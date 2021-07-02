@@ -27,7 +27,7 @@
                 <br /><br />
             </form>
             <code>
-                Usuário de teste: user@ufes.br<br />
+                Usuário de teste: prof1@ufes.br<br />
                 Senha: senha123
             </code><br /><br />
         </main>
