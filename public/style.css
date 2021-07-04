@@ -200,7 +200,7 @@ nav ul li a {
     border-radius: 10px;
 }
 nav ul li a:hover {
-    background: #fff;
+    background: rgb(139, 238, 130);
 }
 nav ul li {
     display: inline-block;
