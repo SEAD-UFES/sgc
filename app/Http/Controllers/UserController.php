@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Employee;
+use App\Models\Role;
 
 class UserController extends Controller
 {
@@ -17,8 +19,9 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
+        $roles = Role::all();
 
-        return view('user.index', compact('users'));
+        return view('user.index', compact('users', 'roles'));
     }
 
     /**
@@ -28,7 +31,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.create');
+        $roles = Role::all();
+        return view('user.create', compact('roles'));
     }
 
     /**
@@ -38,7 +42,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
         $user = new User;
 
         $user->email = $request->email;
@@ -47,6 +51,11 @@ class UserController extends Controller
         $user->active = $request->has('active');
 
         $user->save();
+
+        $existentEmployeeId = Employee::where('email', $request->email)->pluck('id')->first();
+
+        if ($existentEmployeeId != null)
+            Employee::where('id', $existentEmployeeId)->update(['user_id' => $user->id]);
 
         return redirect()->route('user.index');
     }

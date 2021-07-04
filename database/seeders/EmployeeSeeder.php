@@ -19,12 +19,14 @@ class EmployeeSeeder extends Seeder
         DB::table($this->tableName)->insert([
             'name' => 'Mateus',
             'cpf' => '11111111111',
+            'email' => 'admin@ufes.br',
             'user_id' => 1,
         ]);
 
         DB::table($this->tableName)->insert([
             'name' => 'Júlia',
             'cpf' => '22222222222',
+            'email' => 'diretor@ufes.br',
             'user_id' => 2,
         ]);
     }

@@ -17,7 +17,8 @@ class CreateEmployeesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('cpf');
-            $table->foreignId('user_id')->unique()->constrained('users');
+            $table->string('email');
+            $table->foreignId('user_id')->unique()->nullable()->constrained('users');
             $table->timestamps();
         });
     }

@@ -11,6 +11,7 @@
             <table>
                 <thead>
                     <th>E-mail</th>
+                    <th>Atribuição</th>
                     <th>Ativo</th>
                     <th colspan="2">Ações</th>
                 </thead>
@@ -18,6 +19,7 @@
                     @foreach ($users as $user)
                         <tr>
                             <td>{{ $user->email }}</td>
+                            <td>{{ $roles[($user->role_id - 1)]->name }}</td>
                             <td>{{ ($user->active === 1) ? 'Sim' : 'Não'}}</td>
                             <td>Editar</td>
                             <td>Excluir</td>

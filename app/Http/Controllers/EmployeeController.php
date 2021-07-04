@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class EmployeeController extends Controller
 {
@@ -41,6 +42,9 @@ class EmployeeController extends Controller
 
         $employee->name = $request->name;
         $employee->cpf = $request->cpf;
+        $employee->email = $request->email;
+
+        $employee->user_id = User::where('email', $request->email)->pluck('id')->first();
 
         $employee->save();
 

@@ -21,7 +21,10 @@
                 @enderror
                 <br /><br />
                 Atribuição*: <select name="roles">
-                    <option value="1">Selecione um atribuição</option>
+                    <option value="">Selecione um atribuição</option>
+                    @foreach ($roles as $role)
+                        <option value="{{ $role->id }}">{{ $role->name }}</option>
+                    @endforeach
                 </select>
                 <br /><br />
                 Ativo: <input type="checkbox" name="active" />
