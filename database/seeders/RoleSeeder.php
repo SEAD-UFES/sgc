@@ -72,12 +72,12 @@ class RoleSeeder extends Seeder
 
         DB::table($this->tableName)->insert([
             'name' => 'Secretário Acadêmico',
-            'description' => 'Colaborador que atua na Secretaria Acadêmica da Sead',
+            'description' => 'Colaborador da Secretaria Acadêmica da Sead',
         ]);
 
         DB::table($this->tableName)->insert([
             'name' => 'Colaborador LDI',
-            'description' => 'Colaborador que atua no LDI da Sead',
+            'description' => 'Colaborador do LDI da Sead',
         ]);
     }
 }
