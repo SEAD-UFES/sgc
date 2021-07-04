@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table($this->tableName)->insert([
-            'email' => 'administrador@ufes.br',
+            'email' => 'diretor@ufes.br',
             'password' => Hash::make('senha123'),
             'role_id' => 2,
             'active' => true,
@@ -65,6 +65,41 @@ class UserSeeder extends Seeder
             'email' => 'prof2@ufes.br',
             'password' => Hash::make('senha123'),
             'role_id' => 8,
+            'active' => true,
+        ]);
+
+        DB::table($this->tableName)->insert([
+            'email' => 'coordtut@ufes.br',
+            'password' => Hash::make('senha123'),
+            'role_id' => 9,
+            'active' => true,
+        ]);
+
+        DB::table($this->tableName)->insert([
+            'email' => 'proftcc@ufes.br',
+            'password' => Hash::make('senha123'),
+            'role_id' => 10,
+            'active' => true,
+        ]);
+
+        DB::table($this->tableName)->insert([
+            'email' => 'profform@ufes.br',
+            'password' => Hash::make('senha123'),
+            'role_id' => 11,
+            'active' => true,
+        ]);
+
+        DB::table($this->tableName)->insert([
+            'email' => 'secretario@ufes.br',
+            'password' => Hash::make('senha123'),
+            'role_id' => 12,
+            'active' => true,
+        ]);
+
+        DB::table($this->tableName)->insert([
+            'email' => 'ldi@ufes.br',
+            'password' => Hash::make('senha123'),
+            'role_id' => 13,
             'active' => true,
         ]);
     }

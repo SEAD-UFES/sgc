@@ -21,8 +21,8 @@ class RoleSeeder extends Seeder
         ]);
 
         DB::table($this->tableName)->insert([
-            'name' => 'Administrador',
-            'description' => 'Administrador do SGC',
+            'name' => 'Diretor',
+            'description' => 'Diretor da Sead',
         ]);
 
         DB::table($this->tableName)->insert([
@@ -68,6 +68,16 @@ class RoleSeeder extends Seeder
         DB::table($this->tableName)->insert([
             'name' => 'Professor formador de componentes curriculares',
             'description' => 'Professor formador de componentes curriculares',
+        ]);
+
+        DB::table($this->tableName)->insert([
+            'name' => 'Secretário Acadêmico',
+            'description' => 'Colaborador que atua na Secretaria Acadêmica da Sead',
+        ]);
+
+        DB::table($this->tableName)->insert([
+            'name' => 'Colaborador LDI',
+            'description' => 'Colaborador que atua no LDI da Sead',
         ]);
     }
 }
