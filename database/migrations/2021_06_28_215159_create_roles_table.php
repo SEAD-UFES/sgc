@@ -17,6 +17,7 @@ class CreateRolesTable extends Migration
             $table->id();
             $table->string('name', 50);
             $table->string('description', 50);
+            $table->decimal('grant_value', 8, 2);
             $table->timestamps();
         });
     }

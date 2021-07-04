@@ -14,7 +14,10 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return view('course.index');
+        $courses = Course::all();
+        //dd($courses);
+
+        return view('course.index', compact('courses'));
     }
 
     /**
@@ -24,7 +27,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        //
+        return view('course.create');
     }
 
     /**
@@ -35,7 +38,16 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $course = new Course;
+
+        $course->name = $request->name;
+        $course->description = $request->description;
+        $course->begin = $request->begin;
+        $course->end = $request->end;
+
+        $course->save();
+
+        return redirect()->route('course.index');
     }
 
     /**

@@ -14,7 +14,9 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        return view('employee.index');
+        $employees = Employee::all();
+
+        return view('employee.index', compact('employees'));
     }
 
     /**
@@ -24,7 +26,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        //
+        return view('employee.create');
     }
 
     /**
@@ -35,7 +37,14 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $employee = new Employee;
+
+        $employee->name = $request->name;
+        $employee->cpf = $request->cpf;
+
+        $employee->save();
+
+        return redirect()->route('employee.index');
     }
 
     /**

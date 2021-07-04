@@ -8,10 +8,24 @@
     </section>
     <section id="pageContent">
         <main role="main">
-            <p>Sistema</p><br /><br />
-            <a href="{{ route('role.index') }}">Atribuições</a><br /><br />
-            <a href="{{ route('course.index') }}">Cursos</a><br /><br />
-            <a href="{{ route('user.index') }}">Usuários</a><br /><br />
+            <nav>
+                Atribuições
+                <ul>
+                    <li><a href="{{ route('role.index') }}">Listar Atribuições</a></li>
+                    <li><a href="{{ route('role.create') }}">Cadastrar Atribuição</a></li>
+                </ul><br />
+                Cursos
+                <ul>
+                    <li><a href="{{ route('course.index') }}">Listar Cursos</a></li>
+                    <li><a href="{{ route('course.create') }}">Cadastrar Curso</a></li>
+                </ul><br />
+                Usuários
+                <ul>
+                    <li><a href="{{ route('user.index') }}">Listar Usuários</a></li>
+                    <li><a href="{{ route('user.create') }}">Cadastrar Usuário</a></li>
+                </ul>
+            </nav>
+            <br /><br />
         </main>
     </section>
 @endsection

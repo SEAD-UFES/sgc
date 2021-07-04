@@ -17,5 +17,6 @@ class Role extends Model
     protected $fillable = [
         'name',
         'description',
+        'grant_value',
     ];
 }

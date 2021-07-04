@@ -8,7 +8,24 @@
     </section>
     <section id="pageContent">
         <main role="main">
-            <p>Listar Usuários</p>
+            <table>
+                <thead>
+                    <th>E-mail</th>
+                    <th>Ativo</th>
+                    <th colspan="2">Ações</th>
+                </thead>
+                <tbody>
+                    @foreach ($users as $user)
+                        <tr>
+                            <td>{{ $user->email }}</td>
+                            <td>{{ ($user->active === 1) ? 'Sim' : 'Não'}}</td>
+                            <td>Editar</td>
+                            <td>Excluir</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <br />
         </main>
     </section>
 @endsection
