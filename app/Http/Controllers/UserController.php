@@ -128,8 +128,11 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($uuid, User $user)
     {
-        //
+        $targetUser = User::findOrFail($uuid);
+        $targetUser->delete();
+
+        return redirect()->route('user.index');
     }
 }

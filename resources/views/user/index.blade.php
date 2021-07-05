@@ -19,10 +19,12 @@
                     @foreach ($users as $user)
                         <tr>
                             <td>{{ $user->email }}</td>
-                            <td>{{ $roles[($user->role_id - 1)]->name }}</td> {{-- How to make it better? --}}
-                            <td>{{ ($user->active === 1) ? 'Sim' : 'Não'}}</td>
+                            <td>{{ $roles[$user->role_id - 1]->name }}</td> {{-- How to make it better? --}}
+                            <td>{{ $user->active === 1 ? 'Sim' : 'Não' }}</td>
                             <td><a href="{{ route('user.edit', $user) }}">Editar</a></td>
-                            <td>Excluir</td>
+                            {{-- <td><a href="{{ route('user.destroy', $user) }}">Excluir</a></td> --}}
+                            <td><a onClick="{{ 'if(confirm("Tem certeza que deseja excluir esse usuário?")) window.location.replace(\'' . route('user.destroy', $user) . '\')' }}" style="cursor:pointer; color:blue; text-decoration:underline;">Excluir</a>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

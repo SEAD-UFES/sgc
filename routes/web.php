@@ -39,6 +39,7 @@ Route::prefix('/user')->middleware('auth')->group(function () {
     Route::get('/show/{uuid}',  [\App\Http\Controllers\UserController::class, 'show'])->name('user.show');
     Route::get('/edit/{uuid}',  [\App\Http\Controllers\UserController::class, 'edit'])->name('user.edit');
     Route::patch('/update/{uuid}',  [\App\Http\Controllers\UserController::class, 'update'])->name('user.update');
+    Route::get('/destroy/{uuid}',  [\App\Http\Controllers\UserController::class, 'destroy'])->name('user.destroy');
 });
 
 Route::prefix('/employee')->middleware('auth')->group(function () {
