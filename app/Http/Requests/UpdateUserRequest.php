@@ -24,7 +24,7 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'roles' => 'min:1',
         ];
     }
@@ -34,6 +34,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'email.required' => 'O E-mail é obrigatório',
             'email.email' => 'O endereço de E-mail deve ser válido',
+            'email.unique' => 'O endereço não pode ser igual a outro já cadastrado',
             'roles.min' => 'A Atribuição é obrigatória',
         ];
     }

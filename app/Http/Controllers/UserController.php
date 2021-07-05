@@ -111,7 +111,7 @@ class UserController extends Controller
         try {
             $user->save();
         } catch (\Exception $e) {
-            return back()->withErrors(['noAuth' => 'Não foi possível autenticar o usuário: ' . $e->getMessage()]);
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
         }
 
         $existentEmployeeId = Employee::where('email', $request->email)->pluck('id')->first();
