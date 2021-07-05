@@ -9,7 +9,7 @@
     <section id="pageContent">
         <main role="main">
             <form action={{ route('user.store') }} method="POST">
-                @component('user.componentUserForm', ['roles' => $roles])@endcomponent
+                @component('user.componentUserForm',  compact('user', 'roles'))@endcomponent
             </form>
         </main>
     </section>

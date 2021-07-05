@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Employee;
 use App\Models\Role;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Controllers\Exception;
 
 class UserController extends Controller
 {
@@ -33,7 +34,8 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        return view('user.create', compact('roles'));
+        $user = new User;
+        return view('user.create', compact('roles', 'user'));
     }
 
     /**
@@ -78,9 +80,11 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit($uuid, User $user)
     {
-        //
+        $user = User::findOrFail($uuid);
+        $roles = Role::all();
+        return view('user.edit', compact('user', 'roles'));
     }
 
     /**
@@ -90,9 +94,31 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update($uuid, Request $request, User $user)
     {
-        //
+        $user = User::findOrFail($uuid);
+
+        /* echo (isset($request->password));
+        dd($request); */
+
+        $user->email = $request->email;
+        if ($request->password != '')
+            $user->password =  Hash::make($request->password);
+        $user->role_id = $request->roles;
+        $user->active = $request->has('active');
+
+        try {
+            $user->save();
+        } catch (\Exception $e) {
+            return back()->withErrors(['noAuth' => 'Não foi possível autenticar o usuário: ' . $e->getMessage()]);
+        }
+
+        $existentEmployeeId = Employee::where('email', $request->email)->pluck('id')->first();
+
+        if ($existentEmployeeId != null)
+            Employee::where('id', $existentEmployeeId)->update(['user_id' => $user->id]);
+
+        return redirect()->route('user.index');
     }
 
     /**

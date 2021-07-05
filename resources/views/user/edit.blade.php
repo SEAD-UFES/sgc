@@ -8,7 +8,10 @@
     </section>
     <section id="pageContent">
         <main role="main">
-            <p>Editar Usuário</p>
+            <form action="{{ route('user.update', $user->id) }}" method="POST">
+                @method('PATCH')
+                @component('user.componentUserForm', compact('user', 'roles'))@endcomponent
+            </form>
         </main>
     </section>
 @endsection
