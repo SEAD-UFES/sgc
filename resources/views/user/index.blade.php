@@ -19,7 +19,7 @@
                     @foreach ($users as $user)
                         <tr>
                             <td>{{ $user->email }}</td>
-                            <td>{{ $roles[($user->role_id - 1)]->name }}</td>
+                            <td>{{ $roles[($user->role_id - 1)]->name }}</td> {{-- How to make it better? --}}
                             <td>{{ ($user->active === 1) ? 'Sim' : 'Não'}}</td>
                             <td>Editar</td>
                             <td>Excluir</td>
