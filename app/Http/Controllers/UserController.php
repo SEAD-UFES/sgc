@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Employee;
 use App\Models\Role;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Controllers\Exception;
 
 class UserController extends Controller
@@ -94,7 +95,7 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update($uuid, Request $request, User $user)
+    public function update($uuid, UpdateUserRequest $request, User $user)
     {
         $user = User::findOrFail($uuid);
 
