@@ -56,7 +56,10 @@ Route::prefix('/course')->middleware('auth')->group(function () {
     Route::post('/create',  [\App\Http\Controllers\CourseController::class, 'store'])->name('course.store');
     Route::get('/show/{uuid}',  [\App\Http\Controllers\CourseController::class, 'show'])->name('course.show');
     Route::get('/edit/{uuid}',  [\App\Http\Controllers\CourseController::class, 'edit'])->name('course.edit');
+    Route::patch('/update/{uuid}',  [\App\Http\Controllers\CourseController::class, 'update'])->name('course.update');
+    Route::get('/destroy/{uuid}',  [\App\Http\Controllers\CourseController::class, 'destroy'])->name('course.destroy');
 });
+Route::get('/coursetype/index',  [\App\Http\Controllers\CourseTypeController::class, 'index'])->middleware('auth')->name('coursetype.index');
 
 
 Route::fallback([\App\Http\Controllers\FallbackController::class, 'fallback']);

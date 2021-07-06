@@ -30,5 +30,12 @@ class CourseSeeder extends Seeder
             'begin' => Carbon::create('2021', '01', '01'),
             'end' => Carbon::create('2028', '07', '01'),
         ]);
+
+        DB::table($this->tableName)->insert([
+            'name' => 'Curso de Química',
+            'description' => 'Curso de Química',
+            'begin' => Carbon::create('2021', '06', '01'),
+            'end' => Carbon::create('2028', '12', '01'),
+        ]);
     }
 }

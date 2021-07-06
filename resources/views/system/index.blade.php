@@ -18,6 +18,7 @@
                 <ul>
                     <li><a href="{{ route('course.index') }}">Listar Cursos</a></li>
                     <li><a href="{{ route('course.create') }}">Cadastrar Curso</a></li>
+                    <li><a href="{{ route('coursetype.index') }}">Listar Tipos de Cursos</a></li>
                 </ul><br />
                 Usuários
                 <ul>
