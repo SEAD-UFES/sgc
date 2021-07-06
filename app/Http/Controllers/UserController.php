@@ -10,7 +10,7 @@ use App\Models\Employee;
 use App\Models\Role;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Http\Controllers\Exception;
+use App\CustomClasses\SgcLogger;
 
 class UserController extends Controller
 {
@@ -24,6 +24,8 @@ class UserController extends Controller
         $users = User::all();
         $roles = Role::all();
 
+        SgcLogger::writeLog('User');
+
         return view('user.index', compact('users', 'roles'));
     }
 
@@ -36,6 +38,9 @@ class UserController extends Controller
     {
         $roles = Role::all();
         $user = new User;
+
+        SgcLogger::writeLog('User');
+
         return view('user.create', compact('roles', 'user'));
     }
 
@@ -56,10 +61,15 @@ class UserController extends Controller
 
         $user->save();
 
+        SgcLogger::writeLog($user);
+
         $existentEmployeeId = Employee::where('email', $request->email)->pluck('id')->first();
 
-        if ($existentEmployeeId != null)
+        if ($existentEmployeeId != null) {
             Employee::where('id', $existentEmployeeId)->update(['user_id' => $user->id]);
+
+            SgcLogger::writeLog($existentEmployeeId, 'updated employee');
+        }
 
         return redirect()->route('user.index');
     }
@@ -85,6 +95,9 @@ class UserController extends Controller
     {
         $user = User::findOrFail($uuid);
         $roles = Role::all();
+
+        SgcLogger::writeLog($user);
+
         return view('user.edit', compact('user', 'roles'));
     }
 
@@ -99,10 +112,8 @@ class UserController extends Controller
     {
         $user = User::findOrFail($uuid);
 
-        /* echo (isset($request->password));
-        dd($request); */
-
         $user->email = $request->email;
+
         if ($request->password != '')
             $user->password =  Hash::make($request->password);
         $user->role_id = $request->roles;
@@ -114,10 +125,15 @@ class UserController extends Controller
             return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
         }
 
+        SgcLogger::writeLog($user);
+
         $existentEmployeeId = Employee::where('email', $request->email)->pluck('id')->first();
 
-        if ($existentEmployeeId != null)
+        if ($existentEmployeeId != null) {
             Employee::where('id', $existentEmployeeId)->update(['user_id' => $user->id]);
+
+            SgcLogger::writeLog($existentEmployeeId, 'updated employee');
+        }
 
         return redirect()->route('user.index');
     }
@@ -131,6 +147,9 @@ class UserController extends Controller
     public function destroy($uuid, User $user)
     {
         $targetUser = User::findOrFail($uuid);
+
+        SgcLogger::writeLog($targetUser);
+
         $targetUser->delete();
 
         return redirect()->route('user.index');
