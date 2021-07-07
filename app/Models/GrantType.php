@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CourseType extends Model
+class GrantType extends Model
 {
     use HasFactory;
 
@@ -19,8 +19,8 @@ class CourseType extends Model
         'description',
     ];
 
-    public function courses()
+    public function roles()
     {
-        return $this->hasMany(Course::class);
+        return $this->hasMany(Role::class);
     }
 }

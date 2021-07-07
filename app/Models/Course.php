@@ -15,4 +15,9 @@ class Course extends Model
         'begin',
         'end',
     ];
+
+    public function courseType()
+    {
+        return $this->belongsTo(CourseType::class);
+    }
 }

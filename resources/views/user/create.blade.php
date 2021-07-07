@@ -8,7 +8,7 @@
     </section>
     <section id="pageContent">
         <main role="main">
-            <form action={{ route('user.store') }} method="POST">
+            <form action={{ route('users.store') }} method="POST">
                 @component('user.componentUserForm',  compact('user', 'roles'))@endcomponent
             </form>
         </main>

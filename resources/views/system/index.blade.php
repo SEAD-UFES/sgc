@@ -11,19 +11,19 @@
             <nav>
                 Atribuições
                 <ul>
-                    <li><a href="{{ route('role.index') }}">Listar Atribuições</a></li>
-                    <li><a href="{{ route('role.create') }}">Cadastrar Atribuição</a></li>
+                    <li><a href="{{ route('roles.index') }}">Listar Atribuições</a></li>
+                    <li><a href="{{ route('roles.create') }}">Cadastrar Atribuição</a></li>
                 </ul><br />
                 Cursos
                 <ul>
-                    <li><a href="{{ route('course.index') }}">Listar Cursos</a></li>
-                    <li><a href="{{ route('course.create') }}">Cadastrar Curso</a></li>
-                    <li><a href="{{ route('coursetype.index') }}">Listar Tipos de Cursos</a></li>
+                    <li><a href="{{ route('courses.index') }}">Listar Cursos</a></li>
+                    <li><a href="{{ route('courses.create') }}">Cadastrar Curso</a></li>
+                    <li><a href="{{ route('coursetypes.index') }}">Listar Tipos de Cursos</a></li>
                 </ul><br />
                 Usuários
                 <ul>
-                    <li><a href="{{ route('user.index') }}">Listar Usuários</a></li>
-                    <li><a href="{{ route('user.create') }}">Cadastrar Usuário</a></li>
+                    <li><a href="{{ route('users.index') }}">Listar Usuários</a></li>
+                    <li><a href="{{ route('users.create') }}">Cadastrar Usuário</a></li>
                 </ul>
             </nav>
             <br /><br />

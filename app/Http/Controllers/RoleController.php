@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use Illuminate\Http\Request;
+use App\CustomClasses\SgcLogger;
+use App\Http\Requests\StoreRoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
+use App\Models\GrantType;
 
 class RoleController extends Controller
 {
@@ -14,9 +18,11 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
+        $roles = Role::orderBy('name')->paginate(10);
 
-        return view('role.index', compact('roles'));
+        SgcLogger::writeLog('Role');
+
+        return view('role.index', compact('roles'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -26,7 +32,12 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return view('role.create');
+        $grantTypes = GrantType::orderBy('name')->get();
+        $role = new Role;
+
+        SgcLogger::writeLog('Role');
+
+        return view('role.create', compact('role', 'grantTypes'));
     }
 
     /**
@@ -35,17 +46,18 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRoleRequest $request)
     {
         $role = new Role;
 
         $role->name = $request->name;
         $role->description = $request->description;
         $role->grant_value = $request->grantValue;
+        $role->grant_type_id = $request->grantTypes;
 
         $role->save();
 
-        return redirect()->route('role.index');
+        return redirect()->route('roles.index')->with('success', 'Atribuição criada com sucesso.');
     }
 
     /**
@@ -56,7 +68,7 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        //
+        return view('role.show', compact('role'));
     }
 
     /**
@@ -67,7 +79,11 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        //
+        $grantTypes = GrantType::orderBy('name')->get();
+
+        SgcLogger::writeLog($role);
+
+        return view('role.edit', compact('role', 'grantTypes'));
     }
 
     /**
@@ -77,9 +93,22 @@ class RoleController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
-        //
+        $role->name = $request->name;
+        $role->description = $request->description;
+        $role->grant_value = $request->grantValue;
+        $role->grant_type_id = $request->grantTypes;
+
+        try {
+            $role->save();
+        } catch (\Exception $e) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar a Atribuição: ' . $e->getMessage()]);
+        }
+
+        SgcLogger::writeLog($role);
+
+        return redirect()->route('roles.index')->with('success', 'Atribuição atualizada com sucesso.');
     }
 
     /**
@@ -90,6 +119,14 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        SgcLogger::writeLog($role);
+
+        try {
+            $role->delete();
+        } catch (\Exception $e) {
+            return back()->withErrors(['noDestroy' => 'Não foi possível salvar a Atribuição: ' . $e->getMessage()]);
+        }
+
+        return redirect()->route('roles.index')->with('success', 'Atribuição excluída com sucesso.');
     }
 }

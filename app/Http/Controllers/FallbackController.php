@@ -9,9 +9,6 @@ class FallbackController extends Controller
 {
     public function fallback()
     {
-        if (Auth::check())
-            return redirect()->route('home');
-        else
-            return redirect()->route('login');
+        return redirect()->route('root');
     }
 }

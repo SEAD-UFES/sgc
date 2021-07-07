@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Foundation\Auth\User as AuthUser;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Employee;
 use App\Models\Role;
@@ -21,12 +20,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        $roles = Role::all();
+        $users = User::with('role')->orderBy('email')->paginate(10);
 
         SgcLogger::writeLog('User');
 
-        return view('user.index', compact('users', 'roles'));
+        return view('user.index', compact('users'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -36,7 +34,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
+        $roles = Role::orderBy('name')->get();
         $user = new User;
 
         SgcLogger::writeLog('User');
@@ -71,7 +69,7 @@ class UserController extends Controller
             SgcLogger::writeLog($existentEmployeeId, 'updated employee');
         }
 
-        return redirect()->route('user.index');
+        return redirect()->route('users.index')->with('success', 'Usuário criado com sucesso.');;
     }
 
     /**
@@ -82,7 +80,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return view('user.show', compact('user'));
     }
 
     /**
@@ -91,10 +89,9 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit($uuid, User $user)
+    public function edit(User $user)
     {
-        $user = User::findOrFail($uuid);
-        $roles = Role::all();
+        $roles = Role::orderBy('name')->get();
 
         SgcLogger::writeLog($user);
 
@@ -108,10 +105,8 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update($uuid, UpdateUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $user = User::findOrFail($uuid);
-
         $user->email = $request->email;
 
         if ($request->password != '')
@@ -135,7 +130,7 @@ class UserController extends Controller
             SgcLogger::writeLog($existentEmployeeId, 'updated employee');
         }
 
-        return redirect()->route('user.index');
+        return redirect()->route('users.index')->with('success', 'Usuário atualizado com sucesso.');
     }
 
     /**
@@ -144,14 +139,16 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy($uuid, User $user)
+    public function destroy(User $user)
     {
-        $targetUser = User::findOrFail($uuid);
+        SgcLogger::writeLog($user);
 
-        SgcLogger::writeLog($targetUser);
+        try {
+            $user->delete();
+        } catch (\Exception $e) {
+            return back()->withErrors(['noDestroy' => 'Não foi possível excluir o usuário: ' . $e->getMessage()]);
+        }
 
-        $targetUser->delete();
-
-        return redirect()->route('user.index');
+        return redirect()->route('users.index')->with('success', 'Usuário excluído com sucesso.');
     }
 }

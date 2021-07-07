@@ -23,8 +23,10 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules()
     {
+        $id = $this->route('user')->id;
+
         return [
-            'email' => 'required|email|unique:users,email,'. $this->route('uuid'),
+            'email' => 'required|email|unique:users,email,' . $id . ',id',
             'roles' => 'min:1',
         ];
     }

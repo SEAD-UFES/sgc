@@ -19,4 +19,14 @@ class Role extends Model
         'description',
         'grant_value',
     ];
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function grantType()
+    {
+        return $this->belongsTo(GrantType::class);
+    }
 }

@@ -8,8 +8,9 @@
     </section>
     <section id="pageContent">
         <main role="main">
-            <form action={{ route('course.update') }} method="POST">
-                @component('course.componentUserForm', ['course' => $user])@endcomponent
+            <form action={{ route('courses.update', $course->id) }} method="POST">
+                @method('PATCH')
+                @component('course.componentCourseForm', compact('course', 'courseTypes'))@endcomponent
             </form>
         </main>
     </section>

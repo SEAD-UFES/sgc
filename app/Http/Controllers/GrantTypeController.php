@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CourseType;
+use App\Models\GrantType;
 use Illuminate\Http\Request;
-use App\CustomClasses\SgcLogger;
 
-class CourseTypeController extends Controller
+class GrantTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +14,7 @@ class CourseTypeController extends Controller
      */
     public function index()
     {
-        $courseTypes = CourseType::orderBy('name')->get();
-
-        SgcLogger::writeLog('CourseType');
-
-        return view('coursetype.index', compact('courseTypes'));
+        //
     }
 
     /**
@@ -46,10 +41,10 @@ class CourseTypeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\CourseType  $courseType
+     * @param  \App\Models\GrantType  $grantType
      * @return \Illuminate\Http\Response
      */
-    public function show(CourseType $courseType)
+    public function show(GrantType $grantType)
     {
         //
     }
@@ -57,10 +52,10 @@ class CourseTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\CourseType  $courseType
+     * @param  \App\Models\GrantType  $grantType
      * @return \Illuminate\Http\Response
      */
-    public function edit(CourseType $courseType)
+    public function edit(GrantType $grantType)
     {
         //
     }
@@ -69,10 +64,10 @@ class CourseTypeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\CourseType  $courseType
+     * @param  \App\Models\GrantType  $grantType
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, CourseType $courseType)
+    public function update(Request $request, GrantType $grantType)
     {
         //
     }
@@ -80,10 +75,10 @@ class CourseTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\CourseType  $courseType
+     * @param  \App\Models\GrantType  $grantType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CourseType $courseType)
+    public function destroy(GrantType $grantType)
     {
         //
     }

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
-use Illuminate\Http\Request;
+use App\Models\CourseType;
+use App\Http\Requests\StoreCourseRequest;
+use App\Http\Requests\UpdateCourseRequest;
+use App\CustomClasses\SgcLogger;
 
 class CourseController extends Controller
 {
@@ -14,10 +17,11 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::all();
-        //dd($courses);
+        $courses = Course::with('courseType')->orderBy('name')->paginate(10);
 
-        return view('course.index', compact('courses'));
+        SgcLogger::writeLog('Course');
+
+        return view('course.index', compact('courses'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -27,7 +31,12 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return view('course.create');
+        $courseTypes = CourseType::orderBy('name')->get();
+        $course = new Course;
+
+        SgcLogger::writeLog('Course');
+
+        return view('course.create', compact('courseTypes', 'course'));
     }
 
     /**
@@ -36,18 +45,21 @@ class CourseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCourseRequest $request)
     {
         $course = new Course;
 
         $course->name = $request->name;
         $course->description = $request->description;
+        $course->course_type_id = $request->courseTypes;
         $course->begin = $request->begin;
         $course->end = $request->end;
 
         $course->save();
 
-        return redirect()->route('course.index');
+        SgcLogger::writeLog($course);
+
+        return redirect()->route('courses.index')->with('success', 'Curso criado com sucesso.');
     }
 
     /**
@@ -58,7 +70,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        //
+        return view('course.show', compact('course'));
     }
 
     /**
@@ -69,7 +81,11 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        //
+        $courseTypes = CourseType::orderBy('name')->get();
+
+        SgcLogger::writeLog($course);
+
+        return view('course.edit', compact('course', 'courseTypes'));
     }
 
     /**
@@ -79,9 +95,23 @@ class CourseController extends Controller
      * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Course $course)
+    public function update(UpdateCourseRequest $request, Course $course)
     {
-        //
+        $course->name = $request->name;
+        $course->description =  $request->description;
+        $course->course_type_id = $request->courseTypes;
+        $course->begin = $request->begin;
+        $course->end = $request->end;
+
+        try {
+            $course->save();
+        } catch (\Exception $e) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o curso: ' . $e->getMessage()]);
+        }
+
+        SgcLogger::writeLog($course);
+
+        return redirect()->route('courses.index')->with('success', 'Curso atualizado com sucesso.');
     }
 
     /**
@@ -92,6 +122,13 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        //
+        SgcLogger::writeLog($course);
+        try {
+            $course->delete();
+        } catch (\Exception $e) {
+            return back()->withErrors(['noDestroy' => 'Não foi possível excluir o curso: ' . $e->getMessage()]);
+        }
+
+        return redirect()->route('courses.index')->with('success', 'Curso excluído com sucesso.');
     }
 }

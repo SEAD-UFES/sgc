@@ -14,10 +14,10 @@
                     <th>Descrição</th>
                 </thead>
                 <tbody>
-                    @foreach ($coursetypes as $coursetype)
+                    @foreach ($courseTypes as $courseType)
                         <tr>
-                            <td>{{ $coursetype->name }}</td>
-                            <td>{{ $coursetype->description }}</td>
+                            <td>{{ $courseType->name }}</td>
+                            <td>{{ $courseType->description }}</td>
                         </tr>
                     @endforeach
                 </tbody>

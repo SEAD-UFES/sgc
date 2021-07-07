@@ -8,7 +8,10 @@
     </section>
     <section id="pageContent">
         <main role="main">
-            <p>Editar Atribuição</p>
+            <form action={{ route('roles.update', $role->id) }} method="POST">
+                @method('PATCH')
+                @component('role.componentRoleForm', compact('role', 'grantTypes'))@endcomponent
+            </form>
         </main>
     </section>
 @endsection
