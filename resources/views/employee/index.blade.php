@@ -13,7 +13,6 @@
                     <p style="color: green; font-weight: bold">{{ $message }}</p>
                 </div><br />
             @endif
-            {{-- @dd($employees) --}}
             <table>
                 <thead>
                     <th>Nome</th>

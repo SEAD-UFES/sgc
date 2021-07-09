@@ -58,11 +58,9 @@ class UserController extends Controller
         $user->user_type_id = $request->userTypes;
         $user->active = $request->has('active');
 
-        //$existentEmployeeId = Employee::where('email', $request->email)->pluck('id')->first();
         $existentEmployee = Employee::where('email', $request->email)->first();
 
         if (!is_null($existentEmployee)) {
-            //Employee::where('id', $existentEmployeeId)->update(['user_id' => $user->id]);
             $user->employee = $existentEmployee;
 
             SgcLogger::writeLog($existentEmployee, 'Updated existent Employee info on User');
@@ -120,20 +118,12 @@ class UserController extends Controller
             $user->password =  Hash::make($request->password);
         $user->user_type_id = $request->userTypes;
         $user->active = $request->has('active');
-
-        /* $existentEmployeeId = Employee::where('email', $request->email)->pluck('id')->first();
-
-        if ($existentEmployeeId != null) {
-            Employee::where('id', $existentEmployeeId)->update(['user_id' => $user->id]);
-
-            SgcLogger::writeLog($existentEmployeeId, 'updated employee');
-        } */
+        
         $existentEmployee = Employee::where('email', $request->email)->first();
 
         if (!is_null($existentEmployee))
 
             if ($existentEmployee != null) {
-                //Employee::where('id', $existentEmployeeId)->update(['user_id' => $user->id]);
                 $user->employee = $existentEmployee;
 
                 SgcLogger::writeLog($existentEmployee, 'Updated existent Employee info on User');

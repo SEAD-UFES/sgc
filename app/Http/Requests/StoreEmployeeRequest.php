@@ -33,8 +33,8 @@ class StoreEmployeeRequest extends FormRequest
             'birthCity' => 'required|string',
             'idNumber' => 'required',
             'idTypes' => 'min:1',
-            'idIssueDate' => 'required', //
-            'idIssueAgency' => 'required|string', //
+            'idIssueDate' => 'required',
+            'idIssueAgency' => 'required|string',
             'maritalStatuses' => 'min:1',
             'spouseName' => 'nullable|string',
             'fatherName' => 'nullable|string',

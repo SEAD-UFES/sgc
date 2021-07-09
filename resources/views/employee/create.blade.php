@@ -9,7 +9,6 @@
     <section id="pageContent">
         <main role="main">
             <form action={{ route('employees.store') }} method="POST">
-                {{-- @dd($genders) --}}
                 @component('employee.componentEmployeeForm',  compact('genders', 'birthStates', 'idTypes', 'maritalStatuses', 'addressStates', 'employee'))@endcomponent
             </form>
         </main>
