@@ -18,7 +18,7 @@
                     <th>Nome</th>
                     <th>CPF</th>
                     <th>Profissão</th>
-                    <th>Gênero</th>
+                    {{-- <th>Gênero</th>
                     <th>Nascimento</th>
                     <th>UF Nasc.</th>
                     <th>Cidade Nasc.</th>
@@ -34,7 +34,7 @@
                     <th>Complemento</th>
                     <th>Número</th>
                     <th>Bairro</th>
-                    <th>CEP</th>
+                    <th>CEP</th> --}}
                     <th>UF</th>
                     <th>Cidade</th>
                     <th>Área</th>
@@ -50,7 +50,7 @@
                             <td>{{ $employee->name }}</td>
                             <td>{{ $employee->cpf }}</td>
                             <td>{{ $employee->job }}</td>
-                            <td>{{ $employee->gender->name }}</td>
+                            {{-- <td>{{ $employee->gender->name }}</td>
                             <td>{{ $employee->birthday }}</td>
                             <td>{{ $employee->birthState->uf }}</td>
                             <td>{{ $employee->birth_city }}</td>
@@ -66,7 +66,7 @@
                             <td>{{ $employee->address_complement }}</td>
                             <td>{{ $employee->address_number }}</td>
                             <td>{{ $employee->address_district }}</td>
-                            <td>{{ $employee->address_postal_code }}</td>
+                            <td>{{ $employee->address_postal_code }}</td> --}}
                             <td>{{ $employee->addressState->uf }}</td>
                             <td>{{ $employee->address_city }}</td>
                             <td>{{ $employee->area_code }}</td>

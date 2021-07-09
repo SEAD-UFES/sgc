@@ -8,7 +8,7 @@
     </section>
     <section id="pageContent">
         <main role="main">
-            <p>Exibir Funcionário</p>
+            @component('employee.componentEmployeeDetails',  compact('employee'))@endcomponent
         </main>
     </section>
 @endsection
