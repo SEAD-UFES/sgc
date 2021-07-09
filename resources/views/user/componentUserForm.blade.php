@@ -9,13 +9,13 @@ Nova Senha: <input name="password" type="password" placeholder="Nova Senha" />
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Atribuição*: <select name="roles">
-    <option value="">Selecione um atribuição</option>
-    @foreach ($roles as $role)
-        <option value="{{ $role->id }}" {{($role->id == $user->role_id) ? 'selected' : ''}}>{{ $role->name }}</option>
+Tipo de usuário*: <select name="userTypes">
+    <option value="">Selecione um tipo</option>
+    @foreach ($userTypes as $userType)
+        <option value="{{ $userType->id }}" {{($userType->id == $user->user_type_id) ? 'selected' : ''}}>{{ $userType->name }}</option>
     @endforeach
 </select>
-@error('roles')
+@error('userTypes')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />

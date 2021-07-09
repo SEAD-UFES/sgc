@@ -90,7 +90,7 @@ class SgcLogger
             'index' => 'info',
             'create' => 'info',
             'store' => 'notice',
-            'updated employee' => 'notice',
+            'Updated existent Employee info on User' => 'warning',
             'updated user' => 'notice',
             'show' => 'info',
             'edit' => 'info',

@@ -4,11 +4,14 @@
 
 @section('content')
     <section>
-        <strong>Editar Funcionário</strong>
+        <strong>Editar Colaborador</strong>
     </section>
     <section id="pageContent">
         <main role="main">
-            <p>Editar Funcionário</p>
+            <form action="{{ route('employees.update', $employee->id) }}" method="POST">
+                @method('PATCH')
+                @component('employee.componentEmployeeForm',  compact('genders', 'birthStates', 'idTypes', 'maritalStatuses', 'addressStates', 'employee'))@endcomponent
+            </form>
         </main>
     </section>
 @endsection

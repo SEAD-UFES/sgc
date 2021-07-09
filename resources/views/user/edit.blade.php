@@ -10,7 +10,7 @@
         <main role="main">
             <form action="{{ route('users.update', $user->id) }}" method="POST">
                 @method('PATCH')
-                @component('user.componentUserForm', compact('user', 'roles'))@endcomponent
+                @component('user.componentUserForm',  compact('user', 'userTypes'))@endcomponent
             </form>
         </main>
     </section>

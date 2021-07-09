@@ -26,7 +26,7 @@ class StoreUserRequest extends FormRequest
         return [
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
-            'roles' => 'min:1',
+            'userTypes' => 'min:1',
         ];
     }
 
@@ -37,7 +37,7 @@ class StoreUserRequest extends FormRequest
             'email.email' => 'O endereço de E-mail deve ser válido',
             'email.unique' => 'O endereço não pode ser igual a outro já cadastrado',
             'password.required' => 'A Senha é obrigatória',
-            'roles.min' => 'A Atribuição é obrigatória',
+            'userTypes.min' => 'A Atribuição é obrigatória',
         ];
     }
 }

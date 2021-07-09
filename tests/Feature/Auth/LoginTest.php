@@ -44,16 +44,16 @@ class LoginTest extends TestCase
 
         // it must redirect from / to /home
         $response = $this->actingAs($user)->get('/');
-        $response->assertRedirect('/home');
+        $response->assertRedirect('/webhome');
 
         // it must redirect from /login to /home
         $response = $this->actingAs($user)->get('/login');
-        $response->assertRedirect('/home');
+        $response->assertRedirect('/webhome');
     }
 
     public function test_guest_cannot_see_home() 
     {
-        $response = $this->get('/home');
+        $response = $this->get('/webhome');
 
         $response->assertRedirect('/login');
     }

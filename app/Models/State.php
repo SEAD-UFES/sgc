@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Role extends Model
+class State extends Model
 {
     use HasFactory;
 
@@ -15,18 +15,18 @@ class Role extends Model
      * @var array
      */
     protected $fillable = [
+        'uf',
         'name',
-        'description',
-        'grant_value',
+        'ibge_uf_code',
     ];
 
-    /* public function bonds()
+    public function employee()
     {
-        return $this->hasMany(User::class);
-    } */
+        return $this->hasMany(Employee::class);
+    }
 
-    public function grantType()
+    public function employeeBirth()
     {
-        return $this->belongsTo(GrantType::class);
+        return $this->hasMany(Employee::class);
     }
 }

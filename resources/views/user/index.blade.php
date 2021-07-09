@@ -16,16 +16,18 @@
             <table>
                 <thead>
                     <th>E-mail</th>
-                    <th>Atribuição</th>
+                    <th>Tipo</th>
                     <th>Ativo</th>
+                    <th>Colaborador</th>
                     <th colspan="2">Ações</th>
                 </thead>
                 <tbody>
                     @foreach ($users as $user)
                         <tr>
                             <td>{{ $user->email }}</td>
-                            <td>{{ $user->role->name }}</td>
+                            <td>{{ $user->userType->name }}</td>
                             <td>{{ $user->active === 1 ? 'Sim' : 'Não' }}</td>
+                            <td>{{ $user->employee_id }}</td>
                             <td><a href="{{ route('users.edit', $user) }}">Editar</a></td>
                             <td>
                                 <form name="{{ 'formDelete' . $user->id }}" action="{{ route('users.destroy', $user) }}"

@@ -18,9 +18,10 @@ class CreateUsersTable extends Migration
             //$table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->foreignId('role_id')->constrained('roles');
+            $table->foreignId('user_type_id')->constrained('user_types');
             $table->boolean('active')->default(false);
             $table->timestamp('email_verified_at')->nullable();
+            $table->foreignId('employee_id')->unique()->nullable()->constrained('employees');
             $table->rememberToken();
             $table->timestamps();
         });

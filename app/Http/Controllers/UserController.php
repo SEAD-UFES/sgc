@@ -10,6 +10,7 @@ use App\Models\Role;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\CustomClasses\SgcLogger;
+use App\Models\UserType;
 
 class UserController extends Controller
 {
@@ -20,7 +21,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('role')->orderBy('email')->paginate(10);
+        $users = User::with(['userType', 'employee'])->orderBy('email')->paginate(10);
 
         SgcLogger::writeLog('User');
 
@@ -34,12 +35,12 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::orderBy('name')->get();
+        $userTypes = UserType::orderBy('name')->get();
         $user = new User;
 
         SgcLogger::writeLog('User');
 
-        return view('user.create', compact('roles', 'user'));
+        return view('user.create', compact('userTypes', 'user'));
     }
 
     /**
@@ -54,22 +55,28 @@ class UserController extends Controller
 
         $user->email = $request->email;
         $user->password =  Hash::make($request->password);
-        $user->role_id = $request->roles;
+        $user->user_type_id = $request->userTypes;
         $user->active = $request->has('active');
 
-        $user->save();
+        //$existentEmployeeId = Employee::where('email', $request->email)->pluck('id')->first();
+        $existentEmployee = Employee::where('email', $request->email)->first();
+
+        if (!is_null($existentEmployee)) {
+            //Employee::where('id', $existentEmployeeId)->update(['user_id' => $user->id]);
+            $user->employee = $existentEmployee;
+
+            SgcLogger::writeLog($existentEmployee, 'Updated existent Employee info on User');
+        }
+
+        try {
+            $user->save();
+        } catch (\Exception $e) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
+        }
 
         SgcLogger::writeLog($user);
 
-        $existentEmployeeId = Employee::where('email', $request->email)->pluck('id')->first();
-
-        if ($existentEmployeeId != null) {
-            Employee::where('id', $existentEmployeeId)->update(['user_id' => $user->id]);
-
-            SgcLogger::writeLog($existentEmployeeId, 'updated employee');
-        }
-
-        return redirect()->route('users.index')->with('success', 'Usuário criado com sucesso.');;
+        return redirect()->route('users.index')->with('success', 'Usuário criado com sucesso.');
     }
 
     /**
@@ -91,11 +98,11 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = Role::orderBy('name')->get();
+        $userTypes = UserType::orderBy('name')->get();
 
         SgcLogger::writeLog($user);
 
-        return view('user.edit', compact('user', 'roles'));
+        return view('user.edit', compact('user', 'userTypes'));
     }
 
     /**
@@ -111,8 +118,26 @@ class UserController extends Controller
 
         if ($request->password != '')
             $user->password =  Hash::make($request->password);
-        $user->role_id = $request->roles;
+        $user->user_type_id = $request->userTypes;
         $user->active = $request->has('active');
+
+        /* $existentEmployeeId = Employee::where('email', $request->email)->pluck('id')->first();
+
+        if ($existentEmployeeId != null) {
+            Employee::where('id', $existentEmployeeId)->update(['user_id' => $user->id]);
+
+            SgcLogger::writeLog($existentEmployeeId, 'updated employee');
+        } */
+        $existentEmployee = Employee::where('email', $request->email)->first();
+
+        if (!is_null($existentEmployee))
+
+            if ($existentEmployee != null) {
+                //Employee::where('id', $existentEmployeeId)->update(['user_id' => $user->id]);
+                $user->employee = $existentEmployee;
+
+                SgcLogger::writeLog($existentEmployee, 'Updated existent Employee info on User');
+            }
 
         try {
             $user->save();
@@ -121,14 +146,6 @@ class UserController extends Controller
         }
 
         SgcLogger::writeLog($user);
-
-        $existentEmployeeId = Employee::where('email', $request->email)->pluck('id')->first();
-
-        if ($existentEmployeeId != null) {
-            Employee::where('id', $existentEmployeeId)->update(['user_id' => $user->id]);
-
-            SgcLogger::writeLog($existentEmployeeId, 'updated employee');
-        }
 
         return redirect()->route('users.index')->with('success', 'Usuário atualizado com sucesso.');
     }

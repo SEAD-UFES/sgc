@@ -15,32 +15,35 @@ class UserSeeder extends Seeder
         DB::table($this->tableName)->insert([
             'email' => 'admin@ufes.br',
             'password' => Hash::make('senha123'),
-            'role_id' => 1,
+            'user_type_id' => 1,
             'active' => true,
+            'employee_id' => 1,
         ]);
 
         DB::table($this->tableName)->insert([
             'email' => 'diretor@ufes.br',
             'password' => Hash::make('senha123'),
-            'role_id' => 2,
+            'user_type_id' => 2,
             'active' => true,
+            'employee_id' => 2,
         ]);
 
-        DB::table($this->tableName)->insert([
+        /* DB::table($this->tableName)->insert([
             'email' => 'coordenador@ufes.br',
             'password' => Hash::make('senha123'),
             'role_id' => 3,
             'active' => true,
-        ]);
+        ]); */
 
         DB::table($this->tableName)->insert([
             'email' => 'uab@ufes.br',
             'password' => Hash::make('senha123'),
-            'role_id' => 4,
+            'user_type_id' => 3,
             'active' => true,
+            'employee_id' => null,
         ]);
 
-        DB::table($this->tableName)->insert([
+        /* DB::table($this->tableName)->insert([
             'email' => 'tutord@ufes.br',
             'password' => Hash::make('senha123'),
             'role_id' => 5,
@@ -87,20 +90,22 @@ class UserSeeder extends Seeder
             'password' => Hash::make('senha123'),
             'role_id' => 11,
             'active' => true,
-        ]);
+        ]); */
 
         DB::table($this->tableName)->insert([
             'email' => 'secretario@ufes.br',
             'password' => Hash::make('senha123'),
-            'role_id' => 12,
+            'user_type_id' => 4,
             'active' => true,
+            'employee_id' => null,
         ]);
 
         DB::table($this->tableName)->insert([
             'email' => 'ldi@ufes.br',
             'password' => Hash::make('senha123'),
-            'role_id' => 13,
+            'user_type_id' => 5,
             'active' => true,
+            'employee_id' => null,
         ]);
     }
 }
