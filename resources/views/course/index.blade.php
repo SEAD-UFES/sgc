@@ -28,8 +28,8 @@
                             <td>{{ $course->name }}</td>
                             <td>{{ $course->description }}</td>
                             <td>{{ $course->courseType->name }}</td>
-                            <td>{{ $course->begin }}</td>
-                            <td>{{ $course->end }}</td>
+                            <td>{{ \Carbon\Carbon::parse($course->begin)->isoFOrmat('DD/MM/Y') }}</td> 
+                            <td>{{ \Carbon\Carbon::parse($course->end)->isoFOrmat('DD/MM/Y') }}</td>
                             <td><a href="{{ route('courses.edit', $course) }}">Editar</a></td>
                             <td>
                                 <form name="{{ 'formDelete' . $course->id }}" action="{{ route('courses.destroy', $course) }}"

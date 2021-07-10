@@ -26,7 +26,7 @@
                         <tr>
                             <td>{{ $role->name }}</td>
                             <td>{{ $role->description }}</td>
-                            <td>{{ $role->grant_value }}</td>
+                            <td>{{ numfmt_format_currency(numfmt_create('pt_BR', NumberFormatter::CURRENCY), $role->grant_value, 'BRL') }}</td>
                             <td>{{ $role->grantType->name }}</td>
                             <td><a href="{{ route('roles.edit', $role) }}">Editar</a></td>
                             <td>

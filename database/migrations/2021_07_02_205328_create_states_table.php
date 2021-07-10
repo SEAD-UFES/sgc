@@ -16,8 +16,8 @@ class CreateStatesTable extends Migration
         Schema::create('states', function (Blueprint $table) {
             $table->id();
             $table->string('uf', 2);
-            $table->string('name', 50);
-            $table->string('ibge_uf_code', 50);
+            $table->string('name', 20);
+            $table->string('ibge_uf_code', 2);
             $table->timestamps();
         });
     }

@@ -9,7 +9,7 @@ Descrição: <input name="description" type="text" placeholder="Descrição" val
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Valor da bolsa: <input name="grantValue" type="number" placeholder="0" value="{{ $role->grant_value ?? old('grantValue') }}" />
+Valor da bolsa: <input name="grantValue" type="text" placeholder="R$" value="{{ $role->grant_value ?? old('grantValue') }}" />
 @error('grantValue')
     <div class="error">> {{ $message }}</div>
 @enderror

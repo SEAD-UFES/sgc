@@ -16,58 +16,86 @@ class RoleSeeder extends Seeder
     public function run()
     {
         DB::table($this->tableName)->insert([
-            'name' => 'Coordenador de curso',
-            'description' => 'Coordenador de curso',
-            'grant_value' => 10,
-            'grant_type_id' => 1,
+            'name' => 'Coordenador de curso I',
+            'description' => 'Coordenador de curso, com 3 anos de experiência em docência no ensino superior',
+            'grant_value' => 1400,
+            'grant_type_id' => 2,
+        ]);
+
+        DB::table($this->tableName)->insert([
+            'name' => 'Coordenador de curso II',
+            'description' => 'Coordenador de curso, com 1 ano de experiência em docência no ensino superior',
+            'grant_value' => 1100,
+            'grant_type_id' => 2,
         ]);
 
         DB::table($this->tableName)->insert([
             'name' => 'Tutor a Distancia',
             'description' => 'Tutor a Distancia',
-            'grant_value' => 10,
+            'grant_value' => 765,
             'grant_type_id' => 1,
         ]);
 
         DB::table($this->tableName)->insert([
             'name' => 'Tutor Presencial',
             'description' => 'Tutor Presencial',
-            'grant_value' => 10,
-            'grant_type_id' => 2,
-        ]);
-
-        DB::table($this->tableName)->insert([
-            'name' => 'Professor 1',
-            'description' => 'Professor 1',
-            'grant_value' => 10,
+            'grant_value' => 765,
             'grant_type_id' => 1,
         ]);
 
         DB::table($this->tableName)->insert([
-            'name' => 'Professor 2',
-            'description' => 'Professor 2',
-            'grant_value' => 10,
-            'grant_type_id' => 2,
-        ]);
-
-        DB::table($this->tableName)->insert([
-            'name' => 'Coordenador de Tutoria',
-            'description' => 'Coordenador de Tutoria',
-            'grant_value' => 10,
+            'name' => 'Professor I',
+            'description' => 'Professor, com 3 anos de experiência em docência no ensino superior',
+            'grant_value' => 1300,
             'grant_type_id' => 1,
         ]);
 
         DB::table($this->tableName)->insert([
-            'name' => 'Professor orientador de TCC',
-            'description' => 'Professor orientador de TCC',
-            'grant_value' => 10,
-            'grant_type_id' => 2,
+            'name' => 'Professor II',
+            'description' => 'Professor, com 1 ano de experiência em docência no ensino superior',
+            'grant_value' => 1100,
+            'grant_type_id' => 1,
         ]);
 
         DB::table($this->tableName)->insert([
-            'name' => 'Professor formador de componentes curriculares',
-            'description' => 'Professor formador de componentes curriculares',
-            'grant_value' => 10,
+            'name' => 'Coordenador de Tutoria I',
+            'description' => 'Coordenador de Tutoria, com 3 anos de experiência em docência no ensino superior',
+            'grant_value' => 1300,
+            'grant_type_id' => 1,
+        ]);
+
+        DB::table($this->tableName)->insert([
+            'name' => 'Coordenador de Tutoria II',
+            'description' => 'Coordenador de Tutoria, com 1 ano de experiência em docência no ensino superior',
+            'grant_value' => 1100,
+            'grant_type_id' => 1,
+        ]);
+
+        DB::table($this->tableName)->insert([
+            'name' => 'Professor orientador de TCC I',
+            'description' => 'Professor orientador de TCC, com 3 anos de experiência em docência no ensino superior',
+            'grant_value' => 1300,
+            'grant_type_id' => 1,
+        ]);
+
+        DB::table($this->tableName)->insert([
+            'name' => 'Professor orientador de TCC II',
+            'description' => 'Professor orientador de TCC, com 1 ano de experiência em docência no ensino superior',
+            'grant_value' => 1100,
+            'grant_type_id' => 1,
+        ]);
+
+        DB::table($this->tableName)->insert([
+            'name' => 'Professor formador de componentes curriculares I',
+            'description' => 'Professor formador de componentes curriculares, com 3 anos de experiência em docência no ensino superior',
+            'grant_value' => 1300,
+            'grant_type_id' => 1,
+        ]);
+
+        DB::table($this->tableName)->insert([
+            'name' => 'Professor formador de componentes curriculares II',
+            'description' => 'Professor formador de componentes curriculares, com 1 ano de experiência em docência no ensino superior',
+            'grant_value' => 1100,
             'grant_type_id' => 1,
         ]);
     }
