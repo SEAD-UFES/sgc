@@ -34,8 +34,8 @@
                     <th>Complemento</th>
                     <th>Número</th>
                     <th>Bairro</th>
-                    <th>CEP</th> --}}
-                    <th>UF</th>
+                    <th>CEP</th>
+                    <th>UF</th> --}}
                     <th>Cidade</th>
                     <th>Área</th>
                     <th>Telefone</th>
@@ -66,8 +66,8 @@
                             <td>{{ $employee->address_complement }}</td>
                             <td>{{ $employee->address_number }}</td>
                             <td>{{ $employee->address_district }}</td>
-                            <td>{{ $employee->address_postal_code }}</td> --}}
-                            <td>{{ $employee->addressState->uf }}</td>
+                            <td>{{ $employee->address_postal_code }}</td>
+                            <td>{{ $employee->addressState->uf }}</td> --}}
                             <td>{{ $employee->address_city }}</td>
                             <td>{{ $employee->area_code }}</td>
                             <td>{{ $employee->phone }}</td>

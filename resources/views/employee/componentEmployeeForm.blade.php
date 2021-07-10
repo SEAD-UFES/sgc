@@ -16,7 +16,7 @@ Profissão*: <input name="job" type="text" placeholder="Profissão" value="{{ $e
 @enderror
 <br /><br />
 Gênero*: <select name="genders">
-    <option value="">Selecione um gênero</option>
+    <option value="">Selecione o gênero</option>
     @foreach ($genders as $gender)
         <option value="{{ $gender->id }}" {{ $employee->gender_id == $gender->id ? 'selected' : '' }}>
             {{ $gender->name }}</option>
@@ -32,7 +32,7 @@ Data de Nascimento*: <input name="birthday" type="date" value="{{ $employee->bir
 @enderror
 <br /><br />
 UF Nascimento*: <select name="birthStates">
-    <option value="">Selecione uma UF</option>
+    <option value="">Selecione a UF</option>
     @foreach ($birthStates as $birthState)
         <option value="{{ $birthState->id }}"
             {{ $employee->birth_state_id == $birthState->id ? 'selected' : '' }}>{{ $birthState->name }}</option>
@@ -55,7 +55,7 @@ Número do Documento*: <input name="idNumber" type="text" placeholder="Número"
 @enderror
 <br /><br />
 Tipo de Documento*: <select name="idTypes">
-    <option value="">Selecione um tipo</option>
+    <option value="">Selecione o tipo</option>
     @foreach ($idTypes as $idType)
         <option value="{{ $idType->id }}" {{ $employee->id_type_id == $idType->id ? 'selected' : '' }}>
             {{ $idType->name }}</option>
@@ -78,7 +78,7 @@ Orgão Expedidor*: <input name="idIssueAgency" type="text" placeholder="Orgão"
 @enderror
 <br /><br />
 Estado Civil*: <select name="maritalStatuses">
-    <option value="">Selecione um Estado Civil</option>
+    <option value="">Selecione o Estado Civil</option>
     @foreach ($maritalStatuses as $maritalStatus)
         <option value="{{ $maritalStatus->id }}"
             {{ $employee->marital_status_id == $maritalStatus->id ? 'selected' : '' }}>{{ $maritalStatus->name }}
@@ -138,7 +138,7 @@ CEP*: <input name="addressPostalCode" type="text" placeholder="CEP"
 @enderror
 <br /><br />
 UF*: <select name="addressStates">
-    <option value="">Selecione uma UF</option>
+    <option value="">Selecione a UF</option>
     @foreach ($addressStates as $addressState)
         <option value="{{ $addressState->id }}"
             {{ $employee->address_state_id == $addressState->id ? 'selected' : '' }}>{{ $addressState->name }}

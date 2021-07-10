@@ -15,7 +15,7 @@ Valor da bolsa: <input name="grantValue" type="text" placeholder="R$" value="{{ 
 @enderror
 <br /><br />
 Tipo*: <select name="grantTypes">
-    <option value="">Selecione um tipo</option>
+    <option value="">Selecione o tipo</option>
     @foreach ($grantTypes as $grantType)
         <option value="{{ $grantType->id }}" {{($grantType->id == $role->grant_type_id) ? 'selected' : ''}}>{{ $grantType->name }}</option>
     @endforeach

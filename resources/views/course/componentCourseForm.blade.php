@@ -10,7 +10,7 @@ Descrição: <input name="description" type="text" placeholder="Descrição do c
 @enderror
 <br /><br />
 Tipo*: <select name="courseTypes">
-    <option value="">Selecione um tipo</option>
+    <option value="">Selecione o tipo</option>
     @foreach ($courseTypes as $courseType)
         <option value="{{ $courseType->id }}" {{($courseType->id == $course->course_type_id) ? 'selected' : ''}}>{{ $courseType->name }}</option>
     @endforeach

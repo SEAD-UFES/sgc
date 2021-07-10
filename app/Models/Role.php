@@ -29,4 +29,9 @@ class Role extends Model
     {
         return $this->belongsTo(GrantType::class);
     }
+
+    public function bonds()
+    {
+        return $this->hasMany(Bond::class);
+    }
 }
