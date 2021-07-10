@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CourseTypeSeeder::class,
             CourseSeeder::class,
+            PoleSeeder::class,
         ]);
     }
 }

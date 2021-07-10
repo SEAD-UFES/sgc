@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PoleController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\WebController;
 
@@ -34,6 +35,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('employees', EmployeeController::class);
     Route::resource('roles', RoleController::class);
+    Route::resource('poles', PoleController::class);
     Route::resource('users', UserController::class);
     Route::resource('courses', CourseController::class);
     Route::get('/coursetypes/index', [\App\Http\Controllers\CourseTypeController::class, 'index'])->name('coursetypes.index');
