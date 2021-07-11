@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Employee;
 use App\Models\Role;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\CustomClasses\SgcLogger;
@@ -61,7 +62,7 @@ class UserController extends Controller
         $existentEmployee = Employee::where('email', $request->email)->first();
 
         if (!is_null($existentEmployee)) {
-            $user->employee = $existentEmployee;
+            $user->employee_id = $existentEmployee->id;
 
             SgcLogger::writeLog($existentEmployee, 'Updated existent Employee info on User');
         }
@@ -118,16 +119,14 @@ class UserController extends Controller
             $user->password =  Hash::make($request->password);
         $user->user_type_id = $request->userTypes;
         $user->active = $request->has('active');
-        
+
         $existentEmployee = Employee::where('email', $request->email)->first();
 
-        if (!is_null($existentEmployee))
+        if (!is_null($existentEmployee)) {
+            $user->employee_id = $existentEmployee->id;
 
-            if ($existentEmployee != null) {
-                $user->employee = $existentEmployee;
-
-                SgcLogger::writeLog($existentEmployee, 'Updated existent Employee info on User');
-            }
+            SgcLogger::writeLog($existentEmployee, 'Updated existent Employee info on User');
+        }
 
         try {
             $user->save();
@@ -157,5 +156,12 @@ class UserController extends Controller
         }
 
         return redirect()->route('users.index')->with('success', 'Usuário excluído com sucesso.');
+    }
+
+    public function setCurrentBond(Request $request)
+    {
+        session('sessionUser')->setCurrentBond($request->activeBonds);
+
+        return redirect()->route('home');
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class WebController extends Controller
@@ -25,5 +24,5 @@ class WebController extends Controller
 
     public function webSystem() { return view('web.system'); }
 
-    public function fallback() { return $this->rootFork(); } //redirect()->route('root'); }
+    public function fallback() { return $this->rootFork(); }
 }

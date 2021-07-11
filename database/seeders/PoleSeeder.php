@@ -15,6 +15,7 @@ class PoleSeeder extends Seeder
      */
     public function run()
     {
+        DB::table($this->tableName)->insert(['name' => 'Vitória', 'description' => 'Polo de Vitória']);
         DB::table($this->tableName)->insert(['name' => 'Afonso Cláudio', 'description' => 'Polo de Afonso Cláudio']);
         DB::table($this->tableName)->insert(['name' => 'Alegre', 'description' => 'Polo de Alegre']);
         DB::table($this->tableName)->insert(['name' => 'Aracruz', 'description' => 'Polo de Aracruz']);
@@ -41,6 +42,5 @@ class PoleSeeder extends Seeder
         DB::table($this->tableName)->insert(['name' => 'Vargem Alta', 'description' => 'Polo de Vargem Alta']);
         DB::table($this->tableName)->insert(['name' => 'Venda Nova do Imigrante', 'description' => 'Polo de Venda Nova do Imigrante']);
         DB::table($this->tableName)->insert(['name' => 'Vila Velha', 'description' => 'Polo de Vila Velha']);
-        DB::table($this->tableName)->insert(['name' => 'Vitória', 'description' => 'Polo de Vitória']);
     }
 }

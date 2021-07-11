@@ -3,8 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bond;
+use App\Models\User;
+use App\Models\Role;
+use App\Models\Course;
+use App\Models\Pole;
 use Illuminate\Http\Request;
 use App\CustomClasses\SgcLogger;
+use App\Models\Employee;
+use App\Http\Requests\StoreBondRequest;
+use App\Http\Requests\UpdateBondRequest;
 
 class BondController extends Controller
 {
@@ -15,8 +22,7 @@ class BondController extends Controller
      */
     public function index()
     {
-        //dd('Até aqui');
-        $bonds = Bond::with(['employee', 'course', 'role', 'pole'])->paginate(10);//->orderBy('employee')
+        $bonds = Bond::with(['employee', 'course', 'role', 'pole'])->paginate(10); //->orderBy('employee')
         //dd($bonds);
         SgcLogger::writeLog('Bond');
 
@@ -30,7 +36,15 @@ class BondController extends Controller
      */
     public function create()
     {
-        //
+        $employees = Employee::orderBy('name')->get();
+        $roles = Role::orderBy('name')->get();
+        $courses = Course::orderBy('name')->get();
+        $poles = Pole::orderBy('name')->get();
+        $bond = new Bond;
+
+        SgcLogger::writeLog('Bond');
+
+        return view('bond.create', compact('employees', 'roles', 'courses', 'poles', 'bond'));
     }
 
     /**
@@ -39,9 +53,26 @@ class BondController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreBondRequest $request)
     {
-        //
+        $bond = new Bond;
+
+        $bond->employee_id = $request->employees;
+        $bond->role_id = $request->roles;
+        $bond->course_id = $request->courses;
+        $bond->pole_id = $request->poles;
+        $bond->begin = $request->begin;
+        $bond->end = $request->end;
+        $bond->terminated_on = null;
+        $bond->volunteer = $request->has('volunteer');
+        $bond->impediment = false;
+        $bond->uaba_checked_on = null;
+
+        $bond->save();
+
+        SgcLogger::writeLog($bond);
+
+        return redirect()->route('bonds.index')->with('success', 'Vínculo criado com sucesso.');
     }
 
     /**
@@ -63,7 +94,14 @@ class BondController extends Controller
      */
     public function edit(Bond $bond)
     {
-        //
+        $employees = Employee::orderBy('name')->get();
+        $roles = Role::orderBy('name')->get();
+        $courses = Course::orderBy('name')->get();
+        $poles = Pole::orderBy('name')->get();
+
+        SgcLogger::writeLog($bond);
+
+        return view('bond.edit', compact('employees', 'roles', 'courses', 'poles', 'bond'));
     }
 
     /**
@@ -73,9 +111,25 @@ class BondController extends Controller
      * @param  \App\Models\Bond  $bond
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Bond $bond)
+    public function update(UpdateBondRequest $request, Bond $bond)
     {
-        //
+        $bond->employee_id = $request->employees;
+        $bond->role_id = $request->roles;
+        $bond->course_id = $request->courses;
+        $bond->pole_id = $request->poles;
+        $bond->begin = $request->begin;
+        $bond->end = $request->end;
+        $bond->volunteer = $request->has('volunteer');
+
+        try {
+            $bond->save();
+        } catch (\Exception $e) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o vínculo: ' . $e->getMessage()]);
+        }
+
+        SgcLogger::writeLog($bond);
+
+        return redirect()->route('bonds.index')->with('success', 'Vínculo atualizado com sucesso.');
     }
 
     /**
@@ -86,6 +140,14 @@ class BondController extends Controller
      */
     public function destroy(Bond $bond)
     {
-        //
+        SgcLogger::writeLog($bond);
+
+        try {
+            $bond->delete();
+        } catch (\Exception $e) {
+            return back()->withErrors(['noDestroy' => 'Não foi possível excluir o vínculo: ' . $e->getMessage()]);
+        }
+
+        return redirect()->route('bonds.index')->with('success', 'Vínculo excluído com sucesso.');
     }
 }

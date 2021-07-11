@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('poles', PoleController::class);
     Route::resource('bonds', BondController::class);
+    Route::post('/changeBond', [UserController::class, 'setCurrentBond'])->name('currentBond.change');
     Route::resource('users', UserController::class);
     Route::resource('courses', CourseController::class);
     Route::get('/coursetypes/index', [\App\Http\Controllers\CourseTypeController::class, 'index'])->name('coursetypes.index');

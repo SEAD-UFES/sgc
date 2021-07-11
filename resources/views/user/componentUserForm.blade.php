@@ -21,8 +21,3 @@ Tipo de usuário*: <select name="userTypes">
 <br /><br />
 Ativo: <input type="checkbox" name="active" {{($user->active) ? 'checked' : ''}}/>
 <br /><br />
-<button type="submit">Cadastrar</button>
-@error('noStore')
-    <div class="error">> {{ $message }}</div>
-@enderror
-<br /><br />

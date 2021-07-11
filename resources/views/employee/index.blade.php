@@ -73,7 +73,7 @@
                             <td>{{ $employee->phone }}</td>
                             <td>{{ $employee->mobile }}</td>
                             <td>{{ $employee->email }}</td>
-                            <td>{{ $employee->user_id }}</td>
+                            <td>{{ $employee->user->id ?? ''}}</td>
                             <td><a href="{{ route('employees.show', $employee) }}">Exibir</a></td>
                             <td><a href="{{ route('employees.edit', $employee) }}">Editar</a></td>
                             <td>

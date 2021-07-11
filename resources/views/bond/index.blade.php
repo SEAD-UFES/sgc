@@ -15,12 +15,13 @@
             @endif
             <table>
                 <thead>
+                    <tr>
                     <th colspan="4">SEAD</th>
                     <th colspan="4">Vínculo</th>
                     <th colspan="2">UAB</th>
-                    <th rowspan="1">Ações</th>
-                </thead>
-                <thead>
+                    <th rowspan="2" colspan="3">Ações</th>
+                    </tr>
+                    <tr>
                     <th>Colaborador</th>
                     <th>Atribuição</th>
                     <th>Curso</th>
@@ -31,7 +32,7 @@
                     <th>Voluntário</th>
                     <th>Verificado em</th>
                     <th>Impedido</th>
-                    {{-- <th colspan="1">Ações</th> --}}
+                    </tr>
                 </thead>
                 <tbody>
                     @foreach ($bonds as $bond)
@@ -49,7 +50,17 @@
                             </td>
                             <td>{{ $bond->impediment === 1 ? 'Sim' : 'Não' }}</td>
                             <td><a href="{{ route('employees.show', $bond->employee) }}">Ver Colaborador</a></td>
-                            {{-- <td></td> --}}
+                            <td><a href="{{ route('bonds.edit', $bond->id) }}">Editar vínculo</a></td>
+                            <td>
+                                <form name="{{ 'formDelete' . $bond->id }}" action="{{ route('bonds.destroy', $bond) }}"
+                                    method="POST">
+                                    @method('DELETE')
+                                    @csrf
+                                    <span
+                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Vínculo?\')) document.forms[\'formDelete' . $bond->id . '\'].submit();' }}"
+                                        style="cursor:pointer; color:blue; text-decoration:underline;">Excluir</span>
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

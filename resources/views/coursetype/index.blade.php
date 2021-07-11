@@ -23,6 +23,8 @@
                 </tbody>
             </table>
             <br />
+            <button type="button" onclick="history.back()">Voltar</button>
+            <br /><br />
         </main>
     </section>
 @endsection

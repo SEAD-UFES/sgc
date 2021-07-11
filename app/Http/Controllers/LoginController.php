@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use App\CustomClasses\SgcLogger;
+use App\CustomClasses\SessionUser;
 
 class LoginController extends Controller
 {
@@ -25,6 +26,9 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             SgcLogger::writeLog();
+
+            $sessionUser = new SessionUser(Auth::user());
+            session(['sessionUser' => $sessionUser]);
 
             return redirect()->intended('home');
         }

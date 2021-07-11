@@ -23,8 +23,3 @@ Início: <input type="date" name="begin" value="{{ $course->begin ?? old('begin'
 <br /><br />
 Fim: <input type="date" name="end" value="{{ $course->end ?? old('end') }}">
 <br /><br />
-<button type="submit">Cadastrar</button>
-@error('noStore')
-    <div class="error">> {{ $message }}</div>
-@enderror
-<br /><br />

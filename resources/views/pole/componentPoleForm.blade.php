@@ -9,8 +9,3 @@ Descrição: <input name="description" type="text" placeholder="Descrição" val
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-<button type="submit">Cadastrar</button>
-@error('noStore')
-    <div class="error">> {{ $message }}</div>
-@enderror
-<br /><br />

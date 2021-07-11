@@ -24,8 +24,3 @@ Tipo*: <select name="grantTypes">
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-<button type="submit">Cadastrar</button>
-@error('noStore')
-    <div class="error">> {{ $message }}</div>
-@enderror
-<br /><br />

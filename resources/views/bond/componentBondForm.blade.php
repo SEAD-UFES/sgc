@@ -1,28 +1,52 @@
 @csrf
-E-Mail*: <input name="email" type="email" placeholder="nome@empresa.com" value="{{ $user->email ?? old('email') }}" />
-@error('email')
-    <div class="error">> {{ $message }}</div>
-@enderror
-<br /><br />
-Nova Senha: <input name="password" type="password" placeholder="Nova Senha" />
-@error('password')
-    <div class="error">> {{ $message }}</div>
-@enderror
-<br /><br />
-Tipo de usuário*: <select name="userTypes">
-    <option value="">Selecione o tipo</option>
-    @foreach ($userTypes as $userType)
-        <option value="{{ $userType->id }}" {{($userType->id == $user->user_type_id) ? 'selected' : ''}}>{{ $userType->name }}</option>
+
+Colaborador*: <select name="employees">
+    <option value="">Selecione o colaborador</option>
+    @foreach ($employees as $employee)
+        <option value="{{ $employee->id }}" {{ $employee->id == $bond->employee_id ? 'selected' : '' }}>
+            {{ $employee->name }}</option>
     @endforeach
 </select>
-@error('userTypes')
+@error('employees')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Ativo: <input type="checkbox" name="active" {{($user->active) ? 'checked' : ''}}/>
-<br /><br />
-<button type="submit">Cadastrar</button>
-@error('noStore')
+Atribuição*: <select name="roles">
+    <option value="">Selecione a atribuição</option>
+    @foreach ($roles as $role)
+        <option value="{{ $role->id }}" {{ $role->id == $bond->role_id ? 'selected' : '' }}>{{ $role->name }}
+        </option>
+    @endforeach
+</select>
+@error('roles')
     <div class="error">> {{ $message }}</div>
 @enderror
+<br /><br />
+Curso*: <select name="courses">
+    <option value="">Selecione o curso</option>
+    @foreach ($courses as $course)
+        <option value="{{ $course->id }}" {{ $course->id == $bond->course_id ? 'selected' : '' }}>
+            {{ $course->name }}</option>
+    @endforeach
+</select>
+@error('courses')
+    <div class="error">> {{ $message }}</div>
+@enderror
+<br /><br />
+Polo*: <select name="poles">
+    <option value="">Selecione o polo</option>
+    @foreach ($poles as $pole)
+        <option value="{{ $pole->id }}" {{ $pole->id == $bond->pole_id ? 'selected' : '' }}>
+            {{ $pole->name }}</option>
+    @endforeach
+</select>
+@error('poles')
+    <div class="error">> {{ $message }}</div>
+@enderror
+<br /><br />
+Início: <input type="date" name="begin" value="{{ $bond->begin ?? old('begin') }}">
+<br /><br />
+Fim: <input type="date" name="end" value="{{ $bond->end ?? old('end') }}">
+<br /><br />
+Voluntário: <input type="checkbox" name="volunteer" {{ $bond->volunteer ? 'checked' : '' }} />
 <br /><br />
