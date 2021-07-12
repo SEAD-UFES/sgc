@@ -29,6 +29,8 @@ class DatabaseSeeder extends Seeder
             CourseSeeder::class,
             PoleSeeder::class,
             BondSeeder::class,
+            ApprovedStateSeeder::class,
+            ApprovedSeeder::class,
         ]);
     }
 }

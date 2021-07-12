@@ -34,4 +34,9 @@ class Role extends Model
     {
         return $this->hasMany(Bond::class);
     }
+
+    public function approveds()
+    {
+        return $this->hasMany(Approved::class);
+    }
 }

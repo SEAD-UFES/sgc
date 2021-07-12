@@ -15,10 +15,10 @@ class Bond extends Pivot
     protected $table = 'bonds';
 
     protected $fillable = [
-        'course_id',
+        /* 'course_id',
         'employee_id',
         'role_id',
-        'pole_id',
+        'pole_id', */
         //'classroom_id',
         'begin',
         'end',

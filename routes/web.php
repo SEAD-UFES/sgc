@@ -8,6 +8,7 @@ use App\Http\Controllers\PoleController;
 use App\Http\Controllers\BondController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\WebController;
+use App\Http\Controllers\ApprovedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,4 +43,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('courses', CourseController::class);
     Route::get('/coursetypes/index', [\App\Http\Controllers\CourseTypeController::class, 'index'])->name('coursetypes.index');
+    Route::resource('approveds', ApprovedController::class);
+    Route::get('/approved/import', [ApprovedController::class, 'import'])->name('approved.import');
+    Route::get('/approveds/changestate/{approved}/{state}', [ApprovedController::class, 'changeState'])->name('approveds.changestate');
+    Route::get('/approveds/designate/{approved}', [ApprovedController::class, 'designate'])->name('approveds.designate');
 });

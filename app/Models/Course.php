@@ -25,4 +25,9 @@ class Course extends Model
     {
         return $this->belongsToMany(Employee::class)->withPivot('course_id', 'employee_id', 'role_id', 'pole_id', /* 'classroom_id',*/ 'begin', 'end', 'terminated_on', 'volunteer', 'impediment', 'uaba_ckecked_on',)->using(Bond::class)->as('bond')->withTimestamps();
     }
+
+    public function approveds()
+    {
+        return $this->hasMany(Approved::class);
+    }
 }

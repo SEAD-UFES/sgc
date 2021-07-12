@@ -9,6 +9,12 @@
     <section id="pageContent">
         <main role="main">
             <nav>
+                <h3>Aprovados</h3>
+                <ul>
+                    <li><a href="{{ route('approveds.index') }}">Listar Aprovados</a></li>
+                    <li><a href="{{ route('approveds.create') }}">Importar Aprovados</a></li>
+                    {{-- <li><a href="{{ route('approveds.create') }}">Cadastrar Aprovado</a></li> --}}
+                </ul><br />
                 <h3>Colaboradores</h3>
                 <ul>
                     <li><a href="{{ route('employees.index') }}">Listar Colaboradores</a></li>

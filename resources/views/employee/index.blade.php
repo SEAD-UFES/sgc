@@ -13,6 +13,9 @@
                     <p style="color: green; font-weight: bold">{{ $message }}</p>
                 </div><br />
             @endif
+            @error('noStore')
+                <div class="error">> {{ $message }}</div>
+            @enderror
             <table>
                 <thead>
                     <th>Nome</th>

@@ -222,16 +222,16 @@ class EmployeeController extends Controller
             } catch (\Exception $e) {
                 return back()->withErrors(['noStore' => 'Não foi possível salvar o Usuário: ' . $e->getMessage()]);
             }
-
-            try {
-                $employee->delete();
-            } catch (\Exception $e) {
-                return back()->withErrors(['noDestroy' => 'Não foi possível excluir o Colaborador: ' . $e->getMessage()]);
-            }
-
-            SgcLogger::writeLog($employee);
-
-            return redirect()->route('employees.index')->with('success', 'Colaborador excluído com sucesso.');
         }
+
+        try {
+            $employee->delete();
+        } catch (\Exception $e) {
+            return back()->withErrors(['noDestroy' => 'Não foi possível excluir o Colaborador: ' . $e->getMessage()]);
+        }
+
+        SgcLogger::writeLog($employee);
+
+        return redirect()->route('employees.index')->with('success', 'Colaborador excluído com sucesso.');
     }
 }
