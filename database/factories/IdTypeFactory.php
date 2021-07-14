@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class IdTypeFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
+     * IdType Factory
      *
      * @var string
      */
@@ -22,7 +22,9 @@ class IdTypeFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->word(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }
