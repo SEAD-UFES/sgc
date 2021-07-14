@@ -21,8 +21,25 @@ class CourseFactory extends Factory
      */
     public function definition()
     {
+        $wordsInTitle = 3;
+        $wordsInDescription = 8;
+
+        $name = $this->faker->sentence($wordsInTitle);
+        $description = $this->faker->sentence($wordsInDescription);
+
+        $begin = $this->faker
+            ->dateTimeBetween($startDate = '+1 year', $endDate = '+2 years', $timezone = 'America/Sao_Paulo');
+        $end = $this->faker
+            ->dateTimeBetween($startDate = '+3 year', $endDate = '+4 years', $timezone = 'America/Sao_Paulo');
+
         return [
-            //
+            'name' => $name,
+            'description' => $description,
+            'course_type_id' => 1,
+            'begin' => $begin,
+            'end' => $end,
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

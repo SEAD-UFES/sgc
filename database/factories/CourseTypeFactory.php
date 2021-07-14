@@ -21,8 +21,14 @@ class CourseTypeFactory extends Factory
      */
     public function definition()
     {
+        $wordsInName = 2;
+        $wordsInDescription = 5;
+
         return [
-            //
+            'name' => $this->faker->sentence($wordsInName),
+            'description' => $this->faker->sentence($wordsInDescription),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }
