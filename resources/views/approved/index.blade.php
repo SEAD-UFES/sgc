@@ -13,33 +13,33 @@
                     <p style="color: green; font-weight: bold">{{ $message }}</p>
                 </div><br />
             @endif
-            <table>
+            <table style="border: 0px">
                 <thead>
-                    <th>Nome</th>
-                    <th>E-mail</th>
-                    <th>Área</th>
-                    <th>Telefone</th>
-                    <th>Celular</th>
-                    <th>Edital</th>
-                    <th>Status</th>
-                    <th>Atribuição</th>
-                    <th>Curso</th>
-                    <th>Polo</th>
-                    <th colspan="2">Mudar Status</th>
+                    <th style="width:75px;">Nome</th>
+                    <th style="width:110px;">E-mail</th>
+                    <th style="width:20px;">Área</th>
+                    <th style="width:48px;">Telefone</th>
+                    <th style="width:53px;">Celular</th>
+                    <th style="width:35px;">Edital</th>
+                    <th style="width:31px;">Status</th>
+                    <th style="width:45px;">Atribuição</th>
+                    <th style="width:40px;">Curso</th>
+                    <th style="width:31px;">Polo</th>
+                    <th style="width:41px;" colspan="2">Mudar Status</th>
                 </thead>
                 <tbody>
                     @foreach ($approveds as $approved)
                         <tr>
-                            <td>{{ $approved->name }}</td>
-                            <td>{{ $approved->email }}</td>
-                            <td>{{ $approved->area_code }}</td>
-                            <td>{{ $approved->phone }}</td>
-                            <td>{{ $approved->mobile }}</td>
-                            <td>{{ $approved->announcement }}</td>
-                            <td title="{{ $approved->approvedState->description ?? '' }}">{!! $approved->approvedState->name ?? '&nbsp;' !!}</td>
-                            <td>{!! $approved->role->name ?? '&nbsp;' !!}</td>
-                            <td>{!! $approved->course->name ?? '&nbsp;' !!}</td>
-                            <td>{!! $approved->pole->name ?? '&nbsp;' !!}</td>
+                            <td style="padding: 1px;">{{ $approved->name }}</td>
+                            <td style="overflow:hidden; padding: 1px;">{{ $approved->email }}</td>
+                            <td style="overflow:hidden; padding: 1px;">{{ $approved->area_code }}</td>
+                            <td style="overflow:hidden; padding: 1px;">{{ $approved->phone }}</td>
+                            <td style="overflow:hidden; padding: 1px;">{{ $approved->mobile }}</td>
+                            <td style="overflow:hidden; padding: 1px;">{{ $approved->announcement }}</td>
+                            <td style="overflow:hidden; padding: 1px;" title="{{ $approved->approvedState->description ?? '' }}">{!! $approved->approvedState->name ?? '&nbsp;' !!}</td>
+                            <td style="overflow:hidden; padding: 1px;">{!! $approved->role->name ?? '&nbsp;' !!}</td>
+                            <td style="overflow:hidden; padding: 1px;">{!! $approved->course->name ?? '&nbsp;' !!}</td>
+                            <td style="overflow:hidden; padding: 1px;">{!! $approved->pole->name ?? '&nbsp;' !!}</td>
                             @if ($approved->approvedState->hasNext())
                                 @foreach ($approved->approvedState->getNext() as $state)
                                     <td title="{{ $state->description }}" @if ($approved->approvedState->getNext()->count() == 1) colspan="2" @endif style="text-align: center;">

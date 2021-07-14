@@ -20,6 +20,11 @@
                     <li><a href="{{ route('employees.index') }}">Listar Colaboradores</a></li>
                     <li><a href="{{ route('employees.create') }}">Cadastrar Colaborador</a></li>
                 </ul><br />
+                <h3>Documentos</h3>
+                <ul>
+                    <li><a href="{{ route('documents.index') }}">Listar Documentos</a></li>
+                    <li><a href="{{ route('documents.create') }}">Importar Documentos</a></li>
+                </ul><br />
                 <h3>Vínculos</h3>
                 <ul>
                     <li><a href="{{ route('bonds.index') }}">Listar Vínculos</a></li>

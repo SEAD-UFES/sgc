@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             BondSeeder::class,
             ApprovedStateSeeder::class,
             ApprovedSeeder::class,
+            DocumentTypeSeeder::class,
         ]);
     }
 }

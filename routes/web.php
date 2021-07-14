@@ -9,6 +9,7 @@ use App\Http\Controllers\BondController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\WebController;
 use App\Http\Controllers\ApprovedController;
+use App\Http\Controllers\DocumentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +40,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('poles', PoleController::class);
     Route::resource('bonds', BondController::class);
+    Route::resource('documents', DocumentController::class);
+    Route::post('/document/import', [DocumentController::class, 'import'])->name('documents.import');
     Route::post('/changeBond', [UserController::class, 'setCurrentBond'])->name('currentBond.change');
     Route::resource('users', UserController::class);
     Route::resource('courses', CourseController::class);
