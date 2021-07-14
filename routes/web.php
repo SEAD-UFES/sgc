@@ -44,7 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('courses', CourseController::class);
     Route::get('/coursetypes/index', [\App\Http\Controllers\CourseTypeController::class, 'index'])->name('coursetypes.index');
     Route::resource('approveds', ApprovedController::class);
-    Route::get('/approved/import', [ApprovedController::class, 'import'])->name('approved.import');
-    Route::get('/approveds/changestate/{approved}/{state}', [ApprovedController::class, 'changeState'])->name('approveds.changestate');
-    Route::get('/approveds/designate/{approved}', [ApprovedController::class, 'designate'])->name('approveds.designate');
+    Route::post('/approved/import', [ApprovedController::class, 'import'])->name('approveds.import');
+    Route::get('/approved/review', [ApprovedController::class, 'review'])->name('approveds.review');
+    Route::post('/approved/massstore', [ApprovedController::class, 'massStore'])->name('approveds.massstore');
+    Route::get('/approved/changestate/{approved}/{state}', [ApprovedController::class, 'changeState'])->name('approveds.changestate');
+    Route::post('/approveddesignate', [ApprovedController::class, 'designate'])->name('approveds.designate');
 });

@@ -25,7 +25,7 @@ class StoreEmployeeRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'cpf' => 'required|unique:employees,cpf',
+            'cpf' => 'required|unique:employees,cpf|numeric',
             'job' => 'required|string',
             'genders' => 'between:1,2',
             'birthday' => 'required',
@@ -43,7 +43,7 @@ class StoreEmployeeRequest extends FormRequest
             'addressComplement' => 'nullable|string',
             'addressNumber' => 'nullable|string',
             'addressDistrict' => 'nullable|string',
-            'addressPostalCode' => 'required',
+            'addressPostalCode' => 'required|numeric',
             'addressStates' => 'min:1',
             'addressCity' => 'required|string',
             'areaCode' => 'required',

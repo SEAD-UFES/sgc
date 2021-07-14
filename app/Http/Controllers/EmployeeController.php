@@ -89,7 +89,7 @@ class EmployeeController extends Controller
         try {
             $employee->save();
         } catch (\Exception $e) {
-            return back()->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $e->getMessage()]);
+            return redirect()->route('employees.index')->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $e->getMessage()]);
         }
 
         $existentUser = User::where('email', $request->email)->first();

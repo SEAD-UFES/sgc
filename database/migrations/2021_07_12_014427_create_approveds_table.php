@@ -17,9 +17,9 @@ class CreateApprovedsTable extends Migration
             $table->id();
             $table->string('name', 50);
             $table->string('email', 50);
-            $table->string('area_code', 3);
-            $table->string('phone', 11);
-            $table->string('mobile', 11);
+            $table->string('area_code', 3)->nullable();
+            $table->string('phone', 11)->nullable();
+            $table->string('mobile', 11)->nullable();
             $table->string('announcement', 8);
             $table->foreignId('course_id')->nullable()->constrained('courses');
             $table->foreignId('pole_id')->nullable()->constrained('poles');

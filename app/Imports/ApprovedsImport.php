@@ -12,6 +12,13 @@ use Maatwebsite\Excel\Concerns\WithLimit;
 
 class ApprovedsImport implements ToCollection, WithHeadingRow, WithColumnLimit, WithLimit
 {
+    public $myApproveds;
+
+    public function __construct(&$approvedsVar)
+    {
+        $this->myApproveds = $approvedsVar;
+    }
+
     public function collection(Collection $rows)
     {
         $myCollection = collect();
@@ -29,14 +36,12 @@ class ApprovedsImport implements ToCollection, WithHeadingRow, WithColumnLimit, 
             foreach (array_reverse($phones) as $phone) {
 
                 if (substr($phone, 2, 1) == "9") {
-                    //echo 'Cell: ' . substr($phone, 2, 1) . "\n";
                     $tempMobile = $phone;
                 } else {
-                    //echo 'Land: ' . substr($phone, 2, 1) . "\n";
                     $tempPhone =  $phone;
                 }
             }
-            
+
             $data = [
                 'name'        => ApprovedsImport::titleCase(mb_strtolower($row['nome'], 'UTF-8')),
                 'email'       => mb_strtolower($row['e_mail'], 'UTF-8'),
@@ -46,8 +51,6 @@ class ApprovedsImport implements ToCollection, WithHeadingRow, WithColumnLimit, 
                 'announcement' => $row['edital'],
             ];
 
-            //$myCollection->push($phones);
-            //$myCollection->push($data);
             $approved = new Approved();
 
             $approved->name = $data['name'];
@@ -58,10 +61,8 @@ class ApprovedsImport implements ToCollection, WithHeadingRow, WithColumnLimit, 
             $approved->announcement = $data['announcement'];
             $approved->approved_state_id = ApprovedState::where('name', 'Não contatado')->first()->id;
 
-            $approved->save();
+            $this->myApproveds->push($approved);
         }
-
-        //dd($myCollection);
     }
 
     public function endColumn(): string

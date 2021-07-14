@@ -1,16 +1,24 @@
+<script>
+    function validate(elementId) {
+        var element = document.getElementById(elementId);
+            element.value = element.value.replace(/[^a-zA-Z0-9]+/, '');
+        };
+</script>
+
+
 @csrf
 
-Nome*: <input name="name" type="text" placeholder="Nome" value="{{ $employee->name ?? old('name') }}" />
+Nome*: <input name="name" type="text" placeholder="Nome" value="{{ $employee->name ?? old('name') }}" maxlength="50" />
 @error('name')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-CPF*: <input name="cpf" type="text" placeholder="CPF" value="{{ $employee->cpf ?? old('cpf') }}" />
+CPF*: <input name="cpf" id="cpf" type="text" placeholder="CPF" value="{{ $employee->cpf ?? old('cpf') }}" maxlength="10" onkeyup="validate('cpf')" />
 @error('cpf')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Profissão*: <input name="job" type="text" placeholder="Profissão" value="{{ $employee->job ?? old('job') }}" />
+Profissão*: <input name="job" type="text" placeholder="Profissão" value="{{ $employee->job ?? old('job') }}" maxlength="50" />
 @error('job')
     <div class="error">> {{ $message }}</div>
 @enderror
@@ -43,13 +51,13 @@ UF Nascimento*: <select name="birthStates">
 @enderror
 <br /><br />
 Cidade de Nascimento*: <input name="birthCity" type="text" placeholder="Cidade"
-    value="{{ $employee->birth_city ?? old('birthCity') }}" />
+    value="{{ $employee->birth_city ?? old('birthCity') }}" maxlength="50" />
 @error('birthCity')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
 Número do Documento*: <input name="idNumber" type="text" placeholder="Número"
-    value="{{ $employee->id_number ?? old('idNumber') }}" />
+    value="{{ $employee->id_number ?? old('idNumber') }}" maxlength="15" />
 @error('idNumber')
     <div class="error">> {{ $message }}</div>
 @enderror
@@ -72,7 +80,7 @@ Data de Expedição*: <input name="idIssueDate" type="date"
 @enderror
 <br /><br />
 Orgão Expedidor*: <input name="idIssueAgency" type="text" placeholder="Orgão"
-    value="{{ $employee->id_issue_agency ?? old('idIssueAgency') }}" />
+    value="{{ $employee->id_issue_agency ?? old('idIssueAgency') }}" maxlength="10" />
 @error('idIssueAgency')
     <div class="error">> {{ $message }}</div>
 @enderror
@@ -90,49 +98,49 @@ Estado Civil*: <select name="maritalStatuses">
 @enderror
 <br /><br />
 Nome cônjuge: <input name="spouseName" type="text" placeholder="Nome"
-    value="{{ $employee->spouse_name ?? old('spouseName') }}" />
+    value="{{ $employee->spouse_name ?? old('spouseName') }}" maxlength="50" />
 @error('spouseName')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
 Nome do pai: <input name="fatherName" type="text" placeholder="Nome"
-    value="{{ $employee->father_name ?? old('fatherName') }}" />
+    value="{{ $employee->father_name ?? old('fatherName') }}" maxlength="50" />
 @error('fatherName')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
 Nome da mãe*: <input name="motherName" type="text" placeholder="Nome"
-    value="{{ $employee->mother_name ?? old('motherName') }}" />
+    value="{{ $employee->mother_name ?? old('motherName') }}" maxlength="50" />
 @error('motherName')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
 Logradouro*: <input name="addressStreet" type="text" placeholder="Logradouro"
-    value="{{ $employee->address_street ?? old('addressStreet') }}" />
+    value="{{ $employee->address_street ?? old('addressStreet') }}" maxlength="50" />
 @error('addressStreet')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
 Complemento: <input name="addressComplement" type="text" placeholder="Complemento"
-    value="{{ $employee->address_complement ?? old('addressComplement') }}" />
+    value="{{ $employee->address_complement ?? old('addressComplement') }}" maxlength="50" />
 @error('addressComplement')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
 Número: <input name="addressNumber" type="text" placeholder="Número"
-    value="{{ $employee->address_number ?? old('addressNumber') }}" />
+    value="{{ $employee->address_number ?? old('addressNumber') }}" maxlength="5" />
 @error('addressNumber')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
 Bairro: <input name="addressDistrict" type="text" placeholder="Bairro"
-    value="{{ $employee->address_district ?? old('addressDistrict') }}" />
+    value="{{ $employee->address_district ?? old('addressDistrict') }}" maxlength="50" />
 @error('addressDistrict')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-CEP*: <input name="addressPostalCode" type="text" placeholder="CEP"
-    value="{{ $employee->address_postal_code ?? old('addressPostalCode') }}" />
+CEP*: <input name="addressPostalCode" id="addressPostalCode" type="text" placeholder="CEP"
+    value="{{ $employee->address_postal_code ?? old('addressPostalCode') }}" maxlength="8" onkeyup="validate('addressPostalCode');"/>
 @error('addressPostalCode')
     <div class="error">> {{ $message }}</div>
 @enderror
@@ -150,23 +158,25 @@ UF*: <select name="addressStates">
 @enderror
 <br /><br />
 Cidade*: <input name="addressCity" type="text" placeholder="Cidade"
-    value="{{ $employee->address_city ?? old('addressCity') }}" />
+    value="{{ $employee->address_city ?? old('addressCity') }}" maxlength="50" />
 @error('addressCity')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Código de Área*: <input name="areaCode" type="text" placeholder="Código"
-    value="{{ $employee->area_code ?? old('areaCode') }}" />
+Código de Área*: <input name="areaCode" id="areaCode" type="text" placeholder="Código"
+    value="{{ $employee->area_code ?? old('areaCode') }}" maxlength="3"   onkeyup="validate('areaCode');" />
 @error('areaCode')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Telefone*: <input name="phone" type="text" placeholder="Telefone" value="{{ $employee->phone ?? old('phone') }}" />
+Telefone*: <input name="phone" id="phone" type="text" placeholder="Telefone" value="{{ $employee->phone ?? old('phone') }}"
+    maxlength="10" onkeyup="validate('phone');" />
 @error('phone')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Celular*: <input name="mobile" type="text" placeholder="Celular" value="{{ $employee->mobile ?? old('mobile') }}" />
+Celular*: <input name="mobile" id="mobile" type="text" placeholder="Celular" value="{{ $employee->mobile ?? old('mobile') }}"
+    maxlength="10"  onkeyup="validate('mobile');" />
 @error('mobile')
     <div class="error">> {{ $message }}</div>
 @enderror

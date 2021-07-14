@@ -8,7 +8,7 @@
     </section>
     <section id="pageContent">
         <main role="main">
-            <form action={{ route('approveds.store') }} method="POST" enctype="multipart/form-data">
+            <form action={{ route('approveds.import') }} method="POST" enctype="multipart/form-data">
                 @csrf
                 Selecione o arquivo: <input type="file" name="file">
                 <br /><br />

@@ -36,7 +36,7 @@
                             <td>{{ $approved->phone }}</td>
                             <td>{{ $approved->mobile }}</td>
                             <td>{{ $approved->announcement }}</td>
-                            <td title="{{ $approved->approvedState->description ?? '' }}">{!! $approved->approvedState->name ?? '&nbsp;'!!}</td>
+                            <td title="{{ $approved->approvedState->description ?? '' }}">{!! $approved->approvedState->name ?? '&nbsp;' !!}</td>
                             <td>{!! $approved->role->name ?? '&nbsp;' !!}</td>
                             <td>{!! $approved->course->name ?? '&nbsp;' !!}</td>
                             <td>{!! $approved->pole->name ?? '&nbsp;' !!}</td>
@@ -49,9 +49,16 @@
                             @else
                                 <td colspan="2" style="text-align: center;">
                                     @if ($approved->approvedState->name == 'Aceitante')
-                                        <a title="Converter o aprovado em Colaborador" href="{{ route('approveds.designate', $approved) }}">Nomeado</a>
+                                        <form name="{{ 'formDesignate' . $approved->id }}"
+                                            action={{ route('approveds.designate') }} method="POST">
+                                            @csrf
+                                            <input type="hidden" name="approvedId" value="{{ $approved->id }}" />
+                                            <span title="Converter o aprovado em Colaborador"
+                                                onclick="{{ 'document.forms[\'formDesignate' . $approved->id . '\'].submit();' }}"
+                                                style="cursor:pointer; color:blue; text-decoration:underline;">Nomeado</span>
+                                        </form>
                                     @else
-                                    Não existe próximo Status
+                                        Não existe próximo Status
                                     @endif
                                 </td>
                             @endif

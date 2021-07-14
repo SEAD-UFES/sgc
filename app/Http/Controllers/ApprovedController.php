@@ -14,6 +14,9 @@ use App\Models\Employee;
 use App\Imports\ApprovedsImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Role;
+use App\Models\Course;
+use App\Models\Pole;
 
 class ApprovedController extends Controller
 {
@@ -50,21 +53,6 @@ class ApprovedController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'file' => 'required|mimes:csv,xlx,xls,xlsx|max:2048'
-        ]);
-
-        //dd($request);
-
-        if ($request->file()) {
-            $fileName = $request->file->getClientOriginalName();
-            $filePath = $request->file('file')->storeAs('temp', $fileName, 'local');
-
-            Excel::import(new ApprovedsImport, $filePath);/* 'Controle de inscriçoes_015_2021_Química_tutor.xlsx' */
-            //dd($filePath);
-            Storage::delete($filePath);
-        }
-        return redirect()->route('approveds.index')->with('success', 'Aprovados importados para o sistema.');
     }
 
     /**
@@ -140,8 +128,9 @@ class ApprovedController extends Controller
         }
     }
 
-    public function designate(Approved $approved)
+    public function designate(Request $request)
     {
+        $approved = Approved::find($request->approvedId);
         $existantEmployee = Employee::where('email', $approved->email)->first();
         if (is_null($existantEmployee)) {
             $genders = Gender::orderBy('name')->get();
@@ -159,9 +148,8 @@ class ApprovedController extends Controller
             $employee->mobile = $approved->mobile;
 
             SgcLogger::writeLog('Employee', 'create');
-            $this->destroy($approved); // How to destroy only if it was really converted to Employee?
-
-            return view('employee.create', compact('genders', 'birthStates', 'idTypes', 'maritalStatuses', 'addressStates', 'employee'));
+            
+            return view('approved.designate', compact('genders', 'birthStates', 'idTypes', 'maritalStatuses', 'addressStates', 'employee'));
         } else {
             $email = $approved->email;
             $this->destroy($approved);
@@ -169,11 +157,59 @@ class ApprovedController extends Controller
         }
     }
 
-    public function import()
+    public function import(Request $request)
     {
 
-        Excel::import(new ApprovedsImport, 'Controle de inscriçoes_016_2021_Química_prof.xlsx');/* 'Controle de inscriçoes_015_2021_Química_tutor.xlsx' */
+        $roles = Role::orderBy('name')->get();
+        $courses = Course::orderBy('name')->get();
+        $poles = Pole::orderBy('name')->get();
 
-        return redirect()->route('approveds.index')->with('success', 'Aprovados importados para o sistema.');
+        $approveds = collect();
+
+        $request->validate([
+            'file' => 'required|mimes:csv,xlx,xls,xlsx|max:2048'
+        ]);
+
+        if ($request->file()) {
+            $fileName = $request->file->getClientOriginalName();
+            $filePath = $request->file('file')->storeAs('temp', $fileName, 'local');
+
+            Excel::import(new ApprovedsImport($approveds), $filePath);
+            Storage::delete($filePath);
+        }
+
+        return view('approved.review', compact('approveds', 'roles', 'courses', 'poles'))->with('success', 'Aprovados importados da planilha.');
+    }
+
+    public function review(Request $request)
+    {
+        return view('approved.review');
+    }
+
+    public function massStore(Request $request)
+    {
+        $approvedsCount = $request->approvedsCount;
+
+        for ($i = 0; $i < $approvedsCount; $i++) {
+
+            if ($request->has('check_' . $i)) {
+                $approved = new Approved();
+                $approved->name = $request->input('name_' . $i);
+                $approved->email = $request->input('email_' . $i);
+                $approved->area_code = $request->input('area_' . $i);
+                $approved->phone = $request->input('phone_' . $i);
+                $approved->mobile = $request->input('mobile_' . $i);
+                $approved->announcement = $request->input('announcement_' . $i);
+                $approved->course_id = $request->input('courses_' . $i);
+                $approved->role_id = $request->input('roles_' . $i);
+                $approved->pole_id = $request->input('poles_' . $i);
+                $approved->approved_state_id = 1;
+                $approved->save();
+            }
+        }
+
+        SgcLogger::writeLog('Mass Approveds', 'create');
+
+        return redirect()->route('approveds.index')->with('success', 'Aprovados importados com sucesso.');
     }
 }

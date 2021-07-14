@@ -38,8 +38,8 @@ class CreateEmployeesTable extends Migration
             $table->foreignId('address_state_id')->constrained('states');
             $table->string('address_city', 50);
             $table->string('area_code', 3);
-            $table->string('phone', 10);
-            $table->string('mobile', 10);
+            $table->string('phone', 12);
+            $table->string('mobile', 12);
             $table->string('email', 50)->unique();
             $table->timestamps();
         });
