@@ -114,7 +114,7 @@ class DocumentController extends Controller
             $fileName = time() . '.' . $request->file->getClientOriginalName();
             $filePath = $request->file('file')->storeAs('temp', $fileName, 'local');
             
-            $doc = file_get_contents(base_path('storage\app\\'.$filePath), true);
+            $doc = file_get_contents(base_path('storage/app/'.$filePath), true);
             
             $base64 = base64_encode($doc);
 
