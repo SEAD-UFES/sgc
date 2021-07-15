@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class StateFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
+     * State Factory
      *
      * @var string
      */
@@ -22,7 +22,11 @@ class StateFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'uf' => $this->faker->lexify('??'),
+            'name' => $this->faker->word(),
+            'ibge_uf_code' => $this->faker->numberBetween(0, 99),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

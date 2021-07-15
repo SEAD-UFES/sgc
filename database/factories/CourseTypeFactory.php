@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class CourseTypeFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
+     * CourseType Factory
      *
      * @var string
      */
@@ -21,12 +21,9 @@ class CourseTypeFactory extends Factory
      */
     public function definition()
     {
-        $wordsInName = 2;
-        $wordsInDescription = 5;
-
         return [
-            'name' => $this->faker->sentence($wordsInName),
-            'description' => $this->faker->sentence($wordsInDescription),
+            'name' => $this->faker->word(),
+            'description' => $this->faker->text($maxChars = 40),
             'created_at' => now(),
             'updated_at' => now(),
         ];

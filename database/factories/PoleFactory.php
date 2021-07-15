@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class PoleFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
+     * Pole Factory
      *
      * @var string
      */
@@ -22,7 +22,10 @@ class PoleFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->word(),
+            'description' => $this->faker->text($maxCharacters = 40),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

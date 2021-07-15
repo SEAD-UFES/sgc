@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class UserFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
+     * User Factory
      *
      * @var string
      */
