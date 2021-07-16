@@ -18,4 +18,9 @@ class BondDocument extends Model
    {
        return $this->belongsTo(DocumentType::class);
    }
+
+   public function bond()
+   {
+       return $this->belongsTo(Bond::class);
+   }
 }

@@ -8,33 +8,47 @@ use App\Models\DocumentType;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\CustomClasses\SgcLogger;
+use App\Models\Employee;
+use App\Models\Bond;
 use Illuminate\Database\Eloquent\Collection;
 
 class DocumentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function getViewParameters($model)
     {
         $documentTypes = DocumentType::orderBy('name')->get();
 
-        $documentsR = collect(EmployeeDocument::all());
-        $documentsB = collect(BondDocument::all());
+        $class = app("App\\Models\\$model");
 
-        $documents = collect();
+        $documents = $class::all();
 
-        foreach ($documentsR as $doc)
-            $documents->push($doc);
+        SgcLogger::writeLog($model, 'index');
 
-        foreach ($documentsB as $doc)
-            $documents->push($doc);
+        return compact('documents', 'documentTypes');
+    }
 
-        SgcLogger::writeLog('Documents');
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function employeesDocumentIndex()
+    {
+        //dd('employeesDocumentIndex');
+        $model = 'EmployeeDocument';
 
-        return view('document.index', compact('documents', 'documentTypes'));
+        $resArray = $this->getViewParameters($model);
+        return view('employee.document.index', $resArray);
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function bondsDocumentIndex()
+    {
+        //dd('bondsDocumentIndex');
+        $model = 'BondDocument';
+
+        $resArray = $this->getViewParameters($model);
+        return view('bond.document.index', $resArray);
     }
 
     /**
@@ -42,10 +56,67 @@ class DocumentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function employeesDocumentCreate()
     {
+        //dd('employeesDocumentCreate');
         $documentTypes = DocumentType::orderBy('name')->get();
-        return view('document.create', compact('documentTypes'));
+        $employees = Employee::orderBy('name')->get();
+        return view('employee.document.create', compact('documentTypes', 'employees'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function bondsDocumentCreate()
+    {
+        //dd('bondsDocumentCreate');
+        $documentTypes = DocumentType::orderBy('name')->get();
+        $bonds = Bond::all(); //orderBy('name')->get();
+        return view('bond.document.create', compact('documentTypes', 'bonds'));
+    }
+
+
+    public function import(Request $request, $model)
+    {
+        $request->validate([
+            'file' => 'required|mimes:pdf,jpeg,png,jpg|max:2048'
+        ]);
+
+        if ($request->file()) {
+            $fileName = time() . '.' . $request->file->getClientOriginalName();
+            $filePath = $request->file('file')->storeAs('temp', $fileName, 'local');
+
+            $doc = file_get_contents(base_path('storage/app/' . $filePath), true);
+
+            $base64 = base64_encode($doc);
+
+            //dd($request->documentTypes);
+
+            $class = app("App\\Models\\$model");
+
+            $document = new $class();
+            //dd($request);
+            if ($request->has('employees'))
+                $document->employee_id = $request->employees;
+
+            if ($request->has('bonds'))
+                $document->bond_id = $request->bonds;
+
+
+            $document->original_name = $request->file->getClientOriginalName();
+            $document->document_type_id = $request->documentTypes;
+            $document->file_data = $base64;
+
+            $document->save();
+
+            SgcLogger::writeLog($model, 'create');
+
+            Storage::delete($filePath); //base_path('storage\app\\'.$filePath));
+        }
+
+        //return redirect()->route('documents.index')->with('success', 'Arquivo importado com sucesso.');
     }
 
     /**
@@ -54,9 +125,32 @@ class DocumentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function employeesDocumentStore(Request $request)
     {
-        //
+        $request->validate([
+            'file' => 'required|mimes:pdf,jpeg,png,jpg|max:2048'
+        ]);
+
+        $this->import($request, 'EmployeeDocument');
+
+        return redirect()->route('employees.document.index')->with('success', 'Arquivo importado com sucesso.');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function bondsDocumentStore(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:pdf,jpeg,png,jpg|max:2048'
+        ]);
+
+        $this->import($request, 'BondDocument');
+
+        return redirect()->route('bonds.document.index')->with('success', 'Arquivo importado com sucesso.');
     }
 
     /**
@@ -102,39 +196,5 @@ class DocumentController extends Controller
     public function destroy(BondDocument $bondDocument)
     {
         //
-    }
-
-    public function import(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:pdf,jpeg,png,jpg|max:2048'
-        ]);
-
-        if ($request->file()) {
-            $fileName = time() . '.' . $request->file->getClientOriginalName();
-            $filePath = $request->file('file')->storeAs('temp', $fileName, 'local');
-            
-            $doc = file_get_contents(base_path('storage/app/'.$filePath), true);
-            
-            $base64 = base64_encode($doc);
-
-            //dd($request->documentTypes);
-
-            if ($request->documentTypes == '1')
-                $document = new EmployeeDocument();
-            else
-                $document = new BondDocument();
-
-
-            $document->original_name = $request->file->getClientOriginalName();
-            $document->document_type_id = $request->documentTypes;
-            $document->file_data = $base64;
-
-            $document->save();
-
-            Storage::delete($filePath); //base_path('storage\app\\'.$filePath));
-        }
-
-        return redirect()->route('documents.index')->with('success', 'Arquivo importado com sucesso.');
     }
 }

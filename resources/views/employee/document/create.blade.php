@@ -1,14 +1,14 @@
 @extends('layouts.basic')
 
-@section('title', 'Importar Documentos')
+@section('title', 'Importar Documento de Colaborador')
 
 @section('content')
     <section>
-        <strong>Importar Documentos</strong>
+        <strong>Importar Documento de Colaborador</strong>
     </section>
     <section id="pageContent">
         <main role="main">
-            <form action={{ route('documents.import') }} method="POST" enctype="multipart/form-data">
+            <form action={{ route('employees.document.store') }} method="POST" enctype="multipart/form-data">
                 @csrf
                 Selecione o arquivo: <input type="file" name="file">
                 <br /><br />
@@ -19,6 +19,16 @@
                     @endforeach
                 </select>
                 @error('documentTypes')
+                    <div class="error">> {{ $message }}</div>
+                @enderror
+                <br /><br />
+                Colaborador*: <select name="employees">
+                    <option value="">Selecione o colaborador</option>
+                    @foreach ($employees as $employee)
+                        <option value="{{ $employee->id }}" {{-- {{($documentType->id == $document->document_type_id) ? 'selected' : ''}} --}}>{{ $employee->name }}</option>
+                    @endforeach
+                </select>
+                @error('employees')
                     <div class="error">> {{ $message }}</div>
                 @enderror
                 <br /><br />

@@ -37,11 +37,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/websystem', [WebController::class, 'webSystem'])->name('system');
 
     Route::resource('employees', EmployeeController::class);
+     Route::get('employeesdocumentindex', [DocumentController::class, 'employeesDocumentIndex'])->name('employees.document.index');
+    Route::get('employeesdocumentcreate', [DocumentController::class, 'employeesDocumentCreate'])->name('employees.document.create');
+    Route::post('employeesdocumentstore', [DocumentController::class, 'employeesDocumentStore'])->name('employees.document.store');
     Route::resource('roles', RoleController::class);
     Route::resource('poles', PoleController::class);
     Route::resource('bonds', BondController::class);
-    Route::resource('documents', DocumentController::class);
-    Route::post('/document/import', [DocumentController::class, 'import'])->name('documents.import');
+    Route::get('bondsdocumentindex', [DocumentController::class, 'bondsDocumentIndex'])->name('bonds.document.index');
+    Route::get('bondsdocumentcreate', [DocumentController::class, 'bondsDocumentCreate'])->name('bonds.document.create');
+    Route::post('bondsdocumentstore', [DocumentController::class, 'bondsDocumentStore'])->name('bonds.document.store');
+    
+    /* Route::resource('documents', DocumentController::class);
+    Route::post('/document/import', [DocumentController::class, 'import'])->name('documents.import'); */
+
     Route::post('/changeBond', [UserController::class, 'setCurrentBond'])->name('currentBond.change');
     Route::resource('users', UserController::class);
     Route::resource('courses', CourseController::class);

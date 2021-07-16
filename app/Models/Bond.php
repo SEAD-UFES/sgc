@@ -52,4 +52,9 @@ class Bond extends Pivot
     {
         return $this->belongsToMany(Course::class);
     } */
+
+    public function bondDocuments()
+    {
+        return $this->hasMany(BondDocument::class);
+    }
 }

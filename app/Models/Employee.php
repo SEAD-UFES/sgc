@@ -73,4 +73,9 @@ class Employee extends Model
     {
         return $this->belongsToMany(Course::class)->withPivot('course_id', 'employee_id', 'role_id', 'pole_id', /* 'classroom_id',*/ 'begin', 'end', 'terminated_on', 'volunteer', 'impediment', 'uaba_ckecked_on',)->using(Bond::class)->as('bond')->withTimestamps();
     }
+
+    public function employeeDocuments()
+    {
+        return $this->hasMany(EmployeeDocument::class);
+    }
 }
