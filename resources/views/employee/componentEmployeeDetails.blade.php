@@ -27,7 +27,7 @@ Cidade de Nascimento: {{ $employee->birth_city }}
 <br /><br />
 Número do Documento: {{ $employee->id_number }}
 <br /><br />
-Tipo de Documento: {{ $employee->idType->name }}
+Tipo de Documento: {{ $employee->documentType->name }}
 <br /><br />
 Data de Expedição: {{ \Carbon\Carbon::parse($employee->id_issue_date)->isoFormat('DD/MM/Y') }}
 <br /><br />

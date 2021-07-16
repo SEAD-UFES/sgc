@@ -58,7 +58,7 @@
                             <td>{{ $employee->birthState->uf }}</td>
                             <td>{{ $employee->birth_city }}</td>
                             <td>{{ $employee->id_number }}</td>
-                            <td>{{ $employee->idType->name }}</td>
+                            <td>{{ $employee->documentType->name }}</td>
                             <td>{{ $employee->id_issue_date }}</td>
                             <td>{{ $employee->id_issue_agency }}</td>
                             <td>{{ $employee->maritalStatus->name }}</td>

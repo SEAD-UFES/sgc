@@ -18,6 +18,7 @@ class CreateBondDocumentsTable extends Migration
             $table->id();
             $table->string('original_name');
             $table->foreignId('document_type_id')->constrained('document_types');
+            $table->foreignId('bond_id')->constrained('bonds');
             $table->timestamps();
         });
         

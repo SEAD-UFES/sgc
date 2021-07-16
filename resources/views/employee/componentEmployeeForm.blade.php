@@ -62,14 +62,14 @@ Número do Documento*: <input name="idNumber" type="text" placeholder="Número"
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Tipo de Documento*: <select name="idTypes">
+Tipo de Documento*: <select name="documentTypes">
     <option value="">Selecione o tipo</option>
-    @foreach ($idTypes as $idType)
-        <option value="{{ $idType->id }}" {{ $employee->id_type_id == $idType->id ? 'selected' : '' }}>
-            {{ $idType->name }}</option>
+    @foreach ($documentTypes as $documentType)
+        <option value="{{ $documentType->id }}" {{ $employee->document_type_id == $documentType->id ? 'selected' : '' }}>
+            {{ $documentType->name }}</option>
     @endforeach
 </select>
-@error('idTypes')
+@error('documentType')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />

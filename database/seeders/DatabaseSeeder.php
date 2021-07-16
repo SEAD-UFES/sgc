@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             GenderSeeder::class,
             StateSeeder::class,
-            IdTypeSeeder::class,
+            DocumentTypeSeeder::class,
             MaritalStatusSeeder::class,
             EmployeeSeeder::class,
             UserSeeder::class,
@@ -31,7 +31,6 @@ class DatabaseSeeder extends Seeder
             BondSeeder::class,
             ApprovedStateSeeder::class,
             ApprovedSeeder::class,
-            DocumentTypeSeeder::class,
         ]);
     }
 }

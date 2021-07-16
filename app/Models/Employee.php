@@ -19,7 +19,7 @@ class Employee extends Model
         //'birth_state',
         'birth_city',
         'id_number',
-        //id_type
+        //document_type
         'id_issue_date',
         'id_issue_agency',
         //marital_status
@@ -49,9 +49,9 @@ class Employee extends Model
         return $this->belongsTo(State::class);
     }
 
-    public function idType()
+    public function documentType()
     {
-        return $this->belongsTo(IdType::class);
+        return $this->belongsTo(DocumentType::class);
     }
 
     public function maritalStatus()

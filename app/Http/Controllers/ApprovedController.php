@@ -8,7 +8,7 @@ use App\CustomClasses\SgcLogger;
 use App\Models\ApprovedState;
 use App\Models\Gender;
 use App\Models\State;
-use App\Models\IdType;
+use App\Models\documentType;
 use App\Models\MaritalStatus;
 use App\Models\Employee;
 use App\Imports\ApprovedsImport;
@@ -135,7 +135,7 @@ class ApprovedController extends Controller
         if (is_null($existantEmployee)) {
             $genders = Gender::orderBy('name')->get();
             $birthStates = State::orderBy('name')->get();
-            $idTypes = IdType::orderBy('name')->get();
+            $documentTypes = DocumentType::orderBy('name')->get();
             $maritalStatuses = MaritalStatus::orderBy('name')->get();
             $addressStates = State::orderBy('name')->get();
 
@@ -149,7 +149,7 @@ class ApprovedController extends Controller
 
             SgcLogger::writeLog('Employee', 'create');
             
-            return view('approved.designate', compact('genders', 'birthStates', 'idTypes', 'maritalStatuses', 'addressStates', 'employee'));
+            return view('approved.designate', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee'));
         } else {
             $email = $approved->email;
             $this->destroy($approved);

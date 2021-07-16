@@ -23,7 +23,7 @@ class CreateEmployeesTable extends Migration
             $table->foreignId('birth_state_id')->constrained('states');
             $table->string('birth_city', 50);
             $table->string('id_number', 15);
-            $table->foreignId('id_type_id')->constrained('id_types');
+            $table->foreignId('document_type_id')->constrained('document_types');
             $table->date('id_issue_date');
             $table->string('id_issue_agency', 10);
             $table->foreignId('marital_status_id')->constrained('marital_statuses');

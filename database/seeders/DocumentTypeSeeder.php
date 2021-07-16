@@ -17,13 +17,18 @@ class DocumentTypeSeeder extends Seeder
     public function run()
     {
         DB::table($this->tableName)->insert([
-            'name' => 'De Colaborador',
-            'description' => 'Documentos atuais do Colaborador',
+            'name' => 'RG',
+            'description' => 'Carteira de Identidade',
         ]);
 
         DB::table($this->tableName)->insert([
-            'name' => 'De Vínculo',
-            'description' => 'Documentos utiilizados para um vínculo específico',
+            'name' => 'CNH',
+            'description' => 'Carteira Nacional de Habilitação',
+        ]);
+
+        DB::table($this->tableName)->insert([
+            'name' => 'SIAPE',
+            'description' => 'Sistema Integrado de Administração de Pessoal',
         ]);
     }
 }

@@ -18,6 +18,7 @@ class CreateEmployeeDocumentsTable extends Migration
             $table->id();
             $table->string('original_name');
             $table->foreignId('document_type_id')->constrained('document_types');
+            $table->foreignId('employee_id')->constrained('employees');
             $table->timestamps();
         });
 

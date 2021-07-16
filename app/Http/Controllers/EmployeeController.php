@@ -6,7 +6,7 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\CustomClasses\SgcLogger;
 use App\Models\Gender;
-use App\Models\IdType;
+use App\Models\documentType;
 use App\Models\MaritalStatus;
 use App\Models\State;
 use App\Models\User;
@@ -22,7 +22,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::with(['gender', 'birthState', 'idType', 'maritalStatus', 'addressState', 'user'])->orderBy('name')->paginate(10);
+        $employees = Employee::with(['gender', 'birthState', 'documentType', 'maritalStatus', 'addressState', 'user'])->orderBy('name')->paginate(10);
         //dd($employees);
         SgcLogger::writeLog('Employee');
 
@@ -38,7 +38,7 @@ class EmployeeController extends Controller
     {
         $genders = Gender::orderBy('name')->get();
         $birthStates = State::orderBy('name')->get();
-        $idTypes = IdType::orderBy('name')->get();
+        $documentTypes = DocumentType::orderBy('name')->get();
         $maritalStatuses = MaritalStatus::orderBy('name')->get();
         $addressStates = State::orderBy('name')->get();
 
@@ -46,7 +46,7 @@ class EmployeeController extends Controller
 
         SgcLogger::writeLog('Employee');
 
-        return view('employee.create', compact('genders', 'birthStates', 'idTypes', 'maritalStatuses', 'addressStates', 'employee'));
+        return view('employee.create', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee'));
     }
 
     /**
@@ -67,7 +67,7 @@ class EmployeeController extends Controller
         $employee->birth_state_id = $request->birthStates;
         $employee->birth_city = $request->birthCity;
         $employee->id_number = $request->idNumber;
-        $employee->id_type_id = $request->idTypes;
+        $employee->document_type_id = $request->documentTypes;
         $employee->id_issue_date = $request->idIssueDate;
         $employee->id_issue_agency = $request->idIssueAgency;
         $employee->marital_status_id = $request->maritalStatuses;
@@ -129,13 +129,13 @@ class EmployeeController extends Controller
     {
         $genders = Gender::orderBy('name')->get();
         $birthStates = State::orderBy('name')->get();
-        $idTypes = IdType::orderBy('name')->get();
+        $documentTypes = DocumentType::orderBy('name')->get();
         $maritalStatuses = MaritalStatus::orderBy('name')->get();
         $addressStates = State::orderBy('name')->get();
 
         SgcLogger::writeLog($employee);
 
-        return view('employee.edit', compact('genders', 'birthStates', 'idTypes', 'maritalStatuses', 'addressStates', 'employee'));
+        return view('employee.edit', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee'));
     }
 
     /**
@@ -157,7 +157,7 @@ class EmployeeController extends Controller
         $employee->birth_state_id = $request->birthStates;
         $employee->birth_city = $request->birthCity;
         $employee->id_number = $request->idNumber;
-        $employee->id_type_id = $request->idTypes;
+        $employee->document_type_id = $request->documentTypes;
         $employee->id_issue_date = $request->idIssueDate;
         $employee->id_issue_agency = $request->idIssueAgency;
         $employee->marital_status_id = $request->maritalStatuses;
