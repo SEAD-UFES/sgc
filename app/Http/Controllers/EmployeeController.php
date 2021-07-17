@@ -6,7 +6,7 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\CustomClasses\SgcLogger;
 use App\Models\Gender;
-use App\Models\documentType;
+use App\Models\DocumentType;
 use App\Models\MaritalStatus;
 use App\Models\State;
 use App\Models\User;
@@ -229,16 +229,12 @@ class EmployeeController extends Controller
         }
 
         try {
-            //dd($employee->id); //id = 4
-            //dd($employee->courses->first()->id); //id = 10
-            //dd($employee->courses->first()->bond); //id = 7
-            //dd($employee->courses->first()->bond->bondDocuments); //id = 7
-
             foreach ($employee->courses as $course) $course->bond->bondDocuments()->delete();
 
             $employee->courses()->detach();
             $employee->employeeDocuments()->delete();
             $employee->delete();
+            
         } catch (\Exception $e) {
             return redirect()->route('employees.index')->withErrors(['noDestroy' => 'Não foi possível excluir o Colaborador: ' . $e->getMessage()]);
         }

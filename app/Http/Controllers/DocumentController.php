@@ -32,7 +32,6 @@ class DocumentController extends Controller
      */
     public function employeesDocumentIndex()
     {
-        //dd('employeesDocumentIndex');
         $model = 'EmployeeDocument';
 
         $resArray = $this->getViewParameters($model);
@@ -44,7 +43,6 @@ class DocumentController extends Controller
      */
     public function bondsDocumentIndex()
     {
-        //dd('bondsDocumentIndex');
         $model = 'BondDocument';
 
         $resArray = $this->getViewParameters($model);
@@ -65,7 +63,7 @@ class DocumentController extends Controller
         else
             $employees = Employee::orderBy('name')->get();
 
-        return view('employee.document.create', compact('documentTypes', 'employees', 'id'));
+        return view('employee.document.masscreate', compact('documentTypes', 'employees', 'id'));
     }
 
     /**
@@ -75,12 +73,10 @@ class DocumentController extends Controller
      */
     public function bondsDocumentCreate()
     {
-        //dd('bondsDocumentCreate');
         $documentTypes = DocumentType::orderBy('name')->get();
-        $bonds = Bond::all(); //orderBy('name')->get();
+        $bonds = Bond::all();
         return view('bond.document.create', compact('documentTypes', 'bonds'));
     }
-
 
     public function import(Request $request, $model)
     {
@@ -96,12 +92,10 @@ class DocumentController extends Controller
 
             $base64 = base64_encode($doc);
 
-            //dd($request->documentTypes);
-
             $class = app("App\\Models\\$model");
 
             $document = new $class();
-            //dd($request);
+            
             if ($request->has('employees'))
                 $document->employee_id = $request->employees;
 
@@ -117,27 +111,10 @@ class DocumentController extends Controller
 
             SgcLogger::writeLog($model, 'create');
 
-            Storage::delete($filePath); //base_path('storage\app\\'.$filePath));
+            Storage::delete($filePath);
         }
 
         //return redirect()->route('documents.index')->with('success', 'Arquivo importado com sucesso.');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function employeesDocumentStore(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:pdf,jpeg,png,jpg|max:2048'
-        ]);
-
-        $this->import($request, 'EmployeeDocument');
-
-        return redirect()->route('employees.document.index')->with('success', 'Arquivo importado com sucesso.');
     }
 
     /**
@@ -155,6 +132,66 @@ class DocumentController extends Controller
         $this->import($request, 'BondDocument');
 
         return redirect()->route('bonds.document.index')->with('success', 'Arquivo importado com sucesso.');
+    }
+
+    public function employeesDocumentMassImport(Request $request)
+    {
+        $request->validate([
+            'files.*' => 'required|mimes:pdf,jpeg,png,jpg|max:2048',
+        ]);
+
+        if ($request->hasfile('files')) {
+            $files = $request->file('files');
+
+            $fileSet = collect();
+
+            foreach ($files as $file) {
+                $fileName = time() . '.' . $file->getClientOriginalName();
+                $filePath = $file->storeAs('temp', $fileName, 'local');
+                
+                $document = new EmployeeDocument();
+
+                $document->employee_id = $request->employees;
+
+                $document->original_name = $file->getClientOriginalName();
+
+                $document->filePath = $filePath;
+
+                $fileSet->push($document);
+                $documentTypes = DocumentType::orderBy('name')->get();
+            }
+        }
+
+        return view('employee.document.massReview', compact('fileSet', 'documentTypes'));
+    }
+
+    public function employeesDocumentMassStore(Request $request)
+    {
+        $filesCount = $request->fileSetCount;
+        $employeeId = $request->employeeId;
+
+        for ($i = 0; $i < $filesCount; $i++)
+        {
+            $document = new EmployeeDocument();
+
+            $document->employee_id = $employeeId;
+            $document->document_type_id = $request->input('documentTypes_' . $i);
+            $document->original_name = $request->input('fileName_' . $i);
+
+            $filePath = $request->input('filePath_' . $i);
+
+            $doc = file_get_contents(base_path('storage/app/' . $filePath), true);
+            $base64 = base64_encode($doc);
+            $document->file_data = $base64;
+
+            $document->save();
+
+            Storage::delete($filePath);
+        }
+        
+        SgcLogger::writeLog('Mass Employees Documents', 'create');
+
+        return redirect()->route('employees.document.index')->with('success', 'Arquivos importados com sucesso.');
     }
 
     /**

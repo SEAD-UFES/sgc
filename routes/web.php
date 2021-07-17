@@ -40,9 +40,10 @@ Route::middleware('auth')->group(function () {
     Route::get('employeesdocumentindex', [DocumentController::class, 'employeesDocumentIndex'])->name('employees.document.index');
     Route::get('employeesdocumentcreate', [DocumentController::class, 'employeesDocumentCreate'])->name('employees.document.create');
     Route::get('employeesdocumentcreate/{id}', [DocumentController::class, 'employeesDocumentCreate'])->name('employees.document.create.id');
-    Route::post('employeesdocumentstore', [DocumentController::class, 'employeesDocumentStore'])->name('employees.document.store');
-    Route::resource('roles', RoleController::class);
-    Route::resource('poles', PoleController::class);
+    //Route::post('employeesdocumentstore', [DocumentController::class, 'employeesDocumentStore'])->name('employees.document.store');
+    Route::post('employeesdocumentmassimport', [DocumentController::class, 'employeesDocumentMassImport'])->name('employees.document.mass.import');
+    Route::post('employeesdocumentmassstore', [DocumentController::class, 'employeesDocumentMassStore'])->name('employees.document.mass.store');
+
     Route::resource('bonds', BondController::class);
     Route::get('bondsdocumentindex', [DocumentController::class, 'bondsDocumentIndex'])->name('bonds.document.index');
     Route::get('bondsdocumentcreate', [DocumentController::class, 'bondsDocumentCreate'])->name('bonds.document.create');
@@ -53,8 +54,13 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/changeBond', [UserController::class, 'setCurrentBond'])->name('currentBond.change');
     Route::resource('users', UserController::class);
+
+    Route::resource('roles', RoleController::class);
+    Route::resource('poles', PoleController::class);
+    
     Route::resource('courses', CourseController::class);
     Route::get('/coursetypes/index', [\App\Http\Controllers\CourseTypeController::class, 'index'])->name('coursetypes.index');
+
     Route::resource('approveds', ApprovedController::class);
     Route::post('/approved/import', [ApprovedController::class, 'import'])->name('approveds.import');
     Route::post('/approved/massstore', [ApprovedController::class, 'massStore'])->name('approveds.massstore');

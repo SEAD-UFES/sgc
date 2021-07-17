@@ -1,38 +1,36 @@
 @extends('layouts.basic')
 
-@section('title', 'Importar Documento de Colaborador')
+@section('title', 'Importar Documentos de Colaborador')
 
 @section('content')
     <section>
-        <strong>Importar Documento de Colaborador</strong>
+        <strong>Importar Documentos de Colaborador</strong>
     </section>
     <section id="pageContent">
         <main role="main">
-            <form action={{ route('employees.document.store') }} method="POST" enctype="multipart/form-data">
+            <form action={{ route('employees.document.mass.import') }} method="POST" enctype="multipart/form-data">
                 @csrf
-                Selecione o arquivo: <input type="file" name="file">
+                Selecione o arquivo: <input type="file" name="files[]" multiple accept="image/*,.pdf">
                 <br /><br />
-                Tipo de Documento*: <select name="documentTypes">
-                    <option value="">Selecione o tipo</option>
-                    @foreach ($documentTypes as $documentType)
-                        <option value="{{ $documentType->id }}">{{ $documentType->name }}</option>
+                @if ($errors->has('files'))
+                    @foreach ($errors->get('files') as $error)
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $error }}</strong>
+                        </span>
                     @endforeach
-                </select>
-                @error('documentTypes')
-                    <div class="error">> {{ $message }}</div>
-                @enderror
-                <br /><br />
+                @endif
                 Colaborador*: <select name="employees">
                     <option value="">Selecione o colaborador</option>
                     @foreach ($employees as $employee)
-                        <option value="{{ $employee->id }}" {{ ($employee->id == $id) ? 'selected' : '' }}>{{ $employee->name }}</option>
+                        <option value="{{ $employee->id }}" {{ $employee->id == $id ? 'selected' : '' }}>
+                            {{ $employee->name }}</option>
                     @endforeach
                 </select>
                 @error('employees')
                     <div class="error">> {{ $message }}</div>
                 @enderror
                 <br /><br />
-                <button type="submit">Enviar arquivo</button> <button type="button"
+                <button type="submit">Enviar arquivos</button> <button type="button"
                     onclick="history.back()">Cancelar</button>
                 @error('noStore')
                     <div class="error">> {{ $message }}</div>
