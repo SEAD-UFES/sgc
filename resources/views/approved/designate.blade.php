@@ -3,15 +3,28 @@
 @section('title', 'Nomear Aprovado')
 
 @section('content')
-    <section>
+<script>
+    function submitAndImport() {
+        let element = document.getElementById('importDocuments');
+        element.value = "true";
+
+        document.forms['formCreate'].submit();
+    }
+</script>
+
+<section>
         <strong>Nomear Aprovado</strong>
     </section>
     <section id="pageContent">
         <main role="main">
-            <form action={{ route('employees.store') }} method="POST">
+            <form action={{ route('employees.store') }} name="formCreate" method="POST">
                 @method('POST')
                 @component('employee.componentEmployeeForm',  compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee'))@endcomponent
-                <button type="submit">Cadastrar</button> <button type="button" onclick="history.back()">Cancelar</button>
+                <input type="hidden" name="importDocuments" id="importDocuments" value="false" />
+                <button type="submit">Cadastrar</button>
+                <button type="button" onclick="submitAndImport();">Cadastrar e importar
+                    documentos</button>
+                <button type="button" onclick="history.back()">Cancelar</button>
                 @error('noStore')
                     <div class="error">> {{ $message }}</div>
                 @enderror

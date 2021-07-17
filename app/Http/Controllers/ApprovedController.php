@@ -132,6 +132,7 @@ class ApprovedController extends Controller
     {
         $approved = Approved::find($request->approvedId);
         $existantEmployee = Employee::where('email', $approved->email)->first();
+
         if (is_null($existantEmployee)) {
             $genders = Gender::orderBy('name')->get();
             $birthStates = State::orderBy('name')->get();
@@ -148,12 +149,18 @@ class ApprovedController extends Controller
             $employee->mobile = $approved->mobile;
 
             SgcLogger::writeLog('Employee', 'create');
-            
-            return view('approved.designate', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee'));
-        } else {
-            $email = $approved->email;
+
             $this->destroy($approved);
-            return redirect()->route('approveds.index')->with('success', 'Colaborador de email [' . $email . '] já existente no sistema.');
+
+            return view('approved.designate', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee'));
+        }
+        else
+        {
+            $email = $approved->email;
+
+            $this->destroy($approved);
+
+            return redirect()->route('approveds.index')->with('success', "Colaborador de email [$email] já existente no sistema. " . ($existantEmployee->hasDocuments() ? 'Com' : 'Sem') . ' documentos.');
         }
     }
 
@@ -179,11 +186,6 @@ class ApprovedController extends Controller
         }
 
         return view('approved.review', compact('approveds', 'roles', 'courses', 'poles'))->with('success', 'Aprovados importados da planilha.');
-    }
-
-    public function review(Request $request)
-    {
-        return view('approved.review');
     }
 
     public function massStore(Request $request)

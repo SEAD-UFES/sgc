@@ -78,4 +78,9 @@ class Employee extends Model
     {
         return $this->hasMany(EmployeeDocument::class);
     }
+
+    public function hasDocuments()
+    {
+        return !is_null($this->employeeDocuments->first());
+    }
 }

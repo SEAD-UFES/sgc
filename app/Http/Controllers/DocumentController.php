@@ -56,12 +56,16 @@ class DocumentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function employeesDocumentCreate()
+    public function employeesDocumentCreate($id = null)
     {
-        //dd('employeesDocumentCreate');
         $documentTypes = DocumentType::orderBy('name')->get();
-        $employees = Employee::orderBy('name')->get();
-        return view('employee.document.create', compact('documentTypes', 'employees'));
+
+        if (!is_null($id))
+            $employees = Employee::where('id', $id)->get();
+        else
+            $employees = Employee::orderBy('name')->get();
+
+        return view('employee.document.create', compact('documentTypes', 'employees', 'id'));
     }
 
     /**

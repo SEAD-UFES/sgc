@@ -3,6 +3,14 @@
 @section('title', 'Listar Colaboradores')
 
 @section('content')
+    <script>
+        function toogleById(id) {
+            if (document.getElementById(id).style.display == 'table-row')
+                document.getElementById(id).style.display = 'none';
+            else
+                document.getElementById(id).style.display = 'table-row';
+        }
+    </script>
     <section>
         <strong>Listar Colaboradores</strong>
     </section>
@@ -16,11 +24,16 @@
             @error('noStore')
                 <div class="error">> {{ $message }}</div>
             @enderror
+            @error('noDestroy')
+                <div class="error">> {{ $message }}</div>
+            @enderror
+            <p style="color: red"> Clique no CPF ou Nome para exibir/ocultar as informações de contato</p>
             <table>
                 <thead>
+                    <th style="width: 115px">CPF</th>
+                    <br />
                     <th>Nome</th>
-                    <th>CPF</th>
-                    <th>Profissão</th>
+                    <th style="width: 80px">Profissão</th>
                     {{-- <th>Gênero</th>
                     <th>Nascimento</th>
                     <th>UF Nasc.</th>
@@ -39,19 +52,20 @@
                     <th>Bairro</th>
                     <th>CEP</th>
                     <th>UF</th> --}}
-                    <th>Cidade</th>
-                    <th>Área</th>
+                    <th style="width: 70px">Cidade</th>
+                    {{-- <th>Área</th>
                     <th>Telefone</th>
                     <th>Celular</th>
-                    <th>E-mail</th>
-                    <th>Usuário</th>
-                    <th colspan="3">Ações</th>
+                    <th>E-mail</th> --}}
+                    <th style="width: 75px">Usuário</th>
+                    <th colspan="3" style="width: 305px">Ações</th>
                 </thead>
                 <tbody>
                     @foreach ($employees as $employee)
                         <tr>
-                            <td>{{ $employee->name }}</td>
-                            <td>{{ $employee->cpf }}</td>
+                            <td onclick="toogleById({{ '\'contactLine_' . $employee->id . '\');' }}">{{ $employee->cpf }}
+                            </td>
+                            <td onclick="toogleById({{ '\'contactLine_' . $employee->id . '\');' }}">{{ $employee->name }}</td>
                             <td>{{ $employee->job }}</td>
                             {{-- <td>{{ $employee->gender->name }}</td>
                             <td>{{ $employee->birthday }}</td>
@@ -72,16 +86,16 @@
                             <td>{{ $employee->address_postal_code }}</td>
                             <td>{{ $employee->addressState->uf }}</td> --}}
                             <td>{{ $employee->address_city }}</td>
-                            <td>{{ $employee->area_code }}</td>
+                            {{-- <td>{{ $employee->area_code }}</td>
                             <td>{{ $employee->phone }}</td>
                             <td>{{ $employee->mobile }}</td>
-                            <td>{{ $employee->email }}</td>
-                            <td>{{ $employee->user->id ?? ''}}</td>
+                            <td>{{ $employee->email }}</td> --}}
+                            <td>{{ $employee->user->id ?? '' }}</td>
                             <td><a href="{{ route('employees.show', $employee) }}">Exibir</a></td>
                             <td><a href="{{ route('employees.edit', $employee) }}">Editar</a></td>
                             <td>
-                                <form name="{{ 'formDelete' . $employee->id }}" action="{{ route('employees.destroy', $employee) }}"
-                                    method="POST">
+                                <form name="{{ 'formDelete' . $employee->id }}"
+                                    action="{{ route('employees.destroy', $employee) }}" method="POST">
                                     @method('DELETE')
                                     @csrf
                                     <span
@@ -89,6 +103,16 @@
                                         style="cursor:pointer; color:blue; text-decoration:underline;">Excluir</span>
                                 </form>
                             </td>
+                        </tr>
+                        <tr style="background-color: lightgrey; display: none" id="contactLine_{{ $employee->id }}">
+                            <td style="font-weight: bold">E-mail:</td>
+                            <td>{{ $employee->email }}</td>
+                            <td style="font-weight: bold">Área:</td>
+                            <td>{{ $employee->area_code }}</td>
+                            <td style="font-weight: bold">Telefone:</td>
+                            <td>{{ $employee->phone }}</td>
+                            <td style="font-weight: bold">Celular:</td>
+                            <td>{{ $employee->mobile }}</td>
                         </tr>
                     @endforeach
                 </tbody>

@@ -25,7 +25,7 @@
                 Colaborador*: <select name="employees">
                     <option value="">Selecione o colaborador</option>
                     @foreach ($employees as $employee)
-                        <option value="{{ $employee->id }}" {{-- {{($documentType->id == $document->document_type_id) ? 'selected' : ''}} --}}>{{ $employee->name }}</option>
+                        <option value="{{ $employee->id }}" {{ ($employee->id == $id) ? 'selected' : ''}}>{{ $employee->name }}</option>
                     @endforeach
                 </select>
                 @error('employees')

@@ -105,7 +105,10 @@ class EmployeeController extends Controller
             SgcLogger::writeLog($existentUser, 'Updated existent Employee info on User');
         }
 
-        return redirect()->route('employees.index')->with('success', 'Colaborador criado com sucesso.');
+        if ($request->importDocuments == 'true')
+            return redirect()->route('employees.document.create.id', $employee->id)->with('success', 'Colaborador criado com sucesso.');
+        else
+            return redirect()->route('employees.index')->with('success', 'Colaborador criado com sucesso.');
     }
 
     /**
@@ -227,7 +230,7 @@ class EmployeeController extends Controller
         try {
             $employee->delete();
         } catch (\Exception $e) {
-            return back()->withErrors(['noDestroy' => 'Não foi possível excluir o Colaborador: ' . $e->getMessage()]);
+            return redirect()->route('employees.index')->withErrors(['noDestroy' => 'Não foi possível excluir o Colaborador: ' . $e->getMessage()]);
         }
 
         SgcLogger::writeLog($employee);

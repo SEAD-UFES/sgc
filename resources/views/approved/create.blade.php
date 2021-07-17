@@ -20,7 +20,7 @@
                 <br /><br /><br />
             </form>
             <br />
-            <p>Formato esperado da planilha:</p><br />
+            <p style="text-align: center">Formato mínimo esperado da planilha:</p><br />
             <table border=0 cellpadding=0 cellspacing=0 width=390 style='border-collapse:
             collapse;table-layout:fixed;width:400pt'>
                 <tr>

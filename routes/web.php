@@ -37,8 +37,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/websystem', [WebController::class, 'webSystem'])->name('system');
 
     Route::resource('employees', EmployeeController::class);
-     Route::get('employeesdocumentindex', [DocumentController::class, 'employeesDocumentIndex'])->name('employees.document.index');
+    Route::get('employeesdocumentindex', [DocumentController::class, 'employeesDocumentIndex'])->name('employees.document.index');
     Route::get('employeesdocumentcreate', [DocumentController::class, 'employeesDocumentCreate'])->name('employees.document.create');
+    Route::get('employeesdocumentcreate/{id}', [DocumentController::class, 'employeesDocumentCreate'])->name('employees.document.create.id');
     Route::post('employeesdocumentstore', [DocumentController::class, 'employeesDocumentStore'])->name('employees.document.store');
     Route::resource('roles', RoleController::class);
     Route::resource('poles', PoleController::class);
@@ -46,7 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::get('bondsdocumentindex', [DocumentController::class, 'bondsDocumentIndex'])->name('bonds.document.index');
     Route::get('bondsdocumentcreate', [DocumentController::class, 'bondsDocumentCreate'])->name('bonds.document.create');
     Route::post('bondsdocumentstore', [DocumentController::class, 'bondsDocumentStore'])->name('bonds.document.store');
-    
+
     /* Route::resource('documents', DocumentController::class);
     Route::post('/document/import', [DocumentController::class, 'import'])->name('documents.import'); */
 
@@ -56,7 +57,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/coursetypes/index', [\App\Http\Controllers\CourseTypeController::class, 'index'])->name('coursetypes.index');
     Route::resource('approveds', ApprovedController::class);
     Route::post('/approved/import', [ApprovedController::class, 'import'])->name('approveds.import');
-    Route::get('/approved/review', [ApprovedController::class, 'review'])->name('approveds.review');
     Route::post('/approved/massstore', [ApprovedController::class, 'massStore'])->name('approveds.massstore');
     Route::get('/approved/changestate/{approved}/{state}', [ApprovedController::class, 'changeState'])->name('approveds.changestate');
     Route::post('/approveddesignate', [ApprovedController::class, 'designate'])->name('approveds.designate');

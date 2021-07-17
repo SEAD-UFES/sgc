@@ -15,8 +15,8 @@
             @endif
             <table>
                 <thead>
-                    <th>Vínculo</th>
-                    <th>Nome</th>
+                    <th>Colaborador</th>
+                    <th>Nome do arquivo</th>
                     <th>Tipo</th>
                 </thead>
                 <tbody>

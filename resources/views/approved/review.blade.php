@@ -1,6 +1,6 @@
 @extends('layouts.basic')
 
-@section('title', 'Aprovados Importados')
+@section('title', 'Revisão de Importação')
 
 @section('content')
     <script>
@@ -23,7 +23,7 @@
         }
     </script>
     <section>
-        <strong>Aprovados Importados</strong>
+        <strong>Revisão de Importação</strong>
     </section>
     <section id="pageContent">
         <main role="main" style="overflow-x:auto;">
@@ -34,8 +34,10 @@
             @endif
             <table style="border:none;">
                 <thead>
-                    <td colspan="6" style="width:560px; text-align:right;color:red;border:none;">
-                        Atribuir em lote ===>&nbsp;</td>
+                    <td colspan="3" style="width:280px; text-align:left;color:red;border:none;">
+                        &nbsp;&dArr; Selecionar/Desselecionar todos</td>
+                    <td colspan="3" style="width:280px; text-align:right;color:red;border:none;">
+                        Atribuir em lote &rArr;&nbsp;</td>
                     <td style="overflow:hidden; white-space:nowrap;"><select name="courses_mass" id="courses_mass"
                             style="width:142px;"
                             onchange="selectRotateAssign('courses', {{ count($approveds) }}, document.getElementById('courses_mass').value)">
@@ -144,7 +146,7 @@
                     </tbody>
                 </table>
                 <br /><br />
-                <button type="submit">Cadastrar</button> <button type="button" onclick="history.back()">Cancelar</button>
+                <button type="submit">Importar</button> <button type="button" onclick="history.back()">Cancelar</button>
             </form>
             <br /><br />
         </main>

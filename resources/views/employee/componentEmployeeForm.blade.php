@@ -13,7 +13,7 @@ Nome*: <input name="name" type="text" placeholder="Nome" value="{{ $employee->na
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-CPF*: <input name="cpf" id="cpf" type="text" placeholder="CPF" value="{{ $employee->cpf ?? old('cpf') }}" maxlength="10" onkeyup="validate('cpf')" />
+CPF*: <input name="cpf" id="cpf" type="text" placeholder="CPF" value="{{ $employee->cpf ?? old('cpf') }}" maxlength="11" onkeyup="validate('cpf')" />
 @error('cpf')
     <div class="error">> {{ $message }}</div>
 @enderror
