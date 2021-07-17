@@ -28,7 +28,7 @@ class UpdateEmployeeRequest extends FormRequest
         return [
             'name' => 'required|string',
             'cpf' => 'required|unique:employees,cpf,' . $id . ',id',
-            'job' => 'required|string',
+            /* 'job' => 'required|string',
             'genders' => 'between:1,2',
             'birthday' => 'required',
             'birthStates' => 'min:1',
@@ -50,7 +50,7 @@ class UpdateEmployeeRequest extends FormRequest
             'addressCity' => 'required|string',
             'areaCode' => 'required',
             'phone' => 'required',
-            'mobile' => 'required',
+            'mobile' => 'required', */
             'email' => 'required|email|unique:employees,email,' . $id . ',id',
         ];
     }
@@ -62,7 +62,7 @@ class UpdateEmployeeRequest extends FormRequest
             'name.string' => 'O campo deve ser texto',
             'cpf.required' => 'O Campo é obrigatório',
             'cpf.unique' => 'O campo não pode repetir um previamente já cadastrado por outra pessoa',
-            'job.required' => 'O Campo é obrigatório',
+            /* 'job.required' => 'O Campo é obrigatório',
             'job.string' => 'O campo deve ser texto',
             'genders.between' => 'O campo deve ser preenchido com uma das opções fornecidas',
             'birthday.required' => 'O Campo é obrigatório',
@@ -90,7 +90,7 @@ class UpdateEmployeeRequest extends FormRequest
             'addressCity.string' => 'O campo deve ser texto',
             'areaCode.required' => 'O Campo é obrigatório',
             'phone.required' => 'O Campo é obrigatório',
-            'mobile.required' => 'O Campo é obrigatório',
+            'mobile.required' => 'O Campo é obrigatório', */
             'email.required' => 'O Campo é obrigatório',
             'email.email' => 'O compo deve ser preenchido com um email válido',
             'email.unique' => 'O campo não pode repetir um previamente já cadastrado por outra pessoa',

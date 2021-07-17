@@ -99,7 +99,7 @@
                                     @method('DELETE')
                                     @csrf
                                     <span
-                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Colaborador?\')) document.forms[\'formDelete' . $employee->id . '\'].submit();' }}"
+                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Colaborador e todos os seus documentos, vínculos e documentos de vínculos?\')) document.forms[\'formDelete' . $employee->id . '\'].submit();' }}"
                                         style="cursor:pointer; color:blue; text-decoration:underline;">Excluir</span>
                                 </form>
                             </td>

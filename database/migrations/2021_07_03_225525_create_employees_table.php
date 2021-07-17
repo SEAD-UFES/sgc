@@ -17,29 +17,29 @@ class CreateEmployeesTable extends Migration
             $table->id();
             $table->string('cpf', 11)->unique();
             $table->string('name', 50);
-            $table->string('job', 50);
-            $table->foreignId('gender_id')->constrained('genders');
-            $table->date('birthday');
-            $table->foreignId('birth_state_id')->constrained('states');
-            $table->string('birth_city', 50);
-            $table->string('id_number', 15);
-            $table->foreignId('document_type_id')->constrained('document_types');
-            $table->date('id_issue_date');
-            $table->string('id_issue_agency', 10);
-            $table->foreignId('marital_status_id')->constrained('marital_statuses');
+            $table->string('job', 50)->nullable();                                                 //Relaxed (nullable)
+            $table->foreignId('gender_id')->nullable()->constrained('genders');                    //Relaxed (nullable)
+            $table->date('birthday')->nullable();                                                  //Relaxed (nullable)
+            $table->foreignId('birth_state_id')->nullable()->constrained('states');                //Relaxed (nullable)
+            $table->string('birth_city', 50)->nullable();                                          //Relaxed (nullable)
+            $table->string('id_number', 15)->nullable();                                           //Relaxed (nullable)
+            $table->foreignId('document_type_id')->nullable()->constrained('document_types');      //Relaxed (nullable)
+            $table->date('id_issue_date')->nullable();                                             //Relaxed (nullable)
+            $table->string('id_issue_agency', 10)->nullable();                                     //Relaxed (nullable)
+            $table->foreignId('marital_status_id')->nullable()->constrained('marital_statuses');   //Relaxed (nullable)
             $table->string('spouse_name', 50)->nullable();
             $table->string('father_name', 50)->nullable();
-            $table->string('mother_name', 50);
-            $table->string('address_street', 50);
+            $table->string('mother_name', 50)->nullable();                                         //Relaxed (nullable)
+            $table->string('address_street', 50)->nullable();                                      //Relaxed (nullable)
             $table->string('address_complement', 50)->nullable();
             $table->string('address_number', 5)->nullable();
             $table->string('address_district', 50)->nullable();
-            $table->string('address_postal_code', 8);
-            $table->foreignId('address_state_id')->constrained('states');
-            $table->string('address_city', 50);
-            $table->string('area_code', 3);
-            $table->string('phone', 12);
-            $table->string('mobile', 12);
+            $table->string('address_postal_code', 8)->nullable();                                  //Relaxed (nullable)
+            $table->foreignId('address_state_id')->nullable()->constrained('states');              //Relaxed (nullable)
+            $table->string('address_city', 50)->nullable();                                        //Relaxed (nullable)
+            $table->string('area_code', 3)->nullable();                                            //Relaxed (nullable)
+            $table->string('phone', 12)->nullable();                                               //Relaxed (nullable)
+            $table->string('mobile', 12)->nullable();                                              //Relaxed (nullable)
             $table->string('email', 50)->unique();
             $table->timestamps();
         });

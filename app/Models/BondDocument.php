@@ -8,19 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class BondDocument extends Model
 {
     use HasFactory;
-    
-   protected $fillable = [
-       'original_name',
-       'file_data',
-   ];
 
-   public function documentType()
-   {
-       return $this->belongsTo(DocumentType::class);
-   }
+    protected $table = 'bond_documents';
 
-   public function bond()
-   {
-       return $this->belongsTo(Bond::class);
-   }
+    protected $fillable = [
+        'original_name',
+        'file_data',
+    ];
+
+    public function documentType()
+    {
+        return $this->belongsTo(DocumentType::class);
+    }
+
+    public function bond()
+    {
+        return $this->belongsTo(Bond::class, 'bond_id');
+    }
 }

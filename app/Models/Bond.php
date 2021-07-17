@@ -55,6 +55,6 @@ class Bond extends Pivot
 
     public function bondDocuments()
     {
-        return $this->hasMany(BondDocument::class);
+        return $this->hasMany(BondDocument::class, 'bond_id');
     }
 }

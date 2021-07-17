@@ -12,6 +12,7 @@ use App\Models\State;
 use App\Models\User;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
+use App\Models\Bond;
 
 class EmployeeController extends Controller
 {
@@ -61,7 +62,7 @@ class EmployeeController extends Controller
 
         $employee->name = $request->name;
         $employee->cpf = $request->cpf;
-        $employee->job = $request->job;
+        /* $employee->job = $request->job;
         $employee->gender_id = $request->genders;
         $employee->birthday = $request->birthday;
         $employee->birth_state_id = $request->birthStates;
@@ -80,7 +81,7 @@ class EmployeeController extends Controller
         $employee->address_district = $request->addressDistrict;
         $employee->address_postal_code = $request->addressPostalCode;
         $employee->address_state_id = $request->addressStates;
-        $employee->address_city = $request->addressCity;
+        $employee->address_city = $request->addressCity; */
         $employee->area_code = $request->areaCode;
         $employee->phone = $request->phone;
         $employee->mobile = $request->mobile;
@@ -99,7 +100,7 @@ class EmployeeController extends Controller
             try {
                 $existentUser->save();
             } catch (\Exception $e) {
-                return back()->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $e->getMessage()]);
+                return redirect()->route('employees.index')->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $e->getMessage()]);
             }
 
             SgcLogger::writeLog($existentUser, 'Updated existent Employee info on User');
@@ -154,7 +155,7 @@ class EmployeeController extends Controller
 
         $employee->name = $request->name;
         $employee->cpf = $request->cpf;
-        $employee->job = $request->job;
+        /* $employee->job = $request->job;
         $employee->gender_id = $request->genders;
         $employee->birthday = $request->birthday;
         $employee->birth_state_id = $request->birthStates;
@@ -173,7 +174,7 @@ class EmployeeController extends Controller
         $employee->address_district = $request->addressDistrict;
         $employee->address_postal_code = $request->addressPostalCode;
         $employee->address_state_id = $request->addressStates;
-        $employee->address_city = $request->addressCity;
+        $employee->address_city = $request->addressCity; */
         $employee->area_code = $request->areaCode;
         $employee->phone = $request->phone;
         $employee->mobile = $request->mobile;
@@ -228,6 +229,15 @@ class EmployeeController extends Controller
         }
 
         try {
+            //dd($employee->id); //id = 4
+            //dd($employee->courses->first()->id); //id = 10
+            //dd($employee->courses->first()->bond); //id = 7
+            //dd($employee->courses->first()->bond->bondDocuments); //id = 7
+
+            foreach ($employee->courses as $course) $course->bond->bondDocuments()->delete();
+
+            $employee->courses()->detach();
+            $employee->employeeDocuments()->delete();
             $employee->delete();
         } catch (\Exception $e) {
             return redirect()->route('employees.index')->withErrors(['noDestroy' => 'Não foi possível excluir o Colaborador: ' . $e->getMessage()]);

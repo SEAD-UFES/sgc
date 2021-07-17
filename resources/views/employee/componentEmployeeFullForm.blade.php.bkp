@@ -1,27 +1,24 @@
 <script>
     function validate(elementId) {
         var element = document.getElementById(elementId);
-        element.value = element.value.replace(/[^a-zA-Z0-9]+/, '');
-    };
+            element.value = element.value.replace(/[^a-zA-Z0-9]+/, '');
+        };
 </script>
 
 
 @csrf
 
-Nome*: <input name="name" type="text" placeholder="Nome" value="{{ $employee->name ?? old('name') }}"
-    maxlength="50" />
+Nome*: <input name="name" type="text" placeholder="Nome" value="{{ $employee->name ?? old('name') }}" maxlength="50" />
 @error('name')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-CPF*: <input name="cpf" id="cpf" type="text" placeholder="CPF" value="{{ $employee->cpf ?? old('cpf') }}"
-    maxlength="11" onkeyup="validate('cpf')" />
+CPF*: <input name="cpf" id="cpf" type="text" placeholder="CPF" value="{{ $employee->cpf ?? old('cpf') }}" maxlength="11" onkeyup="validate('cpf')" />
 @error('cpf')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-{{-- Profissão*: <input name="job" type="text" placeholder="Profissão" value="{{ $employee->job ?? old('job') }}"
-    maxlength="50" />
+Profissão*: <input name="job" type="text" placeholder="Profissão" value="{{ $employee->job ?? old('job') }}" maxlength="50" />
 @error('job')
     <div class="error">> {{ $message }}</div>
 @enderror
@@ -68,8 +65,7 @@ Número do Documento*: <input name="idNumber" type="text" placeholder="Número"
 Tipo de Documento*: <select name="documentTypes">
     <option value="">Selecione o tipo</option>
     @foreach ($documentTypes as $documentType)
-        <option value="{{ $documentType->id }}"
-            {{ $employee->document_type_id == $documentType->id ? 'selected' : '' }}>
+        <option value="{{ $documentType->id }}" {{ $employee->document_type_id == $documentType->id ? 'selected' : '' }}>
             {{ $documentType->name }}</option>
     @endforeach
 </select>
@@ -144,8 +140,7 @@ Bairro: <input name="addressDistrict" type="text" placeholder="Bairro"
 @enderror
 <br /><br />
 CEP*: <input name="addressPostalCode" id="addressPostalCode" type="text" placeholder="CEP"
-    value="{{ $employee->address_postal_code ?? old('addressPostalCode') }}" maxlength="8"
-    onkeyup="validate('addressPostalCode');" />
+    value="{{ $employee->address_postal_code ?? old('addressPostalCode') }}" maxlength="8" onkeyup="validate('addressPostalCode');"/>
 @error('addressPostalCode')
     <div class="error">> {{ $message }}</div>
 @enderror
@@ -167,21 +162,21 @@ Cidade*: <input name="addressCity" type="text" placeholder="Cidade"
 @error('addressCity')
     <div class="error">> {{ $message }}</div>
 @enderror
-<br /><br /> --}}
-Código de Área: <input name="areaCode" id="areaCode" type="text" placeholder="Código"
-    value="{{ $employee->area_code ?? old('areaCode') }}" maxlength="3" onkeyup="validate('areaCode');" />
+<br /><br />
+Código de Área*: <input name="areaCode" id="areaCode" type="text" placeholder="Código"
+    value="{{ $employee->area_code ?? old('areaCode') }}" maxlength="3"   onkeyup="validate('areaCode');" />
 @error('areaCode')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Telefone: <input name="phone" id="phone" type="text" placeholder="Telefone"
-    value="{{ $employee->phone ?? old('phone') }}" maxlength="10" onkeyup="validate('phone');" />
+Telefone*: <input name="phone" id="phone" type="text" placeholder="Telefone" value="{{ $employee->phone ?? old('phone') }}"
+    maxlength="10" onkeyup="validate('phone');" />
 @error('phone')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Celular: <input name="mobile" id="mobile" type="text" placeholder="Celular"
-    value="{{ $employee->mobile ?? old('mobile') }}" maxlength="10" onkeyup="validate('mobile');" />
+Celular*: <input name="mobile" id="mobile" type="text" placeholder="Celular" value="{{ $employee->mobile ?? old('mobile') }}"
+    maxlength="10"  onkeyup="validate('mobile');" />
 @error('mobile')
     <div class="error">> {{ $message }}</div>
 @enderror
