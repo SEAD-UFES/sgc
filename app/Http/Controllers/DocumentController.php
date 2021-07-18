@@ -176,6 +176,10 @@ class DocumentController extends Controller
 
             $document->employee_id = $employeeId;
             $document->document_type_id = $request->input('documentTypes_' . $i);
+
+            $oldDocuments = EmployeeDocument::where('document_type_id', $document->document_type_id)->where('employee_id', $document->employee_id)->get();
+            foreach ($oldDocuments as $old) $old->delete();
+
             $document->original_name = $request->input('fileName_' . $i);
 
             $filePath = $request->input('filePath_' . $i);

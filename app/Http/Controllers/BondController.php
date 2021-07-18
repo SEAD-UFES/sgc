@@ -12,6 +12,8 @@ use App\CustomClasses\SgcLogger;
 use App\Models\Employee;
 use App\Http\Requests\StoreBondRequest;
 use App\Http\Requests\UpdateBondRequest;
+use App\Models\EmployeeDocument;
+use App\Models\BondDocument;
 
 class BondController extends Controller
 {
@@ -69,6 +71,18 @@ class BondController extends Controller
         $bond->uaba_checked_on = null;
 
         $bond->save();
+
+        $documents = EmployeeDocument::where('employee_id', $bond->employee_id)->get();
+        foreach ($documents as $doc)
+        {
+            $bondDocument = new BondDocument();
+            $bondDocument->original_name = $doc->original_name;
+            $bondDocument->file_data = $doc->file_data;
+            $bondDocument->document_type_id = $doc->documentType->id;
+            $bondDocument->bond_id = $bond->id;
+
+            $bondDocument->save();
+        }
 
         SgcLogger::writeLog($bond);
 
