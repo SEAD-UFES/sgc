@@ -10,7 +10,7 @@
         <main role="main">
             <form action={{ route('bonds.document.store') }} method="POST" enctype="multipart/form-data">
                 @csrf
-                Selecione o arquivo: <input type="file" name="file">
+                Selecione o arquivo: <input type="file" name="file" accept="image/*,.pdf">
                 <br /><br />
                 Tipo de Documento*: <select name="documentTypes">
                     <option value="">Selecione o tipo</option>
