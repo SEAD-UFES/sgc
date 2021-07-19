@@ -3,12 +3,13 @@
 namespace Database\Factories;
 
 use App\Models\Role;
+use App\Models\GrantType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class RoleFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
+     * Role Factory
      *
      * @var string
      */
@@ -21,8 +22,16 @@ class RoleFactory extends Factory
      */
     public function definition()
     {
+      $wordsInDescription = 5;
+      $description = $this->faker->sentence($wordsInDescription);
+
         return [
-            //
+          'name' => $this->faker->word(),
+          'description' => $description,
+          'grant_value' => $this->faker->numberBetween(500, 3500),
+          'grant_type_id' => GrantType::factory(),
+          'created_at' => now(),
+          'updated_at' => now(),
         ];
     }
 }

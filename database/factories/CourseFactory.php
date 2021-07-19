@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Course;
+use App\Models\CourseType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CourseFactory extends Factory
@@ -35,7 +36,7 @@ class CourseFactory extends Factory
         return [
             'name' => $name,
             'description' => $description,
-            'course_type_id' => 1,
+            'course_type_id' => CourseType::factory(),
             'begin' => $begin,
             'end' => $end,
             'created_at' => now(),
