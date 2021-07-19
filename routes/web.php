@@ -49,8 +49,8 @@ Route::middleware('auth')->group(function () {
     Route::get('bondsdocumentcreate', [DocumentController::class, 'bondsDocumentCreate'])->name('bonds.document.create');
     Route::post('bondsdocumentstore', [DocumentController::class, 'bondsDocumentStore'])->name('bonds.document.store');
 
-    /* Route::resource('documents', DocumentController::class);
-    Route::post('/document/import', [DocumentController::class, 'import'])->name('documents.import'); */
+    /* Route::resource('documents', DocumentController::class); */
+    Route::get('/document/{id}/{type}/{htmlTitle}', [DocumentController::class, 'showDocument'])->name('documents.show');
 
     Route::post('/changeBond', [UserController::class, 'setCurrentBond'])->name('currentBond.change');
     Route::resource('users', UserController::class);

@@ -11,6 +11,7 @@ use App\CustomClasses\SgcLogger;
 use App\Models\Employee;
 use App\Models\Bond;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Response;
 
 class DocumentController extends Controller
 {
@@ -95,7 +96,7 @@ class DocumentController extends Controller
             $class = app("App\\Models\\$model");
 
             $document = new $class();
-            
+
             if ($request->has('employees'))
                 $document->employee_id = $request->employees;
 
@@ -148,7 +149,7 @@ class DocumentController extends Controller
             foreach ($files as $file) {
                 $fileName = time() . '.' . $file->getClientOriginalName();
                 $filePath = $file->storeAs('temp', $fileName, 'local');
-                
+
                 $document = new EmployeeDocument();
 
                 $document->employee_id = $request->employees;
@@ -170,8 +171,7 @@ class DocumentController extends Controller
         $filesCount = $request->fileSetCount;
         $employeeId = $request->employeeId;
 
-        for ($i = 0; $i < $filesCount; $i++)
-        {
+        for ($i = 0; $i < $filesCount; $i++) {
             $document = new EmployeeDocument();
 
             $document->employee_id = $employeeId;
@@ -192,7 +192,7 @@ class DocumentController extends Controller
 
             Storage::delete($filePath);
         }
-        
+
         SgcLogger::writeLog('Mass Employees Documents', 'create');
 
         return redirect()->route('employees.document.index')->with('success', 'Arquivos importados com sucesso.');
@@ -204,9 +204,21 @@ class DocumentController extends Controller
      * @param  \App\Models\BondDocument  $bondDocument
      * @return \Illuminate\Http\Response
      */
-    public function show(BondDocument $bondDocument)
+    public function showDocument($id, $model)
     {
-        //
+        $class = app("App\\Models\\$model");
+
+        $document = $class::find($id);
+
+        $file = base64_decode($document->file_data);
+
+        $f = finfo_open();
+
+        $mime_type = finfo_buffer($f, $file, FILEINFO_MIME_TYPE);
+
+        return Response::make($file, 200, [
+            'filename="' . $document->original_name . '"'
+        ])->header('Content-Type', $mime_type);
     }
 
     /**
