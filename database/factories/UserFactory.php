@@ -34,6 +34,7 @@ class UserFactory extends Factory
             'employee_id' => Employee::factory(),
             'active' => true,
             'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 

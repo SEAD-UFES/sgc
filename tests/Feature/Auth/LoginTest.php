@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Database\Eloquent\Factories;
@@ -11,6 +12,8 @@ use App\Models\User;
 
 class LoginTest extends TestCase
 {
+    use DatabaseMigrations;
+
     /**
      * Ensures a guest (unauthenticated user) sees the login form
      *
@@ -60,10 +63,6 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-
-    /*
-     * TODO:  Fix foreign key constraint error while creating 
-     *        test user.
     public function test_user_cannot_view_login_form_authenticated()
     {
         $user = User::factory()->make();
@@ -76,5 +75,5 @@ class LoginTest extends TestCase
         $response = $this->actingAs($user)->get(route('auth.login'));
         $response->assertRedirect(route('home'));
     }
-     */
+
 }
