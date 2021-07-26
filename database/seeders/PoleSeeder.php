@@ -15,6 +15,7 @@ class PoleSeeder extends Seeder
      */
     public function run()
     {
+        DB::table($this->tableName)->insert(['name' => 'SEAD', 'description' => 'Superintendência de Educação a Distância']);
         DB::table($this->tableName)->insert(['name' => 'Vitória', 'description' => 'Polo de Vitória']);
         DB::table($this->tableName)->insert(['name' => 'Afonso Cláudio', 'description' => 'Polo de Afonso Cláudio']);
         DB::table($this->tableName)->insert(['name' => 'Alegre', 'description' => 'Polo de Alegre']);
