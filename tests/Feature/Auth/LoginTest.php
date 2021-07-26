@@ -4,6 +4,7 @@ namespace Tests\Feature\Auth;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 use App\Models\User;
@@ -85,7 +86,7 @@ class LoginTest extends TestCase
 
         $response = $this->post(route('auth.login'), [
             'email' => $user->email,
-            'password' =>  bcrypt('wrong-password'),
+            'password' =>  Hash::make('wrong-password'),
         ]);
 
         $response->assertStatus(302);

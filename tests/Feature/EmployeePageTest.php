@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 use App\Models\User;
 
-class EmployeePage extends TestCase
+class EmployeePageTest extends TestCase
 {
     use DatabaseMigrations;
 
