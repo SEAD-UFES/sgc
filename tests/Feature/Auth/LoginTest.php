@@ -4,8 +4,6 @@ namespace Tests\Feature\Auth;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Database\Eloquent\Factories;
 use Tests\TestCase;
 
 use App\Models\User;
@@ -76,4 +74,20 @@ class LoginTest extends TestCase
         $response->assertRedirect(route('home'));
     }
 
+    /**
+     * An existing user cannot login with the wrong password
+     *
+     * @return void
+     */
+    public function test_user_cannot_authenticate_with_wrong_password()
+    {
+        $user = User::factory()->make();
+
+        $response = $this->post(route('auth.login'), [
+            'email' => $user->email,
+            'password' =>  bcrypt('wrong-password'),
+        ]);
+
+        $response->assertStatus(302);
+    }
 }
