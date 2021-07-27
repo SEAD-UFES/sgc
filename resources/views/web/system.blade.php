@@ -33,7 +33,7 @@
                 </ul><br />
                 @canany(['isAdm'])
                     <h3>Usuários</h3>
-                    <ul><br />
+                    <ul>
                         <li><a href="{{ route('users.index') }}">Listar Usuários</a></li>
                         <li><a href="{{ route('users.create') }}">Cadastrar Usuário</a></li>
                     </ul>
