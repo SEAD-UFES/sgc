@@ -34,6 +34,14 @@
                     <li><a href="{{ route('bonds.document.index') }}">Listar Documento de Vínculos</a></li>
                     <li><a href="{{ route('bonds.document.create') }}">Importar Documento de Vínculo</a></li>
                 </ul><br />
+                <h3 style="background-color: rosybrown;text-decoration:line-through">Alocação</h3>
+                <ul>
+                    <li><a href="#">!Listar Alocações!</a></li>
+                    <li><a href="#">!Alocar tutores a distância!</a></li>
+                    {{-- <li><a href="#">Cadastrar Vínculo</a></li>
+                    <li><a href="#">Listar Documento de Vínculos</a></li>
+                    <li><a href="#">Importar Documento de Vínculo</a></li> --}}
+                </ul><br />
             </nav>
             <br /><br />
         </main>

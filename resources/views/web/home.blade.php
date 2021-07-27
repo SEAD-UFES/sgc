@@ -4,9 +4,14 @@
 
 @section('content')
     <section>
-        <strong>Home [{{ session('sessionUser')->currentBond->role->name }} -
-            {{ session('sessionUser')->currentBond->course->name }} -
-            {{ session('sessionUser')->currentBond->pole->name }}]</strong>
+        <strong>Home&nbsp;
+            @if (session('sessionUser')->currentBond != null)
+                [{{ session('sessionUser')->currentBond->role->name }} -
+                {{ session('sessionUser')->currentBond->course->name }} -
+                {{ session('sessionUser')->currentBond->pole->name }}]
+            @endif
+
+        </strong>
     </section>
     <section id="pageContent">
         <main role="main">

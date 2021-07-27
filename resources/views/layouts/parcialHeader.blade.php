@@ -16,7 +16,6 @@
                                         {{ $bond->role->name }} - {{ $bond->course->name }}</option>
                                 @endforeach
                             </select>
-                            {{-- <input type="submit" value="Alternar"> --}}
                         </div>
                     </form>
                 @endif
@@ -28,10 +27,14 @@
         <nav>
             <ul>
                 <li><a href="{{ route('home') }}">Home</a></li>
-                <li><a href="{{ route('employee') }}">Colaboradores</a></li>
-                <li><a href="{{ route('funding') }}">Fomento</a></li>
+                @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCor'])
+                    <li><a href="{{ route('employee') }}">Colaboradores</a></li>
+                    <li><a href="{{ route('funding') }}">Fomento</a></li>
+                @endcanany
                 <li><a href="{{ route('report') }}">Relatórios</a></li>
-                <li><a href="{{ route('system') }}">Sistema</a></li>
+                @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCor'])
+                    <li><a href="{{ route('system') }}">Sistema</a></li>
+                @endcanany
                 {{-- <li><a href="{{ route('auth.logout') }}">Logout</a></li> --}}
             </ul>
         </nav>

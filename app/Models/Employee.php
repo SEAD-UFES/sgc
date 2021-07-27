@@ -83,4 +83,20 @@ class Employee extends Model
     {
         return !is_null($this->employeeDocuments->first());
     }
+
+    public function hasBond()
+    {
+        return ($this->courses->count() > 0);
+    }
+
+    public function isCoordinator()
+    {
+        $isCoord = false;
+
+        if ($this->hasBond())
+            foreach ($this->courses as $bonded_course)
+                $isCoord = $isCoord || (substr($bonded_course->bond->role->name, 0, 5) == 'Coord');
+
+        return $isCoord;
+    }
 }

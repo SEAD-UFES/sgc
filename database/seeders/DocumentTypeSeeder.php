@@ -37,7 +37,12 @@ class DocumentTypeSeeder extends Seeder
         ]);
 
         DB::table($this->tableName)->insert([
-            'name' => 'Formulário de Inscrição',
+            'name' => 'Ficha de Inscrição - Formulário',
+            'description' => '',
+        ]);
+
+        DB::table($this->tableName)->insert([
+            'name' => 'Ficha de Inscrição - Termos e Licença',
             'description' => '',
         ]);
 

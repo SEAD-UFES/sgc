@@ -22,14 +22,16 @@ class SessionUser
         $this->currentUser = $user;
         $this->email = $user->email;
         $this->name = $user->email;
+        $this->genderArticle = 'o(a)';
 
         $employeeResult = $user->employee;
         if (!is_null($employeeResult)) {
             $this->hasEmployee = true;
             $this->name = $employeeResult->name;
-            $this->genderArticle = (($employeeResult->gender->name) === 'Masculino') ? 'o' : 'a';
+            if ($employeeResult->gender != null)
+                $this->genderArticle = (($employeeResult->gender->name) === 'Masculino') ? 'o' : 'a';
 
-            $bondResult = Bond::where('employee_id', $employeeResult->id)->whereDate('end', '>', Carbon::today())->whereNull('terminated_on')->whereNotNull('uaba_checked_on')->where('impediment', false)->get();
+            $bondResult = Bond::where('employee_id', $employeeResult->id)->whereDate('end', '>', Carbon::today())->whereNull('terminated_on')/* ->whereNotNull('uaba_checked_on') */->where('impediment', false)->get();
             if (!is_null($bondResult)) {
                 $this->hasBond = true;
                 $this->bonds = $bondResult;
@@ -40,12 +42,10 @@ class SessionUser
 
     public function setCurrentBond(int $bondId)
     {
-        if($this->hasBond)
-        {
+        if ($this->hasBond) {
             //dd($this->bonds);
             //dd($this->bonds->firstWhere('id', $bondId));
             $this->currentBond = $this->bonds->firstWhere('id', $bondId);
-
         }
     }
 }

@@ -8,7 +8,24 @@
     </section>
     <section id="pageContent">
         <main role="main">
-            <p>Relatórios</p>
+            <nav>
+                <h3 style="background-color: rosybrown;text-decoration:line-through">Licença de produção</h3>
+                <ul>
+                    <li><a href="#">!Consultar licenças!</a></li>
+                    {{-- <li><a href="{{ route('approveds.create') }}">Importar Aprovados</a></li> --}}
+                    {{-- <li><a href="{{ route('approveds.create') }}">Cadastrar Aprovado</a></li> --}}
+                </ul><br />
+                @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isGra'])
+                    <h3 style="background-color: rosybrown;text-decoration:line-through">Alocação de colaboradores</h3>
+                    <ul>
+                        <li><a href="#">!Relatório de alocações!</a></li>
+                        {{-- <li><a href="{{ route('employees.create') }}">Cadastrar Colaborador</a></li>
+                    <li><a href="{{ route('employees.document.index') }}">Listar Documento de Colaboradores</a></li>
+                    <li><a href="{{ route('employees.document.create') }}">Importar Documento de Colaborador</a></li> --}}
+                    </ul><br />
+                @endcanany
+            </nav>
+            <br /><br />
         </main>
     </section>
 @endsection
