@@ -10,6 +10,7 @@
     <meta name="description" content="SGC - Sistema de Gestão de Colaboradores da Sead/Ufes">
     <link rel="shortcut icon" href="{{ asset('/sead.png') }}">
     <link rel="stylesheet" href="{{ asset('/style.css') }}">
+    <script src="{{ asset('js/app.js') }}"></script>
     <script src="/script.js"></script>
 </head>
 
@@ -18,5 +19,7 @@
     @yield('content')
     @include('layouts.parcialFooter')
 </body>
+
+@yield('scripts')
 
 </html>
