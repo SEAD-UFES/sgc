@@ -8,6 +8,7 @@ use App\Models\State;
 use App\Models\DocumentType;
 use App\Models\MaritalStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class EmployeeFactory extends Factory
 {
@@ -38,7 +39,7 @@ class EmployeeFactory extends Factory
             'job' => $this->faker->jobTitle(),
             'birthday' => $this->faker->dateTimeBetween('-50 years', '-19 years'),
             'birth_city' => $this->faker->city(),
-     
+
             'id_number' => $this->faker->rg($formatted = false),
             'id_issue_date' => $this->faker->dateTimeBetween('-5 years', 'now'),
             'id_issue_agency' => 'SSP/' . $this->faker->stateAbbr(),
@@ -50,7 +51,7 @@ class EmployeeFactory extends Factory
             'address_street' => $this->faker->streetName(),
             'address_complement' => $this->faker->realText($maxChars = 30),
             'address_number' => $this->faker->buildingNumber(),
-            'address_postal_code' => $this->faker->postcode(),
+            'address_postal_code' => Str::of($this->faker->postcode())->replace('-', ''),
             'address_city' => $this->faker->city(),
 
             'area_code' => $this->faker->areaCode(),

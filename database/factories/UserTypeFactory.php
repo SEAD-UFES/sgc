@@ -23,6 +23,7 @@ class UserTypeFactory extends Factory
     {
         return [
             'name' => $this->faker->word(),
+            'acronym' => $this->faker->lexify('???'),
             'description' => $this->faker->text($maxChars = 40),
             'created_at' => now(),
             'updated_at' => now(),

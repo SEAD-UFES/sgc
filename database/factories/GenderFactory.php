@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Gender;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class GenderFactory extends Factory
 {
@@ -21,8 +22,10 @@ class GenderFactory extends Factory
      */
     public function definition()
     {
+        $name = Str::limit($this->faker->word(), 10, $append = '');
+
         return [
-            'name' => $this->faker->word(),
+            'name' => $name,
             'created_at' => now(),
             'updated_at' => now(),
         ];
