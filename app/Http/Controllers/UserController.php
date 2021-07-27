@@ -22,7 +22,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with(['userType', 'employee'])->orderBy('email')->paginate(10);
+        $users = User::sortable(['created_at' => 'desc'])->with(['userType', 'employee'])->orderBy('email')->paginate(10);
 
         SgcLogger::writeLog('User');
 

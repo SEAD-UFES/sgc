@@ -15,10 +15,10 @@
             @endif
             <table>
                 <thead>
-                    <th>E-mail</th>
-                    <th>Tipo</th>
-                    <th>Ativo</th>
-                    <th>Colaborador</th>
+                    <th>@sortablelink('email', 'E-mail')</th>
+                    <th>@sortablelink('userType.name', 'Tipo')</th>
+                    <th>@sortablelink('active', 'Ativo')</th>
+                    <th>@sortablelink('employee.name', 'Colaborador')</th>
                     <th colspan="2">Ações</th>
                 </thead>
                 <tbody>
@@ -27,7 +27,7 @@
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->userType->name }}</td>
                             <td>{{ $user->active === 1 ? 'Sim' : 'Não' }}</td>
-                            <td>{{ $user->employee_id }}</td>
+                            <td>{{ ($user->employee) ? $user->employee->name : 'Não possui' }}</td>
                             <td><a href="{{ route('users.edit', $user) }}">Editar</a></td>
                             <td>
                                 <form name="{{ 'formDelete' . $user->id }}" action="{{ route('users.destroy', $user) }}"
