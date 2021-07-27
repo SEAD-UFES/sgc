@@ -20,13 +20,47 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::sortable(['created_at' => 'desc'])->with(['userType', 'employee'])->orderBy('email')->paginate(10);
+        //star query build
+        $users_query = User::sortable(['created_at' => 'desc'])->with(['userType', 'employee'])->orderBy('email');
 
+        //building filters (to build interface)
+        $filters = [
+            'email' => $request->input('email') ? $request->input('email') : null,
+            'employee' => $request->input('employee') ? $request->input('employee') : null,
+            'user_type' => $request->input('user_type') ? $request->input('user_type') : null,
+            'active' => $request->input('active') ? $request->input('active') : null,
+        ];
+
+        //apply filters
+        if ($filters['email']) {
+            $users_query = $users_query->where('users.email', 'like', '%' . $filters['email'] . '%');
+        }
+        if ($filters['employee']) {
+            $users_query = $users_query->wherehas('employee', function ($query) use ($filters) {
+                $query->where('name', 'like', '%' . $filters['employee'] . '%');
+            });
+        }
+        if ($filters['user_type']) {
+            $users_query = $users_query->wherehas('userType', function ($query) use ($filters) {
+                $query->where('name', 'like', '%' . $filters['user_type'] . '%');
+            });
+        }
+        if ($filters['active']) {
+            $is_active = null;
+            if (in_array(strtolower($filters['active']), ['sim', '1', 'true'])) $is_active = 1;
+            if (in_array(strtolower($filters['active']), ['não', 'nao', '0', 'false']))  $is_active = 0;
+            $users_query = $users_query->where('users.active', '=', $is_active);
+        }
+
+        //get paginate
+        $users = $users_query->paginate(10);
+
+        //write on log;
         SgcLogger::writeLog('User');
 
-        return view('user.index', compact('users'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('user.index', compact('users', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
