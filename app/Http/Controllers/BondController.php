@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bond;
 use App\Models\User;
+use App\Models\UserTYpe;
 use App\Models\Role;
 use App\Models\Course;
 use App\Models\Pole;
@@ -14,6 +15,8 @@ use App\Http\Requests\StoreBondRequest;
 use App\Http\Requests\UpdateBondRequest;
 use App\Models\EmployeeDocument;
 use App\Models\BondDocument;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\NewBondNotification;
 
 class BondController extends Controller
 {
@@ -85,6 +88,9 @@ class BondController extends Controller
         }
 
         SgcLogger::writeLog($bond);
+
+        $grantorAssistants = UserType::with('users')->firstWhere('acronym', 'ass')->users; 
+        Notification::send($grantorAssistants, new NewBondNotification($bond));
 
         return redirect()->route('bonds.index')->with('success', 'Vínculo criado com sucesso.');
     }

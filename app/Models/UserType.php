@@ -16,6 +16,7 @@ class UserType extends Model
      */
     protected $fillable = [
         'name',
+        'acronym',
         'description',
     ];
 
