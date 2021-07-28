@@ -29,7 +29,7 @@
                     <th colspan="4">SEAD</th>
                     <th style="width: 80px">Vínculo</th>
                     <th style="width: 80px">UAB</th>
-                    <th rowspan="2" colspan="3" style="width: 265px">Ações</th>
+                    <th rowspan="2" colspan="4" style="width: 360px">Ações</th>
                     </tr>
                     <tr>
                     <th>Colaborador</th>
@@ -59,6 +59,7 @@
                             {{-- <td>{{ isset($bond->uaba_checked_on) ? \Carbon\Carbon::parse($bond->uaba_checked_on)->isoFormat('DD/MM/Y') : '' }} --}}
                             </td>
                             <td>{{ $bond->impediment === 1 ? 'Sim' : 'Não' }}</td>
+                            <td><a href="{{ route('bonds.show', $bond) }}">Detalhes</a></td>
                             <td><a href="{{ route('employees.show', $bond->employee) }}">Ver Colaborador</a></td>
                             <td><a href="{{ route('bonds.edit', $bond->id) }}">Editar vínculo</a></td>
                             <td>

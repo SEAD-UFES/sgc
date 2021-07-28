@@ -30,7 +30,7 @@
                             <td>{{ $notification->created_at }}</td>
                             @switch($notification->type)
                                 @case('App\Notifications\NewBondNotification')
-                                    <td style="padding: 3px">Novo <a href="{{ route('bonds.edit', $notification->data['bond_id']) }}">vínculo</a> cadastrado |
+                                    <td style="padding: 3px">Novo <a href="{{ route('bonds.show', $notification->data['bond_id']) }}">vínculo</a> cadastrado |
                                         Colaborador: {{ $notification->data['employee_name'] }}<br />
                                         Atribuição: {{ $notification->data['role_name'] }} |
                                         Curso: {{ $notification->data['course_name'] }}

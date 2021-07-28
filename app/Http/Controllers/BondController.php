@@ -103,7 +103,8 @@ class BondController extends Controller
      */
     public function show(Bond $bond)
     {
-        //
+        $documents = $bond->bondDocuments;
+        return view('bond.show', compact('bond', 'documents'));
     }
 
     /**
