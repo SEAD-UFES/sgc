@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bond;
 use App\Models\User;
-use App\Models\UserTYpe;
+use App\Models\UserType;
 use App\Models\Role;
 use App\Models\Course;
 use App\Models\Pole;
