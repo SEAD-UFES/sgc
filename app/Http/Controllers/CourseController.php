@@ -7,6 +7,7 @@ use App\Models\CourseType;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
 use App\CustomClasses\SgcLogger;
+use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
@@ -15,11 +16,14 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $courses = Course::with('courseType')->orderBy('name')->paginate(10);
+        $courses = Course::sortable(['name' => 'asc'])->with('courseType')->orderBy('name')->paginate(10);
 
         SgcLogger::writeLog('Course');
+
+        //add query string params on paginate urls
+        $courses->appends($request->all());
 
         return view('course.index', compact('courses'))->with('i', (request()->input('page', 1) - 1) * 10);
     }

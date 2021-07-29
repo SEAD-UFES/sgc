@@ -4,16 +4,28 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
 class Course extends Model
 {
     use HasFactory;
+    use Sortable;
 
     protected $fillable = [
         'name',
         'description',
         'begin',
         'end',
+    ];
+
+    public $sortable = [
+        'id',
+        'name',
+        'description',
+        'begin',
+        'end',
+        'created_at',
+        'updated_at'
     ];
 
     public function courseType()
