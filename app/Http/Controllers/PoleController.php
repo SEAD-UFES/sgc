@@ -15,9 +15,12 @@ class PoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $poles = Pole::orderBy('name')->paginate(10);
+        $poles = Pole::sortable(['name' => 'asc'])->paginate(10);
+
+        //add query string params on paginate urls
+        $poles->appends($request->all());
 
         SgcLogger::writeLog('Pole');
 

@@ -15,8 +15,8 @@
             @endif
             <table>
                 <thead>
-                    <th>Nome</th>
-                    <th>Descrição</th>
+                    <th>@sortablelink('name', 'Nome')</th>
+                    <th>@sortablelink('description', 'Descrição')</th>
                     <th colspan="2">Ações</th>
                 </thead>
                 <tbody>
