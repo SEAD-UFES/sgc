@@ -15,11 +15,11 @@
             @endif
             <table>
                 <thead>
-                    <th>Nome</th>
-                    <th>Descrição</th>
-                    <th>Tipo do Curso</th>
-                    <th>Início</th>
-                    <th>Fim</th>
+                    <th>@sortablelink('name', 'Nome')</th>
+                    <th>@sortablelink('description', 'Descrição')</th>
+                    <th>@sortablelink('courseType.name', 'Tipo do Curso')</th>
+                    <th>@sortablelink('begin', 'Início')</th>
+                    <th>@sortablelink('end', 'Fim')</th>
                     <th colspan="2">Ações</th>
                 </thead>
                 <tbody>
