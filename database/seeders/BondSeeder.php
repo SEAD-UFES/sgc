@@ -27,6 +27,7 @@ class BondSeeder extends Seeder
             'terminated_on' => null,
             'volunteer' => false,
             'impediment' => false,
+            'impediment_description' => '',
             'uaba_checked_on' => Carbon::create('2021', '07', '01'),
         ]);
 
@@ -41,6 +42,7 @@ class BondSeeder extends Seeder
             'terminated_on' => Carbon::create('2020', '09', '05'),
             'volunteer' => false,
             'impediment' => false,
+            'impediment_description' => '',
             'uaba_checked_on' => Carbon::create('2021', '07', '01'),
         ]);
 
@@ -55,6 +57,7 @@ class BondSeeder extends Seeder
             'terminated_on' => null,
             'volunteer' => false,
             'impediment' => false,
+            'impediment_description' => '',
             'uaba_checked_on' => Carbon::create('2021', '07', '01'),
         ]);
 
@@ -69,6 +72,7 @@ class BondSeeder extends Seeder
             'terminated_on' => null,
             'volunteer' => false,
             'impediment' => true,
+            'impediment_description' => 'Assinatura não confere com o documento',
             'uaba_checked_on' => Carbon::create('2021', '07', '01'),
         ]);
 
@@ -84,6 +88,7 @@ class BondSeeder extends Seeder
             'terminated_on' => null,
             'volunteer' => false,
             'impediment' => false,
+            'impediment_description' => '',
             'uaba_checked_on' => Carbon::create('2021', '07', '01'),
         ]);
 
@@ -98,6 +103,7 @@ class BondSeeder extends Seeder
             'terminated_on' => null,
             'volunteer' => true,
             'impediment' => false,
+            'impediment_description' => '',
             'uaba_checked_on' => Carbon::create('2021', '07', '01'),
         ]);
     }

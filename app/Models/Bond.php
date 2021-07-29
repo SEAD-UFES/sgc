@@ -25,6 +25,7 @@ class Bond extends Pivot
         'terminated_on',
         'volunteer',
         'impediment',
+        'impediment_description',
         'uaba_checked_on',
     ];
 

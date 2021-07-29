@@ -17,6 +17,8 @@ use App\Models\EmployeeDocument;
 use App\Models\BondDocument;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\NewBondNotification;
+use App\Http\Requests\ReviewBondRequest;
+use App\Notifications\BondImpededNotification;
 
 class BondController extends Controller
 {
@@ -71,13 +73,13 @@ class BondController extends Controller
         $bond->terminated_on = null;
         $bond->volunteer = $request->has('volunteer');
         $bond->impediment = false;
+        $bond->impediment_description = $request->impedimentDescription;
         $bond->uaba_checked_on = null;
 
         $bond->save();
 
         $documents = EmployeeDocument::where('employee_id', $bond->employee_id)->get();
-        foreach ($documents as $doc)
-        {
+        foreach ($documents as $doc) {
             $bondDocument = new BondDocument();
             $bondDocument->original_name = $doc->original_name;
             $bondDocument->file_data = $doc->file_data;
@@ -89,7 +91,7 @@ class BondController extends Controller
 
         SgcLogger::writeLog($bond);
 
-        $grantorAssistants = UserType::with('users')->firstWhere('acronym', 'ass')->users; 
+        $grantorAssistants = UserType::with('users')->firstWhere('acronym', 'ass')->users;
         Notification::send($grantorAssistants, new NewBondNotification($bond));
 
         return redirect()->route('bonds.index')->with('success', 'Vínculo criado com sucesso.');
@@ -170,5 +172,43 @@ class BondController extends Controller
         }
 
         return redirect()->route('bonds.index')->with('success', 'Vínculo excluído com sucesso.');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Bond  $bond
+     * @return \Illuminate\Http\Response
+     */
+    public function review(ReviewBondRequest $request, Bond $bond)
+    {
+        $bond->impediment = ($request->impediment == '1') ? true : false;
+        $bond->impediment_description = $request->impedimentDescription;
+        $bond->uaba_checked_on = now();
+
+        try {
+            $bond->save();
+        } catch (\Exception $e) {
+            return redirect()->route('bonds.show', $bond)->withErrors(['noStore' => 'Não foi possível salvar o vínculo: ' . $e->getMessage()]);
+        }
+
+        SgcLogger::writeLog($bond, 'edit');
+
+        $academicSecretaries = UserType::with('users')->Where('acronym', 'sec')->first()->users;
+        //dd($academicSecretaries);
+
+        $courseBonds = Bond::with(['employee'])->where('course_id', $bond->course->id)->get();
+        $courseCoordinators = collect();
+        foreach ($courseBonds as $courseBond)
+            if ($courseBond->employee->isCoordinator() && !is_null($courseBond->employee->user))
+                $courseCoordinators->push($courseBond->employee->user);
+
+        $users = $academicSecretaries->merge($courseCoordinators);
+
+        if ($bond->impediment == true)
+            Notification::send($users, new BondImpededNotification($bond));
+
+        return redirect()->route('bonds.show', $bond)->with('success', 'Vínculo atualizado com sucesso.');
     }
 }

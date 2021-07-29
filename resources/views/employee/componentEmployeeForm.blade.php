@@ -20,13 +20,13 @@ CPF*: <input name="cpf" id="cpf" type="text" placeholder="CPF" value="{{ $employ
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-{{-- Profissão*: <input name="job" type="text" placeholder="Profissão" value="{{ $employee->job ?? old('job') }}"
+Profissão: <input name="job" type="text" placeholder="Profissão" value="{{ $employee->job ?? old('job') }}"
     maxlength="50" />
 @error('job')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Gênero*: <select name="genders">
+Gênero: <select name="genders">
     <option value="">Selecione o gênero</option>
     @foreach ($genders as $gender)
         <option value="{{ $gender->id }}" {{ $employee->gender_id == $gender->id ? 'selected' : '' }}>
@@ -37,12 +37,12 @@ Gênero*: <select name="genders">
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Data de Nascimento*: <input name="birthday" type="date" value="{{ $employee->birthday ?? old('birthday') }}" />
+Data de Nascimento: <input name="birthday" type="date" value="{{ $employee->birthday ?? old('birthday') }}" />
 @error('birthday')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-UF Nascimento*: <select name="birthStates">
+UF Nascimento: <select name="birthStates">
     <option value="">Selecione a UF</option>
     @foreach ($birthStates as $birthState)
         <option value="{{ $birthState->id }}"
@@ -53,19 +53,19 @@ UF Nascimento*: <select name="birthStates">
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Cidade de Nascimento*: <input name="birthCity" type="text" placeholder="Cidade"
+Cidade de Nascimento: <input name="birthCity" type="text" placeholder="Cidade"
     value="{{ $employee->birth_city ?? old('birthCity') }}" maxlength="50" />
 @error('birthCity')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Número do Documento*: <input name="idNumber" type="text" placeholder="Número"
+Número do Documento: <input name="idNumber" type="text" placeholder="Número"
     value="{{ $employee->id_number ?? old('idNumber') }}" maxlength="15" />
 @error('idNumber')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Tipo de Documento*: <select name="documentTypes">
+Tipo de Documento: <select name="documentTypes">
     <option value="">Selecione o tipo</option>
     @foreach ($documentTypes as $documentType)
         <option value="{{ $documentType->id }}"
@@ -77,19 +77,19 @@ Tipo de Documento*: <select name="documentTypes">
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Data de Expedição*: <input name="idIssueDate" type="date"
+Data de Expedição: <input name="idIssueDate" type="date"
     value="{{ $employee->id_issue_date ?? old('idIssueDate') }}" />
 @error('idIssueDate')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Orgão Expedidor*: <input name="idIssueAgency" type="text" placeholder="Orgão"
+Orgão Expedidor: <input name="idIssueAgency" type="text" placeholder="Orgão"
     value="{{ $employee->id_issue_agency ?? old('idIssueAgency') }}" maxlength="10" />
 @error('idIssueAgency')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Estado Civil*: <select name="maritalStatuses">
+Estado Civil: <select name="maritalStatuses">
     <option value="">Selecione o Estado Civil</option>
     @foreach ($maritalStatuses as $maritalStatus)
         <option value="{{ $maritalStatus->id }}"
@@ -113,13 +113,13 @@ Nome do pai: <input name="fatherName" type="text" placeholder="Nome"
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Nome da mãe*: <input name="motherName" type="text" placeholder="Nome"
+Nome da mãe: <input name="motherName" type="text" placeholder="Nome"
     value="{{ $employee->mother_name ?? old('motherName') }}" maxlength="50" />
 @error('motherName')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Logradouro*: <input name="addressStreet" type="text" placeholder="Logradouro"
+Logradouro: <input name="addressStreet" type="text" placeholder="Logradouro"
     value="{{ $employee->address_street ?? old('addressStreet') }}" maxlength="50" />
 @error('addressStreet')
     <div class="error">> {{ $message }}</div>
@@ -143,14 +143,14 @@ Bairro: <input name="addressDistrict" type="text" placeholder="Bairro"
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-CEP*: <input name="addressPostalCode" id="addressPostalCode" type="text" placeholder="CEP"
+CEP: <input name="addressPostalCode" id="addressPostalCode" type="text" placeholder="CEP"
     value="{{ $employee->address_postal_code ?? old('addressPostalCode') }}" maxlength="8"
     onkeyup="validate('addressPostalCode');" />
 @error('addressPostalCode')
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-UF*: <select name="addressStates">
+UF: <select name="addressStates">
     <option value="">Selecione a UF</option>
     @foreach ($addressStates as $addressState)
         <option value="{{ $addressState->id }}"
@@ -162,12 +162,12 @@ UF*: <select name="addressStates">
     <div class="error">> {{ $message }}</div>
 @enderror
 <br /><br />
-Cidade*: <input name="addressCity" type="text" placeholder="Cidade"
+Cidade: <input name="addressCity" type="text" placeholder="Cidade"
     value="{{ $employee->address_city ?? old('addressCity') }}" maxlength="50" />
 @error('addressCity')
     <div class="error">> {{ $message }}</div>
 @enderror
-<br /><br /> --}}
+<br /><br />
 Código de Área: <input name="areaCode" id="areaCode" type="text" placeholder="Código"
     value="{{ $employee->area_code ?? old('areaCode') }}" maxlength="3" onkeyup="validate('areaCode');" />
 @error('areaCode')

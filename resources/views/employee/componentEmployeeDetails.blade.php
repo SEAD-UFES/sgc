@@ -11,60 +11,60 @@
 
 <h3>== FORMULÁRIO UAB ==</h3><br />
 <h4>> Dados Pessoais</h4><br />
-Nome: {{ $employee->name  ?? '' }}
+Nome: {{ $employee->name ?? '-' }}
 <br /><br />
-CPF: {{ $employee->cpf  ?? '' }}
+CPF: {{ $employee->cpf ?? '-' }}
 <br /><br />
-Profissão: {{ $employee->job ?? '' }}
+Profissão: {{ $employee->job ?? '-' }}
 <br /><br />
-Gênero: {{ $employee->gender->name ?? '' }}
+Gênero: {{ $employee->gender->name ?? '-' }}
 <br /><br />
 Data de Nascimento:
-{{ $employee->birthday != null ? \Carbon\Carbon::parse($employee->birthday)->isoFormat('DD/MM/Y') : '' }}
+{{ $employee->birthday != null ? \Carbon\Carbon::parse($employee->birthday)->isoFormat('DD/MM/Y') : '-' }}
 <br /><br />
-UF Nascimento: {{ $employee->birthState->name ?? '' }}
+UF Nascimento: {{ $employee->birthState->name ?? '-' }}
 <br /><br />
-Cidade de Nascimento: {{ $employee->birth_city ?? '' }}
+Cidade de Nascimento: {{ $employee->birth_city ?? '-' }}
 <br /><br />
-Número do Documento: {{ $employee->id_number ?? '' }}
+Número do Documento: {{ $employee->id_number ?? '-' }}
 <br /><br />
-Tipo de Documento: {{ $employee->documentType->name ?? '' }}
+Tipo de Documento: {{ $employee->documentType->name ?? '-' }}
 <br /><br />
 Data de Expedição:
-{{ $employee->id_issue_date != null ? \Carbon\Carbon::parse($employee->id_issue_date)->isoFormat('DD/MM/Y') : '' }}
+{{ $employee->id_issue_date != null ? \Carbon\Carbon::parse($employee->id_issue_date)->isoFormat('DD/MM/Y') : '-' }}
 <br /><br />
-Orgão Expedidor: {{ $employee->id_issue_agency ?? '' }}
+Orgão Expedidor: {{ $employee->id_issue_agency ?? '-' }}
 <br /><br />
-Estado Civil: {{ $employee->maritalStatus->name ?? '' }}
+Estado Civil: {{ $employee->maritalStatus->name ?? '-' }}
 <br /><br />
-Nome cônjuge: {{ $employee->spouse_name ?? '' }}
+Nome cônjuge: {{ $employee->spouse_name ?? '-' }}
 <br /><br />
-Nome do pai: {{ $employee->father_name ?? '' }}
+Nome do pai: {{ $employee->father_name ?? '-' }}
 <br /><br />
-Nome da mãe: {{ $employee->mother_name ?? '' }}
+Nome da mãe: {{ $employee->mother_name ?? '-' }}
 <br /><br />
 <h4>> Endereço para Contato</h4><br />
-Logradouro: {{ $employee->address_street ?? '' }}
+Logradouro: {{ $employee->address_street ?? '-' }}
 <br /><br />
-Complemento: {{ $employee->address_complement ?? '' }}
+Complemento: {{ $employee->address_complement ?? '-' }}
 <br /><br />
-Número: {{ $employee->address_number ?? '' }}
+Número: {{ $employee->address_number ?? '-' }}
 <br /><br />
-Bairro: {{ $employee->address_district ?? '' }}
+Bairro: {{ $employee->address_district ?? '-' }}
 <br /><br />
-CEP: {{ $employee->address_postal_code ?? '' }}
+CEP: {{ $employee->address_postal_code ?? '-' }}
 <br /><br />
-UF: {{ $employee->addressState->uf ?? '' }}
+UF: {{ $employee->addressState->uf ?? '-' }}
 <br /><br />
-Cidade: {{ $employee->address_city ?? '' }}
+Cidade: {{ $employee->address_city ?? '-' }}
 <br /><br />
-Código de Área: {{ $employee->area_code }}
+Código de Área: {{ $employee->area_code ?? '-' }}
 <br /><br />
-Telefone: {{ $employee->phone  ?? '' }}
+Telefone: {{ $employee->phone ?? '-' }}
 <br /><br />
-Celular: {{ $employee->mobile  ?? '' }}
+Celular: {{ $employee->mobile ?? '-' }}
 <br /><br />
-Email: {{ $employee->email  ?? '' }}
+Email: {{ $employee->email ?? '-' }}
 <br /><br />
 @isset($employee->user)
     <h3>== SISTEMA ==</h3><br />

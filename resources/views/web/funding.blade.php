@@ -16,10 +16,19 @@
                     <li><a href="#">!Remanejar bolsas!</a></li>
                 </ul><br />
                 @php
-                    $course = App\Models\Course::find(session('sessionUser')->currentBond->course->id);
-                    $employees = $course->employees()->get();
+                    if (session('sessionUser')->currentBond != null) {
+                        $course = App\Models\Course::find(session('sessionUser')->currentBond->course->id);
+                        $employees = $course->employees()->get();
+                    } else {
+                        $employees = App\Models\Employee::get();
+                    }
                 @endphp
-                <h3 style="background-color: rosybrown;text-decoration:line-through">Colaboradores do Curso [{{$course->name}}]</h3>
+                <h3 style="background-color: rosybrown;text-decoration:line-through">Colaboradores
+                    @if (session('sessionUser')->currentBond != null)
+
+                        do Curso [{{ $course->name }}]
+                    @endif
+                </h3>
                 <table>
                     <thead>
                         <th>Nome</th>

@@ -31,7 +31,7 @@ class SessionUser
             if ($employeeResult->gender != null)
                 $this->genderArticle = (($employeeResult->gender->name) === 'Masculino') ? 'o' : 'a';
 
-            $bondResult = Bond::where('employee_id', $employeeResult->id)->whereDate('end', '>', Carbon::today())->whereNull('terminated_on')/* ->whereNotNull('uaba_checked_on') */->where('impediment', false)->get();
+            $bondResult = Bond::where('employee_id', $employeeResult->id)->/* whereDate('end', '>', Carbon::today())-> */whereNull('terminated_on')/* ->whereNotNull('uaba_checked_on') */->where('impediment', false)->get();
             if (!is_null($bondResult)) {
                 $this->hasBond = true;
                 $this->bonds = $bondResult;

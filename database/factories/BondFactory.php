@@ -37,6 +37,7 @@ class BondFactory extends Factory
             // 'volunteer' => $this->faker->boolean($changeOfGettingTrue = 50),
             'volunteer' => false,
             'impediment' => false,
+            'impediment_description' => '',
             'uaba_checked_on' => $this->faker->dateTimeBetween('-2 years', '-1 year'),
 
             'created_at' => now(),

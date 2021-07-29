@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::post('employeesdocumentmassstore', [DocumentController::class, 'employeesDocumentMassStore'])->name('employees.document.mass.store');
 
     Route::resource('bonds', BondController::class);
+    Route::post('bondreview/{bond}', [BondController::class, 'review'])->name('bonds.review');
     Route::get('bondsdocumentindex', [DocumentController::class, 'bondsDocumentIndex'])->name('bonds.document.index');
     Route::get('bondsdocumentcreate', [DocumentController::class, 'bondsDocumentCreate'])->name('bonds.document.create');
     Route::post('bondsdocumentstore', [DocumentController::class, 'bondsDocumentStore'])->name('bonds.document.store');

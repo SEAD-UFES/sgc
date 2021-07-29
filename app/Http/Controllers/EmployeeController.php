@@ -62,7 +62,7 @@ class EmployeeController extends Controller
 
         $employee->name = $request->name;
         $employee->cpf = $request->cpf;
-        /* $employee->job = $request->job;
+        $employee->job = $request->job;
         $employee->gender_id = $request->genders;
         $employee->birthday = $request->birthday;
         $employee->birth_state_id = $request->birthStates;
@@ -81,7 +81,7 @@ class EmployeeController extends Controller
         $employee->address_district = $request->addressDistrict;
         $employee->address_postal_code = $request->addressPostalCode;
         $employee->address_state_id = $request->addressStates;
-        $employee->address_city = $request->addressCity; */
+        $employee->address_city = $request->addressCity;
         $employee->area_code = $request->areaCode;
         $employee->phone = $request->phone;
         $employee->mobile = $request->mobile;
@@ -155,7 +155,7 @@ class EmployeeController extends Controller
 
         $employee->name = $request->name;
         $employee->cpf = $request->cpf;
-        /* $employee->job = $request->job;
+        $employee->job = $request->job;
         $employee->gender_id = $request->genders;
         $employee->birthday = $request->birthday;
         $employee->birth_state_id = $request->birthStates;
@@ -174,7 +174,7 @@ class EmployeeController extends Controller
         $employee->address_district = $request->addressDistrict;
         $employee->address_postal_code = $request->addressPostalCode;
         $employee->address_state_id = $request->addressStates;
-        $employee->address_city = $request->addressCity; */
+        $employee->address_city = $request->addressCity;
         $employee->area_code = $request->areaCode;
         $employee->phone = $request->phone;
         $employee->mobile = $request->mobile;

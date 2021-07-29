@@ -36,6 +36,13 @@
                                         Curso: {{ $notification->data['course_name'] }}
                                     </td>
                                 @break
+                                @case('App\Notifications\BondImpededNotification')
+                                    <td style="padding: 3px"><a href="{{ route('bonds.show', $notification->data['bond_id']) }}">Vínculo</a> impedido |
+                                        Colaborador: {{ $notification->data['employee_name'] }}<br />
+                                        Atribuição: {{ $notification->data['role_name'] }} |
+                                        Curso: {{ $notification->data['course_name'] }}
+                                    </td>
+                                @break
 
                                 @default
                                     <td>:(</td>
