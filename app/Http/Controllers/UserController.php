@@ -57,6 +57,9 @@ class UserController extends Controller
         //get paginate
         $users = $users_query->paginate(10);
 
+        //add query string on page links
+        $users->appends($request->all());
+
         //write on log;
         SgcLogger::writeLog('User');
 
