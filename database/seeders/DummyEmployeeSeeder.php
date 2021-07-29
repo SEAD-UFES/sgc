@@ -22,10 +22,10 @@ class DummyEmployeeSeeder extends Seeder
     {
 
         /* "Coordenador de Curso"
-        * 
-        * - each course has only one coordinator
-        * - coordinators only have one course
-        */
+         * 
+         * - each course has only one coordinator
+         * - coordinators only have one course
+         */
         $role = Role::where('name', 'like', '%Coordenador%')->first();
         $pole = Pole::where('name', 'SEAD')->first();
 
@@ -47,34 +47,31 @@ class DummyEmployeeSeeder extends Seeder
 
 
         /*
-        *  "Tutores Presenciais" (um por polo) WIP
-        *
+         *  "Tutores Presenciais" (um por polo)
+         *
+         *  - each course has a 'tutor presencial' in each pole.
+         *  - so 20 courses x 20 tutors = 400 tutors.
+         *  - we'll limit to 3 courses and 3 poles (3 x 3 = 9, which is manageable)
+         */
+        $poles   = Pole::where('name', '!=', 'SEAD')->take(3)->get();
+        $courses = Course::take(3)->get();
         $role = Role::where('name', 'Tutor Presencial')->first();
 
-        foreach(Pole::all() as $pole) {
+        foreach ($courses as $course) {
+            foreach ($poles as $pole) {
 
-        $employee = Employee::factory()
-            ->create([
-            'gender_id' => Gender::all()->random(),
-            'job' => 'Tutor Presencial',
-            ]);
+                $employee = Employee::factory()->create([
+                    'gender_id' => Gender::all()->random(),
+                    'job' => 'Tutor Presencial',
+                ]);
 
-        // TODO:
-        //  find out if bond is supposed to accept course_id = null or not...
-        //  there are conflicting narratives coming from people at the desk-secretaria-thing
-        //
-        Bond::factory()->create([
-            'employee_id' => $employee,
-            'course_id' => null, // <- null course is not allowed on the db
-            'role_id' => $role,
-            'pole_id' => $pole,
-        ]);
+                Bond::factory()->create([
+                    'employee_id' => $employee,
+                    'course_id' => $course,
+                    'role_id' => $role,
+                    'pole_id' => $pole,
+                ]);
+            }
         }
-        */
-
-        // TODO: 
-        // #1 Each course has a coodinator (one per course)
-        // #2 Each polo has a "tutor presencial" ???
-        // #3 Each course has one "tutor a distancia" ???
     }
 }
