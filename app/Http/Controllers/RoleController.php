@@ -16,9 +16,12 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::orderBy('name')->paginate(10);
+        $roles = Role::sortable(['name' => 'asc'])->paginate(10);
+
+        //add query string on page links
+        $roles->appends($request->all());
 
         SgcLogger::writeLog('Role');
 
