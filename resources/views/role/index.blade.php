@@ -15,10 +15,10 @@
             @endif
             <table>
                 <thead>
-                    <th>Nome</th>
-                    <th>Descrição</th>
-                    <th>Valor da Bolsa</th>
-                    <th>Tipo da Bolsa</th>
+                    <th>@sortablelink('name', 'Nome')</th>
+                    <th>@sortablelink('description', 'Descrição')</th>
+                    <th>@sortablelink('grant_value', 'Valor da Bolsa')</th>
+                    <th>@sortablelink('grantType.name', 'Tipo da Bolsa')</th>
                     <th colspan="2">Ações</th>
                 </thead>
                 <tbody>
