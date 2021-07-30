@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Bond;
+use Kyslik\ColumnSortable\Sortable;
 
 class Employee extends Model
 {
     use HasFactory;
+    use Sortable;
 
     protected $fillable = [
         'name',
@@ -37,6 +39,16 @@ class Employee extends Model
         'phone',
         'mobile',
         'email',
+    ];
+
+    public $sortable = [
+        'id',
+        'cpf',
+        'name',
+        'job',
+        'address_city',
+        'created_at',
+        'updated_at'
     ];
 
     public function gender()
