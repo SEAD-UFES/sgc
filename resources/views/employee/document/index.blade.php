@@ -15,9 +15,9 @@
             @endif
             <table>
                 <thead>
-                    <th>Colaborador</th>
-                    <th>Nome do arquivo</th>
-                    <th>Tipo</th>
+                    <th>@sortablelink('employee.name', 'Colaborador')</th>
+                    <th>@sortablelink('original_name', 'Nome do arquivo')</th>
+                    <th>@sortablelink('documentType.name', 'Tipo')</th>
                 </thead>
                 <tbody>
                     @foreach ($documents as $document)

@@ -16,13 +16,16 @@ use Illuminate\Support\Facades\Response;
 
 class DocumentController extends Controller
 {
-    public function getViewParameters($model)
+    public function getViewParameters($model, $request)
     {
         $documentTypes = DocumentType::orderBy('name')->get();
 
         $class = app("App\\Models\\$model");
 
-        $documents = $class::all();
+        $documents = $class::sortable(['created_at' => 'desc'])->paginate(10);
+
+        //add query string on page links
+        $documents->appends($request->all());
 
         SgcLogger::writeLog($model, 'index');
 
@@ -32,22 +35,23 @@ class DocumentController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function employeesDocumentIndex()
+    public function employeesDocumentIndex(Request $request)
     {
         $model = 'EmployeeDocument';
 
-        $resArray = $this->getViewParameters($model);
+        $resArray = $this->getViewParameters($model, $request);
+
         return view('employee.document.index', $resArray);
     }
 
     /**
      * @return \Illuminate\Http\Response
      */
-    public function bondsDocumentIndex()
+    public function bondsDocumentIndex(Request $request)
     {
         $model = 'BondDocument';
 
-        $resArray = $this->getViewParameters($model);
+        $resArray = $this->getViewParameters($model, $request);
         return view('bond.document.index', $resArray);
     }
 
