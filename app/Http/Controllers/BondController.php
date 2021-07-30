@@ -27,10 +27,14 @@ class BondController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $bonds = Bond::with(['employee', 'course', 'role', 'pole'])->paginate(10); //->orderBy('employee')
-        //dd($bonds);
+        $bonds = Bond::sortable(['created_at' => 'desc'])->with(['employee', 'course', 'role', 'pole'])->paginate(10); //->orderBy('employee')
+
+        //add query string on page links
+        $bonds->appends($request->all());
+
+        //write on log
         SgcLogger::writeLog('Bond');
 
         return view('bond.index', compact('bonds'))->with('i', (request()->input('page', 1) - 1) * 10);
