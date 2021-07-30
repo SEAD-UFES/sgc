@@ -61,7 +61,8 @@ class BondImpededNotification extends Notification/* implements ShouldQueue */ /
             'bond_id' => $this->bond->id,
             'course_name' => $this->bond->course->name,
             'employee_name' => $this->bond->employee->name,
-            'role_name' => $this->bond->role->name
+            'role_name' => $this->bond->role->name,
+            'description' => $this->bond->impediment_description,
         ];
     }
 }

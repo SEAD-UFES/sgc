@@ -13,6 +13,7 @@ use App\Models\Bond;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Response;
 
+
 class DocumentController extends Controller
 {
     public function getViewParameters($model)
@@ -253,5 +254,27 @@ class DocumentController extends Controller
     public function destroy(BondDocument $bondDocument)
     {
         //
+    }
+
+    public function bondDocumentsMassDownload(Bond $bond)
+    {
+        $documents = $bond->bondDocuments;
+
+        $zipFileName = date('Y-m-d') . '_' . $bond->employee->name . '_' . $bond->id;
+        $zipFile = $zipFileName . '.zip';
+
+        $zip = new \ZipArchive();
+
+        if ($zip->open($zipFile, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
+
+            foreach ($documents as $document)
+                $zip->addFromString($document->original_name, base64_decode($document->file_data));
+
+            $zip->close();
+
+            return response()->download($zipFile)->deleteFileAfterSend(true);
+        } else {
+            echo 'failed: $zip->open()';
+        }
     }
 }

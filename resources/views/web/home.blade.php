@@ -40,7 +40,8 @@
                                     <td style="padding: 3px"><a href="{{ route('bonds.show', $notification->data['bond_id']) }}">Vínculo</a> impedido |
                                         Colaborador: {{ $notification->data['employee_name'] }}<br />
                                         Atribuição: {{ $notification->data['role_name'] }} |
-                                        Curso: {{ $notification->data['course_name'] }}
+                                        Curso: {{ $notification->data['course_name'] }}<br />
+                                        Motivo: {{ $notification->data['description'] }}
                                     </td>
                                 @break
 

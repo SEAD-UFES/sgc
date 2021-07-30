@@ -12,6 +12,8 @@
             <h4>> Documentos</h4><br />
             @component('bond.document.componentList', compact('documents'))@endcomponent
             <br />
+            <a href="{{ route('bonds.document.massdownload', $bond) }}" style="text-decoration: none; font-weight:bold;">&nbsp;&#8627; Fazer o download de todos os documentos do vínculo (zip)</a>
+            <br /><br /><br />
             <h4>> Revisão</h4><br />
             <form name="{{ 'formReview' . $bond->id }}" action="{{ route('bonds.review', $bond) }}" method="POST">
                 @csrf
