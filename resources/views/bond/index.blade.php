@@ -32,16 +32,16 @@
                     <th rowspan="2" colspan="4" style="width: 360px">Ações</th>
                     </tr>
                     <tr>
-                    <th>Colaborador</th>
-                    <th>Atribuição</th>
-                    <th>Curso</th>
-                    <th>Polo</th>
+                    <th>@sortablelink('employee.name', 'Colaborador')</th>
+                    <th>@sortablelink('role.name', 'Atribuição')</th>
+                    <th>@sortablelink('course.name', 'Curso')</th>
+                    <th>@sortablelink('pole.name', 'Polo')</th>
                     {{-- <th>Início</th>
                     <th>Fim</th>
                     <th>Encerrado em</th> --}}
-                    <th>Voluntário</th>
+                    <th>@sortablelink('volunteer', 'Voluntário') </th>
                     {{-- <th>Verificado em</th> --}}
-                    <th>Impedido</th>
+                    <th>@sortablelink('impediment', 'Impedido') </th>
                     </tr>
                 </thead>
                 <tbody>

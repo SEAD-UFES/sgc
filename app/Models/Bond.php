@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Kyslik\ColumnSortable\Sortable;
 
 class Bond extends Pivot
 {
     use HasFactory;
+    use Sortable;
 
     public $incrementing = true;
-    
+
     protected $table = 'bonds';
 
     protected $fillable = [
@@ -27,6 +29,16 @@ class Bond extends Pivot
         'impediment',
         'impediment_description',
         'uaba_checked_on',
+    ];
+
+    public $sortable = [
+        'id',
+        'begin',
+        'end',
+        'volunteer',
+        'impediment',
+        'created_at',
+        'updated_at'
     ];
 
     public function course()
