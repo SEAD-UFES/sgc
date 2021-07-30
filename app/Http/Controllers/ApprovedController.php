@@ -25,11 +25,15 @@ class ApprovedController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $approveds = Approved::with(['approvedState', 'course', 'pole', 'role'])->orderBy('name')->paginate(10);
+        $approveds = Approved::sortable(['created_at' => 'desc'])->with(['approvedState', 'course', 'pole', 'role'])->orderBy('name')->paginate(10);
         $approvedStates = ApprovedState::all();
 
+        //add query string on page links
+        $approveds->appends($request->all());
+
+        //write on log;
         SgcLogger::writeLog('Employee');
 
         return view('approved.index', compact('approveds', 'approvedStates'))->with('i', (request()->input('page', 1) - 1) * 10);
@@ -153,9 +157,7 @@ class ApprovedController extends Controller
             $this->destroy($approved);
 
             return view('approved.designate', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee'));
-        }
-        else
-        {
+        } else {
             $email = $approved->email;
 
             $this->destroy($approved);
