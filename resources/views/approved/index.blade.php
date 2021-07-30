@@ -15,16 +15,16 @@
             @endif
             <table style="border: 0px">
                 <thead>
-                    <th style="width:75px;">Nome</th>
-                    <th style="width:110px;">E-mail</th>
-                    <th style="width:20px;">Área</th>
-                    <th style="width:48px;">Telefone</th>
-                    <th style="width:53px;">Celular</th>
-                    <th style="width:35px;">Edital</th>
-                    <th style="width:31px;">Status</th>
-                    <th style="width:45px;">Atribuição</th>
-                    <th style="width:40px;">Curso</th>
-                    <th style="width:31px;">Polo</th>
+                    <th style="width:75px;">@sortablelink('name', 'Nome')</th>
+                    <th style="width:110px;">@sortablelink('email', 'E-mail')</th>
+                    <th style="width:20px;">@sortablelink('area_code', 'Área')</th>
+                    <th style="width:48px;">@sortablelink('phone', 'Telefone')</th>
+                    <th style="width:53px;">@sortablelink('mobile', 'Celular')</th>
+                    <th style="width:35px;">@sortablelink('announcement', 'Edital')</th>
+                    <th style="width:31px;">@sortablelink('approvedState.description', 'Status')</th>
+                    <th style="width:45px;">@sortablelink('role.name', 'Atribuição')</th>
+                    <th style="width:40px;">@sortablelink('course.name', 'Curso')</th>
+                    <th style="width:31px;">@sortablelink('pole.name', 'Polo')</th>
                     <th style="width:41px;" colspan="2">Mudar Status</th>
                 </thead>
                 <tbody>
