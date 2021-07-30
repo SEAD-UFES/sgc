@@ -30,10 +30,10 @@
             <p style="color: red"> Clique no CPF ou Nome para exibir/ocultar as informações de contato</p>
             <table>
                 <thead>
-                    <th style="width: 115px">CPF</th>
+                    <th style="width: 115px">@sortablelink('cpf', 'CPF')</th>
                     <br />
-                    <th>Nome</th>
-                    <th style="width: 80px">Profissão</th>
+                    <th>@sortablelink('name', 'Nome')</th>
+                    <th style="width: 80px">@sortablelink('job', 'Profissão')</th>
                     {{-- <th>Gênero</th>
                     <th>Nascimento</th>
                     <th>UF Nasc.</th>
@@ -52,12 +52,12 @@
                     <th>Bairro</th>
                     <th>CEP</th>
                     <th>UF</th> --}}
-                    <th style="width: 70px">Cidade</th>
+                    <th style="width: 70px">@sortablelink('address_city', 'Cidade')</th>
                     {{-- <th>Área</th>
                     <th>Telefone</th>
                     <th>Celular</th>
                     <th>E-mail</th> --}}
-                    <th style="width: 75px">Usuário</th>
+                    <th style="width: 75px">@sortablelink('user.id', 'Usuário')</th>
                     <th colspan="3" style="width: 305px">Ações</th>
                 </thead>
                 <tbody>

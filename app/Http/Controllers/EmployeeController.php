@@ -21,10 +21,14 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $employees = Employee::with(['gender', 'birthState', 'documentType', 'maritalStatus', 'addressState', 'user'])->orderBy('name')->paginate(10);
-        //dd($employees);
+        $employees = Employee::sortable(['created_at' => 'desc'])->with(['gender', 'birthState', 'documentType', 'maritalStatus', 'addressState', 'user'])->orderBy('name')->paginate(10);
+
+        //add query string on page links
+        $employees->appends($request->all());
+
+        //write on log;
         SgcLogger::writeLog('Employee');
 
         return view('employee.index', compact('employees'))->with('i', (request()->input('page', 1) - 1) * 10);
@@ -234,7 +238,6 @@ class EmployeeController extends Controller
             $employee->courses()->detach();
             $employee->employeeDocuments()->delete();
             $employee->delete();
-            
         } catch (\Exception $e) {
             return redirect()->route('employees.index')->withErrors(['noDestroy' => 'Não foi possível excluir o Colaborador: ' . $e->getMessage()]);
         }
