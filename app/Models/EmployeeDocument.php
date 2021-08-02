@@ -16,7 +16,12 @@ class EmployeeDocument extends Model
         'file_data',
     ];
 
-    public $sortable = ['id', 'created_at', 'updated_at'];
+    public $sortable = [
+        'id',
+        'original_name',
+        'created_at',
+        'updated_at'
+    ];
 
     public function documentType()
     {

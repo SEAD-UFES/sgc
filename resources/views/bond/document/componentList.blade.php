@@ -1,8 +1,8 @@
 <table>
     <thead>
-        <th>Vínculo</th>
-        <th>Nome</th>
-        <th>Tipo</th>
+        <th>@sortablelink('vinculo', 'Vínculo')</th>
+        <th>@sortablelink('original_name', 'Nome')</th>
+        <th>@sortablelink('documentType.name', 'Tipo')</th>
     </thead>
     <tbody>
         @foreach ($documents as $document)
