@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6cf046784290405b305583496e228b67",
+    "content-hash": "414e8fb4f15fcce38946c1ed1f8b6e05",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1947,6 +1947,81 @@
                 "source": "https://github.com/MarkBaker/PHPMatrix/tree/2.1.3"
             },
             "time": "2021-05-25T15:42:17+00:00"
+        },
+        {
+            "name": "mehdi-fathi/eloquent-filter",
+            "version": "2.5.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mehdi-fathi/eloquent-filter.git",
+                "reference": "1ba85328bf5388d1f759856361ddc364e4177f46"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mehdi-fathi/eloquent-filter/zipball/1ba85328bf5388d1f759856361ddc364e4177f46",
+                "reference": "1ba85328bf5388d1f759856361ddc364e4177f46",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/container": "5.8.*|~6.0|~7.0|~8.0",
+                "illuminate/database": "5.8.*|~6.20.14|~7.0|~8.0",
+                "illuminate/pagination": "5.8.*|~6.0|~7.0|~8.0",
+                "illuminate/support": "5.8.*|~6.0|~7.0|~8.0",
+                "php": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "fzaninotto/faker": "^1.9|1.9.x-dev",
+                "illuminate/macroable": "^8.0",
+                "laravel/legacy-factories": "1.0.2|1.0.3|1.0.4|1.0.5|1.1.0",
+                "mockery/mockery": "1.3.*|1.3.*|1.3.*|1.4.x-dev|1.4.x-dev|1.4.2",
+                "orchestra/database": "v3.7.0|v3.8.0|v4.0.0|v5.0.0|v6.x-dev",
+                "orchestra/testbench": "3.7.*|3.8.*|4.*|5.*|^6.0|^6.6.0",
+                "phpunit/phpunit": "6.*|7.0.*|7.5|8.3|8.5|9.3"
+            },
+            "type": "lib",
+            "autoload": {
+                "psr-4": {
+                    "eloquentFilter\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mehdi Fathi",
+                    "email": "mehdifathi.developer@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The Eloquent Filter is a package for filter data of models by the query string. Easy to use and fully dynamic.",
+            "homepage": "https://github.com/mehdi-fathi/eloquent-filter",
+            "keywords": [
+                "dynamic-filters",
+                "eloquent",
+                "eloquent filter",
+                "filter",
+                "laravel",
+                "laravel filter",
+                "laravel filter multiple parameters",
+                "laravel query filter",
+                "laravel tools",
+                "query",
+                "query-filter",
+                "search"
+            ],
+            "support": {
+                "issues": "https://github.com/mehdi-fathi/eloquent-filter/issues",
+                "source": "https://github.com/mehdi-fathi/eloquent-filter/tree/2.5.4"
+            },
+            "funding": [
+                {
+                    "url": "https://blockchain.com/btc/payment_request?address=15ojn5TPqRy9GkTWqEKS8itPXSP8KVui5R&amount=0.00017084&message=Donate package eloquent filter",
+                    "type": "custom"
+                }
+            ],
+            "time": "2021-07-29T19:47:45+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -8394,5 +8469,5 @@
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.0.0"
 }

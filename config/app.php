@@ -175,6 +175,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        //eloquent filters
+        eloquentFilter\ServiceProvider::class,
     ],
 
     /*
@@ -228,6 +230,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        //eloquent filters
+        'EloquentFilter' => eloquentFilter\Facade\EloquentFilter::class,
     ],
 
     /*
