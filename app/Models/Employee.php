@@ -101,13 +101,13 @@ class Employee extends Model
         return ($this->courses->count() > 0);
     }
 
-    public function isCoordinator()
+    public function isCourseCoordinator()
     {
         $isCoord = false;
 
         if ($this->hasBond())
             foreach ($this->courses as $bonded_course)
-                $isCoord = $isCoord || (substr($bonded_course->bond->role->name, 0, 5) == 'Coord');
+                $isCoord = $isCoord || (substr($bonded_course->bond->role->name, 0, 20) == 'Coordenador de curso');
 
         return $isCoord;
     }

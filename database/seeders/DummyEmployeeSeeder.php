@@ -26,14 +26,14 @@ class DummyEmployeeSeeder extends Seeder
          * - each course has only one coordinator
          * - coordinators only have one course
          */
-        $role = Role::where('name', 'like', '%Coordenador%')->first();
         $pole = Pole::where('name', 'SEAD')->first();
-
+        
         foreach (Course::all() as $course) {
-
+            $role = Role::where('name', 'like', 'Coordenador de curso%')->get()->random();
+            
             $employee = Employee::factory()
                 ->create([
-                    'gender_id' => Gender::all()->random(),
+                    //'gender_id' => Gender::all()->random(),
                     'job' => 'Coordenador de Curso',
                 ]);
 
@@ -61,7 +61,7 @@ class DummyEmployeeSeeder extends Seeder
             foreach ($poles as $pole) {
 
                 $employee = Employee::factory()->create([
-                    'gender_id' => Gender::all()->random(),
+                    //'gender_id' => Gender::all()->random(),
                     'job' => 'Tutor Presencial',
                 ]);
 

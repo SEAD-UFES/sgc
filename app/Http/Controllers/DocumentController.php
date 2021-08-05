@@ -54,6 +54,24 @@ class DocumentController extends Controller
         $resArray = $this->getViewParameters($model, $request);
         return view('bond.document.index', $resArray);
     }
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function rightsIndex(Request $request)
+    {
+        $type = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
+        $documents = BondDocument::where('document_type_id', $type->id)->sortable(['created_at' => 'desc'])->paginate(10);
+
+        //add query string on page links
+        $documents->appends($request->all());
+
+        SgcLogger::writeLog('BondsRightsIndex', 'index');
+
+        return view('reports.rightsIndex', compact('documents'))->with('i', (request()->input('page', 1) - 1) * 10);
+    }
 
     /**
      * Show the form for creating a new resource.

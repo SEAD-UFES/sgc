@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::get('bondsdocumentcreate', [DocumentController::class, 'bondsDocumentCreate'])->name('bonds.document.create');
     Route::post('bondsdocumentstore', [DocumentController::class, 'bondsDocumentStore'])->name('bonds.document.store');
     Route::get('bonddocumentsmassdownload/{bond}', [DocumentController::class, 'bondDocumentsMassDownload'])->name('bonds.document.massdownload');
+    Route::get('rights', [DocumentController::class, 'rightsIndex'])->name('bonds.rights.index');
 
     /* Route::resource('documents', DocumentController::class); */
     Route::get('/document/{id}/{type}/{htmlTitle}', [DocumentController::class, 'showDocument'])->name('documents.show');

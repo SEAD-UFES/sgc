@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Notification;
 use App\Notifications\NewBondNotification;
 use App\Http\Requests\ReviewBondRequest;
 use App\Notifications\BondImpededNotification;
+use App\Notifications\NewRightsNotification;
 
 class BondController extends Controller
 {
@@ -199,19 +200,27 @@ class BondController extends Controller
 
         SgcLogger::writeLog($bond, 'edit');
 
-        $academicSecretaries = UserType::with('users')->Where('acronym', 'sec')->first()->users;
-        //dd($academicSecretaries);
 
-        $courseBonds = Bond::with(['employee'])->where('course_id', $bond->course->id)->get();
-        $courseCoordinators = collect();
-        foreach ($courseBonds as $courseBond)
-            if ($courseBond->employee->isCoordinator() && !is_null($courseBond->employee->user))
-                $courseCoordinators->push($courseBond->employee->user);
+        if ($bond->impediment == true) {
 
-        $users = $academicSecretaries->merge($courseCoordinators);
+            $academicSecretaries = UserType::with('users')->Where('acronym', 'sec')->first()->users;
 
-        if ($bond->impediment == true)
+            $courseBonds = Bond::with(['employee'])->where('course_id', $bond->course->id)->get();
+
+            $courseCoordinators = collect();
+
+            foreach ($courseBonds as $courseBond)
+                if ($courseBond->employee->isCourseCoordinator() && !is_null($courseBond->employee->user))
+                    $courseCoordinators->push($courseBond->employee->user);
+
+            $users = $academicSecretaries->merge($courseCoordinators);
+
             Notification::send($users, new BondImpededNotification($bond));
+        } else {
+            $users = UserType::with('users')->Where('acronym', 'ldi')->first()->users;
+
+            Notification::send($users, new NewRightsNotification($bond));
+        }
 
         return redirect()->route('bonds.show', $bond)->with('success', 'Vínculo atualizado com sucesso.');
     }

@@ -9,9 +9,9 @@
     <section id="pageContent">
         <main role="main">
             <nav>
-                <h3 style="background-color: rosybrown;text-decoration:line-through">Licença de produção</h3>
+                <h3>Termos e Licença</h3>
                 <ul>
-                    <li><a href="#">!Consultar licenças!</a></li>
+                    <li><a href="{{ route('bonds.rights.index') }}">Listar Documentos de Termos e Licença</a></li>
                     {{-- <li><a href="{{ route('approveds.create') }}">Importar Aprovados</a></li> --}}
                     {{-- <li><a href="{{ route('approveds.create') }}">Cadastrar Aprovado</a></li> --}}
                 </ul><br />

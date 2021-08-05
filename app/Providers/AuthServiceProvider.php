@@ -60,7 +60,7 @@ class AuthServiceProvider extends ServiceProvider
             if ($user->employee == null)
                 return false;
 
-            return $user->employee->isCoordinator();
+            return $user->employee->isCourseCoordinator();
         });
     }
 }

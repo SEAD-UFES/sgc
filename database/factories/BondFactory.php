@@ -25,6 +25,8 @@ class BondFactory extends Factory
      */
     public function definition()
     {
+        $issueStatus = random_int(1,3); // 1 - Not reviewed; 2 - Reviewed-Approved; 3 - Reviewed-Not approved
+
         return [
             'course_id' => Course::factory(),
             'employee_id' => Employee::factory(),
@@ -36,9 +38,9 @@ class BondFactory extends Factory
             // 'terminated_on' => $this->faker->dateTimeBetween('+1 year', '+2 years'),
             // 'volunteer' => $this->faker->boolean($changeOfGettingTrue = 50),
             'volunteer' => false,
-            'impediment' => false,
-            'impediment_description' => '',
-            'uaba_checked_on' => $this->faker->dateTimeBetween('-2 years', '-1 year'),
+            'impediment' => ($issueStatus == 3) ? true : false,
+            'impediment_description' =>  ($issueStatus == 3) ? 'Problema na documentação' : '',
+            'uaba_checked_on' => ($issueStatus != 1) ? $this->faker->dateTimeBetween('-2 years', '-1 year') : null,
 
             'created_at' => now(),
             'updated_at' => now(),
