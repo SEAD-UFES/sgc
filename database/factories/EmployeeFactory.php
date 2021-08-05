@@ -71,7 +71,7 @@ class EmployeeFactory extends Factory
             'area_code' => $this->faker->areaCode(),
             'phone' => $this->faker->landline($formatted = true),
             'mobile' => $this->faker->cellphone($formatted = true),
-            'email' => removeAccents(Str::lower($firstName)) . '.' . removeAccents(Str::lower($lastname)) . '.' . $this->faker->unique()->word . '@' . $this->faker->safeEmailDomain(), //$this->faker->email(),
+            'email' => str_replace(' ', '', removeAccents(Str::lower($firstName))) . '.' . str_replace(' ', '', removeAccents(Str::lower($lastname))) . '.' . $this->faker->unique()->word . '@' . $this->faker->safeEmailDomain(), //$this->faker->email(),
 
             'created_at' => now(),
             'updated_at' => now(),

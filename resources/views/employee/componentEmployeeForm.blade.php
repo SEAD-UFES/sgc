@@ -46,7 +46,7 @@ UF Nascimento: <select name="birthStates">
     <option value="">Selecione a UF</option>
     @foreach ($birthStates as $birthState)
         <option value="{{ $birthState->id }}"
-            {{ $employee->birth_state_id == $birthState->id ? 'selected' : '' }}>{{ $birthState->name }}</option>
+            {{ $employee->birth_state_id == $birthState->id ? 'selected' : '' }}>{{ $birthState->uf }}</option>
     @endforeach
 </select>
 @error('birthStates')
@@ -154,7 +154,7 @@ UF: <select name="addressStates">
     <option value="">Selecione a UF</option>
     @foreach ($addressStates as $addressState)
         <option value="{{ $addressState->id }}"
-            {{ $employee->address_state_id == $addressState->id ? 'selected' : '' }}>{{ $addressState->name }}
+            {{ $employee->address_state_id == $addressState->id ? 'selected' : '' }}>{{ $addressState->uf }}
         </option>
     @endforeach
 </select>

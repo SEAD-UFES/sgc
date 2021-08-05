@@ -22,7 +22,7 @@ Gênero: {{ $employee->gender->name ?? '-' }}
 Data de Nascimento:
 {{ $employee->birthday != null ? \Carbon\Carbon::parse($employee->birthday)->isoFormat('DD/MM/Y') : '-' }}
 <br /><br />
-UF Nascimento: {{ $employee->birthState->name ?? '-' }}
+UF Nascimento: {{ $employee->birthState->uf ?? '-' }}
 <br /><br />
 Cidade de Nascimento: {{ $employee->birth_city ?? '-' }}
 <br /><br />
