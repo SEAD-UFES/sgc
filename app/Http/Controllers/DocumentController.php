@@ -54,7 +54,7 @@ class DocumentController extends Controller
         $resArray = $this->getViewParameters($model, $request);
         return view('bond.document.index', $resArray);
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -63,10 +63,13 @@ class DocumentController extends Controller
     public function rightsIndex(Request $request)
     {
         $type = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
-        $documents = BondDocument::where('document_type_id', $type->id)->sortable(['created_at' => 'desc'])->paginate(10);
+
+        $documents = BondDocument::with('bond')->where('document_type_id', $type->id)->whereHas('bond', function ($query) {
+            $query->whereNotNull('uaba_checked_on')->where('impediment', false);
+        })->get(); //->sortable(['created_at' => 'desc'])->paginate(10);
 
         //add query string on page links
-        $documents->appends($request->all());
+        //$documents->appends($request->all());
 
         SgcLogger::writeLog('BondsRightsIndex', 'index');
 
