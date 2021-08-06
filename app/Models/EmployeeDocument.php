@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
+use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 
 class EmployeeDocument extends Model
 {
     use HasFactory;
     use Sortable;
+    use Filterable;
 
     protected $fillable = [
         'original_name',
@@ -22,6 +24,9 @@ class EmployeeDocument extends Model
         'created_at',
         'updated_at'
     ];
+
+    private static $whiteListFilter = ['*'];
+    public static $accepted_filters = [];
 
     public function documentType()
     {
