@@ -12,6 +12,7 @@ use App\Models\Employee;
 use App\Models\Bond;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Response;
+use App\CustomClasses\ModelFilterHelpers;
 
 
 class DocumentController extends Controller
@@ -20,16 +21,24 @@ class DocumentController extends Controller
     {
         $documentTypes = DocumentType::orderBy('name')->get();
 
+        //get class
         $class = app("App\\Models\\$model");
+        $documents_query = $class;
 
-        $documents = $class::sortable(['created_at' => 'desc'])->paginate(10);
+        //filters
+        $filters = ModelFilterHelpers::buildFilters($request, $class::$accepted_filters);
+        $documents_query = $documents_query->AcceptRequest($class::$accepted_filters)->filter();
 
-        //add query string on page links
+        //sort
+        $documents_query = $documents_query->sortable(['updated_at' => 'desc']);
+
+        //get paginate and add querystring on paginate links
+        $documents = $documents_query->paginate(10);
         $documents->appends($request->all());
 
         SgcLogger::writeLog($model, 'index');
 
-        return compact('documents', 'documentTypes');
+        return compact('documents', 'documentTypes', 'filters');
     }
 
     /**

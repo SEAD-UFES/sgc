@@ -12,7 +12,8 @@
         "kyslik/column-sortable": "^6.4",
         "laravel/framework": "^8.40",
         "laravel/tinker": "^2.5",
-        "maatwebsite/excel": "^3.1"
+        "maatwebsite/excel": "^3.1",
+        "mehdi-fathi/eloquent-filter": "^2.5"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
