@@ -26,7 +26,7 @@ class EmployeeDocument extends Model
     ];
 
     private static $whiteListFilter = ['*'];
-    public static $accepted_filters = [];
+    public static $accepted_filters = ['*'];
 
     public function documentType()
     {

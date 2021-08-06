@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\CustomClasses\SgcLogger;
 use App\Http\Requests\StorePoleRequest;
 use App\Http\Requests\UpdatePoleRequest;
+use App\CustomClasses\ModelFilterHelpers;
 
 class PoleController extends Controller
 {
@@ -17,14 +18,23 @@ class PoleController extends Controller
      */
     public function index(Request $request)
     {
-        $poles = Pole::sortable(['name' => 'asc'])->paginate(10);
+        $poles_query = new Pole();
 
-        //add query string params on paginate urls
+        //filters
+        $filters = ModelFilterHelpers::buildFilters($request, Pole::$accepted_filters);
+        $poles_query = $poles_query->AcceptRequest(Pole::$accepted_filters)->filter();
+
+        //sort
+        $poles_query = $poles_query->sortable(['name' => 'asc']);
+
+        //get paginate and add querystring on paginate links
+        $poles = $poles_query->paginate(10);
         $poles->appends($request->all());
 
+        //write log
         SgcLogger::writeLog('Pole');
 
-        return view('pole.index', compact('poles'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('pole.index', compact('poles', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**

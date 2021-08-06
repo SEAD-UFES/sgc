@@ -13,6 +13,16 @@
                     <p style="color: green; font-weight: bold">{{ $message }}</p>
                 </div><br />
             @endif
+
+            {{-- local para os filtros --}}
+            @component(
+                '_components.filters_form', 
+                [
+                    'filters' =>$filters,
+                    'options' => [[ 'label'=>'Nome', 'value'=>'name_contains', 'selected'=>true]]
+                ]
+            )@endcomponent
+
             <table class="table table-striped table-hover">
                 <thead>
                     <th>@sortablelink('name', 'Nome')</th>
@@ -44,4 +54,10 @@
             <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
         </main>
     </section>
+@endsection
+
+@section('scripts')
+
+@component('_components.filters_script', ['filters' =>$filters] )@endcomponent
+
 @endsection
