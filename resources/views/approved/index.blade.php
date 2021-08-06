@@ -1,10 +1,10 @@
 @extends('layouts.basic')
 
-@section('title', 'Listar Aprovados')
+@section('title', 'Aprovados')
 
 @section('content')
     <section>
-        <strong>Listar Aprovados</strong>
+        <h2>Aprovados</h2>
     </section>
     <section id="pageContent">
         <main role="main">
@@ -13,41 +13,41 @@
                     <p style="color: green; font-weight: bold">{{ $message }}</p>
                 </div><br />
             @endif
-            <table style="border: 0px">
+            <table class="table table-striped table-hover">
                 <thead>
-                    <th style="width:75px;">@sortablelink('name', 'Nome')</th>
-                    <th style="width:110px;">@sortablelink('email', 'E-mail')</th>
-                    <th style="width:20px;">@sortablelink('area_code', 'Área')</th>
-                    <th style="width:48px;">@sortablelink('phone', 'Telefone')</th>
-                    <th style="width:53px;">@sortablelink('mobile', 'Celular')</th>
-                    <th style="width:35px;">@sortablelink('announcement', 'Edital')</th>
-                    <th style="width:31px;">@sortablelink('approvedState.description', 'Status')</th>
-                    <th style="width:45px;">@sortablelink('role.name', 'Atribuição')</th>
-                    <th style="width:40px;">@sortablelink('course.name', 'Curso')</th>
-                    <th style="width:31px;">@sortablelink('pole.name', 'Polo')</th>
-                    <th style="width:41px;" colspan="2">Mudar Status</th>
+                    <th>@sortablelink('name', 'Nome')</th>
+                    <th>@sortablelink('email', 'E-mail')</th>
+                    <th>@sortablelink('area_code', 'Área')</th>
+                    <th>@sortablelink('phone', 'Telefone')</th>
+                    <th>@sortablelink('mobile', 'Celular')</th>
+                    <th>@sortablelink('announcement', 'Edital')</th>
+                    <th>@sortablelink('approvedState.description', 'Status')</th>
+                    <th>@sortablelink('role.name', 'Atribuição')</th>
+                    <th>@sortablelink('course.name', 'Curso')</th>
+                    <th>@sortablelink('pole.name', 'Polo')</th>
+                    <th colspan="2">Mudar Status</th>
                 </thead>
                 <tbody>
                     @foreach ($approveds as $approved)
                         <tr>
-                            <td style="padding: 1px;">{{ $approved->name }}</td>
-                            <td style="overflow:hidden; padding: 1px;">{{ $approved->email }}</td>
-                            <td style="overflow:hidden; padding: 1px;">{{ $approved->area_code }}</td>
-                            <td style="overflow:hidden; padding: 1px;">{{ $approved->phone }}</td>
-                            <td style="overflow:hidden; padding: 1px;">{{ $approved->mobile }}</td>
-                            <td style="overflow:hidden; padding: 1px;">{{ $approved->announcement }}</td>
-                            <td style="overflow:hidden; padding: 1px;" title="{{ $approved->approvedState->description ?? '' }}">{!! $approved->approvedState->name ?? '&nbsp;' !!}</td>
-                            <td style="overflow:hidden; padding: 1px;">{!! $approved->role->name ?? '&nbsp;' !!}</td>
-                            <td style="overflow:hidden; padding: 1px;">{!! $approved->course->name ?? '&nbsp;' !!}</td>
-                            <td style="overflow:hidden; padding: 1px;">{!! $approved->pole->name ?? '&nbsp;' !!}</td>
+                            <td>{{ $approved->name }}</td>
+                            <td>{{ $approved->email }}</td>
+                            <td>{{ $approved->area_code }}</td>
+                            <td>{{ $approved->phone }}</td>
+                            <td>{{ $approved->mobile }}</td>
+                            <td>{{ $approved->announcement }}</td>
+                            <td title="{{ $approved->approvedState->description ?? '' }}">{!! $approved->approvedState->name ?? '&nbsp;' !!}</td>
+                            <td>{!! $approved->role->name ?? '&nbsp;' !!}</td>
+                            <td>{!! $approved->course->name ?? '&nbsp;' !!}</td>
+                            <td>{!! $approved->pole->name ?? '&nbsp;' !!}</td>
                             @if ($approved->approvedState->hasNext())
                                 @foreach ($approved->approvedState->getNext() as $state)
-                                    <td title="{{ $state->description }}" @if ($approved->approvedState->getNext()->count() == 1) colspan="2" @endif style="text-align: center;">
+                                    <td title="{{ $state->description }}" @if ($approved->approvedState->getNext()->count() == 1) colspan="2" @endif>
                                         <a href="{{ route('approveds.changestate', ['approved' => $approved, 'state' => $state->id]) }}">{{ $state->name }}</a>
                                     </td>
                                 @endforeach
                             @else
-                                <td colspan="2" style="text-align: center;">
+                                <td colspan="2">
                                     @if ($approved->approvedState->name == 'Aceitante')
                                         <form name="{{ 'formDesignate' . $approved->id }}"
                                             action={{ route('approveds.designate') }} method="POST">

@@ -1,10 +1,10 @@
 @extends('layouts.basic')
 
-@section('title', 'Listar Cursos')
+@section('title', 'Cursos')
 
 @section('content')
     <section>
-        <strong>Listar Cursos</strong>
+        <h2>Cursos</h2>
     </section>
     <section id="pageContent">
         <main role="main">
@@ -13,7 +13,7 @@
                     <p style="color: green; font-weight: bold">{{ $message }}</p>
                 </div><br />
             @endif
-            <table>
+            <table class="table table-striped table-hover">
                 <thead>
                     <th>@sortablelink('name', 'Nome')</th>
                     <th>@sortablelink('description', 'Descrição')</th>
@@ -47,6 +47,7 @@
             </table>
             {!! $courses->links() !!}
             <br />
+            <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
         </main>
     </section>
 @endsection

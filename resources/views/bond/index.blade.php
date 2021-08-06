@@ -1,18 +1,18 @@
 @extends('layouts.basic')
 
-@section('title', 'Listar Vínculos')
+@section('title', 'Vínculos')
 
 @section('content')
-<script>
-    function toogleById(id) {
-        if (document.getElementById(id).style.display == 'table-row')
-            document.getElementById(id).style.display = 'none';
-        else
-            document.getElementById(id).style.display = 'table-row';
-    }
-</script>
+    <script>
+        function toogleById(id) {
+            if (document.getElementById(id).style.display == 'table-row')
+                document.getElementById(id).style.display = 'none';
+            else
+                document.getElementById(id).style.display = 'table-row';
+        }
+    </script>
     <section>
-        <strong>Listar Vínculos</strong>
+        <h2>Vínculos</h2>
     </section>
     <section id="pageContent">
         <main role="main">
@@ -23,32 +23,29 @@
             @endif
             <p style="color: red"> Clique no Nome ou Atribuição para exibir/ocultar as informações de datas</p>
             <br />
-            <table>
+            <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                    <th colspan="4">SEAD</th>
-                    <th style="width: 80px">Vínculo</th>
-                    <th style="width: 80px">UAB</th>
-                    <th rowspan="2" colspan="4" style="width: 360px">Ações</th>
-                    </tr>
-                    <tr>
-                    <th>@sortablelink('employee.name', 'Colaborador')</th>
-                    <th>@sortablelink('role.name', 'Atribuição')</th>
-                    <th>@sortablelink('course.name', 'Curso')</th>
-                    <th>@sortablelink('pole.name', 'Polo')</th>
-                    {{-- <th>Início</th>
-                    <th>Fim</th>
-                    <th>Encerrado em</th> --}}
-                    <th>@sortablelink('volunteer', 'Voluntário') </th>
-                    {{-- <th>Verificado em</th> --}}
-                    <th>@sortablelink('impediment', 'Impedido') </th>
+                        <th>@sortablelink('employee.name', 'Colaborador')</th>
+                        <th>@sortablelink('role.name', 'Atribuição')</th>
+                        <th>@sortablelink('course.name', 'Curso')</th>
+                        <th>@sortablelink('pole.name', 'Polo')</th>
+                        {{-- <th>Início</th>
+                        <th>Fim</th>
+                        <th>Encerrado em</th> --}}
+                        <th>@sortablelink('volunteer', 'Voluntário') </th>
+                        {{-- <th>Verificado em</th> --}}
+                        <th>@sortablelink('impediment', 'Impedido') </th>
+                        <th colspan="4" class="text-center">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($bonds as $bond)
                         <tr>
-                            <td onclick="toogleById({{ '\'datesLine_' . $bond->id . '\');' }}">{{ $bond->employee->name }}</td>
-                            <td onclick="toogleById({{ '\'datesLine_' . $bond->id . '\');' }}">{{ $bond->role->name }}</td>
+                            <td onclick="toogleById({{ '\'datesLine_' . $bond->id . '\');' }}">
+                                {{ $bond->employee->name }}</td>
+                            <td onclick="toogleById({{ '\'datesLine_' . $bond->id . '\');' }}">{{ $bond->role->name }}
+                            </td>
                             <td>{{ $bond->course->name }}</td>
                             <td>{{ $bond->pole->name }}</td>
                             {{-- <td>{{ \Carbon\Carbon::parse($bond->begin)->isoFormat('DD/MM/Y') }}</td>
@@ -63,8 +60,8 @@
                             <td><a href="{{ route('employees.show', $bond->employee) }}">Ver Colaborador</a></td>
                             <td><a href="{{ route('bonds.edit', $bond->id) }}">Editar vínculo</a></td>
                             <td>
-                                <form name="{{ 'formDelete' . $bond->id }}" action="{{ route('bonds.destroy', $bond) }}"
-                                    method="POST">
+                                <form name="{{ 'formDelete' . $bond->id }}"
+                                    action="{{ route('bonds.destroy', $bond) }}" method="POST">
                                     @method('DELETE')
                                     @csrf
                                     <span
@@ -73,7 +70,7 @@
                                 </form>
                             </td>
                         </tr>
-                        <tr style="background-color: lightgrey; display: none" id="datesLine_{{ $bond->id }}">
+                        <tr style="display: none" id="datesLine_{{ $bond->id }}">
                             <th>Início</th>
                             <td>{{ \Carbon\Carbon::parse($bond->begin)->isoFormat('DD/MM/Y') }}</td>
                             <th>Fim</th>
@@ -82,7 +79,8 @@
                             <td>{{ isset($bond->terminated_on) ? \Carbon\Carbon::parse($bond->terminated_on)->isoFormat('DD/MM/Y') : '' }}
                             </td>
                             <th>Verificado</th>
-                            <td colspan="2">{{ isset($bond->uaba_checked_on) ? \Carbon\Carbon::parse($bond->uaba_checked_on)->isoFormat('DD/MM/Y') : '' }}
+                            <td colspan="2">
+                                {{ isset($bond->uaba_checked_on) ? \Carbon\Carbon::parse($bond->uaba_checked_on)->isoFormat('DD/MM/Y') : '' }}
                         </tr>
                     @endforeach
                 </tbody>

@@ -1,10 +1,10 @@
 @extends('layouts.basic')
 
-@section('title', 'Listar Documentos de Termos e Licença')
+@section('title', 'Documentos de Termos e Licença')
 
 @section('content')
     <section>
-        <strong>Listar Documentos de Termos e Licença</strong>
+        <h2>Documentos de Termos e Licença</h2>
     </section>
     <section id="pageContent">
         <main role="main">
@@ -13,7 +13,7 @@
                     <p style="color: green; font-weight: bold">{{ $message }}</p>
                 </div><br />
             @endif
-            <table>
+            <table class="table table-striped table-hover">
                 <thead>{{-- <th>@sortablelink('employee.name', 'Colaborador')</th>
                     <th>@sortablelink('role.name', 'Atribuição')</th>
                     <th>@sortablelink('course.name', 'Curso')</th>
@@ -38,8 +38,7 @@
                 </tbody>
             </table>
             <br />
-            <button type="button" onclick="history.back()">Voltar</button>
-            <br /><br /><br />
+            <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
         </main>
     </section>
 @endsection

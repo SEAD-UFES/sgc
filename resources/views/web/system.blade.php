@@ -4,7 +4,7 @@
 
 @section('content')
     <section>
-        <strong>Sistema</strong>
+        <h2>Sistema</h2>
     </section>
     <section id="pageContent">
         <main role="main">

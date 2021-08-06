@@ -4,13 +4,13 @@
 
 @section('content')
     <section>
-        <strong>Cadastrar Atribuição</strong>
+        <h2>Cadastrar Atribuição</h2>
     </section>
     <section id="pageContent">
         <main role="main">
             <form action={{ route('roles.store') }} method="POST">
                 @component('role.componentRoleForm',  compact('role', 'grantTypes'))@endcomponent
-                <button type="submit">Cadastrar</button> <button type="button" onclick="history.back()">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Cadastrar</button> <button type="button" onclick="history.back()" class="btn btn-secondary">Cancelar</button>
                 @error('noStore')
                     <div class="error">> {{ $message }}</div>
                 @enderror

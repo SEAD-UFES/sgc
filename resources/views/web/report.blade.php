@@ -4,7 +4,7 @@
 
 @section('content')
     <section>
-        <strong>Relatórios</strong>
+        <h2>Relatórios</h2>
     </section>
     <section id="pageContent">
         <main role="main">

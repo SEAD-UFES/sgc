@@ -1,10 +1,10 @@
 @extends('layouts.basic')
 
-@section('title', 'Listar Documentos de Colaboradores')
+@section('title', 'Documentos de Colaboradores')
 
 @section('content')
     <section>
-        <strong>Listar Documentos de Colaboradores</strong>
+        <h2>Documentos de Colaboradores</h2>
     </section>
     <section id="pageContent">
         <main role="main">
@@ -13,7 +13,7 @@
                     <p style="color: green; font-weight: bold">{{ $message }}</p>
                 </div><br />
             @endif
-            <table>
+            <table class="table table-striped table-hover">
                 <thead>
                     <th>@sortablelink('employee.name', 'Colaborador')</th>
                     <th>@sortablelink('original_name', 'Nome do arquivo')</th>

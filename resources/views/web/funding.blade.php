@@ -4,7 +4,7 @@
 
 @section('content')
     <section>
-        <strong>Fomento</strong>
+        <h2>Fomento</h2>
     </section>
     <section id="pageContent">
         <main role="main">
@@ -29,7 +29,7 @@
                         do Curso [{{ $course->name }}]
                     @endif
                 </h3>
-                <table>
+                <table class="table table-striped table-hover">
                     <thead>
                         <th>Nome</th>
                         <th>Cidade</th>

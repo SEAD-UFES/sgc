@@ -1,10 +1,10 @@
 @extends('layouts.basic')
 
-@section('title', 'Listar Usuários')
+@section('title', 'Usuários')
 
 @section('content')
     <section>
-        <strong>Listar Usuários</strong>
+        <h2>Usuários</h2>
     </section>
     <section id="pageContent">
         <main role="main">
@@ -51,7 +51,7 @@
             </div>
             <br/>
 
-            <table>
+            <table class="table table-striped table-hover">
                 <thead>
                     <th>@sortablelink('email', 'E-mail')</th>
                     <th>@sortablelink('userType.name', 'Tipo')</th>
@@ -83,6 +83,7 @@
             </table>
             {!! $users->links() !!}
             <br />
+            <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
         </main>
     </section>
 @endsection

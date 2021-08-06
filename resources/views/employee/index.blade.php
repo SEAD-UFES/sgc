@@ -1,6 +1,6 @@
 @extends('layouts.basic')
 
-@section('title', 'Listar Colaboradores')
+@section('title', 'Colaboradores')
 
 @section('content')
     <script>
@@ -12,7 +12,7 @@
         }
     </script>
     <section>
-        <strong>Listar Colaboradores</strong>
+        <h2>Colaboradores</h2>
     </section>
     <section id="pageContent">
         <main role="main">
@@ -28,12 +28,12 @@
                 <div class="error">> {{ $message }}</div>
             @enderror
             <p style="color: red"> Clique no CPF ou Nome para exibir/ocultar as informações de contato</p>
-            <table>
+            <table class="table table-striped table-hover">
                 <thead>
-                    <th style="width: 115px">@sortablelink('cpf', 'CPF')</th>
+                    <th>@sortablelink('cpf', 'CPF')</th>
                     <br />
                     <th>@sortablelink('name', 'Nome')</th>
-                    <th style="width: 80px">@sortablelink('job', 'Profissão')</th>
+                    <th>@sortablelink('job', 'Profissão')</th>
                     {{-- <th>Gênero</th>
                     <th>Nascimento</th>
                     <th>UF Nasc.</th>
@@ -52,13 +52,13 @@
                     <th>Bairro</th>
                     <th>CEP</th>
                     <th>UF</th> --}}
-                    <th style="width: 70px">@sortablelink('address_city', 'Cidade')</th>
+                    <th>@sortablelink('address_city', 'Cidade')</th>
                     {{-- <th>Área</th>
                     <th>Telefone</th>
                     <th>Celular</th>
                     <th>E-mail</th> --}}
-                    <th style="width: 75px">@sortablelink('user.id', 'Usuário')</th>
-                    <th colspan="3" style="width: 305px">Ações</th>
+                    <th>@sortablelink('user.id', 'Usuário')</th>
+                    <th colspan="3" class="text-center">Ações</th>
                 </thead>
                 <tbody>
                     @foreach ($employees as $employee)
@@ -119,6 +119,7 @@
             </table>
             {!! $employees->links() !!}
             <br />
+            <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
         </main>
     </section>
 @endsection

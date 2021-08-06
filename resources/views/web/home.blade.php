@@ -4,23 +4,22 @@
 
 @section('content')
     <section>
-        <strong>Home&nbsp;
+        <h2>Home&nbsp;
             @if (session('sessionUser')->currentBond != null)
                 [{{ session('sessionUser')->currentBond->role->name }} -
                 {{ session('sessionUser')->currentBond->course->name }} -
                 {{ session('sessionUser')->currentBond->pole->name }}]
             @endif
-
-        </strong>
+        </h2>
     </section>
     <section id="pageContent">
         <main role="main">
             <h3>Notificações</h3>
             <br />
-            <table>
+            <table class="table table-striped table-hover mx-1">
                 <thead>
                     <tr>
-                        <th style="width: 150px">Data</th>
+                        <th>Data</th>
                         <th>Mensagem</th>
                     </tr>
                 </thead>
@@ -30,14 +29,14 @@
                             <td>{{ $notification->created_at }}</td>
                             @switch($notification->type)
                                 @case('App\Notifications\NewBondNotification')
-                                    <td style="padding: 3px"><span style="font-weight: bold">= Novo <a href="{{ route('bonds.show', $notification->data['bond_id']) }}">vínculo</a> cadastrado =</span><br />
+                                    <td><strong>= Novo <a href="{{ route('bonds.show', $notification->data['bond_id']) }}">vínculo</a> cadastrado =</strong><br />
                                         Colaborador: {{ $notification->data['employee_name'] }}<br />
                                         Atribuição: {{ $notification->data['role_name'] }} |
                                         Curso: {{ $notification->data['course_name'] }}
                                     </td>
                                 @break
                                 @case('App\Notifications\BondImpededNotification')
-                                    <td style="padding: 3px"><span style="font-weight: bold">= <a href="{{ route('bonds.show', $notification->data['bond_id']) }}">Vínculo</a> impedido =</span><br />
+                                    <td><strong>= <a href="{{ route('bonds.show', $notification->data['bond_id']) }}">Vínculo</a> impedido =</strong><br />
                                         Colaborador: {{ $notification->data['employee_name'] }}<br />
                                         Atribuição: {{ $notification->data['role_name'] }} |
                                         Curso: {{ $notification->data['course_name'] }}<br />
@@ -45,7 +44,7 @@
                                     </td>
                                 @break
                                 @case('App\Notifications\NewRightsNotification')
-                                    <td style="padding: 3px"><span style="font-weight: bold">= Novo <a href="{{ route('documents.show', ['id' => $notification->data['document_id'], 'type' => 'BondDocument', 'htmlTitle' => $notification->data['document_name']]) }}" target="_blank">Documento de Termos e Licença</a> =</span><br />
+                                    <td><strong>= Novo <a href="{{ route('documents.show', ['id' => $notification->data['document_id'], 'type' => 'BondDocument', 'htmlTitle' => $notification->data['document_name']]) }}" target="_blank">Documento de Termos e Licença</a> =</strong><br />
                                         Colaborador: {{ $notification->data['employee_name'] }}<br />
                                         Atribuição: {{ $notification->data['role_name'] }} |
                                         Curso: {{ $notification->data['course_name'] }}<br />

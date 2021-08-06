@@ -1,10 +1,10 @@
 @extends('layouts.basic')
 
-@section('title', 'Listar Documentos de Vínculos')
+@section('title', 'Documentos de Vínculos')
 
 @section('content')
     <section>
-        <strong>Listar Documentos de Vínculos</strong>
+        <h2>Documentos de Vínculos</h2>
     </section>
     <section id="pageContent">
         <main role="main">
@@ -15,7 +15,7 @@
             @endif
             @component('bond.document.componentList', compact('documents'))@endcomponent
             <br />
-            <button type="button" onclick="history.back()">Voltar</button>
+            <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
             <br /><br /><br />
         </main>
     </section>

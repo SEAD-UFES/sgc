@@ -13,7 +13,7 @@
 </script>
 
 <section>
-        <strong>Nomear Aprovado</strong>
+        <h2>Nomear Aprovado</h2>
     </section>
     <section id="pageContent">
         <main role="main">

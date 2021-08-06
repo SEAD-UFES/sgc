@@ -1,42 +1,49 @@
-<header>
-    <div>
-        <div id="logo"><img src="{{ asset('/sead.png') }}">SGC</div>
-        @if (Auth::check())
-            <div style="float: right;">
-                <div style="text-align:right;">Bem vind{{ session('sessionUser')->genderArticle }},
-                    {{ session('sessionUser')->name }}! (<a href="{{ route('auth.logout') }}">Sair</a>)</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"><img src="{{ asset('/sead.png') }}" alt="" width="30" {{-- height="24" --}}
+                class="d-inline-block align-text-top">
+            SGC</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            @if (Auth::check())
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page"
+                            href="{{ route('home') }}">Home</a></li>
+
+                    @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCor'])
+                        <li class="nav-item"><a class="nav-link" href="{{ route('employee') }}">Colaboradores</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('funding') }}">Fomento</a></li>
+                    @endcanany
+
+                    <li class="nav-item"><a class="nav-link" href="{{ route('report') }}">Relatórios</a></li>
+
+                    @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCor'])
+                        <li class="nav-item"><a class="nav-link" href="{{ route('system') }}">Sistema</a></li>
+                    @endcanany
+                </ul>
+
                 @if (session('sessionUser')->hasBond)
-                    <form action={{ route('currentBond.change') }} method="POST">
+                    <form class="d-flex" action={{ route('currentBond.change') }} method="POST">
                         @csrf
-                        <div style="margin-top: 3px">Vínculo:
-                            <select name="activeBonds" onchange="submit();">
-                                @foreach (session('sessionUser')->bonds as $bond)
-                                    <option value="{{ $bond->id }}"
-                                        {{ $bond->id === session('sessionUser')->currentBond->id ? 'selected' : '' }}>
-                                        {{ $bond->role->name }} - {{ $bond->course->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <select class="form-select" aria-label="Vínculo" name="activeBonds" onchange="submit();">
+                            @foreach (session('sessionUser')->bonds as $bond)
+                                <option value="{{ $bond->id }}"
+                                    {{ $bond->id === session('sessionUser')->currentBond->id ? 'selected' : '' }}>
+                                    {{ $bond->role->name }} - {{ $bond->course->name }}</option>
+                            @endforeach
+                        </select>
                     </form>
-                @endif
-            </div>
-        @endif
+                @endif &nbsp;
+
+                <ul class="list-unstyled ms-1 mb-2 mb-lg-0">
+                    <li>Bem vind{{ session('sessionUser')->genderArticle }}, {{ session('sessionUser')->name }}!
+                        [<a href="{{ route('auth.logout') }}">Sair</a>]</li>
+
+                </ul>
+            @endif
+        </div>
     </div>
-    <br />
-    @if (Auth::check())
-        <nav>
-            <ul>
-                <li><a href="{{ route('home') }}">Home</a></li>
-                @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCor'])
-                    <li><a href="{{ route('employee') }}">Colaboradores</a></li>
-                    <li><a href="{{ route('funding') }}">Fomento</a></li>
-                @endcanany
-                <li><a href="{{ route('report') }}">Relatórios</a></li>
-                @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCor'])
-                    <li><a href="{{ route('system') }}">Sistema</a></li>
-                @endcanany
-                {{-- <li><a href="{{ route('auth.logout') }}">Logout</a></li> --}}
-            </ul>
-        </nav>
-    @endif
-</header>
+</nav>
