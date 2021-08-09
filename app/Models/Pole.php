@@ -26,7 +26,8 @@ class Pole extends Model
 
     private static $whiteListFilter = [''];
     public static $accepted_filters = [
-        'name_contains'
+        'name_contains',
+        'description_contains'
     ];
 
     public $sortable = ['id', 'name', 'description', 'created_at', 'updated_at'];

@@ -13,4 +13,11 @@ trait poleFilter
         $builder = ModelFilterHelpers::contains($builder, 'name', $values);
         return $builder;
     }
+
+    public function description_contains(Builder $builder, $value)
+    {
+        $values = ModelFilterHelpers::inputToArray($value);
+        $builder = ModelFilterHelpers::contains($builder, 'name', $values);
+        return $builder;
+    }
 }

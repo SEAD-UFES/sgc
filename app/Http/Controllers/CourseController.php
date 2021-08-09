@@ -27,6 +27,7 @@ class CourseController extends Controller
 
         //sort
         $courses_query = $courses_query->sortable(['name' => 'asc'])->with('courseType');
+
         //get paginate and add querystring on paginate links
         $courses = $courses_query->paginate(10);
         $courses->appends($request->all());

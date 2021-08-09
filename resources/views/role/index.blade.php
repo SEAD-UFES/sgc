@@ -29,7 +29,6 @@
                     ]
                 ]
             )@endcomponent
-
             <br/>
 
             <table class="table table-striped table-hover">
@@ -70,7 +69,5 @@
 @endsection
 
 @section('scripts')
-
 @component('_components.filters_script', ['filters' =>$filters] )@endcomponent
-
 @endsection

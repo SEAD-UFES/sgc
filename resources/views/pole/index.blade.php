@@ -19,9 +19,13 @@
                 '_components.filters_form', 
                 [
                     'filters' =>$filters,
-                    'options' => [[ 'label'=>'Nome', 'value'=>'name_contains', 'selected'=>true]]
+                    'options' => [
+                        [ 'label'=>'Nome', 'value'=>'name_contains', 'selected'=>true],
+                        [ 'label'=>'Descrição', 'value'=>'description_contains']
+                    ]
                 ]
             )@endcomponent
+            <br/>
 
             <table class="table table-striped table-hover">
                 <thead>
