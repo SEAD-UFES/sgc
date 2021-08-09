@@ -16,50 +16,67 @@
         <main role="main">
             <h3>Notificações</h3>
             <br />
-            <table class="table table-striped table-hover mx-1">
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Mensagem</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (auth()->user()->notifications as $notification)
-                        <tr>
-                            <td>{{ $notification->created_at }}</td>
-                            @switch($notification->type)
-                                @case('App\Notifications\NewBondNotification')
-                                    <td><strong>= Novo <a href="{{ route('bonds.show', $notification->data['bond_id']) }}">vínculo</a> cadastrado =</strong><br />
-                                        Colaborador: {{ $notification->data['employee_name'] }}<br />
-                                        Atribuição: {{ $notification->data['role_name'] }} |
-                                        Curso: {{ $notification->data['course_name'] }}
-                                    </td>
-                                @break
-                                @case('App\Notifications\BondImpededNotification')
-                                    <td><strong>= <a href="{{ route('bonds.show', $notification->data['bond_id']) }}">Vínculo</a> impedido =</strong><br />
-                                        Colaborador: {{ $notification->data['employee_name'] }}<br />
-                                        Atribuição: {{ $notification->data['role_name'] }} |
-                                        Curso: {{ $notification->data['course_name'] }}<br />
-                                        Motivo: {{ $notification->data['description'] }}
-                                    </td>
-                                @break
-                                @case('App\Notifications\NewRightsNotification')
-                                    <td><strong>= Novo <a href="{{ route('documents.show', ['id' => $notification->data['document_id'], 'type' => 'BondDocument', 'htmlTitle' => $notification->data['document_name']]) }}" target="_blank">Documento de Termos e Licença</a> =</strong><br />
-                                        Colaborador: {{ $notification->data['employee_name'] }}<br />
-                                        Atribuição: {{ $notification->data['role_name'] }} |
-                                        Curso: {{ $notification->data['course_name'] }}<br />
-                                        <a href="{{ route('bonds.rights.index') }}" target="_blank">[Listar Documentos de Termos e Licença]</a>
-                                    </td>
-                                @break
 
-                                @default
-                                    <td>:(</td>
-                            @endswitch
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            <br />
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-xxl-6">
+                    <table class="table table-striped table-hover mx-1">
+                        <thead>
+                            <tr>
+                                <th>Envio</th>
+                                <th>Mensagem</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (auth()->user()->notifications->count() < 1)
+                                <tr>
+                                    <td colspan="2" class="text-center">Sem notificações</td>
+                                </tr>
+                            @endif
+                            @foreach (auth()->user()->notifications as $notification)
+                                <tr>
+                                    <td>{{ \Carbon\Carbon::parse($notification->created_at)->isoFormat('DD/MM/Y hh:mm') }}
+                                    </td>
+                                    @switch($notification->type)
+                                        @case('App\Notifications\NewBondNotification')
+                                            <td><strong>= Novo <a
+                                                        href="{{ route('bonds.show', $notification->data['bond_id']) }}">vínculo</a>
+                                                    cadastrado =</strong><br />
+                                                Colaborador: {{ $notification->data['employee_name'] }}<br />
+                                                Atribuição: {{ $notification->data['role_name'] }} |
+                                                Curso: {{ $notification->data['course_name'] }}
+                                            </td>
+                                        @break
+                                        @case('App\Notifications\BondImpededNotification')
+                                            <td><strong>= <a
+                                                        href="{{ route('bonds.show', $notification->data['bond_id']) }}">Vínculo</a>
+                                                    impedido =</strong><br />
+                                                Colaborador: {{ $notification->data['employee_name'] }}<br />
+                                                Atribuição: {{ $notification->data['role_name'] }} |
+                                                Curso: {{ $notification->data['course_name'] }}<br />
+                                                Motivo: {{ $notification->data['description'] }}
+                                            </td>
+                                        @break
+                                        @case('App\Notifications\NewRightsNotification')
+                                            <td><strong>= Novo <a
+                                                        href="{{ route('documents.show', ['id' => $notification->data['document_id'], 'type' => 'BondDocument', 'htmlTitle' => $notification->data['document_name']]) }}"
+                                                        target="_blank">Documento de Termos e Licença</a> =</strong><br />
+                                                Colaborador: {{ $notification->data['employee_name'] }}<br />
+                                                Atribuição: {{ $notification->data['role_name'] }} |
+                                                Curso: {{ $notification->data['course_name'] }}<br />
+                                                <a href="{{ route('bonds.rights.index') }}" target="_blank">[Listar
+                                                    Documentos de Termos e Licença]</a>
+                                            </td>
+                                        @break
+
+                                        @default
+                                            <td>:(</td>
+                                    @endswitch
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </main>
     </section>
 @endsection

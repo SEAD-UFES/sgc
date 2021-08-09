@@ -7,7 +7,7 @@
         <h2>Login</h2>
     </section> --}}
     <section id="pageContent">
-        <main role="main" class="">
+        <main role="main">
             <div class="row justify-content-center">
                 <div class="col-sm-8 col-md-6 col-lg-5 col-xl-4 col-xxl-3">
                     <div class="border border-2 rounded-3 my-3 p-3">
