@@ -8,6 +8,7 @@ use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
 use App\CustomClasses\SgcLogger;
 use Illuminate\Http\Request;
+use App\CustomClasses\ModelFilterHelpers;
 
 class CourseController extends Controller
 {
@@ -18,14 +19,22 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
-        $courses = Course::sortable(['name' => 'asc'])->with('courseType')->orderBy('name')->paginate(10);
+        $courses_query = new Course();
 
-        SgcLogger::writeLog('Course');
+        //filters
+        $filters = ModelFilterHelpers::buildFilters($request, Course::$accepted_filters);
+        $courses_query = $courses_query->AcceptRequest(Course::$accepted_filters)->filter();
 
-        //add query string params on paginate urls
+        //sort
+        $courses_query = $courses_query->sortable(['name' => 'asc'])->with('courseType');
+        //get paginate and add querystring on paginate links
+        $courses = $courses_query->paginate(10);
         $courses->appends($request->all());
 
-        return view('course.index', compact('courses'))->with('i', (request()->input('page', 1) - 1) * 10);
+        //write on log
+        SgcLogger::writeLog('Course');
+
+        return view('course.index', compact('courses', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**

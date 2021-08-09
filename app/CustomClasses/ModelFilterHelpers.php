@@ -3,6 +3,7 @@
 namespace App\CustomClasses;
 
 use Illuminate\Http\Request;
+use DateTime;
 
 class ModelFilterHelpers
 {
@@ -22,6 +23,32 @@ class ModelFilterHelpers
         if (is_string($value)) $values = [$value];
         elseif (is_array($value)) $values = $value;
         return $values;
+    }
+
+
+    public static function validateDate($date, $form = 'Y-m-d')
+    {
+        $d = DateTime::createFromFormat($form, $date);
+        return $d && $d->format($form) === $date;
+    }
+
+    public static function convertDateFormat($values)
+    {
+        foreach ($values as $key => $value) {
+            if (ModelFilterHelpers::validateDate($value, 'd/m/Y')) {
+                $dt = DateTime::createFromFormat('d/m/Y', $value);
+                $values[$key] = $dt->format('Y-m-d');
+            }
+        }
+        return $values;
+    }
+
+    public static function simple_operation($query_builder, $column, $operation, $values)
+    {
+        foreach ($values as $value) {
+            $query_builder = $query_builder->where($column, $operation, $value);
+        }
+        return $query_builder;
     }
 
     public static function contains($query_builder,  $column, $values)

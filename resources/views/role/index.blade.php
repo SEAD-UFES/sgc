@@ -13,6 +13,25 @@
                     <p style="color: green; font-weight: bold">{{ $message }}</p>
                 </div><br />
             @endif
+
+            {{-- filtros --}}
+            @component(
+                '_components.filters_form', 
+                [
+                    'filters' =>$filters,
+                    'options' => [
+                        [ 'label'=>'Nome', 'value'=>'name_contains', 'selected'=>true],
+                        [ 'label'=>'Descrição', 'value'=>'description_contains' ],
+                        [ 'label'=>'Valor da Bolsa (=)', 'value'=>'grantvalue_exactly' ],
+                        [ 'label'=>'Valor da Bolsa (>=)', 'value'=>'grantvalue_BigOrEqu' ],
+                        [ 'label'=>'Valor da Bolsa (<=)', 'value'=>'grantvalue_LowOrEqu' ],
+                        [ 'label'=>'Tipo da bolsa', 'value'=>'grantType_name_contains' ],
+                    ]
+                ]
+            )@endcomponent
+
+            <br/>
+
             <table class="table table-striped table-hover">
                 <thead>
                     <th>@sortablelink('name', 'Nome')</th>
@@ -48,4 +67,10 @@
             <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
         </main>
     </section>
+@endsection
+
+@section('scripts')
+
+@component('_components.filters_script', ['filters' =>$filters] )@endcomponent
+
 @endsection

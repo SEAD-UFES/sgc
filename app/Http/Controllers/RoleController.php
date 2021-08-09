@@ -8,6 +8,7 @@ use App\CustomClasses\SgcLogger;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\GrantType;
+use App\CustomClasses\ModelFilterHelpers;
 
 class RoleController extends Controller
 {
@@ -20,12 +21,23 @@ class RoleController extends Controller
     {
         $roles = Role::sortable(['name' => 'asc'])->paginate(10);
 
-        //add query string on page links
+        $roles_query = new Role();
+
+        //filters
+        $filters = ModelFilterHelpers::buildFilters($request, Role::$accepted_filters);
+        $roles_query = $roles_query->AcceptRequest(Role::$accepted_filters)->filter();
+
+        //sort
+        $roles_query = $roles_query->sortable(['name' => 'asc']);
+
+        //get paginate and add querystring on paginate links
+        $roles = $roles_query->paginate(10);
         $roles->appends($request->all());
 
+        //write on log
         SgcLogger::writeLog('Role');
 
-        return view('role.index', compact('roles'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('role.index', compact('roles', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
