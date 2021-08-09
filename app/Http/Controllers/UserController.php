@@ -12,6 +12,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\CustomClasses\SgcLogger;
 use App\Models\UserType;
+use App\CustomClasses\ModelFilterHelpers;
 
 class UserController extends Controller
 {
@@ -22,45 +23,53 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        //star query build
-        $users_query = User::sortable(['created_at' => 'desc'])->with(['userType', 'employee'])->orderBy('email');
 
-        //building filters (to build interface)
-        $filters = [
-            'email' => $request->input('email') ? $request->input('email') : null,
-            'employee' => $request->input('employee') ? $request->input('employee') : null,
-            'user_type' => $request->input('user_type') ? $request->input('user_type') : null,
-            'active' => $request->input('active') ? $request->input('active') : null,
-        ];
+        $users_query = User::with(['userType', 'employee']);
 
-        //apply filters
-        if ($filters['email']) {
-            $users_query = $users_query->where('users.email', 'like', '%' . $filters['email'] . '%');
-        }
-        if ($filters['employee']) {
-            $users_query = $users_query->wherehas('employee', function ($query) use ($filters) {
-                $query->where('name', 'like', '%' . $filters['employee'] . '%');
-            });
-        }
-        if ($filters['user_type']) {
-            $users_query = $users_query->wherehas('userType', function ($query) use ($filters) {
-                $query->where('name', 'like', '%' . $filters['user_type'] . '%');
-            });
-        }
-        if ($filters['active']) {
-            $is_active = null;
-            if (in_array(strtolower($filters['active']), ['sim', '1', 'true'])) $is_active = 1;
-            if (in_array(strtolower($filters['active']), ['não', 'nao', '0', 'false']))  $is_active = 0;
-            $users_query = $users_query->where('users.active', '=', $is_active);
-        }
+        // //building filters (to build interface)
+        // $filters = [
+        //     'email' => $request->input('email') ? $request->input('email') : null,
+        //     'employee' => $request->input('employee') ? $request->input('employee') : null,
+        //     'user_type' => $request->input('user_type') ? $request->input('user_type') : null,
+        //     'active' => $request->input('active') ? $request->input('active') : null,
+        // ];
 
-        //get paginate
+        // //apply filters
+        // if ($filters['email']) {
+        //     $users_query = $users_query->where('users.email', 'like', '%' . $filters['email'] . '%');
+        // }
+        // if ($filters['employee']) {
+        //     $users_query = $users_query->wherehas('employee', function ($query) use ($filters) {
+        //         $query->where('name', 'like', '%' . $filters['employee'] . '%');
+        //     });
+        // }
+        // if ($filters['user_type']) {
+        //     $users_query = $users_query->wherehas('userType', function ($query) use ($filters) {
+        //         $query->where('name', 'like', '%' . $filters['user_type'] . '%');
+        //     });
+        // }
+        // if ($filters['active']) {
+        //     $is_active = null;
+        //     if (in_array(strtolower($filters['active']), ['sim', '1', 'true'])) $is_active = 1;
+        //     if (in_array(strtolower($filters['active']), ['não', 'nao', '0', 'false']))  $is_active = 0;
+        //     $users_query = $users_query->where('users.active', '=', $is_active);
+        // }
+
+        //filters
+        $filters = ModelFilterHelpers::buildFilters($request, User::$accepted_filters);
+        $users_query = $users_query->AcceptRequest(User::$accepted_filters)->filter();
+
+        //sort
+        $users_query = $users_query->sortable(['updated_at' => 'desc']);
+
+        // //star query build
+        // $users_query = User::sortable(['created_at' => 'desc'])->with(['userType', 'employee'])->orderBy('email');
+
+        //get paginate and add querystring on paginate links
         $users = $users_query->paginate(10);
-
-        //add query string on page links
         $users->appends($request->all());
 
-        //write on log;
+        //write on log
         SgcLogger::writeLog('User');
 
         return view('user.index', compact('users', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);

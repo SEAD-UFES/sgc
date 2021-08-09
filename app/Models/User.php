@@ -7,11 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Kyslik\ColumnSortable\Sortable;
+use eloquentFilter\QueryFilter\ModelFilters\Filterable;
+use App\ModelFilters\userFilter;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
     use Sortable;
+    use userFilter, Filterable;
 
     /**
      * The attributes that are mass assignable.
@@ -25,7 +28,15 @@ class User extends Authenticatable
         'active',
     ];
 
-    public $sortable = ['id', 'email', 'created_at', 'updated_at'];
+    public $sortable = ['id', 'email', 'active', 'created_at', 'updated_at'];
+
+    private static $whiteListFilter = ['*'];
+    public static $accepted_filters = [
+        'email_contains',
+        'usertype_name_contains',
+        'active_exactly',
+        'employee_name_contains',
+    ];
 
     /**
      * The attributes that should be hidden for arrays.

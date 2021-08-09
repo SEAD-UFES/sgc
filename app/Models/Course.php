@@ -5,11 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
+use eloquentFilter\QueryFilter\ModelFilters\Filterable;
+use App\ModelFilters\courseFilter;
 
 class Course extends Model
 {
     use HasFactory;
     use Sortable;
+    use courseFilter, Filterable;
 
     protected $fillable = [
         'name',
@@ -26,6 +29,19 @@ class Course extends Model
         'end',
         'created_at',
         'updated_at'
+    ];
+
+    private static $whiteListFilter = ['*'];
+    public static $accepted_filters = [
+        'name_contains',
+        'description_contains',
+        'courseType_name_contains',
+        'begin_exactly',
+        'begin_BigOrEqu',
+        'begin_LowOrEqu',
+        'end_exactly',
+        'end_BigOrEqu',
+        'end_LowOrEqu'
     ];
 
     public function courseType()
