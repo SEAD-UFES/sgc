@@ -10,7 +10,6 @@ trait approvedFilter
 {
     public function name_contains(Builder $builder, $value)
     {
-        echo "entrei aqui";
         $values = ModelFilterHelpers::inputToArray($value);
         $builder = ModelFilterHelpers::contains($builder, 'name', $values);
         return $builder;
