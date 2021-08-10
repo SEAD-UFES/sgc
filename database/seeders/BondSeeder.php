@@ -24,11 +24,11 @@ class BondSeeder extends Seeder
             //'classroom_id' => null,
             'begin' => Carbon::create('2020', '03', '05'),
             'end' => Carbon::create('2027', '07', '03'),
-            'terminated_on' => null,
+            'terminated_at' => null,
             'volunteer' => false,
             'impediment' => false,
             'impediment_description' => '',
-            'uaba_checked_on' => Carbon::create('2021', '07', '01'),
+            'uaba_checked_at' => Carbon::create('2021', '07', '01'),
         ]);
 
         DB::table($this->tableName)->insert([
@@ -39,11 +39,11 @@ class BondSeeder extends Seeder
             //'classroom_id' => null,
             'begin' => Carbon::create('2020', '03', '05'),
             'end' => Carbon::create('2027', '07', '03'),
-            'terminated_on' => Carbon::create('2020', '09', '05'),
+            'terminated_at' => Carbon::create('2020', '09', '05'),
             'volunteer' => false,
             'impediment' => false,
             'impediment_description' => '',
-            'uaba_checked_on' => Carbon::create('2021', '07', '01'),
+            'uaba_checked_at' => Carbon::create('2021', '07', '01'),
         ]);
 
         DB::table($this->tableName)->insert([
@@ -54,11 +54,11 @@ class BondSeeder extends Seeder
             //'classroom_id' => null,
             'begin' => Carbon::create('2020', '03', '05'),
             'end' => Carbon::create('2020', '09', '05'),
-            'terminated_on' => null,
+            'terminated_at' => null,
             'volunteer' => false,
             'impediment' => false,
             'impediment_description' => '',
-            'uaba_checked_on' => Carbon::create('2021', '07', '01'),
+            'uaba_checked_at' => Carbon::create('2021', '07', '01'),
         ]);
 
         DB::table($this->tableName)->insert([
@@ -69,11 +69,11 @@ class BondSeeder extends Seeder
             //'classroom_id' => null,
             'begin' => Carbon::create('2020', '03', '05'),
             'end' => Carbon::create('2029', '09', '05'),
-            'terminated_on' => null,
+            'terminated_at' => null,
             'volunteer' => false,
             'impediment' => true,
             'impediment_description' => 'Assinatura não confere com o documento',
-            'uaba_checked_on' => Carbon::create('2021', '07', '01'),
+            'uaba_checked_at' => Carbon::create('2021', '07', '01'),
         ]);
 
 
@@ -85,11 +85,11 @@ class BondSeeder extends Seeder
             //'classroom_id' => null,
             'begin' => Carbon::create('2020', '03', '05'),
             'end' => Carbon::create('2029', '09', '05'),
-            'terminated_on' => null,
+            'terminated_at' => null,
             'volunteer' => false,
             'impediment' => false,
             'impediment_description' => '',
-            'uaba_checked_on' => Carbon::create('2021', '07', '01'),
+            'uaba_checked_at' => Carbon::create('2021', '07', '01'),
         ]);
 
         DB::table($this->tableName)->insert([
@@ -100,11 +100,11 @@ class BondSeeder extends Seeder
             //'classroom_id' => null,
             'begin' => Carbon::create('2020', '03', '05'),
             'end' => Carbon::create('2027', '07', '03'),
-            'terminated_on' => null,
+            'terminated_at' => null,
             'volunteer' => true,
             'impediment' => false,
             'impediment_description' => '',
-            'uaba_checked_on' => Carbon::create('2021', '07', '01'),
+            'uaba_checked_at' => Carbon::create('2021', '07', '01'),
         ]);
     }
 }

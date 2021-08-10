@@ -31,7 +31,7 @@ class SessionUser
             if ($employeeResult->gender != null)
                 $this->genderArticle = (($employeeResult->gender->name) === 'Masculino') ? 'o' : 'a';
 
-            $bondResult = Bond::with('role')->where('employee_id', $employeeResult->id)->/* whereDate('end', '>', Carbon::today())-> */whereNull('terminated_on')/* ->whereNotNull('uaba_checked_on') */->where('impediment', false)->whereHas('role', function ($query) {
+            $bondResult = Bond::with('role')->where('employee_id', $employeeResult->id)->/* whereDate('end', '>', Carbon::today())-> */whereNull('terminated_at')/* ->whereNotNull('uaba_checked_at') */->where('impediment', false)->whereHas('role', function ($query) {
                 $query->where('name', 'LIKE', 'Coordenador de curso%');
             })->get();
             if (!is_null($bondResult)) {

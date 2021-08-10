@@ -22,11 +22,11 @@ class CreateBondsTable extends Migration
             //$table->foreignId('classroom_id')->constrained('classrooms');
             $table->date('begin')->nullable();
             $table->date('end')->nullable();
-            $table->date('terminated_on')->nullable();
+            $table->timestamp('terminated_at')->nullable();
             $table->boolean('volunteer')->default(false);
             $table->boolean('impediment')->default(false);
             $table->string('impediment_description')->nullable();
-            $table->date('uaba_checked_on')->nullable();
+            $table->timestamp('uaba_checked_at')->nullable();
             $table->timestamps();
         });
     }

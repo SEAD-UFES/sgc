@@ -35,12 +35,12 @@ class BondFactory extends Factory
 
             'begin' => $this->faker->dateTimeBetween('-2 years', '-1 year'),
             'end' => $this->faker->dateTimeBetween('now', '+1 year'),
-            // 'terminated_on' => $this->faker->dateTimeBetween('+1 year', '+2 years'),
+            // 'terminated_at' => $this->faker->dateTimeBetween('+1 year', '+2 years'),
             // 'volunteer' => $this->faker->boolean($changeOfGettingTrue = 50),
             'volunteer' => false,
             'impediment' => ($issueStatus == 3) ? true : false,
             'impediment_description' =>  ($issueStatus == 3) ? 'Problema na documentação' : '',
-            'uaba_checked_on' => ($issueStatus != 1) ? $this->faker->dateTimeBetween('-2 years', '-1 year') : null,
+            'uaba_checked_at' => ($issueStatus != 1) ? $this->faker->dateTimeBetween('-2 years', '-1 year') : null,
 
             'created_at' => now(),
             'updated_at' => now(),

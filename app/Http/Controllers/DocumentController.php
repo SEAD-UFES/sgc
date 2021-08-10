@@ -74,7 +74,7 @@ class DocumentController extends Controller
         $type = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
 
         $documents = BondDocument::with('bond')->where('document_type_id', $type->id)->whereHas('bond', function ($query) {
-            $query->whereNotNull('uaba_checked_on')->where('impediment', false);
+            $query->whereNotNull('uaba_checked_at')->where('impediment', false);
         })->get(); //->sortable(['created_at' => 'desc'])->paginate(10);
 
         //add query string on page links

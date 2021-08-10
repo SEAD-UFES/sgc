@@ -75,11 +75,11 @@ class BondController extends Controller
         $bond->pole_id = $request->poles;
         $bond->begin = $request->begin;
         $bond->end = $request->end;
-        $bond->terminated_on = null;
+        $bond->terminated_at = null;
         $bond->volunteer = $request->has('volunteer');
         $bond->impediment = false;
         $bond->impediment_description = $request->impedimentDescription;
-        $bond->uaba_checked_on = null;
+        $bond->uaba_checked_at = null;
 
         $bond->save();
 
@@ -190,7 +190,7 @@ class BondController extends Controller
     {
         $bond->impediment = ($request->impediment == '1') ? true : false;
         $bond->impediment_description = $request->impedimentDescription;
-        $bond->uaba_checked_on = now();
+        $bond->uaba_checked_at = now();
 
         try {
             $bond->save();

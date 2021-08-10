@@ -53,10 +53,10 @@
                             <td>{{ $bond->pole->name }}</td>
                             {{-- <td>{{ \Carbon\Carbon::parse($bond->begin)->isoFormat('DD/MM/Y') }}</td>
                             <td>{{ \Carbon\Carbon::parse($bond->end)->isoFormat('DD/MM/Y') }}</td>
-                            <td>{{ isset($bond->terminated_on) ? \Carbon\Carbon::parse($bond->terminated_on)->isoFormat('DD/MM/Y') : '' }}
+                            <td>{{ isset($bond->terminated_at) ? \Carbon\Carbon::parse($bond->terminated_at)->isoFormat('DD/MM/Y') : '' }}
                             </td> --}}
                             <td>{{ $bond->volunteer === 1 ? 'Sim' : 'Não' }}</td>
-                            {{-- <td>{{ isset($bond->uaba_checked_on) ? \Carbon\Carbon::parse($bond->uaba_checked_on)->isoFormat('DD/MM/Y') : '' }} --}}
+                            {{-- <td>{{ isset($bond->uaba_checked_at) ? \Carbon\Carbon::parse($bond->uaba_checked_at)->isoFormat('DD/MM/Y') : '' }} --}}
                             </td>
                             <td>{{ $bond->impediment === 1 ? 'Sim' : 'Não' }}</td>
                             <td class="text-center"><a href="{{ route('bonds.show', $bond) }}">Detalhes</a></td>
@@ -79,11 +79,11 @@
                             <th>Fim</th>
                             <td>{{ \Carbon\Carbon::parse($bond->end)->isoFormat('DD/MM/Y') }}</td>
                             <th>Encerrado</th>
-                            <td>{{ isset($bond->terminated_on) ? \Carbon\Carbon::parse($bond->terminated_on)->isoFormat('DD/MM/Y') : '' }}
+                            <td>{{ isset($bond->terminated_at) ? \Carbon\Carbon::parse($bond->terminated_at)->isoFormat('DD/MM/Y') : '' }}
                             </td>
                             <th>Verificado</th>
                             <td colspan="2">
-                                {{ isset($bond->uaba_checked_on) ? \Carbon\Carbon::parse($bond->uaba_checked_on)->isoFormat('DD/MM/Y') : '' }}
+                                {{ isset($bond->uaba_checked_at) ? \Carbon\Carbon::parse($bond->uaba_checked_at)->isoFormat('DD/MM/Y') : '' }}
                         </tr>
                     @endforeach
                 </tbody>

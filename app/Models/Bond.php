@@ -24,11 +24,11 @@ class Bond extends Pivot
         //'classroom_id',
         'begin',
         'end',
-        'terminated_on',
+        'terminated_at',
         'volunteer',
         'impediment',
         'impediment_description',
-        'uaba_checked_on',
+        'uaba_checked_at',
     ];
 
     public $sortable = [

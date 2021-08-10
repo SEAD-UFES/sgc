@@ -51,7 +51,7 @@ class Course extends Model
 
     public function employees()
     {
-        return $this->belongsToMany(Employee::class, 'bonds')->withPivot('course_id', 'employee_id', 'role_id', 'pole_id', /* 'classroom_id',*/ 'begin', 'end', 'terminated_on', 'volunteer', 'impediment', 'impediment_description', 'uaba_checked_on',)->using(Bond::class)->as('bond')->withTimestamps();
+        return $this->belongsToMany(Employee::class, 'bonds')->withPivot('course_id', 'employee_id', 'role_id', 'pole_id', /* 'classroom_id',*/ 'begin', 'end', 'terminated_at', 'volunteer', 'impediment', 'impediment_description', 'uaba_checked_at',)->using(Bond::class)->as('bond')->withTimestamps();
     }
 
     public function approveds()

@@ -63,7 +63,7 @@
 <div class="mb-1 row">
     <label for="staticEmail" class="col-sm-2 col-form-label">Encerrado em:</label>
     <div class="col-sm-10">
-        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{ ($bond->terminated_on != null) ? \Carbon\Carbon::parse($bond->terminated_on)->isoFormat('DD/MM/Y hh:mm') : '-' }}">
+        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{ ($bond->terminated_at != null) ? \Carbon\Carbon::parse($bond->terminated_at)->isoFormat('DD/MM/Y hh:mm') : '-' }}">
     </div>
 </div>
 <div class="mb-1 row">
@@ -81,6 +81,6 @@
 <div class="mb-1 row">
     <label for="staticEmail" class="col-sm-2 col-form-label">Revisado em:</label>
     <div class="col-sm-10">
-        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{ ($bond->uaba_checked_on != null) ? \Carbon\Carbon::parse($bond->uaba_checked_on)->isoFormat('DD/MM/Y hh:mm') : '-' }}">
+        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{ ($bond->uaba_checked_at != null) ? \Carbon\Carbon::parse($bond->uaba_checked_at)->isoFormat('DD/MM/Y hh:mm') : '-' }}">
     </div>
 </div>
