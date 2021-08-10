@@ -24,6 +24,12 @@
                     <p style="color: green; font-weight: bold">{{ $message }}</p>
                 </div><br />
             @endif
+            @error('noStore')
+                <div class="error">> {{ $message }}</div>
+            @enderror
+            @error('noDestroy')
+                <div class="error">> {{ $message }}</div>
+            @enderror
 
             {{-- filtros --}}
             @component(
@@ -39,15 +45,7 @@
                     ]
                 ]
             )@endcomponent
-            <br/>            
             
-
-            @error('noStore')
-                <div class="error">> {{ $message }}</div>
-            @enderror
-            @error('noDestroy')
-                <div class="error">> {{ $message }}</div>
-            @enderror
             <p style="color: red"> Clique no CPF ou Nome para exibir/ocultar as informações de contato</p>
             <table class="table table-striped table-hover">
                 <thead>

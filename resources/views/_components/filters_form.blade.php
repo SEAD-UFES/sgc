@@ -1,35 +1,52 @@
-<div style="border:1px solid black; padding:1px; display: flex; flex-wrap: wrap; align-items: center;">
-                
-    <div style="flex-grow: 1;">
-        <span>Filtros: </span>
-        
-        @foreach ($options as $option)
+<div class="container-fluid p-1 mb-2">
+    <div class="row px-3 mb-1">
+        <div class="col-sm px-1 d-flex align-items-center">
+            <span>Filtros:</span>
+        </div>
+        <div class="col-sm-auto px-1 ms-auto d-flex justify-content-center">
+            <form class="row"  onsubmit="submitFilters(event)">
+                <div class="col-auto px-0 mx-1">
+                    <select class="form-select form-select-sm" id="filterType" name='type'>
+                        @foreach ($options as $option)
+                            <option 
+                                value="{{$option['value']}}" 
+                                {{ array_key_exists( 'selected', $option ) && $option['selected'] === true ? 'selected' : '' }}
+                            >{{$option['label']}}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-auto px-0 mx-1">
+                    <input class="form-control form-control-sm" id="filterValue" type="text" name='value' placeholder="Pesquisar" />
+                </div>
+
+                <div class="col-auto px-0 mx-1">
+                    <button class="btn btn-primary btn-sm" type="submit">Filtrar</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <hr class="p-0 m-0" />
+    <div class="row px-3">
+        <div class="col px-1">
+            @foreach ($options as $option)
             @if( $filters && array_key_exists( $option['value'], $filters ) )
                 @if( is_string( $filters[$option['value']] ) )
-                    <a href="#" onclick="removeFilter('{{$option['value']}}', null)">({{ $option['label'] }}: {{$filters[$option['value']]}})</a>
+                    <span class="badge rounded-pill bg-primary mb-1">
+                        {{ $option['label'] }}:"{{$filters[$option['value']]}}"
+                        <a class="text-white" href="#" onclick="removeFilter('{{$option['value']}}', null)"><i class="bi bi-x-circle-fill"></i></a>
+                    </span>
                 @elseif( is_array( $filters[$option['value']]) )
                     @foreach ($filters[$option['value']] as $key => $filter)
-                        <a href="#" onclick="removeFilter('{{$option['value']}}', {{$key}})">({{$option['label'] }}: {{$filters[$option['value']][$key]}})</a>
+                        <span class="badge rounded-pill bg-primary mb-1">
+                            {{$option['label'] }}:"{{$filters[$option['value']][$key]}}"
+                            <a class="text-white" href="#" onclick="removeFilter('{{$option['value']}}', null)"><i class="bi bi-x-circle-fill"></i></a>
+                        </span>                    
                     @endforeach
                 @endif
             @endif
-        @endforeach
-
+            @endforeach        
+        </div>
     </div>
-
-    <div style="flex-grow: 1; display: flex; justify-content: flex-end;">
-        <form onsubmit="submitFilters(event)">
-            <select id="filterType" name='type'>
-                @foreach ($options as $option)
-                    <option 
-                        value="{{$option['value']}}" 
-                        {{ array_key_exists( 'selected', $option ) && $option['selected'] === true ? 'selected' : '' }}
-                    >{{$option['label']}}</option>
-                @endforeach
-            </select>
-            <input id="filterValue" type="text" name='value' />
-            <button type="submit">Filtrar</button>
-        </form>
-    </div>
-
 </div>
