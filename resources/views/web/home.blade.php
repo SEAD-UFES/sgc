@@ -3,22 +3,24 @@
 @section('title', 'Home')
 
 @section('content')
-    <section>
-        <h2>Home&nbsp;
-            @if (session('sessionUser')->currentBond != null)
-                [{{ session('sessionUser')->currentBond->role->name }} -
-                {{ session('sessionUser')->currentBond->course->name }} -
-                {{ session('sessionUser')->currentBond->pole->name }}]
-            @endif
-        </h2>
-    </section>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb border-top border-bottom bg-light">
+            <li class="breadcrumb-item active" aria-current="page">
+                Home&nbsp;
+                @if (session('sessionUser')->currentBond != null)
+                    [{{ session('sessionUser')->currentBond->role->name }} -
+                    {{ session('sessionUser')->currentBond->course->name }} -
+                    {{ session('sessionUser')->currentBond->pole->name }}]
+                @endif
+            </li>
+        </ol>
+    </nav>
     <section id="pageContent">
         <main role="main">
-            <h3>Notificações</h3>
-            <br />
-
             <div class="row justify-content-center">
                 <div class="col-xl-8 col-xxl-6">
+                    <h3>Notificações</h3>
+                    <br />
                     <table class="table table-striped table-hover mx-1">
                         <thead>
                             <tr>

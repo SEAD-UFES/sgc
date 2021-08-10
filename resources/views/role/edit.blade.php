@@ -3,15 +3,20 @@
 @section('title', 'Editar Atribuição')
 
 @section('content')
-    <section>
-        <h2>Editar Atribuição</h2>
-    </section>
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb border-top border-bottom bg-light">
+            <li class="breadcrumb-item"><a href="{{ route('system') }}">Sistema</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('roles.index') }}">Listar Atribuições</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Editar: {{ $role->name }}</li>
+        </ol>
+    </nav>
     <section id="pageContent">
         <main role="main">
             <form action={{ route('roles.update', $role->id) }} method="POST">
                 @method('PATCH')
                 @component('role.componentRoleForm', compact('role', 'grantTypes'))@endcomponent
-                <button type="submit" class="btn btn-primary">Atualizar</button> <button type="button" onclick="history.back()" class="btn btn-secondary">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Atualizar</button> <button type="button"
+                    onclick="history.back()" class="btn btn-secondary">Cancelar</button>
                 @error('noStore')
                     <div class="error">> {{ $message }}</div>
                 @enderror

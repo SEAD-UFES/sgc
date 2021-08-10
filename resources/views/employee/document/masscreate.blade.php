@@ -3,9 +3,12 @@
 @section('title', 'Importar Documentos de Colaborador')
 
 @section('content')
-    <section>
-        <h2>Importar Documentos de Colaborador</h2>
-    </section>
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb border-top border-bottom bg-light">
+            <li class="breadcrumb-item"><a href="{{ route('employee') }}">Colaboradores</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Importar Documentos de Colaborador</li>
+        </ol>
+    </nav>
     <section id="pageContent">
         <main role="main">
             <form action={{ route('employees.document.mass.import') }} method="POST" enctype="multipart/form-data">
@@ -41,7 +44,7 @@
                 @enderror
             </form>
             <br />
-            <p>Formato esperado de arquivos: pdf, jpeg, png, jpg</p><br />
+            <p>Formato esperado de arquivos: pdf, jpeg, png, jpg</p>
             <br />
         </main>
     </section>

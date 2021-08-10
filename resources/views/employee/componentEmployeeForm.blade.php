@@ -5,7 +5,6 @@
     };
 </script>
 
-
 @csrf
 <div class="mb-3">
     <label for="inputName1" class="form-label">Nome*</label>
@@ -245,4 +244,3 @@
         <div class="error">> {{ $message }}</div>
     @enderror
 </div>
-<br />

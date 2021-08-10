@@ -11,9 +11,12 @@
                 document.getElementById(id).style.display = 'table-row';
         }
     </script>
-    <section>
-        <h2>Colaboradores</h2>
-    </section>
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb border-top border-bottom bg-light">
+            <li class="breadcrumb-item"><a href="{{ route('employee') }}">Colaboradores</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Listar Colaboradores</li>
+        </ol>
+    </nav>
     <section id="pageContent">
         <main role="main">
             @if ($message = Session::get('success'))
@@ -63,9 +66,11 @@
                 <tbody>
                     @foreach ($employees as $employee)
                         <tr>
-                            <td onclick="toogleById({{ '\'contactLine_' . $employee->id . '\');' }}">{{ $employee->cpf }}
+                            <td onclick="toogleById({{ '\'contactLine_' . $employee->id . '\');' }}">
+                                {{ $employee->cpf }}
                             </td>
-                            <td onclick="toogleById({{ '\'contactLine_' . $employee->id . '\');' }}">{{ $employee->name }}</td>
+                            <td onclick="toogleById({{ '\'contactLine_' . $employee->id . '\');' }}">
+                                {{ $employee->name }}</td>
                             <td>{{ $employee->job }}</td>
                             {{-- <td>{{ $employee->gender->name }}</td>
                             <td>{{ $employee->birthday }}</td>
@@ -91,9 +96,9 @@
                             <td>{{ $employee->mobile }}</td>
                             <td>{{ $employee->email }}</td> --}}
                             <td>{{ $employee->user->id ?? '' }}</td>
-                            <td><a href="{{ route('employees.show', $employee) }}">Exibir</a></td>
-                            <td><a href="{{ route('employees.edit', $employee) }}">Editar</a></td>
-                            <td>
+                            <td class="text-center"><a href="{{ route('employees.show', $employee) }}">Exibir</a></td>
+                            <td class="text-center"><a href="{{ route('employees.edit', $employee) }}">Editar</a></td>
+                            <td class="text-center">
                                 <form name="{{ 'formDelete' . $employee->id }}"
                                     action="{{ route('employees.destroy', $employee) }}" method="POST">
                                     @method('DELETE')
@@ -118,8 +123,8 @@
                 </tbody>
             </table>
             {!! $employees->links() !!}
-            <br />
             <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+            <br /><br />
         </main>
     </section>
 @endsection

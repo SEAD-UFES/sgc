@@ -1,7 +1,7 @@
 <table class="table table-striped table-hover">
     <thead>
         <th>@sortablelink('vinculo', 'Vínculo')</th>
-        <th>@sortablelink('original_name', 'Nome')</th>
+        <th>@sortablelink('original_name', 'Nome do arquivo')</th>
         <th>@sortablelink('documentType.name', 'Tipo')</th>
     </thead>
     <tbody>

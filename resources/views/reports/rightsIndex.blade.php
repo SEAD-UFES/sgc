@@ -3,9 +3,12 @@
 @section('title', 'Documentos de Termos e Licença')
 
 @section('content')
-    <section>
-        <h2>Documentos de Termos e Licença</h2>
-    </section>
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb border-top border-bottom bg-light">
+            <li class="breadcrumb-item"><a href="{{ route('employee') }}">Relatórios</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Listar Documentos de Termos e Licença</li>
+        </ol>
+    </nav>
     <section id="pageContent">
         <main role="main">
             @if ($message = Session::get('success'))
@@ -37,8 +40,8 @@
                     @endforeach
                 </tbody>
             </table>
-            <br />
             <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+            <br /><br />
         </main>
     </section>
 @endsection

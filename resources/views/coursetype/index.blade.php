@@ -3,9 +3,12 @@
 @section('title', 'Tipos de Cursos')
 
 @section('content')
-    <section>
-        <h2>Tipos de Cursos</h2>
-    </section>
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb border-top border-bottom bg-light">
+            <li class="breadcrumb-item"><a href="{{ route('system') }}">Sistema</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Listar Tipos de Cursos</li>
+        </ol>
+    </nav>
     <section id="pageContent">
         <main role="main">
             <table class="table table-striped table-hover">
@@ -22,8 +25,8 @@
                     @endforeach
                 </tbody>
             </table>
-            <br />
             <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+            <br /><br />
         </main>
     </section>
 @endsection

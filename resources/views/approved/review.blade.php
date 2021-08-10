@@ -22,9 +22,13 @@
             }
         }
     </script>
-    <section>
-        <h2>Revisão de Importação</h2>
-    </section>
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb border-top border-bottom bg-light">
+            <li class="breadcrumb-item"><a href="{{ route('employee') }}">Colaboradores</a></li>
+            <li class="breadcrumb-item">Importar Aprovados</li>
+            <li class="breadcrumb-item active" aria-current="page">Revisão de Importação</li>
+        </ol>
+    </nav>
     <section id="pageContent">
         <main role="main">
             @if ($message = Session::get('success'))

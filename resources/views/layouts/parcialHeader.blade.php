@@ -1,8 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"><img src="{{ asset('/sead.png') }}" alt="" width="30" {{-- height="24" --}}
-                class="d-inline-block align-text-top">
-            SGC</a>
+        <a class="navbar-brand" href="#"><img src="{{ asset('/sead.png') }}" alt="" width="30"
+                class="d-inline-block align-text-top">&nbsp;SGC&nbsp;</a>
         @if (Auth::check())
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -16,7 +15,7 @@
 
                     @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCor'])
                         <li class="nav-item"><a class="nav-link" href="{{ route('employee') }}">Colaboradores</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('funding') }}">Fomento</a></li>
+                        {{-- <li class="nav-item"><a class="nav-link" href="{{ route('funding') }}">Fomento</a></li> --}}
                     @endcanany
 
                     <li class="nav-item"><a class="nav-link" href="{{ route('report') }}">Relatórios</a></li>

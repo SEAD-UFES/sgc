@@ -3,9 +3,12 @@
 @section('title', 'Usuários')
 
 @section('content')
-    <section>
-        <h2>Usuários</h2>
-    </section>
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb border-top border-bottom bg-light">
+            <li class="breadcrumb-item"><a href="{{ route('system') }}">Sistema</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Listar Usuários</li>
+        </ol>
+    </nav>
     <section id="pageContent">
         <main role="main">
             @if ($message = Session::get('success'))
@@ -18,17 +21,16 @@
             @component(
                 '_components.filters_form', 
                 [
-                    'filters' =>$filters,
+                    'filters' => $filters,
                     'options' => [
-                        [ 'label'=>'E-mail', 'value'=>'email_contains', 'selected'=>true],
-                        [ 'label'=>'Tipo', 'value'=>'usertype_name_contains'],
-                        [ 'label'=>'Ativo', 'value'=>'active_exactly'],
-                        [ 'label'=>'Colaborador', 'value'=>'employee_name_contains'],
-
-                    ]
+                        ['label' => 'E-mail', 'value' => 'email_contains', 'selected' => true], 
+                        ['label' => 'Tipo', 'value' => 'usertype_name_contains'], 
+                        ['label' => 'Ativo', 'value' => 'active_exactly'], 
+                        ['label' => 'Colaborador', 'value' => 'employee_name_contains']
+                    ],
                 ]
             )@endcomponent
-            <br/>
+            <br />
 
             <table class="table table-striped table-hover">
                 <thead>
@@ -36,7 +38,7 @@
                     <th>@sortablelink('userType.name', 'Tipo')</th>
                     <th>@sortablelink('active', 'Ativo')</th>
                     <th>@sortablelink('employee.name', 'Colaborador')</th>
-                    <th colspan="2">Ações</th>
+                    <th colspan="2" class="text-center">Ações</th>
                 </thead>
                 <tbody>
                     @foreach ($users as $user)
@@ -44,9 +46,9 @@
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->userType->name }}</td>
                             <td>{{ $user->active === 1 ? 'Sim' : 'Não' }}</td>
-                            <td>{{ ($user->employee) ? $user->employee->name : 'Não possui' }}</td>
-                            <td><a href="{{ route('users.edit', $user) }}">Editar</a></td>
-                            <td>
+                            <td>{{ $user->employee ? $user->employee->name : 'Não possui' }}</td>
+                            <td class="text-center"><a href="{{ route('users.edit', $user) }}">Editar</a></td>
+                            <td class="text-center">
                                 <form name="{{ 'formDelete' . $user->id }}" action="{{ route('users.destroy', $user) }}"
                                     method="POST">
                                     @method('DELETE')
@@ -61,12 +63,12 @@
                 </tbody>
             </table>
             {!! $users->links() !!}
-            <br />
             <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+            <br /><br />
         </main>
     </section>
 @endsection
 
 @section('scripts')
-@component('_components.filters_script', ['filters' =>$filters] )@endcomponent
+    @component('_components.filters_script', ['filters' => $filters])@endcomponent
 @endsection

@@ -3,9 +3,13 @@
 @section('title', 'Editar Atribuição')
 
 @section('content')
-    <section>
-        <h2>Editar Polo</h2>
-    </section>
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb border-top border-bottom bg-light">
+        <li class="breadcrumb-item"><a href="{{ route('system') }}">Sistema</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('poles.index') }}">Listar Polos</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Editar: {{ $pole->name }}</li>
+    </ol>
+</nav>
     <section id="pageContent">
         <main role="main">
             <form action={{ route('poles.update', $pole->id) }} method="POST">

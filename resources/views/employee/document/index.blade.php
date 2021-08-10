@@ -3,9 +3,12 @@
 @section('title', 'Documentos de Colaboradores')
 
 @section('content')
-    <section>
-        <h2>Documentos de Colaboradores</h2>
-    </section>
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb border-top border-bottom bg-light">
+            <li class="breadcrumb-item"><a href="{{ route('employee') }}">Colaboradores</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Listar Documentos de Colaboradores</li>
+        </ol>
+    </nav>
     <section id="pageContent">
         <main role="main">
             @if ($message = Session::get('success'))
@@ -23,13 +26,15 @@
                     @foreach ($documents as $document)
                         <tr>
                             <td>{{ $document->employee->name }}</td>
-                            <td><a href={{ route('documents.show', ['id' => $document->id, 'type' => 'EmployeeDocument', 'htmlTitle' => $document->original_name]) }} target="_blank">{{ $document->original_name }}</a></td>
+                            <td><a href={{ route('documents.show', ['id' => $document->id, 'type' => 'EmployeeDocument', 'htmlTitle' => $document->original_name]) }}
+                                    target="_blank">{{ $document->original_name }}</a></td>
                             <td>{{ $document->documentType->name }}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-            <br />
+            <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+            <br /><br />
         </main>
     </section>
 @endsection

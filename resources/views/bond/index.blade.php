@@ -11,9 +11,12 @@
                 document.getElementById(id).style.display = 'table-row';
         }
     </script>
-    <section>
-        <h2>Vínculos</h2>
-    </section>
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb border-top border-bottom bg-light">
+            <li class="breadcrumb-item"><a href="{{ route('employee') }}">Colaboradores</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Listar Vínculos</li>
+        </ol>
+    </nav>
     <section id="pageContent">
         <main role="main">
             @if ($message = Session::get('success'))
@@ -22,7 +25,6 @@
                 </div><br />
             @endif
             <p style="color: red"> Clique no Nome ou Atribuição para exibir/ocultar as informações de datas</p>
-            <br />
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
@@ -44,7 +46,8 @@
                         <tr>
                             <td onclick="toogleById({{ '\'datesLine_' . $bond->id . '\');' }}">
                                 {{ $bond->employee->name }}</td>
-                            <td onclick="toogleById({{ '\'datesLine_' . $bond->id . '\');' }}">{{ $bond->role->name }}
+                            <td onclick="toogleById({{ '\'datesLine_' . $bond->id . '\');' }}">
+                                {{ $bond->role->name }}
                             </td>
                             <td>{{ $bond->course->name }}</td>
                             <td>{{ $bond->pole->name }}</td>
@@ -56,10 +59,10 @@
                             {{-- <td>{{ isset($bond->uaba_checked_on) ? \Carbon\Carbon::parse($bond->uaba_checked_on)->isoFormat('DD/MM/Y') : '' }} --}}
                             </td>
                             <td>{{ $bond->impediment === 1 ? 'Sim' : 'Não' }}</td>
-                            <td><a href="{{ route('bonds.show', $bond) }}">Detalhes</a></td>
-                            <td><a href="{{ route('employees.show', $bond->employee) }}">Ver Colaborador</a></td>
-                            <td><a href="{{ route('bonds.edit', $bond->id) }}">Editar vínculo</a></td>
-                            <td>
+                            <td class="text-center"><a href="{{ route('bonds.show', $bond) }}">Detalhes</a></td>
+                            <td class="text-center"><a href="{{ route('employees.show', $bond->employee) }}">Ver Colaborador</a></td>
+                            <td class="text-center"><a href="{{ route('bonds.edit', $bond->id) }}">Editar vínculo</a></td>
+                            <td class="text-center">
                                 <form name="{{ 'formDelete' . $bond->id }}"
                                     action="{{ route('bonds.destroy', $bond) }}" method="POST">
                                     @method('DELETE')
@@ -86,7 +89,8 @@
                 </tbody>
             </table>
             {!! $bonds->links() !!}
-            <br />
+            <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+            <br /><br />
         </main>
     </section>
 @endsection

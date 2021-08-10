@@ -3,9 +3,12 @@
 @section('title', 'Aprovados')
 
 @section('content')
-    <section>
-        <h2>Aprovados</h2>
-    </section>
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb border-top border-bottom bg-light">
+            <li class="breadcrumb-item"><a href="{{ route('employee') }}">Colaboradores</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Listar Aprovados</li>
+        </ol>
+    </nav>
     <section id="pageContent">
         <main role="main">
             @if ($message = Session::get('success'))
@@ -43,7 +46,8 @@
                             @if ($approved->approvedState->hasNext())
                                 @foreach ($approved->approvedState->getNext() as $state)
                                     <td title="{{ $state->description }}" @if ($approved->approvedState->getNext()->count() == 1) colspan="2" @endif>
-                                        <a href="{{ route('approveds.changestate', ['approved' => $approved, 'state' => $state->id]) }}">{{ $state->name }}</a>
+                                        <a
+                                            href="{{ route('approveds.changestate', ['approved' => $approved, 'state' => $state->id]) }}">{{ $state->name }}</a>
                                     </td>
                                 @endforeach
                             @else
@@ -67,7 +71,8 @@
                 </tbody>
             </table>
             {!! $approveds->links() !!}
-            <br />
+            <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+            <br /><br />
         </main>
     </section>
 @endsection

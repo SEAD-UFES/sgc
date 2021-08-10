@@ -3,9 +3,12 @@
 @section('title', 'Cursos')
 
 @section('content')
-    <section>
-        <h2>Cursos</h2>
-    </section>
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb border-top border-bottom bg-light">
+        <li class="breadcrumb-item"><a href="{{ route('system') }}">Sistema</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Listar Cursos</li>
+    </ol>
+</nav>
     <section id="pageContent">
         <main role="main">
             @if ($message = Session::get('success'))
@@ -42,7 +45,7 @@
                     <th>@sortablelink('courseType.name', 'Tipo do Curso')</th>
                     <th>@sortablelink('begin', 'Início')</th>
                     <th>@sortablelink('end', 'Fim')</th>
-                    <th colspan="2">Ações</th>
+                    <th colspan="2" class="text-center">Ações</th>
                 </thead>
                 <tbody>
                     @foreach ($courses as $course)
@@ -52,8 +55,8 @@
                             <td>{{ $course->courseType->name }}</td>
                             <td>{{ \Carbon\Carbon::parse($course->begin)->isoFormat('DD/MM/Y') }}</td> 
                             <td>{{ \Carbon\Carbon::parse($course->end)->isoFormat('DD/MM/Y') }}</td>
-                            <td><a href="{{ route('courses.edit', $course) }}">Editar</a></td>
-                            <td>
+                            <td class="text-center"><a href="{{ route('courses.edit', $course) }}">Editar</a></td>
+                            <td class="text-center">
                                 <form name="{{ 'formDelete' . $course->id }}" action="{{ route('courses.destroy', $course) }}"
                                     method="POST">
                                     @method('DELETE')
@@ -68,8 +71,8 @@
                 </tbody>
             </table>
             {!! $courses->links() !!}
-            <br />
             <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+            <br /><br />
         </main>
     </section>
 @endsection
