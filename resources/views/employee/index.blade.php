@@ -24,6 +24,24 @@
                     <p style="color: green; font-weight: bold">{{ $message }}</p>
                 </div><br />
             @endif
+
+            {{-- filtros --}}
+            @component(
+                '_components.filters_form', 
+                [
+                    'filters' =>$filters,
+                    'options' => [
+                        [ 'label'=>'CPF', 'value'=>'cpf_contains', 'selected'=>true],
+                        [ 'label'=>'Nome', 'value'=>'name_contains'],
+                        [ 'label'=>'Profissão', 'value'=>'job_contains'],
+                        [ 'label'=>'Cidade', 'value'=>'addresscity_contains'],
+                        [ 'label'=>'Usuário', 'value'=>'user_email_contains'],
+                    ]
+                ]
+            )@endcomponent
+            <br/>            
+            
+
             @error('noStore')
                 <div class="error">> {{ $message }}</div>
             @enderror
@@ -60,7 +78,7 @@
                     <th>Telefone</th>
                     <th>Celular</th>
                     <th>E-mail</th> --}}
-                    <th>@sortablelink('user.id', 'Usuário')</th>
+                    <th>@sortablelink('user.email', 'Usuário')</th>
                     <th colspan="3" class="text-center">Ações</th>
                 </thead>
                 <tbody>
@@ -95,10 +113,10 @@
                             <td>{{ $employee->phone }}</td>
                             <td>{{ $employee->mobile }}</td>
                             <td>{{ $employee->email }}</td> --}}
-                            <td>{{ $employee->user->id ?? '' }}</td>
                             <td class="text-center"><a href="{{ route('employees.show', $employee) }}">Exibir</a></td>
                             <td class="text-center"><a href="{{ route('employees.edit', $employee) }}">Editar</a></td>
                             <td class="text-center">
+                            <td>{{ $employee->user->email ?? '' }}</td>
                                 <form name="{{ 'formDelete' . $employee->id }}"
                                     action="{{ route('employees.destroy', $employee) }}" method="POST">
                                     @method('DELETE')
@@ -127,4 +145,8 @@
             <br /><br />
         </main>
     </section>
+@endsection
+
+@section('scripts')
+    @component('_components.filters_script', ['filters' =>$filters] )@endcomponent
 @endsection

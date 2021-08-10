@@ -16,6 +16,29 @@
                     <p style="color: green; font-weight: bold">{{ $message }}</p>
                 </div><br />
             @endif
+
+            {{-- filtros --}}
+            @component(
+                '_components.filters_form', 
+                [
+                    'filters' =>$filters,
+                    'options' => [
+                        [ 'label'=>'Nome', 'value'=>'name_contains', 'selected'=>true],
+                        [ 'label'=>'E-mail', 'value'=>'email_contains'],
+                        [ 'label'=>'Área', 'value'=>'areacode_contains'],
+                        [ 'label'=>'Telefone', 'value'=>'phone_contains'],
+                        [ 'label'=>'Celular', 'value'=>'mobile_contains'],
+                        [ 'label'=>'Edital', 'value'=>'announcement_contains'],
+                        [ 'label'=>'Status', 'value'=>'approvedState_name_contains'],
+                        [ 'label'=>'Atribuição', 'value'=>'role_name_contains'],
+                        [ 'label'=>'Curso', 'value'=>'course_name_contains'],
+                        [ 'label'=>'Polo', 'value'=>'pole_name_contains'],
+
+                    ]
+                ]
+            )@endcomponent
+            <br/>            
+
             <table class="table table-striped table-hover">
                 <thead>
                     <th>@sortablelink('name', 'Nome')</th>
@@ -75,4 +98,8 @@
             <br /><br />
         </main>
     </section>
+@endsection
+
+@section('scripts')
+@component('_components.filters_script', ['filters' =>$filters] )@endcomponent
 @endsection

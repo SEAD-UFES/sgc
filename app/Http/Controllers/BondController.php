@@ -20,6 +20,7 @@ use App\Notifications\NewBondNotification;
 use App\Http\Requests\ReviewBondRequest;
 use App\Notifications\BondImpededNotification;
 use App\Notifications\NewRightsNotification;
+use App\CustomClasses\ModelFilterHelpers;
 
 class BondController extends Controller
 {
@@ -30,15 +31,23 @@ class BondController extends Controller
      */
     public function index(Request $request)
     {
-        $bonds = Bond::sortable(['created_at' => 'desc'])->with(['employee', 'course', 'role', 'pole'])->paginate(10); //->orderBy('employee')
+        $bonds_query = Bond::with(['employee', 'course', 'role', 'pole']);
 
-        //add query string on page links
+        //filters
+        $filters = ModelFilterHelpers::buildFilters($request, Bond::$accepted_filters);
+        $bonds_query = $bonds_query->AcceptRequest(Bond::$accepted_filters)->filter();
+
+        //sort
+        $bonds_query = $bonds_query->sortable(['updated_at' => 'desc']);
+
+        //get paginate and add querystring on paginate links
+        $bonds = $bonds_query->paginate(10);
         $bonds->appends($request->all());
 
         //write on log
         SgcLogger::writeLog('Bond');
 
-        return view('bond.index', compact('bonds'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('bond.index', compact('bonds', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**

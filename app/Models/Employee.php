@@ -6,11 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Bond;
 use Kyslik\ColumnSortable\Sortable;
+use eloquentFilter\QueryFilter\ModelFilters\Filterable;
+use App\ModelFilters\employeeFilter;
 
 class Employee extends Model
 {
     use HasFactory;
     use Sortable;
+    use employeeFilter, Filterable;
 
     protected $fillable = [
         'name',
@@ -47,8 +50,18 @@ class Employee extends Model
         'name',
         'job',
         'address_city',
+        'user.email',
         'created_at',
         'updated_at'
+    ];
+
+    private static $whiteListFilter = ['*'];
+    public static $accepted_filters = [
+        'cpf_contains',
+        'name_contains',
+        'job_contains',
+        'addresscity_contains',
+        'user_email_contains'
     ];
 
     public function gender()

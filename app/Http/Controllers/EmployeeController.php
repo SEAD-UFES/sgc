@@ -12,7 +12,7 @@ use App\Models\State;
 use App\Models\User;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
-use App\Models\Bond;
+use App\CustomClasses\ModelFilterHelpers;
 
 class EmployeeController extends Controller
 {
@@ -23,15 +23,23 @@ class EmployeeController extends Controller
      */
     public function index(Request $request)
     {
-        $employees = Employee::sortable(['created_at' => 'desc'])->with(['gender', 'birthState', 'documentType', 'maritalStatus', 'addressState', 'user'])->orderBy('name')->paginate(10);
+        $employees_query = Employee::with(['gender', 'birthState', 'documentType', 'maritalStatus', 'addressState', 'user']);
 
-        //add query string on page links
+        //filters
+        $filters = ModelFilterHelpers::buildFilters($request, Employee::$accepted_filters);
+        $employees_query = $employees_query->AcceptRequest(Employee::$accepted_filters)->filter();
+
+        //sort
+        $employees_query = $employees_query->sortable(['updated_at' => 'desc']);
+
+        //get paginate and add querystring on paginate links
+        $employees = $employees_query->paginate(10);
         $employees->appends($request->all());
 
-        //write on log;
+        //write on log
         SgcLogger::writeLog('Employee');
 
-        return view('employee.index', compact('employees'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('employee.index', compact('employees', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**

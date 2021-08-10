@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Role;
 use App\Models\Course;
 use App\Models\Pole;
+use App\CustomClasses\ModelFilterHelpers;
 
 class ApprovedController extends Controller
 {
@@ -27,16 +28,26 @@ class ApprovedController extends Controller
      */
     public function index(Request $request)
     {
-        $approveds = Approved::sortable(['created_at' => 'desc'])->with(['approvedState', 'course', 'pole', 'role'])->orderBy('name')->paginate(10);
-        $approvedStates = ApprovedState::all();
+        $approveds_query = Approved::with(['approvedState', 'course', 'pole', 'role']);
 
-        //add query string on page links
+        //filters
+        $filters = ModelFilterHelpers::buildFilters($request, Approved::$accepted_filters);
+        $approveds_query = $approveds_query->AcceptRequest(Approved::$accepted_filters)->filter();
+
+        //sort
+        $approveds_query = $approveds_query->sortable(['updated_at' => 'desc']);
+
+        //get paginate and add querystring on paginate links
+        $approveds = $approveds_query->paginate(10);
         $approveds->appends($request->all());
 
-        //write on log;
+        //get approved states
+        $approvedStates = ApprovedState::all();
+
+        //write on log
         SgcLogger::writeLog('Employee');
 
-        return view('approved.index', compact('approveds', 'approvedStates'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('approved.index', compact('approveds', 'approvedStates', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
