@@ -12,7 +12,6 @@ use App\Models\State;
 use App\Models\User;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
-use App\Models\Bond;
 use App\CustomClasses\ModelFilterHelpers;
 
 class EmployeeController extends Controller

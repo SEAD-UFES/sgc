@@ -27,7 +27,8 @@ trait userFilter
 
         foreach ($values as $key => $value) {
             if (in_array(strtolower($value), ['sim', '1', 'true'])) $values[$key] = 1;
-            if (in_array(strtolower($value), ['não', 'nao', '0', 'false'])) $values[$key] = 0;
+            else if (in_array(strtolower($value), ['não', 'nao', '0', 'false'])) $values[$key] = 0;
+            else $values[$key] = null;
         }
 
         $builder = ModelFilterHelpers::simple_operation($builder, 'active', '=', $values);

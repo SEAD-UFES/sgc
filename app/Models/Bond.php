@@ -6,11 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Kyslik\ColumnSortable\Sortable;
+use eloquentFilter\QueryFilter\ModelFilters\Filterable;
+use App\ModelFilters\bondFilter;
 
 class Bond extends Pivot
 {
     use HasFactory;
     use Sortable;
+    use bondFilter, Filterable;
 
     public $incrementing = true;
 
@@ -39,6 +42,16 @@ class Bond extends Pivot
         'impediment',
         'created_at',
         'updated_at'
+    ];
+
+    private static $whiteListFilter = ['*'];
+    public static $accepted_filters = [
+        'employee_name_contains',
+        'role_name_contains',
+        'course_name_contains',
+        'pole_name_contains',
+        'volunteer_exactly',
+        'impediment_exactly'
     ];
 
     public function course()

@@ -24,6 +24,24 @@
                     <p style="color: green; font-weight: bold">{{ $message }}</p>
                 </div><br />
             @endif
+
+            {{-- filtros --}}
+            @component(
+                '_components.filters_form', 
+                [
+                    'filters' =>$filters,
+                    'options' => [
+                        [ 'label'=>'Colaborador', 'value'=>'employee_name_contains', 'selected'=>true],
+                        [ 'label'=>'Atribuição', 'value'=>'role_name_contains'],
+                        [ 'label'=>'Curso', 'value'=>'course_name_contains'],
+                        [ 'label'=>'Polo', 'value'=>'pole_name_contains'],
+                        [ 'label'=>'Voluntário', 'value'=>'volunteer_exactly'],
+                        [ 'label'=>'Impedido', 'value'=>'impediment_exactly'],
+                    ]
+                ]
+            )@endcomponent
+            <br/>  
+
             <p style="color: red"> Clique no Nome ou Atribuição para exibir/ocultar as informações de datas</p>
             <table class="table table-striped table-hover">
                 <thead>
@@ -93,4 +111,8 @@
             <br /><br />
         </main>
     </section>
+@endsection
+
+@section('scripts')
+    @component('_components.filters_script', ['filters' =>$filters] )@endcomponent
 @endsection

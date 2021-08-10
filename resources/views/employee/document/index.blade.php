@@ -26,7 +26,6 @@
                         [ 'label'=>'Colaborador', 'value'=>'employee_name_contains', 'selected'=>true],
                         [ 'label'=>'Nome do arquivo', 'value'=>'originalname_contains'],
                         [ 'label'=>'Tipo', 'value'=>'documentType_name_contains'],
-
                     ]
                 ]
             )@endcomponent
