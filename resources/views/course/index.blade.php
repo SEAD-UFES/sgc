@@ -36,8 +36,6 @@
                 ]
             )@endcomponent
 
-            <br/>
-
             <table class="table table-striped table-hover">
                 <thead>
                     <th>@sortablelink('name', 'Nome')</th>

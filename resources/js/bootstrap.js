@@ -1,4 +1,18 @@
+import Popper from "@popperjs/core/dist/umd/popper.js";
+import "bootstrap";
+
+//lodash
 window._ = require("lodash");
+
+try {
+    window.Popper = Popper;
+    window.$ = window.jQuery = require("jquery");
+} catch (e) {
+    console.log("Erro ao carregar popper ou jquery.");
+}
+
+window.axios = require("axios");
+window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -6,16 +20,16 @@ window._ = require("lodash");
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-try {
-    window.Popper = require("popper.js").default;
-    window.$ = window.jQuery = require("jquery");
+// try {
+//     window.Popper = require("popper.js").default;
+//     window.$ = window.jQuery = require("jquery");
 
-    require("bootstrap");
-} catch (e) {}
+//     require("bootstrap");
+// } catch (e) {}
 
-window.axios = require("axios");
+// window.axios = require("axios");
 
-window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+// window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

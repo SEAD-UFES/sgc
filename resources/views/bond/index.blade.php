@@ -40,7 +40,6 @@
                     ]
                 ]
             )@endcomponent
-            <br/>  
 
             <p style="color: red"> Clique no Nome ou Atribuição para exibir/ocultar as informações de datas</p>
             <table class="table table-striped table-hover">

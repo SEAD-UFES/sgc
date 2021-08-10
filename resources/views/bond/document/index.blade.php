@@ -17,8 +17,7 @@
                 </div><br />
             @endif
 
-            {{-- local para os filtros --}}
-
+            {{-- filtros --}}
             @component(
                 '_components.filters_form', 
                 [
@@ -33,8 +32,6 @@
                     ], 
                 ]
             )@endcomponent
-
-            <br />
 
             @component('bond.document.componentList', compact('documents'))@endcomponent
             <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>

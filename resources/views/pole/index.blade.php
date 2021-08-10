@@ -17,7 +17,7 @@
                 </div><br />
             @endif
 
-            {{-- local para os filtros --}}
+            {{-- filtros --}}
             @component(
                 '_components.filters_form', 
                 [
@@ -28,7 +28,6 @@
                     ], 
                 ]
             )@endcomponent
-            <br />
 
             <table class="table table-striped table-hover">
                 <thead>

@@ -29,7 +29,6 @@
                     ]
                 ]
             )@endcomponent
-            <br/> 
 
             <table class="table table-striped table-hover">
                 <thead>
