@@ -6,12 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
+use App\ModelFilters\employeeDocumentFilter;
 
 class EmployeeDocument extends Model
 {
     use HasFactory;
     use Sortable;
-    use Filterable;
+    use employeeDocumentFilter, Filterable;
 
     protected $fillable = [
         'original_name',
@@ -26,7 +27,11 @@ class EmployeeDocument extends Model
     ];
 
     private static $whiteListFilter = ['*'];
-    public static $accepted_filters = ['*'];
+    public static $accepted_filters = [
+        'employee_name_contains',
+        'originalname_contains',
+        'documentType_name_contains'
+    ];
 
     public function documentType()
     {

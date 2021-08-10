@@ -16,6 +16,22 @@
                     <p style="color: green; font-weight: bold">{{ $message }}</p>
                 </div><br />
             @endif
+
+            {{-- filtros --}}
+            @component(
+                '_components.filters_form', 
+                [
+                    'filters' =>$filters,
+                    'options' => [
+                        [ 'label'=>'Colaborador', 'value'=>'employee_name_contains', 'selected'=>true],
+                        [ 'label'=>'Nome do arquivo', 'value'=>'originalname_contains'],
+                        [ 'label'=>'Tipo', 'value'=>'documentType_name_contains'],
+
+                    ]
+                ]
+            )@endcomponent
+            <br/> 
+
             <table class="table table-striped table-hover">
                 <thead>
                     <th>@sortablelink('employee.name', 'Colaborador')</th>
@@ -37,4 +53,8 @@
             <br /><br />
         </main>
     </section>
+@endsection
+
+@section('scripts')
+    @component('_components.filters_script', ['filters' =>$filters] )@endcomponent
 @endsection

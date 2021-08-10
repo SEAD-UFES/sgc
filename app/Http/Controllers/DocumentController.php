@@ -47,9 +47,7 @@ class DocumentController extends Controller
     public function employeesDocumentIndex(Request $request)
     {
         $model = 'EmployeeDocument';
-
         $resArray = $this->getViewParameters($model, $request);
-
         return view('employee.document.index', $resArray);
     }
 
@@ -59,7 +57,6 @@ class DocumentController extends Controller
     public function bondsDocumentIndex(Request $request)
     {
         $model = 'BondDocument';
-
         $resArray = $this->getViewParameters($model, $request);
         return view('bond.document.index', $resArray);
     }

@@ -148,5 +148,5 @@
 @endsection
 
 @section('scripts')
-@component('_components.filters_script', ['filters' =>$filters] )@endcomponent
+    @component('_components.filters_script', ['filters' =>$filters] )@endcomponent
 @endsection

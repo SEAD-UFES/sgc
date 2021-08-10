@@ -4,7 +4,6 @@ namespace App\ModelFilters;
 
 use Illuminate\Database\Eloquent\Builder;
 use App\CustomClasses\ModelFilterHelpers;
-use App\Models\ApprovedState;
 
 trait employeeFilter
 {
