@@ -26,8 +26,8 @@
 
             <table class="table table-striped table-hover">
                 <thead>
-                    <th>Nome</th>
-                    <th>Descrição</th>
+                    <th>@sortablelink('name', 'Nome')</th>
+                    <th>@sortablelink('description', 'Descrição')</th>
                 </thead>
                 <tbody>
                     @foreach ($courseTypes as $courseType)
