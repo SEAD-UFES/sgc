@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Response;
 use App\CustomClasses\ModelFilterHelpers;
 
-
 class DocumentController extends Controller
 {
     public function getViewParameters($model, $request)
@@ -70,16 +69,27 @@ class DocumentController extends Controller
     {
         $type = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
 
-        $documents = BondDocument::with('bond')->where('document_type_id', $type->id)->whereHas('bond', function ($query) {
-            $query->whereNotNull('uaba_checked_at')->where('impediment', false);
-        })->get(); //->sortable(['created_at' => 'desc'])->paginate(10);
+        $documents_query = BondDocument::with('bond')
+            ->where('document_type_id', $type->id)
+            ->whereHas('bond', function ($query) {
+                $query->whereNotNull('uaba_checked_at')->where('impediment', false);
+            });
 
-        //add query string on page links
-        //$documents->appends($request->all());
+        //filters
+        $filters = ModelFilterHelpers::buildFilters($request, BondDocument::$accepted_filters);
+        $documents_query = $documents_query->AcceptRequest(BondDocument::$accepted_filters)->filter();
 
+        //sort
+        $documents_query = $documents_query->sortable(['updated_at' => 'desc']);
+
+        //get paginate and add querystring on paginate links
+        $documents = $documents_query->paginate(10);
+        $documents->appends($request->all());
+
+        //write on log
         SgcLogger::writeLog('BondsRightsIndex', 'index');
 
-        return view('reports.rightsIndex', compact('documents'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('reports.rightsIndex', compact('documents', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
