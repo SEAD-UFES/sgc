@@ -7,13 +7,9 @@ use App\Models\Gender;
 use App\Models\State;
 use App\Models\DocumentType;
 use App\Models\MaritalStatus;
+use App\Helpers\TextHelper;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-
-function removeAccents($str) {
-    return transliterator_transliterate('NFKC; [:Nonspacing Mark:] Remove; NFKC; Any-Latin; Latin-ASCII', $str);
-}
-
 
 class EmployeeFactory extends Factory
 {
@@ -71,7 +67,7 @@ class EmployeeFactory extends Factory
             'area_code' => $this->faker->areaCode(),
             'phone' => $this->faker->landline($formatted = true),
             'mobile' => $this->faker->cellphone($formatted = true),
-            'email' => str_replace(' ', '', removeAccents(Str::lower($firstName))) . '.' . str_replace(' ', '', removeAccents(Str::lower($lastname))) . '.' . $this->faker->unique()->word . '@' . $this->faker->safeEmailDomain(), //$this->faker->email(),
+            'email' => str_replace(' ', '', TextHelper::removeAccents(Str::lower($firstName))) . '.' . str_replace(' ', '', TextHelper::removeAccents(Str::lower($lastname))) . '.' . $this->faker->unique()->word . '@' . $this->faker->safeEmailDomain(), //$this->faker->email(),
 
             'created_at' => now(),
             'updated_at' => now(),
