@@ -4,11 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"> --}}
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>SGC - @yield('title')</title>
     <meta name="description" content="SGC - Sistema de Gestão de Colaboradores da Sead/Ufes">
     <link rel="shortcut icon" href="{{ asset('/sead.png') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <script src="{{ asset('js/app.js') }}"></script>
 </head>
 
