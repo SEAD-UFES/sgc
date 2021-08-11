@@ -16,16 +16,29 @@
                     <p style="color: green; font-weight: bold">{{ $message }}</p>
                 </div><br />
             @endif
+
+            {{-- filtros --}}
+            @component(
+                '_components.filters_form', 
+                [
+                    'filters' => $filters,
+                    'options' => [
+                        ['label' => 'Colaborador', 'value' => 'bond_employee_name_contains', 'selected' => true], 
+                        ['label' => 'Atribuição', 'value' => 'bond_role_name_contains'], 
+                        ['label' => 'Curso', 'value' => 'bond_course_name_contains'],
+                        ['label' => 'Polo', 'value' => 'bond_pole_name_contains'],  
+                        ['label' => 'Nome do arquivo', 'value' => 'originalname_contains'], 
+                    ], 
+                ]
+            )@endcomponent
+
             <table class="table table-striped table-hover">
-                <thead>{{-- <th>@sortablelink('employee.name', 'Colaborador')</th>
-                    <th>@sortablelink('role.name', 'Atribuição')</th>
-                    <th>@sortablelink('course.name', 'Curso')</th>
-                    <th>@sortablelink('pole.name', 'Polo')</th> --}}
-                    <th>Colaborador</th>
-                    <th>Atribuição</th>
-                    <th>Curso</th>
-                    <th>Polo</th>
-                    <th>Nome</th>
+                <thead>
+                    <th>@sortablelink('bond_employee_name', 'Colaborador')</th>
+                    <th>@sortablelink('bond_role_name', 'Atribuição')</th>
+                    <th>@sortablelink('bond_course_name', 'Curso')</th>
+                    <th>@sortablelink('bond_pole_name', 'Polo')</th>
+                    <th>@sortablelink('original_name', 'Nome')</th>
                 </thead>
                 <tbody>
                     @foreach ($documents as $document)
@@ -44,4 +57,8 @@
             <br /><br />
         </main>
     </section>
+@endsection
+
+@section('scripts')
+    @component('_components.filters_script', ['filters' => $filters])@endcomponent
 @endsection

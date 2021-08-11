@@ -23,7 +23,6 @@
                 [
                     'filters' => $filters,
                     'options' => [
-                        
                         ['label' => 'Colaborador', 'value' => 'bond_employee_name_contains', 'selected' => true], 
                         ['label' => 'Cargo', 'value' => 'bond_role_name_contains'], 
                         ['label' => 'Curso', 'value' => 'bond_course_name_contains'], 
@@ -41,7 +40,5 @@
 @endsection
 
 @section('scripts')
-
     @component('_components.filters_script', ['filters' => $filters])@endcomponent
-
 @endsection
