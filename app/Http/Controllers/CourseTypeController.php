@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CourseType;
 use Illuminate\Http\Request;
 use App\CustomClasses\SgcLogger;
+use App\CustomClasses\ModelFilterHelpers;
 
 class CourseTypeController extends Controller
 {
@@ -13,13 +14,25 @@ class CourseTypeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $courseTypes = CourseType::orderBy('name')->get();
+        $coursesTypes_query = new CourseType();
 
+        //filters
+        $filters = ModelFilterHelpers::buildFilters($request, CourseType::$accepted_filters);
+        $coursesTypes_query = $coursesTypes_query->AcceptRequest(CourseType::$accepted_filters)->filter();
+
+        //sort
+        $coursesTypes_query = $coursesTypes_query->sortable(['name' => 'asc']);
+
+        //get paginate and add querystring on paginate links
+        $courseTypes = $coursesTypes_query->paginate(10);
+        $courseTypes->appends($request->all());
+
+        //write on log
         SgcLogger::writeLog('CourseType');
 
-        return view('coursetype.index', compact('courseTypes'));
+        return view('coursetype.index', compact('courseTypes', 'filters'));
     }
 
     /**
