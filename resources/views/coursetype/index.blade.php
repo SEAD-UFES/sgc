@@ -11,10 +11,23 @@
     </nav>
     <section id="pageContent">
         <main role="main">
+
+            {{-- filtros --}}
+            @component(
+                '_components.filters_form', 
+                [
+                    'filters' =>$filters,
+                    'options' => [
+                        [ 'label'=>'Nome', 'value'=>'name_contains', 'selected'=>true],
+                        [ 'label'=>'Descrição', 'value'=>'description_contains']
+                    ]
+                ]
+            )@endcomponent
+
             <table class="table table-striped table-hover">
                 <thead>
-                    <th>Nome</th>
-                    <th>Descrição</th>
+                    <th>@sortablelink('name', 'Nome')</th>
+                    <th>@sortablelink('description', 'Descrição')</th>
                 </thead>
                 <tbody>
                     @foreach ($courseTypes as $courseType)
@@ -29,4 +42,8 @@
             <br /><br />
         </main>
     </section>
+@endsection
+
+@section('scripts')
+    @component('_components.filters_script', ['filters' =>$filters] )@endcomponent
 @endsection
