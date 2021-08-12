@@ -17,7 +17,7 @@
         <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{ $bond->employee->email ?? '-' }}">
     </div>
 </div>
-<h4>> Dados do vínculo</h4><br />
+<h4>> Dados do vínculo</h4>
 <div class="mb-1 row">
     <label for="staticEmail" class="col-sm-2 col-form-label">Atribuição:</label>
     <div class="col-sm-10">

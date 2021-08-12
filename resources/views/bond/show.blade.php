@@ -15,7 +15,7 @@
 <section id="pageContent">
     <main role="main">
         @component('bond.componentBondDetails', compact('bond'))@endcomponent
-        <h4>> Documentos</h4><br />
+        <h4>> Documentos</h4>
         @component('bond.document.componentList', compact('documents'))@endcomponent
         <a href="{{ route('bonds.document.massdownload', $bond) }}"
             style="text-decoration: none; font-weight:bold;">&nbsp;&#8627; Fazer o download de todos os documentos do
