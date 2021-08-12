@@ -3,24 +3,26 @@
 @section('title', 'Exibir Vínculo')
 
 @section('content')
-    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-        <ol class="breadcrumb border-top border-bottom bg-light">
-            <li class="breadcrumb-item"><a href="{{ route('employee') }}">Colaboradores</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('bonds.index') }}">Listar Vínculos</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Exibir:
-                [{{ $bond->employee->name . '-' . $bond->role->name . '-' . $bond->course->name . '-' . $bond->pole->name }}]
-            </li>
-        </ol>
-    </nav>
-    <section id="pageContent">
-        <main role="main">
-            @component('bond.componentBondDetails', compact('bond'))@endcomponent
-            <h4>> Documentos</h4><br />
-            @component('bond.document.componentList', compact('documents'))@endcomponent
-            <a href="{{ route('bonds.document.massdownload', $bond) }}"
-                style="text-decoration: none; font-weight:bold;">&nbsp;&#8627; Fazer o download de todos os documentos do
-                vínculo (zip)</a>
-            <br /><br /><br />
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb border-top border-bottom bg-light">
+        <li class="breadcrumb-item"><a href="{{ route('employee') }}">Colaboradores</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('bonds.index') }}">Listar Vínculos</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Exibir:
+            [{{ $bond->employee->name . '-' . $bond->role->name . '-' . $bond->course->name . '-' . $bond->pole->name }}]
+        </li>
+    </ol>
+</nav>
+<section id="pageContent">
+    <main role="main">
+        @component('bond.componentBondDetails', compact('bond'))@endcomponent
+        <h4>> Documentos</h4><br />
+        @component('bond.document.componentList', compact('documents'))@endcomponent
+        <a href="{{ route('bonds.document.massdownload', $bond) }}"
+            style="text-decoration: none; font-weight:bold;">&nbsp;&#8627; Fazer o download de todos os documentos do
+            vínculo (zip)</a>
+        <br /><br /><br />
+
+        @canany(['isAdm', 'isDir', 'isAss'])
             <fieldset class="bg-warning px-2 py-2">
                 <h4>> Revisão</h4>
                 <form name="{{ 'formReview' . $bond->id }}" action="{{ route('bonds.review', $bond) }}" method="POST">
@@ -48,8 +50,20 @@
                     <input type="submit" value="Revisar" class="btn btn-primary my-2 mx-1">
                 </form>
             </fieldset><br />
-            <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
-            <br /><br />
-        </main>
-    </section>
+        @endcanany
+
+        @canany(['isAdm', 'isDir', 'isSec', 'isCor'])
+            @if ($bond->impediment == '1')
+                <fieldset class="bg-warning px-2 py-2">
+                    <h4>> Nova Revisão</h4>
+                    <a href="{{ route('bonds.requestReview', $bond->id) }}" class="btn btn-primary my-2 mx-1">Solicitar
+                        nova revisão</a>
+                </fieldset><br />
+            @endif
+        @endcanany
+
+        <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+        <br /><br />
+    </main>
+</section>
 @endsection

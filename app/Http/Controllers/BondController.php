@@ -21,6 +21,7 @@ use App\Http\Requests\ReviewBondRequest;
 use App\Notifications\BondImpededNotification;
 use App\Notifications\NewRightsNotification;
 use App\CustomClasses\ModelFilterHelpers;
+use App\Notifications\RequestReviewNotification;
 
 class BondController extends Controller
 {
@@ -232,5 +233,31 @@ class BondController extends Controller
         }
 
         return redirect()->route('bonds.show', $bond)->with('success', 'Vínculo atualizado com sucesso.');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Bond  $bond
+     * @return \Illuminate\Http\Response
+     */
+    public function requestReview(Request $request, Bond $bond)
+    {
+        $academicSecretaries = UserType::with('users')->Where('acronym', 'sec')->first()->users;
+
+        $courseBonds = Bond::with(['employee'])->where('course_id', $bond->course->id)->get();
+
+        $courseCoordinators = collect();
+
+        foreach ($courseBonds as $courseBond)
+            if ($courseBond->employee->isCourseCoordinator() && !is_null($courseBond->employee->user))
+                $courseCoordinators->push($courseBond->employee->user);
+
+        $assistants = UserType::with('users')->Where('acronym', 'ass')->first()->users;
+
+        $users = $academicSecretaries->merge($courseCoordinators)->merge($assistants);
+
+        Notification::send($users, new RequestReviewNotification($bond));
     }
 }
