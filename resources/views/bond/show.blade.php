@@ -22,12 +22,15 @@
             vínculo (zip)</a>
         <br /><br /><br />
 
+        @php
+            $hasRights = $documents->where('document_type_id', App\Models\DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first()->id)->count() > 0;
+        @endphp
         @canany(['isAdm', 'isDir', 'isAss'])
             <fieldset class="bg-warning px-2 py-2">
                 <h4>> Revisão</h4>
                 <form name="{{ 'formReview' . $bond->id }}" action="{{ route('bonds.review', $bond) }}" method="POST">
                     @csrf
-                    <label class="form-label">Impedido</label><br />
+                    <label class="form-label">Impedido:</label><br />
                     <div class="mb-3 form-check">
                         <input class="form-check-input" type="radio" id="sim" name="impediment" value="1"
                             {{ $bond->impediment == '1' ? 'checked' : '' }}
@@ -35,8 +38,10 @@
                         <label for="sim" class="form-check-label">Sim</label><br>
                         <input class="form-check-input" type="radio" id="nao" name="impediment" value="0"
                             {{ $bond->impediment == '0' ? 'checked' : '' }}
-                            onclick="document.getElementById('impedimentDescription').disabled=true;">
-                        <label for="nao" class="form-check-label">Não</label><br>
+                            onclick="document.getElementById('impedimentDescription').disabled=true;"
+                            {{ !$hasRights ? 'disabled' : '' }}>
+                        <label for="nao" class="form-check-label">Não*</label><br>
+                        <p>* Para a aprovação de um vínculo é necessário ter o documento 'Ficha de Inscrição - Termos e Licença'</p>
                     </div>
                     <div class="mb-3">
                         <label for="impedimentDescription" class="form-label">Motivo do impedimento:</label><br />

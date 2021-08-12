@@ -87,8 +87,8 @@ class BondController extends Controller
         $bond->end = $request->end;
         $bond->terminated_at = null;
         $bond->volunteer = $request->has('volunteer');
-        $bond->impediment = false;
-        $bond->impediment_description = $request->impedimentDescription;
+        $bond->impediment = true;
+        $bond->impediment_description = 'Vínculo ainda não revisado';
         $bond->uaba_checked_at = null;
 
         $bond->save();

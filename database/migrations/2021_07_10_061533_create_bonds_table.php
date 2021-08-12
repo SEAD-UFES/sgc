@@ -24,8 +24,8 @@ class CreateBondsTable extends Migration
             $table->date('end')->nullable();
             $table->timestamp('terminated_at')->nullable();
             $table->boolean('volunteer')->default(false);
-            $table->boolean('impediment')->default(false);
-            $table->string('impediment_description')->nullable();
+            $table->boolean('impediment')->default(true);
+            $table->string('impediment_description')->nullable()->default('Vínculo ainda não revisado');
             $table->timestamp('uaba_checked_at')->nullable();
             $table->timestamps();
         });
