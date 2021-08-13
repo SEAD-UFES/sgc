@@ -33,8 +33,8 @@
         <main role="main">
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
-                    <p style="color: green; font-weight: bold">{{ $message }}</p>
-                </div><br />
+                    <span style="color: green; font-weight: bold">{{ $message }}</span>
+                </div>
             @endif
             <div>
                 <span class="float-end"><span style="color:red">Atribuir em lote &rArr;&nbsp;</span>

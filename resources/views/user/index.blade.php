@@ -13,8 +13,8 @@
         <main role="main">
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
-                    <p style="color: green; font-weight: bold">{{ $message }}</p>
-                </div><br />
+                    <span style="color: green; font-weight: bold">{{ $message }}</span>
+                </div>
             @endif
 
             {{-- filtros --}}
@@ -46,7 +46,7 @@
                             <td>{{ $user->userType->name }}</td>
                             <td>{{ $user->active === 1 ? 'Sim' : 'Não' }}</td>
                             <td>{{ $user->employee ? $user->employee->name : 'Não possui' }}</td>
-                            <td class="text-center"><a href="{{ route('users.edit', $user) }}">Editar</a></td>
+                            <td class="text-center"><a href="{{ route('users.edit', $user) }}" class="btn btn-primary btn-sm">Editar</a></td>
                             <td class="text-center">
                                 <form name="{{ 'formDelete' . $user->id }}" action="{{ route('users.destroy', $user) }}"
                                     method="POST">
@@ -54,7 +54,7 @@
                                     @csrf
                                     <span
                                         onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse usuário?\')) document.forms[\'formDelete' . $user->id . '\'].submit();' }}"
-                                        style="cursor:pointer; color:blue; text-decoration:underline;">Excluir</span>
+                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">Excluir</span>
                                 </form>
                             </td>
                         </tr>

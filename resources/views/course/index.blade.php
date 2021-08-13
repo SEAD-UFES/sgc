@@ -13,8 +13,8 @@
         <main role="main">
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
-                    <p style="color: green; font-weight: bold">{{ $message }}</p>
-                </div><br />
+                    <span style="color: green; font-weight: bold">{{ $message }}</span>
+                </div>
             @endif
 
             {{-- local para os filtros --}}
@@ -53,7 +53,7 @@
                             <td>{{ $course->courseType->name }}</td>
                             <td>{{ \Carbon\Carbon::parse($course->begin)->isoFormat('DD/MM/Y') }}</td> 
                             <td>{{ \Carbon\Carbon::parse($course->end)->isoFormat('DD/MM/Y') }}</td>
-                            <td class="text-center"><a href="{{ route('courses.edit', $course) }}">Editar</a></td>
+                            <td class="text-center"><a href="{{ route('courses.edit', $course) }}" class="btn btn-primary btn-sm">Editar</a></td>
                             <td class="text-center">
                                 <form name="{{ 'formDelete' . $course->id }}" action="{{ route('courses.destroy', $course) }}"
                                     method="POST">
@@ -61,7 +61,7 @@
                                     @csrf
                                     <span
                                         onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse curso?\')) document.forms[\'formDelete' . $course->id . '\'].submit();' }}"
-                                        style="cursor:pointer; color:blue; text-decoration:underline;">Excluir</span>
+                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">Excluir</span>
                                 </form>
                             </td>
                         </tr>

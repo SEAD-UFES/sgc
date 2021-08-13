@@ -80,7 +80,7 @@
                 @if (session('sessionUser')->hasBond)
                     <form class="d-flex" action={{ route('currentBond.change') }} method="POST">
                         @csrf
-                        <select class="form-select" aria-label="Vínculo" name="activeBonds" onchange="submit();">
+                        <select class="form-select form-select-sm" aria-label="Vínculo" name="activeBonds" onchange="submit();">
                             @foreach (session('sessionUser')->bonds as $bond)
                                 <option value="{{ $bond->id }}"
                                     {{ $bond->id === session('sessionUser')->currentBond->id ? 'selected' : '' }}>

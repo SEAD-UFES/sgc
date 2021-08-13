@@ -26,17 +26,18 @@
                         <tr>
                             <th>Envio</th>
                             <th>Mensagem</th>
+                            <th>Dispensar</th>
                         </tr>
                     </thead>
                     <tbody>
                         @if (auth()->user()->notifications->count() < 1)
                             <tr>
-                                <td colspan="2" class="text-center">Sem notificações</td>
+                                <td colspan="3" class="text-center">Sem notificações</td>
                             </tr>
                         @endif
                         @foreach (auth()->user()->notifications as $notification)
                             <tr>
-                                <td>{{ \Carbon\Carbon::parse($notification->created_at)->isoFormat('DD/MM/Y hh:mm') }}
+                                <td class="align-middle">{{ \Carbon\Carbon::parse($notification->created_at)->isoFormat('DD/MM/Y hh:mm') }}
                                 </td>
                                 @switch($notification->type)
                                     @case('App\Notifications\NewBondNotification')
@@ -83,6 +84,7 @@
                                     @default
                                         <td>:(</td>
                                 @endswitch
+                                <td class="align-middle"><a href="#" class="btn btn-danger btn-sm">Dispensar</a></td>
                             </tr>
                         @endforeach
                     </tbody>

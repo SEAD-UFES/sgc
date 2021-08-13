@@ -10,6 +10,8 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\WebController;
 use App\Http\Controllers\ApprovedController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\CourseTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,18 +27,25 @@ use App\Http\Controllers\DocumentController;
 Route::get('/', [WebController::class, 'rootFork'])->name('root');
 Route::fallback([WebController::class, 'fallback']);
 
-Route::get('/login', [\App\Http\Controllers\LoginController::class, 'getLoginForm'])->name('auth.form');
-Route::post('/login', [\App\Http\Controllers\LoginController::class, 'authenticate'])->name('auth.login');
-Route::get('/logout', [\App\Http\Controllers\LoginController::class, 'logout'])->name('auth.logout');
+Route::get('/login', [LoginController::class, 'getLoginForm'])->name('auth.form');
+Route::post('/login', [LoginController::class, 'authenticate'])->name('auth.login');
+Route::get('/logout', [LoginController::class, 'logout'])->name('auth.logout');
 
 Route::middleware('auth')->group(function () {
     Route::get('/webhome', [WebController::class, 'webHome'])->name('home');
-    Route::get('/webemployee', [WebController::class, 'webEmployee'])->name('employee');
+    /* Route::get('/webemployee', [WebController::class, 'webEmployee'])->name('employee');
     Route::get('/webfunding', [WebController::class, 'webFunding'])->name('funding');
     Route::get('/webreport', [WebController::class, 'webReport'])->name('report');
-    Route::get('/websystem', [WebController::class, 'webSystem'])->name('system');
+    Route::get('/websystem', [WebController::class, 'webSystem'])->name('system'); */
 
     Route::resource('employees', EmployeeController::class);
+
+    Route::resource('bonds', BondController::class);
+    Route::post('bondreview/{bond}', [BondController::class, 'review'])->name('bonds.review');
+    Route::get('bondrequestreview/{bond}', [BondController::class, 'requestReview'])->name('bonds.requestReview');
+
+    /* Route::resource('documents', DocumentController::class); */
+
     Route::get('employeesdocumentindex', [DocumentController::class, 'employeesDocumentIndex'])->name('employees.document.index');
     Route::get('employeesdocumentcreate', [DocumentController::class, 'employeesDocumentCreate'])->name('employees.document.create');
     Route::get('employeesdocumentcreate/{id}', [DocumentController::class, 'employeesDocumentCreate'])->name('employees.document.create.id');
@@ -44,26 +53,22 @@ Route::middleware('auth')->group(function () {
     Route::post('employeesdocumentmassimport', [DocumentController::class, 'employeesDocumentMassImport'])->name('employees.document.mass.import');
     Route::post('employeesdocumentmassstore', [DocumentController::class, 'employeesDocumentMassStore'])->name('employees.document.mass.store');
 
-    Route::resource('bonds', BondController::class);
-    Route::post('bondreview/{bond}', [BondController::class, 'review'])->name('bonds.review');
     Route::get('bondsdocumentindex', [DocumentController::class, 'bondsDocumentIndex'])->name('bonds.document.index');
     Route::get('bondsdocumentcreate', [DocumentController::class, 'bondsDocumentCreate'])->name('bonds.document.create');
     Route::post('bondsdocumentstore', [DocumentController::class, 'bondsDocumentStore'])->name('bonds.document.store');
     Route::get('bonddocumentsmassdownload/{bond}', [DocumentController::class, 'bondDocumentsMassDownload'])->name('bonds.document.massdownload');
     Route::get('rights', [DocumentController::class, 'rightsIndex'])->name('bonds.rights.index');
-    Route::get('bondrequestreview/{bond}', [BondController::class, 'requestReview'])->name('bonds.requestReview');
 
-    /* Route::resource('documents', DocumentController::class); */
     Route::get('/document/{id}/{type}/{htmlTitle}', [DocumentController::class, 'showDocument'])->name('documents.show');
 
-    Route::post('/changeBond', [UserController::class, 'setCurrentBond'])->name('currentBond.change');
     Route::resource('users', UserController::class);
+    Route::post('/changeBond', [UserController::class, 'setCurrentBond'])->name('currentBond.change');
 
     Route::resource('roles', RoleController::class);
     Route::resource('poles', PoleController::class);
-    
     Route::resource('courses', CourseController::class);
-    Route::get('/coursetypes/index', [\App\Http\Controllers\CourseTypeController::class, 'index'])->name('coursetypes.index');
+    
+    Route::get('/coursetypes/index', [CourseTypeController::class, 'index'])->name('coursetypes.index');
 
     Route::resource('approveds', ApprovedController::class);
     Route::post('/approved/import', [ApprovedController::class, 'import'])->name('approveds.import');

@@ -21,8 +21,8 @@
         <main role="main">
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
-                    <p style="color: green; font-weight: bold">{{ $message }}</p>
-                </div><br />
+                    <span style="color: green; font-weight: bold">{{ $message }}</span>
+                </div>
             @endif
 
             {{-- filtros --}}
@@ -49,11 +49,7 @@
                         <th>@sortablelink('role.name', 'Atribuição')</th>
                         <th>@sortablelink('course.name', 'Curso')</th>
                         <th>@sortablelink('pole.name', 'Polo')</th>
-                        {{-- <th>Início</th>
-                        <th>Fim</th>
-                        <th>Encerrado em</th> --}}
                         <th>@sortablelink('volunteer', 'Voluntário') </th>
-                        {{-- <th>Verificado em</th> --}}
                         <th>@sortablelink('impediment', 'Impedido') </th>
                         <th colspan="4" class="text-center">Ações</th>
                     </tr>
@@ -68,17 +64,11 @@
                             </td>
                             <td>{{ $bond->course->name }}</td>
                             <td>{{ $bond->pole->name }}</td>
-                            {{-- <td>{{ \Carbon\Carbon::parse($bond->begin)->isoFormat('DD/MM/Y') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($bond->end)->isoFormat('DD/MM/Y') }}</td>
-                            <td>{{ isset($bond->terminated_at) ? \Carbon\Carbon::parse($bond->terminated_at)->isoFormat('DD/MM/Y') : '' }}
-                            </td> --}}
                             <td>{{ $bond->volunteer === 1 ? 'Sim' : 'Não' }}</td>
-                            {{-- <td>{{ isset($bond->uaba_checked_at) ? \Carbon\Carbon::parse($bond->uaba_checked_at)->isoFormat('DD/MM/Y') : '' }} --}}
-                            </td>
                             <td>{{ $bond->impediment === 1 ? 'Sim' : 'Não' }}</td>
-                            <td class="text-center"><a href="{{ route('bonds.show', $bond) }}">Detalhes</a></td>
-                            <td class="text-center"><a href="{{ route('employees.show', $bond->employee) }}">Ver Colaborador</a></td>
-                            <td class="text-center"><a href="{{ route('bonds.edit', $bond->id) }}">Editar vínculo</a></td>
+                            <td class="text-center"><a href="{{ route('bonds.show', $bond) }}" class="btn btn-primary btn-sm">Detalhes</a></td>
+                            <td class="text-center"><a href="{{ route('employees.show', $bond->employee) }}" class="btn btn-primary btn-sm">Ver Colaborador</a></td>
+                            <td class="text-center"><a href="{{ route('bonds.edit', $bond->id) }}" class="btn btn-primary btn-sm">Editar vínculo</a></td>
                             <td class="text-center">
                                 <form name="{{ 'formDelete' . $bond->id }}"
                                     action="{{ route('bonds.destroy', $bond) }}" method="POST">
@@ -86,21 +76,17 @@
                                     @csrf
                                     <span
                                         onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Vínculo?\')) document.forms[\'formDelete' . $bond->id . '\'].submit();' }}"
-                                        style="cursor:pointer; color:blue; text-decoration:underline;">Excluir</span>
+                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">Excluir</span>
                                 </form>
                             </td>
                         </tr>
                         <tr style="display: none" id="datesLine_{{ $bond->id }}">
-                            <th>Início</th>
-                            <td>{{ \Carbon\Carbon::parse($bond->begin)->isoFormat('DD/MM/Y') }}</td>
-                            <th>Fim</th>
-                            <td>{{ \Carbon\Carbon::parse($bond->end)->isoFormat('DD/MM/Y') }}</td>
-                            <th>Encerrado</th>
-                            <td>{{ isset($bond->terminated_at) ? \Carbon\Carbon::parse($bond->terminated_at)->isoFormat('DD/MM/Y') : '' }}
+                            <td colspan="9">
+                                <strong>Início: </strong>{{ isset($bond->begin) ? \Carbon\Carbon::parse($bond->begin)->isoFormat('DD/MM/Y') : '-' }} | 
+                                <strong>Fim: </strong>{{ isset($bond->end) ? \Carbon\Carbon::parse($bond->end)->isoFormat('DD/MM/Y') : '-' }} | 
+                                <strong>Encerrado: </strong>{{ isset($bond->terminated_at) ? \Carbon\Carbon::parse($bond->terminated_at)->isoFormat('DD/MM/Y') : '-' }} | 
+                                <strong>Verificado: </strong>{{ isset($bond->uaba_checked_at) ? \Carbon\Carbon::parse($bond->uaba_checked_at)->isoFormat('DD/MM/Y') : '-' }}
                             </td>
-                            <th>Verificado</th>
-                            <td colspan="2">
-                                {{ isset($bond->uaba_checked_at) ? \Carbon\Carbon::parse($bond->uaba_checked_at)->isoFormat('DD/MM/Y') : '' }}
                         </tr>
                     @endforeach
                 </tbody>

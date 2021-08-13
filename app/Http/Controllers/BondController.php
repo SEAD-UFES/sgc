@@ -259,5 +259,7 @@ class BondController extends Controller
         $users = $academicSecretaries->merge($courseCoordinators)->merge($assistants);
 
         Notification::send($users, new RequestReviewNotification($bond));
+
+        return redirect()->route('bonds.show', $bond->id)->with('success', 'Revisão de vínculo solicitada.');
     }
 }

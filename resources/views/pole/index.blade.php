@@ -13,8 +13,8 @@
         <main role="main">
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
-                    <p style="color: green; font-weight: bold">{{ $message }}</p>
-                </div><br />
+                    <span style="color: green; font-weight: bold">{{ $message }}</span>
+                </div>
             @endif
 
             {{-- filtros --}}
@@ -40,7 +40,7 @@
                         <tr>
                             <td>{{ $pole->name }}</td>
                             <td>{{ $pole->description }}</td>
-                            <td class="text-center"><a href="{{ route('poles.edit', $pole) }}">Editar</a></td>
+                            <td class="text-center"><a href="{{ route('poles.edit', $pole) }}" class="btn btn-primary btn-sm">Editar</a></td>
                             <td class="text-center">
                                 <form name="{{ 'formDelete' . $pole->id }}" action="{{ route('poles.destroy', $pole) }}"
                                     method="POST">
@@ -48,7 +48,7 @@
                                     @csrf
                                     <span
                                         onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Polo?\')) document.forms[\'formDelete' . $pole->id . '\'].submit();' }}"
-                                        style="cursor:pointer; color:blue; text-decoration:underline;">Excluir</span>
+                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">Excluir</span>
                                 </form>
                             </td>
                         </tr>

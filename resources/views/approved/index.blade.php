@@ -13,8 +13,8 @@
         <main role="main">
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
-                    <p style="color: green; font-weight: bold">{{ $message }}</p>
-                </div><br />
+                    <span style="color: green; font-weight: bold">{{ $message }}</span>
+                </div>
             @endif
 
             {{-- filtros --}}
@@ -69,7 +69,7 @@
                                 @foreach ($approved->approvedState->getNext() as $state)
                                     <td title="{{ $state->description }}" @if ($approved->approvedState->getNext()->count() == 1) colspan="2" @endif>
                                         <a
-                                            href="{{ route('approveds.changestate', ['approved' => $approved, 'state' => $state->id]) }}">{{ $state->name }}</a>
+                                            href="{{ route('approveds.changestate', ['approved' => $approved, 'state' => $state->id]) }}" class="btn btn-primary btn-sm">{{ $state->name }}</a>
                                     </td>
                                 @endforeach
                             @else
@@ -81,7 +81,7 @@
                                             <input type="hidden" name="approvedId" value="{{ $approved->id }}" />
                                             <span title="Converter o aprovado em Colaborador"
                                                 onclick="{{ 'document.forms[\'formDesignate' . $approved->id . '\'].submit();' }}"
-                                                style="cursor:pointer; color:blue; text-decoration:underline;">Nomeado</span>
+                                                {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-warning btn-sm">Nomeado</span>
                                         </form>
                                     @else
                                         Não existe próximo Status

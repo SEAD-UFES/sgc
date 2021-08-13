@@ -14,11 +14,16 @@
 </nav>
 <section id="pageContent">
     <main role="main">
+        @if ($message = Session::get('success'))
+            <div class="alert alert-success">
+                <span style="color: green; font-weight: bold">{{ $message }}</span>
+            </div>
+        @endif
         @component('bond.componentBondDetails', compact('bond'))@endcomponent
         <h4>> Documentos</h4>
         @component('bond.document.componentList', compact('documents'))@endcomponent
         <a href="{{ route('bonds.document.massdownload', $bond) }}"
-            style="text-decoration: none; font-weight:bold;">&nbsp;&#8627; Fazer o download de todos os documentos do
+            {{-- style="text-decoration: none; font-weight:bold;" --}} class="btn btn-primary btn-sm">&nbsp;&#8627; Fazer o download de todos os documentos do
             vínculo (zip)</a>
         <br /><br /><br />
 
