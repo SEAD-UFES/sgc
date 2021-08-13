@@ -50,7 +50,6 @@
             <table class="table table-striped table-hover">
                 <thead>
                     <th>@sortablelink('cpf', 'CPF')</th>
-                    <br />
                     <th>@sortablelink('name', 'Nome')</th>
                     <th>@sortablelink('job', 'Profissão')</th>
                     <th>@sortablelink('address_city', 'Cidade')</th>
@@ -68,16 +67,22 @@
                             <td>{{ $employee->job }}</td>
                             <td>{{ $employee->address_city }}</td>
                             <td>{{ $employee->user->email ?? '' }}</td>
-                            <td class="text-center"><a href="{{ route('employees.show', $employee) }}" class="btn btn-primary btn-sm">Exibir</a></td>
-                            <td class="text-center"><a href="{{ route('employees.edit', $employee) }}" class="btn btn-primary btn-sm">Editar</a></td>
+                            <td class="text-center"><a href="{{ route('employees.show', $employee) }}" data-bs-toggle="tooltip" title="Ver" class="btn btn-primary btn-sm">
+                                <i class="bi-eye-fill"></i>
+                            </a></td>
+                            <td class="text-center"><a href="{{ route('employees.edit', $employee) }}" data-bs-toggle="tooltip" title="Editar" class="btn btn-primary btn-sm">
+                                <i class="bi-pencil-fill"></i>
+                            </a></td>
                             <td class="text-center">
                                 <form name="{{ 'formDelete' . $employee->id }}"
                                     action="{{ route('employees.destroy', $employee) }}" method="POST">
                                     @method('DELETE')
                                     @csrf
-                                    <span
+                                    <button type="button" data-bs-toggle="tooltip" title="Excluir" 
                                         onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Colaborador e todos os seus documentos, vínculos e documentos de vínculos?\')) document.forms[\'formDelete' . $employee->id . '\'].submit();' }}"
-                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">Excluir</span>
+                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">
+                                        <i class="bi-trash-fill"></i>
+                                    </button>
                                 </form>
                             </td>
                         </tr>

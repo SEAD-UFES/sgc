@@ -46,15 +46,18 @@
                             <td>{{ $user->userType->name }}</td>
                             <td>{{ $user->active === 1 ? 'Sim' : 'Não' }}</td>
                             <td>{{ $user->employee ? $user->employee->name : 'Não possui' }}</td>
-                            <td class="text-center"><a href="{{ route('users.edit', $user) }}" class="btn btn-primary btn-sm">Editar</a></td>
+                            <td class="text-center"><a href="{{ route('users.edit', $user) }}" data-bs-toggle="tooltip" title="Editar" class="btn btn-primary btn-sm">
+                                <i class="bi-pencil-fill"></i></a></td>
                             <td class="text-center">
                                 <form name="{{ 'formDelete' . $user->id }}" action="{{ route('users.destroy', $user) }}"
                                     method="POST">
                                     @method('DELETE')
                                     @csrf
-                                    <span
+                                    <button type="button" data-bs-toggle="tooltip" title="Excluir" 
                                         onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse usuário?\')) document.forms[\'formDelete' . $user->id . '\'].submit();' }}"
-                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">Excluir</span>
+                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">
+                                        <i class="bi-trash-fill"></i>
+                                    </button>
                                 </form>
                             </td>
                         </tr>

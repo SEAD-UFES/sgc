@@ -66,17 +66,25 @@
                             <td>{{ $bond->pole->name }}</td>
                             <td>{{ $bond->volunteer === 1 ? 'Sim' : 'Não' }}</td>
                             <td>{{ $bond->impediment === 1 ? 'Sim' : 'Não' }}</td>
-                            <td class="text-center"><a href="{{ route('bonds.show', $bond) }}" class="btn btn-primary btn-sm">Detalhes</a></td>
-                            <td class="text-center"><a href="{{ route('employees.show', $bond->employee) }}" class="btn btn-primary btn-sm">Ver Colaborador</a></td>
-                            <td class="text-center"><a href="{{ route('bonds.edit', $bond->id) }}" class="btn btn-primary btn-sm">Editar vínculo</a></td>
+                            <td class="text-center"><a href="{{ route('bonds.show', $bond) }}" data-bs-toggle="tooltip" title="Ver Vínculo" class="btn btn-primary btn-sm">
+                                <i class="bi-eye-fill"></i>
+                            </a></td>
+                            <td class="text-center"><a href="{{ route('employees.show', $bond->employee) }}" data-bs-toggle="tooltip" title="Ver Colaborador" class="btn btn-primary btn-sm">
+                                <i class="bi-person-fill"></i>
+                            </a></td>
+                            <td class="text-center"><a href="{{ route('bonds.edit', $bond->id) }}" data-bs-toggle="tooltip" title="Editar vínculo" class="btn btn-primary btn-sm">
+                                <i class="bi-pencil-fill"></i>
+                            </a></td>
                             <td class="text-center">
                                 <form name="{{ 'formDelete' . $bond->id }}"
                                     action="{{ route('bonds.destroy', $bond) }}" method="POST">
                                     @method('DELETE')
                                     @csrf
-                                    <span
+                                    <button type="button" data-bs-toggle="tooltip" title="Excluir" 
                                         onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Vínculo?\')) document.forms[\'formDelete' . $bond->id . '\'].submit();' }}"
-                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">Excluir</span>
+                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">
+                                        <i class="bi-trash-fill"></i>
+                                    </button>
                                 </form>
                             </td>
                         </tr>

@@ -26,7 +26,7 @@
                         <tr>
                             <th>Envio</th>
                             <th>Mensagem</th>
-                            <th>Dispensar</th>
+                            <th class="text-center">Dispensar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -84,7 +84,9 @@
                                     @default
                                         <td>:(</td>
                                 @endswitch
-                                <td class="align-middle"><a href="#" class="btn btn-danger btn-sm">Dispensar</a></td>
+                                <td class="align-middle text-center"><a href="#" data-bs-toggle="tooltip" title="Dispensar" class="btn btn-danger">
+                                    <i class="bi-trash-fill"></i>
+                                </a></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -93,4 +95,10 @@
         </div>
     </main>
 </section>
+{{-- <script type="text/javascript">
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl){
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script> --}}
 @endsection

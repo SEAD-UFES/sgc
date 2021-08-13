@@ -40,15 +40,19 @@
                         <tr>
                             <td>{{ $pole->name }}</td>
                             <td>{{ $pole->description }}</td>
-                            <td class="text-center"><a href="{{ route('poles.edit', $pole) }}" class="btn btn-primary btn-sm">Editar</a></td>
+                            <td class="text-center"><a href="{{ route('poles.edit', $pole) }}" data-bs-toggle="tooltip" title="Editar" class="btn btn-primary btn-sm">
+                                <i class="bi-pencil-fill"></i>
+                            </a></td>
                             <td class="text-center">
                                 <form name="{{ 'formDelete' . $pole->id }}" action="{{ route('poles.destroy', $pole) }}"
                                     method="POST">
                                     @method('DELETE')
                                     @csrf
-                                    <span
+                                    <button type="button" data-bs-toggle="tooltip" title="Excluir" 
                                         onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Polo?\')) document.forms[\'formDelete' . $pole->id . '\'].submit();' }}"
-                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">Excluir</span>
+                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">
+                                        <i class="bi-trash-fill"></i>
+                                    </button>
                                 </form>
                             </td>
                         </tr>

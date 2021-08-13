@@ -48,14 +48,18 @@
                             <td>{{ $role->description }}</td>
                             <td>{{ numfmt_format_currency(numfmt_create('pt_BR', NumberFormatter::CURRENCY), $role->grant_value, 'BRL') }}</td>
                             <td>{{ $role->grantType->name }}</td>
-                            <td class="text-center"><a href="{{ route('roles.edit', $role) }}" class="btn btn-primary btn-sm">Editar</a></td>
+                            <td class="text-center"><a href="{{ route('roles.edit', $role) }}" data-bs-toggle="tooltip" title="Editar" class="btn btn-primary btn-sm">
+                                <i class="bi-pencil-fill"></i>
+                            </a></td>
                             <td class="text-center">
                                 <form name="{{ 'formDelete' . $role->id }}" action="{{ route('roles.destroy', $role) }}" method="POST">
                                     @method('DELETE')
                                     @csrf
-                                    <span 
+                                    <button type="button" data-bs-toggle="tooltip" title="Excluir" 
                                         onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir essa Atribuição?\')) document.forms[\'formDelete' . $role->id . '\'].submit();' }}"
-                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">Excluir</span>
+                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">
+                                        <i class="bi-trash-fill"></i>
+                                    </button>
                                 </form>
                             </td>
                         </tr>

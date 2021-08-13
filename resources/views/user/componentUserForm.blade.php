@@ -1,7 +1,7 @@
 @csrf
 <div class="mb-3">
     <label for="inputEmail1" class="form-label">E-Mail*</label>
-    <input name="email" type="email" id="inputEmail1" class="form-control" placeholder="nome@empresa.com"
+    <input name="email" type="email" autocomplete="username" id="inputEmail1" class="form-control" placeholder="nome@empresa.com"
         value="{{ $user->email ?? old('email') }}" />
     @error('email')
         <div class="error">> {{ $message }}</div>
@@ -9,7 +9,7 @@
 </div>
 <div class="mb-3">
     <label for="inputPassword1" class="form-label">Nova Senha</label>
-    <input name="password" type="password" id="inputPassword1" class="form-control" placeholder="Nova Senha" />
+    <input name="password" type="password" autocomplete="new-password" id="inputPassword1" class="form-control" placeholder="Nova Senha" />
     @error('password')
         <div class="error">> {{ $message }}</div>
     @enderror

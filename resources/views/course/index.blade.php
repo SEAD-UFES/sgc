@@ -53,15 +53,19 @@
                             <td>{{ $course->courseType->name }}</td>
                             <td>{{ \Carbon\Carbon::parse($course->begin)->isoFormat('DD/MM/Y') }}</td> 
                             <td>{{ \Carbon\Carbon::parse($course->end)->isoFormat('DD/MM/Y') }}</td>
-                            <td class="text-center"><a href="{{ route('courses.edit', $course) }}" class="btn btn-primary btn-sm">Editar</a></td>
+                            <td class="text-center"><a href="{{ route('courses.edit', $course) }}" data-bs-toggle="tooltip" title="Editar" class="btn btn-primary btn-sm">
+                                <i class="bi-pencil-fill"></i>
+                            </a></td>
                             <td class="text-center">
                                 <form name="{{ 'formDelete' . $course->id }}" action="{{ route('courses.destroy', $course) }}"
                                     method="POST">
                                     @method('DELETE')
                                     @csrf
-                                    <span
+                                    <button type="button" data-bs-toggle="tooltip" title="Excluir" 
                                         onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse curso?\')) document.forms[\'formDelete' . $course->id . '\'].submit();' }}"
-                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">Excluir</span>
+                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">
+                                        <i class="bi-trash-fill"></i>
+                                    </button>
                                 </form>
                             </td>
                         </tr>

@@ -16,7 +16,7 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="inputEmail1" class="form-label">E-Mail*</label>
-                                <input name="email" type="text" id="inputEmail1" class="form-control" placeholder="Email"
+                                <input name="email" type="text" autocomplete="username" id="inputEmail1" class="form-control" placeholder="Email"
                                     value="{{ old('email') }}" />
                                 @error('email')
                                     <div class="error">&gt; {{ $message }}</div>
@@ -24,7 +24,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="inputSenha1" class="form-label">Senha*</label>
-                                <input name="password" type="password" id="inputSenha1" class="form-control"
+                                <input name="password" type="password" autocomplete="current-password" id="inputSenha1" class="form-control"
                                     placeholder="Senha" />
                                 @error('password')
                                     <div class="error">&gt; {{ $message }}</div>
