@@ -5,7 +5,7 @@
 @section('content')
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb border-top border-bottom bg-light">
-        <li class="breadcrumb-item"><a href="{{ route('employee') }}">Colaboradores</a></li>
+        <li class="breadcrumb-item">{{-- <a href="{{ route('employee') }}"> --}}Colaboradores{{-- </a> --}}</li>
         <li class="breadcrumb-item"><a href="{{ route('bonds.index') }}">Listar Vínculos</a></li>
         <li class="breadcrumb-item active" aria-current="page">Exibir:
             [{{ $bond->employee->name . '-' . $bond->role->name . '-' . $bond->course->name . '-' . $bond->pole->name }}]
