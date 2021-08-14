@@ -5,7 +5,7 @@
 @section('content')
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb border-top border-bottom bg-light">
-            <li class="breadcrumb-item">{{-- <a href="{{ route('system') }}"> --}}Sistema{{-- </a> --}}</li>
+            <li class="breadcrumb-item">Sistema</li>
             <li class="breadcrumb-item active" aria-current="page">Listar Usuários</li>
         </ol>
     </nav>
@@ -37,7 +37,7 @@
                     <th>@sortablelink('userType.name', 'Tipo')</th>
                     <th>@sortablelink('active', 'Ativo')</th>
                     <th>@sortablelink('employee.name', 'Colaborador')</th>
-                    <th colspan="2" class="text-center">Ações</th>
+                    <th class="text-center">Ações</th>
                 </thead>
                 <tbody>
                     @foreach ($users as $user)
@@ -46,19 +46,19 @@
                             <td>{{ $user->userType->name }}</td>
                             <td>{{ $user->active === 1 ? 'Sim' : 'Não' }}</td>
                             <td>{{ $user->employee ? $user->employee->name : 'Não possui' }}</td>
-                            <td class="text-center"><a href="{{ route('users.edit', $user) }}" data-bs-toggle="tooltip" title="Editar" class="btn btn-primary btn-sm">
-                                <i class="bi-pencil-fill"></i></a></td>
-                            <td class="text-center">
+                            <td class="text-center"><div class="d-inline-flex">
+                                <a href="{{ route('users.edit', $user) }}" data-bs-toggle="tooltip" title="Editar usuário" class="btn btn-primary btn-sm">
+                                    <i class="bi-pencil-fill"></i>
+                                </a>&nbsp;
                                 <form name="{{ 'formDelete' . $user->id }}" action="{{ route('users.destroy', $user) }}"
                                     method="POST">
                                     @method('DELETE')
                                     @csrf
-                                    <button type="button" data-bs-toggle="tooltip" title="Excluir" 
-                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse usuário?\')) document.forms[\'formDelete' . $user->id . '\'].submit();' }}"
-                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">
+                                    <button type="button" data-bs-toggle="tooltip" title="Excluir usuário" 
+                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse usuário?\')) document.forms[\'formDelete' . $user->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
                                         <i class="bi-trash-fill"></i>
                                     </button>
-                                </form>
+                                </form></div>
                             </td>
                         </tr>
                     @endforeach
@@ -73,4 +73,5 @@
 
 @section('scripts')
     @component('_components.filters_script', ['filters' => $filters])@endcomponent
+    <script src="{{ asset('js/enable_tooltip_popover.js') }}"></script>
 @endsection

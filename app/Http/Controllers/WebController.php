@@ -16,13 +16,5 @@ class WebController extends Controller
 
     public function webHome() { return view('web.home'); }
 
-    /* public function webEmployee() { return view('web.employee'); }
-
-    public function webFunding() { return view('web.funding'); }
-
-    public function webReport() { return view('web.report'); }
-
-    public function webSystem() { return view('web.system'); } */
-
     public function fallback() { return $this->rootFork(); }
 }

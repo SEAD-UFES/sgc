@@ -3,17 +3,9 @@
 @section('title', 'Colaboradores')
 
 @section('content')
-    <script>
-        function toogleById(id) {
-            if (document.getElementById(id).style.display == 'table-row')
-                document.getElementById(id).style.display = 'none';
-            else
-                document.getElementById(id).style.display = 'table-row';
-        }
-    </script>
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb border-top border-bottom bg-light">
-            <li class="breadcrumb-item">{{-- <a href="{{ route('employee') }}"> --}}Colaboradores{{-- </a> --}}</li>
+            <li class="breadcrumb-item">Colaboradores</li>
             <li class="breadcrumb-item active" aria-current="page">Listar Colaboradores</li>
         </ol>
     </nav>
@@ -54,40 +46,39 @@
                     <th>@sortablelink('job', 'Profissão')</th>
                     <th>@sortablelink('address_city', 'Cidade')</th>
                     <th>@sortablelink('user.email', 'Usuário')</th>
-                    <th colspan="3" class="text-center">Ações</th>
+                    <th class="text-center">Ações</th>
                 </thead>
                 <tbody>
                     @foreach ($employees as $employee)
                         <tr>
-                            <td onclick="toogleById({{ '\'contactLine_' . $employee->id . '\');' }}">
+                            <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
+                            data-bs-content="<strong>E-mail:</strong> {{ $employee->email }} | <strong>Área:</strong> {{ $employee->area_code }} | <strong>Telefone:</strong> {{ $employee->phone }} | <strong>Celular:</strong> {{ $employee->mobile }}">
                                 {{ $employee->cpf }}
                             </td>
-                            <td onclick="toogleById({{ '\'contactLine_' . $employee->id . '\');' }}">
+                            <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
+                            data-bs-content="<strong>E-mail:</strong> {{ $employee->email }} | <strong>Área:</strong> {{ $employee->area_code }} | <strong>Telefone:</strong> {{ $employee->phone }} | <strong>Celular:</strong> {{ $employee->mobile }}">
                                 {{ $employee->name }}</td>
                             <td>{{ $employee->job }}</td>
                             <td>{{ $employee->address_city }}</td>
                             <td>{{ $employee->user->email ?? '' }}</td>
-                            <td class="text-center"><a href="{{ route('employees.show', $employee) }}" data-bs-toggle="tooltip" title="Ver" class="btn btn-primary btn-sm">
-                                <i class="bi-eye-fill"></i>
-                            </a></td>
-                            <td class="text-center"><a href="{{ route('employees.edit', $employee) }}" data-bs-toggle="tooltip" title="Editar" class="btn btn-primary btn-sm">
-                                <i class="bi-pencil-fill"></i>
-                            </a></td>
-                            <td class="text-center">
+                            <td class="text-center"><div class="d-inline-flex">
+                                <a href="{{ route('employees.show', $employee) }}" data-bs-toggle="tooltip" title="Ver colaborador" class="btn btn-primary btn-sm">
+                                    <i class="bi-eye-fill"></i>
+                                </a>&nbsp;
+                                <a href="{{ route('employees.edit', $employee) }}" data-bs-toggle="tooltip" title="Editar colaborador" class="btn btn-primary btn-sm">
+                                    <i class="bi-pencil-fill"></i>
+                                </a>&nbsp;
                                 <form name="{{ 'formDelete' . $employee->id }}"
                                     action="{{ route('employees.destroy', $employee) }}" method="POST">
                                     @method('DELETE')
                                     @csrf
-                                    <button type="button" data-bs-toggle="tooltip" title="Excluir" 
-                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Colaborador e todos os seus documentos, vínculos e documentos de vínculos?\')) document.forms[\'formDelete' . $employee->id . '\'].submit();' }}"
-                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">
+                                    <button type="button" data-bs-toggle="tooltip" title="Excluir colaborador" 
+                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Colaborador e todos os seus documentos, vínculos e documentos de vínculos?\')) document.forms[\'formDelete' . $employee->id . '\'].submit();' }}" 
+                                        class="btn btn-danger btn-sm">
                                         <i class="bi-trash-fill"></i>
                                     </button>
-                                </form>
+                                </form></div>
                             </td>
-                        </tr>
-                        <tr style="display: none" id="contactLine_{{ $employee->id }}">
-                            <td colspan="7"><strong>E-mail:</strong> {{ $employee->email }} | <strong>Área:</strong> {{ $employee->area_code }} | <strong>Telefone:</strong> {{ $employee->phone }} | <strong>Celular:</strong> {{ $employee->mobile }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -101,4 +92,5 @@
 
 @section('scripts')
     @component('_components.filters_script', ['filters' =>$filters] )@endcomponent
+    <script src="{{ asset('js/enable_tooltip_popover.js') }}"></script>
 @endsection

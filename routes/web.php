@@ -33,10 +33,6 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('auth.logout');
 
 Route::middleware('auth')->group(function () {
     Route::get('/webhome', [WebController::class, 'webHome'])->name('home');
-    /* Route::get('/webemployee', [WebController::class, 'webEmployee'])->name('employee');
-    Route::get('/webfunding', [WebController::class, 'webFunding'])->name('funding');
-    Route::get('/webreport', [WebController::class, 'webReport'])->name('report');
-    Route::get('/websystem', [WebController::class, 'webSystem'])->name('system'); */
 
     Route::resource('employees', EmployeeController::class);
 

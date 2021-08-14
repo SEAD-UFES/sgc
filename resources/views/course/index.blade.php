@@ -5,7 +5,7 @@
 @section('content')
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb border-top border-bottom bg-light">
-        <li class="breadcrumb-item">{{-- <a href="{{ route('system') }}"> --}}Sistema{{-- </a> --}}</li>
+        <li class="breadcrumb-item">Sistema</li>
         <li class="breadcrumb-item active" aria-current="page">Listar Cursos</li>
     </ol>
 </nav>
@@ -43,7 +43,7 @@
                     <th>@sortablelink('courseType.name', 'Tipo do Curso')</th>
                     <th>@sortablelink('begin', 'Início')</th>
                     <th>@sortablelink('end', 'Fim')</th>
-                    <th colspan="2" class="text-center">Ações</th>
+                    <th class="text-center">Ações</th>
                 </thead>
                 <tbody>
                     @foreach ($courses as $course)
@@ -53,20 +53,18 @@
                             <td>{{ $course->courseType->name }}</td>
                             <td>{{ \Carbon\Carbon::parse($course->begin)->isoFormat('DD/MM/Y') }}</td> 
                             <td>{{ \Carbon\Carbon::parse($course->end)->isoFormat('DD/MM/Y') }}</td>
-                            <td class="text-center"><a href="{{ route('courses.edit', $course) }}" data-bs-toggle="tooltip" title="Editar" class="btn btn-primary btn-sm">
-                                <i class="bi-pencil-fill"></i>
-                            </a></td>
-                            <td class="text-center">
-                                <form name="{{ 'formDelete' . $course->id }}" action="{{ route('courses.destroy', $course) }}"
-                                    method="POST">
+                            <td class="text-center"><div class="d-inline-flex">
+                                <a href="{{ route('courses.edit', $course) }}" data-bs-toggle="tooltip" title="Editar curso" class="btn btn-primary btn-sm">
+                                    <i class="bi-pencil-fill"></i>
+                                </a>&nbsp;
+                                <form name="{{ 'formDelete' . $course->id }}" action="{{ route('courses.destroy', $course) }}" method="POST">
                                     @method('DELETE')
                                     @csrf
-                                    <button type="button" data-bs-toggle="tooltip" title="Excluir" 
-                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse curso?\')) document.forms[\'formDelete' . $course->id . '\'].submit();' }}"
-                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">
+                                    <button type="button" data-bs-toggle="tooltip" title="Excluir curso" 
+                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse curso?\')) document.forms[\'formDelete' . $course->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
                                         <i class="bi-trash-fill"></i>
                                     </button>
-                                </form>
+                                </form></div>
                             </td>
                         </tr>
                     @endforeach
@@ -80,7 +78,6 @@
 @endsection
 
 @section('scripts')
-
-@component('_components.filters_script', ['filters' =>$filters] )@endcomponent
-
+    @component('_components.filters_script', ['filters' =>$filters] )@endcomponent
+    <script src="{{ asset('js/enable_tooltip_popover.js') }}"></script>
 @endsection

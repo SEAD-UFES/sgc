@@ -41,8 +41,7 @@
                                 </td>
                                 @switch($notification->type)
                                     @case('App\Notifications\NewBondNotification')
-                                        <td><strong>= Novo <a
-                                                    href="{{ route('bonds.show', $notification->data['bond_id']) }}">vínculo</a>
+                                        <td><strong>= Novo <a href="{{ route('bonds.show', $notification->data['bond_id']) }}">vínculo</a>
                                                 cadastrado =</strong><br />
                                             Colaborador: {{ $notification->data['employee_name'] }}<br />
                                             Atribuição: {{ $notification->data['role_name'] }} |
@@ -50,8 +49,7 @@
                                         </td>
                                     @break
                                     @case('App\Notifications\BondImpededNotification')
-                                        <td><strong>= <a
-                                                    href="{{ route('bonds.show', $notification->data['bond_id']) }}">Vínculo</a>
+                                        <td><strong>= <a href="{{ route('bonds.show', $notification->data['bond_id']) }}">Vínculo</a>
                                                 impedido =</strong><br />
                                             Colaborador: {{ $notification->data['employee_name'] }}<br />
                                             Atribuição: {{ $notification->data['role_name'] }} |
@@ -60,20 +58,17 @@
                                         </td>
                                     @break
                                     @case('App\Notifications\NewRightsNotification')
-                                        <td><strong>= Novo <a
-                                                    href="{{ route('documents.show', ['id' => $notification->data['document_id'], 'type' => 'BondDocument', 'htmlTitle' => $notification->data['document_name']]) }}"
+                                        <td><strong>= Novo <a href="{{ route('documents.show', ['id' => $notification->data['document_id'], 'type' => 'BondDocument', 'htmlTitle' => $notification->data['document_name']]) }}"
                                                     target="_blank">Documento de Termos e Licença</a> =</strong><br />
                                             Colaborador: {{ $notification->data['employee_name'] }}<br />
                                             Atribuição: {{ $notification->data['role_name'] }} |
                                             Curso: {{ $notification->data['course_name'] }}<br />
-                                            <a href="{{ route('bonds.rights.index') }}" target="_blank">[Listar
-                                                Documentos de Termos e Licença]</a>
+                                            <a href="{{ route('bonds.rights.index') }}" target="_blank">[Listar Documentos de Termos e Licença]</a>
                                         </td>
                                     @break
                                     @case('App\Notifications\RequestReviewNotification')
                                         <td><strong>= Solicitação de nova Revisão =</strong><br />
-                                            Vínculo: <a
-                                                href="{{ route('bonds.show', $notification->data['bond_id']) }}">{{ $notification->data['employee_name'] . '-' . $notification->data['role_name'] . '-' . $notification->data['course_name'] }}</a><br />
+                                            Vínculo: <a href="{{ route('bonds.show', $notification->data['bond_id']) }}">{{ $notification->data['employee_name'] . '-' . $notification->data['role_name'] . '-' . $notification->data['course_name'] }}</a><br />
                                             Colaborador: {{ $notification->data['employee_name'] }}<br />
                                             Atribuição: {{ $notification->data['role_name'] }} |
                                             Curso: {{ $notification->data['course_name'] }}<br />
@@ -84,7 +79,7 @@
                                     @default
                                         <td>:(</td>
                                 @endswitch
-                                <td class="align-middle text-center"><a href="#" data-bs-toggle="tooltip" title="Dispensar" class="btn btn-danger">
+                                <td class="align-middle text-center"><a href="#" data-bs-toggle="tooltip" title="Dispensar notificação" class="btn btn-danger">
                                     <i class="bi-trash-fill"></i>
                                 </a></td>
                             </tr>
@@ -95,10 +90,8 @@
         </div>
     </main>
 </section>
-{{-- <script type="text/javascript">
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl){
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-    })
-</script> --}}
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('js/enable_tooltip_popover.js') }}"></script>
 @endsection

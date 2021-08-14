@@ -5,7 +5,7 @@
 @section('content')
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb border-top border-bottom bg-light">
-            <li class="breadcrumb-item">{{-- <a href="{{ route('system') }}"> --}}Sistema{{-- </a> --}}</li>
+            <li class="breadcrumb-item">Sistema</li>
             <li class="breadcrumb-item active" aria-current="page">Listar Atribuições</li>
         </ol>
     </nav>
@@ -39,7 +39,7 @@
                     <th>@sortablelink('description', 'Descrição')</th>
                     <th>@sortablelink('grant_value', 'Valor da Bolsa')</th>
                     <th>@sortablelink('grantType.name', 'Tipo da Bolsa')</th>
-                    <th colspan="2" class="text-center">Ações</th>
+                    <th class="text-center">Ações</th>
                 </thead>
                 <tbody>
                     @foreach ($roles as $role)
@@ -48,19 +48,18 @@
                             <td>{{ $role->description }}</td>
                             <td>{{ numfmt_format_currency(numfmt_create('pt_BR', NumberFormatter::CURRENCY), $role->grant_value, 'BRL') }}</td>
                             <td>{{ $role->grantType->name }}</td>
-                            <td class="text-center"><a href="{{ route('roles.edit', $role) }}" data-bs-toggle="tooltip" title="Editar" class="btn btn-primary btn-sm">
-                                <i class="bi-pencil-fill"></i>
-                            </a></td>
-                            <td class="text-center">
+                            <td class="text-center"><div class="d-inline-flex">
+                                <a href="{{ route('roles.edit', $role) }}" data-bs-toggle="tooltip" title="Editar atribuição" class="btn btn-primary btn-sm">
+                                    <i class="bi-pencil-fill"></i>
+                                </a>&nbsp;
                                 <form name="{{ 'formDelete' . $role->id }}" action="{{ route('roles.destroy', $role) }}" method="POST">
                                     @method('DELETE')
                                     @csrf
-                                    <button type="button" data-bs-toggle="tooltip" title="Excluir" 
-                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir essa Atribuição?\')) document.forms[\'formDelete' . $role->id . '\'].submit();' }}"
-                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">
+                                    <button type="button" data-bs-toggle="tooltip" title="Excluir atribuição" 
+                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir essa Atribuição?\')) document.forms[\'formDelete' . $role->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
                                         <i class="bi-trash-fill"></i>
                                     </button>
-                                </form>
+                                </form></div>
                             </td>
                         </tr>
                     @endforeach
@@ -75,4 +74,5 @@
 
 @section('scripts')
     @component('_components.filters_script', ['filters' => $filters])@endcomponent
+    <script src="{{ asset('js/enable_tooltip_popover.js') }}"></script>
 @endsection

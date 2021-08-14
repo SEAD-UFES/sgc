@@ -5,7 +5,7 @@
 @section('content')
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb border-top border-bottom bg-light">
-            <li class="breadcrumb-item">{{-- <a href="{{ route('employee') }}"> --}}Colaboradores{{-- </a> --}}</li>
+            <li class="breadcrumb-item">Colaboradores</li>
             <li class="breadcrumb-item active" aria-current="page">Listar Aprovados</li>
         </ol>
     </nav>
@@ -67,21 +67,17 @@
                             <td>{!! $approved->pole->name ?? '&nbsp;' !!}</td>
                             @if ($approved->approvedState->hasNext())
                                 @foreach ($approved->approvedState->getNext() as $state)
-                                    <td title="{{ $state->description }}" @if ($approved->approvedState->getNext()->count() == 1) colspan="2" @endif>
-                                        <a
-                                            href="{{ route('approveds.changestate', ['approved' => $approved, 'state' => $state->id]) }}" class="btn btn-primary btn-sm">{{ $state->name }}</a>
+                                    <td @if ($approved->approvedState->getNext()->count() == 1) colspan="2" @endif>
+                                        <a href="{{ route('approveds.changestate', ['approved' => $approved, 'state' => $state->id]) }}" data-bs-toggle="tooltip" title="{{ $state->description }}" class="btn btn-primary btn-sm">{{ $state->name }}</a>
                                     </td>
                                 @endforeach
                             @else
                                 <td colspan="2">
                                     @if ($approved->approvedState->name == 'Aceitante')
-                                        <form name="{{ 'formDesignate' . $approved->id }}"
-                                            action={{ route('approveds.designate') }} method="POST">
+                                        <form name="{{ 'formDesignate' . $approved->id }}" action={{ route('approveds.designate') }} method="POST">
                                             @csrf
                                             <input type="hidden" name="approvedId" value="{{ $approved->id }}" />
-                                            <span title="Converter o aprovado em Colaborador"
-                                                onclick="{{ 'document.forms[\'formDesignate' . $approved->id . '\'].submit();' }}"
-                                                {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-warning btn-sm">Nomeado</span>
+                                            <span onclick="{{ 'document.forms[\'formDesignate' . $approved->id . '\'].submit();' }}" data-bs-toggle="tooltip" title="Converter o aprovado em Colaborador" class="btn btn-warning btn-sm">Nomeado</span>
                                         </form>
                                     @else
                                         Não existe próximo Status
@@ -100,5 +96,6 @@
 @endsection
 
 @section('scripts')
-@component('_components.filters_script', ['filters' =>$filters] )@endcomponent
+    @component('_components.filters_script', ['filters' =>$filters] )@endcomponent
+    <script src="{{ asset('js/enable_tooltip_popover.js') }}"></script>
 @endsection

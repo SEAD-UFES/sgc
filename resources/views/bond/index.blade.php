@@ -3,17 +3,9 @@
 @section('title', 'Vínculos')
 
 @section('content')
-    <script>
-        function toogleById(id) {
-            if (document.getElementById(id).style.display == 'table-row')
-                document.getElementById(id).style.display = 'none';
-            else
-                document.getElementById(id).style.display = 'table-row';
-        }
-    </script>
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb border-top border-bottom bg-light">
-            <li class="breadcrumb-item">{{-- <a href="{{ route('employee') }}"> --}}Colaboradores{{-- </a> --}}</li>
+            <li class="breadcrumb-item">Colaboradores</li>
             <li class="breadcrumb-item active" aria-current="page">Listar Vínculos</li>
         </ol>
     </nav>
@@ -51,49 +43,52 @@
                         <th>@sortablelink('pole.name', 'Polo')</th>
                         <th>@sortablelink('volunteer', 'Voluntário') </th>
                         <th>@sortablelink('impediment', 'Impedido') </th>
-                        <th colspan="4" class="text-center">Ações</th>
+                        <th class="text-center">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($bonds as $bond)
                         <tr>
-                            <td onclick="toogleById({{ '\'datesLine_' . $bond->id . '\');' }}">
+                            <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
+                                data-bs-content="
+                                    <strong>Início: </strong>{{ isset($bond->begin) ? \Carbon\Carbon::parse($bond->begin)->isoFormat('DD/MM/Y') : '-' }} | 
+                                    <strong>Fim: </strong>{{ isset($bond->end) ? \Carbon\Carbon::parse($bond->end)->isoFormat('DD/MM/Y') : '-' }} | 
+                                    <strong>Encerrado: </strong>{{ isset($bond->terminated_at) ? \Carbon\Carbon::parse($bond->terminated_at)->isoFormat('DD/MM/Y') : '-' }} | 
+                                    <strong>Verificado: </strong>{{ isset($bond->uaba_checked_at) ? \Carbon\Carbon::parse($bond->uaba_checked_at)->isoFormat('DD/MM/Y') : '-' }}
+                                ">
                                 {{ $bond->employee->name }}</td>
-                            <td onclick="toogleById({{ '\'datesLine_' . $bond->id . '\');' }}">
+                            <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
+                                data-bs-content="
+                                    <strong>Início: </strong>{{ isset($bond->begin) ? \Carbon\Carbon::parse($bond->begin)->isoFormat('DD/MM/Y') : '-' }} | 
+                                    <strong>Fim: </strong>{{ isset($bond->end) ? \Carbon\Carbon::parse($bond->end)->isoFormat('DD/MM/Y') : '-' }} | 
+                                    <strong>Encerrado: </strong>{{ isset($bond->terminated_at) ? \Carbon\Carbon::parse($bond->terminated_at)->isoFormat('DD/MM/Y') : '-' }} | 
+                                    <strong>Verificado: </strong>{{ isset($bond->uaba_checked_at) ? \Carbon\Carbon::parse($bond->uaba_checked_at)->isoFormat('DD/MM/Y') : '-' }}
+                                ">
                                 {{ $bond->role->name }}
                             </td>
                             <td>{{ $bond->course->name }}</td>
                             <td>{{ $bond->pole->name }}</td>
                             <td>{{ $bond->volunteer === 1 ? 'Sim' : 'Não' }}</td>
                             <td>{{ $bond->impediment === 1 ? 'Sim' : 'Não' }}</td>
-                            <td class="text-center"><a href="{{ route('bonds.show', $bond) }}" data-bs-toggle="tooltip" title="Ver Vínculo" class="btn btn-primary btn-sm">
-                                <i class="bi-eye-fill"></i>
-                            </a></td>
-                            <td class="text-center"><a href="{{ route('employees.show', $bond->employee) }}" data-bs-toggle="tooltip" title="Ver Colaborador" class="btn btn-primary btn-sm">
-                                <i class="bi-person-fill"></i>
-                            </a></td>
-                            <td class="text-center"><a href="{{ route('bonds.edit', $bond->id) }}" data-bs-toggle="tooltip" title="Editar vínculo" class="btn btn-primary btn-sm">
-                                <i class="bi-pencil-fill"></i>
-                            </a></td>
-                            <td class="text-center">
+                            <td class="text-center"><div class="d-inline-flex">
+                                <a href="{{ route('bonds.show', $bond) }}" data-bs-toggle="tooltip" title="Ver Vínculo" class="btn btn-primary btn-sm">
+                                    <i class="bi-eye-fill"></i>
+                                </a>&nbsp;
+                                <a href="{{ route('employees.show', $bond->employee) }}" data-bs-toggle="tooltip" title="Ver Colaborador" class="btn btn-primary btn-sm">
+                                    <i class="bi-person-fill"></i>
+                                </a>&nbsp;
+                                <a href="{{ route('bonds.edit', $bond->id) }}" data-bs-toggle="tooltip" title="Editar vínculo" class="btn btn-primary btn-sm">
+                                    <i class="bi-pencil-fill"></i>
+                                </a>&nbsp;
                                 <form name="{{ 'formDelete' . $bond->id }}"
                                     action="{{ route('bonds.destroy', $bond) }}" method="POST">
                                     @method('DELETE')
                                     @csrf
                                     <button type="button" data-bs-toggle="tooltip" title="Excluir" 
-                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Vínculo?\')) document.forms[\'formDelete' . $bond->id . '\'].submit();' }}"
-                                        {{-- style="cursor:pointer; color:blue; text-decoration:underline;" --}} class="btn btn-danger btn-sm">
+                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Vínculo?\')) document.forms[\'formDelete' . $bond->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
                                         <i class="bi-trash-fill"></i>
                                     </button>
-                                </form>
-                            </td>
-                        </tr>
-                        <tr style="display: none" id="datesLine_{{ $bond->id }}">
-                            <td colspan="9">
-                                <strong>Início: </strong>{{ isset($bond->begin) ? \Carbon\Carbon::parse($bond->begin)->isoFormat('DD/MM/Y') : '-' }} | 
-                                <strong>Fim: </strong>{{ isset($bond->end) ? \Carbon\Carbon::parse($bond->end)->isoFormat('DD/MM/Y') : '-' }} | 
-                                <strong>Encerrado: </strong>{{ isset($bond->terminated_at) ? \Carbon\Carbon::parse($bond->terminated_at)->isoFormat('DD/MM/Y') : '-' }} | 
-                                <strong>Verificado: </strong>{{ isset($bond->uaba_checked_at) ? \Carbon\Carbon::parse($bond->uaba_checked_at)->isoFormat('DD/MM/Y') : '-' }}
+                                </form></div>
                             </td>
                         </tr>
                     @endforeach
