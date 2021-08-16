@@ -11,46 +11,50 @@
     </nav>
     <section id="pageContent">
         <main role="main">
-            @if ($message = Session::get('success'))
-                <div class="alert alert-success">
-                    <span style="color: green; font-weight: bold">{{ $message }}</span>
-                </div>
-            @endif
+            <div class="row justify-content-center">
+                <div class="col-xl-10 col-xxl-8">
+                    @if ($message = Session::get('success'))
+                        <div class="alert alert-success">
+                            <span style="color: green; font-weight: bold">{{ $message }}</span>
+                        </div>
+                    @endif
 
-            {{-- filtros --}}
-            @component(
-                '_components.filters_form', 
-                [
-                    'filters' =>$filters,
-                    'options' => [
-                        [ 'label'=>'Colaborador', 'value'=>'employee_name_contains', 'selected'=>true],
-                        [ 'label'=>'Nome do arquivo', 'value'=>'originalname_contains'],
-                        [ 'label'=>'Tipo', 'value'=>'documentType_name_contains'],
-                    ]
-                ]
-            )@endcomponent
-            
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <th>@sortablelink('employee.name', 'Colaborador')</th>
-                        <th>@sortablelink('original_name', 'Nome do arquivo')</th>
-                        <th>@sortablelink('documentType.name', 'Tipo')</th>
-                    </thead>
-                    <tbody>
-                        @foreach ($documents as $document)
-                            <tr>
-                                <td>{{ $document->employee->name }}</td>
-                                <td><a href={{ route('documents.show', ['id' => $document->id, 'type' => 'EmployeeDocument', 'htmlTitle' => $document->original_name]) }}
-                                        target="_blank">{{ $document->original_name }}</a></td>
-                                <td>{{ $document->documentType->name }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                    {{-- filtros --}}
+                    @component(
+                        '_components.filters_form', 
+                        [
+                            'filters' =>$filters,
+                            'options' => [
+                                [ 'label'=>'Colaborador', 'value'=>'employee_name_contains', 'selected'=>true],
+                                [ 'label'=>'Nome do arquivo', 'value'=>'originalname_contains'],
+                                [ 'label'=>'Tipo', 'value'=>'documentType_name_contains'],
+                            ]
+                        ]
+                    )@endcomponent
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <th>@sortablelink('employee.name', 'Colaborador')</th>
+                                <th>@sortablelink('original_name', 'Nome do arquivo')</th>
+                                <th>@sortablelink('documentType.name', 'Tipo')</th>
+                            </thead>
+                            <tbody>
+                                @foreach ($documents as $document)
+                                    <tr>
+                                        <td>{{ $document->employee->name }}</td>
+                                        <td><a href={{ route('documents.show', ['id' => $document->id, 'type' => 'EmployeeDocument', 'htmlTitle' => $document->original_name]) }}
+                                                target="_blank">{{ $document->original_name }}</a></td>
+                                        <td>{{ $document->documentType->name }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    <br /><br />
+                </div>
             </div>
-            <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
-            <br /><br />
         </main>
     </section>
 @endsection

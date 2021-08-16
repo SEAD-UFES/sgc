@@ -11,84 +11,88 @@
     </nav>
     <section id="pageContent">
         <main role="main">
-            @if ($message = Session::get('success'))
-                <div class="alert alert-success">
-                    <span style="color: green; font-weight: bold">{{ $message }}</span>
-                </div>
-            @endif
-            @error('noStore')
-                <div class="error">> {{ $message }}</div>
-            @enderror
-            @error('noDestroy')
-                <div class="error">> {{ $message }}</div>
-            @enderror
+            <div class="row justify-content-center">
+                <div class="col-xl-10 col-xxl-8">
+                    @if ($message = Session::get('success'))
+                        <div class="alert alert-success">
+                            <span style="color: green; font-weight: bold">{{ $message }}</span>
+                        </div>
+                    @endif
+                    @error('noStore')
+                        <div class="error">> {{ $message }}</div>
+                    @enderror
+                    @error('noDestroy')
+                        <div class="error">> {{ $message }}</div>
+                    @enderror
 
-            {{-- filtros --}}
-            @component(
-                '_components.filters_form', 
-                [
-                    'filters' =>$filters,
-                    'options' => [
-                        [ 'label'=>'CPF', 'value'=>'cpf_contains', 'selected'=>true],
-                        [ 'label'=>'Nome', 'value'=>'name_contains'],
-                        [ 'label'=>'Profissão', 'value'=>'job_contains'],
-                        [ 'label'=>'Cidade', 'value'=>'addresscity_contains'],
-                        [ 'label'=>'Usuário', 'value'=>'user_email_contains'],
-                    ]
-                ]
-            )@endcomponent
-            
-            <p style="color: red"> Clique no CPF ou Nome para exibir/ocultar as informações de contato</p>
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <th>@sortablelink('cpf', 'CPF')</th>
-                        <th>@sortablelink('name', 'Nome')</th>
-                        <th>@sortablelink('job', 'Profissão')</th>
-                        <th>@sortablelink('address_city', 'Cidade')</th>
-                        <th>@sortablelink('user.email', 'Usuário')</th>
-                        <th class="text-center">Ações</th>
-                    </thead>
-                    <tbody>
-                        @foreach ($employees as $employee)
-                            <tr>
-                                <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
-                                data-bs-content="<strong>E-mail:</strong> {{ $employee->email }} | <strong>Área:</strong> {{ $employee->area_code }} | <strong>Telefone:</strong> {{ $employee->phone }} | <strong>Celular:</strong> {{ $employee->mobile }}">
-                                    {{ $employee->cpf }}
-                                </td>
-                                <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
-                                data-bs-content="<strong>E-mail:</strong> {{ $employee->email }} | <strong>Área:</strong> {{ $employee->area_code }} | <strong>Telefone:</strong> {{ $employee->phone }} | <strong>Celular:</strong> {{ $employee->mobile }}">
-                                    {{ $employee->name }}</td>
-                                <td>{{ $employee->job }}</td>
-                                <td>{{ $employee->address_city }}</td>
-                                <td>{{ $employee->user->email ?? '' }}</td>
-                                <td class="text-center"><div class="d-inline-flex">
-                                    <a href="{{ route('employees.show', $employee) }}" data-bs-toggle="tooltip" title="Ver colaborador" class="btn btn-primary btn-sm">
-                                        <i class="bi-eye-fill"></i>
-                                    </a>&nbsp;
-                                    <a href="{{ route('employees.edit', $employee) }}" data-bs-toggle="tooltip" title="Editar colaborador" class="btn btn-primary btn-sm">
-                                        <i class="bi-pencil-fill"></i>
-                                    </a>&nbsp;
-                                    <form name="{{ 'formDelete' . $employee->id }}"
-                                        action="{{ route('employees.destroy', $employee) }}" method="POST">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button type="button" data-bs-toggle="tooltip" title="Excluir colaborador" 
-                                            onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Colaborador e todos os seus documentos, vínculos e documentos de vínculos?\')) document.forms[\'formDelete' . $employee->id . '\'].submit();' }}" 
-                                            class="btn btn-danger btn-sm">
-                                            <i class="bi-trash-fill"></i>
-                                        </button>
-                                    </form></div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                    {{-- filtros --}}
+                    @component(
+                        '_components.filters_form', 
+                        [
+                            'filters' =>$filters,
+                            'options' => [
+                                [ 'label'=>'CPF', 'value'=>'cpf_contains', 'selected'=>true],
+                                [ 'label'=>'Nome', 'value'=>'name_contains'],
+                                [ 'label'=>'Profissão', 'value'=>'job_contains'],
+                                [ 'label'=>'Cidade', 'value'=>'addresscity_contains'],
+                                [ 'label'=>'Usuário', 'value'=>'user_email_contains'],
+                            ]
+                        ]
+                    )@endcomponent
+                    
+                    <p style="color: red"> Clique no CPF ou Nome para exibir/ocultar as informações de contato</p>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <th>@sortablelink('cpf', 'CPF')</th>
+                                <th>@sortablelink('name', 'Nome')</th>
+                                <th>@sortablelink('job', 'Profissão')</th>
+                                <th>@sortablelink('address_city', 'Cidade')</th>
+                                <th>@sortablelink('user.email', 'Usuário')</th>
+                                <th class="text-center">Ações</th>
+                            </thead>
+                            <tbody>
+                                @foreach ($employees as $employee)
+                                    <tr>
+                                        <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
+                                        data-bs-content="<strong>E-mail:</strong> {{ $employee->email }} | <strong>Área:</strong> {{ $employee->area_code }} | <strong>Telefone:</strong> {{ $employee->phone }} | <strong>Celular:</strong> {{ $employee->mobile }}">
+                                            {{ $employee->cpf }}
+                                        </td>
+                                        <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
+                                        data-bs-content="<strong>E-mail:</strong> {{ $employee->email }} | <strong>Área:</strong> {{ $employee->area_code }} | <strong>Telefone:</strong> {{ $employee->phone }} | <strong>Celular:</strong> {{ $employee->mobile }}">
+                                            {{ $employee->name }}</td>
+                                        <td>{{ $employee->job }}</td>
+                                        <td>{{ $employee->address_city }}</td>
+                                        <td>{{ $employee->user->email ?? '' }}</td>
+                                        <td class="text-center"><div class="d-inline-flex">
+                                            <a href="{{ route('employees.show', $employee) }}" data-bs-toggle="tooltip" title="Ver colaborador" class="btn btn-primary btn-sm">
+                                                <i class="bi-eye-fill"></i>
+                                            </a>&nbsp;
+                                            <a href="{{ route('employees.edit', $employee) }}" data-bs-toggle="tooltip" title="Editar colaborador" class="btn btn-primary btn-sm">
+                                                <i class="bi-pencil-fill"></i>
+                                            </a>&nbsp;
+                                            <form name="{{ 'formDelete' . $employee->id }}"
+                                                action="{{ route('employees.destroy', $employee) }}" method="POST">
+                                                @method('DELETE')
+                                                @csrf
+                                                <button type="button" data-bs-toggle="tooltip" title="Excluir colaborador" 
+                                                    onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Colaborador e todos os seus documentos, vínculos e documentos de vínculos?\')) document.forms[\'formDelete' . $employee->id . '\'].submit();' }}" 
+                                                    class="btn btn-danger btn-sm">
+                                                    <i class="bi-trash-fill"></i>
+                                                </button>
+                                            </form></div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <br />
+                    {!! $employees->links() !!}
+                    <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    <br /><br />
+                </div>
             </div>
-            <br />
-            {!! $employees->links() !!}
-            <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
-            <br /><br />
         </main>
     </section>
 @endsection

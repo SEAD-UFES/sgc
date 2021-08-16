@@ -11,37 +11,41 @@
     </nav>
     <section id="pageContent">
         <main role="main">
+            <div class="row justify-content-center">
+                <div class="col-xl-10 col-xxl-8">
 
-            {{-- filtros --}}
-            @component(
-                '_components.filters_form', 
-                [
-                    'filters' =>$filters,
-                    'options' => [
-                        [ 'label'=>'Nome', 'value'=>'name_contains', 'selected'=>true],
-                        [ 'label'=>'Descrição', 'value'=>'description_contains']
-                    ]
-                ]
-            )@endcomponent
-            
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <th>@sortablelink('name', 'Nome')</th>
-                        <th>@sortablelink('description', 'Descrição')</th>
-                    </thead>
-                    <tbody>
-                        @foreach ($courseTypes as $courseType)
-                            <tr>
-                                <td>{{ $courseType->name }}</td>
-                                <td>{{ $courseType->description }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                    {{-- filtros --}}
+                    @component(
+                        '_components.filters_form', 
+                        [
+                            'filters' =>$filters,
+                            'options' => [
+                                [ 'label'=>'Nome', 'value'=>'name_contains', 'selected'=>true],
+                                [ 'label'=>'Descrição', 'value'=>'description_contains']
+                            ]
+                        ]
+                    )@endcomponent
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <th>@sortablelink('name', 'Nome')</th>
+                                <th>@sortablelink('description', 'Descrição')</th>
+                            </thead>
+                            <tbody>
+                                @foreach ($courseTypes as $courseType)
+                                    <tr>
+                                        <td>{{ $courseType->name }}</td>
+                                        <td>{{ $courseType->description }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    <br /><br />
+                </div>
             </div>
-            <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
-            <br /><br />
         </main>
     </section>
 @endsection

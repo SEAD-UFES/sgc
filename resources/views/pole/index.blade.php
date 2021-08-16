@@ -11,59 +11,63 @@
     </nav>
     <section id="pageContent">
         <main role="main">
-            @if ($message = Session::get('success'))
-                <div class="alert alert-success">
-                    <span style="color: green; font-weight: bold">{{ $message }}</span>
-                </div>
-            @endif
+            <div class="row justify-content-center">
+                <div class="col-xl-10 col-xxl-8">
+                    @if ($message = Session::get('success'))
+                        <div class="alert alert-success">
+                            <span style="color: green; font-weight: bold">{{ $message }}</span>
+                        </div>
+                    @endif
 
-            {{-- filtros --}}
-            @component(
-                '_components.filters_form', 
-                [
-                    'filters' => $filters,
-                    'options' => [
-                        ['label' => 'Nome', 'value' => 'name_contains', 'selected' => true], 
-                        ['label' => 'Descrição', 'value' => 'description_contains']
-                    ], 
-                ]
-            )@endcomponent
-            
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <th>@sortablelink('name', 'Nome')</th>
-                        <th>@sortablelink('description', 'Descrição')</th>
-                        <th class="text-center">Ações</th>
-                    </thead>
-                    <tbody>
-                        @foreach ($poles as $pole)
-                            <tr>
-                                <td>{{ $pole->name }}</td>
-                                <td>{{ $pole->description }}</td>
-                                <td class="text-center"><div class="d-inline-flex">
-                                    <a href="{{ route('poles.edit', $pole) }}" data-bs-toggle="tooltip" title="Editar polo" class="btn btn-primary btn-sm">
-                                        <i class="bi-pencil-fill"></i>
-                                    </a>&nbsp;
-                                    <form name="{{ 'formDelete' . $pole->id }}" action="{{ route('poles.destroy', $pole) }}"
-                                        method="POST">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button type="button" data-bs-toggle="tooltip" title="Excluir polo" 
-                                            onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Polo?\')) document.forms[\'formDelete' . $pole->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
-                                            <i class="bi-trash-fill"></i>
-                                        </button>
-                                    </form></div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                    {{-- filtros --}}
+                    @component(
+                        '_components.filters_form', 
+                        [
+                            'filters' => $filters,
+                            'options' => [
+                                ['label' => 'Nome', 'value' => 'name_contains', 'selected' => true], 
+                                ['label' => 'Descrição', 'value' => 'description_contains']
+                            ], 
+                        ]
+                    )@endcomponent
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <th>@sortablelink('name', 'Nome')</th>
+                                <th>@sortablelink('description', 'Descrição')</th>
+                                <th class="text-center">Ações</th>
+                            </thead>
+                            <tbody>
+                                @foreach ($poles as $pole)
+                                    <tr>
+                                        <td>{{ $pole->name }}</td>
+                                        <td>{{ $pole->description }}</td>
+                                        <td class="text-center"><div class="d-inline-flex">
+                                            <a href="{{ route('poles.edit', $pole) }}" data-bs-toggle="tooltip" title="Editar polo" class="btn btn-primary btn-sm">
+                                                <i class="bi-pencil-fill"></i>
+                                            </a>&nbsp;
+                                            <form name="{{ 'formDelete' . $pole->id }}" action="{{ route('poles.destroy', $pole) }}"
+                                                method="POST">
+                                                @method('DELETE')
+                                                @csrf
+                                                <button type="button" data-bs-toggle="tooltip" title="Excluir polo" 
+                                                    onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Polo?\')) document.forms[\'formDelete' . $pole->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
+                                                    <i class="bi-trash-fill"></i>
+                                                </button>
+                                            </form></div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <br />
+                    {!! $poles->links() !!}
+                    <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    <br /><br />
+                </div>
             </div>
-            <br />
-            {!! $poles->links() !!}
-            <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
-            <br /><br />
         </main>
     </section>
 @endsection

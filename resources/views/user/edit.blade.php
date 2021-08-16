@@ -12,16 +12,20 @@
     </nav>
     <section id="pageContent">
         <main role="main">
-            <form action="{{ route('users.update', $user->id) }}" method="POST">
-                @method('PATCH')
-                @component('user.componentUserForm', compact('user', 'userTypes'))@endcomponent
-                <button type="submit" class="btn btn-primary">Atualizar</button> <button type="button"
-                    onclick="history.back()" class="btn btn-secondary">Cancelar</button>
-                @error('noStore')
-                    <div class="error">> {{ $message }}</div>
-                @enderror
-                <br /><br />
-            </form>
+            <div class="row justify-content-center">
+                <div class="col-xl-10 col-xxl-8">
+                    <form action="{{ route('users.update', $user->id) }}" method="POST">
+                        @method('PATCH')
+                        @component('user.componentUserForm', compact('user', 'userTypes'))@endcomponent
+                        <button type="submit" class="btn btn-primary">Atualizar</button> <button type="button"
+                            onclick="history.back()" class="btn btn-secondary">Cancelar</button>
+                        @error('noStore')
+                            <div class="error">> {{ $message }}</div>
+                        @enderror
+                        <br /><br />
+                    </form>
+                </div>
+            </div>
         </main>
     </section>
 @endsection

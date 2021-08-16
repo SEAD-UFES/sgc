@@ -11,66 +11,70 @@
     </nav>
     <section id="pageContent">
         <main role="main">
-            @if ($message = Session::get('success'))
-                <div class="alert alert-success">
-                    <span style="color: green; font-weight: bold">{{ $message }}</span>
-                </div>
-            @endif
+            <div class="row justify-content-center">
+                <div class="col-xl-10 col-xxl-8">
+                    @if ($message = Session::get('success'))
+                        <div class="alert alert-success">
+                            <span style="color: green; font-weight: bold">{{ $message }}</span>
+                        </div>
+                    @endif
 
-            {{-- filtros --}}
-            @component(
-                '_components.filters_form', 
-                [
-                    'filters' => $filters,
-                    'options' => [
-                        ['label' => 'Nome', 'value' => 'name_contains', 'selected' => true],
-                        ['label' => 'Descrição', 'value' => 'description_contains'], 
-                        ['label' => 'Valor da Bolsa (=)', 'value' => 'grantvalue_exactly'], 
-                        ['label' => 'Valor da Bolsa (>=)', 'value' => 'grantvalue_BigOrEqu'], 
-                        ['label' => 'Valor da Bolsa (<=)', 'value'=> 'grantvalue_LowOrEqu'], 
-                        ['label' => 'Tipo da bolsa', 'value' => 'grantType_name_contains']
-                    ],
-                ]
-            )@endcomponent
-            
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <th>@sortablelink('name', 'Nome')</th>
-                        <th>@sortablelink('description', 'Descrição')</th>
-                        <th>@sortablelink('grant_value', 'Valor da Bolsa')</th>
-                        <th>@sortablelink('grantType.name', 'Tipo da Bolsa')</th>
-                        <th class="text-center">Ações</th>
-                    </thead>
-                    <tbody>
-                        @foreach ($roles as $role)
-                            <tr>
-                                <td>{{ $role->name }}</td>
-                                <td>{{ $role->description }}</td>
-                                <td>{{ numfmt_format_currency(numfmt_create('pt_BR', NumberFormatter::CURRENCY), $role->grant_value, 'BRL') }}</td>
-                                <td>{{ $role->grantType->name }}</td>
-                                <td class="text-center"><div class="d-inline-flex">
-                                    <a href="{{ route('roles.edit', $role) }}" data-bs-toggle="tooltip" title="Editar atribuição" class="btn btn-primary btn-sm">
-                                        <i class="bi-pencil-fill"></i>
-                                    </a>&nbsp;
-                                    <form name="{{ 'formDelete' . $role->id }}" action="{{ route('roles.destroy', $role) }}" method="POST">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button type="button" data-bs-toggle="tooltip" title="Excluir atribuição" 
-                                            onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir essa Atribuição?\')) document.forms[\'formDelete' . $role->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
-                                            <i class="bi-trash-fill"></i>
-                                        </button>
-                                    </form></div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                    {{-- filtros --}}
+                    @component(
+                        '_components.filters_form', 
+                        [
+                            'filters' => $filters,
+                            'options' => [
+                                ['label' => 'Nome', 'value' => 'name_contains', 'selected' => true],
+                                ['label' => 'Descrição', 'value' => 'description_contains'], 
+                                ['label' => 'Valor da Bolsa (=)', 'value' => 'grantvalue_exactly'], 
+                                ['label' => 'Valor da Bolsa (>=)', 'value' => 'grantvalue_BigOrEqu'], 
+                                ['label' => 'Valor da Bolsa (<=)', 'value'=> 'grantvalue_LowOrEqu'], 
+                                ['label' => 'Tipo da bolsa', 'value' => 'grantType_name_contains']
+                            ],
+                        ]
+                    )@endcomponent
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <th>@sortablelink('name', 'Nome')</th>
+                                <th>@sortablelink('description', 'Descrição')</th>
+                                <th>@sortablelink('grant_value', 'Valor da Bolsa')</th>
+                                <th>@sortablelink('grantType.name', 'Tipo da Bolsa')</th>
+                                <th class="text-center">Ações</th>
+                            </thead>
+                            <tbody>
+                                @foreach ($roles as $role)
+                                    <tr>
+                                        <td>{{ $role->name }}</td>
+                                        <td>{{ $role->description }}</td>
+                                        <td>{{ numfmt_format_currency(numfmt_create('pt_BR', NumberFormatter::CURRENCY), $role->grant_value, 'BRL') }}</td>
+                                        <td>{{ $role->grantType->name }}</td>
+                                        <td class="text-center"><div class="d-inline-flex">
+                                            <a href="{{ route('roles.edit', $role) }}" data-bs-toggle="tooltip" title="Editar atribuição" class="btn btn-primary btn-sm">
+                                                <i class="bi-pencil-fill"></i>
+                                            </a>&nbsp;
+                                            <form name="{{ 'formDelete' . $role->id }}" action="{{ route('roles.destroy', $role) }}" method="POST">
+                                                @method('DELETE')
+                                                @csrf
+                                                <button type="button" data-bs-toggle="tooltip" title="Excluir atribuição" 
+                                                    onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir essa Atribuição?\')) document.forms[\'formDelete' . $role->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
+                                                    <i class="bi-trash-fill"></i>
+                                                </button>
+                                            </form></div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <br />
+                    {!! $roles->links() !!}
+                    <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    <br /><br />
+                </div>
             </div>
-            <br />
-            {!! $roles->links() !!}
-            <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
-            <br /><br />
         </main>
     </section>
 @endsection

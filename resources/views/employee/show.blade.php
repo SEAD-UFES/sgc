@@ -12,7 +12,11 @@
 </nav>
     <section id="pageContent">
         <main role="main">
-            @component('employee.componentEmployeeDetails',  compact('employee'))@endcomponent
+            <div class="row justify-content-center">
+                <div class="col-xl-10 col-xxl-8">
+                    @component('employee.componentEmployeeDetails',  compact('employee'))@endcomponent
+                </div>
+            </div>
         </main>
     </section>
 @endsection
