@@ -23,21 +23,23 @@
                     ]
                 ]
             )@endcomponent
-
-            <table class="table table-striped table-hover">
-                <thead>
-                    <th>@sortablelink('name', 'Nome')</th>
-                    <th>@sortablelink('description', 'Descrição')</th>
-                </thead>
-                <tbody>
-                    @foreach ($courseTypes as $courseType)
-                        <tr>
-                            <td>{{ $courseType->name }}</td>
-                            <td>{{ $courseType->description }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <th>@sortablelink('name', 'Nome')</th>
+                        <th>@sortablelink('description', 'Descrição')</th>
+                    </thead>
+                    <tbody>
+                        @foreach ($courseTypes as $courseType)
+                            <tr>
+                                <td>{{ $courseType->name }}</td>
+                                <td>{{ $courseType->description }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
             <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
             <br /><br />
         </main>

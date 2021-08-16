@@ -28,36 +28,39 @@
                     ], 
                 ]
             )@endcomponent
-
-            <table class="table table-striped table-hover">
-                <thead>
-                    <th>@sortablelink('name', 'Nome')</th>
-                    <th>@sortablelink('description', 'Descrição')</th>
-                    <th class="text-center">Ações</th>
-                </thead>
-                <tbody>
-                    @foreach ($poles as $pole)
-                        <tr>
-                            <td>{{ $pole->name }}</td>
-                            <td>{{ $pole->description }}</td>
-                            <td class="text-center"><div class="d-inline-flex">
-                                <a href="{{ route('poles.edit', $pole) }}" data-bs-toggle="tooltip" title="Editar polo" class="btn btn-primary btn-sm">
-                                    <i class="bi-pencil-fill"></i>
-                                </a>&nbsp;
-                                <form name="{{ 'formDelete' . $pole->id }}" action="{{ route('poles.destroy', $pole) }}"
-                                    method="POST">
-                                    @method('DELETE')
-                                    @csrf
-                                    <button type="button" data-bs-toggle="tooltip" title="Excluir polo" 
-                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Polo?\')) document.forms[\'formDelete' . $pole->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
-                                        <i class="bi-trash-fill"></i>
-                                    </button>
-                                </form></div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <th>@sortablelink('name', 'Nome')</th>
+                        <th>@sortablelink('description', 'Descrição')</th>
+                        <th class="text-center">Ações</th>
+                    </thead>
+                    <tbody>
+                        @foreach ($poles as $pole)
+                            <tr>
+                                <td>{{ $pole->name }}</td>
+                                <td>{{ $pole->description }}</td>
+                                <td class="text-center"><div class="d-inline-flex">
+                                    <a href="{{ route('poles.edit', $pole) }}" data-bs-toggle="tooltip" title="Editar polo" class="btn btn-primary btn-sm">
+                                        <i class="bi-pencil-fill"></i>
+                                    </a>&nbsp;
+                                    <form name="{{ 'formDelete' . $pole->id }}" action="{{ route('poles.destroy', $pole) }}"
+                                        method="POST">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button type="button" data-bs-toggle="tooltip" title="Excluir polo" 
+                                            onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Polo?\')) document.forms[\'formDelete' . $pole->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
+                                            <i class="bi-trash-fill"></i>
+                                        </button>
+                                    </form></div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <br />
             {!! $poles->links() !!}
             <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
             <br /><br />

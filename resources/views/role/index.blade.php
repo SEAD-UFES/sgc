@@ -32,39 +32,42 @@
                     ],
                 ]
             )@endcomponent
-
-            <table class="table table-striped table-hover">
-                <thead>
-                    <th>@sortablelink('name', 'Nome')</th>
-                    <th>@sortablelink('description', 'Descrição')</th>
-                    <th>@sortablelink('grant_value', 'Valor da Bolsa')</th>
-                    <th>@sortablelink('grantType.name', 'Tipo da Bolsa')</th>
-                    <th class="text-center">Ações</th>
-                </thead>
-                <tbody>
-                    @foreach ($roles as $role)
-                        <tr>
-                            <td>{{ $role->name }}</td>
-                            <td>{{ $role->description }}</td>
-                            <td>{{ numfmt_format_currency(numfmt_create('pt_BR', NumberFormatter::CURRENCY), $role->grant_value, 'BRL') }}</td>
-                            <td>{{ $role->grantType->name }}</td>
-                            <td class="text-center"><div class="d-inline-flex">
-                                <a href="{{ route('roles.edit', $role) }}" data-bs-toggle="tooltip" title="Editar atribuição" class="btn btn-primary btn-sm">
-                                    <i class="bi-pencil-fill"></i>
-                                </a>&nbsp;
-                                <form name="{{ 'formDelete' . $role->id }}" action="{{ route('roles.destroy', $role) }}" method="POST">
-                                    @method('DELETE')
-                                    @csrf
-                                    <button type="button" data-bs-toggle="tooltip" title="Excluir atribuição" 
-                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir essa Atribuição?\')) document.forms[\'formDelete' . $role->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
-                                        <i class="bi-trash-fill"></i>
-                                    </button>
-                                </form></div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <th>@sortablelink('name', 'Nome')</th>
+                        <th>@sortablelink('description', 'Descrição')</th>
+                        <th>@sortablelink('grant_value', 'Valor da Bolsa')</th>
+                        <th>@sortablelink('grantType.name', 'Tipo da Bolsa')</th>
+                        <th class="text-center">Ações</th>
+                    </thead>
+                    <tbody>
+                        @foreach ($roles as $role)
+                            <tr>
+                                <td>{{ $role->name }}</td>
+                                <td>{{ $role->description }}</td>
+                                <td>{{ numfmt_format_currency(numfmt_create('pt_BR', NumberFormatter::CURRENCY), $role->grant_value, 'BRL') }}</td>
+                                <td>{{ $role->grantType->name }}</td>
+                                <td class="text-center"><div class="d-inline-flex">
+                                    <a href="{{ route('roles.edit', $role) }}" data-bs-toggle="tooltip" title="Editar atribuição" class="btn btn-primary btn-sm">
+                                        <i class="bi-pencil-fill"></i>
+                                    </a>&nbsp;
+                                    <form name="{{ 'formDelete' . $role->id }}" action="{{ route('roles.destroy', $role) }}" method="POST">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button type="button" data-bs-toggle="tooltip" title="Excluir atribuição" 
+                                            onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir essa Atribuição?\')) document.forms[\'formDelete' . $role->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
+                                            <i class="bi-trash-fill"></i>
+                                        </button>
+                                    </form></div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <br />
             {!! $roles->links() !!}
             <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
             <br /><br />

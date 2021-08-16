@@ -29,24 +29,26 @@
                     ]
                 ]
             )@endcomponent
-
-            <table class="table table-striped table-hover">
-                <thead>
-                    <th>@sortablelink('employee.name', 'Colaborador')</th>
-                    <th>@sortablelink('original_name', 'Nome do arquivo')</th>
-                    <th>@sortablelink('documentType.name', 'Tipo')</th>
-                </thead>
-                <tbody>
-                    @foreach ($documents as $document)
-                        <tr>
-                            <td>{{ $document->employee->name }}</td>
-                            <td><a href={{ route('documents.show', ['id' => $document->id, 'type' => 'EmployeeDocument', 'htmlTitle' => $document->original_name]) }}
-                                    target="_blank">{{ $document->original_name }}</a></td>
-                            <td>{{ $document->documentType->name }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <th>@sortablelink('employee.name', 'Colaborador')</th>
+                        <th>@sortablelink('original_name', 'Nome do arquivo')</th>
+                        <th>@sortablelink('documentType.name', 'Tipo')</th>
+                    </thead>
+                    <tbody>
+                        @foreach ($documents as $document)
+                            <tr>
+                                <td>{{ $document->employee->name }}</td>
+                                <td><a href={{ route('documents.show', ['id' => $document->id, 'type' => 'EmployeeDocument', 'htmlTitle' => $document->original_name]) }}
+                                        target="_blank">{{ $document->original_name }}</a></td>
+                                <td>{{ $document->documentType->name }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
             <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
             <br /><br />
         </main>

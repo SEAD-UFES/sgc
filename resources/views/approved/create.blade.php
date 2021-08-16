@@ -29,32 +29,34 @@
                 <div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5">
                     <p>Formato mínimo esperado da planilha: Nome, Email, Telefone(s), Edital</p>
                     <p>Ex:</p>
-                    <table class="table table-striped table-hover">
-                        <tr>
-                            <th>Nome</th>
-                            <th>E-mail</th>
-                            <th>Telefone</th>
-                            <th>Edital</th>
-                        </tr>
-                        <tr>
-                            <td>Mateus</td>
-                            <td>mateus@ufes.br</td>
-                            <td>(27) 3339 3554<br />(27) 99999-9375</td>
-                            <td>099/2021</td>
-                        </tr>
-                        <tr>
-                            <td>Júlia</td>
-                            <td>julia@gmail.com</td>
-                            <td>(27) 99999-9374</td>
-                            <td>099/2021</td>
-                        </tr>
-                        <tr>
-                            <td>Gabriel</td>
-                            <td>gabriel@outlook.com</td>
-                            <td>(28) 99999-0647</td>
-                            <td>099/2021</td>
-                        </tr>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <tr>
+                                <th>Nome</th>
+                                <th>E-mail</th>
+                                <th>Telefone</th>
+                                <th>Edital</th>
+                            </tr>
+                            <tr>
+                                <td>Mateus</td>
+                                <td>mateus@ufes.br</td>
+                                <td>(27) 3339 3554<br />(27) 99999-9375</td>
+                                <td>099/2021</td>
+                            </tr>
+                            <tr>
+                                <td>Júlia</td>
+                                <td>julia@gmail.com</td>
+                                <td>(27) 99999-9374</td>
+                                <td>099/2021</td>
+                            </tr>
+                            <tr>
+                                <td>Gabriel</td>
+                                <td>gabriel@outlook.com</td>
+                                <td>(28) 99999-0647</td>
+                                <td>099/2021</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
             <br />

@@ -37,57 +37,60 @@
                     ]
                 ]
             )@endcomponent
-
-            <table class="table table-striped table-hover">
-                <thead>
-                    <th>@sortablelink('name', 'Nome')</th>
-                    <th>@sortablelink('email', 'E-mail')</th>
-                    <th>@sortablelink('area_code', 'Área')</th>
-                    <th>@sortablelink('phone', 'Telefone')</th>
-                    <th>@sortablelink('mobile', 'Celular')</th>
-                    <th>@sortablelink('announcement', 'Edital')</th>
-                    <th>@sortablelink('approvedState.description', 'Status')</th>
-                    <th>@sortablelink('role.name', 'Atribuição')</th>
-                    <th>@sortablelink('course.name', 'Curso')</th>
-                    <th>@sortablelink('pole.name', 'Polo')</th>
-                    <th colspan="2">Mudar Status</th>
-                </thead>
-                <tbody>
-                    @foreach ($approveds as $approved)
-                        <tr>
-                            <td>{{ $approved->name }}</td>
-                            <td>{{ $approved->email }}</td>
-                            <td>{{ $approved->area_code }}</td>
-                            <td>{{ $approved->phone }}</td>
-                            <td>{{ $approved->mobile }}</td>
-                            <td>{{ $approved->announcement }}</td>
-                            <td title="{{ $approved->approvedState->description ?? '' }}">{!! $approved->approvedState->name ?? '&nbsp;' !!}</td>
-                            <td>{!! $approved->role->name ?? '&nbsp;' !!}</td>
-                            <td>{!! $approved->course->name ?? '&nbsp;' !!}</td>
-                            <td>{!! $approved->pole->name ?? '&nbsp;' !!}</td>
-                            @if ($approved->approvedState->hasNext())
-                                @foreach ($approved->approvedState->getNext() as $state)
-                                    <td @if ($approved->approvedState->getNext()->count() == 1) colspan="2" @endif>
-                                        <a href="{{ route('approveds.changestate', ['approved' => $approved, 'state' => $state->id]) }}" data-bs-toggle="tooltip" title="{{ $state->description }}" class="btn btn-primary btn-sm">{{ $state->name }}</a>
+            
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <th>@sortablelink('name', 'Nome')</th>
+                        <th>@sortablelink('email', 'E-mail')</th>
+                        <th>@sortablelink('area_code', 'Área')</th>
+                        <th>@sortablelink('phone', 'Telefone')</th>
+                        <th>@sortablelink('mobile', 'Celular')</th>
+                        <th>@sortablelink('announcement', 'Edital')</th>
+                        <th>@sortablelink('approvedState.description', 'Status')</th>
+                        <th>@sortablelink('role.name', 'Atribuição')</th>
+                        <th>@sortablelink('course.name', 'Curso')</th>
+                        <th>@sortablelink('pole.name', 'Polo')</th>
+                        <th colspan="2">Mudar Status</th>
+                    </thead>
+                    <tbody>
+                        @foreach ($approveds as $approved)
+                            <tr>
+                                <td>{{ $approved->name }}</td>
+                                <td>{{ $approved->email }}</td>
+                                <td>{{ $approved->area_code }}</td>
+                                <td>{{ $approved->phone }}</td>
+                                <td>{{ $approved->mobile }}</td>
+                                <td>{{ $approved->announcement }}</td>
+                                <td title="{{ $approved->approvedState->description ?? '' }}">{!! $approved->approvedState->name ?? '&nbsp;' !!}</td>
+                                <td>{!! $approved->role->name ?? '&nbsp;' !!}</td>
+                                <td>{!! $approved->course->name ?? '&nbsp;' !!}</td>
+                                <td>{!! $approved->pole->name ?? '&nbsp;' !!}</td>
+                                @if ($approved->approvedState->hasNext())
+                                    @foreach ($approved->approvedState->getNext() as $state)
+                                        <td @if ($approved->approvedState->getNext()->count() == 1) colspan="2" @endif>
+                                            <a href="{{ route('approveds.changestate', ['approved' => $approved, 'state' => $state->id]) }}" data-bs-toggle="tooltip" title="{{ $state->description }}" class="btn btn-primary btn-sm">{{ $state->name }}</a>
+                                        </td>
+                                    @endforeach
+                                @else
+                                    <td colspan="2">
+                                        @if ($approved->approvedState->name == 'Aceitante')
+                                            <form name="{{ 'formDesignate' . $approved->id }}" action={{ route('approveds.designate') }} method="POST">
+                                                @csrf
+                                                <input type="hidden" name="approvedId" value="{{ $approved->id }}" />
+                                                <span onclick="{{ 'document.forms[\'formDesignate' . $approved->id . '\'].submit();' }}" data-bs-toggle="tooltip" title="Converter o aprovado em Colaborador" class="btn btn-warning btn-sm">Nomeado</span>
+                                            </form>
+                                        @else
+                                            Não existe próximo Status
+                                        @endif
                                     </td>
-                                @endforeach
-                            @else
-                                <td colspan="2">
-                                    @if ($approved->approvedState->name == 'Aceitante')
-                                        <form name="{{ 'formDesignate' . $approved->id }}" action={{ route('approveds.designate') }} method="POST">
-                                            @csrf
-                                            <input type="hidden" name="approvedId" value="{{ $approved->id }}" />
-                                            <span onclick="{{ 'document.forms[\'formDesignate' . $approved->id . '\'].submit();' }}" data-bs-toggle="tooltip" title="Converter o aprovado em Colaborador" class="btn btn-warning btn-sm">Nomeado</span>
-                                        </form>
-                                    @else
-                                        Não existe próximo Status
-                                    @endif
-                                </td>
-                            @endif
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                                @endif
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <br />
             {!! $approveds->links() !!}
             <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
             <br /><br />

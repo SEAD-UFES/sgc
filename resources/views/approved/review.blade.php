@@ -69,74 +69,76 @@
             <form action={{ route('approveds.massstore') }} method="POST">
                 @csrf
                 <input type="hidden" name="approvedsCount" value="{{ count($approveds) }}">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <th><span onclick="toggleCheck({{ count($approveds) }})"
-                                style="cursor: pointer;color:green;">&check;</span></th>
-                        <th>Nome</th>
-                        <th>E-mail</th>
-                        <th>DDD</th>
-                        <th>Telefone</th>
-                        <th>Celular</th>
-                        <th>Edital</th>
-                        <th>Curso</th>
-                        <th>Atribuição</th>
-                        <th>Polo</th>
-                    </thead>
-                    <tbody>
-                        @foreach ($approveds as $key => $approved)
-                            <tr class="p-0">
-                                <td class="py-0"><input type="checkbox" name="check_{{ $key }}"
-                                        id="check_{{ $key }}" checked="1" /></td>
-                                <td title="{{ $approved->name }}" class="p-0"><input type="text"
-                                        name="name_{{ $key }}" value="{{ $approved->name }}" class="w-100" />
-                                </td>
-                                <td title="{{ $approved->email }}" class="p-0"><input type="text"
-                                        name="email_{{ $key }}" value="{{ $approved->email }}" class="w-100" />
-                                </td>
-                                <td title="{{ $approved->area_code }}" class="p-0"><input type="text"
-                                        name="area_{{ $key }}" value="{{ $approved->area_code }}" size="2" />
-                                </td>
-                                <td title="{{ $approved->phone }}" class="p-0"><input type="text"
-                                        name="phone_{{ $key }}" value="{{ $approved->phone }}" size="10" />
-                                </td>
-                                <td title="{{ $approved->mobile }}" class="p-0"><input type="text"
-                                        name="mobile_{{ $key }}" value="{{ $approved->mobile }}" size="10" />
-                                </td>
-                                <td title="{{ $approved->announcement }}" class="p-0"><input type="text"
-                                        name="announcement_{{ $key }}" value="{{ $approved->announcement }}"
-                                        size="8" /></td>
-                                <td class="p-0"><select name="courses_{{ $key }}"
-                                        id="courses_{{ $key }}" style="height: 30px">
-                                        <option value="">Selecione o curso</option>
-                                        @foreach ($courses as $course)
-                                            <option value="{{ $course->id }}">
-                                                {{ $course->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td class="p-0"><select name="roles_{{ $key }}" id="roles_{{ $key }}"
-                                        style="height: 30px">
-                                        <option value="">Selecione a atribuição</option>
-                                        @foreach ($roles as $role)
-                                            <option value="{{ $role->id }}">{{ $role->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td class="p-0"><select name="poles_{{ $key }}" id="poles_{{ $key }}"
-                                        style="height: 30px">
-                                        <option value="">Selecione o polo</option>
-                                        @foreach ($poles as $pole)
-                                            <option value="{{ $pole->id }}" {{ $pole->id == 1 ? 'selected' : '' }}>
-                                                {{ $pole->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <th><span onclick="toggleCheck({{ count($approveds) }})"
+                                    style="cursor: pointer;color:green;">&check;</span></th>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>DDD</th>
+                            <th>Telefone</th>
+                            <th>Celular</th>
+                            <th>Edital</th>
+                            <th>Curso</th>
+                            <th>Atribuição</th>
+                            <th>Polo</th>
+                        </thead>
+                        <tbody>
+                            @foreach ($approveds as $key => $approved)
+                                <tr class="p-0">
+                                    <td class="py-0"><input type="checkbox" name="check_{{ $key }}"
+                                            id="check_{{ $key }}" checked="1" /></td>
+                                    <td title="{{ $approved->name }}" class="p-0"><input type="text"
+                                            name="name_{{ $key }}" value="{{ $approved->name }}" class="w-100" />
+                                    </td>
+                                    <td title="{{ $approved->email }}" class="p-0"><input type="text"
+                                            name="email_{{ $key }}" value="{{ $approved->email }}" class="w-100" />
+                                    </td>
+                                    <td title="{{ $approved->area_code }}" class="p-0"><input type="text"
+                                            name="area_{{ $key }}" value="{{ $approved->area_code }}" size="2" />
+                                    </td>
+                                    <td title="{{ $approved->phone }}" class="p-0"><input type="text"
+                                            name="phone_{{ $key }}" value="{{ $approved->phone }}" size="10" />
+                                    </td>
+                                    <td title="{{ $approved->mobile }}" class="p-0"><input type="text"
+                                            name="mobile_{{ $key }}" value="{{ $approved->mobile }}" size="10" />
+                                    </td>
+                                    <td title="{{ $approved->announcement }}" class="p-0"><input type="text"
+                                            name="announcement_{{ $key }}" value="{{ $approved->announcement }}"
+                                            size="8" /></td>
+                                    <td class="p-0"><select name="courses_{{ $key }}"
+                                            id="courses_{{ $key }}" style="height: 30px">
+                                            <option value="">Selecione o curso</option>
+                                            @foreach ($courses as $course)
+                                                <option value="{{ $course->id }}">
+                                                    {{ $course->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td class="p-0"><select name="roles_{{ $key }}" id="roles_{{ $key }}"
+                                            style="height: 30px">
+                                            <option value="">Selecione a atribuição</option>
+                                            @foreach ($roles as $role)
+                                                <option value="{{ $role->id }}">{{ $role->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td class="p-0"><select name="poles_{{ $key }}" id="poles_{{ $key }}"
+                                            style="height: 30px">
+                                            <option value="">Selecione o polo</option>
+                                            @foreach ($poles as $pole)
+                                                <option value="{{ $pole->id }}" {{ $pole->id == 1 ? 'selected' : '' }}>
+                                                    {{ $pole->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
                 <br /><br />
                 <button type="submit">Importar</button> <button type="button" onclick="history.back()">Cancelar</button>
             </form>

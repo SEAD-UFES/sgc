@@ -31,28 +31,30 @@
                     ], 
                 ]
             )@endcomponent
-
-            <table class="table table-striped table-hover">
-                <thead>
-                    <th>@sortablelink('bond_employee_name', 'Colaborador')</th>
-                    <th>@sortablelink('bond_role_name', 'Atribuição')</th>
-                    <th>@sortablelink('bond_course_name', 'Curso')</th>
-                    <th>@sortablelink('bond_pole_name', 'Polo')</th>
-                    <th>@sortablelink('original_name', 'Nome')</th>
-                </thead>
-                <tbody>
-                    @foreach ($documents as $document)
-                        <tr>
-                            <td>{{ $document->bond->employee->name }}</td>
-                            <td>{{ $document->bond->role->name }}</td>
-                            <td>{{ $document->bond->course->name }}</td>
-                            <td>{{ $document->bond->pole->name }}</td>
-                            <td><a href={{ route('documents.show', ['id' => $document->id, 'type' => 'BondDocument', 'htmlTitle' => $document->original_name]) }}
-                                    target="_blank">{{ $document->original_name }}</a></td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <th>@sortablelink('bond_employee_name', 'Colaborador')</th>
+                        <th>@sortablelink('bond_role_name', 'Atribuição')</th>
+                        <th>@sortablelink('bond_course_name', 'Curso')</th>
+                        <th>@sortablelink('bond_pole_name', 'Polo')</th>
+                        <th>@sortablelink('original_name', 'Nome')</th>
+                    </thead>
+                    <tbody>
+                        @foreach ($documents as $document)
+                            <tr>
+                                <td>{{ $document->bond->employee->name }}</td>
+                                <td>{{ $document->bond->role->name }}</td>
+                                <td>{{ $document->bond->course->name }}</td>
+                                <td>{{ $document->bond->pole->name }}</td>
+                                <td><a href={{ route('documents.show', ['id' => $document->id, 'type' => 'BondDocument', 'htmlTitle' => $document->original_name]) }}
+                                        target="_blank">{{ $document->original_name }}</a></td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
             <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
             <br /><br />
         </main>

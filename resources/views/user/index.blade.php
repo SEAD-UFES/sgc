@@ -30,40 +30,43 @@
                     ],
                 ]
             )@endcomponent
-
-            <table class="table table-striped table-hover">
-                <thead>
-                    <th>@sortablelink('email', 'E-mail')</th>
-                    <th>@sortablelink('userType.name', 'Tipo')</th>
-                    <th>@sortablelink('active', 'Ativo')</th>
-                    <th>@sortablelink('employee.name', 'Colaborador')</th>
-                    <th class="text-center">Ações</th>
-                </thead>
-                <tbody>
-                    @foreach ($users as $user)
-                        <tr>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->userType->name }}</td>
-                            <td>{{ $user->active === 1 ? 'Sim' : 'Não' }}</td>
-                            <td>{{ $user->employee ? $user->employee->name : 'Não possui' }}</td>
-                            <td class="text-center"><div class="d-inline-flex">
-                                <a href="{{ route('users.edit', $user) }}" data-bs-toggle="tooltip" title="Editar usuário" class="btn btn-primary btn-sm">
-                                    <i class="bi-pencil-fill"></i>
-                                </a>&nbsp;
-                                <form name="{{ 'formDelete' . $user->id }}" action="{{ route('users.destroy', $user) }}"
-                                    method="POST">
-                                    @method('DELETE')
-                                    @csrf
-                                    <button type="button" data-bs-toggle="tooltip" title="Excluir usuário" 
-                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse usuário?\')) document.forms[\'formDelete' . $user->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
-                                        <i class="bi-trash-fill"></i>
-                                    </button>
-                                </form></div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <th>@sortablelink('email', 'E-mail')</th>
+                        <th>@sortablelink('userType.name', 'Tipo')</th>
+                        <th>@sortablelink('active', 'Ativo')</th>
+                        <th>@sortablelink('employee.name', 'Colaborador')</th>
+                        <th class="text-center">Ações</th>
+                    </thead>
+                    <tbody>
+                        @foreach ($users as $user)
+                            <tr>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->userType->name }}</td>
+                                <td>{{ $user->active === 1 ? 'Sim' : 'Não' }}</td>
+                                <td>{{ $user->employee ? $user->employee->name : 'Não possui' }}</td>
+                                <td class="text-center"><div class="d-inline-flex">
+                                    <a href="{{ route('users.edit', $user) }}" data-bs-toggle="tooltip" title="Editar usuário" class="btn btn-primary btn-sm">
+                                        <i class="bi-pencil-fill"></i>
+                                    </a>&nbsp;
+                                    <form name="{{ 'formDelete' . $user->id }}" action="{{ route('users.destroy', $user) }}"
+                                        method="POST">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button type="button" data-bs-toggle="tooltip" title="Excluir usuário" 
+                                            onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse usuário?\')) document.forms[\'formDelete' . $user->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
+                                            <i class="bi-trash-fill"></i>
+                                        </button>
+                                    </form></div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <br />
             {!! $users->links() !!}
             <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
             <br /><br />
