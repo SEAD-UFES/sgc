@@ -27,24 +27,16 @@ class EmployeeFactory extends Factory
      */
     public function definition()
     {
-
-        $genderId = Gender::all()->random()->id;
-        $genderName = [1 => 'female', 2 => 'male'];
-        $spouseGenderId = ($genderId == 1) ? 2 : 1;
-        $firstName = $this->faker->firstName($genderName[$genderId]);
-        $lastname = $this->faker->lastName();
-        $maritalStatusId = MaritalStatus::all()->random()->id;
-
         return [
 
-            'gender_id' => $genderId, // Gender::factory(),
-            'birth_state_id' => State::all()->random(), //State::factory(),
-            'address_state_id' => State::all()->random(), //State::factory(),
-            'document_type_id' => random_int(1,3), //DocumentType::factory(),
-            'marital_status_id' => $maritalStatusId, //MaritalStatus::factory(),
+            'gender_id' => Gender::factory(),
+            'birth_state_id' => State::factory(),
+            'address_state_id' => State::factory(),
+            'document_type_id' => DocumentType::factory(),
+            'marital_status_id' => MaritalStatus::factory(),
 
             'cpf' => $this->faker->cpf($formatted = false),
-            'name' => $firstName . ' ' . $lastname, //$this->faker->name(),
+            'name' => $this->faker->name(),
             'job' => $this->faker->jobTitle(),
             'birthday' => $this->faker->dateTimeBetween('-50 years', '-19 years'),
             'birth_city' => $this->faker->city(),
@@ -53,9 +45,9 @@ class EmployeeFactory extends Factory
             'id_issue_date' => $this->faker->dateTimeBetween('-5 years', 'now'),
             'id_issue_agency' => 'SSP/' . $this->faker->stateAbbr(),
 
-            'spouse_name' => (in_array($maritalStatusId, [2,3,6])) ? $this->faker->firstName($genderName[$spouseGenderId]) . ' ' . $lastname : null, //$this->faker->name(),
-            'father_name' => $this->faker->firstName($gender = 'male') . ' ' . $lastname,
-            'mother_name' => $this->faker->firstName($gender = 'female') . ' ' . $lastname,
+            'spouse_name' => $this->faker->name(),
+            'father_name' => $this->faker->name($gender = 'male'),
+            'mother_name' => $this->faker->name($gender = 'female'),
 
             'address_street' => $this->faker->streetName(),
             'address_complement' => $this->faker->realText($maxChars = 30),
@@ -67,10 +59,57 @@ class EmployeeFactory extends Factory
             'area_code' => $this->faker->areaCode(),
             'phone' => $this->faker->landline($formatted = true),
             'mobile' => $this->faker->cellphone($formatted = true),
-            'email' => str_replace(' ', '', TextHelper::removeAccents(Str::lower($firstName))) . '.' . str_replace(' ', '', TextHelper::removeAccents(Str::lower($lastname))) . '.' . $this->faker->unique()->word . '@' . $this->faker->safeEmailDomain(), //$this->faker->email(),
+            'email' => $this->faker->email(),
 
             'created_at' => now(),
             'updated_at' => now(),
         ];
+    }
+
+    /**
+     * Indicates the created Employee must use data already in the Database.
+     * @return \Illumintate\Database\Eloquent\Factories\Factory
+     */
+    public function assumePopulatedDatabase()
+    {
+        return $this->state(function (array $attributes) {
+
+            $genderId = Gender::all()->random()->id;
+            $genderName = [1 => 'female', 2 => 'male'];
+            $spouseGenderId = $genderId == 1 ? 2 : 1;
+            $firstName = $this->faker->firstName($genderName[$genderId]);
+            $lastName = $this->faker->lastName();
+            $maritalStatusId = MaritalStatus::all()->random()->id;
+
+            $email = Str::of(
+                $firstName . '.' .
+                    $lastName  . '.' .
+                    $this->faker->unique()->word() . '@' .
+                    $this->faker->safeEmailDomain()
+            )
+                ->ascii()
+                ->replace(' ', '')
+                ->lower();
+
+            $spouseName =  in_array($maritalStatusId, [2, 3, 6])
+                ? $this->faker->firstName($genderName[$spouseGenderId]) . ' ' . $lastName
+                : null;
+
+            return [
+                'gender_id' => $genderId,
+                'birth_state_id' => State::all()->random(),
+                'address_state_id' => State::all()->random(),
+                'document_type_id' => random_int(1, 3),
+                'marital_status_id' => $maritalStatusId,
+
+                'name' => $firstName . ' ' . $lastName,
+
+                'spouse_name' => $spouseName,
+                'father_name' => $this->faker->firstName($gender = 'male') . ' ' . $lastName,
+                'mother_name' => $this->faker->firstName($gender = 'female') . ' ' . $lastName,
+
+                'email' => $email
+            ];
+        });
     }
 }
