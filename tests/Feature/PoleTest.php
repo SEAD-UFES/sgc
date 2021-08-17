@@ -13,112 +13,214 @@ use App\CustomClasses\SessionUser;
 
 class PoleTest extends TestCase
 {
-  use DatabaseMigrations;
+    use DatabaseMigrations;
 
-  protected $poleData = [ "name" => "Polo Teste", "description" => "Teste." ];
+    protected $poleData = ["name" => "Polo Teste", "description" => "Teste."];
 
-  /**
-   * Asserts that guest users cannot access any routes related to the 
-   * Pole model. 
-   *
-   * @return void
-   */
-  public function test_guest_cannot_perform_crud_operations()
-  {
-    $this->get(route('poles.index'))
-      ->assertRedirect(route('auth.login'));
+    /**
+     * Guest cannot list poles
+     * @return void
+     */
+    public function test_guest_cannot_list_poles()
+    {
+        $this->get(route('poles.index'))
+            ->assertRedirect(route('auth.login'));
+    }
+    /**
+     * Guest cannot create a pole
+     * @return void
+     */
+    public function test_guest_cannot_create_pole()
+    {
+        $this->post(route('poles.store'), $this->poleData)
+            ->assertRedirect(route('auth.login'));
+    }
 
-    $this->post(route('poles.store'), $this->poleData)
-      ->assertRedirect(route('auth.login'));
+    /**
+     * Guest cannot update a pole
+     * @return void
+     */
+    public function test_guest_cannot_update_pole()
+    {
+        $pole = $this->getTestPole();
 
-    $this->get(route('poles.create'))
-      ->assertRedirect(route('auth.login'));
+        $this->put(route('poles.update', $pole->id), $this->poleData)
+            ->assertRedirect(route('auth.login'));
+    }
 
-    // route 'poles.show' is unused. 
-    // $this->get(route('poles.show',1))
-    //  ->assertRedirect(route('auth.login'));
+    /**
+     * Guest cannot delete a pole
+     * @return void
+     */
+    public function test_guest_cannot_delete_pole()
+    {
+        $pole = $this->getTestPole();
 
-    $this->put(route('poles.update', 1), $this->poleData)
-      ->assertRedirect(route('auth.login'));
+        $this->get(route('poles.destroy', $pole->id))
+            ->assertRedirect(route('auth.login'));
+    }
 
-    $this->get(route('poles.destroy', 1))
-      ->assertRedirect(route('auth.login'));
+    /**
+     * Guest cannot access pole create page
+     * @return void
+     */
+    public function test_guest_cannot_access_create_pole_page()
+    {
+        $this->get(route('poles.create'))
+            ->assertRedirect(route('auth.login'));
+    }
 
-    $this->get(route('poles.edit', 1))
-      ->assertRedirect(route('auth.login'));     
-  }
+    /**
+     * Guest cannot access pole edit page
+     * @return void
+     */
+    public function test_guest_cannot_access_edit_pole_page()
+    {
+        $pole = $this->getTestPole();
 
-  /**
-   * Asserts an authenticated user can perform all CRUD operations
-   * in the routes related to the Pole model. 
-   *
-   * @return void
-   */
-  public function test_authenticated_user_can_perform_crud_operations()
-  {
-    $user = User::factory()->make([ "employee_id" => null ]);
+        $this->get(route('poles.edit', $pole->id))
+            ->assertRedirect(route('auth.login'));
+    }
 
-    $session = $this->actingAs($user)
-      ->withSession([ 'sessionUser' => new SessionUser($user) ]);
+    /**
+     * Route `poles.show` is not used at the moment.
+     *
+     * Guest cannot access pole details page
+     * @return void
+   public function test_guest_cannot_see_pole_details()
+   {
+     $this->get(route('poles.show',1))
+       ->assertRedirect(route('auth.login'));
+   }
+     */
+
+    /**
+     * Authenticated user can list poles
+     * @return void
+     */
+    public function test_authenticated_user_can_list_poles()
+    {
+        $session = $this->getAuthenticatedSession();
+
+        $session->get(route('poles.index'))
+            ->assertSee('Listar Polos');
+    }
+
+    /**
+     * Authenticated user can create pole
+     * @return void
+     */
+    public function test_authenticated_user_can_create_pole()
+    {
+        $session = $this->getAuthenticatedSession();
+
+        $this->assertEquals(Pole::count(), 0);
+
+        $session->post(route('poles.store'), $this->poleData)
+            ->assertStatus(302);
+
+        $this->assertEquals(Pole::count(), 1);
+
+        $pole = Pole::first();
+
+        $this->assertEquals($pole->name, $this->poleData["name"]);
+        $this->assertEquals($pole->description, $this->poleData["description"]);
+    }
+
+    /**
+     * Authenticated user can update pole
+     * @return void
+     */
+    public function test_authenticated_user_can_update_pole()
+    {
+        $session = $this->getAuthenticatedSession();
+
+        $pole = $this->getTestPole();
+
+        $session
+            ->put(
+                route('poles.update', $pole->id),
+                ["name" => "updated", "description" => "updated"]
+            )
+            ->assertStatus(302);
+
+        $updatedPole = Pole::find($pole->id);
+
+        $this->assertEquals($updatedPole->name, "updated");
+        $this->assertEquals($updatedPole->description, "updated");
+    }
+
+    /**
+     * Authenticated user can delete pole
+     * @return void
+     */
+    public function test_authenticated_user_can_delete_pole()
+    {
+        $session = $this->getAuthenticatedSession();
+
+        $pole = $this->getTestPole();
+
+        $this->assertEquals(Pole::count(), 1);
+
+        $session
+            ->delete(route('poles.destroy', $pole->id))
+            ->assertStatus(302);
+
+        $this->assertEquals(Pole::count(), 0);
+    }
+
+    /**
+     * Authenticated user can access pole create page
+     * @return void
+     */
+    public function test_authenticated_user_can_access_create_pole_page()
+    {
+        $session = $this->getAuthenticatedSession();
+
+        $session
+            ->get(route('poles.create'))
+            ->assertOk();
+    }
+
+    /**
+     * Authenticated user can access pole edit page
+     * @return void
+     */
+    public function test_authenticated_user_can_access_edit_pole_page()
+    {
+        $session = $this->getAuthenticatedSession();
+
+        $pole = $this->getTestPole();
+
+        $session
+            ->get(route('poles.edit', $pole->id))
+            ->assertSee($pole->name)
+            ->assertSee($pole->description);
+    }
 
 
-    // asser user can access index page for item 
-    $session->get(route('poles.index'))
-      ->assertSee('Listar Polos');
+    /**
+     * Get user with SessionUser attached
+     * @return User with SessionUser
+     */
+    private function getAuthenticatedSession()
+    {
+        $user  = User::factory()->make(["employee_id" => null]);
 
+        $session = $this->actingAs($user)
+            ->withSession(['sessionUser' => new SessionUser($user)]);
 
-    // assert table is unpopulated before tests
-    $this->assertEquals(Pole::count(), 0);
+        return $session;
+    }
 
-    $session->post(route('poles.store'), $this->poleData)
-      ->assertStatus(302);
+    /**
+     * Get Pole for testing
+     * @return Pole (persisted to Database)
+     */
+    private function getTestPole()
+    {
+        $pole = Pole::factory()->create();
 
-
-    // assert element was persisted
-    $this->assertEquals(Pole::count(), 1);
-
-    $pole = Pole::first();
-
-    $this->assertEquals($pole->name, $this->poleData["name"]);
-    $this->assertEquals($pole->description, $this->poleData["description"]);
-
-
-    // assert user can see create page
-    $session
-      ->get(route('poles.create'))
-      ->assertOk();
-
-
-    // route 'poles.show' is unused. 
-    // $session
-    //  ->get(route('poles.show',1))
-    //  ->assertRedirect(route('auth.login'));
-
-
-    // assert user can see edit page
-    $session
-      ->get(route('poles.edit', 1))
-      ->assertSee($this->poleData["name"])
-      ->assertSee($this->poleData["description"]);
-
-
-    // assert user can update existing item
-    $session
-      ->put(route('poles.update', 1), [ "name" => "updated", "description" => "updated" ])
-      ->assertStatus(302);
-
-    $pole = Pole::first();
-
-    $this->assertEquals($pole->name, "updated");
-    $this->assertEquals($pole->description, "updated");
-
-
-    // assert usuer can destroy/delete/remove item
-    $session
-      ->delete(route('poles.destroy', 1))
-      ->assertStatus(302);
-
-    $this->assertEquals(Pole::count(), 0);
-
-  }
+        return $pole;
+    }
 }
