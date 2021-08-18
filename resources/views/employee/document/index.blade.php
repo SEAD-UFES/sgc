@@ -42,9 +42,15 @@
                             <tbody>
                                 @foreach ($documents as $document)
                                     <tr>
-                                        <td>{{ $document->employee->name }}</td>
-                                        <td><a href={{ route('documents.show', ['id' => $document->id, 'type' => 'EmployeeDocument', 'htmlTitle' => $document->original_name]) }}
-                                                target="_blank">{{ $document->original_name }}</a></td>
+                                        <td>
+                                            <a href="{{ route('employees.show', $document->employee->id) }}" target="_blank">
+                                                {{ $document->employee->name }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('documents.show', ['id' => $document->id, 'type' => 'EmployeeDocument', 'htmlTitle' => $document->original_name]) }}"
+                                                target="_blank">{{ $document->original_name }}</a>
+                                        </td>
                                         <td>{{ $document->documentType->name }}</td>
                                     </tr>
                                 @endforeach
