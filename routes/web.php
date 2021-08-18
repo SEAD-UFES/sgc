@@ -12,6 +12,7 @@ use App\Http\Controllers\ApprovedController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CourseTypeController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,4 +72,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/approved/massstore', [ApprovedController::class, 'massStore'])->name('approveds.massstore');
     Route::get('/approved/changestate/{approved}/{state}', [ApprovedController::class, 'changeState'])->name('approveds.changestate');
     Route::post('/approveddesignate', [ApprovedController::class, 'designate'])->name('approveds.designate');
+
+    Route::get('/notification/dismiss/{notification}', [NotificationController::class, 'dismiss'])->name('notifications.dismiss');
 });

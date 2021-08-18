@@ -80,7 +80,7 @@
                 @if (session('sessionUser')->hasBond)
                     <form class="d-flex" action={{ route('currentBond.change') }} method="POST">
                         @csrf
-                        <select class="form-select form-select-sm" aria-label="Vínculo" name="activeBonds" onchange="submit();">
+                        <select class="form-select form-select-sm" aria-label="Vínculo" name="activeBonds" data-bs-toggle="tooltip" data-bs-placement="left" title="Mudar atribuição atual" onchange="submit();">
                             @foreach (session('sessionUser')->bonds as $bond)
                                 <option value="{{ $bond->id }}"
                                     {{ $bond->id === session('sessionUser')->currentBond->id ? 'selected' : '' }}>
@@ -92,7 +92,7 @@
 
                 <ul class="list-unstyled ms-1 mb-2 mb-lg-0">
                     <li>Bem vind{{ session('sessionUser')->genderArticle }}, {{ session('sessionUser')->name }}!
-                        &nbsp;<a class="btn btn-sm btn-danger" href="{{ route('auth.logout') }}">Sair</a></li>
+                        &nbsp;<a class="btn btn-sm btn-danger" href="{{ route('auth.logout') }}" data-bs-toggle="tooltip" data-bs-placement="left" title="Sair do sistema">Sair</a></li>
 
                 </ul>
             </div>

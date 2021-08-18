@@ -19,10 +19,19 @@
     <main role="main">
         <div class="row justify-content-center">
             <div class="col-xl-8 col-xxl-6">
+                @if ($message = Session::get('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <span style="color: green; font-weight: bold">{{ $message }}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                @error('noDismiss')
+                    <div class="error">> {{ $message }}</div>
+                @enderror
                 <h3>Notificações</h3>
                 <br />
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover mx-1">
+                    <table class="table table-striped table-hover">
                         <thead>
                             <tr>
                                 <th>Envio</th>
@@ -31,12 +40,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (auth()->user()->notifications->count() < 1)
+                            @if (auth()->user()->unreadNotifications->count() < 1)
                                 <tr>
                                     <td colspan="3" class="text-center">Sem notificações</td>
                                 </tr>
                             @endif
-                            @foreach (auth()->user()->notifications as $notification)
+                            @foreach (auth()->user()->unreadNotifications as $notification)
                                 <tr>
                                     <td class="align-middle">{{ \Carbon\Carbon::parse($notification->created_at)->isoFormat('DD/MM/Y hh:mm') }}
                                     </td>
@@ -80,7 +89,7 @@
                                         @default
                                             <td>:(</td>
                                     @endswitch
-                                    <td class="align-middle text-center"><a href="#" data-bs-toggle="tooltip" title="Dispensar notificação" class="btn btn-danger">
+                                    <td class="align-middle text-center"><a href="{{ route('notifications.dismiss', $notification->id) }}" data-bs-toggle="tooltip" title="Dispensar notificação" class="btn btn-danger">
                                         <i class="bi-trash-fill"></i>
                                     </a></td>
                                 </tr>
