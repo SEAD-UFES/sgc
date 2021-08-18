@@ -13,6 +13,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CourseTypeController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\UserTypeAssignmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,7 +65,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('poles', PoleController::class);
     Route::resource('courses', CourseController::class);
-    
+
     Route::get('/coursetypes/index', [CourseTypeController::class, 'index'])->name('coursetypes.index');
 
     Route::resource('approveds', ApprovedController::class);
@@ -74,4 +75,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/approveddesignate', [ApprovedController::class, 'designate'])->name('approveds.designate');
 
     Route::get('/notification/{notification}/dismiss', [NotificationController::class, 'dismiss'])->name('notifications.dismiss');
+
+    Route::resource('userTypeAssignments', UserTypeAssignmentController::class);
 });

@@ -16,7 +16,7 @@ class CreateUserTypesTable extends Migration
         Schema::create('user_types', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50);
-            $table->string('acronym', 3);
+            $table->string('acronym', 5);
             $table->string('description', 110);
             $table->timestamps();
         });
