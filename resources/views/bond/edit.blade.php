@@ -19,6 +19,7 @@
                     <form action="{{ route('bonds.update', $bond->id) }}" method="POST">
                         @method('PATCH')
                         @component('bond.componentBondForm', compact('employees', 'roles', 'courses', 'poles', 'bond'))@endcomponent
+                        <br />
                         <button type="submit" class="btn btn-primary">Atualizar</button> <button type="button"
                             onclick="history.back()" class="btn btn-secondary">Cancelar</button>
                         @error('noStore')

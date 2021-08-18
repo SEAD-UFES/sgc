@@ -25,6 +25,7 @@
                         @component('employee.componentEmployeeForm', compact('genders', 'birthStates', 'documentTypes',
                         'maritalStatuses', 'addressStates', 'employee'))@endcomponent
                         <input type="hidden" name="importDocuments" id="importDocuments" value="false" />
+                        <br />
                         <button type="submit" class="btn btn-primary">Cadastrar</button>
                         <button type="button" onclick="submitAndImport();" class="btn btn-primary">Cadastrar e importar
                             documentos</button>

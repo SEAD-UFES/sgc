@@ -17,6 +17,7 @@
                     <form action={{ route('poles.update', $pole->id) }} method="POST">
                         @method('PATCH')
                         @component('pole.componentPoleForm', compact('pole'))@endcomponent
+                        <br />
                         <button type="submit" class="btn btn-primary">Atualizar</button> <button type="button" onclick="history.back()" class="btn btn-secondary">Cancelar</button>
                         @error('noStore')
                             <div class="error">> {{ $message }}</div>

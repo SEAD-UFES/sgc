@@ -17,6 +17,7 @@
                     <form action="{{ route('users.update', $user->id) }}" method="POST">
                         @method('PATCH')
                         @component('user.componentUserForm', compact('user', 'userTypes'))@endcomponent
+                        <br />
                         <button type="submit" class="btn btn-primary">Atualizar</button> <button type="button"
                             onclick="history.back()" class="btn btn-secondary">Cancelar</button>
                         @error('noStore')

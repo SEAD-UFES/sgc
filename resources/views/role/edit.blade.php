@@ -17,6 +17,7 @@
                     <form action={{ route('roles.update', $role->id) }} method="POST">
                         @method('PATCH')
                         @component('role.componentRoleForm', compact('role', 'grantTypes'))@endcomponent
+                        <br />
                         <button type="submit" class="btn btn-primary">Atualizar</button> <button type="button"
                             onclick="history.back()" class="btn btn-secondary">Cancelar</button>
                         @error('noStore')

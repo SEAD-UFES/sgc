@@ -15,6 +15,7 @@
                 <div class="col-xl-10 col-xxl-8">
                     <form action={{ route('courses.store') }} method="POST">
                         @component('course.componentCourseForm', compact('course', 'courseTypes'))@endcomponent
+                        <br />
                         <button type="submit" class="btn btn-primary">Cadastrar</button> <button type="button"
                             onclick="history.back()" class="btn btn-secondary">Cancelar</button>
                         @error('noStore')
