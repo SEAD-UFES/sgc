@@ -1,7 +1,7 @@
 <div class="table-responsive">
     <table class="table table-striped table-hover">
         <thead>
-            <th>@sortablelink('bond_employee_name', 'Vínculo')</th>
+            <th>@sortablelink('bondEmployeeName', 'Vínculo')</th>
             <th>@sortablelink('original_name', 'Nome do arquivo')</th>
             <th>@sortablelink('documentType.name', 'Tipo')</th>
         </thead>

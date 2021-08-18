@@ -37,10 +37,10 @@
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
-                                <th>@sortablelink('bond_employee_name', 'Colaborador')</th>
-                                <th>@sortablelink('bond_role_name', 'Atribuição')</th>
-                                <th>@sortablelink('bond_course_name', 'Curso')</th>
-                                <th>@sortablelink('bond_pole_name', 'Polo')</th>
+                                <th>@sortablelink('bondEmployeeName', 'Colaborador')</th>
+                                <th>@sortablelink('bondRoleName', 'Atribuição')</th>
+                                <th>@sortablelink('bondCourseName', 'Curso')</th>
+                                <th>@sortablelink('bondPoleName', 'Polo')</th>
                                 <th>@sortablelink('original_name', 'Nome')</th>
                             </thead>
                             <tbody>

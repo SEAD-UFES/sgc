@@ -49,7 +49,7 @@ class BondDocument extends Model
     }
 
     //metodo de ordenação para (bond->employee->name) no sortable
-    public function bond_employee_nameSortable($query, $direction)
+    public function bondEmployeeNameSortable($query, $direction)
     {
         $query = $query
             ->join('bonds', 'bond_documents.bond_id', '=', 'bonds.id')
@@ -60,7 +60,7 @@ class BondDocument extends Model
     }
 
     //metodo de ordenação para (bond->role->name) no sortable
-    public function bond_role_nameSortable($query, $direction)
+    public function bondRoleNameSortable($query, $direction)
     {
         $query = $query
             ->join('bonds', 'bond_documents.bond_id', '=', 'bonds.id')
@@ -71,7 +71,7 @@ class BondDocument extends Model
     }
 
     //metodo de ordenação para (bond->course->name) no sortable
-    public function bond_course_nameSortable($query, $direction)
+    public function bondCourseNameSortable($query, $direction)
     {
         $query = $query
             ->join('bonds', 'bond_documents.bond_id', '=', 'bonds.id')
@@ -82,7 +82,7 @@ class BondDocument extends Model
     }
 
     //metodo de ordenação para (bond->pole->name) no sortable
-    public function bond_pole_nameSortable($query, $direction)
+    public function bondPoleNameSortable($query, $direction)
     {
         $query = $query
             ->join('bonds', 'bond_documents.bond_id', '=', 'bonds.id')
