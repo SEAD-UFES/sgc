@@ -130,7 +130,7 @@
             <div class="error">> {{ $message }}</div>
         @enderror
     </div>
-    <div class="col-8 col-sm-8 col-md-9 col-lg-6">
+    <div class="col-8 col-sm-8 col-md-9 col-lg-10">
         <label for="inputSpouse1" class="form-label">Nome cônjuge</label>
         <input name="spouseName" type="text" id="inputSpouse1" class="form-control" placeholder="Nome"
             value="{{ $employee->spouse_name ?? old('spouseName') }}" maxlength="50" />

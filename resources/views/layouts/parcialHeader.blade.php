@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"><img src="{{ asset('/sead.png') }}" alt="" width="30"
+        <a class="navbar-brand" href="{{ route('root') }}"><img src="{{ asset('/sead.png') }}" alt="" width="30"
                 class="d-inline-block align-text-top">&nbsp;SGC&nbsp;</a>
         @if (Auth::check())
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -14,7 +14,7 @@
 
                     @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCor'])
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toogle" href="#" {{-- href="{{ route('employee') }}" --}} id="navbarSupportedContentMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false">Colaboradores</a>
+                            <a class="nav-link dropdown-toogle" href="" {{-- href="{{ route('employee') }}" --}} id="navbarSupportedContentMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false">Colaboradores</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarSupportedContentMenuLink1">
                                 <li><h6 class="dropdown-header">Aprovados</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('approveds.index') }}">Listar Aprovados</a></li>
@@ -37,7 +37,7 @@
                     @endcanany
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toogle" href="#" {{-- href="{{ route('report') }}" --}} id="navbarSupportedContentMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false">Relatórios</a>
+                        <a class="nav-link dropdown-toogle" href="" {{-- href="{{ route('report') }}" --}} id="navbarSupportedContentMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false">Relatórios</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarSupportedContentMenuLink3">
                             <li><h6 class="dropdown-header">Termos e Licença</h6></li>
                             <li><a class="dropdown-item" href="{{ route('bonds.rights.index') }}">Listar Documentos de Termos e Licença</a></li>
@@ -46,7 +46,7 @@
 
                     @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCor'])
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toogle" href="#" {{-- href="{{ route('system') }}" --}} id="navbarSupportedContentMenuLink4" role="button" data-bs-toggle="dropdown" aria-expanded="false">Sistema</a>
+                            <a class="nav-link dropdown-toogle" href="" {{-- href="{{ route('system') }}" --}} id="navbarSupportedContentMenuLink4" role="button" data-bs-toggle="dropdown" aria-expanded="false">Sistema</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarSupportedContentMenuLink4">
                                 <li><h6 class="dropdown-header">Atribuições</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('roles.index') }}">Listar Atribuições</a></li>
@@ -92,7 +92,7 @@
 
                 <ul class="list-unstyled ms-1 mb-2 mb-lg-0">
                     <li>Bem vind{{ session('sessionUser')->genderArticle }}, {{ session('sessionUser')->name }}!
-                        [<a href="{{ route('auth.logout') }}">Sair</a>]</li>
+                        &nbsp;<a class="btn btn-sm btn-danger" href="{{ route('auth.logout') }}">Sair</a></li>
 
                 </ul>
             </div>
