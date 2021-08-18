@@ -4,6 +4,7 @@ namespace App\CustomClasses;
 
 use App\Models\Bond;
 use App\Models\User;
+use App\Models\UserTypeAssignment;
 use Carbon\Carbon;
 
 class SessionUser
@@ -16,6 +17,11 @@ class SessionUser
     public bool $hasBond = false;
     public $bonds = null;
     public ?Bond $currentBond = null;
+
+    //permission system
+    public $activeUserTypeAssignments = null;
+    public bool $hasAnyActiveUserTypeAssignment = false;
+    public ?UserTypeAssignment $currentUserTypeAssignment = null;
 
     public function __construct(User $user)
     {
@@ -49,5 +55,13 @@ class SessionUser
             //dd($this->bonds->firstWhere('id', $bondId));
             $this->currentBond = $this->bonds->firstWhere('id', $bondId);
         }
+    }
+
+    public function getActiveUserTypeAssignments()
+    {
+        $user_id = $this->currentUser->id ?? null;
+        $userTypeAssignments = UserTypeAssignment::with('course')
+            ->where('user_id', $user_id);
+        return $userTypeAssignments;
     }
 }
