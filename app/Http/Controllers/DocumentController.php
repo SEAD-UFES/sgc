@@ -70,7 +70,7 @@ class DocumentController extends Controller
         $type = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
 
         $documents_query = BondDocument::with('bond')
-            ->where('document_type_id', $type->id)
+            ->where('bond_documents.document_type_id', $type->id)
             ->whereHas('bond', function ($query) {
                 $query->whereNotNull('uaba_checked_at')->where('impediment', false);
             });
