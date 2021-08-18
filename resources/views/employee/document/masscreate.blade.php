@@ -36,13 +36,13 @@
                                 @endforeach
                             </select>
                             @error('employees')
-                                <div class="error">> {{ $message }}</div>
+                                <div class="text-danger">> {{ $message }}</div>
                             @enderror
                         </div>
                         <button type="submit" class="btn btn-primary">Enviar arquivos</button> <button type="button"
                             onclick="history.back()" class="btn btn-secondary">Cancelar</button>
                         @error('noStore')
-                            <div class="error">> {{ $message }}</div>
+                            <div class="text-danger">> {{ $message }}</div>
                         @enderror
                     </form>
                     <br />

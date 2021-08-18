@@ -11,17 +11,17 @@
     <div class="col-12 col-sm-12 col-md-6 col-lg-6">
         <label for="inputName1" class="form-label">Nome*</label>
         <input name="name" type="text" id="inputName1" class="form-control" placeholder="Nome"
-            value="{{ $employee->name ?? old('name') }}" maxlength="50" />
+            value="{{ $employee->name ?? old('name') }}" maxlength="50" required />
         @error('name')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-4 col-sm-3 col-md-3 col-lg-2">
         <label for="inputCpf1" class="form-label">CPF*</label>
         <input name="cpf" id="cpf" type="text" id="inputCpf1" class="form-control" placeholder="CPF"
-            value="{{ $employee->cpf ?? old('cpf') }}" maxlength="11" onkeyup="validate('cpf')" />
+            value="{{ $employee->cpf ?? old('cpf') }}" maxlength="11" onkeyup="validate('cpf')" required />
         @error('cpf')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-8 col-sm-9 col-md-3 col-lg-4">
@@ -29,7 +29,7 @@
         <input name="job" type="text" id="inputJob1" class="form-control" placeholder="Profissão"
             value="{{ $employee->job ?? old('job') }}" maxlength="50" />
         @error('job')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-6 col-sm-4 col-md-3 col-lg-2">
@@ -42,7 +42,7 @@
             @endforeach
         </select>
         @error('gender')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-6 col-sm-4 col-md-3 col-lg-3">
@@ -50,7 +50,7 @@
         <input name="birthday" type="date" id="inputBirthday1" value="{{ $employee->birthday ?? old('birthday') }}"
             class="form-control" />
         @error('birthday')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-4 col-sm-4 col-md-3 col-lg-2">
@@ -64,7 +64,7 @@
             @endforeach
         </select>
         @error('birthStates')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-8 col-sm-8 col-md-3 col-lg-5">
@@ -72,7 +72,7 @@
         <input name="birthCity" type="text" id="inputBirthCity1" class="form-control" placeholder="Cidade"
             value="{{ $employee->birth_city ?? old('birthCity') }}" maxlength="50" />
         @error('birthCity')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-7 col-sm-8 col-md-6 col-lg-4">
@@ -86,7 +86,7 @@
             @endforeach
         </select>
         @error('documentType')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-5 col-sm-4 col-md-3 col-lg-3">
@@ -94,7 +94,7 @@
         <input name="idNumber" type="text" id="inputId1" class="form-control" placeholder="Número"
             value="{{ $employee->id_number ?? old('idNumber') }}" maxlength="15" />
         @error('idNumber')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-5 col-sm-4 col-md-3 col-lg-3">
@@ -102,7 +102,7 @@
         <input name="idIssueDate" type="date" id="inputIssueDate1" class="form-control"
             value="{{ $employee->id_issue_date ?? old('idIssueDate') }}" />
         @error('idIssueDate')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-7 col-sm-8 col-md-3 col-lg-2">
@@ -110,7 +110,7 @@
         <input name="idIssueAgency" type="text" id="inpuIssueAgency1" class="form-control" placeholder="Orgão"
             value="{{ $employee->id_issue_agency ?? old('idIssueAgency') }}" maxlength="10" />
         @error('idIssueAgency')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
 </div>
@@ -127,7 +127,7 @@
             @endforeach
         </select>
         @error('maritalStatuses')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-8 col-sm-8 col-md-9 col-lg-10">
@@ -135,7 +135,7 @@
         <input name="spouseName" type="text" id="inputSpouse1" class="form-control" placeholder="Nome"
             value="{{ $employee->spouse_name ?? old('spouseName') }}" maxlength="50" />
         @error('spouseName')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-6 col-sm-6 col-md-6 col-lg-6">
@@ -143,7 +143,7 @@
         <input name="fatherName" type="text" id="inputFather1" class="form-control" placeholder="Nome"
             value="{{ $employee->father_name ?? old('fatherName') }}" maxlength="50" />
         @error('fatherName')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-6 col-sm-6 col-md-6 col-lg-6">
@@ -151,7 +151,7 @@
         <input name="motherName" type="text" id="inputMother1" class="form-control" placeholder="Nome"
             value="{{ $employee->mother_name ?? old('motherName') }}" maxlength="50" />
         @error('motherName')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
 </div>
@@ -161,7 +161,7 @@
         <input name="addressStreet" type="text" id="inputStreet1" class="form-control" placeholder="Logradouro"
             value="{{ $employee->address_street ?? old('addressStreet') }}" maxlength="50" />
         @error('addressStreet')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-12 col-sm-12 col-md-6 col-lg-6">
@@ -169,7 +169,7 @@
         <input name="addressComplement" type="text" id="inputComplement1" class="form-control" placeholder="Complemento"
             value="{{ $employee->address_complement ?? old('addressComplement') }}" maxlength="50" />
         @error('addressComplement')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-3 col-sm-3 col-md-2 col-lg-1">
@@ -177,7 +177,7 @@
         <input name="addressNumber" type="text" id="inputNumber1" class="form-control" placeholder="Número"
             value="{{ $employee->address_number ?? old('addressNumber') }}" maxlength="5" />
         @error('addressNumber')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-6 col-sm-6 col-md-3 col-lg-4">
@@ -185,7 +185,7 @@
         <input name="addressDistrict" type="text" id="inputDistrict1" class="form-control" placeholder="Bairro"
             value="{{ $employee->address_district ?? old('addressDistrict') }}" maxlength="50" />
         @error('addressDistrict')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-3 col-sm-3 col-md-2 col-lg-2">
@@ -194,7 +194,7 @@
             placeholder="CEP" value="{{ $employee->address_postal_code ?? old('addressPostalCode') }}" maxlength="8"
             onkeyup="validate('addressPostalCode');" />
         @error('addressPostalCode')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-3 col-sm-2 col-md-2 col-lg-2">
@@ -209,7 +209,7 @@
             @endforeach
         </select>
         @error('addressStates')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-9 col-sm-10 col-md-3 col-lg-3">
@@ -217,7 +217,7 @@
         <input name="addressCity" type="text" id="inputAddressCity1" class="form-control" placeholder="Cidade"
             value="{{ $employee->address_city ?? old('addressCity') }}" maxlength="50" />
         @error('addressCity')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
 </div>
@@ -225,33 +225,33 @@
     <div class="col-2 col-sm-2 col-md-1 col-lg-1">
         <label for="inputArea1" class="form-label">DDD</label>
         <input name="areaCode" id="areaCode" type="text" id="inputArea1" class="form-control" placeholder="DDD"
-            value="{{ $employee->area_code ?? old('areaCode') }}" maxlength="3" onkeyup="validate('areaCode');" />
+            value="{{ $employee->area_code ?? old('areaCode') }}" maxlength="3" onkeyup="validate('areaCode');" pattern="[0-9]{2}" />
         @error('areaCode')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-5 col-sm-5 col-md-2 col-lg-2">
         <label for="inputPhone1" class="form-label">Telefone</label>
-        <input name="phone" id="phone" type="text" id="inputPhone1" class="form-control" placeholder="Telefone"
-            value="{{ $employee->phone ?? old('phone') }}" maxlength="10" onkeyup="validate('phone');" />
+        <input name="phone" id="phone" type="tel" id="inputPhone1" class="form-control" placeholder="Telefone"
+            value="{{ $employee->phone ?? old('phone') }}" maxlength="10" onkeyup="validate('phone');" pattern="[0-9]{8}" />
         @error('phone')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-5 col-sm-5 col-md-2 col-lg-2">
         <label for="inputMobile1" class="form-label">Celular</label>
-        <input name="mobile" id="mobile" type="text" id="inputMobile1" class="form-control" placeholder="Celular"
-            value="{{ $employee->mobile ?? old('mobile') }}" maxlength="10" onkeyup="validate('mobile');" />
+        <input name="mobile" id="mobile" type="tel" id="inputMobile1" class="form-control" placeholder="Celular"
+            value="{{ $employee->mobile ?? old('mobile') }}" maxlength="10" onkeyup="validate('mobile');" pattern="[0-9]{9}" /><span class="validity"></span>
         @error('mobile')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-12 col-sm-12 col-md-7 col-lg-7">
         <label for="inputEmail1" class="form-label">Email*</label>
         <input name="email" type="email" class="form-control" placeholder="Email" id="inputEmail1"
-            value="{{ $employee->email ?? old('email') }}" />
+            value="{{ $employee->email ?? old('email') }}" required />
         @error('email')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
 </div>

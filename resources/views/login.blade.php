@@ -19,7 +19,7 @@
                                 <input name="email" type="text" autocomplete="username" id="inputEmail1" class="form-control" placeholder="Email"
                                     value="{{ old('email') }}" />
                                 @error('email')
-                                    <div class="error">&gt; {{ $message }}</div>
+                                    <div class="text-danger">&gt; {{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="mb-3">
@@ -27,12 +27,12 @@
                                 <input name="password" type="password" autocomplete="current-password" id="inputSenha1" class="form-control"
                                     placeholder="Senha" />
                                 @error('password')
-                                    <div class="error">&gt; {{ $message }}</div>
+                                    <div class="text-danger">&gt; {{ $message }}</div>
                                 @enderror
                             </div>
                             <button type="submit" class="btn btn-primary">Login</button>
                             @error('noAuth')
-                                <div class="error">&gt; {{ $message }}</div>
+                                <div class="text-danger">&gt; {{ $message }}</div>
                             @enderror
                         </form>
                         <br /><br />

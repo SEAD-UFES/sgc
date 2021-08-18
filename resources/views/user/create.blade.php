@@ -20,7 +20,7 @@
                             onclick="history.back()" class="btn btn-secondary">Cancelar</button>
                             <br /><br />
                         @error('noStore')
-                            <div class="error">> {{ $message }}</div>
+                            <div class="text-danger">> {{ $message }}</div>
                         @enderror
                     </form>
                 </div>

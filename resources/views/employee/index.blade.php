@@ -19,10 +19,10 @@
                         </div>
                     @endif
                     @error('noStore')
-                        <div class="error">> {{ $message }}</div>
+                        <div class="text-danger">> {{ $message }}</div>
                     @enderror
                     @error('noDestroy')
-                        <div class="error">> {{ $message }}</div>
+                        <div class="text-danger">> {{ $message }}</div>
                     @enderror
 
                     {{-- filtros --}}

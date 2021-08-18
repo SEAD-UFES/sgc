@@ -29,7 +29,7 @@
                                 @endforeach
                             </select>
                             @error('documentTypes')
-                                <div class="error">> {{ $message }}</div>
+                                <div class="text-danger">> {{ $message }}</div>
                             @enderror
                         </div>
                         <div class="mb-3">
@@ -42,13 +42,13 @@
                                 @endforeach
                             </select>
                             @error('bonds')
-                                <div class="error">> {{ $message }}</div>
+                                <div class="text-danger">> {{ $message }}</div>
                             @enderror
                         </div>
                         <button type="submit" class="btn btn-primary">Enviar arquivo</button> <button type="button"
                             onclick="history.back()" class="btn btn-secondary">Cancelar</button>
                         @error('noStore')
-                            <div class="error">> {{ $message }}</div>
+                            <div class="text-danger">> {{ $message }}</div>
                         @enderror
                     </form>
                     <br />

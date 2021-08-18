@@ -10,7 +10,7 @@
             @endforeach
         </select>
         @error('employees')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-12 col-lg-6">
@@ -24,7 +24,7 @@
             @endforeach
         </select>
         @error('roles')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-12 col-md-7">
@@ -37,7 +37,7 @@
             @endforeach
         </select>
         @error('courses')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-12 col-md-5">
@@ -50,7 +50,7 @@
             @endforeach
         </select>
         @error('poles')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-6 col-md-3">

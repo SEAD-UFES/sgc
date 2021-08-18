@@ -35,10 +35,10 @@ class StoreBondRequest extends FormRequest
     public function messages()
     {
         return [
-            'employees.min' => 'O campo deve ser preenchido com uma das opções fornecidas',
-            'roles.min' => 'O campo deve ser preenchido com uma das opções fornecidas',
-            'courses.min' => 'O campo deve ser preenchido com uma das opções fornecidas',
-            'poles.min' => 'O campo deve ser preenchido com uma das opções fornecidas',
+            'employees.min' => 'O colaborador deve ser preenchido com uma das opções fornecidas',
+            'roles.min' => 'A atribuição deve ser preenchido com uma das opções fornecidas',
+            'courses.min' => 'O curso deve ser preenchido com uma das opções fornecidas',
+            'poles.min' => 'O polo deve ser preenchido com uma das opções fornecidas',
         ];
     }
 }

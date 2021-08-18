@@ -26,7 +26,7 @@
                     </div>
                 @endif
                 @error('noDismiss')
-                    <div class="error">> {{ $message }}</div>
+                    <div class="text-danger">> {{ $message }}</div>
                 @enderror
                 <h3>Notificações</h3>
                 <br />

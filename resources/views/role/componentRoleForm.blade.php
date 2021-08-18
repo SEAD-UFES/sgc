@@ -6,7 +6,7 @@
         <input name="name" type="text" id="inputName1" class="form-control" placeholder="Nome da atribuição"
             value="{{ $role->name ?? old('name') }}" />
         @error('name')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-12">
@@ -14,7 +14,7 @@
         <input name="description" type="text" id="inputDescription1" class="form-control" placeholder="Descrição"
             value="{{ $role->description ?? old('description') }}" />
         @error('description')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-6">
@@ -22,7 +22,7 @@
         <input name="grantValue" type="text" id="inputValue1" class="form-control" placeholder="R$"
             value="{{ $role->grant_value ?? old('grantValue') }}" />
         @error('grantValue')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-6">
@@ -35,7 +35,7 @@
             @endforeach
         </select>
         @error('grantTypes')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
 </div>

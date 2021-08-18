@@ -4,14 +4,14 @@
     <input name="email" type="email" autocomplete="username" id="inputEmail1" class="form-control" placeholder="nome@empresa.com"
         value="{{ $user->email ?? old('email') }}" />
     @error('email')
-        <div class="error">> {{ $message }}</div>
+        <div class="text-danger">> {{ $message }}</div>
     @enderror
 </div>
 <div class="mb-3">
     <label for="inputPassword1" class="form-label">Nova Senha</label>
     <input name="password" type="password" autocomplete="new-password" id="inputPassword1" class="form-control" placeholder="Nova Senha" />
     @error('password')
-        <div class="error">> {{ $message }}</div>
+        <div class="text-danger">> {{ $message }}</div>
     @enderror
 </div>
 <div class="mb-3">
@@ -24,7 +24,7 @@
         @endforeach
     </select>
     @error('userTypes')
-        <div class="error">> {{ $message }}</div>
+        <div class="text-danger">> {{ $message }}</div>
     @enderror
 </div>
 <div class="mb-3" class="form-check">

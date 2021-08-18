@@ -56,10 +56,11 @@ class StoreEmployeeRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'O Campo é obrigatório',
-            'name.string' => 'O campo deve ser texto',
-            'cpf.required' => 'O Campo é obrigatório',
-            'cpf.unique' => 'O campo não pode repetir um previamente já cadastrado por outra pessoa',
+            'name.required' => 'O nome é obrigatório',
+            'name.string' => 'O nome deve ser texto',
+            'cpf.required' => 'O CPF é obrigatório',
+            'cpf.unique' => 'O CPF não pode repetir um previamente já cadastrado por outra pessoa',
+            'cpf.numeric' => 'O CPF deve ser um número',
             /* 'job.required' => 'O Campo é obrigatório',
             'job.string' => 'O campo deve ser texto',
             'genders.between' => 'O campo deve ser preenchido com uma das opções fornecidas',
@@ -89,9 +90,9 @@ class StoreEmployeeRequest extends FormRequest
             'areaCode.required' => 'O Campo é obrigatório',
             'phone.required' => 'O Campo é obrigatório',
             'mobile.required' => 'O Campo é obrigatório', */
-            'email.required' => 'O Campo é obrigatório',
-            'email.email' => 'O compo deve ser preenchido com um email válido',
-            'email.unique' => 'O campo não pode repetir um previamente já cadastrado por outra pessoa',
+            'email.required' => 'O email é obrigatório',
+            'email.email' => 'O email deve ser válido',
+            'email.unique' => 'O email não pode repetir um previamente já cadastrado por outra pessoa',
         ];
     }
 }

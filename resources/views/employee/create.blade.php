@@ -31,7 +31,7 @@
                             documentos</button>
                         <button type="button" onclick="history.back()" class="btn btn-secondary">Cancelar</button>
                         @error('noStore')
-                            <div class="error">> {{ $message }}</div>
+                            <div class="text-danger">> {{ $message }}</div>
                         @enderror
                         <br /><br />
                     </form>

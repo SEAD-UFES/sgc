@@ -6,7 +6,7 @@
         <input name="name" type="text" id="inputName1" class="form-control" placeholder="Nome do Curso"
             value="{{ $course->name ?? old('name') }}" />
         @error('name')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-12">
@@ -14,7 +14,7 @@
         <input name="description" type="text" id="inputDescription1" class="form-control"
             placeholder="Descrição do curso" value="{{ $course->description ?? old('description') }}" />
         @error('description')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-12 col-md-6">
@@ -28,7 +28,7 @@
             @endforeach
         </select>
         @error('courseTypes')
-            <div class="error">> {{ $message }}</div>
+            <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-6 col-md-3">
