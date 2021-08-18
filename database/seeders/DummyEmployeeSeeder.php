@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Employee;
-use App\Models\Gender;
 use App\Models\Course;
 use App\Models\Bond;
 use App\Models\Role;
@@ -27,13 +26,13 @@ class DummyEmployeeSeeder extends Seeder
          * - coordinators only have one course
          */
         $pole = Pole::where('name', 'SEAD')->first();
-        
+
         foreach (Course::all() as $course) {
             $role = Role::where('name', 'like', 'Coordenador de curso%')->get()->random();
-            
+
             $employee = Employee::factory()
+                ->assumePopulatedDatabase()
                 ->create([
-                    //'gender_id' => Gender::all()->random(),
                     'job' => 'Coordenador de Curso',
                 ]);
 
@@ -60,10 +59,12 @@ class DummyEmployeeSeeder extends Seeder
         foreach ($courses as $course) {
             foreach ($poles as $pole) {
 
-                $employee = Employee::factory()->create([
-                    //'gender_id' => Gender::all()->random(),
-                    'job' => 'Tutor Presencial',
-                ]);
+                $employee = Employee::factory()
+                    ->assumePopulatedDatabase()
+                    ->create([
+                        //'gender_id' => Gender::all()->random(),
+                        'job' => 'Tutor Presencial',
+                    ]);
 
                 Bond::factory()->create([
                     'employee_id' => $employee,

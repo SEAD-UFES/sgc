@@ -20,7 +20,7 @@ class EmployeePageTest extends TestCase
 
     public function test_guest_cannot_view_employee_page()
     {
-        $response = $this->get(route('employee'));
+        $response = $this->get(route('employees.index'));
 
         $response->assertRedirect(route('auth.login'));
     }
@@ -34,7 +34,7 @@ class EmployeePageTest extends TestCase
     {
         $user = User::factory()->make();
 
-        $response = $this->actingAs($user)->get(route('employee'));
+        $response = $this->actingAs($user)->get(route('employees.index'));
 
         $response->assertSee('Colaboradores');
     }
