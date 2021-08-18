@@ -73,5 +73,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/approved/changestate/{approved}/{state}', [ApprovedController::class, 'changeState'])->name('approveds.changestate');
     Route::post('/approveddesignate', [ApprovedController::class, 'designate'])->name('approveds.designate');
 
-    Route::get('/notification/dismiss/{notification}', [NotificationController::class, 'dismiss'])->name('notifications.dismiss');
+    Route::get('/notification/{notification}/dismiss', [NotificationController::class, 'dismiss'])->name('notifications.dismiss');
 });
