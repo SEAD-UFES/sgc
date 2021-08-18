@@ -55,12 +55,13 @@
                                 @foreach ($employees as $employee)
                                     <tr>
                                         <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
-                                        data-bs-content="<strong>E-mail:</strong> {{ $employee->email }} | <strong>Área:</strong> {{ $employee->area_code }} | <strong>Telefone:</strong> {{ $employee->phone }} | <strong>Celular:</strong> {{ $employee->mobile }}">
+                                        data-bs-content="<strong>E-mail:</strong> <a href='mailto:{{ $employee->email }}'>{{ $employee->email }}</a> | <strong>Área:</strong> {{ $employee->area_code }} | <strong>Telefone:</strong> <a href='tel:{{ $employee->phone }}'>{{ $employee->phone }}</a> | <strong>Celular:</strong> <a href='tel:{{ $employee->mobile }}'>{{ $employee->mobile }}</a>">
                                             {{ $employee->cpf }}
                                         </td>
                                         <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
-                                        data-bs-content="<strong>E-mail:</strong> {{ $employee->email }} | <strong>Área:</strong> {{ $employee->area_code }} | <strong>Telefone:</strong> {{ $employee->phone }} | <strong>Celular:</strong> {{ $employee->mobile }}">
-                                            {{ $employee->name }}</td>
+                                        data-bs-content="<strong>E-mail:</strong> <a href='mailto:{{ $employee->email }}'>{{ $employee->email }}</a> | <strong>Área:</strong> {{ $employee->area_code }} | <strong>Telefone:</strong> <a href='tel:{{ $employee->phone }}'>{{ $employee->phone }}</a> | <strong>Celular:</strong> <a href='tel:{{ $employee->mobile }}'>{{ $employee->mobile }}</a>">
+                                            {{ $employee->name }}
+                                        </td>
                                         <td>{{ $employee->job }}</td>
                                         <td>{{ $employee->address_city }}</td>
                                         <td>{{ $employee->user->email ?? '' }}</td>

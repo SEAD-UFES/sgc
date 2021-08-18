@@ -139,10 +139,10 @@
                         </tbody>
                     </table>
                 </div>
-                <br /><br />
-                <button type="submit">Importar</button> <button type="button" onclick="history.back()">Cancelar</button>
+                <br />
+                <button type="submit" class="btn btn-primary">Importar</button>&nbsp;<button type="button" class="btn btn-secondary" onclick="history.back()">Cancelar</button>
             </form>
-            <br /><br />
+            <br />
         </main>
     </section>
 @endsection

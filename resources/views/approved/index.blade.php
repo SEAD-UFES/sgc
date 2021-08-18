@@ -59,10 +59,10 @@
                                 @foreach ($approveds as $approved)
                                     <tr>
                                         <td>{{ $approved->name }}</td>
-                                        <td>{{ $approved->email }}</td>
+                                        <td><a href="mailto:{{ $approved->email }}">{{ $approved->email }}</a></td>
                                         <td>{{ $approved->area_code }}</td>
-                                        <td>{{ $approved->phone }}</td>
-                                        <td>{{ $approved->mobile }}</td>
+                                        <td><a href="tel:{{ /* $approved->area_code .  */$approved->phone }}">{{ $approved->phone }}</a></td>
+                                        <td><a href="tel:{{ /* $approved->area_code .  */$approved->mobile }}">{{ $approved->mobile }}</a></td>
                                         <td>{{ $approved->announcement }}</td>
                                         <td title="{{ $approved->approvedState->description ?? '' }}">{!! $approved->approvedState->name ?? '&nbsp;' !!}</td>
                                         <td>{!! $approved->role->name ?? '&nbsp;' !!}</td>
