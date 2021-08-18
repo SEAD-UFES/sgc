@@ -77,4 +77,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/notification/{notification}/dismiss', [NotificationController::class, 'dismiss'])->name('notifications.dismiss');
 
     Route::resource('userTypeAssignments', UserTypeAssignmentController::class);
+    Route::post('/session/changeCurrentUTA', [UserController::class, 'setCurrentUTA'])->name('currentUTA.change');
 });

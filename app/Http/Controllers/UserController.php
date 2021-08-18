@@ -177,4 +177,10 @@ class UserController extends Controller
 
         return redirect()->route('home');
     }
+
+    public function setCurrentUTA(Request $request)
+    {
+        session('sessionUser')->setCurrentUTA($request->activeUTAs);
+        return redirect()->back();
+    }
 }

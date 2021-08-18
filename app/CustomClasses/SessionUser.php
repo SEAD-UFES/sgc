@@ -19,9 +19,7 @@ class SessionUser
     public ?Bond $currentBond = null;
 
     //permission system
-    public $activeUserTypeAssignments = null;
-    public bool $hasAnyActiveUserTypeAssignment = false;
-    public ?UserTypeAssignment $currentUserTypeAssignment = null;
+    public $currentUTA_id = null;
 
     public function __construct(User $user)
     {
@@ -57,11 +55,47 @@ class SessionUser
         }
     }
 
-    public function getActiveUserTypeAssignments()
+    //dynamic > static :)
+    public function getActiveUTAsQuery()
     {
         $user_id = $this->currentUser->id ?? null;
-        $userTypeAssignments = UserTypeAssignment::with('course')
-            ->where('user_id', $user_id);
-        return $userTypeAssignments;
+        $query = UserTypeAssignment::with('userType', 'course')
+            ->where('user_id', $user_id)
+            ->where(function ($query) {
+                $query
+                    ->where([
+                        ['begin', '<=', Carbon::today()->toDateString()],
+                        ['end', '>=', Carbon::today()->toDateString()],
+                    ])
+                    ->orWhere([
+                        ['begin', '<=', Carbon::today()->toDateString()],
+                        ['end', '=', null],
+                    ]);
+            });
+        return $query;
+    }
+
+    public function hasUTAs()
+    {
+        $has = $this->getActiveUTAsQuery()->get()->count();
+        return $has > 0 ? true : false;
+    }
+
+    public function getCurrentUTA()
+    {
+        $user_type_assignment = $this
+            ->getActiveUTAsQuery()
+            ->where('id', $this->currentUTA_id)
+            ->first();
+        return $user_type_assignment;
+    }
+
+    public function setCurrentUTA(int $user_type_assignment_id)
+    {
+        $user_type_assignment = $this
+            ->getActiveUTAsQuery()
+            ->where('id', $user_type_assignment_id)
+            ->firstOrFail();
+        $this->currentUTA_id = $user_type_assignment->id;
     }
 }

@@ -83,7 +83,7 @@
                     @endcanany
                 </ul>
 
-                @if (session('sessionUser')->hasBond)
+                {{-- @if (session('sessionUser')->hasBond)
                     <form class="d-flex" action={{ route('currentBond.change') }} method="POST">
                         @csrf
                         <select class="form-select form-select-sm" aria-label="Vínculo" name="activeBonds" data-bs-toggle="tooltip" data-bs-placement="left" title="Mudar atribuição atual" onchange="submit();">
@@ -94,16 +94,16 @@
                             @endforeach
                         </select>
                     </form>
-                @endif &nbsp;
+                @endif &nbsp; --}}
 
-                @if (session('sessionUser')->hasBond)
-                    <form class="d-flex" action={{ route('currentBond.change') }} method="POST">
+                @if (session('sessionUser')->hasUTAs())
+                    <form class="d-flex" action={{ route('currentUTA.change') }} method="POST">
                         @csrf
-                        <select class="form-select form-select-sm" aria-label="Vínculo" name="activeBonds" onchange="submit();">
-                            @foreach (session('sessionUser')->bonds as $bond)
-                                <option value="{{ $bond->id }}"
-                                    {{ $bond->id === session('sessionUser')->currentBond->id ? 'selected' : '' }}>
-                                    {{ $bond->role->name }} - {{ $bond->course->name }}</option>
+                        <select class="form-select form-select-sm" aria-label="uta" name="activeUTAs" data-bs-toggle="tooltip" data-bs-placement="left" title="Mudar papel atual" onchange="submit();">
+                            @foreach (session('sessionUser')->getActiveUTAsQuery()->get() as $uta)
+                                <option value="{{ $uta->id }}"
+                                    {{ session('sessionUser')->getCurrentUTA() && $uta->id === session('sessionUser')->getCurrentUTA()->id ? 'selected' : '' }}>
+                                    {{ $uta->userType->name }}{{ $uta->course ? " - ".$uta->course->name : '' }}</option>
                             @endforeach
                         </select>
                     </form>
