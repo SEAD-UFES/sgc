@@ -4,8 +4,6 @@ namespace App\CustomClasses;
 
 use App\Models\Bond;
 use App\Models\User;
-use App\Models\UserTypeAssignment;
-use Carbon\Carbon;
 
 class SessionUser
 {
@@ -44,6 +42,13 @@ class SessionUser
                 $this->currentBond = $bondResult[0];
             }
         }
+
+        //set $currentUTA_id
+        $activeUTAs = $this->currentUser->getActiveUTAs;
+        $hasUTAs = $activeUTAs->count();
+        if ($hasUTAs > 0) {
+            $this->currentUTA_id = $activeUTAs->first()->id;
+        }
     }
 
     public function setCurrentBond(int $bondId)
@@ -55,37 +60,23 @@ class SessionUser
         }
     }
 
-    //dynamic > static :)
-    public function getActiveUTAsQuery()
-    {
-        $user_id = $this->currentUser->id ?? null;
-        $query = UserTypeAssignment::with('userType', 'course')
-            ->where('user_id', $user_id)
-            ->where(function ($query) {
-                $query
-                    ->where([
-                        ['begin', '<=', Carbon::today()->toDateString()],
-                        ['end', '>=', Carbon::today()->toDateString()],
-                    ])
-                    ->orWhere([
-                        ['begin', '<=', Carbon::today()->toDateString()],
-                        ['end', '=', null],
-                    ]);
-            });
-        return $query;
-    }
-
     public function hasUTAs()
     {
-        $has = $this->getActiveUTAsQuery()->get()->count();
+        $has = $this->currentUser->getActiveUTAs->count();
         return $has > 0 ? true : false;
+    }
+
+    public function getActiveUTAs()
+    {
+        return $this->currentUser->getActiveUTAs;
     }
 
     public function getCurrentUTA()
     {
         $user_type_assignment = $this
-            ->getActiveUTAsQuery()
-            ->where('id', $this->currentUTA_id)
+            ->currentUser
+            ->getActiveUTAs()
+            ->where('user_type_assignments.id', $this->currentUTA_id)
             ->first();
         return $user_type_assignment;
     }
@@ -93,7 +84,8 @@ class SessionUser
     public function setCurrentUTA(int $user_type_assignment_id)
     {
         $user_type_assignment = $this
-            ->getActiveUTAsQuery()
+            ->currentUser
+            ->getActiveUTAs()
             ->where('id', $user_type_assignment_id)
             ->firstOrFail();
         $this->currentUTA_id = $user_type_assignment->id;

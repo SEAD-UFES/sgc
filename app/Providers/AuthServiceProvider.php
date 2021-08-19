@@ -5,6 +5,9 @@ namespace App\Providers;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
+use App\Gates\GenericGates;
+use App\Gates\UserGates;
+
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -62,5 +65,8 @@ class AuthServiceProvider extends ServiceProvider
 
             return $user->employee->isCourseCoordinator();
         });
+
+        GenericGates::define();
+        UserGates::define();
     }
 }

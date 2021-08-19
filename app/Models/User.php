@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Kyslik\ColumnSortable\Sortable;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use App\ModelFilters\userFilter;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -65,5 +66,36 @@ class User extends Authenticatable
     public function employee()
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    public function userTypeAssignments($options = [])
+    {
+        return $this->hasMany(UserTypeAssignment::class);
+    }
+
+    //dynamic > static :)
+    public function getActiveUTAs()
+    {
+        // $result =  $this->userTypeAssignments();
+        // dd($result->toSql());
+        $result =  $this->userTypeAssignments()
+            ->with('userType', 'course')
+            ->join('user_types', 'user_type_assignments.user_type_id', '=', 'user_types.id')
+            ->select('user_type_assignments.*')
+            ->where(
+                function ($query) {
+                    $query
+                        ->where([
+                            ['begin', '<=', Carbon::today()->toDateString()],
+                            ['end', '>=', Carbon::today()->toDateString()],
+                        ])
+                        ->orWhere([
+                            ['begin', '<=', Carbon::today()->toDateString()],
+                            ['end', '=', null],
+                        ]);
+                }
+            )
+            ->orderBy('user_types.name', 'asc');
+        return $result;
     }
 }

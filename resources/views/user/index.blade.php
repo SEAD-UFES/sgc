@@ -50,18 +50,18 @@
                                         <td>{{ $user->active === 1 ? 'Sim' : 'Não' }}</td>
                                         <td>{{ $user->employee ? $user->employee->name : 'Não possui' }}</td>
                                         <td class="text-center"><div class="d-inline-flex">
-                                            <a href="{{ route('users.edit', $user) }}" data-bs-toggle="tooltip" title="Editar usuário" class="btn btn-primary btn-sm">
-                                                <i class="bi-pencil-fill"></i>
-                                            </a>&nbsp;
-                                            <form name="{{ 'formDelete' . $user->id }}" action="{{ route('users.destroy', $user) }}"
-                                                method="POST">
-                                                @method('DELETE')
-                                                @csrf
-                                                <button type="button" data-bs-toggle="tooltip" title="Excluir usuário" 
-                                                    onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse usuário?\')) document.forms[\'formDelete' . $user->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
-                                                    <i class="bi-trash-fill"></i>
-                                                </button>
-                                            </form></div>
+                                            @can('user-update')
+                                                <a href="{{route('users.edit', $user)}}" data-bs-toggle="tooltip" title="Editar usuário" class="btn btn-primary btn-sm"><i class="bi-pencil-fill"></i></a>&nbsp;
+                                            @endcan
+                                            @can('user-destroy')
+                                                <form name="{{ 'formDelete' . $user->id }}" action="{{ route('users.destroy', $user) }}" method="POST">
+                                                    @method('DELETE')
+                                                    @csrf
+                                                    <button type="button" data-bs-toggle="tooltip" title="Excluir usuário" onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse usuário?\')) document.forms[\'formDelete' . $user->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
+                                                        <i class="bi-trash-fill"></i>
+                                                    </button>
+                                                </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach
