@@ -57,17 +57,21 @@
                                         <td>{{ \Carbon\Carbon::parse($course->begin)->isoFormat('DD/MM/Y') }}</td> 
                                         <td>{{ \Carbon\Carbon::parse($course->end)->isoFormat('DD/MM/Y') }}</td>
                                         <td class="text-center"><div class="d-inline-flex">
-                                            <a href="{{ route('courses.edit', $course) }}" data-bs-toggle="tooltip" title="Editar curso" class="btn btn-primary btn-sm">
-                                                <i class="bi-pencil-fill"></i>
-                                            </a>&nbsp;
-                                            <form name="{{ 'formDelete' . $course->id }}" action="{{ route('courses.destroy', $course) }}" method="POST">
-                                                @method('DELETE')
-                                                @csrf
-                                                <button type="button" data-bs-toggle="tooltip" title="Excluir curso" 
-                                                    onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse curso?\')) document.forms[\'formDelete' . $course->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
-                                                    <i class="bi-trash-fill"></i>
-                                                </button>
-                                            </form></div>
+                                            @can('course-update')
+                                                <a href="{{ route('courses.edit', $course) }}" data-bs-toggle="tooltip" title="Editar curso" class="btn btn-primary btn-sm">
+                                                    <i class="bi-pencil-fill"></i>
+                                                </a>&nbsp;
+                                            @endcan
+                                            @can('course-destroy')
+                                                <form name="{{ 'formDelete' . $course->id }}" action="{{ route('courses.destroy', $course) }}" method="POST">
+                                                    @method('DELETE')
+                                                    @csrf
+                                                    <button type="button" data-bs-toggle="tooltip" title="Excluir curso" 
+                                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse curso?\')) document.forms[\'formDelete' . $course->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
+                                                        <i class="bi-trash-fill"></i>
+                                                    </button>
+                                                </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach

@@ -64,5 +64,18 @@ class GenericGates
             //if no permission
             return false;
         });
+
+        /* define a grantee user role */
+        Gate::define('is-Gra', function (User $user) {
+            //need to have session UserTypeAssignment active.
+            $currentUTA = session('sessionUser')->getCurrentUTA();
+            if (!$currentUTA) return false;
+
+            //if currentUTA (UserTypeAssignment) is gra, ok
+            if ($currentUTA && $currentUTA->userType->acronym === 'gra') return true;
+
+            //if no permission
+            return false;
+        });
     }
 }

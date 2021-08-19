@@ -63,7 +63,7 @@ class UserSeeder extends Seeder
         DB::table($this->tableName)->insert([
             'email' => 'coordenador01@ufes.br',
             'password' => Hash::make('senha123'),
-            'user_type_id' => 5,
+            'user_type_id' => 6,
             'active' => true,
             'employee_id' => null,
         ]);

@@ -36,7 +36,7 @@ class UserTypeAssignmentSeeder extends Seeder
 
         DB::table($this->tableName)->insert([
             'user_id' => 7,
-            'user_type_id' => 7,
+            'user_type_id' => 6,
             'course_id' => 5,
             'begin' => Carbon::now(),
             'end' => Carbon::now()->addYears(1),

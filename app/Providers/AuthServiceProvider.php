@@ -9,6 +9,7 @@ use App\Gates\GenericGates;
 use App\Gates\UserGates;
 use App\Gates\UserTypeAssignmentGates;
 use App\Gates\PoleGates;
+use App\Gates\CourseGates;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -69,8 +70,9 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         GenericGates::define();
-        UserGates::define();
         UserTypeAssignmentGates::define();
+        UserGates::define();
         PoleGates::define();
+        CourseGates::define();
     }
 }
