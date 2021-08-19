@@ -9,6 +9,7 @@ use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\GrantType;
 use App\CustomClasses\ModelFilterHelpers;
+use Illuminate\Support\Facades\Gate;
 
 class RoleController extends Controller
 {
@@ -19,6 +20,9 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
+        //check access permission
+        if (!Gate::allows('role-list')) return view('access.denied');
+
         $roles = Role::sortable(['name' => 'asc'])->paginate(10);
 
         $roles_query = new Role();
@@ -47,6 +51,9 @@ class RoleController extends Controller
      */
     public function create()
     {
+        //check access permission
+        if (!Gate::allows('role-store')) return view('access.denied');
+
         $grantTypes = GrantType::orderBy('name')->get();
         $role = new Role;
 
@@ -63,6 +70,9 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
+        //check access permission
+        if (!Gate::allows('role-store')) return view('access.denied');
+
         $role = new Role;
 
         $role->name = $request->name;
@@ -83,6 +93,9 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
+        //check access permission
+        if (!Gate::allows('role-show')) return view('access.denied');
+
         return view('role.show', compact('role'));
     }
 
@@ -94,6 +107,9 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+        //check access permission
+        if (!Gate::allows('role-update')) return view('access.denied');
+
         $grantTypes = GrantType::orderBy('name')->get();
 
         SgcLogger::writeLog($role);
@@ -110,6 +126,9 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, Role $role)
     {
+        //check access permission
+        if (!Gate::allows('role-update')) return view('access.denied');
+
         $role->name = $request->name;
         $role->description = $request->description;
         $role->grant_value = $request->grantValue;
@@ -134,6 +153,9 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        //check access permission
+        if (!Gate::allows('role-destroy')) return view('access.denied');
+
         SgcLogger::writeLog($role);
 
         try {

@@ -10,6 +10,7 @@ use App\Gates\UserGates;
 use App\Gates\UserTypeAssignmentGates;
 use App\Gates\PoleGates;
 use App\Gates\CourseGates;
+use App\Gates\RoleGates;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -74,5 +75,6 @@ class AuthServiceProvider extends ServiceProvider
         UserGates::define();
         PoleGates::define();
         CourseGates::define();
+        RoleGates::define();
     }
 }
