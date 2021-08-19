@@ -201,7 +201,7 @@ class PoleTest extends TestCase
 
     /**
      * Get user with SessionUser attached
-     * @return User with SessionUser
+     * @return \App\Models\User
      */
     private function getAuthenticatedSession()
     {
@@ -215,7 +215,7 @@ class PoleTest extends TestCase
 
     /**
      * Get Pole for testing
-     * @return Pole (persisted to Database)
+     * @return \App\Models\Pole
      */
     private function getTestPole()
     {
