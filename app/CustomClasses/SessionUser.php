@@ -86,7 +86,7 @@ class SessionUser
         $user_type_assignment = $this
             ->currentUser
             ->getActiveUTAs()
-            ->where('id', $user_type_assignment_id)
+            ->where('user_type_assignments.id', $user_type_assignment_id)
             ->firstOrFail();
         $this->currentUTA_id = $user_type_assignment->id;
     }
