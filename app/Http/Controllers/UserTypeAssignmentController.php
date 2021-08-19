@@ -8,6 +8,7 @@ use App\CustomClasses\SgcLogger;
 use App\Models\UserType;
 use App\Models\Course;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 
 class UserTypeAssignmentController extends Controller
 {
@@ -18,7 +19,9 @@ class UserTypeAssignmentController extends Controller
      */
     public function index()
     {
-        //
+        //check access permission
+        if (!Gate::allows('userTypeAssignment-list')) return view('access.denied');
+
         $userTypeAssignments = UserTypeAssignment::paginate(10);
 
         return view('userTypeAssignment.index', compact('userTypeAssignments'));
@@ -31,6 +34,9 @@ class UserTypeAssignmentController extends Controller
      */
     public function create()
     {
+        //check access permission
+        if (!Gate::allows('userTypeAssignment-store')) return view('access.denied');
+
         $users = User::orderBy('email')->get();
         $userTypes = UserType::orderBy('name')->get();
         $courses = Course::orderBy('name')->get();
@@ -50,6 +56,9 @@ class UserTypeAssignmentController extends Controller
      */
     public function store(Request $request)
     {
+        //check access permission
+        if (!Gate::allows('userTypeAssignment-store')) return view('access.denied');
+
         //save the model
         $userTypeAssignment = new UserTypeAssignment();
         $userTypeAssignment->user_id = $request->user_id;
@@ -73,7 +82,8 @@ class UserTypeAssignmentController extends Controller
      */
     public function show(UserTypeAssignment $userTypeAssignment)
     {
-        //
+        //check access permission
+        if (!Gate::allows('userTypeAssignment-show')) return view('access.denied');
     }
 
     /**
@@ -84,7 +94,8 @@ class UserTypeAssignmentController extends Controller
      */
     public function edit(UserTypeAssignment $userTypeAssignment)
     {
-        //
+        //check access permission
+        if (!Gate::allows('userTypeAssignment-update')) return view('access.denied');
     }
 
     /**
@@ -96,7 +107,8 @@ class UserTypeAssignmentController extends Controller
      */
     public function update(Request $request, UserTypeAssignment $userTypeAssignment)
     {
-        //
+        //check access permission
+        if (!Gate::allows('userTypeAssignment-update')) return view('access.denied');
     }
 
     /**
@@ -107,6 +119,7 @@ class UserTypeAssignmentController extends Controller
      */
     public function destroy(UserTypeAssignment $userTypeAssignment)
     {
-        //
+        //check access permission
+        if (!Gate::allows('userTypeAssignment-destroy')) return view('access.denied');
     }
 }

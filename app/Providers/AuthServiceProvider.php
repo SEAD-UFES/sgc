@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Gate;
 
 use App\Gates\GenericGates;
 use App\Gates\UserGates;
+use App\Gates\UserTypeAssignmentGates;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -68,5 +69,6 @@ class AuthServiceProvider extends ServiceProvider
 
         GenericGates::define();
         UserGates::define();
+        UserTypeAssignmentGates::define();
     }
 }
