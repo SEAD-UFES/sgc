@@ -22,6 +22,7 @@
                     </div>
                 @endif
                 @component('bond.componentBondDetails', compact('bond'))@endcomponent
+                <br />
                 <h4>> Documentos</h4>
                 @component('bond.document.componentList', compact('documents'))@endcomponent
                 <a href="{{ route('bonds.document.massdownload', $bond) }}" 
