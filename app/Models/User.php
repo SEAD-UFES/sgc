@@ -76,8 +76,6 @@ class User extends Authenticatable
     //dynamic > static :)
     public function getActiveUTAs()
     {
-        // $result =  $this->userTypeAssignments();
-        // dd($result->toSql());
         $result =  $this->userTypeAssignments()
             ->with('userType', 'course')
             ->join('user_types', 'user_type_assignments.user_type_id', '=', 'user_types.id')
