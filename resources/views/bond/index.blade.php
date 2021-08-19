@@ -25,7 +25,8 @@
                         [
                             'filters' =>$filters,
                             'options' => [
-                                [ 'label'=>'Colaborador', 'value'=>'employee_name_contains', 'selected'=>true],
+                                [ 'label'=>'CPF', 'value'=>'employee_cpf_contains', 'selected'=>true],
+                                [ 'label'=>'Colaborador', 'value'=>'employee_name_contains'],
                                 [ 'label'=>'Atribuição', 'value'=>'role_name_contains'],
                                 [ 'label'=>'Curso', 'value'=>'course_name_contains'],
                                 [ 'label'=>'Polo', 'value'=>'pole_name_contains'],
@@ -40,6 +41,7 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
+                                    <th>@sortablelink('employee.cpf', 'CPF')</th>
                                     <th>@sortablelink('employee.name', 'Colaborador')</th>
                                     <th>@sortablelink('role.name', 'Atribuição')</th>
                                     <th>@sortablelink('course.name', 'Curso')</th>
@@ -52,6 +54,9 @@
                             <tbody>
                                 @foreach ($bonds as $bond)
                                     <tr>
+                                        <td>
+                                            {{ $bond->employee->cpf }}
+                                        </td>
                                         <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
                                             data-bs-content="
                                                 <strong>Início: </strong>{{ isset($bond->begin) ? \Carbon\Carbon::parse($bond->begin)->isoFormat('DD/MM/Y') : '-' }} | 

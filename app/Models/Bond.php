@@ -46,6 +46,7 @@ class Bond extends Pivot
 
     private static $whiteListFilter = ['*'];
     public static $accepted_filters = [
+        'employee_cpf_contains',
         'employee_name_contains',
         'role_name_contains',
         'course_name_contains',

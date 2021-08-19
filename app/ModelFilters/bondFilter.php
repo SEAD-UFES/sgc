@@ -7,6 +7,13 @@ use App\CustomClasses\ModelFilterHelpers;
 
 trait bondFilter
 {
+    public function employee_cpf_contains(Builder $builder, $value)
+    {
+        $values = ModelFilterHelpers::inputToArray($value);
+        $builder = ModelFilterHelpers::relation_contains($builder, 'employee', 'cpf', $values);
+        return $builder;
+    }
+
     public function employee_name_contains(Builder $builder, $value)
     {
         $values = ModelFilterHelpers::inputToArray($value);

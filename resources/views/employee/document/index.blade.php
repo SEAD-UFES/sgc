@@ -25,7 +25,8 @@
                         [
                             'filters' =>$filters,
                             'options' => [
-                                [ 'label'=>'Colaborador', 'value'=>'employee_name_contains', 'selected'=>true],
+                                [ 'label'=>'CPF', 'value'=>'employee_cpf_contains', 'selected'=>true],
+                                [ 'label'=>'Colaborador', 'value'=>'employee_name_contains'],
                                 [ 'label'=>'Nome do arquivo', 'value'=>'originalname_contains'],
                                 [ 'label'=>'Tipo', 'value'=>'documentType_name_contains'],
                             ]
@@ -35,6 +36,7 @@
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
+                                <th>@sortablelink('employee.cpf', 'CPF')</th>
                                 <th>@sortablelink('employee.name', 'Colaborador')</th>
                                 <th>@sortablelink('original_name', 'Nome do arquivo')</th>
                                 <th>@sortablelink('documentType.name', 'Tipo')</th>
@@ -42,6 +44,11 @@
                             <tbody>
                                 @foreach ($documents as $document)
                                     <tr>
+                                        <td>
+                                            <a href="{{ route('employees.show', $document->employee->id) }}" target="_blank">
+                                                {{ $document->employee->cpf }}
+                                            </a>
+                                        </td>
                                         <td>
                                             <a href="{{ route('employees.show', $document->employee->id) }}" target="_blank">
                                                 {{ $document->employee->name }}

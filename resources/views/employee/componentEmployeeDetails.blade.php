@@ -1,4 +1,4 @@
-<h3>Formulário UAB</h3>
+{{-- <h3>Formulário UAB</h3> --}}
 <div class="card">
     <div class="card-header" data-bs-toggle="collapse" href="#collapsePersonal" role="button" aria-expanded="true" aria-controls="collapsePersonal">> Dados Pessoais</div>
     <div class="collapse show card-body" id="collapsePersonal">
@@ -78,7 +78,6 @@
         </div>
     </div>
 </div>
-&nbsp;
 <div class="card">
     <div class="card-header" data-bs-toggle="collapse" href="#collapseContact" role="button" aria-expanded="true" aria-controls="collapseContact">> Endereço para Contato</div>
     <div class="collapse show card-body" id="collapseContact">
@@ -151,6 +150,3 @@
         </div>
     </div>
 @endisset
-<br />
-<button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
-<br /><br />

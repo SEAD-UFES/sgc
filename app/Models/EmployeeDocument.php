@@ -28,6 +28,7 @@ class EmployeeDocument extends Model
 
     private static $whiteListFilter = ['*'];
     public static $accepted_filters = [
+        'employee_cpf_contains',
         'employee_name_contains',
         'originalname_contains',
         'documentType_name_contains'
