@@ -8,6 +8,7 @@ use App\CustomClasses\SgcLogger;
 use App\Http\Requests\StorePoleRequest;
 use App\Http\Requests\UpdatePoleRequest;
 use App\CustomClasses\ModelFilterHelpers;
+use Illuminate\Support\Facades\Gate;
 
 class PoleController extends Controller
 {
@@ -18,6 +19,9 @@ class PoleController extends Controller
      */
     public function index(Request $request)
     {
+        //check access permission
+        if (!Gate::allows('pole-list')) return view('access.denied');
+
         $poles_query = new Pole();
 
         //filters
@@ -44,6 +48,9 @@ class PoleController extends Controller
      */
     public function create()
     {
+        //check access permission
+        if (!Gate::allows('pole-store')) return view('access.denied');
+
         $pole = new Pole;
 
         SgcLogger::writeLog('Pole');
@@ -59,6 +66,9 @@ class PoleController extends Controller
      */
     public function store(StorePoleRequest $request)
     {
+        //check access permission
+        if (!Gate::allows('pole-store')) return view('access.denied');
+
         $pole = new Pole;
 
         $pole->name = $request->name;
@@ -77,6 +87,9 @@ class PoleController extends Controller
      */
     public function show(Pole $pole)
     {
+        //check access permission
+        if (!Gate::allows('pole-show')) return view('access.denied');
+
         return view('pole.show', compact('pole'));
     }
 
@@ -88,6 +101,9 @@ class PoleController extends Controller
      */
     public function edit(Pole $pole)
     {
+        //check access permission
+        if (!Gate::allows('pole-update')) return view('access.denied');
+
         SgcLogger::writeLog($pole);
 
         return view('pole.edit', compact('pole'));
@@ -102,6 +118,9 @@ class PoleController extends Controller
      */
     public function update(UpdatePoleRequest $request, Pole $pole)
     {
+        //check access permission
+        if (!Gate::allows('pole-update')) return view('access.denied');
+
         $pole->name = $request->name;
         $pole->description = $request->description;
 
@@ -124,6 +143,9 @@ class PoleController extends Controller
      */
     public function destroy(Pole $pole)
     {
+        //check access permission
+        if (!Gate::allows('pole-destroy')) return view('access.denied');
+
         SgcLogger::writeLog($pole);
 
         try {
