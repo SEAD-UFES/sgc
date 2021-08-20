@@ -34,7 +34,7 @@ class User extends Authenticatable
     private static $whiteListFilter = ['*'];
     public static $accepted_filters = [
         'email_contains',
-        'usertype_name_contains',
+        // 'usertype_name_contains',
         'active_exactly',
         'employee_name_contains',
     ];

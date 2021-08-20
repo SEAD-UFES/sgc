@@ -14,7 +14,7 @@
         <div class="text-danger">> {{ $message }}</div>
     @enderror
 </div>
-<div class="mb-3">
+{{-- <div class="mb-3">
     <label for="selectType1" class="form-label">Tipo de usuário*</label>
     <select name="userTypes" id="selectType1" class="form-select">
         <option value="">Selecione o tipo</option>
@@ -26,7 +26,7 @@
     @error('userTypes')
         <div class="text-danger">> {{ $message }}</div>
     @enderror
-</div>
+</div> --}}
 <div class="mb-3" class="form-check">
     <input type="checkbox" class="form-check-input" name="active" id="inputActive1"
         {{ $user->active ? 'checked' : '' }} />

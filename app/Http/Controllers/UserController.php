@@ -79,7 +79,7 @@ class UserController extends Controller
 
         $user->email = $request->email;
         $user->password =  Hash::make($request->password);
-        $user->user_type_id = $request->userTypes;
+        // $user->user_type_id = $request->userTypes;
         $user->active = $request->has('active');
 
         $existentEmployee = Employee::where('email', $request->email)->first();
@@ -149,7 +149,7 @@ class UserController extends Controller
 
         if ($request->password != '')
             $user->password =  Hash::make($request->password);
-        $user->user_type_id = $request->userTypes;
+        // $user->user_type_id = $request->userTypes;
         $user->active = $request->has('active');
 
         $existentEmployee = Employee::where('email', $request->email)->first();
