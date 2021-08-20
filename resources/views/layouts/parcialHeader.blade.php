@@ -72,28 +72,34 @@
                                 <li><a class="dropdown-item" href="{{ route('users.index') }}">Listar Usuários</a></li>
                                 <li><a class="dropdown-item" href="{{ route('users.create') }}">Cadastrar Usuário</a></li>
                                 @endcanany
+                                <li><hr class="dropdown-divider"></li>
+                                @canany(['isAdm'])
+                                <li><h6 class="dropdown-header">Atribuições de papel</h6></li>
+                                <li><a class="dropdown-item" href="{{ route('userTypeAssignments.index') }}">Listar Atribuições de Papel</a></li>
+                                <li><a class="dropdown-item" href="{{ route('userTypeAssignments.create') }}">Cadastrar Atrib. de Papel</a></li>
+                                @endcanany
                             </ul>
                         </li>
                     @endcanany
                 </ul>
 
-                @if (session('sessionUser')->hasBond)
-                    <form class="d-flex" action={{ route('currentBond.change') }} method="POST">
+                @if (session('sessionUser')->hasUTAs())
+                    <form class="d-flex" action={{ route('currentUTA.change') }} method="POST">
                         @csrf
-                        <select class="form-select form-select-sm" aria-label="Vínculo" name="activeBonds" data-bs-toggle="tooltip" data-bs-placement="left" title="Mudar atribuição atual" onchange="submit();">
-                            @foreach (session('sessionUser')->bonds as $bond)
-                                <option value="{{ $bond->id }}"
-                                    {{ $bond->id === session('sessionUser')->currentBond->id ? 'selected' : '' }}>
-                                    {{ $bond->role->name }} - {{ $bond->course->name }}</option>
+                        <select class="form-select form-select-sm" aria-label="uta" name="activeUTAs" data-bs-toggle="tooltip" data-bs-placement="left" title="Mudar papel atual" onchange="submit();">
+                            @foreach (session('sessionUser')->getActiveUTAs() as $uta)
+                                <option value="{{ $uta->id }}"
+                                    {{ session('sessionUser')->getCurrentUTA() && $uta->id === session('sessionUser')->getCurrentUTA()->id ? 'selected' : '' }}>
+                                    {{ $uta->userType->name }}{{ $uta->course ? " - ".$uta->course->name : '' }}</option>
                             @endforeach
                         </select>
                     </form>
-                @endif &nbsp;
+                @endif
 
                 <ul class="list-unstyled ms-1 mb-2 mb-lg-0">
                     <li>Bem vind{{ session('sessionUser')->genderArticle }}, {{ session('sessionUser')->name }}!
-                        &nbsp;<a class="btn btn-sm btn-danger" href="{{ route('auth.logout') }}" data-bs-toggle="tooltip" data-bs-placement="left" title="Sair do sistema">Sair</a></li>
-
+                        &nbsp;<a class="btn btn-sm btn-danger" href="{{ route('auth.logout') }}" data-bs-toggle="tooltip" data-bs-placement="left" title="Sair do sistema">Sair</a>
+                    </li>
                 </ul>
             </div>
         @endif

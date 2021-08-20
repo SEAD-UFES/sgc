@@ -13,6 +13,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\CustomClasses\SgcLogger;
 use App\Models\UserType;
 use App\CustomClasses\ModelFilterHelpers;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -23,6 +24,9 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        //check access permission
+        if (!Gate::allows('user-list')) return view('access.denied');
+
         $users_query = User::with(['userType', 'employee']);
 
         //filters
@@ -49,6 +53,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        //check access permission
+        if (!Gate::allows('user-store')) return view('access.denied');
+
         $userTypes = UserType::orderBy('name')->get();
         $user = new User;
 
@@ -65,6 +72,9 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+        //check access permission
+        if (!Gate::allows('user-store')) return view('access.denied');
+
         $user = new User;
 
         $user->email = $request->email;
@@ -99,6 +109,9 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        //check access permission
+        if (!Gate::allows('user-show')) return view('access.denied');
+
         return view('user.show', compact('user'));
     }
 
@@ -110,6 +123,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        //check access permission
+        if (!Gate::allows('user-update')) return view('access.denied');
+
         $userTypes = UserType::orderBy('name')->get();
 
         SgcLogger::writeLog($user);
@@ -126,6 +142,9 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+        //check access permission
+        if (!Gate::allows('user-update')) return view('access.denied');
+
         $user->email = $request->email;
 
         if ($request->password != '')
@@ -160,6 +179,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        //check access permission
+        if (!Gate::allows('user-destroy')) return view('access.denied');
+
         SgcLogger::writeLog($user);
 
         try {
@@ -171,10 +193,9 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'Usuário excluído com sucesso.');
     }
 
-    public function setCurrentBond(Request $request)
+    public function setCurrentUTA(Request $request)
     {
-        session('sessionUser')->setCurrentBond($request->activeBonds);
-
-        return redirect()->route('home');
+        session('sessionUser')->setCurrentUTA($request->activeUTAs);
+        return redirect()->back();
     }
 }

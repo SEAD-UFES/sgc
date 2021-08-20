@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateCourseRequest;
 use App\CustomClasses\SgcLogger;
 use Illuminate\Http\Request;
 use App\CustomClasses\ModelFilterHelpers;
+use Illuminate\Support\Facades\Gate;
 
 class CourseController extends Controller
 {
@@ -19,6 +20,9 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
+        //check access permission
+        if (!Gate::allows('course-list')) return view('access.denied');
+
         $courses_query = new Course();
 
         //filters
@@ -45,6 +49,9 @@ class CourseController extends Controller
      */
     public function create()
     {
+        //check access permission
+        if (!Gate::allows('course-store')) return view('access.denied');
+
         $courseTypes = CourseType::orderBy('name')->get();
         $course = new Course;
 
@@ -61,6 +68,9 @@ class CourseController extends Controller
      */
     public function store(StoreCourseRequest $request)
     {
+        //check access permission
+        if (!Gate::allows('course-store')) return view('access.denied');
+
         $course = new Course;
 
         $course->name = $request->name;
@@ -84,6 +94,9 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
+        //check access permission
+        if (!Gate::allows('course-show')) return view('access.denied');
+
         return view('course.show', compact('course'));
     }
 
@@ -95,6 +108,9 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
+        //check access permission
+        if (!Gate::allows('course-update')) return view('access.denied');
+
         $courseTypes = CourseType::orderBy('name')->get();
 
         SgcLogger::writeLog($course);
@@ -111,6 +127,9 @@ class CourseController extends Controller
      */
     public function update(UpdateCourseRequest $request, Course $course)
     {
+        //check access permission
+        if (!Gate::allows('course-update')) return view('access.denied');
+
         $course->name = $request->name;
         $course->description =  $request->description;
         $course->course_type_id = $request->courseTypes;
@@ -136,6 +155,9 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
+        //check access permission
+        if (!Gate::allows('course-destroy')) return view('access.denied');
+
         SgcLogger::writeLog($course);
         try {
             $course->delete();
