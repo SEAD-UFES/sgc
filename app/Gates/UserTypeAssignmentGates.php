@@ -10,7 +10,7 @@ class UserTypeAssignmentGates
     {
         Gate::define('userTypeAssignment-list', function ($user) {
             //admins can do it.
-            if (Gate::forUser($user)->allows('is-Adm')) return true;
+            if (Gate::forUser($user)->allows('is-Adm-global')) return true;
 
             //no permission
             return false;
@@ -18,7 +18,7 @@ class UserTypeAssignmentGates
 
         Gate::define('userTypeAssignment-show', function ($user) {
             //admins can do it.
-            if (Gate::forUser($user)->allows('is-Adm')) return true;
+            if (Gate::forUser($user)->allows('is-Adm-global')) return true;
 
             //no permission
             return false;
@@ -26,7 +26,7 @@ class UserTypeAssignmentGates
 
         Gate::define('userTypeAssignment-store', function ($user) {
             //admins can do it.
-            if (Gate::forUser($user)->allows('is-Adm')) return true;
+            if (Gate::forUser($user)->allows('is-Adm-global')) return true;
 
             //no permission
             return false;
@@ -34,7 +34,7 @@ class UserTypeAssignmentGates
 
         Gate::define('userTypeAssignment-update', function ($user) {
             //admins can do it.
-            if (Gate::forUser($user)->allows('is-Adm')) return true;
+            if (Gate::forUser($user)->allows('is-Adm-global')) return true;
 
             //no permission
             return false;
@@ -42,7 +42,7 @@ class UserTypeAssignmentGates
 
         Gate::define('userTypeAssignment-destroy', function ($user) {
             //admins can do it.
-            if (Gate::forUser($user)->allows('is-Adm')) return true;
+            if (Gate::forUser($user)->allows('is-Adm-global')) return true;
 
             //no permission
             return false;
