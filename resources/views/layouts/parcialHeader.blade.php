@@ -83,19 +83,6 @@
                     @endcanany
                 </ul>
 
-                {{-- @if (session('sessionUser')->hasBond)
-                    <form class="d-flex" action={{ route('currentBond.change') }} method="POST">
-                        @csrf
-                        <select class="form-select form-select-sm" aria-label="Vínculo" name="activeBonds" data-bs-toggle="tooltip" data-bs-placement="left" title="Mudar atribuição atual" onchange="submit();">
-                            @foreach (session('sessionUser')->bonds as $bond)
-                                <option value="{{ $bond->id }}"
-                                    {{ $bond->id === session('sessionUser')->currentBond->id ? 'selected' : '' }}>
-                                    {{ $bond->role->name }} - {{ $bond->course->name }}</option>
-                            @endforeach
-                        </select>
-                    </form>
-                @endif &nbsp; --}}
-
                 @if (session('sessionUser')->hasUTAs())
                     <form class="d-flex" action={{ route('currentUTA.change') }} method="POST">
                         @csrf

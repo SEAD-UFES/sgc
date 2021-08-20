@@ -60,8 +60,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/document/{id}/{type}/{htmlTitle}', [DocumentController::class, 'showDocument'])->name('documents.show');
 
     Route::resource('users', UserController::class);
-    Route::post('/changeBond', [UserController::class, 'setCurrentBond'])->name('currentBond.change');
-
     Route::resource('roles', RoleController::class);
     Route::resource('poles', PoleController::class);
     Route::resource('courses', CourseController::class);
