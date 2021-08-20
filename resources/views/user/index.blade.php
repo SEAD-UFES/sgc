@@ -26,7 +26,7 @@
                             'filters' => $filters,
                             'options' => [
                                 ['label' => 'E-mail', 'value' => 'email_contains', 'selected' => true], 
-                                ['label' => 'Tipo', 'value' => 'usertype_name_contains'], 
+                                // ['label' => 'Tipo', 'value' => 'usertype_name_contains'], 
                                 ['label' => 'Ativo', 'value' => 'active_exactly'], 
                                 ['label' => 'Colaborador', 'value' => 'employee_name_contains']
                             ],
@@ -37,7 +37,7 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <th>@sortablelink('email', 'E-mail')</th>
-                                <th>@sortablelink('userType.name', 'Tipo')</th>
+                                {{-- <th>@sortablelink('userType.name', 'Tipo')</th> --}}
                                 <th>@sortablelink('active', 'Ativo')</th>
                                 <th>@sortablelink('employee.name', 'Colaborador')</th>
                                 <th class="text-center">Ações</th>
@@ -46,7 +46,7 @@
                                 @foreach ($users as $user)
                                     <tr>
                                         <td>{{ $user->email }}</td>
-                                        <td>{{ $user->userType->name }}</td>
+                                        {{-- <td>{{ $user->userType->name }}</td> --}}
                                         <td>{{ $user->active === 1 ? 'Sim' : 'Não' }}</td>
                                         <td>{{ $user->employee ? $user->employee->name : 'Não possui' }}</td>
                                         <td class="text-center"><div class="d-inline-flex">

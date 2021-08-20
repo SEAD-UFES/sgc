@@ -14,12 +14,12 @@ trait userFilter
         return $builder;
     }
 
-    public function usertype_name_contains(Builder $builder, $value)
-    {
-        $values = ModelFilterHelpers::inputToArray($value);
-        $builder = ModelFilterHelpers::relation_contains($builder, 'userType', 'name', $values);
-        return $builder;
-    }
+    // public function usertype_name_contains(Builder $builder, $value)
+    // {
+    //     $values = ModelFilterHelpers::inputToArray($value);
+    //     $builder = ModelFilterHelpers::relation_contains($builder, 'userType', 'name', $values);
+    //     return $builder;
+    // }
 
     public function active_exactly(Builder $builder, $value)
     {
