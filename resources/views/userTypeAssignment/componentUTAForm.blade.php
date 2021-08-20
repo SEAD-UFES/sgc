@@ -17,7 +17,7 @@
     <select name="userType_id" id="selectRole1" class="form-select">
         <option value="">Selecione o papel</option>
         @foreach ($userTypes as $userType)
-            <option value="{{ $userType->id }}" {{ $userType->id == $userTypeAssignment->userType_id ? 'selected' : '' }}>
+            <option value="{{ $userType->id }}" {{ $userType->id == $userTypeAssignment->user_type_id ? 'selected' : '' }}>
                 {{ $userType->name }}
             </option>
         @endforeach
@@ -41,9 +41,19 @@
 </div>
 <div class="mb-3">
     <label for="inputBegin1" class="form-label">Início</label>
-    <input type="date" name="begin" value="{{ $userTypeAssignment->begin ?? old('begin') ? old('begin') : date('Y-m-d') }}" id="inputBegin1" class="form-control">
+    <input type="date" name="begin" value="{{ 
+        $userTypeAssignment->begin ? 
+            $userTypeAssignment->begin 
+            : (old('begin') ? old('begin') : date('Y-m-d')) 
+    }}" id="inputBegin1" class="form-control">
+    @error('begin')
+        <div class="error">> {{ $message }}</div>
+    @enderror
 </div>
 <div class="mb-3">
     <label for="inputEnd1" class="form-label">Fim (Opcional)</label>
     <input type="date" name="end" value="{{ $userTypeAssignment->end ?? old('end') }}" id="inputEnd1" class="form-control">
+    @error('end')
+        <div class="error">> {{ $message }}</div>
+    @enderror
 </div>

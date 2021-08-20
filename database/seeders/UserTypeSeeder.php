@@ -16,45 +16,45 @@ class UserTypeSeeder extends Seeder
     public function run()
     {
         DB::table($this->tableName)->insert([
+            'id' => 1,
             'name' => 'Administrador',
             'acronym' => 'adm',
             'description' => 'Administrador do sistema',
         ]);
 
         DB::table($this->tableName)->insert([
+            'id' => 2,
             'name' => 'Diretor',
             'acronym' => 'dir',
             'description' => 'Diretor da Sead',
         ]);
 
         DB::table($this->tableName)->insert([
+            'id' => 3,
             'name' => 'Assitente UAB',
             'acronym' => 'ass',
             'description' => 'Assitente UAB',
         ]);
 
         DB::table($this->tableName)->insert([
+            'id' => 4,
             'name' => 'Secretário Acadêmico',
             'acronym' => 'sec',
             'description' => 'Colaborador da Secretaria Acadêmica da Sead',
         ]);
 
         DB::table($this->tableName)->insert([
+            'id' => 5,
             'name' => 'Colaborador LDI',
             'acronym' => 'ldi',
             'description' => 'Colaborador do LDI da Sead',
         ]);
 
         DB::table($this->tableName)->insert([
-            'name' => 'Colaborador Bolsista',
+            'id' => 6,
+            'name' => 'Coordenador',
             'acronym' => 'gra',
             'description' => 'Colaborador que recebe bolsa',
-        ]);
-
-        DB::table($this->tableName)->insert([
-            'name' => 'Coordenador de Curso',
-            'acronym' => 'coord',
-            'description' => 'Cordenador de um curso',
         ]);
     }
 }

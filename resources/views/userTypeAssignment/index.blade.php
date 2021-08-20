@@ -25,7 +25,7 @@
                         [
                             'filters' => $filters,
                             'options' => [
-                                ['label' => 'Colaborador', 'value' => 'user_email_contains', 'selected' => true], 
+                                ['label' => 'Usuário', 'value' => 'user_email_contains', 'selected' => true], 
                                 ['label' => 'Papel', 'value' => 'usertype_name_contains'], 
                                 [ 'label'=>'Início (=)', 'value'=>'begin_exactly'],
                                 [ 'label'=>'Início (>=)' , 'value'=>'begin_BigOrEqu'],
@@ -40,7 +40,7 @@
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
-                                <th>@sortablelink('user.email', 'Colaborador')</th>
+                                <th>@sortablelink('user.email', 'Usuário')</th>
                                 <th>@sortablelink('userType.name', 'Papel')</th>
                                 <th>@sortablelink('begin', 'Início')</th>
                                 <th>@sortablelink('end', 'Fim')</th>
@@ -54,18 +54,21 @@
                                         <td>{{ $userTypeAssignment->begin }}</td>
                                         <td>{{ $userTypeAssignment->end ?? "..." }}</td>
                                         <td class="text-center"><div class="d-inline-flex">
-                                            {{-- <a href="{{ route('users.edit', $user) }}" data-bs-toggle="tooltip" title="Editar usuário" class="btn btn-primary btn-sm">
-                                                <i class="bi-pencil-fill"></i>
-                                            </a>&nbsp;
-                                            <form name="{{ 'formDelete' . $user->id }}" action="{{ route('users.destroy', $user) }}"
-                                                method="POST">
-                                                @method('DELETE')
-                                                @csrf
-                                                <button type="button" data-bs-toggle="tooltip" title="Excluir usuário" 
-                                                    onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse usuário?\')) document.forms[\'formDelete' . $user->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
-                                                    <i class="bi-trash-fill"></i>
-                                                </button>
-                                            </form></div> --}}
+                                            @can('userTypeAssignment-update')
+                                                <a href="{{ route('userTypeAssignments.edit', $userTypeAssignment) }}" data-bs-toggle="tooltip" title="Editar usuário" class="btn btn-primary btn-sm">
+                                                    <i class="bi-pencil-fill"></i>
+                                                </a>&nbsp;          
+                                            @endcan
+                                            @can('userTypeAssignment-destroy')
+                                                <form name="{{ 'formDelete' . $userTypeAssignment->id }}" action="{{ route('userTypeAssignments.destroy', $userTypeAssignment) }}" method="POST">
+                                                    @method('DELETE')
+                                                    @csrf
+                                                    <button type="button" data-bs-toggle="tooltip" title="Excluir usuário" 
+                                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse usuário?\')) document.forms[\'formDelete' . $userTypeAssignment->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
+                                                        <i class="bi-trash-fill"></i>
+                                                    </button>
+                                                </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach

@@ -10,6 +10,8 @@ use App\Models\Course;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use App\CustomClasses\ModelFilterHelpers;
+use App\Http\Requests\StoreUserTypeAssignmentRequest;
+use App\Http\Requests\UpdateUserTypeAssignmentRequest;
 
 class UserTypeAssignmentController extends Controller
 {
@@ -68,7 +70,7 @@ class UserTypeAssignmentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUserTypeAssignmentRequest $request)
     {
         //check access permission
         if (!Gate::allows('userTypeAssignment-store')) return view('access.denied');
@@ -110,6 +112,15 @@ class UserTypeAssignmentController extends Controller
     {
         //check access permission
         if (!Gate::allows('userTypeAssignment-update')) return view('access.denied');
+
+        $users = User::orderBy('email')->get();
+        $userTypes = UserType::orderBy('name')->get();
+        $courses = Course::orderBy('name')->get();
+
+        //write on log
+        SgcLogger::writeLog('UserTypeAssignment');
+
+        return view('userTypeAssignment.edit', compact('users', 'userTypes', 'courses', 'userTypeAssignment'));
     }
 
     /**
@@ -119,10 +130,23 @@ class UserTypeAssignmentController extends Controller
      * @param  \App\Models\UserTypeAssignment  $userTypeAssignment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, UserTypeAssignment $userTypeAssignment)
+    public function update(UpdateUserTypeAssignmentRequest $request, UserTypeAssignment $userTypeAssignment)
     {
         //check access permission
         if (!Gate::allows('userTypeAssignment-update')) return view('access.denied');
+
+        //save the model
+        $userTypeAssignment->user_id = $request->user_id;
+        $userTypeAssignment->user_type_id = $request->userType_id;
+        $userTypeAssignment->course_id = $request->course_id;
+        $userTypeAssignment->begin = $request->begin;
+        $userTypeAssignment->end = $request->end;
+        $userTypeAssignment->save();
+
+        //write on log
+        SgcLogger::writeLog($userTypeAssignment);
+
+        return redirect()->route('userTypeAssignments.index')->with('success', 'Atribuição de Papel atualizada com sucesso.');
     }
 
     /**
@@ -135,5 +159,15 @@ class UserTypeAssignmentController extends Controller
     {
         //check access permission
         if (!Gate::allows('userTypeAssignment-destroy')) return view('access.denied');
+
+        SgcLogger::writeLog($userTypeAssignment);
+
+        try {
+            $userTypeAssignment->delete();
+        } catch (\Exception $e) {
+            return back()->withErrors(['noDestroy' => 'Não foi possível excluir a atribuição de papel: ' . $e->getMessage()]);
+        }
+
+        return redirect()->route('userTypeAssignments.index')->with('success', 'Atribuição de papel excluído com sucesso.');
     }
 }

@@ -62,13 +62,13 @@ class SessionUser
 
     public function hasUTAs()
     {
-        $has = $this->currentUser->getActiveUTAs->count();
+        $has = $this->currentUser->getActiveUTAs()->get()->count();
         return $has > 0 ? true : false;
     }
 
     public function getActiveUTAs()
     {
-        return $this->currentUser->getActiveUTAs;
+        return $this->currentUser->getActiveUTAs()->get();
     }
 
     public function getCurrentUTA()
