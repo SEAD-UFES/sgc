@@ -21,6 +21,13 @@ trait userTypeAssignmentFilter
         return $builder;
     }
 
+    public function course_name_contains(Builder $builder, $value)
+    {
+        $values = ModelFilterHelpers::inputToArray($value);
+        $builder = ModelFilterHelpers::relation_contains($builder, 'course', 'name', $values);
+        return $builder;
+    }
+
     public function begin_exactly(Builder $builder, $value)
     {
         $values = ModelFilterHelpers::inputToArray($value);

@@ -28,6 +28,7 @@ class UserTypeAssignment extends Model
     public static $accepted_filters = [
         'user_email_contains',
         'usertype_name_contains',
+        'course_name_contains',
         'begin_exactly',
         'begin_BigOrEqu',
         'begin_LowOrEqu',
