@@ -12,9 +12,6 @@ class SessionUser
     public bool $hasEmployee = false;
     public string $name = '';
     public string $genderArticle = '';
-    public bool $hasBond = false;
-    public $bonds = null;
-    public ?Bond $currentBond = null;
 
     //permission system
     public $currentUTA_id = null;
@@ -32,15 +29,6 @@ class SessionUser
             $this->name = $employeeResult->name;
             if ($employeeResult->gender != null)
                 $this->genderArticle = (($employeeResult->gender->name) === 'Masculino') ? 'o' : 'a';
-
-            $bondResult = Bond::with('role')->where('employee_id', $employeeResult->id)->/* whereDate('end', '>', Carbon::today())-> */whereNull('terminated_at')/* ->whereNotNull('uaba_checked_at') */->where('impediment', false)->whereHas('role', function ($query) {
-                $query->where('name', 'LIKE', 'Coordenador de curso%');
-            })->get();
-            if (!is_null($bondResult)) {
-                $this->hasBond = true;
-                $this->bonds = $bondResult;
-                $this->currentBond = $bondResult[0];
-            }
         }
 
         //set $currentUTA_id
@@ -48,15 +36,6 @@ class SessionUser
         $hasUTAs = $activeUTAs->count();
         if ($hasUTAs > 0) {
             $this->currentUTA_id = $activeUTAs->first()->id;
-        }
-    }
-
-    public function setCurrentBond(int $bondId)
-    {
-        if ($this->hasBond) {
-            //dd($this->bonds);
-            //dd($this->bonds->firstWhere('id', $bondId));
-            $this->currentBond = $this->bonds->firstWhere('id', $bondId);
         }
     }
 
