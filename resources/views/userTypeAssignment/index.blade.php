@@ -20,26 +20,30 @@
                     @endif
 
                     {{-- filtros --}}
-                    {{-- @component(
+                    @component(
                         '_components.filters_form', 
                         [
                             'filters' => $filters,
                             'options' => [
-                                ['label' => 'E-mail', 'value' => 'email_contains', 'selected' => true], 
-                                ['label' => 'Tipo', 'value' => 'usertype_name_contains'], 
-                                ['label' => 'Ativo', 'value' => 'active_exactly'], 
-                                ['label' => 'Colaborador', 'value' => 'employee_name_contains']
+                                ['label' => 'Colaborador', 'value' => 'user_email_contains', 'selected' => true], 
+                                ['label' => 'Papel', 'value' => 'usertype_name_contains'], 
+                                [ 'label'=>'Início (=)', 'value'=>'begin_exactly'],
+                                [ 'label'=>'Início (>=)' , 'value'=>'begin_BigOrEqu'],
+                                [ 'label'=>'Início (<=)', 'value'=>'begin_LowOrEqu'],
+                                [ 'label'=>'Fim (=)', 'value'=>'end_exactly'],
+                                [ 'label'=>'Fim (>=)' , 'value'=>'end_BigOrEqu'],
+                                [ 'label'=>'Fim (<=)', 'value'=>'end_LowOrEqu'],
                             ],
                         ]
-                    )@endcomponent --}}
+                    )@endcomponent
                     
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
-                                <th>Colaborador</th>
-                                <th>Papel</th>
-                                <th>Início</th>
-                                <th>Fim</th>
+                                <th>@sortablelink('user.email', 'Colaborador')</th>
+                                <th>@sortablelink('userType.name', 'Papel')</th>
+                                <th>@sortablelink('begin', 'Início')</th>
+                                <th>@sortablelink('end', 'Fim')</th>
                                 <th class="text-center">Ações</th>
                             </thead>
                             <tbody>
@@ -86,6 +90,6 @@
 @endsection
 
 @section('scripts')
-    {{-- @component('_components.filters_script', ['filters' => $filters])@endcomponent --}}
+    @component('_components.filters_script', ['filters' => $filters])@endcomponent
     <script src="{{ asset('js/enable_tooltip_popover.js') }}"></script>
 @endsection

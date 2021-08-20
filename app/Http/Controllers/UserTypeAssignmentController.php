@@ -9,6 +9,7 @@ use App\Models\UserType;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
+use App\CustomClasses\ModelFilterHelpers;
 
 class UserTypeAssignmentController extends Controller
 {
@@ -17,14 +18,27 @@ class UserTypeAssignmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //check access permission
         if (!Gate::allows('userTypeAssignment-list')) return view('access.denied');
 
         $userTypeAssignments = UserTypeAssignment::paginate(10);
 
-        return view('userTypeAssignment.index', compact('userTypeAssignments'));
+        $userTypeAssignments_query = new UserTypeAssignment();
+
+        //filters
+        $filters = ModelFilterHelpers::buildFilters($request, UserTypeAssignment::$accepted_filters);
+        $userTypeAssignments_query = $userTypeAssignments_query->AcceptRequest(UserTypeAssignment::$accepted_filters)->filter();
+
+        //sort
+        $userTypeAssignments_query = $userTypeAssignments_query->sortable(['updated_at' => 'desc']);
+
+        //get paginate and add querystring on paginate links
+        $userTypeAssignments = $userTypeAssignments_query->paginate(10);
+        $userTypeAssignments->appends($request->all());
+
+        return view('userTypeAssignment.index', compact('userTypeAssignments', 'filters'));
     }
 
     /**
