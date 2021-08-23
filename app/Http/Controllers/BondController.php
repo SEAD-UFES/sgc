@@ -113,7 +113,7 @@ class BondController extends Controller
         $grantorAssistants = User::where('active', true)->whereActiveUserType($ass_UT->id)->get();
         Notification::send($grantorAssistants, new NewBondNotification($bond));
 
-        return redirect()->route('$users.index')->with('success', 'Vínculo criado com sucesso.');
+        return redirect()->route('bonds.index')->with('success', 'Vínculo criado com sucesso.');
     }
 
     /**
