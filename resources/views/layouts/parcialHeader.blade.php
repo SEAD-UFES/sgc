@@ -66,14 +66,14 @@
                                 @canany(['isAdm', 'isDir', 'isAss', 'isSec'])
                                 <li><a class="dropdown-item" href="{{ route('poles.create') }}">Cadastrar Polo</a></li>
                                 @endcanany
-                                <li><hr class="dropdown-divider"></li>
                                 @canany(['isAdm'])
+                                <li><hr class="dropdown-divider"></li>
                                 <li><h6 class="dropdown-header">Usuários</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('users.index') }}">Listar Usuários</a></li>
                                 <li><a class="dropdown-item" href="{{ route('users.create') }}">Cadastrar Usuário</a></li>
                                 @endcanany
-                                <li><hr class="dropdown-divider"></li>
                                 @canany(['isAdm'])
+                                <li><hr class="dropdown-divider"></li>
                                 <li><h6 class="dropdown-header">Atribuições de papel</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('userTypeAssignments.index') }}">Listar Atribuições de Papel</a></li>
                                 <li><a class="dropdown-item" href="{{ route('userTypeAssignments.create') }}">Cadastrar Atrib. de Papel</a></li>
