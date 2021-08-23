@@ -96,4 +96,33 @@ class User extends Authenticatable
             ->orderBy('user_types.name', 'asc');
         return $result;
     }
+
+    public function scopeWhereActiveUserType($query, $id)
+    {
+        return $query
+            ->join('user_type_assignments', 'users.id', '=', 'user_type_assignments.user_id')
+            ->where('user_type_assignments.user_type_id', $id)
+            ->where(
+                function ($query) {
+                    $query
+                        ->where([
+                            ['user_type_assignments.begin', '<=', Carbon::today()->toDateString()],
+                            ['user_type_assignments.end', '>=', Carbon::today()->toDateString()],
+                        ])
+                        ->orWhere([
+                            ['user_type_assignments.begin', '<=', Carbon::today()->toDateString()],
+                            ['user_type_assignments.end', '=', null],
+                        ]);
+                }
+            )
+            ->select('users.*');
+    }
+
+    public function scopeWhereUtaCourseId($query, $id)
+    {
+        return $query
+            ->join('user_type_assignments', 'users.id', '=', 'user_type_assignments.user_id')
+            ->where('user_type_assignments.course_id', $id)
+            ->select('users.*');
+    }
 }

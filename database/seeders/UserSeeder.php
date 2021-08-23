@@ -75,5 +75,12 @@ class UserSeeder extends Seeder
             'active' => true,
             'employee_id' => null,
         ]);
+
+        DB::table($this->tableName)->insert([
+            'email' => 'assistente01@ufes.br',
+            'password' => Hash::make('senha123'),
+            'active' => true,
+            'employee_id' => null,
+        ]);
     }
 }
