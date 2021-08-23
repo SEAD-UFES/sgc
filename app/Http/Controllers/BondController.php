@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bond;
 use App\Models\User;
 use App\Models\UserType;
+use App\Models\UserTypeAssignment;
 use App\Models\Role;
 use App\Models\Course;
 use App\Models\Pole;
@@ -106,10 +107,13 @@ class BondController extends Controller
 
         SgcLogger::writeLog($bond);
 
-        $grantorAssistants = UserType::with('users')->firstWhere('acronym', 'ass')->users;
+        //Notificar assistentes
+        //$grantorAssistants = UserType::with('users')->firstWhere('acronym', 'ass')->users;
+        $ass_UT = UserType::firstWhere('acronym', 'ass');
+        $grantorAssistants = User::where('active', true)->whereActiveUserType($ass_UT->id)->get();
         Notification::send($grantorAssistants, new NewBondNotification($bond));
 
-        return redirect()->route('bonds.index')->with('success', 'Vínculo criado com sucesso.');
+        return redirect()->route('$users.index')->with('success', 'Vínculo criado com sucesso.');
     }
 
     /**
@@ -213,23 +217,29 @@ class BondController extends Controller
 
         if ($bond->impediment == true) {
 
-            $academicSecretaries = UserType::with('users')->Where('acronym', 'sec')->first()->users;
+            //$academicSecretaries = UserType::with('users')->Where('acronym', 'sec')->first()->users;
+            $sec_UT = UserType::firstWhere('acronym', 'sec');
+            $sec_users = User::where('active', true)->whereActiveUserType($sec_UT->id)->get();
 
-            $courseBonds = Bond::with(['employee'])->where('course_id', $bond->course->id)->get();
+            // $courseBonds = Bond::with(['employee'])->where('course_id', $bond->course->id)->get();
+            // $courseCoordinators = collect();
+            // foreach ($courseBonds as $courseBond)
+            //     if ($courseBond->employee->isCourseCoordinator() && !is_null($courseBond->employee->user))
+            //         $courseCoordinators->push($courseBond->employee->user);
+            $gra_UT = UserType::firstWhere('acronym', 'gra');
+            $course_id = $bond->course->id;
+            $gra_users = User::where('active', true)->whereActiveUserType($gra_UT->id)->whereUtaCourseId($course_id)->get();
 
-            $courseCoordinators = collect();
-
-            foreach ($courseBonds as $courseBond)
-                if ($courseBond->employee->isCourseCoordinator() && !is_null($courseBond->employee->user))
-                    $courseCoordinators->push($courseBond->employee->user);
-
-            $users = $academicSecretaries->merge($courseCoordinators);
+            //$users = $academicSecretaries->merge($courseCoordinators);
+            $users = $sec_users->merge($gra_users);
 
             Notification::send($users, new BondImpededNotification($bond));
         } else {
-            $users = UserType::with('users')->Where('acronym', 'ldi')->first()->users;
+            //$users = UserType::with('users')->Where('acronym', 'ldi')->first()->users;
+            $ldi_UT = UserType::firstWhere('acronym', 'ldi');
+            $ldi_users = User::where('active', true)->whereActiveUserType($ldi_UT->id);
 
-            Notification::send($users, new NewRightsNotification($bond));
+            Notification::send($ldi_users, new NewRightsNotification($bond));
         }
 
         return redirect()->route('bonds.show', $bond)->with('success', 'Vínculo atualizado com sucesso.');
@@ -244,19 +254,25 @@ class BondController extends Controller
      */
     public function requestReview(Request $request, Bond $bond)
     {
-        $academicSecretaries = UserType::with('users')->Where('acronym', 'sec')->first()->users;
+        //$academicSecretaries = UserType::with('users')->Where('acronym', 'sec')->first()->users;
+        $sec_UT = UserType::firstWhere('acronym', 'sec');
+        $sec_users = User::where('active', true)->whereActiveUserType($sec_UT->id)->get();
 
-        $courseBonds = Bond::with(['employee'])->where('course_id', $bond->course->id)->get();
+        // $courseBonds = Bond::with(['employee'])->where('course_id', $bond->course->id)->get();
+        // $courseCoordinators = collect();
+        // foreach ($courseBonds as $courseBond)
+        //     if ($courseBond->employee->isCourseCoordinator() && !is_null($courseBond->employee->user))
+        //         $courseCoordinators->push($courseBond->employee->user);
+        $gra_UT = UserType::firstWhere('acronym', 'gra');
+        $course_id = $bond->course->id;
+        $gra_users = User::where('active', true)->whereActiveUserType($gra_UT->id)->whereUtaCourseId($course_id)->get();
 
-        $courseCoordinators = collect();
+        //$assistants = UserType::with('users')->Where('acronym', 'ass')->first()->users;
+        $ass_UT = UserType::firstWhere('acronym', 'ass');
+        $ass_users = User::where('active', true)->whereActiveUserType($ass_UT->id)->get();
 
-        foreach ($courseBonds as $courseBond)
-            if ($courseBond->employee->isCourseCoordinator() && !is_null($courseBond->employee->user))
-                $courseCoordinators->push($courseBond->employee->user);
-
-        $assistants = UserType::with('users')->Where('acronym', 'ass')->first()->users;
-
-        $users = $academicSecretaries->merge($courseCoordinators)->merge($assistants);
+        //$users = $academicSecretaries->merge($courseCoordinators)->merge($assistants);
+        $users = $sec_users->merge($gra_users)->merge($ass_users);
 
         Notification::send($users, new RequestReviewNotification($bond));
 
