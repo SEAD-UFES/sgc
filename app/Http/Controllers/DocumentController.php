@@ -13,6 +13,7 @@ use App\Models\Bond;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Response;
 use App\CustomClasses\ModelFilterHelpers;
+use Illuminate\Support\Facades\Gate;
 
 class DocumentController extends Controller
 {
@@ -67,6 +68,9 @@ class DocumentController extends Controller
      */
     public function rightsIndex(Request $request)
     {
+        //check access permission
+        if (!Gate::allows('bondDocument-rights')) return view('access.denied');
+
         $type = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
 
         $documents_query = BondDocument::with('bond')
