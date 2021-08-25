@@ -13,7 +13,7 @@ class BondDocumentGates
             if (Gate::forUser($user)->any(['is-Adm-global', 'is-Dir-global', 'is-Ass-global', 'is-Sec-global', 'is-Ldi-global'])) return true;
 
             //coords of any course
-            if (Gate::forUser($user)->any(['isGra'])) return true;
+            if (Gate::forUser($user)->any(['isCoord'])) return true;
 
             //no permission
             return false;

@@ -74,13 +74,13 @@ class GenericGates
         });
 
         /* define a grantee user role */
-        Gate::define('is-Gra-global', function (User $user) {
+        Gate::define('is-Coord-global', function (User $user) {
             //need to have session UserTypeAssignment active.
             $currentUTA = session('sessionUser')->getCurrentUTA();
             if (!$currentUTA) return false;
 
             //if currentUTA (UserTypeAssignment) is gra, ok
-            $acronym_gra = $currentUTA->userType->acronym === 'gra';
+            $acronym_gra = $currentUTA->userType->acronym === 'coord';
             $course_id_null = $currentUTA->course_id === null;
             if ($acronym_gra && $course_id_null) return true;
 

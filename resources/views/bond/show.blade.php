@@ -65,7 +65,7 @@
                     </fieldset><br />
                 @endcanany
 
-                @canany(['isAdm', 'isDir', 'isSec', 'isGra'])
+                @canany(['isAdm', 'isDir', 'isSec', 'isCoord'])
                     @if ($bond->impediment == '1')
                         <fieldset class="bg-warning px-2 py-2">
                             <h4>> Nova Revisão</h4>

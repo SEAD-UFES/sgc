@@ -53,8 +53,8 @@ class UserTypeSeeder extends Seeder
         DB::table($this->tableName)->insert([
             'id' => 6,
             'name' => 'Coordenador',
-            'acronym' => 'gra',
-            'description' => 'Colaborador que recebe bolsa',
+            'acronym' => 'coord',
+            'description' => 'Coordenador que recebe bolsa',
         ]);
     }
 }
