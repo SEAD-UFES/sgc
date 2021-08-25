@@ -10,7 +10,7 @@ class RoleGates
     {
         Gate::define('role-list', function ($user) {
             //who can do it.
-            if (Gate::forUser($user)->any(['is-Adm-global', 'is-Dir-global', 'is-Ass-global', 'is-Sec-global', 'is-Gra-global'])) return true;
+            if (Gate::forUser($user)->any(['is-Adm-global', 'is-Dir-global', 'is-Ass-global', 'is-Sec-global', 'is-Coord-global'])) return true;
 
             //no permission
             return false;
@@ -18,7 +18,7 @@ class RoleGates
 
         Gate::define('role-show', function ($user) {
             //who can do it.
-            if (Gate::forUser($user)->any(['is-Adm-global', 'is-Dir-global', 'is-Ass-global', 'is-Sec-global', 'is-Gra-global'])) return true;
+            if (Gate::forUser($user)->any(['is-Adm-global', 'is-Dir-global', 'is-Ass-global', 'is-Sec-global', 'is-Coord-global'])) return true;
 
             //no permission
             return false;
@@ -26,7 +26,7 @@ class RoleGates
 
         Gate::define('role-store', function ($user) {
             //who can do it.
-            if (Gate::forUser($user)->any(['is-Adm-global', 'is-Dir-global', 'is-Ass-global', 'is-Sec-global', 'is-Gra-global'])) return true;
+            if (Gate::forUser($user)->any(['is-Adm-global', 'is-Dir-global', 'is-Ass-global', 'is-Sec-global', 'is-Coord-global'])) return true;
 
             //no permission
             return false;
@@ -34,7 +34,7 @@ class RoleGates
 
         Gate::define('role-update', function ($user) {
             //who can do it.
-            if (Gate::forUser($user)->any(['is-Adm-global', 'is-Dir-global', 'is-Ass-global', 'is-Sec-global', 'is-Gra-global'])) return true;
+            if (Gate::forUser($user)->any(['is-Adm-global', 'is-Dir-global', 'is-Ass-global', 'is-Sec-global', 'is-Coord-global'])) return true;
 
             //no permission
             return false;

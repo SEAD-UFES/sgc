@@ -113,7 +113,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         /* define a grantee user role */
-        Gate::define('isGra', function ($user) {
+        Gate::define('isCoord', function ($user) {
             //return $user->userType->acronym == 'gra';
 
             //need to have session UserTypeAssignment active.
@@ -121,20 +121,12 @@ class AuthServiceProvider extends ServiceProvider
             if (!$currentUTA) return false;
 
             //if currentUTA (UserTypeAssignment) is gra, ok
-            $acronym_gra = $currentUTA->userType->acronym === 'gra';
+            $acronym_gra = $currentUTA->userType->acronym === 'coord';
             if ($acronym_gra) return true;
 
             //if no permission
             return false;
         });
-
-        // /* define a course coordinator user role */
-        // Gate::define('isCor', function ($user) {
-        //     if ($user->employee == null)
-        //         return false;
-
-        //     return $user->employee->isCourseCoordinator();
-        // });
 
         GenericGates::define();
         UserTypeAssignmentGates::define();
