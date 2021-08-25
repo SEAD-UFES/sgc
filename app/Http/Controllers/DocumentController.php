@@ -56,6 +56,9 @@ class DocumentController extends Controller
      */
     public function bondsDocumentIndex(Request $request)
     {
+        //check access permission
+        if (!Gate::allows('bondDocument-list')) return view('access.denied');
+
         $model = 'BondDocument';
         $resArray = $this->getViewParameters($model, $request);
         return view('bond.document.index', $resArray);
@@ -120,6 +123,9 @@ class DocumentController extends Controller
      */
     public function bondsDocumentCreate()
     {
+        //check access permission
+        if (!Gate::allows('bondDocument-store')) return view('access.denied');
+
         $documentTypes = DocumentType::orderBy('name')->get();
         $bonds = Bond::all();
         return view('bond.document.create', compact('documentTypes', 'bonds'));
@@ -172,6 +178,9 @@ class DocumentController extends Controller
      */
     public function bondsDocumentStore(Request $request)
     {
+        //check access permission
+        if (!Gate::allows('bondDocument-store')) return view('access.denied');
+
         $request->validate([
             'file' => 'required|mimes:pdf,jpeg,png,jpg|max:2048'
         ]);
@@ -183,6 +192,9 @@ class DocumentController extends Controller
 
     public function employeesDocumentMassImport(Request $request)
     {
+        //check access permission
+        if (!Gate::allows('bondDocument-store')) return view('access.denied');
+
         $request->validate([
             'files.*' => 'required|mimes:pdf,jpeg,png,jpg|max:2048',
         ]);
@@ -214,6 +226,9 @@ class DocumentController extends Controller
 
     public function employeesDocumentMassStore(Request $request)
     {
+        //check access permission
+        if (!Gate::allows('bondDocument-store')) return view('access.denied');
+
         $filesCount = $request->fileSetCount;
         $employeeId = $request->employeeId;
 
@@ -252,6 +267,9 @@ class DocumentController extends Controller
      */
     public function showDocument($id, $model)
     {
+        //check access permission
+        if (!Gate::allows('bondDocument-download')) return view('access.denied');
+
         $class = app("App\\Models\\$model");
 
         $document = $class::find($id);
@@ -303,6 +321,9 @@ class DocumentController extends Controller
 
     public function bondDocumentsMassDownload(Bond $bond)
     {
+        //check access permission
+        if (!Gate::allows('bondDocument-download')) return view('access.denied');
+
         $documents = $bond->bondDocuments;
 
         $zipFileName = date('Y-m-d') . '_' . $bond->employee->name . '_' . $bond->id;
