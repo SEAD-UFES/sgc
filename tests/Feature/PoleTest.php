@@ -8,6 +8,8 @@ use Tests\TestCase;
 
 use App\Models\User;
 use App\Models\Pole;
+use App\Models\UserType;
+use App\Models\UserTypeAssignment;
 
 use App\CustomClasses\SessionUser;
 
@@ -83,78 +85,49 @@ class PoleTest extends TestCase
     }
 
     /**
-     * Route `poles.show` is not used at the moment.
-     *
-     * Guest cannot access pole details page
-     * @return void
-   public function test_guest_cannot_see_pole_details()
-   {
-     $this->get(route('poles.show',1))
-       ->assertRedirect(route('auth.login'));
-   }
-     */
-
-    /**
      * Authenticated user can list poles
      * @return void
      */
-    public function test_authenticated_user_can_list_poles()
+    public function test_authenticated_user_whitout_permission_assignment_cannot_list_poles()
     {
         $session = $this->getAuthenticatedSession();
 
         $session->get(route('poles.index'))
-            ->assertSee('Listar Polos');
+            ->assertSee('Acesso negado');
     }
 
     /**
      * Authenticated user can create pole
      * @return void
      */
-    public function test_authenticated_user_can_create_pole()
+    public function test_authenticated_user_without_permission_assignment_cannot_create_pole()
     {
         $session = $this->getAuthenticatedSession();
 
-        $this->assertEquals(Pole::count(), 0);
-
         $session->post(route('poles.store'), $this->poleData)
-            ->assertStatus(302);
-
-        $this->assertEquals(Pole::count(), 1);
-
-        $pole = Pole::first();
-
-        $this->assertEquals($pole->name, $this->poleData["name"]);
-        $this->assertEquals($pole->description, $this->poleData["description"]);
+          ->assertSee('Acesso negado');
     }
 
     /**
      * Authenticated user can update pole
      * @return void
      */
-    public function test_authenticated_user_can_update_pole()
+    public function test_authenticated_user_without_permission_assignment_cannot_update_pole()
     {
         $session = $this->getAuthenticatedSession();
 
         $pole = $this->getTestPole();
 
-        $session
-            ->put(
-                route('poles.update', $pole->id),
-                ["name" => "updated", "description" => "updated"]
-            )
-            ->assertStatus(302);
-
-        $updatedPole = Pole::find($pole->id);
-
-        $this->assertEquals($updatedPole->name, "updated");
-        $this->assertEquals($updatedPole->description, "updated");
+        $session->put(route('poles.update', $pole->id),
+                ["name" => "updated", "description" => "updated"])
+            ->assertSee('Acesso negado');
     }
 
     /**
      * Authenticated user can delete pole
      * @return void
      */
-    public function test_authenticated_user_can_delete_pole()
+    public function test_authenticated_user_without_permission_assignment_cannot_delete_pole()
     {
         $session = $this->getAuthenticatedSession();
 
@@ -164,29 +137,27 @@ class PoleTest extends TestCase
 
         $session
             ->delete(route('poles.destroy', $pole->id))
-            ->assertStatus(302);
-
-        $this->assertEquals(Pole::count(), 0);
+            ->assertSee('Acesso negado');
     }
 
     /**
      * Authenticated user can access pole create page
      * @return void
      */
-    public function test_authenticated_user_can_access_create_pole_page()
+    public function test_authenticated_user_without_permission_assignment_cannot_access_create_pole_page()
     {
         $session = $this->getAuthenticatedSession();
 
         $session
             ->get(route('poles.create'))
-            ->assertOk();
+            ->assertSee('Acesso negado');
     }
 
     /**
      * Authenticated user can access pole edit page
      * @return void
      */
-    public function test_authenticated_user_can_access_edit_pole_page()
+    public function test_authenticated_user_without_permission_assignment_cannot_access_edit_pole_page()
     {
         $session = $this->getAuthenticatedSession();
 
@@ -194,8 +165,7 @@ class PoleTest extends TestCase
 
         $session
             ->get(route('poles.edit', $pole->id))
-            ->assertSee($pole->name)
-            ->assertSee($pole->description);
+            ->assertSee('Acesso negado');
     }
 
 
@@ -205,7 +175,7 @@ class PoleTest extends TestCase
      */
     private function getAuthenticatedSession()
     {
-        $user  = User::factory()->make(["employee_id" => null]);
+        $user  = User::factory()->create(["employee_id" => null]);
 
         $session = $this->actingAs($user)
             ->withSession(['sessionUser' => new SessionUser($user)]);
