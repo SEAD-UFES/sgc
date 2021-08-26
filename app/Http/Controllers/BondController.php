@@ -23,6 +23,7 @@ use App\Notifications\BondImpededNotification;
 use App\Notifications\NewRightsNotification;
 use App\CustomClasses\ModelFilterHelpers;
 use App\Notifications\RequestReviewNotification;
+use Illuminate\Support\Facades\Gate;
 
 class BondController extends Controller
 {
@@ -33,6 +34,9 @@ class BondController extends Controller
      */
     public function index(Request $request)
     {
+        //check access permission
+        if (!Gate::allows('bond-list')) return view('access.denied');
+
         $bonds_query = Bond::with(['employee', 'course', 'role', 'pole']);
 
         //filters
@@ -59,6 +63,9 @@ class BondController extends Controller
      */
     public function create()
     {
+        //check access permission
+        if (!Gate::allows('bond-store')) return view('access.denied');
+
         $employees = Employee::orderBy('name')->get();
         $roles = Role::orderBy('name')->get();
         $courses = Course::orderBy('name')->get();
@@ -78,6 +85,9 @@ class BondController extends Controller
      */
     public function store(StoreBondRequest $request)
     {
+        //check access permission
+        if (!Gate::allows('bond-store')) return view('access.denied');
+
         $bond = new Bond;
 
         $bond->employee_id = $request->employees;
@@ -108,10 +118,10 @@ class BondController extends Controller
         SgcLogger::writeLog($bond);
 
         //Notificar assistentes
-        //$grantorAssistants = UserType::with('users')->firstWhere('acronym', 'ass')->users;
+        //$coordOrAssistants = UserType::with('users')->firstWhere('acronym', 'ass')->users;
         $ass_UT = UserType::firstWhere('acronym', 'ass');
-        $grantorAssistants = User::where('active', true)->whereActiveUserType($ass_UT->id)->get();
-        Notification::send($grantorAssistants, new NewBondNotification($bond));
+        $coordOrAssistants = User::where('active', true)->whereActiveUserType($ass_UT->id)->get();
+        Notification::send($coordOrAssistants, new NewBondNotification($bond));
 
         return redirect()->route('bonds.index')->with('success', 'Vínculo criado com sucesso.');
     }
@@ -124,6 +134,9 @@ class BondController extends Controller
      */
     public function show(Bond $bond)
     {
+        //check access permission
+        if (!Gate::allows('bond-show')) return view('access.denied');
+
         $documents = $bond->bondDocuments;
         return view('bond.show', compact('bond', 'documents'));
     }
@@ -136,6 +149,9 @@ class BondController extends Controller
      */
     public function edit(Bond $bond)
     {
+        //check access permission
+        if (!Gate::allows('bond-update')) return view('access.denied');
+
         $employees = Employee::orderBy('name')->get();
         $roles = Role::orderBy('name')->get();
         $courses = Course::orderBy('name')->get();
@@ -155,6 +171,9 @@ class BondController extends Controller
      */
     public function update(UpdateBondRequest $request, Bond $bond)
     {
+        //check access permission
+        if (!Gate::allows('bond-update')) return view('access.denied');
+
         $bond->employee_id = $request->employees;
         $bond->role_id = $request->roles;
         $bond->course_id = $request->courses;
@@ -182,6 +201,9 @@ class BondController extends Controller
      */
     public function destroy(Bond $bond)
     {
+        //check access permission
+        if (!Gate::allows('bond-destroy')) return view('access.denied');
+
         SgcLogger::writeLog($bond);
 
         try {
@@ -202,6 +224,9 @@ class BondController extends Controller
      */
     public function review(ReviewBondRequest $request, Bond $bond)
     {
+        //check access permission
+        if (!Gate::allows('bond-review')) return view('access.denied');
+
         $bond->impediment = ($request->impediment == '1') ? true : false;
         $bond->impediment_description = $request->impedimentDescription;
         $bond->uaba_checked_at = now();
@@ -226,12 +251,12 @@ class BondController extends Controller
             // foreach ($courseBonds as $courseBond)
             //     if ($courseBond->employee->isCourseCoordinator() && !is_null($courseBond->employee->user))
             //         $courseCoordinators->push($courseBond->employee->user);
-            $gra_UT = UserType::firstWhere('acronym', 'gra');
+            $coord_UT = UserType::firstWhere('acronym', 'coord');
             $course_id = $bond->course->id;
-            $gra_users = User::where('active', true)->whereActiveUserType($gra_UT->id)->whereUtaCourseId($course_id)->get();
+            $coord_users = User::where('active', true)->whereActiveUserType($coord_UT->id)->whereUtaCourseId($course_id)->get();
 
             //$users = $academicSecretaries->merge($courseCoordinators);
-            $users = $sec_users->merge($gra_users);
+            $users = $sec_users->merge($coord_users);
 
             Notification::send($users, new BondImpededNotification($bond));
         } else {
@@ -254,6 +279,9 @@ class BondController extends Controller
      */
     public function requestReview(Request $request, Bond $bond)
     {
+        //check access permission
+        if (!Gate::allows('bond-requestReview')) return view('access.denied');
+
         //$academicSecretaries = UserType::with('users')->Where('acronym', 'sec')->first()->users;
         $sec_UT = UserType::firstWhere('acronym', 'sec');
         $sec_users = User::where('active', true)->whereActiveUserType($sec_UT->id)->get();
@@ -263,16 +291,16 @@ class BondController extends Controller
         // foreach ($courseBonds as $courseBond)
         //     if ($courseBond->employee->isCourseCoordinator() && !is_null($courseBond->employee->user))
         //         $courseCoordinators->push($courseBond->employee->user);
-        $gra_UT = UserType::firstWhere('acronym', 'gra');
+        $coord_UT = UserType::firstWhere('acronym', 'coord');
         $course_id = $bond->course->id;
-        $gra_users = User::where('active', true)->whereActiveUserType($gra_UT->id)->whereUtaCourseId($course_id)->get();
+        $coord_users = User::where('active', true)->whereActiveUserType($coord_UT->id)->whereUtaCourseId($course_id)->get();
 
         //$assistants = UserType::with('users')->Where('acronym', 'ass')->first()->users;
         $ass_UT = UserType::firstWhere('acronym', 'ass');
         $ass_users = User::where('active', true)->whereActiveUserType($ass_UT->id)->get();
 
         //$users = $academicSecretaries->merge($courseCoordinators)->merge($assistants);
-        $users = $sec_users->merge($gra_users)->merge($ass_users);
+        $users = $sec_users->merge($coord_users)->merge($ass_users);
 
         Notification::send($users, new RequestReviewNotification($bond));
 

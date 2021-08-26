@@ -12,6 +12,7 @@ use App\Gates\PoleGates;
 use App\Gates\CourseGates;
 use App\Gates\RoleGates;
 use App\Gates\BondDocumentGates;
+use App\Gates\BondGates;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -135,5 +136,6 @@ class AuthServiceProvider extends ServiceProvider
         CourseGates::define();
         RoleGates::define();
         BondDocumentGates::define();
+        BondGates::define();
     }
 }
