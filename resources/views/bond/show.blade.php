@@ -33,7 +33,8 @@
                 @php
                     $hasRights = $documents->where('document_type_id', App\Models\DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first()->id)->count() > 0;
                 @endphp
-                @canany(['isAdm', 'isDir', 'isAss'])
+
+                @can('bond-review')
                     <fieldset class="bg-warning px-2 py-2">
                         <h4>> Revisão</h4>
                         <form name="{{ 'formReview' . $bond->id }}" action="{{ route('bonds.review', $bond) }}" method="POST">
@@ -63,9 +64,9 @@
                             <input type="submit" value="Revisar" class="btn btn-primary my-2 mx-1">
                         </form>
                     </fieldset><br />
-                @endcanany
+                @endcan
 
-                @canany(['isAdm', 'isDir', 'isSec', 'isCoord'])
+                @can('bond-requestReview')
                     @if ($bond->impediment == '1')
                         <fieldset class="bg-warning px-2 py-2">
                             <h4>> Nova Revisão</h4>
@@ -73,7 +74,7 @@
                                 nova revisão</a>
                         </fieldset><br />
                     @endif
-                @endcanany
+                @endcan
 
                 <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
                 <br /><br />

@@ -79,24 +79,30 @@
                                         <td>{{ $bond->volunteer === 1 ? 'Sim' : 'Não' }}</td>
                                         <td>{{ $bond->impediment === 1 ? 'Sim' : 'Não' }}</td>
                                         <td class="text-center"><div class="d-inline-flex">
-                                            <a href="{{ route('bonds.show', $bond) }}" data-bs-toggle="tooltip" title="Ver Vínculo" class="btn btn-primary btn-sm">
-                                                <i class="bi-eye-fill"></i>
-                                            </a>&nbsp;
+                                            @can('bond-show')
+                                                <a href="{{ route('bonds.show', $bond) }}" data-bs-toggle="tooltip" title="Ver Vínculo" class="btn btn-primary btn-sm">
+                                                    <i class="bi-eye-fill"></i>
+                                                </a>&nbsp; 
+                                            @endcan
                                             <a href="{{ route('employees.show', $bond->employee) }}" data-bs-toggle="tooltip" title="Ver Colaborador" class="btn btn-primary btn-sm">
                                                 <i class="bi-person-fill"></i>
                                             </a>&nbsp;
-                                            <a href="{{ route('bonds.edit', $bond->id) }}" data-bs-toggle="tooltip" title="Editar vínculo" class="btn btn-primary btn-sm">
-                                                <i class="bi-pencil-fill"></i>
-                                            </a>&nbsp;
-                                            <form name="{{ 'formDelete' . $bond->id }}"
-                                                action="{{ route('bonds.destroy', $bond) }}" method="POST">
-                                                @method('DELETE')
-                                                @csrf
-                                                <button type="button" data-bs-toggle="tooltip" title="Excluir" 
-                                                    onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Vínculo?\')) document.forms[\'formDelete' . $bond->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
-                                                    <i class="bi-trash-fill"></i>
-                                                </button>
-                                            </form></div>
+                                            @can('bond-update')
+                                                <a href="{{ route('bonds.edit', $bond->id) }}" data-bs-toggle="tooltip" title="Editar vínculo" class="btn btn-primary btn-sm">
+                                                    <i class="bi-pencil-fill"></i>
+                                                </a>&nbsp;
+                                            @endcan
+                                            @can('bond-destroy')
+                                                <form name="{{ 'formDelete' . $bond->id }}"
+                                                    action="{{ route('bonds.destroy', $bond) }}" method="POST">
+                                                    @method('DELETE')
+                                                    @csrf
+                                                    <button type="button" data-bs-toggle="tooltip" title="Excluir" 
+                                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Vínculo?\')) document.forms[\'formDelete' . $bond->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
+                                                        <i class="bi-trash-fill"></i>
+                                                    </button>
+                                                </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach
