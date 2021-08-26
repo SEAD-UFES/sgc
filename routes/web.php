@@ -69,7 +69,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('approveds', ApprovedController::class);
     Route::post('/approved/import', [ApprovedController::class, 'import'])->name('approveds.import');
     Route::post('/approved/massstore', [ApprovedController::class, 'massStore'])->name('approveds.massstore');
-    Route::get('/approved/changestate/{approved}/{state}', [ApprovedController::class, 'changeState'])->name('approveds.changestate');
+    Route::post('/approved/changestate/{approved}', [ApprovedController::class, 'changeState'])->name('approveds.changestate');
     Route::post('/approveddesignate', [ApprovedController::class, 'designate'])->name('approveds.designate');
 
     Route::get('/notification/{notification}/dismiss', [NotificationController::class, 'dismiss'])->name('notifications.dismiss');

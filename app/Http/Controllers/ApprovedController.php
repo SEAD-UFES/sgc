@@ -123,24 +123,21 @@ class ApprovedController extends Controller
         return redirect()->route('approveds.index')->with('success', 'Aprovado retirado da lista.');
     }
 
-    public function changeState(Approved $approved, ApprovedState $state)
+    public function changeState(Request $request, Approved $approved)
     {
-        if ($state->name == 'Desistente') {
-            $this->destroy($approved);
-            return redirect()->route('approveds.index')->with('success', 'Aprovado retirado da lista.');
-        } else {
-            $approved->approved_state_id = $state->id;
+        $new_state_id = $request->states;
 
-            try {
-                $approved->save();
-            } catch (\Exception $e) {
-                return back()->withErrors(['noStore' => 'Não foi possível salvar o Aprovado: ' . $e->getMessage()]);
-            }
+        $approved->approved_state_id = $new_state_id;
 
-            SgcLogger::writeLog($approved, 'edit');
-
-            return redirect()->route('approveds.index')->with('success', 'Aprovado alterado com sucesso.');
+        try {
+            $approved->save();
+        } catch (\Exception $e) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o Aprovado: ' . $e->getMessage()]);
         }
+
+        SgcLogger::writeLog($approved, 'edit');
+
+        return redirect()->route('approveds.index')->with('success', 'Aprovado alterado com sucesso.');
     }
 
     public function designate(Request $request)

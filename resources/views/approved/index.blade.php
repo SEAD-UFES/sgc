@@ -31,7 +31,7 @@
                                 [ 'label'=>'Telefone', 'value'=>'phone_contains'],
                                 [ 'label'=>'Celular', 'value'=>'mobile_contains'],
                                 [ 'label'=>'Edital', 'value'=>'announcement_contains'],
-                                [ 'label'=>'Status', 'value'=>'approvedState_name_contains'],
+                                [ 'label'=>'Situação', 'value'=>'approvedState_name_contains'],
                                 [ 'label'=>'Atribuição', 'value'=>'role_name_contains'],
                                 [ 'label'=>'Curso', 'value'=>'course_name_contains'],
                                 [ 'label'=>'Polo', 'value'=>'pole_name_contains'],
@@ -49,11 +49,11 @@
                                 <th>@sortablelink('phone', 'Telefone')</th>
                                 <th>@sortablelink('mobile', 'Celular')</th>
                                 <th>@sortablelink('announcement', 'Edital')</th>
-                                <th>@sortablelink('approvedState.description', 'Status')</th>
+                                <th>@sortablelink('approvedState.description', 'Situação')</th>
                                 <th>@sortablelink('role.name', 'Atribuição')</th>
                                 <th>@sortablelink('course.name', 'Curso')</th>
                                 <th>@sortablelink('pole.name', 'Polo')</th>
-                                <th colspan="2">Mudar Status</th>
+                                <th class="text-center">Mudar Situação</th>
                             </thead>
                             <tbody>
                                 @foreach ($approveds as $approved)
@@ -64,29 +64,42 @@
                                         <td><a href="tel:{{ /* $approved->area_code .  */$approved->phone }}">{{ $approved->phone }}</a></td>
                                         <td><a href="tel:{{ /* $approved->area_code .  */$approved->mobile }}">{{ $approved->mobile }}</a></td>
                                         <td>{{ $approved->announcement }}</td>
-                                        <td title="{{ $approved->approvedState->description ?? '' }}">{!! $approved->approvedState->name ?? '&nbsp;' !!}</td>
+                                        <td  data-bs-toggle="tooltip" data-bs-placement="left" title="{{ $approved->approvedState->description ?? '' }}">{!! $approved->approvedState->name ?? '&nbsp;' !!}</td>
                                         <td>{!! $approved->role->name ?? '&nbsp;' !!}</td>
                                         <td>{!! $approved->course->name ?? '&nbsp;' !!}</td>
                                         <td>{!! $approved->pole->name ?? '&nbsp;' !!}</td>
-                                        @if ($approved->approvedState->hasNext())
-                                            @foreach ($approved->approvedState->getNext() as $state)
-                                                <td @if ($approved->approvedState->getNext()->count() == 1) colspan="2" @endif>
-                                                    <a href="{{ route('approveds.changestate', ['approved' => $approved, 'state' => $state->id]) }}" data-bs-toggle="tooltip" title="{{ $state->description }}" class="btn btn-primary btn-sm">{{ $state->name }}</a>
-                                                </td>
-                                            @endforeach
-                                        @else
-                                            <td colspan="2">
+                                        <td>
+                                            <div class="d-inline-flex">
+                                                <form name="{{ 'formChangeState' . $approved->id }}" action={{ route('approveds.changestate', ['approved' => $approved]) }} method="POST">
+                                                    @csrf
+                                                    <select name="states" id="selectState1" class="form-select form-select-sm w-auto" data-bs-toggle="tooltip" data-bs-placement="left" title="{{ $approved->approvedState->description ?? '' }}" onchange="{{ 'document.forms[\'formChangeState' . $approved->id . '\'].submit();' }}">
+                                                        @foreach ($approvedStates as $approvedState)
+                                                            <option value="{{ $approvedState->id }}" {{ $approvedState->id == $approved->approvedState->id ? 'selected' : '' }}>
+                                                                {{ $approvedState->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </form>
+
                                                 @if ($approved->approvedState->name == 'Aceitante')
+                                                    &nbsp;
                                                     <form name="{{ 'formDesignate' . $approved->id }}" action={{ route('approveds.designate') }} method="POST">
                                                         @csrf
                                                         <input type="hidden" name="approvedId" value="{{ $approved->id }}" />
-                                                        <span onclick="{{ 'document.forms[\'formDesignate' . $approved->id . '\'].submit();' }}" data-bs-toggle="tooltip" title="Converter o aprovado em Colaborador" class="btn btn-warning btn-sm">Nomeado</span>
+                                                        <span onclick="{{ 'if(confirm(\'Tem certeza que deseja nomear esse Aprovado para Colaborador?\')) document.forms[\'formDesignate' . $approved->id . '\'].submit();' }}" data-bs-toggle="tooltip" title="Converter o aprovado em Colaborador" class="btn btn-warning btn-sm">Nomear</span>
                                                     </form>
-                                                @else
-                                                    Não existe próximo Status
                                                 @endif
-                                            </td>
-                                        @endif
+
+                                                @if ($approved->approvedState->name == 'Desistente')
+                                                    &nbsp;
+                                                    <form name="{{ 'formDestroy' . $approved->id }}" action={{ route('approveds.destroy', ['approved' => $approved]) }} method="POST">
+                                                        @method('DELETE')
+                                                        @csrf
+                                                        <span onclick="{{ 'if(confirm(\'Tem certeza que deseja remover esse Aprovado da listagem?\')) document.forms[\'formDestroy' . $approved->id . '\'].submit();' }}" data-bs-toggle="tooltip" title="Remover o aprovado desistente da listagem" class="btn btn-danger btn-sm">Remover</span>
+                                                    </form>
+                                                @endif
+                                            </div>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
