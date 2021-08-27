@@ -12,7 +12,7 @@ class EmployeeGates
             //who can do it (global).
             if (Gate::forUser($user)->any(['is-Adm-global', 'is-Dir-global', 'is-Ass-global', 'is-Sec-global'])) return true;
 
-            //coord on any course
+            //coord on any course or global
             if (Gate::forUser($user)->any(['isCoord'])) return true;
 
             //no permission

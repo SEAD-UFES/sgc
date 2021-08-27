@@ -18,6 +18,7 @@ use App\Models\Role;
 use App\Models\Course;
 use App\Models\Pole;
 use App\CustomClasses\ModelFilterHelpers;
+use Illuminate\Support\Facades\Gate;
 
 class ApprovedController extends Controller
 {
@@ -28,6 +29,9 @@ class ApprovedController extends Controller
      */
     public function index(Request $request)
     {
+        //check access permission
+        if (!Gate::allows('approved-list')) return view('access.denied');
+
         $approveds_query = Approved::with(['approvedState', 'course', 'pole', 'role']);
 
         //filters
@@ -57,6 +61,9 @@ class ApprovedController extends Controller
      */
     public function create()
     {
+        //check access permission
+        if (!Gate::allows('approved-store')) return view('access.denied');
+
         return view('approved.create');
     }
 
@@ -112,6 +119,9 @@ class ApprovedController extends Controller
      */
     public function destroy(Approved $approved)
     {
+        //check access permission
+        if (!Gate::allows('approved-destroy')) return view('access.denied');
+
         SgcLogger::writeLog($approved);
 
         try {
@@ -125,6 +135,9 @@ class ApprovedController extends Controller
 
     public function changeState(Request $request, Approved $approved)
     {
+        //check access permission
+        if (!Gate::allows('approved-update-status')) return view('access.denied');
+
         $new_state_id = $request->states;
 
         $approved->approved_state_id = $new_state_id;
@@ -142,6 +155,9 @@ class ApprovedController extends Controller
 
     public function designate(Request $request)
     {
+        //check access permission
+        if (!Gate::allows('approved-designate')) return view('access.denied');
+
         $approved = Approved::find($request->approvedId);
         $existantEmployee = Employee::where('email', $approved->email)->first();
 
@@ -153,7 +169,6 @@ class ApprovedController extends Controller
             $addressStates = State::orderBy('name')->get();
 
             $employee = new Employee;
-
             $employee->name = $approved->name;
             $employee->email = $approved->email;
             $employee->area_code = $approved->area_code;
@@ -176,16 +191,17 @@ class ApprovedController extends Controller
 
     public function import(Request $request)
     {
-
-        $roles = Role::orderBy('name')->get();
-        $courses = Course::orderBy('name')->get();
-        $poles = Pole::orderBy('name')->get();
-
-        $approveds = collect();
-
         $request->validate([
             'file' => 'required|mimes:csv,xlx,xls,xlsx|max:2048'
         ]);
+
+        //check access permission
+        if (!Gate::allows('approved-store')) return view('access.denied');
+
+        $approveds = collect();
+        $roles = Role::orderBy('name')->get();
+        $courses = Course::orderBy('name')->get();
+        $poles = Pole::orderBy('name')->get();
 
         if ($request->file()) {
             $fileName = $request->file->getClientOriginalName();
@@ -200,10 +216,11 @@ class ApprovedController extends Controller
 
     public function massStore(Request $request)
     {
+        //check access permission
+        if (!Gate::allows('approved-store')) return view('access.denied');
+
         $approvedsCount = $request->approvedsCount;
-
         for ($i = 0; $i < $approvedsCount; $i++) {
-
             if ($request->has('check_' . $i)) {
                 $approved = new Approved();
                 $approved->name = $request->input('name_' . $i);

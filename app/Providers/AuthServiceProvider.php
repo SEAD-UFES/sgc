@@ -15,7 +15,7 @@ use App\Gates\BondDocumentGates;
 use App\Gates\BondGates;
 use App\Gates\EmployeeDocumentGates;
 use App\Gates\EmployeeGates;
-
+use App\Gates\ApprovedGates;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -144,5 +144,6 @@ class AuthServiceProvider extends ServiceProvider
         BondGates::define();
         EmployeeDocumentGates::define();
         EmployeeGates::define();
+        ApprovedGates::define();
     }
 }

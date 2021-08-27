@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\CustomClasses\ModelFilterHelpers;
+use Illuminate\Support\Facades\Gate;
 
 class EmployeeController extends Controller
 {
@@ -23,6 +24,9 @@ class EmployeeController extends Controller
      */
     public function index(Request $request)
     {
+        //check access permission
+        if (!Gate::allows('employee-list')) return view('access.denied');
+
         $employees_query = Employee::with(['gender', 'birthState', 'documentType', 'maritalStatus', 'addressState', 'user']);
 
         //filters
@@ -49,6 +53,9 @@ class EmployeeController extends Controller
      */
     public function create()
     {
+        //check access permission
+        if (!Gate::allows('employee-store')) return view('access.denied');
+
         $genders = Gender::orderBy('name')->get();
         $birthStates = State::orderBy('name')->get();
         $documentTypes = DocumentType::orderBy('name')->get();
@@ -70,6 +77,9 @@ class EmployeeController extends Controller
      */
     public function store(StoreEmployeeRequest $request)
     {
+        //check access permission
+        if (!Gate::allows('employee-store')) return view('access.denied');
+
         $employee = new Employee;
 
         $employee->name = $request->name;
@@ -132,6 +142,9 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
+        //check access permission
+        if (!Gate::allows('employee-show')) return view('access.denied');
+
         return view('employee.show', compact('employee'));
     }
 
@@ -143,6 +156,9 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
+        //check access permission
+        if (!Gate::allows('employee-update')) return view('access.denied');
+
         $genders = Gender::orderBy('name')->get();
         $birthStates = State::orderBy('name')->get();
         $documentTypes = DocumentType::orderBy('name')->get();
@@ -163,6 +179,9 @@ class EmployeeController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
+        //check access permission
+        if (!Gate::allows('employee-update')) return view('access.denied');
+
         $currentUser = $employee->user;
 
         $employee->name = $request->name;
@@ -229,6 +248,9 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
+        //check access permission
+        if (!Gate::allows('employee-destroy')) return view('access.denied');
+
         $currentUser = $employee->user;
 
         if (!is_null($currentUser)) {
