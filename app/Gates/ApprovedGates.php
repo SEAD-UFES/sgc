@@ -27,7 +27,7 @@ class ApprovedGates
             return false;
         });
 
-        Gate::define('approved-update-status', function ($user) {
+        Gate::define('approved-update-state', function ($user) {
             //who can do it (global).
             if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isSec-global'])) return true;
 

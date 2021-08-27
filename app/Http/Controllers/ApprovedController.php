@@ -136,7 +136,7 @@ class ApprovedController extends Controller
     public function changeState(Request $request, Approved $approved)
     {
         //check access permission
-        if (!Gate::allows('approved-update-status')) return view('access.denied');
+        if (!Gate::allows('approved-update-state')) return view('access.denied');
 
         $new_state_id = $request->states;
 
