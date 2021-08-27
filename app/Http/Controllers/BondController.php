@@ -64,13 +64,16 @@ class BondController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('bond-store')) return view('access.denied');
+        if (!Gate::allows('bond-create')) return view('access.denied');
 
         $employees = Employee::orderBy('name')->get();
         $roles = Role::orderBy('name')->get();
-        $courses = Course::orderBy('name')->get();
         $poles = Pole::orderBy('name')->get();
         $bond = new Bond;
+
+        //get only allowed courses
+        $courses = Course::orderBy('name')->get();
+        foreach ($courses as $key => $course) if (!Gate::allows('bond-store-course_id', $course->id)) $courses->forget($key);
 
         SgcLogger::writeLog('Bond');
 
@@ -86,7 +89,7 @@ class BondController extends Controller
     public function store(StoreBondRequest $request)
     {
         //check access permission
-        if (!Gate::allows('bond-store')) return view('access.denied');
+        if (!Gate::allows('bond-create')) return view('access.denied');
 
         $bond = new Bond;
 

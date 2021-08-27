@@ -27,9 +27,23 @@ class BondGates
             return false;
         });
 
-        Gate::define('bond-store', function ($user) {
+        Gate::define('bond-create', function ($user) {
             //who can do it (global).
             if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global'])) return true;
+
+            //coord on any course
+            if (Gate::forUser($user)->any(['isCoord'])) return true;
+
+            //no permission
+            return false;
+        });
+
+        Gate::define('bond-store-course_id', function ($user, $course_id) {
+            //who can do it (global).
+            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global'])) return true;
+
+            //coord on this course then ok.
+            if (Gate::forUser($user)->any(['isCoord-course_id'], $course_id)) return true;
 
             //no permission
             return false;
