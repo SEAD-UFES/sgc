@@ -48,7 +48,9 @@
                                 <th>@sortablelink('name', 'Nome')</th>
                                 <th>@sortablelink('job', 'Profissão')</th>
                                 <th>@sortablelink('address_city', 'Cidade')</th>
-                                <th>@sortablelink('user.email', 'Usuário')</th>
+                                @can('isAdm-global')
+                                    <th>@sortablelink('user.email', 'Usuário')</th>
+                                @endcan
                                 <th class="text-center">Ações</th>
                             </thead>
                             <tbody>
@@ -64,7 +66,9 @@
                                         </td>
                                         <td>{{ $employee->job }}</td>
                                         <td>{{ $employee->address_city }}</td>
-                                        <td>{{ $employee->user->email ?? '' }}</td>
+                                        @can('isAdm-global')
+                                            <td>{{ $employee->user->email ?? '' }}</td>
+                                        @endcan
                                         <td class="text-center"><div class="d-inline-flex">
                                             @can('employee-show')
                                                 <a href="{{ route('employees.show', $employee) }}" data-bs-toggle="tooltip" title="Ver colaborador" class="btn btn-primary btn-sm">
