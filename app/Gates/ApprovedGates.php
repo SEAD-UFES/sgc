@@ -10,7 +10,7 @@ class ApprovedGates
     {
         Gate::define('approved-list', function ($user) {
             //who can do it (global).
-            if (Gate::forUser($user)->any(['is-Adm-global', 'is-Dir-global', 'is-Sec-global'])) return true;
+            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isSec-global'])) return true;
 
             //coord on any course or global
             if (Gate::forUser($user)->any(['isCoord'])) return true;
@@ -21,7 +21,7 @@ class ApprovedGates
 
         Gate::define('approved-store', function ($user) {
             //who can do it (global).
-            if (Gate::forUser($user)->any(['is-Adm-global', 'is-Dir-global', 'is-Sec-global'])) return true;
+            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isSec-global'])) return true;
 
             //no permission
             return false;
@@ -29,7 +29,7 @@ class ApprovedGates
 
         Gate::define('approved-update-status', function ($user) {
             //who can do it (global).
-            if (Gate::forUser($user)->any(['is-Adm-global', 'is-Dir-global', 'is-Sec-global'])) return true;
+            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isSec-global'])) return true;
 
             //no permission
             return false;
@@ -37,7 +37,7 @@ class ApprovedGates
 
         Gate::define('approved-destroy', function ($user) {
             //who can do it (global).
-            if (Gate::forUser($user)->any(['is-Adm-global'])) return true;
+            if (Gate::forUser($user)->any(['isAdm-global'])) return true;
 
             //no permission
             return false;
@@ -45,7 +45,7 @@ class ApprovedGates
 
         Gate::define('approved-designate', function ($user) {
             //who can do it (global).
-            if (Gate::forUser($user)->any(['is-Adm-global', 'is-Dir-global', 'is-Sec-global'])) return true;
+            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isSec-global'])) return true;
 
             //no permission
             return false;
