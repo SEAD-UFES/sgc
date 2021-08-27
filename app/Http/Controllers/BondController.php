@@ -105,6 +105,9 @@ class BondController extends Controller
         $bond->impediment_description = 'Vínculo ainda não revisado';
         $bond->uaba_checked_at = null;
 
+        //user can only store bonds with allowed course_ids 
+        if (!Gate::allows('bond-store-course_id', $bond->course_id)) return back()->withErrors('courses', 'O usuário não pode escolher esse curso.');
+
         $bond->save();
 
         $documents = EmployeeDocument::where('employee_id', $bond->employee_id)->get();
