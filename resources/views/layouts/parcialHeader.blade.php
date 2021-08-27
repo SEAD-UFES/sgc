@@ -18,7 +18,9 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarSupportedContentMenuLink1">
                                 <li><h6 class="dropdown-header">Aprovados</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('approveds.index') }}">Listar Aprovados</a></li>
-                                <li><a class="dropdown-item" href="{{ route('approveds.create') }}">Importar Aprovados</a></li>
+                                @can('approved-store')
+                                    <li><a class="dropdown-item" href="{{ route('approveds.create') }}">Importar Aprovados</a></li>
+                                @endcan
                                 <li><hr class="dropdown-divider"></li>
                                 <li><h6 class="dropdown-header">Colaboradores</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('employees.index') }}">Listar Colaboradores</a></li>
