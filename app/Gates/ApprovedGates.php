@@ -37,7 +37,7 @@ class ApprovedGates
 
         Gate::define('approved-destroy', function ($user) {
             //who can do it (global).
-            if (Gate::forUser($user)->any(['isAdm-global'])) return true;
+            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isSec-global'])) return true;
 
             //no permission
             return false;
