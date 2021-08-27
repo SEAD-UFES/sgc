@@ -66,22 +66,28 @@
                                         <td>{{ $employee->address_city }}</td>
                                         <td>{{ $employee->user->email ?? '' }}</td>
                                         <td class="text-center"><div class="d-inline-flex">
-                                            <a href="{{ route('employees.show', $employee) }}" data-bs-toggle="tooltip" title="Ver colaborador" class="btn btn-primary btn-sm">
-                                                <i class="bi-eye-fill"></i>
-                                            </a>&nbsp;
-                                            <a href="{{ route('employees.edit', $employee) }}" data-bs-toggle="tooltip" title="Editar colaborador" class="btn btn-primary btn-sm">
-                                                <i class="bi-pencil-fill"></i>
-                                            </a>&nbsp;
-                                            <form name="{{ 'formDelete' . $employee->id }}"
-                                                action="{{ route('employees.destroy', $employee) }}" method="POST">
-                                                @method('DELETE')
-                                                @csrf
-                                                <button type="button" data-bs-toggle="tooltip" title="Excluir colaborador" 
-                                                    onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Colaborador e todos os seus documentos, vínculos e documentos de vínculos?\')) document.forms[\'formDelete' . $employee->id . '\'].submit();' }}" 
-                                                    class="btn btn-danger btn-sm">
-                                                    <i class="bi-trash-fill"></i>
-                                                </button>
-                                            </form></div>
+                                            @can('employee-show')
+                                                <a href="{{ route('employees.show', $employee) }}" data-bs-toggle="tooltip" title="Ver colaborador" class="btn btn-primary btn-sm">
+                                                    <i class="bi-eye-fill"></i>
+                                                </a>&nbsp;
+                                            @endcan
+                                            @can('employee-update')
+                                                <a href="{{ route('employees.edit', $employee) }}" data-bs-toggle="tooltip" title="Editar colaborador" class="btn btn-primary btn-sm">
+                                                    <i class="bi-pencil-fill"></i>
+                                                </a>&nbsp;
+                                            @endcan
+                                            @can('employee-destroy')
+                                                <form name="{{ 'formDelete' . $employee->id }}"
+                                                    action="{{ route('employees.destroy', $employee) }}" method="POST">
+                                                    @method('DELETE')
+                                                    @csrf
+                                                    <button type="button" data-bs-toggle="tooltip" title="Excluir colaborador" 
+                                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Colaborador e todos os seus documentos, vínculos e documentos de vínculos?\')) document.forms[\'formDelete' . $employee->id . '\'].submit();' }}" 
+                                                        class="btn btn-danger btn-sm">
+                                                        <i class="bi-trash-fill"></i>
+                                                    </button>
+                                                </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach

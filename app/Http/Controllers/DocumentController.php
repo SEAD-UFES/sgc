@@ -46,6 +46,9 @@ class DocumentController extends Controller
      */
     public function employeesDocumentIndex(Request $request)
     {
+        //check access permission
+        if (!Gate::allows('employeeDocument-list')) return view('access.denied');
+
         $model = 'EmployeeDocument';
         $resArray = $this->getViewParameters($model, $request);
         return view('employee.document.index', $resArray);
@@ -106,6 +109,9 @@ class DocumentController extends Controller
      */
     public function employeesDocumentCreate($id = null)
     {
+        //check access permission
+        if (!Gate::allows('employeeDocument-store')) return view('access.denied');
+
         $documentTypes = DocumentType::orderBy('name')->get();
 
         if (!is_null($id))
@@ -136,6 +142,10 @@ class DocumentController extends Controller
         $request->validate([
             'file' => 'required|mimes:pdf,jpeg,png,jpg|max:2048'
         ]);
+
+        //check access permission
+        if ($model === 'EmployeeDocument' && !Gate::allows('employeeDocument-store')) return view('access.denied');
+        elseif ($model === 'BondDocument' && !Gate::allows('bondDocument-store')) return view('access.denied');
 
         if ($request->file()) {
             $fileName = time() . '.' . $request->file->getClientOriginalName();
@@ -193,7 +203,7 @@ class DocumentController extends Controller
     public function employeesDocumentMassImport(Request $request)
     {
         //check access permission
-        if (!Gate::allows('bondDocument-store')) return view('access.denied');
+        if (!Gate::allows('employeeDocument-store')) return view('access.denied');
 
         $request->validate([
             'files.*' => 'required|mimes:pdf,jpeg,png,jpg|max:2048',
@@ -227,7 +237,7 @@ class DocumentController extends Controller
     public function employeesDocumentMassStore(Request $request)
     {
         //check access permission
-        if (!Gate::allows('bondDocument-store')) return view('access.denied');
+        if (!Gate::allows('employeeDocument-store')) return view('access.denied');
 
         $filesCount = $request->fileSetCount;
         $employeeId = $request->employeeId;
@@ -268,7 +278,8 @@ class DocumentController extends Controller
     public function showDocument($id, $model)
     {
         //check access permission
-        if (!Gate::allows('bondDocument-download')) return view('access.denied');
+        if ($model === 'EmployeeDocument' && !Gate::allows('employeeDocument-download')) return view('access.denied');
+        elseif ($model === 'BondDocument' && !Gate::allows('bondDocument-download')) return view('access.denied');
 
         $class = app("App\\Models\\$model");
 

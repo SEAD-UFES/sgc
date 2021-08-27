@@ -84,9 +84,11 @@
                                                     <i class="bi-eye-fill"></i>
                                                 </a>&nbsp; 
                                             @endcan
-                                            <a href="{{ route('employees.show', $bond->employee) }}" data-bs-toggle="tooltip" title="Ver Colaborador" class="btn btn-primary btn-sm">
-                                                <i class="bi-person-fill"></i>
-                                            </a>&nbsp;
+                                            @can('employee-show')
+                                                <a href="{{ route('employees.show', $bond->employee) }}" data-bs-toggle="tooltip" title="Ver Colaborador" class="btn btn-primary btn-sm">
+                                                    <i class="bi-person-fill"></i>
+                                                </a>&nbsp;
+                                            @endcan
                                             @can('bond-update')
                                                 <a href="{{ route('bonds.edit', $bond->id) }}" data-bs-toggle="tooltip" title="Editar vínculo" class="btn btn-primary btn-sm">
                                                     <i class="bi-pencil-fill"></i>
