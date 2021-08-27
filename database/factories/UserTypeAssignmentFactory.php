@@ -3,6 +3,9 @@
 namespace Database\Factories;
 
 use App\Models\UserTypeAssignment;
+use App\Models\User;
+use App\Models\UserType;
+use App\Models\Course;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserTypeAssignmentFactory extends Factory
@@ -22,7 +25,11 @@ class UserTypeAssignmentFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_id' => User::factory(),
+            'user_type_id' => UserType::factory(),
+            'course_id' => Course::factory(),
+            'begin' => $this->faker->dateTimeBetween('-1 year', 'now'),
+            'end' => $this->faker->dateTimeBetween('1 year', '2 years'),
         ];
     }
 }
