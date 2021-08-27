@@ -29,4 +29,18 @@ class UserTypeFactory extends Factory
             'updated_at' => now(),
         ];
     }
+
+
+    /**
+     * Return an Administrator User Type (acronym `adm`)
+     * @return \Illumintate\Database\Eloquent\Factories\Factory
+     */
+    public function admin()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'acronym' => 'adm'
+            ];
+        });
+    }
 }
