@@ -24,15 +24,25 @@
                                 <li><hr class="dropdown-divider"></li>
                                 <li><h6 class="dropdown-header">Colaboradores</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('employees.index') }}">Listar Colaboradores</a></li>
-                                <li><a class="dropdown-item" href="{{ route('employees.create') }}">Cadastrar Colaborador</a></li>
-                                <li><a class="dropdown-item" href="{{ route('employees.document.index') }}">Listar Documentos de Colaboradores</a></li>
-                                <li><a class="dropdown-item" href="{{ route('employees.document.create') }}">Importar Documentos de Colaborador</a></li>
+                                @can('employee-store')
+                                    <li><a class="dropdown-item" href="{{ route('employees.create') }}">Cadastrar Colaborador</a></li>
+                                @endcan
+                                @can('employeeDocument-list')
+                                    <li><a class="dropdown-item" href="{{ route('employees.document.index') }}">Listar Documentos de Colaboradores</a></li>
+                                @endcan
+                                @can('employeeDocument-store')
+                                    <li><a class="dropdown-item" href="{{ route('employees.document.create') }}">Importar Documentos de Colaborador</a></li>
+                                @endcan
                                 <li><hr class="dropdown-divider"></li>
                                 <li><h6 class="dropdown-header">Vínculos</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('bonds.index') }}">Listar Vínculos</a></li>
                                 <li><a class="dropdown-item" href="{{ route('bonds.create') }}">Cadastrar Vínculo</a></li>
-                                <li><a class="dropdown-item" href="{{ route('bonds.document.index') }}">Listar Documento de Vínculos</a></li>
-                                <li><a class="dropdown-item" href="{{ route('bonds.document.create') }}">Importar Documento de Vínculo</a></li>
+                                @can('bondDocument-list')
+                                    <li><a class="dropdown-item" href="{{ route('bonds.document.index') }}">Listar Documento de Vínculos</a></li>
+                                @endcan
+                                @can('bondDocument-store')
+                                    <li><a class="dropdown-item" href="{{ route('bonds.document.create') }}">Importar Documento de Vínculo</a></li>
+                                @endcan
                             </ul>
                         </li>
                         {{-- <li class="nav-item"><a class="nav-link" href="{{ route('funding') }}">Fomento</a></li> --}}
