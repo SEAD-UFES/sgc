@@ -100,18 +100,18 @@ class User extends Authenticatable
     public function scopeWhereActiveUserType($query, $id)
     {
         return $query
-            ->join('user_type_assignments', 'users.id', '=', 'user_type_assignments.user_id')
-            ->where('user_type_assignments.user_type_id', $id)
+            ->join('user_type_assignments AS user_type_assignments_A', 'users.id', '=', 'user_type_assignments_A.user_id')
+            ->where('user_type_assignments_A.user_type_id', $id)
             ->where(
                 function ($query) {
                     $query
                         ->where([
-                            ['user_type_assignments.begin', '<=', Carbon::today()->toDateString()],
-                            ['user_type_assignments.end', '>=', Carbon::today()->toDateString()],
+                            ['user_type_assignments_A.begin', '<=', Carbon::today()->toDateString()],
+                            ['user_type_assignments_A.end', '>=', Carbon::today()->toDateString()],
                         ])
                         ->orWhere([
-                            ['user_type_assignments.begin', '<=', Carbon::today()->toDateString()],
-                            ['user_type_assignments.end', '=', null],
+                            ['user_type_assignments_A.begin', '<=', Carbon::today()->toDateString()],
+                            ['user_type_assignments_A.end', '=', null],
                         ]);
                 }
             )
@@ -121,8 +121,8 @@ class User extends Authenticatable
     public function scopeWhereUtaCourseId($query, $id)
     {
         return $query
-            ->join('user_type_assignments', 'users.id', '=', 'user_type_assignments.user_id')
-            ->where('user_type_assignments.course_id', $id)
+            ->join('user_type_assignments AS user_type_assignments_B', 'users.id', '=', 'user_type_assignments_B.user_id')
+            ->where('user_type_assignments_B.course_id', $id)
             ->select('users.*');
     }
 }

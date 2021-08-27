@@ -274,7 +274,7 @@ class BondController extends Controller
         } else {
             //$users = UserType::with('users')->Where('acronym', 'ldi')->first()->users;
             $ldi_UT = UserType::firstWhere('acronym', 'ldi');
-            $ldi_users = User::where('active', true)->whereActiveUserType($ldi_UT->id);
+            $ldi_users = User::where('active', true)->whereActiveUserType($ldi_UT->id)->get();
 
             Notification::send($ldi_users, new NewRightsNotification($bond));
         }
