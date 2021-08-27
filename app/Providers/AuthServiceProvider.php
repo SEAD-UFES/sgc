@@ -13,6 +13,9 @@ use App\Gates\CourseGates;
 use App\Gates\RoleGates;
 use App\Gates\BondDocumentGates;
 use App\Gates\BondGates;
+use App\Gates\EmployeeDocumentGates;
+use App\Gates\EmployeeGates;
+
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -129,7 +132,9 @@ class AuthServiceProvider extends ServiceProvider
             return false;
         });
 
+        //basic function gates
         GenericGates::define();
+        //this gates need GenericGates::define();
         UserTypeAssignmentGates::define();
         UserGates::define();
         PoleGates::define();
@@ -137,5 +142,7 @@ class AuthServiceProvider extends ServiceProvider
         RoleGates::define();
         BondDocumentGates::define();
         BondGates::define();
+        EmployeeDocumentGates::define();
+        EmployeeGates::define();
     }
 }
