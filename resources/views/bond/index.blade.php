@@ -89,7 +89,7 @@
                                                     <i class="bi-person-fill"></i>
                                                 </a>&nbsp;
                                             @endcan
-                                            @can('bond-update')
+                                            @can('bond-update', $bond)
                                                 <a href="{{ route('bonds.edit', $bond->id) }}" data-bs-toggle="tooltip" title="Editar vínculo" class="btn btn-primary btn-sm">
                                                     <i class="bi-pencil-fill"></i>
                                                 </a>&nbsp;

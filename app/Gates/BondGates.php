@@ -49,9 +49,12 @@ class BondGates
             return false;
         });
 
-        Gate::define('bond-update', function ($user) {
+        Gate::define('bond-update', function ($user, $bond) {
             //who can do it (global).
             if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global'])) return true;
+
+            //coord on this course then ok.
+            if (Gate::forUser($user)->any(['isCoord-course_id'], $bond->course_id)) return true;
 
             //no permission
             return false;
