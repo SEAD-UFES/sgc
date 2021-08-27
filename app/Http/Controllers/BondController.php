@@ -64,13 +64,16 @@ class BondController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('bond-store')) return view('access.denied');
+        if (!Gate::allows('bond-create')) return view('access.denied');
 
         $employees = Employee::orderBy('name')->get();
         $roles = Role::orderBy('name')->get();
-        $courses = Course::orderBy('name')->get();
         $poles = Pole::orderBy('name')->get();
         $bond = new Bond;
+
+        //get only allowed courses
+        $courses = Course::orderBy('name')->get();
+        foreach ($courses as $key => $course) if (!Gate::allows('bond-store-course_id', $course->id)) $courses->forget($key);
 
         SgcLogger::writeLog('Bond');
 
@@ -86,7 +89,7 @@ class BondController extends Controller
     public function store(StoreBondRequest $request)
     {
         //check access permission
-        if (!Gate::allows('bond-store')) return view('access.denied');
+        if (!Gate::allows('bond-create')) return view('access.denied');
 
         $bond = new Bond;
 
@@ -101,6 +104,9 @@ class BondController extends Controller
         $bond->impediment = true;
         $bond->impediment_description = 'Vínculo ainda não revisado';
         $bond->uaba_checked_at = null;
+
+        //user can only store bonds with allowed course_ids 
+        if (!Gate::allows('bond-store-course_id', $bond->course_id)) return back()->withErrors('courses', 'O usuário não pode escolher esse curso.');
 
         $bond->save();
 
@@ -150,12 +156,15 @@ class BondController extends Controller
     public function edit(Bond $bond)
     {
         //check access permission
-        if (!Gate::allows('bond-update')) return view('access.denied');
+        if (!Gate::allows('bond-update', $bond)) return view('access.denied');
 
         $employees = Employee::orderBy('name')->get();
         $roles = Role::orderBy('name')->get();
-        $courses = Course::orderBy('name')->get();
         $poles = Pole::orderBy('name')->get();
+
+        //get only allowed courses
+        $courses = Course::orderBy('name')->get();
+        foreach ($courses as $key => $course) if (!Gate::allows('bond-store-course_id', $course->id)) $courses->forget($key);
 
         SgcLogger::writeLog($bond);
 
@@ -172,7 +181,7 @@ class BondController extends Controller
     public function update(UpdateBondRequest $request, Bond $bond)
     {
         //check access permission
-        if (!Gate::allows('bond-update')) return view('access.denied');
+        if (!Gate::allows('bond-update', $bond)) return view('access.denied');
 
         $bond->employee_id = $request->employees;
         $bond->role_id = $request->roles;
@@ -181,6 +190,9 @@ class BondController extends Controller
         $bond->begin = $request->begin;
         $bond->end = $request->end;
         $bond->volunteer = $request->has('volunteer');
+
+        //user can only update bonds to allowed course_ids 
+        if (!Gate::allows('bond-store-course_id', $bond->course_id)) return back()->withErrors('courses', 'O usuário não pode escolher este curso.');
 
         try {
             $bond->save();

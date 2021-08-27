@@ -175,10 +175,10 @@ class GenericGates
             $currentUTA = session('sessionUser')->getCurrentUTA();
             if (!$currentUTA) return false;
 
-            //if currentUTA (UserTypeAssignment) is gra, ok
-            $acronym_gra = $currentUTA->userType->acronym === 'coord';
+            //if currentUTA (UserTypeAssignment) is coord, ok
+            $acronym_coord = $currentUTA->userType->acronym === 'coord';
             $course_id_null = $currentUTA->course_id === null;
-            if ($acronym_gra && $course_id_null) return true;
+            if ($acronym_coord && $course_id_null) return true;
 
             //if no permission
             return false;
@@ -190,10 +190,25 @@ class GenericGates
             $currentUTA = session('sessionUser')->getCurrentUTA();
             if (!$currentUTA) return false;
 
-            //if currentUTA (UserTypeAssignment) is gra, ok
-            $acronym_gra = $currentUTA->userType->acronym === 'ldi';
+            //if currentUTA (UserTypeAssignment) is ldi, ok
+            $acronym_ldi = $currentUTA->userType->acronym === 'ldi';
             $course_id_null = $currentUTA->course_id === null;
-            if ($acronym_gra && $course_id_null) return true;
+            if ($acronym_ldi && $course_id_null) return true;
+
+            //if no permission
+            return false;
+        });
+
+        /* define a coord with course_id */
+        Gate::define('isCoord-course_id', function (User $user, $course_id) {
+            //need to have session UserTypeAssignment active.
+            $currentUTA = session('sessionUser')->getCurrentUTA();
+            if (!$currentUTA) return false;
+
+            //if currentUTA (UserTypeAssignment) is coord, ok
+            $is_coord = $currentUTA->userType->acronym === 'coord';
+            $course_id_math = $currentUTA->course_id === $course_id;
+            if ($is_coord && $course_id_math) return true;
 
             //if no permission
             return false;
