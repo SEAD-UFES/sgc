@@ -12,18 +12,26 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ route('home') }}">Home</a></li>
 
-                    @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCoord'])
+                    @cannot('isLdi') {{-- @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCoord']) --}}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toogle" href="" {{-- href="{{ route('employee') }}" --}} id="navbarSupportedContentMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false">Colaboradores</a>
+                            <a class="nav-link dropdown-toogle" href="" id="navbarSupportedContentMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false">Colaboradores</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarSupportedContentMenuLink1">
-                                <li><h6 class="dropdown-header">Aprovados</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('approveds.index') }}">Listar Aprovados</a></li>
+                                @canany(['approved-list', 'approved-store'])
+                                    <li><h6 class="dropdown-header">Aprovados</h6></li>
+                                @endcanany
+                                @can('approved-list')
+                                    <li><a class="dropdown-item" href="{{ route('approveds.index') }}">Listar Aprovados</a></li>
+                                @endcan
                                 @can('approved-store')
                                     <li><a class="dropdown-item" href="{{ route('approveds.create') }}">Importar Aprovados</a></li>
                                 @endcan
-                                <li><hr class="dropdown-divider"></li>
+                                @canany(['approved-list', 'approved-store'])
+                                    <li><hr class="dropdown-divider"></li>
+                                @endcanany
                                 <li><h6 class="dropdown-header">Colaboradores</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('employees.index') }}">Listar Colaboradores</a></li>
+                                @can('employee-list')
+                                    <li><a class="dropdown-item" href="{{ route('employees.index') }}">Listar Colaboradores</a></li>
+                                @endcan
                                 @can('employee-store')
                                     <li><a class="dropdown-item" href="{{ route('employees.create') }}">Cadastrar Colaborador</a></li>
                                 @endcan
@@ -35,64 +43,68 @@
                                 @endcan
                                 <li><hr class="dropdown-divider"></li>
                                 <li><h6 class="dropdown-header">Vínculos</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('bonds.index') }}">Listar Vínculos</a></li>
-                                <li><a class="dropdown-item" href="{{ route('bonds.create') }}">Cadastrar Vínculo</a></li>
+                                @can('bond-list')
+                                    <li><a class="dropdown-item" href="{{ route('bonds.index') }}">Listar Vínculos</a></li>
+                                @endcan
+                                @can('bond-create')
+                                    <li><a class="dropdown-item" href="{{ route('bonds.create') }}">Cadastrar Vínculo</a></li>
+                                @endcan
                                 @can('bondDocument-list')
-                                    <li><a class="dropdown-item" href="{{ route('bonds.document.index') }}">Listar Documento de Vínculos</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('bonds.document.index') }}">Listar Documentos de Vínculos</a></li>
                                 @endcan
                                 @can('bondDocument-store')
-                                    <li><a class="dropdown-item" href="{{ route('bonds.document.create') }}">Importar Documento de Vínculo</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('bonds.document.create') }}">Importar Documentos de Vínculo</a></li>
                                 @endcan
                             </ul>
                         </li>
                         {{-- <li class="nav-item"><a class="nav-link" href="{{ route('funding') }}">Fomento</a></li> --}}
-                    @endcanany
+                    @endcannot
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toogle" href="" {{-- href="{{ route('report') }}" --}} id="navbarSupportedContentMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false">Relatórios</a>
+                        <a class="nav-link dropdown-toogle" href="" id="navbarSupportedContentMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false">Relatórios</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarSupportedContentMenuLink3">
                             <li><h6 class="dropdown-header">Termos e Licença</h6></li>
                             <li><a class="dropdown-item" href="{{ route('bonds.rights.index') }}">Listar Documentos de Termos e Licença</a></li>
                         </ul>
                     </li>
 
-                    @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCoord'])
+                    @cannot('isLdi') {{-- @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCoord']) --}}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toogle" href="" {{-- href="{{ route('system') }}" --}} id="navbarSupportedContentMenuLink4" role="button" data-bs-toggle="dropdown" aria-expanded="false">Sistema</a>
+                            <a class="nav-link dropdown-toogle" href="" id="navbarSupportedContentMenuLink4" role="button" data-bs-toggle="dropdown" aria-expanded="false">Sistema</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarSupportedContentMenuLink4">
                                 <li><h6 class="dropdown-header">Atribuições</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('roles.index') }}">Listar Atribuições</a></li>
-                                @canany(['isAdm', 'isDir', 'isAss', 'isSec'])
-                                <li><a class="dropdown-item" href="{{ route('roles.create') }}">Cadastrar Atribuição</a></li>
-                                @endcanany
+                                @can('role-store')
+                                    <li><a class="dropdown-item" href="{{ route('roles.create') }}">Cadastrar Atribuição</a></li>
+                                @endcan
                                 <li><hr class="dropdown-divider"></li>
                                 <li><h6 class="dropdown-header">Cursos</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('courses.index') }}">Listar Cursos</a></li>
-                                @canany(['isAdm', 'isDir', 'isAss', 'isSec'])
-                                <li><a class="dropdown-item" href="{{ route('courses.create') }}">Cadastrar Curso</a></li>
-                                @endcanany
+                                @can('course-store')
+                                    <li><a class="dropdown-item" href="{{ route('courses.create') }}">Cadastrar Curso</a></li>
+                                @endcan
                                 <li><a class="dropdown-item" href="{{ route('coursetypes.index') }}">Listar Tipos de Cursos</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><h6 class="dropdown-header">Polos</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('poles.index') }}">Listar Polos</a></li>
-                                @canany(['isAdm', 'isDir', 'isAss', 'isSec'])
-                                <li><a class="dropdown-item" href="{{ route('poles.create') }}">Cadastrar Polo</a></li>
-                                @endcanany
-                                @canany(['isAdm'])
-                                <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header">Usuários</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('users.index') }}">Listar Usuários</a></li>
-                                <li><a class="dropdown-item" href="{{ route('users.create') }}">Cadastrar Usuário</a></li>
-                                @endcanany
-                                @canany(['isAdm'])
-                                <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header">Atribuições de papel</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('userTypeAssignments.index') }}">Listar Atribuições de Papel</a></li>
-                                <li><a class="dropdown-item" href="{{ route('userTypeAssignments.create') }}">Cadastrar Atrib. de Papel</a></li>
-                                @endcanany
+                                @can('pole-store')
+                                    <li><a class="dropdown-item" href="{{ route('poles.create') }}">Cadastrar Polo</a></li>
+                                @endcan
+                                @can('isAdm-global')
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><h6 class="dropdown-header">Usuários</h6></li>
+                                    <li><a class="dropdown-item" href="{{ route('users.index') }}">Listar Usuários</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('users.create') }}">Cadastrar Usuário</a></li>
+                                @endcan
+                                @can('isAdm-global')
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><h6 class="dropdown-header">Atribuições de papel</h6></li>
+                                    <li><a class="dropdown-item" href="{{ route('userTypeAssignments.index') }}">Listar Atribuições de Papel</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('userTypeAssignments.create') }}">Cadastrar Atrib. de Papel</a></li>
+                                @endcan
                             </ul>
                         </li>
-                    @endcanany
+                    @endcannot
                 </ul>
 
                 @if (session('sessionUser')->hasUTAs())
@@ -102,7 +114,8 @@
                             @foreach (session('sessionUser')->getActiveUTAs() as $uta)
                                 <option value="{{ $uta->id }}"
                                     {{ session('sessionUser')->getCurrentUTA() && $uta->id === session('sessionUser')->getCurrentUTA()->id ? 'selected' : '' }}>
-                                    {{ $uta->userType->name }}{{ $uta->course ? " - ".$uta->course->name : '' }}</option>
+                                    {{ $uta->userType->name }}{{ $uta->course ? ' - ' . $uta->course->name : '' }}
+                                </option>
                             @endforeach
                         </select>
                     </form>
