@@ -31,11 +31,9 @@
     </nav>
     <section id="pageContent">
         <main role="main">
-            @if ($message = Session::get('success'))
-                <div class="alert alert-success">{{ $message }}</div>
-            @endif
             <div class="row">
                 <div class="col">
+                    @include('_components.alerts')
                     <div class="d-xl-flex float-md-end">
                         <span class="text-danger my-auto">Atribuir em lote&nbsp;</span>
                         <span class="text-danger my-auto d-none d-xl-block"> &rArr;&nbsp;</span>

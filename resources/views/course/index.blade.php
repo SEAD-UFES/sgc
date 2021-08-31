@@ -13,11 +13,7 @@
         <main role="main">
             <div class="row justify-content-center">
                 <div class="col-xl-10 col-xxl-8">
-                    @if ($message = Session::get('success'))
-                        <div class="alert alert-success">
-                            <span style="color: green; font-weight: bold">{{ $message }}</span>
-                        </div>
-                    @endif
+                    @include('_components.alerts')
 
                     {{-- local para os filtros --}}
                     @component(

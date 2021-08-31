@@ -14,6 +14,7 @@
         <main role="main">
             <div class="row justify-content-center">
                 <div class="col-xl-10 col-xxl-8">
+                    @include('_components.alerts')
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="form-tab" data-bs-toggle="tab" data-bs-target="#form" type="button" role="tab" aria-controls="form" aria-selected="true">Formulário</button>

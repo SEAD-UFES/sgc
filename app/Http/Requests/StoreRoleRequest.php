@@ -25,7 +25,7 @@ class StoreRoleRequest extends FormRequest
     {
         return [
             'name' => 'required|max:50',
-            'description' => 'max:50',
+            'description' => 'max:110',
             'grantValue' => 'numeric',
             'grantTypes' => 'min:1',
         ];

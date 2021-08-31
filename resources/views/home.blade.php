@@ -19,15 +19,7 @@
     <main role="main">
         <div class="row justify-content-center">
             <div class="col-xl-8 col-xxl-6">
-                @if ($message = Session::get('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <span style="color: green; font-weight: bold">{{ $message }}</span>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
-                @error('noDismiss')
-                    <div class="text-danger">> {{ $message }}</div>
-                @enderror
+                @include('_components.alerts')
                 <h3>Notificações</h3>
                 <br />
                 <div class="table-responsive">

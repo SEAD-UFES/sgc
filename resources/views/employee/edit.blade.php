@@ -14,6 +14,7 @@
         <main role="main">
             <div class="row justify-content-center">
                 <div class="col-xl-10 col-xxl-8">
+                    @include('_components.alerts')
                     <form action="{{ route('employees.update', $employee->id) }}" method="POST">
                         @method('PATCH')
                         @component('employee.componentEmployeeForm',  compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee'))@endcomponent

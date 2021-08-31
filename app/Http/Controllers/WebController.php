@@ -14,7 +14,7 @@ class WebController extends Controller
             return redirect()->route('auth.form');
     }
 
-    public function webHome() { return view('web.home'); }
+    public function webHome() { return view('home'); }
 
     public function fallback() { return $this->rootFork(); }
 }

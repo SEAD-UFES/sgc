@@ -25,7 +25,7 @@ class StorePoleRequest extends FormRequest
     {
         return [
             'name' => 'required|max:50',
-            'description' => 'max:50',
+            'description' => 'max:110',
         ];
     }
 
