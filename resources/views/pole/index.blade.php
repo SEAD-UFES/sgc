@@ -69,6 +69,9 @@
                     <br />
                     {!! $poles->links() !!}
                     <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    @can('pole-store')
+                        <a href="{{ route('poles.create') }}" class="btn btn-warning">Cadastrar novo Polo</a>
+                    @endcan
                     <br /><br />
                 </div>
             </div>

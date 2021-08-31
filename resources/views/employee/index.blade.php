@@ -101,6 +101,9 @@
                     <br />
                     {!! $employees->links() !!}
                     <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    @can('employee-store')
+                        <a href="{{ route('employees.create') }}" class="btn btn-warning">Cadastrar novo Colaborador</a>
+                    @endcan
                     <br /><br />
                 </div>
             </div>

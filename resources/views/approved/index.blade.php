@@ -112,6 +112,9 @@
                     <br />
                     {!! $approveds->links() !!}
                     <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    @can('approved-store')
+                        <a href="{{ route('approveds.create') }}" class="btn btn-warning">Importar novos Aprovados</a>
+                    @endcan
                     <br /><br />
                 </div>
             </div>

@@ -81,6 +81,9 @@
                     <br />
                     {!! $courses->links() !!}
                     <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    @can('course-store')
+                        <a href="{{ route('courses.create') }}" class="btn btn-warning">Cadastrar novo Curso</a>
+                    @endcan
                     <br /><br />
                 </div>
             </div>

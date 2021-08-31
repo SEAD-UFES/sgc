@@ -76,6 +76,9 @@
                     <br />
                     {!! $roles->links() !!}
                     <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    @can('role-store')
+                        <a href="{{ route('roles.create') }}" class="btn btn-warning">Cadastrar nova Atribuição</a>
+                    @endcan
                     <br /><br />
                 </div>
             </div>

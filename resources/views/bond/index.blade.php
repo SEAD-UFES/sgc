@@ -114,6 +114,9 @@
                     <br />
                     {!! $bonds->links() !!}
                     <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    @can('bond-create')
+                        <a href="{{ route('bonds.create') }}" class="btn btn-warning">Cadastrar novo Vínculo</a>
+                    @endcan
                     <br /><br />
                 </div>
             </div>

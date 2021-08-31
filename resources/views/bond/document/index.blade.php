@@ -36,6 +36,9 @@
 
                     @component('bond.document.componentList', compact('documents'))@endcomponent
                     <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    @can('approved-store')
+                        <a href="{{ route('bonds.document.create') }}" class="btn btn-warning">Importar novos Documentos de Vínculo</a>
+                    @endcan
                     <br /><br />
                 </div>
             </div>

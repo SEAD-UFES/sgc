@@ -71,6 +71,9 @@
                     <br />
                     {!! $users->links() !!}
                     <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    @can('isAdm-global')
+                        <a href="{{ route('users.create') }}" class="btn btn-warning">Cadastrar novo Usuário</a>
+                    @endcan
                     <br /><br />
                 </div>
             </div>
