@@ -102,6 +102,11 @@
                                     <li><a class="dropdown-item" href="{{ route('userTypeAssignments.index') }}">Listar Atribuições de Papel</a></li>
                                     <li><a class="dropdown-item" href="{{ route('userTypeAssignments.create') }}">Cadastrar Atrib. de Papel</a></li>
                                 @endcan
+                                @can('isAdm-global')
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><h6 class="dropdown-header">SGC</h6></li>
+                                    <li><a class="dropdown-item" href="{{ route('logs') }}">Logs de sistema</a></li>
+                                @endcan
                             </ul>
                         </li>
                     @endcannot

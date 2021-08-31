@@ -177,6 +177,11 @@ return [
 
         //eloquent filters
         eloquentFilter\ServiceProvider::class,
+
+        /*
+         *  Laravel log viewer
+         */
+        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
     ],
 
     /*

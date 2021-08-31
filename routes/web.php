@@ -76,4 +76,6 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('userTypeAssignments', UserTypeAssignmentController::class);
     Route::post('/session/changeCurrentUTA', [UserController::class, 'setCurrentUTA'])->name('currentUTA.change');
+
+    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('logs');
 });
