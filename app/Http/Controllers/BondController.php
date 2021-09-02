@@ -35,7 +35,7 @@ class BondController extends Controller
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('bond-list')) return view('access.denied');
+        if (!Gate::allows('bond-list')) return response()->view('access.denied')->setStatusCode(401);
 
         $bonds_query = Bond::with(['employee', 'course', 'role', 'pole']);
 
@@ -64,7 +64,7 @@ class BondController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('bond-create')) return view('access.denied');
+        if (!Gate::allows('bond-create')) return response()->view('access.denied')->setStatusCode(401);
 
         $employees = Employee::orderBy('name')->get();
         $roles = Role::orderBy('name')->get();
@@ -89,7 +89,7 @@ class BondController extends Controller
     public function store(StoreBondRequest $request)
     {
         //check access permission
-        if (!Gate::allows('bond-create')) return view('access.denied');
+        if (!Gate::allows('bond-create')) return response()->view('access.denied')->setStatusCode(401);
 
         $bond = new Bond;
 
@@ -141,7 +141,7 @@ class BondController extends Controller
     public function show(Bond $bond)
     {
         //check access permission
-        if (!Gate::allows('bond-show')) return view('access.denied');
+        if (!Gate::allows('bond-show')) return response()->view('access.denied')->setStatusCode(401);
 
         $documents = $bond->bondDocuments;
         return view('bond.show', compact('bond', 'documents'));
@@ -156,7 +156,7 @@ class BondController extends Controller
     public function edit(Bond $bond)
     {
         //check access permission
-        if (!Gate::allows('bond-update', $bond)) return view('access.denied');
+        if (!Gate::allows('bond-update', $bond)) return response()->view('access.denied')->setStatusCode(401);
 
         $employees = Employee::orderBy('name')->get();
         $roles = Role::orderBy('name')->get();
@@ -181,7 +181,7 @@ class BondController extends Controller
     public function update(UpdateBondRequest $request, Bond $bond)
     {
         //check access permission
-        if (!Gate::allows('bond-update', $bond)) return view('access.denied');
+        if (!Gate::allows('bond-update', $bond)) return response()->view('access.denied')->setStatusCode(401);
 
         $bond->employee_id = $request->employees;
         $bond->role_id = $request->roles;
@@ -214,7 +214,7 @@ class BondController extends Controller
     public function destroy(Bond $bond)
     {
         //check access permission
-        if (!Gate::allows('bond-destroy')) return view('access.denied');
+        if (!Gate::allows('bond-destroy')) return response()->view('access.denied')->setStatusCode(401);
 
         SgcLogger::writeLog($bond);
 
@@ -237,7 +237,7 @@ class BondController extends Controller
     public function review(ReviewBondRequest $request, Bond $bond)
     {
         //check access permission
-        if (!Gate::allows('bond-review')) return view('access.denied');
+        if (!Gate::allows('bond-review')) return response()->view('access.denied')->setStatusCode(401);
 
         $bond->impediment = ($request->impediment == '1') ? true : false;
         $bond->impediment_description = $request->impedimentDescription;
@@ -292,7 +292,7 @@ class BondController extends Controller
     public function requestReview(Request $request, Bond $bond)
     {
         //check access permission
-        if (!Gate::allows('bond-requestReview')) return view('access.denied');
+        if (!Gate::allows('bond-requestReview')) return response()->view('access.denied')->setStatusCode(401);
 
         //$academicSecretaries = UserType::with('users')->Where('acronym', 'sec')->first()->users;
         $sec_UT = UserType::firstWhere('acronym', 'sec');

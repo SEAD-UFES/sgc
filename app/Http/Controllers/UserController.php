@@ -25,7 +25,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('user-list')) return view('access.denied');
+        if (!Gate::allows('user-list')) return response()->view('access.denied')->setStatusCode(401);
 
         $users_query = User::with(['userType', 'employee']);
 
@@ -54,7 +54,7 @@ class UserController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('user-store')) return view('access.denied');
+        if (!Gate::allows('user-store')) return response()->view('access.denied')->setStatusCode(401);
 
         $userTypes = UserType::orderBy('name')->get();
         $user = new User;
@@ -73,7 +73,7 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         //check access permission
-        if (!Gate::allows('user-store')) return view('access.denied');
+        if (!Gate::allows('user-store')) return response()->view('access.denied')->setStatusCode(401);
 
         $user = new User;
 
@@ -110,7 +110,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         //check access permission
-        if (!Gate::allows('user-show')) return view('access.denied');
+        if (!Gate::allows('user-show')) return response()->view('access.denied')->setStatusCode(401);
 
         return view('user.show', compact('user'));
     }
@@ -124,7 +124,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         //check access permission
-        if (!Gate::allows('user-update')) return view('access.denied');
+        if (!Gate::allows('user-update')) return response()->view('access.denied')->setStatusCode(401);
 
         $userTypes = UserType::orderBy('name')->get();
 
@@ -143,7 +143,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         //check access permission
-        if (!Gate::allows('user-update')) return view('access.denied');
+        if (!Gate::allows('user-update')) return response()->view('access.denied')->setStatusCode(401);
 
         $user->email = $request->email;
 
@@ -180,7 +180,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //check access permission
-        if (!Gate::allows('user-destroy')) return view('access.denied');
+        if (!Gate::allows('user-destroy')) return response()->view('access.denied')->setStatusCode(401);
 
         SgcLogger::writeLog($user);
 

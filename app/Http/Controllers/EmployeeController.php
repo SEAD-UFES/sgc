@@ -25,7 +25,7 @@ class EmployeeController extends Controller
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('employee-list')) return view('access.denied');
+        if (!Gate::allows('employee-list')) return response()->view('access.denied')->setStatusCode(401);
 
         $employees_query = Employee::with(['gender', 'birthState', 'documentType', 'maritalStatus', 'addressState', 'user']);
 
@@ -54,7 +54,7 @@ class EmployeeController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('employee-store')) return view('access.denied');
+        if (!Gate::allows('employee-store')) return response()->view('access.denied')->setStatusCode(401);
 
         $genders = Gender::orderBy('name')->get();
         $birthStates = State::orderBy('name')->get();
@@ -78,7 +78,7 @@ class EmployeeController extends Controller
     public function store(StoreEmployeeRequest $request)
     {
         //check access permission
-        if (!Gate::allows('employee-store')) return view('access.denied');
+        if (!Gate::allows('employee-store')) return response()->view('access.denied')->setStatusCode(401);
 
         $employee = new Employee;
 
@@ -143,7 +143,7 @@ class EmployeeController extends Controller
     public function show(Employee $employee)
     {
         //check access permission
-        if (!Gate::allows('employee-show')) return view('access.denied');
+        if (!Gate::allows('employee-show')) return response()->view('access.denied')->setStatusCode(401);
 
         return view('employee.show', compact('employee'));
     }
@@ -157,7 +157,7 @@ class EmployeeController extends Controller
     public function edit(Employee $employee)
     {
         //check access permission
-        if (!Gate::allows('employee-update')) return view('access.denied');
+        if (!Gate::allows('employee-update')) return response()->view('access.denied')->setStatusCode(401);
 
         $genders = Gender::orderBy('name')->get();
         $birthStates = State::orderBy('name')->get();
@@ -180,7 +180,7 @@ class EmployeeController extends Controller
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
         //check access permission
-        if (!Gate::allows('employee-update')) return view('access.denied');
+        if (!Gate::allows('employee-update')) return response()->view('access.denied')->setStatusCode(401);
 
         $currentUser = $employee->user;
 
@@ -249,7 +249,7 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         //check access permission
-        if (!Gate::allows('employee-destroy')) return view('access.denied');
+        if (!Gate::allows('employee-destroy')) return response()->view('access.denied')->setStatusCode(401);
 
         $currentUser = $employee->user;
 

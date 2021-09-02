@@ -30,7 +30,7 @@ class ApprovedController extends Controller
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('approved-list')) return view('access.denied');
+        if (!Gate::allows('approved-list')) return response()->view('access.denied')->setStatusCode(401);
 
         $approveds_query = Approved::with(['approvedState', 'course', 'pole', 'role']);
 
@@ -62,7 +62,7 @@ class ApprovedController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('approved-store')) return view('access.denied');
+        if (!Gate::allows('approved-store')) return response()->view('access.denied')->setStatusCode(401);
 
         return view('approved.create');
     }
@@ -120,7 +120,7 @@ class ApprovedController extends Controller
     public function destroy(Approved $approved)
     {
         //check access permission
-        if (!Gate::allows('approved-destroy')) return view('access.denied');
+        if (!Gate::allows('approved-destroy')) return response()->view('access.denied')->setStatusCode(401);
 
         SgcLogger::writeLog($approved);
 
@@ -136,7 +136,7 @@ class ApprovedController extends Controller
     public function changeState(Request $request, Approved $approved)
     {
         //check access permission
-        if (!Gate::allows('approved-update-state')) return view('access.denied');
+        if (!Gate::allows('approved-update-state')) return response()->view('access.denied')->setStatusCode(401);
 
         $new_state_id = $request->states;
 
@@ -156,7 +156,7 @@ class ApprovedController extends Controller
     public function designate(Request $request)
     {
         //check access permission
-        if (!Gate::allows('approved-designate')) return view('access.denied');
+        if (!Gate::allows('approved-designate')) return response()->view('access.denied')->setStatusCode(401);
 
         $approved = Approved::find($request->approvedId);
         $existantEmployee = Employee::where('email', $approved->email)->first();
@@ -196,7 +196,7 @@ class ApprovedController extends Controller
         ]);
 
         //check access permission
-        if (!Gate::allows('approved-store')) return view('access.denied');
+        if (!Gate::allows('approved-store')) return response()->view('access.denied')->setStatusCode(401);
 
         $approveds = collect();
         $roles = Role::orderBy('name')->get();
@@ -217,7 +217,7 @@ class ApprovedController extends Controller
     public function massStore(Request $request)
     {
         //check access permission
-        if (!Gate::allows('approved-store')) return view('access.denied');
+        if (!Gate::allows('approved-store')) return response()->view('access.denied')->setStatusCode(401);
 
         $approvedsCount = $request->approvedsCount;
         for ($i = 0; $i < $approvedsCount; $i++) {

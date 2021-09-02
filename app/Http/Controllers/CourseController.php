@@ -21,7 +21,7 @@ class CourseController extends Controller
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('course-list')) return view('access.denied');
+        if (!Gate::allows('course-list')) return response()->view('access.denied')->setStatusCode(401);
 
         $courses_query = new Course();
 
@@ -50,7 +50,7 @@ class CourseController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('course-store')) return view('access.denied');
+        if (!Gate::allows('course-store')) return response()->view('access.denied')->setStatusCode(401);
 
         $courseTypes = CourseType::orderBy('name')->get();
         $course = new Course;
@@ -69,7 +69,7 @@ class CourseController extends Controller
     public function store(StoreCourseRequest $request)
     {
         //check access permission
-        if (!Gate::allows('course-store')) return view('access.denied');
+        if (!Gate::allows('course-store')) return response()->view('access.denied')->setStatusCode(401);
 
         $course = new Course;
 
@@ -95,7 +95,7 @@ class CourseController extends Controller
     public function show(Course $course)
     {
         //check access permission
-        if (!Gate::allows('course-show')) return view('access.denied');
+        if (!Gate::allows('course-show')) return response()->view('access.denied')->setStatusCode(401);
 
         return view('course.show', compact('course'));
     }
@@ -109,7 +109,7 @@ class CourseController extends Controller
     public function edit(Course $course)
     {
         //check access permission
-        if (!Gate::allows('course-update')) return view('access.denied');
+        if (!Gate::allows('course-update')) return response()->view('access.denied')->setStatusCode(401);
 
         $courseTypes = CourseType::orderBy('name')->get();
 
@@ -128,7 +128,7 @@ class CourseController extends Controller
     public function update(UpdateCourseRequest $request, Course $course)
     {
         //check access permission
-        if (!Gate::allows('course-update')) return view('access.denied');
+        if (!Gate::allows('course-update')) return response()->view('access.denied')->setStatusCode(401);
 
         $course->name = $request->name;
         $course->description =  $request->description;
@@ -156,7 +156,7 @@ class CourseController extends Controller
     public function destroy(Course $course)
     {
         //check access permission
-        if (!Gate::allows('course-destroy')) return view('access.denied');
+        if (!Gate::allows('course-destroy')) return response()->view('access.denied')->setStatusCode(401);
 
         SgcLogger::writeLog($course);
         try {
