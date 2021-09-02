@@ -23,7 +23,7 @@ class UserTypeAssignmentController extends Controller
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-list')) return view('access.denied');
+        if (!Gate::allows('userTypeAssignment-list')) return response()->view('access.denied')->setStatusCode(401);
 
         $userTypeAssignments = UserTypeAssignment::paginate(10);
 
@@ -51,7 +51,7 @@ class UserTypeAssignmentController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-store')) return view('access.denied');
+        if (!Gate::allows('userTypeAssignment-store')) return response()->view('access.denied')->setStatusCode(401);
 
         $users = User::orderBy('email')->get();
         $userTypes = UserType::orderBy('name')->get();
@@ -73,7 +73,7 @@ class UserTypeAssignmentController extends Controller
     public function store(StoreUserTypeAssignmentRequest $request)
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-store')) return view('access.denied');
+        if (!Gate::allows('userTypeAssignment-store')) return response()->view('access.denied')->setStatusCode(401);
 
         //save the model
         $userTypeAssignment = new UserTypeAssignment();
@@ -99,7 +99,7 @@ class UserTypeAssignmentController extends Controller
     public function show(UserTypeAssignment $userTypeAssignment)
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-show')) return view('access.denied');
+        if (!Gate::allows('userTypeAssignment-show')) return response()->view('access.denied')->setStatusCode(401);
     }
 
     /**
@@ -111,7 +111,7 @@ class UserTypeAssignmentController extends Controller
     public function edit(UserTypeAssignment $userTypeAssignment)
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-update')) return view('access.denied');
+        if (!Gate::allows('userTypeAssignment-update')) return response()->view('access.denied')->setStatusCode(401);
 
         $users = User::orderBy('email')->get();
         $userTypes = UserType::orderBy('name')->get();
@@ -133,7 +133,7 @@ class UserTypeAssignmentController extends Controller
     public function update(UpdateUserTypeAssignmentRequest $request, UserTypeAssignment $userTypeAssignment)
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-update')) return view('access.denied');
+        if (!Gate::allows('userTypeAssignment-update')) return response()->view('access.denied')->setStatusCode(401);
 
         //save the model
         $userTypeAssignment->user_id = $request->user_id;
@@ -158,7 +158,7 @@ class UserTypeAssignmentController extends Controller
     public function destroy(UserTypeAssignment $userTypeAssignment)
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-destroy')) return view('access.denied');
+        if (!Gate::allows('userTypeAssignment-destroy')) return response()->view('access.denied')->setStatusCode(401);
 
         SgcLogger::writeLog($userTypeAssignment);
 

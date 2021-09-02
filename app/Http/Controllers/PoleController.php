@@ -20,7 +20,7 @@ class PoleController extends Controller
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('pole-list')) return view('access.denied');
+        if (!Gate::allows('pole-list')) return response()->view('access.denied')->setStatusCode(401);
 
         $poles_query = new Pole();
 
@@ -49,7 +49,7 @@ class PoleController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('pole-store')) return view('access.denied');
+        if (!Gate::allows('pole-store')) return response()->view('access.denied')->setStatusCode(401);
 
         $pole = new Pole;
 
@@ -67,7 +67,7 @@ class PoleController extends Controller
     public function store(StorePoleRequest $request)
     {
         //check access permission
-        if (!Gate::allows('pole-store')) return view('access.denied');
+        if (!Gate::allows('pole-store')) return response()->view('access.denied')->setStatusCode(401);
 
         $pole = new Pole;
 
@@ -88,7 +88,7 @@ class PoleController extends Controller
     public function show(Pole $pole)
     {
         //check access permission
-        if (!Gate::allows('pole-show')) return view('access.denied');
+        if (!Gate::allows('pole-show')) return response()->view('access.denied')->setStatusCode(401);
 
         return view('pole.show', compact('pole'));
     }
@@ -102,7 +102,7 @@ class PoleController extends Controller
     public function edit(Pole $pole)
     {
         //check access permission
-        if (!Gate::allows('pole-update')) return view('access.denied');
+        if (!Gate::allows('pole-update')) return response()->view('access.denied')->setStatusCode(401);
 
         SgcLogger::writeLog($pole);
 
@@ -119,7 +119,7 @@ class PoleController extends Controller
     public function update(UpdatePoleRequest $request, Pole $pole)
     {
         //check access permission
-        if (!Gate::allows('pole-update')) return view('access.denied');
+        if (!Gate::allows('pole-update')) return response()->view('access.denied')->setStatusCode(401);
 
         $pole->name = $request->name;
         $pole->description = $request->description;
@@ -144,7 +144,7 @@ class PoleController extends Controller
     public function destroy(Pole $pole)
     {
         //check access permission
-        if (!Gate::allows('pole-destroy')) return view('access.denied');
+        if (!Gate::allows('pole-destroy')) return response()->view('access.denied')->setStatusCode(401);
 
         SgcLogger::writeLog($pole);
 
