@@ -69,81 +69,6 @@
     padding: 0px;
   }
 
-
-
-  /**
-  * DARK MODE CSS
-  */
-
-  body[data-theme="dark"] {
-  background-color: #151515;
-  color: #cccccc !important;
-  }
-
-  [data-theme="dark"] a {
-  color: #4da3ff !important;
-  }
-
-  [data-theme="dark"] a:hover {
-  color: #a8d2ff !important;
-  }
-
-  [data-theme="dark"] .list-group-item {
-  background-color: #1d1d1d;
-  border-color: #444;
-  }
-
-  [data-theme="dark"] a.llv-active {
-  background-color: #0468d2;
-  border-color: rgba(255, 255, 255, 0.125);
-  color: #ffffff !important;
-  }
-
-  [data-theme="dark"] a.list-group-item:focus, [data-theme="dark"] a.list-group-item:hover {
-  background-color: #273a4e;
-  border-color: rgba(255, 255, 255, 0.125);
-  color: #ffffff !important;
-  }
-
-  [data-theme="dark"] .table td, [data-theme="dark"] .table th,[data-theme="dark"] .table thead th {
-  border-color:#616161;
-  }
-
-  [data-theme="dark"] .page-item.disabled .page-link {
-  color: #8a8a8a;
-  background-color: #151515;
-  border-color: #5a5a5a;
-  }
-
-  [data-theme="dark"] .page-link {
-  background-color: #151515;
-  border-color: #5a5a5a;
-  }
-
-  [data-theme="dark"] .page-item.active .page-link {
-  color: #fff !important;
-  background-color: #0568d2;
-  border-color: #007bff;
-  }
-
-  [data-theme="dark"] .page-link:hover {
-  color: #ffffff !important;
-  background-color: #0051a9;
-  border-color: #0568d2;
-  }
-
-  [data-theme="dark"] .form-control {
-  border: 1px solid #464646;
-  background-color: #151515;
-  color: #bfbfbf !important;
-  }
-
-  [data-theme="dark"] .form-control:focus {
-  color: #bfbfbf !important;
-  background-color: #212121;
-  border-color: #4a4a4a;
-  }
-
   </style>
 {{-- ====== --}}
 
@@ -151,11 +76,6 @@
     <div class="col sidebar mb-3">
       <h1><i class="fa fa-calendar" aria-hidden="true"></i> Laravel Log Viewer</h1>
       <p class="text-muted"><i>by Rap2h</i></p>
-
-      <div class="custom-control custom-switch" style="padding-bottom:20px;">
-        <input type="checkbox" class="custom-control-input" id="darkSwitch">
-        <label class="custom-control-label" for="darkSwitch" style="margin-top: 6px;">Dark Mode</label>
-      </div>
 
       <div class="list-group div-scroll">
         @foreach($folders as $folder)
@@ -263,26 +183,6 @@
 @endsection
 
 @section('scripts')
-  <script>
-    function initTheme() {
-      const darkThemeSelected =
-        localStorage.getItem('darkSwitch') !== null &&
-        localStorage.getItem('darkSwitch') === 'dark';
-      darkSwitch.checked = darkThemeSelected;
-      darkThemeSelected ? document.body.setAttribute('data-theme', 'dark') :
-        document.body.removeAttribute('data-theme');
-    }
-
-    function resetTheme() {
-      if (darkSwitch.checked) {
-        document.body.setAttribute('data-theme', 'dark');
-        localStorage.setItem('darkSwitch', 'dark');
-      } else {
-        document.body.removeAttribute('data-theme');
-        localStorage.removeItem('darkSwitch');
-      }
-    }
-  </script>
 
   <!-- jQuery for Bootstrap -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -298,24 +198,6 @@
   <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
 
   <script>
-
-  // dark mode by https://github.com/coliff/dark-mode-switch
-  const darkSwitch = document.getElementById('darkSwitch');
-
-  // this is here so we can get the body dark mode before the page displays
-  // otherwise the page will be white for a second... 
-  initTheme();
-
-  window.addEventListener('load', () => {
-    if (darkSwitch) {
-      initTheme();
-      darkSwitch.addEventListener('change', () => {
-        resetTheme();
-      });
-    }
-  });
-
-  // end darkmode js
         
   $(document).ready(function () {
     $('.table-container tr').on('click', function () {
@@ -337,5 +219,6 @@
       return confirm('Are you sure?');
     });
   });
+
   </script>
 @endsection
