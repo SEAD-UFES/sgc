@@ -51,7 +51,7 @@ class BondController extends Controller
         $bonds->appends($request->all());
 
         //write on log
-        SgcLogger::writeLog('Bond');
+        SgcLogger::writeLog(target: 'Bond');
 
         return view('bond.index', compact('bonds', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
@@ -75,7 +75,7 @@ class BondController extends Controller
         $courses = Course::orderBy('name')->get();
         foreach ($courses as $key => $course) if (!Gate::allows('bond-store-course_id', $course->id)) $courses->forget($key);
 
-        SgcLogger::writeLog('Bond');
+        SgcLogger::writeLog(target: 'Bond');
 
         return view('bond.create', compact('employees', 'roles', 'courses', 'poles', 'bond'));
     }
@@ -121,7 +121,7 @@ class BondController extends Controller
             $bondDocument->save();
         }
 
-        SgcLogger::writeLog($bond);
+        SgcLogger::writeLog(target: $bond);
 
         //Notificar assistentes
         //$coordOrAssistants = UserType::with('users')->firstWhere('acronym', 'ass')->users;
@@ -142,6 +142,8 @@ class BondController extends Controller
     {
         //check access permission
         if (!Gate::allows('bond-show')) return response()->view('access.denied')->setStatusCode(401);
+
+        SgcLogger::writeLog(target: $bond);
 
         $documents = $bond->bondDocuments;
         return view('bond.show', compact('bond', 'documents'));
@@ -166,7 +168,7 @@ class BondController extends Controller
         $courses = Course::orderBy('name')->get();
         foreach ($courses as $key => $course) if (!Gate::allows('bond-store-course_id', $course->id)) $courses->forget($key);
 
-        SgcLogger::writeLog($bond);
+        SgcLogger::writeLog(target: $bond);
 
         return view('bond.edit', compact('employees', 'roles', 'courses', 'poles', 'bond'));
     }
@@ -200,7 +202,7 @@ class BondController extends Controller
             return back()->withErrors(['noStore' => 'Não foi possível salvar o vínculo: ' . $e->getMessage()]);
         }
 
-        SgcLogger::writeLog($bond);
+        SgcLogger::writeLog(target: $bond);
 
         return redirect()->route('bonds.index')->with('success', 'Vínculo atualizado com sucesso.');
     }
@@ -216,7 +218,7 @@ class BondController extends Controller
         //check access permission
         if (!Gate::allows('bond-destroy')) return response()->view('access.denied')->setStatusCode(401);
 
-        SgcLogger::writeLog($bond);
+        SgcLogger::writeLog(target: $bond);
 
         try {
             $bond->delete();
@@ -249,7 +251,7 @@ class BondController extends Controller
             return redirect()->route('bonds.show', $bond)->withErrors(['noStore' => 'Não foi possível salvar o vínculo: ' . $e->getMessage()]);
         }
 
-        SgcLogger::writeLog($bond, 'edit');
+        SgcLogger::writeLog(target: $bond, action: 'review');
 
 
         if ($bond->impediment == true) {
@@ -313,6 +315,8 @@ class BondController extends Controller
 
         //$users = $academicSecretaries->merge($courseCoordinators)->merge($assistants);
         $users = $sec_users->merge($coord_users)->merge($ass_users);
+
+        SgcLogger::writeLog(target: $bond, action: 'request review');
 
         Notification::send($users, new RequestReviewNotification($bond));
 

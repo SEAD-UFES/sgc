@@ -41,7 +41,7 @@ class UserController extends Controller
         $users->appends($request->all());
 
         //write on log
-        SgcLogger::writeLog('User');
+        SgcLogger::writeLog(target: 'User');
 
         return view('user.index', compact('users', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
@@ -59,7 +59,7 @@ class UserController extends Controller
         $userTypes = UserType::orderBy('name')->get();
         $user = new User;
 
-        SgcLogger::writeLog('User');
+        SgcLogger::writeLog(target: 'User');
 
         return view('user.create', compact('userTypes', 'user'));
     }
@@ -87,7 +87,7 @@ class UserController extends Controller
         if (!is_null($existentEmployee)) {
             $user->employee_id = $existentEmployee->id;
 
-            SgcLogger::writeLog($existentEmployee, 'Updated existent Employee info on User');
+            SgcLogger::writeLog(target: $existentEmployee, action: 'Updated existent Employee info on User');
         }
 
         try {
@@ -96,7 +96,7 @@ class UserController extends Controller
             return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
         }
 
-        SgcLogger::writeLog($user);
+        SgcLogger::writeLog(target: $user);
 
         return redirect()->route('users.index')->with('success', 'Usuário criado com sucesso.');
     }
@@ -111,6 +111,8 @@ class UserController extends Controller
     {
         //check access permission
         if (!Gate::allows('user-show')) return response()->view('access.denied')->setStatusCode(401);
+
+        SgcLogger::writeLog(target: $user);
 
         return view('user.show', compact('user'));
     }
@@ -128,7 +130,7 @@ class UserController extends Controller
 
         $userTypes = UserType::orderBy('name')->get();
 
-        SgcLogger::writeLog($user);
+        SgcLogger::writeLog(target: $user);
 
         return view('user.edit', compact('user', 'userTypes'));
     }
@@ -157,7 +159,7 @@ class UserController extends Controller
         if (!is_null($existentEmployee)) {
             $user->employee_id = $existentEmployee->id;
 
-            SgcLogger::writeLog($existentEmployee, 'Updated existent Employee info on User');
+            SgcLogger::writeLog(target: $existentEmployee, action: 'Updated existent Employee info on User');
         }
 
         try {
@@ -166,7 +168,7 @@ class UserController extends Controller
             return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
         }
 
-        SgcLogger::writeLog($user);
+        SgcLogger::writeLog(target: $user);
 
         return redirect()->route('users.index')->with('success', 'Usuário atualizado com sucesso.');
     }
@@ -182,7 +184,7 @@ class UserController extends Controller
         //check access permission
         if (!Gate::allows('user-destroy')) return response()->view('access.denied')->setStatusCode(401);
 
-        SgcLogger::writeLog($user);
+        SgcLogger::writeLog(target: $user);
 
         try {
             $user->delete();

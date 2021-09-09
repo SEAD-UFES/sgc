@@ -30,7 +30,7 @@ class CourseTypeController extends Controller
         $courseTypes->appends($request->all());
 
         //write on log
-        SgcLogger::writeLog('CourseType');
+        SgcLogger::writeLog(target: 'CourseType');
 
         return view('coursetype.index', compact('courseTypes', 'filters'));
     }

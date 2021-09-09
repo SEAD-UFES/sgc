@@ -36,7 +36,7 @@ class PoleController extends Controller
         $poles->appends($request->all());
 
         //write log
-        SgcLogger::writeLog('Pole');
+        SgcLogger::writeLog(target: 'Pole');
 
         return view('pole.index', compact('poles', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
@@ -53,7 +53,7 @@ class PoleController extends Controller
 
         $pole = new Pole;
 
-        SgcLogger::writeLog('Pole');
+        SgcLogger::writeLog(target: 'Pole');
 
         return view('pole.create', compact('pole'));
     }
@@ -74,6 +74,8 @@ class PoleController extends Controller
         $pole->name = $request->name;
         $pole->description = $request->description;
 
+        SgcLogger::writeLog(target: $pole);
+
         $pole->save();
 
         return redirect()->route('poles.index')->with('success', 'Polo criado com sucesso.');
@@ -90,6 +92,8 @@ class PoleController extends Controller
         //check access permission
         if (!Gate::allows('pole-show')) return response()->view('access.denied')->setStatusCode(401);
 
+        SgcLogger::writeLog(target: $pole);
+
         return view('pole.show', compact('pole'));
     }
 
@@ -104,7 +108,7 @@ class PoleController extends Controller
         //check access permission
         if (!Gate::allows('pole-update')) return response()->view('access.denied')->setStatusCode(401);
 
-        SgcLogger::writeLog($pole);
+        SgcLogger::writeLog(target: $pole);
 
         return view('pole.edit', compact('pole'));
     }
@@ -130,7 +134,7 @@ class PoleController extends Controller
             return back()->withErrors(['noStore' => 'Não foi possível salvar o Polo: ' . $e->getMessage()]);
         }
 
-        SgcLogger::writeLog($pole);
+        SgcLogger::writeLog(target: $pole);
 
         return redirect()->route('poles.index')->with('success', 'Polo atualizado com sucesso.');
     }
@@ -146,7 +150,7 @@ class PoleController extends Controller
         //check access permission
         if (!Gate::allows('pole-destroy')) return response()->view('access.denied')->setStatusCode(401);
 
-        SgcLogger::writeLog($pole);
+        SgcLogger::writeLog(target: $pole);
 
         try {
             $pole->delete();

@@ -40,6 +40,8 @@ class UserTypeAssignmentController extends Controller
         $userTypeAssignments = $userTypeAssignments_query->paginate(10);
         $userTypeAssignments->appends($request->all());
 
+        SgcLogger::writeLog(target: 'userTypeAssignment');
+
         return view('userTypeAssignment.index', compact('userTypeAssignments', 'filters'));
     }
 
@@ -59,7 +61,7 @@ class UserTypeAssignmentController extends Controller
         $userTypeAssignment = new UserTypeAssignment;
 
         //write on log
-        SgcLogger::writeLog('UserTypeAssignment');
+        SgcLogger::writeLog(target: 'UserTypeAssignment');
 
         return view('userTypeAssignment.create', compact('users', 'userTypes', 'courses', 'userTypeAssignment'));
     }
@@ -85,7 +87,7 @@ class UserTypeAssignmentController extends Controller
         $userTypeAssignment->save();
 
         //write on log
-        SgcLogger::writeLog($userTypeAssignment);
+        SgcLogger::writeLog(target: $userTypeAssignment);
 
         return redirect()->route('userTypeAssignments.index')->with('success', 'Atribuição de Papel criada com sucesso.');
     }
@@ -118,7 +120,7 @@ class UserTypeAssignmentController extends Controller
         $courses = Course::orderBy('name')->get();
 
         //write on log
-        SgcLogger::writeLog('UserTypeAssignment');
+        SgcLogger::writeLog(target: $userTypeAssignment);
 
         return view('userTypeAssignment.edit', compact('users', 'userTypes', 'courses', 'userTypeAssignment'));
     }
@@ -141,10 +143,11 @@ class UserTypeAssignmentController extends Controller
         $userTypeAssignment->course_id = $request->course_id;
         $userTypeAssignment->begin = $request->begin;
         $userTypeAssignment->end = $request->end;
-        $userTypeAssignment->save();
-
+        
         //write on log
-        SgcLogger::writeLog($userTypeAssignment);
+        SgcLogger::writeLog(target: $userTypeAssignment);
+
+        $userTypeAssignment->save();
 
         return redirect()->route('userTypeAssignments.index')->with('success', 'Atribuição de Papel atualizada com sucesso.');
     }
@@ -160,7 +163,7 @@ class UserTypeAssignmentController extends Controller
         //check access permission
         if (!Gate::allows('userTypeAssignment-destroy')) return response()->view('access.denied')->setStatusCode(401);
 
-        SgcLogger::writeLog($userTypeAssignment);
+        SgcLogger::writeLog(target: $userTypeAssignment);
 
         try {
             $userTypeAssignment->delete();

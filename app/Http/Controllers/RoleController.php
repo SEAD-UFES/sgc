@@ -39,7 +39,7 @@ class RoleController extends Controller
         $roles->appends($request->all());
 
         //write on log
-        SgcLogger::writeLog('Role');
+        SgcLogger::writeLog(target: 'Role');
 
         return view('role.index', compact('roles', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
@@ -57,7 +57,7 @@ class RoleController extends Controller
         $grantTypes = GrantType::orderBy('name')->get();
         $role = new Role;
 
-        SgcLogger::writeLog('Role');
+        SgcLogger::writeLog(target: 'Role');
 
         return view('role.create', compact('role', 'grantTypes'));
     }
@@ -80,6 +80,8 @@ class RoleController extends Controller
         $role->grant_value = $request->grantValue;
         $role->grant_type_id = $request->grantTypes;
 
+        SgcLogger::writeLog(target: $role);
+
         $role->save();
 
         return redirect()->route('roles.index')->with('success', 'Atribuição criada com sucesso.');
@@ -95,6 +97,8 @@ class RoleController extends Controller
     {
         //check access permission
         if (!Gate::allows('role-show')) return response()->view('access.denied')->setStatusCode(401);
+
+        SgcLogger::writeLog(target: $role);
 
         return view('role.show', compact('role'));
     }
@@ -112,7 +116,7 @@ class RoleController extends Controller
 
         $grantTypes = GrantType::orderBy('name')->get();
 
-        SgcLogger::writeLog($role);
+        SgcLogger::writeLog(target: $role);
 
         return view('role.edit', compact('role', 'grantTypes'));
     }
@@ -140,7 +144,7 @@ class RoleController extends Controller
             return back()->withErrors(['noStore' => 'Não foi possível salvar a Atribuição: ' . $e->getMessage()]);
         }
 
-        SgcLogger::writeLog($role);
+        SgcLogger::writeLog(target: $role);
 
         return redirect()->route('roles.index')->with('success', 'Atribuição atualizada com sucesso.');
     }
@@ -156,7 +160,7 @@ class RoleController extends Controller
         //check access permission
         if (!Gate::allows('role-destroy')) return response()->view('access.denied')->setStatusCode(401);
 
-        SgcLogger::writeLog($role);
+        SgcLogger::writeLog(target: $role);
 
         try {
             $role->delete();

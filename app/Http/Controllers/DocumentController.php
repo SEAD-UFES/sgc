@@ -36,7 +36,7 @@ class DocumentController extends Controller
         $documents = $documents_query->paginate(10);
         $documents->appends($request->all());
 
-        SgcLogger::writeLog($model, 'index');
+        SgcLogger::writeLog(target: $model, action: 'index');
 
         return compact('documents', 'documentTypes', 'filters');
     }
@@ -97,7 +97,7 @@ class DocumentController extends Controller
         $documents->appends($request->all());
 
         //write on log
-        SgcLogger::writeLog('BondsRightsIndex', 'index');
+        SgcLogger::writeLog(target: 'BondsRightsIndex', action: 'index');
 
         return view('reports.rightsIndex', compact('documents', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
@@ -119,6 +119,9 @@ class DocumentController extends Controller
         else
             $employees = Employee::orderBy('name')->get();
 
+        //write on log
+        SgcLogger::writeLog(target: 'employeesDocument', action: 'create');
+
         return view('employee.document.masscreate', compact('documentTypes', 'employees', 'id'));
     }
 
@@ -134,6 +137,10 @@ class DocumentController extends Controller
 
         $documentTypes = DocumentType::orderBy('name')->get();
         $bonds = Bond::all();
+
+        //write on log
+        SgcLogger::writeLog(target: 'bondsDocument', action: 'create');
+
         return view('bond.document.create', compact('documentTypes', 'bonds'));
     }
 
@@ -172,7 +179,7 @@ class DocumentController extends Controller
 
             $document->save();
 
-            SgcLogger::writeLog($model, 'create');
+            SgcLogger::writeLog(target: $model, action: 'create');
 
             Storage::delete($filePath);
         }
@@ -196,6 +203,8 @@ class DocumentController extends Controller
         ]);
 
         $this->import($request, 'BondDocument');
+
+        SgcLogger::writeLog(target: 'bondDocument', action: 'store');
 
         return redirect()->route('bonds.document.index')->with('success', 'Arquivo importado com sucesso.');
     }
@@ -227,6 +236,9 @@ class DocumentController extends Controller
                 $document->filePath = $filePath;
 
                 $fileSet->push($document);
+
+                SgcLogger::writeLog(target: 'employeeDocument', action: 'store');
+                
                 $documentTypes = DocumentType::orderBy('name')->get();
             }
         }
@@ -264,7 +276,7 @@ class DocumentController extends Controller
             Storage::delete($filePath);
         }
 
-        SgcLogger::writeLog('Mass Employees Documents', 'create');
+        SgcLogger::writeLog(target: 'Mass Employees Documents', action: 'create');
 
         return redirect()->route('employees.document.index')->with('success', 'Arquivos importados com sucesso.');
     }
@@ -290,6 +302,8 @@ class DocumentController extends Controller
         $f = finfo_open();
 
         $mime_type = finfo_buffer($f, $file, FILEINFO_MIME_TYPE);
+
+        SgcLogger::writeLog(target: $model, action: 'show');
 
         return Response::make($file, 200, [
             'filename="' . $document->original_name . '"'
@@ -348,6 +362,8 @@ class DocumentController extends Controller
                 $zip->addFromString($document->original_name, base64_decode($document->file_data));
 
             $zip->close();
+
+            SgcLogger::writeLog(target: $bond, action: 'bondDocuments download');
 
             return response()->download($zipFile)->deleteFileAfterSend(true);
         } else {

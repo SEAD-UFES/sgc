@@ -33,7 +33,7 @@ class LoginController extends Controller
             return redirect()->intended('home');
         }
 
-        SgcLogger::writeLog(null, 'tried login', $request);
+        SgcLogger::writeLog(target: 'System', action: 'tried login', executor: $request);
 
         return back()->withErrors(['noAuth' => 'Não foi possível autenticar o usuário']);
     }

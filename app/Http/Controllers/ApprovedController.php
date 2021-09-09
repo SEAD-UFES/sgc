@@ -49,7 +49,7 @@ class ApprovedController extends Controller
         $approvedStates = ApprovedState::all();
 
         //write on log
-        SgcLogger::writeLog('Employee');
+        SgcLogger::writeLog(target: 'Approved');
 
         return view('approved.index', compact('approveds', 'approvedStates', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
@@ -63,6 +63,9 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (!Gate::allows('approved-store')) return response()->view('access.denied')->setStatusCode(401);
+
+        //write on log
+        SgcLogger::writeLog(target: 'Approved');
 
         return view('approved.create');
     }
@@ -122,7 +125,7 @@ class ApprovedController extends Controller
         //check access permission
         if (!Gate::allows('approved-destroy')) return response()->view('access.denied')->setStatusCode(401);
 
-        SgcLogger::writeLog($approved);
+        SgcLogger::writeLog(target: $approved);
 
         try {
             $approved->delete();
@@ -142,13 +145,13 @@ class ApprovedController extends Controller
 
         $approved->approved_state_id = $new_state_id;
 
+        SgcLogger::writeLog(target: $approved, action: 'edit');
+
         try {
             $approved->save();
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o Aprovado: ' . $e->getMessage()]);
         }
-
-        SgcLogger::writeLog($approved, 'edit');
 
         return redirect()->route('approveds.index')->with('success', 'Aprovado alterado com sucesso.');
     }
@@ -175,7 +178,7 @@ class ApprovedController extends Controller
             $employee->phone = $approved->phone;
             $employee->mobile = $approved->mobile;
 
-            SgcLogger::writeLog('Employee', 'create');
+            SgcLogger::writeLog(target: $approved, action: 'designate');
 
             $this->destroy($approved);
 
@@ -211,6 +214,9 @@ class ApprovedController extends Controller
             Storage::delete($filePath);
         }
 
+        //write on log
+        SgcLogger::writeLog(target: 'Approved', action: 'import');
+
         return view('approved.review', compact('approveds', 'roles', 'courses', 'poles'))->with('success', 'Aprovados importados da planilha.');
     }
 
@@ -237,7 +243,7 @@ class ApprovedController extends Controller
             }
         }
 
-        SgcLogger::writeLog('Mass Approveds', 'create');
+        SgcLogger::writeLog(target: 'Mass Approveds', action: 'create');
 
         return redirect()->route('approveds.index')->with('success', 'Aprovados importados com sucesso.');
     }

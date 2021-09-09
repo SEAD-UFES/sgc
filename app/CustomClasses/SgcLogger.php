@@ -89,12 +89,17 @@ class SgcLogger
             'logout' => 'info',
             'index' => 'info',
             'create' => 'info',
+            'designate' => 'info',
+            'import' => 'info',
             'store' => 'notice',
             'Updated existent Employee info on User' => 'warning',
             'updated user' => 'notice',
             'show' => 'info',
             'edit' => 'info',
+            'review' => 'info',
+            'request review' => 'info',
             'update' => 'notice',
+            'bondDocuments download' => 'notice',
             'destroy' => 'warning',
         ];
 

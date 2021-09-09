@@ -37,7 +37,7 @@ class CourseController extends Controller
         $courses->appends($request->all());
 
         //write on log
-        SgcLogger::writeLog('Course');
+        SgcLogger::writeLog(target: 'Course');
 
         return view('course.index', compact('courses', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
@@ -55,7 +55,7 @@ class CourseController extends Controller
         $courseTypes = CourseType::orderBy('name')->get();
         $course = new Course;
 
-        SgcLogger::writeLog('Course');
+        SgcLogger::writeLog(target: 'Course');
 
         return view('course.create', compact('courseTypes', 'course'));
     }
@@ -81,7 +81,7 @@ class CourseController extends Controller
 
         $course->save();
 
-        SgcLogger::writeLog($course);
+        SgcLogger::writeLog(target: $course);
 
         return redirect()->route('courses.index')->with('success', 'Curso criado com sucesso.');
     }
@@ -96,6 +96,8 @@ class CourseController extends Controller
     {
         //check access permission
         if (!Gate::allows('course-show')) return response()->view('access.denied')->setStatusCode(401);
+
+        SgcLogger::writeLog(target: $course);
 
         return view('course.show', compact('course'));
     }
@@ -113,7 +115,7 @@ class CourseController extends Controller
 
         $courseTypes = CourseType::orderBy('name')->get();
 
-        SgcLogger::writeLog($course);
+        SgcLogger::writeLog(target: $course);
 
         return view('course.edit', compact('course', 'courseTypes'));
     }
@@ -142,7 +144,7 @@ class CourseController extends Controller
             return back()->withErrors(['noStore' => 'Não foi possível salvar o curso: ' . $e->getMessage()]);
         }
 
-        SgcLogger::writeLog($course);
+        SgcLogger::writeLog(target: $course);
 
         return redirect()->route('courses.index')->with('success', 'Curso atualizado com sucesso.');
     }
@@ -158,7 +160,7 @@ class CourseController extends Controller
         //check access permission
         if (!Gate::allows('course-destroy')) return response()->view('access.denied')->setStatusCode(401);
 
-        SgcLogger::writeLog($course);
+        SgcLogger::writeLog(target: $course);
         try {
             $course->delete();
         } catch (\Exception $e) {

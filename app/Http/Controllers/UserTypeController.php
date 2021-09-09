@@ -17,7 +17,7 @@ class UserTypeController extends Controller
     {
         $userTypes = UserType::orderBy('name')->all();
 
-        SgcLogger::writeLog('UserType');
+        SgcLogger::writeLog(target: 'UserType');
 
         return view('userType.index', compact('userTypes'));
     }

@@ -41,7 +41,7 @@ class EmployeeController extends Controller
         $employees->appends($request->all());
 
         //write on log
-        SgcLogger::writeLog('Employee');
+        SgcLogger::writeLog(target: 'Employee');
 
         return view('employee.index', compact('employees', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
@@ -64,7 +64,7 @@ class EmployeeController extends Controller
 
         $employee = new Employee;
 
-        SgcLogger::writeLog('Employee');
+        SgcLogger::writeLog(target: 'Employee');
 
         return view('employee.create', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee'));
     }
@@ -125,7 +125,7 @@ class EmployeeController extends Controller
                 return redirect()->route('employees.index')->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $e->getMessage()]);
             }
 
-            SgcLogger::writeLog($existentUser, 'Updated existent Employee info on User');
+            SgcLogger::writeLog(target: $existentUser, action: 'Updated existent Employee info on User');
         }
 
         if ($request->importDocuments == 'true')
@@ -144,6 +144,8 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (!Gate::allows('employee-show')) return response()->view('access.denied')->setStatusCode(401);
+
+        SgcLogger::writeLog(target: $employee);
 
         return view('employee.show', compact('employee'));
     }
@@ -165,7 +167,7 @@ class EmployeeController extends Controller
         $maritalStatuses = MaritalStatus::orderBy('name')->get();
         $addressStates = State::orderBy('name')->get();
 
-        SgcLogger::writeLog($employee);
+        SgcLogger::writeLog(target: $employee);
 
         return view('employee.edit', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee'));
     }
@@ -234,7 +236,7 @@ class EmployeeController extends Controller
                 return back()->withErrors(['noStore' => 'Não foi possível salvar o Usuário: ' . $e->getMessage()]);
             }
 
-            SgcLogger::writeLog($existentUser, 'Updated existent Employee info on User');
+            SgcLogger::writeLog(target: $existentUser, action: 'Updated existent Employee info on User');
         }
 
         return redirect()->route('employees.index')->with('success', 'Colaborador atualizado com sucesso.');
@@ -272,7 +274,7 @@ class EmployeeController extends Controller
             return redirect()->route('employees.index')->withErrors(['noDestroy' => 'Não foi possível excluir o Colaborador: ' . $e->getMessage()]);
         }
 
-        SgcLogger::writeLog($employee);
+        SgcLogger::writeLog(target: $employee);
 
         return redirect()->route('employees.index')->with('success', 'Colaborador excluído com sucesso.');
     }
