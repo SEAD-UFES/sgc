@@ -24,6 +24,7 @@ use App\Notifications\NewRightsNotification;
 use App\CustomClasses\ModelFilterHelpers;
 use App\Notifications\RequestReviewNotification;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\DB;
 
 class BondController extends Controller
 {
@@ -91,44 +92,46 @@ class BondController extends Controller
         //check access permission
         if (!Gate::allows('bond-create')) return response()->view('access.denied')->setStatusCode(401);
 
-        $bond = new Bond;
+        DB::transaction(function() use ($request) {
+            $bond = new Bond;
 
-        $bond->employee_id = $request->employees;
-        $bond->role_id = $request->roles;
-        $bond->course_id = $request->courses;
-        $bond->pole_id = $request->poles;
-        $bond->begin = $request->begin;
-        $bond->end = $request->end;
-        $bond->terminated_at = null;
-        $bond->volunteer = $request->has('volunteer');
-        $bond->impediment = true;
-        $bond->impediment_description = 'Vínculo ainda não revisado';
-        $bond->uaba_checked_at = null;
+            $bond->employee_id = $request->employees;
+            $bond->role_id = $request->roles;
+            $bond->course_id = $request->courses;
+            $bond->pole_id = $request->poles;
+            $bond->begin = $request->begin;
+            $bond->end = $request->end;
+            $bond->terminated_at = null;
+            $bond->volunteer = $request->has('volunteer');
+            $bond->impediment = true;
+            $bond->impediment_description = 'Vínculo ainda não revisado';
+            $bond->uaba_checked_at = null;
 
-        //user can only store bonds with allowed course_ids 
-        if (!Gate::allows('bond-store-course_id', $bond->course_id)) return back()->withErrors('courses', 'O usuário não pode escolher esse curso.');
+            //user can only store bonds with allowed course_ids 
+            if (!Gate::allows('bond-store-course_id', $bond->course_id)) return back()->withErrors('courses', 'O usuário não pode escolher esse curso.');
 
-        $bond->save();
+            $bond->save();
 
-        $documents = EmployeeDocument::where('employee_id', $bond->employee_id)->get();
-        foreach ($documents as $doc) {
-            $bondDocument = new BondDocument();
-            $bondDocument->original_name = $doc->original_name;
-            $bondDocument->file_data = $doc->file_data;
-            $bondDocument->document_type_id = $doc->documentType->id;
-            $bondDocument->bond_id = $bond->id;
+            $documents = EmployeeDocument::where('employee_id', $bond->employee_id)->get();
+            foreach ($documents as $doc) {
+                $bondDocument = new BondDocument();
+                $bondDocument->original_name = $doc->original_name;
+                $bondDocument->file_data = $doc->file_data;
+                $bondDocument->document_type_id = $doc->documentType->id;
+                $bondDocument->bond_id = $bond->id;
 
-            $bondDocument->save();
-        }
+                $bondDocument->save();
+            }
 
-        SgcLogger::writeLog(target: $bond);
+            SgcLogger::writeLog(target: $bond, action: 'store');
 
-        //Notificar assistentes
-        //$coordOrAssistants = UserType::with('users')->firstWhere('acronym', 'ass')->users;
-        $ass_UT = UserType::firstWhere('acronym', 'ass');
-        $coordOrAssistants = User::where('active', true)->whereActiveUserType($ass_UT->id)->get();
-        Notification::send($coordOrAssistants, new NewBondNotification($bond));
-
+            //Notificar assistentes
+            //$coordOrAssistants = UserType::with('users')->firstWhere('acronym', 'ass')->users;
+            $ass_UT = UserType::firstWhere('acronym', 'ass');
+            $coordOrAssistants = User::where('active', true)->whereActiveUserType($ass_UT->id)->get();
+            Notification::send($coordOrAssistants, new NewBondNotification($bond));
+        });
+        
         return redirect()->route('bonds.index')->with('success', 'Vínculo criado com sucesso.');
     }
 

@@ -19,6 +19,7 @@ use App\Models\Course;
 use App\Models\Pole;
 use App\CustomClasses\ModelFilterHelpers;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\DB;
 
 class ApprovedController extends Controller
 {
@@ -225,25 +226,29 @@ class ApprovedController extends Controller
         //check access permission
         if (!Gate::allows('approved-store')) return response()->view('access.denied')->setStatusCode(401);
 
-        $approvedsCount = $request->approvedsCount;
-        for ($i = 0; $i < $approvedsCount; $i++) {
-            if ($request->has('check_' . $i)) {
-                $approved = new Approved();
-                $approved->name = $request->input('name_' . $i);
-                $approved->email = $request->input('email_' . $i);
-                $approved->area_code = $request->input('area_' . $i);
-                $approved->phone = $request->input('phone_' . $i);
-                $approved->mobile = $request->input('mobile_' . $i);
-                $approved->announcement = $request->input('announcement_' . $i);
-                $approved->course_id = $request->input('courses_' . $i);
-                $approved->role_id = $request->input('roles_' . $i);
-                $approved->pole_id = $request->input('poles_' . $i);
-                $approved->approved_state_id = 1;
-                $approved->save();
+        
+        DB::transaction(function() use ($request) {
+            
+            $approvedsCount = $request->approvedsCount;
+            for ($i = 0; $i < $approvedsCount; $i++) {
+                if ($request->has('check_' . $i)) {
+                    $approved = new Approved();
+                    $approved->name = $request->input('name_' . $i);
+                    $approved->email = $request->input('email_' . $i);
+                    $approved->area_code = $request->input('area_' . $i);
+                    $approved->phone = $request->input('phone_' . $i);
+                    $approved->mobile = $request->input('mobile_' . $i);
+                    $approved->announcement = $request->input('announcement_' . $i);
+                    $approved->course_id = $request->input('courses_' . $i);
+                    $approved->role_id = $request->input('roles_' . $i);
+                    $approved->pole_id = $request->input('poles_' . $i);
+                    $approved->approved_state_id = 1;
+                    $approved->save();
+                }
             }
-        }
 
-        SgcLogger::writeLog(target: 'Mass Approveds', action: 'create');
+            SgcLogger::writeLog(target: 'Mass Approveds', action: 'create');
+        });
 
         return redirect()->route('approveds.index')->with('success', 'Aprovados importados com sucesso.');
     }

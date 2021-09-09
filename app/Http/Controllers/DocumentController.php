@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Response;
 use App\CustomClasses\ModelFilterHelpers;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\DB;
 
 class DocumentController extends Controller
 {
@@ -251,33 +252,35 @@ class DocumentController extends Controller
         //check access permission
         if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
 
-        $filesCount = $request->fileSetCount;
-        $employeeId = $request->employeeId;
+        DB::transaction(function() use ($request) {
+            $filesCount = $request->fileSetCount;
+            $employeeId = $request->employeeId;
 
-        for ($i = 0; $i < $filesCount; $i++) {
-            $document = new EmployeeDocument();
+            for ($i = 0; $i < $filesCount; $i++) {
+                $document = new EmployeeDocument();
 
-            $document->employee_id = $employeeId;
-            $document->document_type_id = $request->input('documentTypes_' . $i);
+                $document->employee_id = $employeeId;
+                $document->document_type_id = $request->input('documentTypes_' . $i);
 
-            $oldDocuments = EmployeeDocument::where('document_type_id', $document->document_type_id)->where('employee_id', $document->employee_id)->get();
-            foreach ($oldDocuments as $old) $old->delete();
+                $oldDocuments = EmployeeDocument::where('document_type_id', $document->document_type_id)->where('employee_id', $document->employee_id)->get();
+                foreach ($oldDocuments as $old) $old->delete();
 
-            $document->original_name = $request->input('fileName_' . $i);
+                $document->original_name = $request->input('fileName_' . $i);
 
-            $filePath = $request->input('filePath_' . $i);
+                $filePath = $request->input('filePath_' . $i);
 
-            $doc = file_get_contents(base_path('storage/app/' . $filePath), true);
-            $base64 = base64_encode($doc);
-            $document->file_data = $base64;
+                $doc = file_get_contents(base_path('storage/app/' . $filePath), true);
+                $base64 = base64_encode($doc);
+                $document->file_data = $base64;
 
-            $document->save();
+                $document->save();
 
-            Storage::delete($filePath);
-        }
+                Storage::delete($filePath);
+            }
 
-        SgcLogger::writeLog(target: 'Mass Employees Documents', action: 'create');
-
+            SgcLogger::writeLog(target: 'Mass Employees Documents', action: 'create');
+        });
+        
         return redirect()->route('employees.document.index')->with('success', 'Arquivos importados com sucesso.');
     }
 
