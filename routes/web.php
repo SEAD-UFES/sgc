@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PoleController;
 use App\Http\Controllers\BondController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EmployeeDocumentController;
 use App\Http\Controllers\WebController;
 use App\Http\Controllers\ApprovedController;
 use App\Http\Controllers\DocumentController;
@@ -47,7 +48,12 @@ Route::middleware('auth')->group(function () {
     Route::get('employeesdocumentindex', [DocumentController::class, 'employeesDocumentIndex'])->name('employees.document.index');
     Route::get('employeesdocumentcreate', [DocumentController::class, 'employeesDocumentCreate'])->name('employees.document.create');
     Route::get('employeesdocumentcreate/{id}', [DocumentController::class, 'employeesDocumentCreate'])->name('employees.document.create.id');
-    //Route::post('employeesdocumentstore', [DocumentController::class, 'employeesDocumentStore'])->name('employees.document.store');
+
+    //single employee doc create
+    Route::get('employeedocuments/create', [EmployeeDocumentController::class, 'create'])->name('employeeDocuments.create');
+    Route::post('employeedocuments', [EmployeeDocumentController::class, 'store'])->name('employeeDocuments.store');
+
+    //many employee doc create
     Route::post('employeesdocumentmassimport', [DocumentController::class, 'employeesDocumentMassImport'])->name('employees.document.mass.import');
     Route::post('employeesdocumentmassstore', [DocumentController::class, 'employeesDocumentMassStore'])->name('employees.document.mass.store');
 

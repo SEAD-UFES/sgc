@@ -39,7 +39,7 @@
                                     <li><a class="dropdown-item" href="{{ route('employees.document.index') }}">Listar Documentos de Colaboradores</a></li>
                                 @endcan
                                 @can('employeeDocument-store')
-                                    <li><a class="dropdown-item" href="{{ route('employees.document.create') }}">Importar Documentos de Colaborador</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('employeeDocuments.create') }}">Importar Documento de Colaborador</a></li>
                                 @endcan
                                 <li><hr class="dropdown-divider"></li>
                                 <li><h6 class="dropdown-header">Vínculos</h6></li>
