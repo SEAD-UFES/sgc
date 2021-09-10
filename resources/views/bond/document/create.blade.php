@@ -39,15 +39,18 @@
                                 <option value="">Selecione o vínculo</option>
                                 @foreach ($bonds as $bond)
                                     <option value="{{ $bond->id }}" {{-- {{($documentType->id == $document->document_type_id) ? 'selected' : ''}} --}}>
-                                        {{ $bond->employee->name . '-' . $bond->role->name . '-' . $bond->course->name }}</option>
+                                        {{ $bond->employee->name . ' - ' . $bond->role->name . ' - ' . $bond->course->name }}</option>
                                 @endforeach
                             </select>
                             @error('bonds')
                                 <div class="text-danger">> {{ $message }}</div>
                             @enderror
                         </div>
-                        <button type="submit" class="btn btn-primary">Enviar arquivo</button> <button type="button"
-                            onclick="history.back()" class="btn btn-secondary">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Enviar arquivo</button> 
+                        <button type="button" onclick="history.back()" class="btn btn-secondary">Cancelar</button>
+                        @can('bondDocument-store')
+                            <a href="{{ route('bondDocuments.createMany') }}" class="btn btn-warning">Desejo importar vários documentos de vínculo</a>
+                        @endcan
                         @error('noStore')
                             <div class="text-danger">> {{ $message }}</div>
                         @enderror

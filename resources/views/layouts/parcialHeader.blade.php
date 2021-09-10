@@ -53,7 +53,7 @@
                                     <li><a class="dropdown-item" href="{{ route('bonds.document.index') }}">Listar Documentos de Vínculos</a></li>
                                 @endcan
                                 @can('bondDocument-store')
-                                    <li><a class="dropdown-item" href="{{ route('bonds.document.create') }}">Importar Documentos de Vínculo</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('bonds.document.create') }}">Importar Documento de Vínculo</a></li>
                                 @endcan
                             </ul>
                         </li>

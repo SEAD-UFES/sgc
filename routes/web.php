@@ -6,6 +6,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PoleController;
 use App\Http\Controllers\BondController;
+use App\Http\Controllers\BondDocumentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeDocumentController;
 use App\Http\Controllers\WebController;
@@ -46,20 +47,24 @@ Route::middleware('auth')->group(function () {
     /* Route::resource('documents', DocumentController::class); */
 
     Route::get('employeesdocumentindex', [DocumentController::class, 'employeesDocumentIndex'])->name('employees.document.index');
-    Route::get('employeesdocumentcreate', [DocumentController::class, 'employeesDocumentCreate'])->name('employees.document.create');
-    Route::get('employeesdocumentcreate/{id}', [DocumentController::class, 'employeesDocumentCreate'])->name('employees.document.create.id');
-
     //single employee doc create
     Route::get('employeedocuments/create', [EmployeeDocumentController::class, 'create'])->name('employeeDocuments.create');
     Route::post('employeedocuments', [EmployeeDocumentController::class, 'store'])->name('employeeDocuments.store');
-
     //many employee doc create
+    Route::get('employeesdocumentcreate', [DocumentController::class, 'employeesDocumentCreate'])->name('employees.document.create');
+    Route::get('employeesdocumentcreate/{id}', [DocumentController::class, 'employeesDocumentCreate'])->name('employees.document.create.id');
     Route::post('employeesdocumentmassimport', [DocumentController::class, 'employeesDocumentMassImport'])->name('employees.document.mass.import');
     Route::post('employeesdocumentmassstore', [DocumentController::class, 'employeesDocumentMassStore'])->name('employees.document.mass.store');
 
     Route::get('bondsdocumentindex', [DocumentController::class, 'bondsDocumentIndex'])->name('bonds.document.index');
+    //single bond doc create
     Route::get('bondsdocumentcreate', [DocumentController::class, 'bondsDocumentCreate'])->name('bonds.document.create');
     Route::post('bondsdocumentstore', [DocumentController::class, 'bondsDocumentStore'])->name('bonds.document.store');
+    // many bond doc create
+    Route::get('bonddocuments/create-many/p1/', [BondDocumentController::class, 'createMany'])->name('bondDocuments.createMany');
+    Route::post('bonddocuments/create-many/p2/', [BondDocumentController::class, 'storeManyFase1'])->name('bondDocuments.storeManyFase01');
+    Route::post('bonddocuments/create-many/', [BondDocumentController::class, 'storeManyFase2'])->name('bondDocuments.storeManyFase02');
+
     Route::get('bonddocumentsmassdownload/{bond}', [DocumentController::class, 'bondDocumentsMassDownload'])->name('bonds.document.massdownload');
     Route::get('rights', [DocumentController::class, 'rightsIndex'])->name('bonds.rights.index');
 
