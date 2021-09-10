@@ -108,22 +108,22 @@ class DocumentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function employeesDocumentCreate($id = null)
+    public function employeeDocumentCreateMany(Request $request)
     {
         //check access permission
         if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
 
         $documentTypes = DocumentType::orderBy('name')->get();
 
-        if (!is_null($id))
-            $employees = Employee::where('id', $id)->get();
-        else
-            $employees = Employee::orderBy('name')->get();
+        $id = $request->id ?? null;
+        $employees = !is_null($id)
+            ? Employee::where('id', $id)->get()
+            : Employee::orderBy('name')->get();
 
         //write on log
         SgcLogger::writeLog(target: 'employeesDocument', action: 'create');
 
-        return view('employee.document.masscreate', compact('documentTypes', 'employees', 'id'));
+        return view('employee.document.create-many-1', compact('documentTypes', 'employees', 'id'));
     }
 
     /**
@@ -210,7 +210,7 @@ class DocumentController extends Controller
         return redirect()->route('bonds.document.index')->with('success', 'Arquivo importado com sucesso.');
     }
 
-    public function employeesDocumentMassImport(Request $request)
+    public function employeeDocumentStoreManyFase1(Request $request)
     {
         //check access permission
         if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
@@ -239,20 +239,20 @@ class DocumentController extends Controller
                 $fileSet->push($document);
 
                 SgcLogger::writeLog(target: 'employeeDocument', action: 'store');
-                
+
                 $documentTypes = DocumentType::orderBy('name')->get();
             }
         }
 
-        return view('employee.document.massReview', compact('fileSet', 'documentTypes'));
+        return view('employee.document.create-many-2', compact('fileSet', 'documentTypes'));
     }
 
-    public function employeesDocumentMassStore(Request $request)
+    public function employeeDocumentStoreManyFase2(Request $request)
     {
         //check access permission
         if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
 
-        DB::transaction(function() use ($request) {
+        DB::transaction(function () use ($request) {
             $filesCount = $request->fileSetCount;
             $employeeId = $request->employeeId;
 
@@ -280,7 +280,7 @@ class DocumentController extends Controller
 
             SgcLogger::writeLog(target: 'Mass Employees Documents', action: 'create');
         });
-        
+
         return redirect()->route('employees.document.index')->with('success', 'Arquivos importados com sucesso.');
     }
 

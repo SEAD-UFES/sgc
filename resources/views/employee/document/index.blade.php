@@ -62,7 +62,7 @@
                     </div>
                     <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
                     @can('employeeDocument-store')
-                        <a href="{{ route('employees.document.create') }}" class="btn btn-warning">Importar novos Documentos de Colaborador</a>
+                        <a href="{{ route('employeeDocuments.create') }}" class="btn btn-warning">Importar Documento de Colaborador</a>
                     @endcan
                     <br /><br />
                 </div>
