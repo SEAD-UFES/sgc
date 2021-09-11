@@ -38,7 +38,7 @@ class UserController extends Controller
 
         //get paginate and add querystring on paginate links
         $users = $users_query->paginate(10);
-        $users->appends($request->all());
+        $users->withQueryString();
 
         //write on log
         SgcLogger::writeLog(target: 'User');

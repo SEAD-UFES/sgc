@@ -34,7 +34,7 @@ class CourseController extends Controller
 
         //get paginate and add querystring on paginate links
         $courses = $courses_query->paginate(10);
-        $courses->appends($request->all());
+        $courses->withQueryString();
 
         //write on log
         SgcLogger::writeLog(target: 'Course');

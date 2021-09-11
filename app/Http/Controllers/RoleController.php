@@ -36,7 +36,7 @@ class RoleController extends Controller
 
         //get paginate and add querystring on paginate links
         $roles = $roles_query->paginate(10);
-        $roles->appends($request->all());
+        $roles->withQueryString();
 
         //write on log
         SgcLogger::writeLog(target: 'Role');

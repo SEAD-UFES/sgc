@@ -33,7 +33,7 @@ class PoleController extends Controller
 
         //get paginate and add querystring on paginate links
         $poles = $poles_query->paginate(10);
-        $poles->appends($request->all());
+        $poles->withQueryString();
 
         //write log
         SgcLogger::writeLog(target: 'Pole');

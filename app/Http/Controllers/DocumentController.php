@@ -35,7 +35,7 @@ class DocumentController extends Controller
 
         //get paginate and add querystring on paginate links
         $documents = $documents_query->paginate(10);
-        $documents->appends($request->all());
+        $documents->withQueryString();
 
         SgcLogger::writeLog(target: $model, action: 'index');
 
@@ -95,7 +95,7 @@ class DocumentController extends Controller
 
         //get paginate and add querystring on paginate links
         $documents = $documents_query->paginate(10);
-        $documents->appends($request->all());
+        $documents->withQueryString();
 
         //write on log
         SgcLogger::writeLog(target: 'BondsRightsIndex', action: 'index');

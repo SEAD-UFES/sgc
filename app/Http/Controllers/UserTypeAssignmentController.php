@@ -38,7 +38,7 @@ class UserTypeAssignmentController extends Controller
 
         //get paginate and add querystring on paginate links
         $userTypeAssignments = $userTypeAssignments_query->paginate(10);
-        $userTypeAssignments->appends($request->all());
+        $userTypeAssignments->withQueryString();
 
         SgcLogger::writeLog(target: 'userTypeAssignment');
 

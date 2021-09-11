@@ -39,7 +39,7 @@ class EmployeeController extends Controller
 
         //get paginate and add querystring on paginate links
         $employees = $employees_query->paginate(10);
-        $employees->appends($request->all());
+        $employees->withQueryString();
 
         //write on log
         SgcLogger::writeLog(target: 'Employee');

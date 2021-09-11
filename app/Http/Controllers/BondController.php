@@ -49,7 +49,7 @@ class BondController extends Controller
 
         //get paginate and add querystring on paginate links
         $bonds = $bonds_query->paginate(10);
-        $bonds->appends($request->all());
+        $bonds->withQueryString();
 
         //write on log
         SgcLogger::writeLog(target: 'Bond');

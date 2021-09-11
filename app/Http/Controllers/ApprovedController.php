@@ -44,7 +44,7 @@ class ApprovedController extends Controller
 
         //get paginate and add querystring on paginate links
         $approveds = $approveds_query->paginate(10);
-        $approveds->appends($request->all());
+        $approveds->withQueryString();
 
         //get approved states
         $approvedStates = ApprovedState::all();
