@@ -11,7 +11,7 @@ trait approvedFilter
     public function name_contains(Builder $builder, $value)
     {
         $values = ModelFilterHelpers::inputToArray($value);
-        $builder = ModelFilterHelpers::contains($builder, 'name', $values);
+        $builder = ModelFilterHelpers::contains($builder, 'approveds.name', $values);
         return $builder;
     }
 
