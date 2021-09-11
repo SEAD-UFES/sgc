@@ -45,7 +45,7 @@
                                 <th>@sortablelink('phone', 'Telefone')</th>
                                 <th>@sortablelink('mobile', 'Celular')</th>
                                 <th>@sortablelink('announcement', 'Edital')</th>
-                                <th>@sortablelink('approvedState.description', 'Situação')</th>
+                                <th>@sortablelink('approvedState.name', 'Situação')</th>
                                 <th>@sortablelink('role.name', 'Atribuição')</th>
                                 <th>@sortablelink('course.name', 'Curso')</th>
                                 <th>@sortablelink('pole.name', 'Polo')</th>
@@ -60,7 +60,7 @@
                                         <td><a href="tel:{{ /* $approved->area_code .  */$approved->phone }}">{{ $approved->phone }}</a></td>
                                         <td><a href="tel:{{ /* $approved->area_code .  */$approved->mobile }}">{{ $approved->mobile }}</a></td>
                                         <td>{{ $approved->announcement }}</td>
-                                        <td  data-bs-toggle="tooltip" data-bs-placement="left" title="{{ $approved->approvedState->description ?? '' }}">{!! $approved->approvedState->name ?? '&nbsp;' !!}</td>
+                                        <td data-bs-toggle="tooltip" data-bs-placement="left" title="{{ $approved->approvedState->description ?? '' }}">{!! $approved->approvedState->name ?? '&nbsp;' !!}</td>
                                         <td>{!! $approved->role->name ?? '&nbsp;' !!}</td>
                                         <td>{!! $approved->course->name ?? '&nbsp;' !!}</td>
                                         <td>{!! $approved->pole->name ?? '&nbsp;' !!}</td>
