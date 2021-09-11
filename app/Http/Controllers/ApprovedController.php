@@ -60,7 +60,7 @@ class ApprovedController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create() // import spreadsheet file view
     {
         //check access permission
         if (!Gate::allows('approved-store')) return response()->view('access.denied')->setStatusCode(401);

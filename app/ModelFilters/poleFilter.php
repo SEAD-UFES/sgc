@@ -17,7 +17,7 @@ trait poleFilter
     public function description_contains(Builder $builder, $value)
     {
         $values = ModelFilterHelpers::inputToArray($value);
-        $builder = ModelFilterHelpers::contains($builder, 'name', $values);
+        $builder = ModelFilterHelpers::contains($builder, 'description', $values);
         return $builder;
     }
 }
