@@ -2,23 +2,22 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
-
-use App\Models\User;
-use App\Models\Employee;
-
 use App\CustomClasses\SessionUser;
+use App\Models\Employee;
+use App\Models\User;
+use App\Models\UserType;
+use App\Models\UserTypeAssignment;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\TestCase;
 
 class EmployeeTest extends TestCase
 {
     use DatabaseMigrations;
 
     protected $employeeData = [
-        "name"  => "Fulano de Tal",
-        "cpf"   => "12345678900",
-        "email" => "fulanodetal@mail.com"
+        "name" => "Fulano de Tal",
+        "cpf" => "12345678900",
+        "email" => "fulanodetal@mail.com",
     ];
 
     /**
@@ -99,14 +98,111 @@ class EmployeeTest extends TestCase
             ->assertRedirect(route('auth.login'));
     }
 
-
     /**
-     * Authenticated user can list employees
+     * Authenticated user cannot list employees
      * @return void
      */
-    public function test_authenticated_user_can_list_employees()
+    public function test_authenticated_user_without_permission_assignment_cannot_list_employees()
     {
         $session = $this->getAuthenticatedSession();
+
+        $session->get(route('employees.index'))
+            ->assertSee('Acesso negado');
+    }
+
+    /**
+     * Authenticated user cannot create employee
+     * @return void
+     */
+    public function test_authenticated_user_without_permission_assignment_cannot_create_employee()
+    {
+        $session = $this->getAuthenticatedSession();
+
+        $session->post(route('employees.store'), $this->employeeData)
+            ->assertSee('Acesso negado');
+    }
+
+    /**
+     * Authenticated user cannot update employee
+     * @return void
+     */
+    public function test_authenticated_user_without_permission_assignment_cannot_update_employee()
+    {
+        $session = $this->getAuthenticatedSession();
+
+        $employee = $this->getTestEmployee();
+
+        $session->put(route('employees.update', $employee->id),
+            ["name" => "updated", "email" => "updated@email.com"])
+            ->assertSee('Acesso negado');
+    }
+
+    /**
+     * Authenticated user cannot delete employee
+     * @return void
+     */
+    public function test_authenticated_user_without_permission_assignment_cannot_delete_employee()
+    {
+        $session = $this->getAuthenticatedSession();
+
+        $employee = $this->getTestEmployee();
+
+        $this->assertEquals(Employee::count(), 1);
+
+        $session
+            ->delete(route('employees.destroy', $employee->id))
+            ->assertSee('Acesso negado');
+    }
+
+    /**
+     * Authenticated user cannot access employee create page
+     * @return void
+     */
+    public function test_authenticated_user_without_permission_assignment_cannot_access_create_employee_page()
+    {
+        $session = $this->getAuthenticatedSession();
+
+        $session
+            ->get(route('employees.create'))
+            ->assertSee('Acesso negado');
+    }
+
+    /**
+     * Authenticated user cannot access employee edit page
+     * @return void
+     */
+    public function test_authenticated_user_without_permission_assignment_cannot_access_employee_edit_page()
+    {
+        $session = $this->getAuthenticatedSession();
+
+        $employee = $this->getTestEmployee();
+
+        $session
+            ->get(route('employees.edit', $employee->id))
+            ->assertSee('Acesso negado');
+    }
+
+    /**
+     * Authenticated user cannot access employee details page
+     * @return void
+     */
+    public function test_authenticated_user_without_permission_assignment_cannot_access_employee_details_page()
+    {
+        $session = $this->getAuthenticatedSession();
+
+        $employee = $this->getTestEmployee();
+
+        $session->get(route('employees.show', $employee->id))
+            ->assertSee('Acesso negado');
+    }
+
+    /**
+     * Admin user can list employees
+     * @return void
+     */
+    public function test_admin_user_can_list_employees()
+    {
+        $session = $this->getAdminUser();
 
         // empty state
         $session->get(route('employees.index'))
@@ -120,12 +216,12 @@ class EmployeeTest extends TestCase
     }
 
     /**
-     * Authenticated user can create employees
+     * Admin user can create employees
      * @return void
      */
-    public function test_authenticated_user_can_create_employee()
+    public function test_admin_user_can_create_employee()
     {
-        $session = $this->getAuthenticatedSession();
+        $session = $this->getAdminUser();
 
         $this->assertEquals(Employee::count(), 0);
 
@@ -141,14 +237,13 @@ class EmployeeTest extends TestCase
         $this->assertEquals($employee->email, $this->employeeData["email"]);
     }
 
-
     /**
-     * Authenticated user can update employee
+     * Admin user can update employee
      * @return void
      */
-    public function test_authenticated_user_can_update_employee()
+    public function test_admin_user_can_update_employee()
     {
-        $session = $this->getAuthenticatedSession();
+        $session = $this->getAdminUser();
 
         $employee = $this->getTestEmployee();
 
@@ -165,14 +260,13 @@ class EmployeeTest extends TestCase
         $this->assertEquals($updatedEmployee->email, "updated@mail.com");
     }
 
-
     /**
-     * Authenticated user can delete employee
+     * Admin user can delete employee
      * @return void
      */
-    public function test_authenticated_user_can_delete_employee()
+    public function test_admin_user_can_delete_employee()
     {
-        $session = $this->getAuthenticatedSession();
+        $session = $this->getAdminUser();
 
         $employee = $this->getTestEmployee();
 
@@ -186,26 +280,25 @@ class EmployeeTest extends TestCase
     }
 
     /**
-     * Authenticated user can access create employee page
+     * Admin user can access create employee page
      * @return void
      */
-    public function test_authenticated_user_can_access_create_employee_page()
+    public function test_admin_user_can_access_create_employee_page()
     {
-        $session = $this->getAuthenticatedSession();
+        $session = $this->getAdminUser();
 
         $session
             ->get(route('employees.create'))
             ->assertOk();
     }
 
-
     /**
-     * Authenticated user can access edit employee page
+     * Admin user can access edit employee page
      * @return void
      */
-    public function test_authenticated_user_can_access_edit_employee_page()
+    public function test_admin_user_can_access_edit_employee_page()
     {
-        $session = $this->getAuthenticatedSession();
+        $session = $this->getAdminUser();
 
         $employee = $this->getTestEmployee();
 
@@ -216,14 +309,13 @@ class EmployeeTest extends TestCase
             ->assertSee($employee->email);
     }
 
-
     /**
-     * Authenticated user can access employee details page
+     * Admin user can access employee details page
      * @return void
      */
-    public function test_authenticated_user_can_access_employee_details_page()
+    public function test_admin_user_can_access_employee_details_page()
     {
-        $session = $this->getAuthenticatedSession();
+        $session = $this->getAdminUser();
 
         $employee = $this->getTestEmployee();
 
@@ -233,13 +325,39 @@ class EmployeeTest extends TestCase
             ->assertSee($employee->email);
     }
 
+    //
+    // TODO: move mock user functions to factory or helper
+    //
+
     /**
-     * Get User with UserSession attached 
+     * Get User with Admin profile and Session
+     * @return \App\Models\User
+     */
+    private function getAdminUser()
+    {
+        $user = User::factory()->create(["employee_id" => null]);
+
+        $adminType = UserType::factory()->create(['acronym' => 'adm']);
+
+        $assignment = UserTypeAssignment::factory()->create([
+            'user_id' => $user->id,
+            'user_type_id' => $adminType->id,
+            'course_id' => null,
+        ]);
+
+        $session = $this->actingAs($user)
+            ->withSession(['sessionUser' => new SessionUser($user)]);
+
+        return $session;
+    }
+
+    /**
+     * Get user with SessionUser attached
      * @return \App\Models\User
      */
     private function getAuthenticatedSession()
     {
-        $user = User::factory()->make(["employee_id" => null]);
+        $user = User::factory()->create(["employee_id" => null]);
 
         $session = $this->actingAs($user)
             ->withSession(['sessionUser' => new SessionUser($user)]);
