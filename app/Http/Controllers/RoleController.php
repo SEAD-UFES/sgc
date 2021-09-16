@@ -23,8 +23,6 @@ class RoleController extends Controller
         //check access permission
         if (!Gate::allows('role-list')) return response()->view('access.denied')->setStatusCode(401);
 
-        $roles = Role::sortable(['name' => 'asc'])->paginate(10);
-
         $roles_query = new Role();
 
         //filters
