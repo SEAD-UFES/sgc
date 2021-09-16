@@ -25,8 +25,6 @@ class UserTypeAssignmentController extends Controller
         //check access permission
         if (!Gate::allows('userTypeAssignment-list')) return response()->view('access.denied')->setStatusCode(401);
 
-        $userTypeAssignments = UserTypeAssignment::paginate(10);
-
         $userTypeAssignments_query = new UserTypeAssignment();
 
         //filters
