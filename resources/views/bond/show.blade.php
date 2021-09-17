@@ -75,14 +75,14 @@
                                                 <strong>Descrição do impedimento:</strong>
                                             </div>
                                             <div class="col-sm-8 col-lg-9">
-                                                {{ $bond->impediment == '1' ? $bond->impediment_description : '-' }}
-                                                @if(!$hasRights && $bond->impediment_description ) <br> @endif
+                                                {{ $bond->impediment == '1' ? $bond->impediment_description : '' }}
+                                                <br>
                                                 {{ !$hasRights ? 'OBS: Sem o documento "Ficha de Inscrição - Termos e Licença" o vínculo permanecerá impedido.' : ''}}
                                             </div>
                                         </div>
                                     @endif
 
-                                    <a href="{{ route('bonds.requestReview', $bond->id) }}" class="btn btn-primary btn-sm">Enviar solicitação de revisão de vínculo</a>
+                                    <a href="{{ route('bonds.requestReview', $bond->id) }}" class="btn btn-primary btn-sm">Enviar notificação de revisão de vínculo</a>
                                 @endcan
 
                                 @can(['bond-review', 'bond-requestReview'])
