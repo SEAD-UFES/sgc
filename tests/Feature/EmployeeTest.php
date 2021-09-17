@@ -133,7 +133,7 @@ class EmployeeTest extends TestCase
         $employee = $this->getTestEmployee();
 
         $session->put(route('employees.update', $employee->id),
-            ["name" => "updated", "email" => "updated@email.com"])
+            ["name" => "updated", "email" => "updated@email.com", "cpf" => 69696969696])
             ->assertSee('Acesso negado');
     }
 
