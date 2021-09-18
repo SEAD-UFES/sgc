@@ -9,6 +9,7 @@ use App\Models\UserTypeAssignment;
 use App\Models\Role;
 use App\Models\Course;
 use App\Models\Pole;
+use App\Models\DocumentType;
 use Illuminate\Http\Request;
 use App\CustomClasses\SgcLogger;
 use App\Models\Employee;
@@ -92,7 +93,7 @@ class BondController extends Controller
         //check access permission
         if (!Gate::allows('bond-create')) return response()->view('access.denied')->setStatusCode(401);
 
-        DB::transaction(function() use ($request) {
+        DB::transaction(function () use ($request) {
             $bond = new Bond;
 
             $bond->employee_id = $request->employees;
@@ -131,7 +132,7 @@ class BondController extends Controller
             $coordOrAssistants = User::where('active', true)->whereActiveUserType($ass_UT->id)->get();
             Notification::send($coordOrAssistants, new NewBondNotification($bond));
         });
-        
+
         return redirect()->route('bonds.index')->with('success', 'Vínculo criado com sucesso.');
     }
 
@@ -244,7 +245,13 @@ class BondController extends Controller
         //check access permission
         if (!Gate::allows('bond-review')) return response()->view('access.denied')->setStatusCode(401);
 
+        //get impediment; check if bond have 'termo'; if not, impediment = true.
         $bond->impediment = ($request->impediment == '1') ? true : false;
+        $termo_document_type_id = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first()->id;
+        $termo_document_count = BondDocument::where('document_type_id', $termo_document_type_id)->where('bond_id', $bond->id)->get()->count();
+        if ($termo_document_count <= 0) $bond->impediment = true;
+
+
         $bond->impediment_description = $request->impedimentDescription;
         $bond->uaba_checked_at = now();
 
