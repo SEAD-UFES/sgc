@@ -29,6 +29,8 @@ class BondSeeder extends Seeder
             'impediment' => false,
             'impediment_description' => '',
             'uaba_checked_at' => Carbon::create('2021', '07', '01'),
+            'created_at' => Carbon::create('2020', '03', '05'),
+            'updated_at' => Carbon::create('2020', '03', '05'),
         ]);
 
         DB::table($this->tableName)->insert([
@@ -44,6 +46,8 @@ class BondSeeder extends Seeder
             'impediment' => false,
             'impediment_description' => '',
             'uaba_checked_at' => Carbon::create('2021', '07', '01'),
+            'created_at' => Carbon::create('2020', '03', '05'),
+            'updated_at' => Carbon::create('2020', '03', '05'),
         ]);
 
         DB::table($this->tableName)->insert([
@@ -59,6 +63,8 @@ class BondSeeder extends Seeder
             'impediment' => false,
             'impediment_description' => '',
             'uaba_checked_at' => Carbon::create('2021', '07', '01'),
+            'created_at' => Carbon::create('2020', '03', '05'),
+            'updated_at' => Carbon::create('2020', '03', '05'),
         ]);
 
         DB::table($this->tableName)->insert([
@@ -74,6 +80,8 @@ class BondSeeder extends Seeder
             'impediment' => true,
             'impediment_description' => 'Assinatura não confere com o documento',
             'uaba_checked_at' => Carbon::create('2021', '07', '01'),
+            'created_at' => Carbon::create('2020', '03', '05'),
+            'updated_at' => Carbon::create('2020', '03', '05'),
         ]);
 
 
@@ -90,6 +98,8 @@ class BondSeeder extends Seeder
             'impediment' => false,
             'impediment_description' => '',
             'uaba_checked_at' => Carbon::create('2021', '07', '01'),
+            'created_at' => Carbon::create('2020', '03', '05'),
+            'updated_at' => Carbon::create('2020', '03', '05'),
         ]);
 
         DB::table($this->tableName)->insert([
@@ -105,6 +115,8 @@ class BondSeeder extends Seeder
             'impediment' => false,
             'impediment_description' => '',
             'uaba_checked_at' => Carbon::create('2021', '07', '01'),
+            'created_at' => Carbon::create('2020', '03', '05'),
+            'updated_at' => Carbon::create('2020', '03', '05'),
         ]);
     }
 }
