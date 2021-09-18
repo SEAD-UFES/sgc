@@ -149,7 +149,8 @@ class BondController extends Controller
 
         SgcLogger::writeLog(target: $bond);
 
-        $documents = $bond->bondDocuments;
+        $documents = $bond->bondDocuments()->orderBy('updated_at', 'DESC')->get();
+
         return view('bond.show', compact('bond', 'documents'));
     }
 

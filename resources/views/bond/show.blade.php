@@ -27,7 +27,33 @@
                     <div class="collapse show" id="bondDocumentListContent" >
                         <div class="card-body">
                             @if($documents->count() > 0)
-                                @component('bond.document.componentList', compact('documents'))@endcomponent
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <th>Útima atualização</th>
+                                            <th>Tipo do arquivo</th>
+                                            <th>Nome do arquivo</th>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($documents as $document)
+                                                <tr>
+                                                    <td>
+                                                        {{$document->updated_at 
+                                                            ? \Carbon\Carbon::parse($document->updated_at)->isoFormat('DD/MM/Y hh:mm') 
+                                                            : '-'
+                                                        }}
+                                                    </td>
+                                                    <td>{{ $document->documentType->name }}</td>
+                                                    <td>
+                                                        <a href="{{ route('documents.show', ['id' => $document->id, 'type' => 'BondDocument', 'htmlTitle' => $document->original_name]) }}"
+                                                            target="_blank">{{ $document->original_name }}</a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+
                                 <a href="{{ route('bonds.document.massdownload', $bond) }}" class="btn btn-primary btn-sm">
                                     &nbsp;&#8627; Fazer o download de todos os documentos do vínculo (zip)
                                 </a>
