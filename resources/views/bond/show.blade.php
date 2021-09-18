@@ -52,43 +52,40 @@
                         <div class="collapse show" id="bondReviewContent" >
                             <div class="card-body">
 
-                                @can('bond-requestReview')
+                                <div class="mb-2 row">
+                                    <div class="col-sm-4 col-lg-3"><strong>Última revisão:</strong></div>
+                                    <div class="col-sm-8 col-lg-9">{{ ($bond->uaba_checked_at != null) ? \Carbon\Carbon::parse($bond->uaba_checked_at)->isoFormat('DD/MM/Y hh:mm') : '-' }}</div>
+                                </div>
 
-                                    <div class="mb-2 row">
-                                        <div class="col-sm-4 col-lg-3"><strong>Última revisão:</strong></div>
-                                        <div class="col-sm-8 col-lg-9">{{ ($bond->uaba_checked_at != null) ? \Carbon\Carbon::parse($bond->uaba_checked_at)->isoFormat('DD/MM/Y hh:mm') : '-' }}</div>
+                                <div class="mb-2 row">
+                                    <div class="col-sm-4 col-lg-3">
+                                        <strong>Status do vínculo:</strong>
                                     </div>
+                                    <div class="col-sm-8 col-lg-9">
+                                        {{ $bond->impediment == 0 ? 'Sem pendências' : 'Impedido'}}
+                                        {{ $bond->impediment == 0 && !$hasRights ? ' - OBS: Sem o documento "Ficha de Inscrição - Termos e Licença" o vínculo permanecerá impedido.' : ''}}
+                                    </div>
+                                </div>
 
+                                @if ($bond->impediment == '1')
                                     <div class="mb-2 row">
                                         <div class="col-sm-4 col-lg-3">
-                                            <strong>Status do vínculo:</strong>
+                                            <strong>Descrição do impedimento:</strong>
                                         </div>
                                         <div class="col-sm-8 col-lg-9">
-                                            {{ $bond->impediment == 0 ? 'Sem pendências' : 'Impedido'}}
-                                            {{ $bond->impediment == 0 && !$hasRights ? ' - OBS: Sem o documento "Ficha de Inscrição - Termos e Licença" o vínculo permanecerá impedido.' : ''}}
+                                            {{ $bond->impediment == '1' ? $bond->impediment_description : '-' }}
+                                            @if(!$hasRights && $bond->impediment_description ) <br> @endif
+                                            {{ !$hasRights ? 'OBS: Sem o documento "Ficha de Inscrição - Termos e Licença" o vínculo permanecerá impedido.' : ''}}
                                         </div>
                                     </div>
+                                @endif
 
-                                    @if ($bond->impediment == '1')
-                                        <div class="mb-2 row">
-                                            <div class="col-sm-4 col-lg-3">
-                                                <strong>Descrição do impedimento:</strong>
-                                            </div>
-                                            <div class="col-sm-8 col-lg-9">
-                                                {{ $bond->impediment == '1' ? $bond->impediment_description : '-' }}
-                                                @if(!$hasRights && $bond->impediment_description ) <br> @endif
-                                                {{ !$hasRights ? 'OBS: Sem o documento "Ficha de Inscrição - Termos e Licença" o vínculo permanecerá impedido.' : ''}}
-                                            </div>
-                                        </div>
-                                    @endif
-
+                                @can('bond-requestReview')
                                     <a href="{{ route('bonds.requestReview', $bond->id) }}" class="btn btn-primary btn-sm">Enviar solicitação de revisão de vínculo</a>
                                 @endcan
-
-                                @can(['bond-review', 'bond-requestReview'])
-                                    <hr>
-                                @endcan
-
+                                
+                                <hr>
+                                
                                 @can('bond-review')
                                         <form name="{{ 'formReview' . $bond->id }}" action="{{ route('bonds.review', $bond) }}" method="POST">
                                             @csrf
