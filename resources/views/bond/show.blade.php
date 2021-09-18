@@ -54,7 +54,7 @@
                                     </table>
                                 </div>
 
-                                <a href="{{ route('bonds.document.massdownload', $bond) }}" class="btn btn-primary btn-sm">
+                                <a href="{{ route('bonds.document.massdownload', $bond) }}" class="btn btn-primary btn-sm mt-1">
                                     &nbsp;&#8627; Fazer o download de todos os documentos do vínculo (zip)
                                 </a>
                             @else
@@ -107,12 +107,16 @@
                                 @endif
 
                                 @can('bond-requestReview')
-                                    <a href="{{ route('bonds.requestReview', $bond->id) }}" class="btn btn-primary btn-sm">Enviar solicitação de revisão de vínculo</a>
+                                    <a class="btn btn-primary btn-sm mt-1" href="{{ route('bonds.requestReview', $bond->id) }}">Enviar solicitação de revisão de vínculo</a>
+                                @endcan
+
+                                @can('bond-review')
+                                    <a class="btn btn-primary btn-sm mt-1" data-bs-toggle="collapse" href="#bondReviewFormContainer" role="button" aria-expanded="false" aria-controls="bondReviewFormContainer">Exibir formulário de revisão do vínculo</a>
                                 @endcan
                                 
-                                <hr>
-                                
                                 @can('bond-review')
+                                    <div class="collapse" id="bondReviewFormContainer">
+                                        <hr>
                                         <form name="{{ 'formReview' . $bond->id }}" action="{{ route('bonds.review', $bond) }}" method="POST">
                                             @csrf
                                             <label class="form-label">Impedido:</label>
@@ -141,8 +145,9 @@
                                                         document.getElementById('impedimentDescription').disabled = true;
                                                 </script>
                                             </div>
-                                            <input type="submit" value="Revisar" class="btn btn-primary btn-sm my-2 mx-1">
+                                            <input type="submit" value="Revisar" class="btn btn-primary btn-sm mt-1">
                                         </form>
+                                    </div> 
                                 @endcan
 
                             </div>
@@ -150,8 +155,7 @@
                     </div>
                 @endcanany
 
-                <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
-                <br />
+                <button type="button mb-1" onclick="history.back()" class="btn btn-secondary">Voltar</button>
             </div>
         </div>
     </main>
