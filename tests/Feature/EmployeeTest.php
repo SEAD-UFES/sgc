@@ -15,9 +15,61 @@ class EmployeeTest extends TestCase
     use DatabaseMigrations;
 
     protected $employeeData = [
-        "name" => "Fulano de Tal",
-        "cpf" => "12345678900",
-        "email" => "fulanodetal@mail.com",
+        'name' => 'Fulano de Tal',
+        'cpf' => '12345678900',
+        'job'  => 'fulanodetal@mail.com',
+        'genders' => '',
+        'birthday' => '',
+        'birthStates' => '',
+        'birthCity' => '',
+        'idNumber' => '',
+        'documentTypes' => '',
+        'idIssueDate' => '',
+        'idIssueAgency' => '',
+        'maritalStatuses' => '',
+        'spouseName' => '',
+        'fatherName' => '',
+        'motherName' => '',
+        'addressStreet' => '',
+        'addressComplement' => '',
+        'addressNumber' => '',
+        'addressDistrict' => '',
+        'addressPostalCode' => '',
+        'addressStates' => '',
+        'addressCity' => '',
+        'areaCode' => '',
+        'phone' => '',
+        'mobile' => '',
+        'email' => 'fulanodetal@mail.com',
+    ];
+
+    protected $newEmployeeData = [
+        'name' => 'updated',
+        'cpf' => '69696969696',
+        'job'  => 'fulanodetal@mail.com',
+        'genders' => '',
+        'birthday' => '',
+        'birthStates' => '',
+        'birthCity' => '',
+        'idNumber' => '',
+        'documentTypes' => '',
+        'idIssueDate' => '',
+        'idIssueAgency' => '',
+        'maritalStatuses' => '',
+        'spouseName' => '',
+        'fatherName' => '',
+        'motherName' => '',
+        'addressStreet' => '',
+        'addressComplement' => '',
+        'addressNumber' => '',
+        'addressDistrict' => '',
+        'addressPostalCode' => '',
+        'addressStates' => '',
+        'addressCity' => '',
+        'areaCode' => '',
+        'phone' => '',
+        'mobile' => '',
+        'email' => 'updated@email.com',
     ];
 
     /**
@@ -132,9 +184,8 @@ class EmployeeTest extends TestCase
 
         $employee = $this->getTestEmployee();
 
-        $session->put(route('employees.update', $employee->id),
-            ["name" => "updated", "email" => "updated@email.com", "cpf" => 69696969696])
-            ->assertSee('Acesso negado');
+        $session->put(route('employees.update', $employee->id), $this->newEmployeeData)
+        ->assertSee('Acesso negado');
     }
 
     /**
@@ -247,17 +298,12 @@ class EmployeeTest extends TestCase
 
         $employee = $this->getTestEmployee();
 
-        $employee->name = "updated";
-        $employee->email = "updated@mail.com";
-
-        $payload = $employee->toArray();
-
-        $session->put(route('employees.update', $employee->id), $payload)->assertStatus(302);
+        $session->put(route('employees.update', $employee->id), $this->newEmployeeData)->assertStatus(302);
 
         $updatedEmployee = Employee::find($employee->id);
 
         $this->assertEquals($updatedEmployee->name, "updated");
-        $this->assertEquals($updatedEmployee->email, "updated@mail.com");
+        $this->assertEquals($updatedEmployee->email, "updated@email.com");
     }
 
     /**

@@ -2,25 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
-use Illuminate\Http\Request;
-use App\CustomClasses\SgcLogger;
-use App\Models\Gender;
-use App\Models\DocumentType;
-use App\Models\MaritalStatus;
 use App\Models\State;
-use App\Models\User;
+use App\Models\Gender;
+use App\Models\Employee;
+use App\Models\DocumentType;
+use Illuminate\Http\Request;
+use App\Models\MaritalStatus;
+use App\CustomClasses\SgcLogger;
+use App\Services\EmployeeService;
+use Illuminate\Support\Facades\Gate;
+use App\CustomClasses\ModelFilterHelpers;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
-use App\CustomClasses\ModelFilterHelpers;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\DB;
 
 class EmployeeController extends Controller
 {
+    public function __construct(EmployeeService $employeeService)
+    {
+        $this->service = $employeeService;
+    }
+
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -28,21 +33,10 @@ class EmployeeController extends Controller
         //check access permission
         if (!Gate::allows('employee-list')) return response()->view('access.denied')->setStatusCode(401);
 
-        $employees_query = Employee::with(['gender', 'birthState', 'documentType', 'maritalStatus', 'addressState', 'user']);
-
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, Employee::$accepted_filters);
-        $employees_query = $employees_query->AcceptRequest(Employee::$accepted_filters)->filter();
 
-        //sort
-        $employees_query = $employees_query->sortable(['updated_at' => 'desc']);
-
-        //get paginate and add querystring on paginate links
-        $employees = $employees_query->paginate(10);
-        $employees->withQueryString();
-
-        //write on log
-        SgcLogger::writeLog(target: 'Employee');
+        $employees = $this->service->list();
 
         return view('employee.index', compact('employees', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
@@ -63,17 +57,15 @@ class EmployeeController extends Controller
         $maritalStatuses = MaritalStatus::orderBy('name')->get();
         $addressStates = State::orderBy('name')->get();
 
-        $employee = new Employee;
-
         SgcLogger::writeLog(target: 'Employee');
 
-        return view('employee.create', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee'));
+        return view('employee.create', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param StoreEmployeeRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreEmployeeRequest $request)
@@ -81,52 +73,10 @@ class EmployeeController extends Controller
         //check access permission
         if (!Gate::allows('employee-store')) return response()->view('access.denied')->setStatusCode(401);
 
-        $employee = new Employee;
-
-        $employee->name = $request->name;
-        $employee->cpf = $request->cpf;
-        $employee->job = $request->job;
-        $employee->gender_id = $request->genders;
-        $employee->birthday = $request->birthday;
-        $employee->birth_state_id = $request->birthStates;
-        $employee->birth_city = $request->birthCity;
-        $employee->id_number = $request->idNumber;
-        $employee->document_type_id = $request->documentTypes;
-        $employee->id_issue_date = $request->idIssueDate;
-        $employee->id_issue_agency = $request->idIssueAgency;
-        $employee->marital_status_id = $request->maritalStatuses;
-        $employee->spouse_name = $request->spouseName;
-        $employee->father_name = $request->fatherName;
-        $employee->mother_name = $request->motherName;
-        $employee->address_street = $request->addressStreet;
-        $employee->address_complement = $request->addressComplement;
-        $employee->address_number = $request->addressNumber;
-        $employee->address_district = $request->addressDistrict;
-        $employee->address_postal_code = $request->addressPostalCode;
-        $employee->address_state_id = $request->addressStates;
-        $employee->address_city = $request->addressCity;
-        $employee->area_code = $request->areaCode;
-        $employee->phone = $request->phone;
-        $employee->mobile = $request->mobile;
-        $employee->email = $request->email;
-
         try {
-            $employee->save();
+            $employee = $this->service->create($request->all());
         } catch (\Exception $e) {
             return redirect()->route('employees.index')->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $e->getMessage()]);
-        }
-
-        $existentUser = User::where('email', $request->email)->first();
-
-        if (!is_null($existentUser)) {
-            $existentUser->employee_id = $employee->id;
-            try {
-                $existentUser->save();
-            } catch (\Exception $e) {
-                return redirect()->route('employees.index')->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $e->getMessage()]);
-            }
-
-            SgcLogger::writeLog(target: $existentUser, action: 'Updated existent Employee info on User');
         }
 
         if ($request->importDocuments == 'true')
@@ -162,13 +112,13 @@ class EmployeeController extends Controller
         //check access permission
         if (!Gate::allows('employee-update')) return response()->view('access.denied')->setStatusCode(401);
 
+        SgcLogger::writeLog(target: $employee);
+
         $genders = Gender::orderBy('name')->get();
         $birthStates = State::orderBy('name')->get();
         $documentTypes = DocumentType::orderBy('name')->get();
         $maritalStatuses = MaritalStatus::orderBy('name')->get();
         $addressStates = State::orderBy('name')->get();
-
-        SgcLogger::writeLog(target: $employee);
 
         return view('employee.edit', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee'));
     }
@@ -176,72 +126,20 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Employee  $employee
+     * @param UpdateEmployeeRequest $request
+     * @param Employee $employee
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
         //check access permission
         if (!Gate::allows('employee-update')) return response()->view('access.denied')->setStatusCode(401);
-        
-        DB::transaction(function() use ($request, $employee) {
 
-            $currentUser = $employee->user;
-
-            $employee->name = $request->name;
-            $employee->cpf = $request->cpf;
-            $employee->job = $request->job;
-            $employee->gender_id = $request->genders;
-            $employee->birthday = $request->birthday;
-            $employee->birth_state_id = $request->birthStates;
-            $employee->birth_city = $request->birthCity;
-            $employee->id_number = $request->idNumber;
-            $employee->document_type_id = $request->documentTypes;
-            $employee->id_issue_date = $request->idIssueDate;
-            $employee->id_issue_agency = $request->idIssueAgency;
-            $employee->marital_status_id = $request->maritalStatuses;
-            $employee->spouse_name = $request->spouseName;
-            $employee->father_name = $request->fatherName;
-            $employee->mother_name = $request->motherName;
-            $employee->address_street = $request->addressStreet;
-            $employee->address_complement = $request->addressComplement;
-            $employee->address_number = $request->addressNumber;
-            $employee->address_district = $request->addressDistrict;
-            $employee->address_postal_code = $request->addressPostalCode;
-            $employee->address_state_id = $request->addressStates;
-            $employee->address_city = $request->addressCity;
-            $employee->area_code = $request->areaCode;
-            $employee->phone = $request->phone;
-            $employee->mobile = $request->mobile;
-            $employee->email = $request->email;
-
-            try {
-                $employee->save();
-            } catch (\Exception $e) {
-                return back()->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $e->getMessage()]);
-            }
-
-            $existentUser = User::where('email', $request->email)->first();
-
-            if (!is_null($existentUser)) {
-                $currentUser->employee_id = null;
-                try {
-                    $currentUser->save();
-                } catch (\Exception $e) {
-                    return back()->withErrors(['noStore' => 'Não foi possível salvar o Usuário: ' . $e->getMessage()]);
-                }
-
-                $existentUser->employee_id = $employee->id;
-                try {
-                    $existentUser->save();
-                } catch (\Exception $e) {
-                    return back()->withErrors(['noStore' => 'Não foi possível salvar o Usuário: ' . $e->getMessage()]);
-                }
-
-                SgcLogger::writeLog(target: $existentUser, action: 'Updated existent Employee info on User');
-            }
-        });
+        try {
+            $this->service->update($request->all(), $employee);
+        } catch (\Exception $e) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $e->getMessage()]);
+        }
 
         return redirect()->route('employees.index')->with('success', 'Colaborador atualizado com sucesso.');
     }
@@ -256,32 +154,12 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (!Gate::allows('employee-destroy')) return response()->view('access.denied')->setStatusCode(401);
-        
-        DB::transaction(function() use ($employee) {
 
-            $currentUser = $employee->user;
-
-            if (!is_null($currentUser)) {
-                $currentUser->employee_id = null;
-                try {
-                    $currentUser->save();
-                } catch (\Exception $e) {
-                    return back()->withErrors(['noStore' => 'Não foi possível salvar o Usuário: ' . $e->getMessage()]);
-                }
-            }
-
-            try {
-                foreach ($employee->courses as $course) $course->bond->bondDocuments()->delete();
-
-                $employee->courses()->detach();
-                $employee->employeeDocuments()->delete();
-                $employee->delete();
-            } catch (\Exception $e) {
-                return redirect()->route('employees.index')->withErrors(['noDestroy' => 'Não foi possível excluir o Colaborador: ' . $e->getMessage()]);
-            }
-
-            SgcLogger::writeLog(target: $employee, action: 'destroy');
-        });
+        try {
+            $this->service->delete($employee);
+        } catch (\Exception $e) {
+            return redirect()->route('employees.index')->withErrors(['noDestroy' => 'Não foi possível excluir o Colaborador: ' . $e->getMessage()]);
+        }
 
         return redirect()->route('employees.index')->with('success', 'Colaborador excluído com sucesso.');
     }
