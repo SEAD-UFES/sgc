@@ -64,8 +64,6 @@
                     </div>
                 </div>
 
-                @canany(['bond-review', 'bond-requestReview'])
-
                     @php
                         $hasRights = $documents->where('document_type_id', App\Models\DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first()->id)->count() > 0;
                     @endphp
@@ -153,7 +151,6 @@
                             </div>
                         </div>
                     </div>
-                @endcanany
 
                 <button type="button mb-1" onclick="history.back()" class="btn btn-secondary">Voltar</button>
             </div>
