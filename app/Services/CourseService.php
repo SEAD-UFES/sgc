@@ -9,7 +9,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class CourseService
 {
-    
     /**
      * Undocumented function
      *
