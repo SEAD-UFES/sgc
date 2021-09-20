@@ -117,12 +117,6 @@ class CourseController extends Controller
         //check access permission
         if (!Gate::allows('course-update')) return response()->view('access.denied')->setStatusCode(401);
 
-        $course->name = $request->name;
-        $course->description =  $request->description;
-        $course->course_type_id = $request->courseTypes;
-        $course->begin = $request->begin;
-        $course->end = $request->end;
-
         try {
             $this->service->update($request->all(), $course);
         } catch (\Exception $e) {
