@@ -15,7 +15,7 @@
                 <div class="col-xl-10 col-xxl-8">
                     @include('_components.alerts')
                     <form action={{ route('courses.store') }} method="POST">
-                        @component('course.componentCourseForm', compact('course', 'courseTypes'))@endcomponent
+                        @component('course.componentCourseForm', compact('courseTypes'))@endcomponent
                         <br />
                         <button type="submit" class="btn btn-primary">Cadastrar</button> <button type="button"
                             onclick="history.back()" class="btn btn-secondary">Cancelar</button>
