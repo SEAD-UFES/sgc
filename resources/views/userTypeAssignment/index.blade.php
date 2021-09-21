@@ -77,15 +77,14 @@
 
                     @if(sizeof($userTypeAssignments) <= 0)
                         <p>Sem resultados para exibir.</p>
+                        <br />
                     @endif
-                    <br />
 
                     <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
                     @can('isAdm-global')
                         <a href="{{ route('userTypeAssignments.create') }}" class="btn btn-warning">Cadastrar nova Atrib. de Papel</a>
                     @endcan
                     <br />
-
                 </div>
             </div>
         </main>

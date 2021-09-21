@@ -1,33 +1,5 @@
-<div class="card mb-3">
-    <div class="card-header" data-bs-toggle="collapse" href="#employeeDataContent" role="button" aria-expanded="true" aria-controls="employeeDataContent">
-        <h4 class='mb-0'>Dados do colaborador</h4>
-    </div>
-    
-    <div class="collapse show" id="employeeDataContent" >
-        <div class="card-body" >
-            <div class="mb-2 row">
-                <div class="col-sm-4 col-lg-3"><strong>Nome:</strong></div>
-                <div class="col-sm-8 col-lg-9">{{ $bond->employee->name ?? '-' }}</div>
-            </div>
-            <div class="mb-2 row">
-                <div class="col-sm-4 col-lg-3"><strong>Cidade:</strong></div>
-                <div class="col-sm-8 col-lg-9">{{ $bond->employee->address_city ?? '-' }}</div>
-            </div>
-            <div class="mb-2 row">
-                <div class="col-sm-4 col-lg-3"><strong>Email:</strong></div>
-                <div class="col-sm-8 col-lg-9">{{ $bond->employee->email ?? '-' }}</div>
-            </div>
 
-            <div class="">
-                @can('employee-show')
-                <a href="{{ route('employees.show', $bond->employee->id) }}" class="btn btn-primary btn-sm">
-                    <i class="bi-eye-fill"></i> Consultar colaborador
-                </a>&nbsp;
-                @endcan
-            </div>
-        </div> 
-    </div>
-</div>
+@component('employee.componentBasicEmployeeData', ['employee'=>$bond->employee])@endcomponent
 
 <div class="card mb-3">
     <div class="card-header" data-bs-toggle="collapse" href="#bondDataContent" role="button" aria-expanded="true" aria-controls="bondDataContent">

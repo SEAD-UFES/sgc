@@ -68,4 +68,14 @@ class ModelFilterHelpers
         }
         return $query_builder;
     }
+
+    public static function relation_simple_operation($query_builder,  $relation, $column, $operation, $values)
+    {
+        foreach ($values as $value) {
+            $query_builder = $query_builder->wherehas($relation, function ($query) use ($column, $operation, $value) {
+                $query->where($column, $operation, $value);
+            });
+        }
+        return $query_builder;
+    }
 }
