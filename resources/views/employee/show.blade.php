@@ -195,7 +195,7 @@
                                     <div class="table-responsive">
                                         <table class="table table-hover">
                                             <thead>
-                                                <th>Útima atualização</th>
+                                                <th>Última atualização</th>
                                                 <th>Tipo do arquivo</th>
                                                 <th>Nome do arquivo</th>
                                             </thead>
