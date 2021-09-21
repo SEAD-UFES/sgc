@@ -116,6 +116,11 @@
                         <div class="collapse show" id="employeeContactDataContent" >
                             <div class="card-body">
                                 <div class="mb-2 row">
+                                    <div class="col-sm-4 col-lg-3"><strong>Código de Área:</strong></div>
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->area_code ?? '-' }}
+                                    </div>
+                                </div>
+                                <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Telefone:</strong></div>
                                     <div class="col-sm-8 col-lg-9"><a href='tel:{{ $employee->phone }}'>{{ $employee->phone ?? '-' }}</a>
                                     </div>
@@ -163,11 +168,6 @@
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Cidade:</strong></div>
                                     <div class="col-sm-8 col-lg-9">{{ $employee->address_city ?? '-' }}
-                                    </div>
-                                </div>
-                                <div class="mb-2 row">
-                                    <div class="col-sm-4 col-lg-3"><strong>Código de Área:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->area_code ?? '-' }}
                                     </div>
                                 </div>
 
