@@ -16,6 +16,7 @@
     <main role="main">
         <div class="row justify-content-center">
             <div class="col-xl-10 col-xxl-8">
+                
                 @include('_components.alerts')
 
                 @component('bond.componentBondDetails', compact('bond'))@endcomponent

@@ -100,6 +100,7 @@ class SgcLogger
             'request review' => 'info',
             'update' => 'notice',
             'bondDocuments download' => 'notice',
+            'employeeDocuments download' => 'notice',
             'destroy' => 'warning',
         ];
 

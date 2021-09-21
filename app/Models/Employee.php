@@ -89,6 +89,11 @@ class Employee extends Model
         return $this->belongsTo(State::class);
     }
 
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
     public function user()
     {
         return $this->hasOne(User::class);
@@ -102,6 +107,11 @@ class Employee extends Model
     public function employeeDocuments()
     {
         return $this->hasMany(EmployeeDocument::class);
+    }
+
+    public function bonds()
+    {
+        return $this->hasMany(Bond::class);
     }
 
     public function hasDocuments()

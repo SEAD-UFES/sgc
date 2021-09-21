@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 use Kyslik\ColumnSortable\Sortable;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use App\ModelFilters\bondFilter;
+use Carbon\Carbon;
 
 class Bond extends Pivot
 {
@@ -83,5 +84,23 @@ class Bond extends Pivot
     public function bondDocuments()
     {
         return $this->hasMany(BondDocument::class, 'bond_id');
+    }
+
+    public function scopeInActivePeriod($query)
+    {
+        return $query
+            ->where(
+                function ($query) {
+                    $query
+                        ->where([
+                            ['bonds.begin', '<=', Carbon::today()->toDateString()],
+                            ['bonds.end', '>=', Carbon::today()->toDateString()],
+                        ])
+                        ->orWhere([
+                            ['bonds.begin', '<=', Carbon::today()->toDateString()],
+                            ['bonds.end', '=', null],
+                        ]);
+                }
+            );
     }
 }
