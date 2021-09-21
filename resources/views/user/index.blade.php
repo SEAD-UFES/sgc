@@ -46,6 +46,9 @@
                                         <td>{{ $user->active === 1 ? 'Sim' : 'Não' }}</td>
                                         <td>{{ $user->employee ? $user->employee->name : 'Não possui' }}</td>
                                         <td class="text-center"><div class="d-inline-flex">
+                                            @can('user-show')
+                                                <a href="{{route('users.show', $user)}}" data-bs-toggle="tooltip" title="Ver usuário" class="btn btn-primary btn-sm"><i class="bi-eye-fill"></i></a>&nbsp;
+                                            @endcan
                                             @can('user-update')
                                                 <a href="{{route('users.edit', $user)}}" data-bs-toggle="tooltip" title="Editar usuário" class="btn btn-primary btn-sm"><i class="bi-pencil-fill"></i></a>&nbsp;
                                             @endcan

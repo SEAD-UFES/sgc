@@ -188,7 +188,10 @@
                         </div>
                         <div class="collapse show" id="employeeDocumentListContent" >
                             <div class="card-body">
-                                @if($employee->employeeDocuments->count() > 0)
+                                @php
+                                    $employeeDocuments = $employee->employeeDocuments()->orderBy('updated_at', 'DESC')->get();
+                                @endphp
+                                @if($employeeDocuments->count() > 0)
                                     <div class="table-responsive">
                                         <table class="table table-hover">
                                             <thead>
@@ -197,7 +200,7 @@
                                                 <th>Nome do arquivo</th>
                                             </thead>
                                             <tbody>
-                                                @foreach ($employee->employeeDocuments as $document)
+                                                @foreach ($employeeDocuments as $document)
                                                     <tr>
                                                         <td>
                                                             {{$document->updated_at 
@@ -365,6 +368,9 @@
                                                             }}
                                                         </td>
                                                         <td class="text-center"><div class="d-inline-flex">
+                                                            @can('user-show')
+                                                                <a href="{{route('users.show', $user)}}" data-bs-toggle="tooltip" title="Ver usuário" class="btn btn-primary btn-sm"><i class="bi-eye-fill"></i></a>&nbsp;
+                                                            @endcan
                                                             @can('user-update')
                                                                 <a href="{{route('users.edit', $user)}}" data-bs-toggle="tooltip" title="Editar usuário" class="btn btn-primary btn-sm"><i class="bi-pencil-fill"></i></a>&nbsp;
                                                             @endcan
@@ -386,6 +392,13 @@
                                 @else
                                     <p class="mb-0">O colaborador não possui usuários de sistema associados.</p>
                                 @endif
+
+                                <div class="">
+                                    <a class="btn btn-primary btn-sm mt-1" href="{{ route('users.index', ['employee_id' => $employee->id]) }}" target="_blank">
+                                        Listagem avançada...
+                                    </a>    
+                                </div>
+
                             </div>
                         </div>
                     </div>   

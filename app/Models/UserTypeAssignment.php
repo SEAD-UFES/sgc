@@ -34,7 +34,8 @@ class UserTypeAssignment extends Model
         'begin_LowOrEqu',
         'end_exactly',
         'end_BigOrEqu',
-        'end_LowOrEqu'
+        'end_LowOrEqu',
+        'user_id'
     ];
 
     public function user()

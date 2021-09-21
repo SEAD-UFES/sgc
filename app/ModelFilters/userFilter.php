@@ -41,4 +41,11 @@ trait userFilter
         $builder = ModelFilterHelpers::relation_contains($builder, 'employee', 'name', $values);
         return $builder;
     }
+
+    public function employee_id(Builder $builder, $value)
+    {
+        $values = ModelFilterHelpers::inputToArray($value);
+        $builder = ModelFilterHelpers::relation_simple_operation($builder, 'employee', 'id', '=', $values);
+        return $builder;
+    }
 }

@@ -37,6 +37,7 @@ class User extends Authenticatable
         // 'usertype_name_contains',
         'active_exactly',
         'employee_name_contains',
+        'employee_id'
     ];
 
     /**
