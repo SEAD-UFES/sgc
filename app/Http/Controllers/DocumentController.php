@@ -373,4 +373,28 @@ class DocumentController extends Controller
             echo 'failed: $zip->open()';
         }
     }
+
+    public function employeeDocumentsMassDownload(Employee $employee)
+    {
+        //check access permission
+        if (!Gate::allows('employeeDocument-download')) return response()->view('access.denied')->setStatusCode(401);
+
+        $documents = $employee->employeeDocuments;
+
+        $zip_file_name = date('Y-m-d') . '_' . $employee->name . '.zip';
+
+        $zip = new \ZipArchive();
+
+        if ($zip->open($zip_file_name, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
+
+            foreach ($documents as $document) $zip->addFromString($document->original_name, base64_decode($document->file_data));
+            $zip->close();
+
+            SgcLogger::writeLog(target: $employee, action: 'employeeDocuments download');
+
+            return response()->download($zip_file_name)->deleteFileAfterSend(true);
+        } else {
+            echo 'failed: $zip->open()';
+        }
+    }
 }

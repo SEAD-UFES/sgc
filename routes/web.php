@@ -39,8 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/webhome', [WebController::class, 'webHome'])->name('home');
 
     Route::resource('employees', EmployeeController::class);
-
     Route::resource('bonds', BondController::class);
+
     Route::post('bondreview/{bond}', [BondController::class, 'review'])->name('bonds.review');
     Route::get('bondrequestreview/{bond}', [BondController::class, 'requestReview'])->name('bonds.requestReview');
 
@@ -54,6 +54,8 @@ Route::middleware('auth')->group(function () {
     Route::get('employeedocuments/create-many/p1', [DocumentController::class, 'employeeDocumentCreateMany'])->name('employees.document.create');
     Route::post('employeedocuments/create-many/p2', [DocumentController::class, 'employeeDocumentStoreManyFase1'])->name('employees.document.mass.import');
     Route::post('employeedocuments/create-many/p3', [DocumentController::class, 'employeeDocumentStoreManyFase2'])->name('employees.document.mass.store');
+    //mass download
+    Route::get('employeedocumentsmassdownload/{employee}', [DocumentController::class, 'employeeDocumentsMassDownload'])->name('employees.document.massdownload');
 
     Route::get('bondsdocumentindex', [DocumentController::class, 'bondsDocumentIndex'])->name('bonds.document.index');
     //single bond doc create
@@ -63,7 +65,7 @@ Route::middleware('auth')->group(function () {
     Route::get('bonddocuments/create-many/p1', [BondDocumentController::class, 'createMany'])->name('bondDocuments.createMany');
     Route::post('bonddocuments/create-many/p2', [BondDocumentController::class, 'storeManyFase1'])->name('bondDocuments.storeManyFase01');
     Route::post('bonddocuments/create-many/p3', [BondDocumentController::class, 'storeManyFase2'])->name('bondDocuments.storeManyFase02');
-
+    //mass download
     Route::get('bonddocumentsmassdownload/{bond}', [DocumentController::class, 'bondDocumentsMassDownload'])->name('bonds.document.massdownload');
     Route::get('rights', [DocumentController::class, 'rightsIndex'])->name('bonds.rights.index');
 
