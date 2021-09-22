@@ -4,14 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Pole;
 use Illuminate\Http\Request;
+use App\Services\PoleService;
 use App\CustomClasses\SgcLogger;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StorePoleRequest;
 use App\Http\Requests\UpdatePoleRequest;
 use App\CustomClasses\ModelFilterHelpers;
-use Illuminate\Support\Facades\Gate;
 
 class PoleController extends Controller
 {
+    public function __construct(PoleService $poleService)
+    {
+        $this->service = $poleService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,21 +28,10 @@ class PoleController extends Controller
         //check access permission
         if (!Gate::allows('pole-list')) return response()->view('access.denied')->setStatusCode(401);
 
-        $poles_query = new Pole();
-
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, Pole::$accepted_filters);
-        $poles_query = $poles_query->AcceptRequest(Pole::$accepted_filters)->filter();
 
-        //sort
-        $poles_query = $poles_query->sortable(['name' => 'asc']);
-
-        //get paginate and add querystring on paginate links
-        $poles = $poles_query->paginate(10);
-        $poles->withQueryString();
-
-        //write log
-        SgcLogger::writeLog(target: 'Pole');
+        $poles = $this->service->list();
 
         return view('pole.index', compact('poles', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
@@ -51,11 +46,9 @@ class PoleController extends Controller
         //check access permission
         if (!Gate::allows('pole-store')) return response()->view('access.denied')->setStatusCode(401);
 
-        $pole = new Pole;
-
         SgcLogger::writeLog(target: 'Pole');
 
-        return view('pole.create', compact('pole'));
+        return view('pole.create');
     }
 
     /**
@@ -69,14 +62,11 @@ class PoleController extends Controller
         //check access permission
         if (!Gate::allows('pole-store')) return response()->view('access.denied')->setStatusCode(401);
 
-        $pole = new Pole;
-
-        $pole->name = $request->name;
-        $pole->description = $request->description;
-
-        SgcLogger::writeLog(target: $pole);
-
-        $pole->save();
+        try {
+            $this->service->create($request->all());
+        } catch (\Exception $e) {
+            return redirect()->route('poles.index')->withErrors(['noStore' => 'Não foi possível salvar o Polo: ' . $e->getMessage()]);
+        }
 
         return redirect()->route('poles.index')->with('success', 'Polo criado com sucesso.');
     }
@@ -125,16 +115,11 @@ class PoleController extends Controller
         //check access permission
         if (!Gate::allows('pole-update')) return response()->view('access.denied')->setStatusCode(401);
 
-        $pole->name = $request->name;
-        $pole->description = $request->description;
-
         try {
-            $pole->save();
+            $pole = $this->service->update($request->all(), $pole);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o Polo: ' . $e->getMessage()]);
         }
-
-        SgcLogger::writeLog(target: $pole);
 
         return redirect()->route('poles.index')->with('success', 'Polo atualizado com sucesso.');
     }
@@ -150,10 +135,8 @@ class PoleController extends Controller
         //check access permission
         if (!Gate::allows('pole-destroy')) return response()->view('access.denied')->setStatusCode(401);
 
-        SgcLogger::writeLog(target: $pole);
-
         try {
-            $pole->delete();
+            $this->service->delete($pole);
         } catch (\Exception $e) {
             return back()->withErrors(['noDestroy' => 'Não foi possível salvar o Polo: ' . $e->getMessage()]);
         }
