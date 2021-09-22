@@ -3,16 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use App\Models\GrantType;
 use Illuminate\Http\Request;
+use App\Services\RoleService;
 use App\CustomClasses\SgcLogger;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
-use App\Models\GrantType;
 use App\CustomClasses\ModelFilterHelpers;
-use Illuminate\Support\Facades\Gate;
 
 class RoleController extends Controller
 {
+    public function __construct(RoleService $roleService)
+    {
+        $this->service = $roleService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -23,21 +29,10 @@ class RoleController extends Controller
         //check access permission
         if (!Gate::allows('role-list')) return response()->view('access.denied')->setStatusCode(401);
 
-        $roles_query = new Role();
-
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, Role::$accepted_filters);
-        $roles_query = $roles_query->AcceptRequest(Role::$accepted_filters)->filter();
 
-        //sort
-        $roles_query = $roles_query->sortable(['name' => 'asc']);
-
-        //get paginate and add querystring on paginate links
-        $roles = $roles_query->paginate(10);
-        $roles->withQueryString();
-
-        //write on log
-        SgcLogger::writeLog(target: 'Role');
+        $roles = $this->service->list();
 
         return view('role.index', compact('roles', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
@@ -53,11 +48,10 @@ class RoleController extends Controller
         if (!Gate::allows('role-store')) return response()->view('access.denied')->setStatusCode(401);
 
         $grantTypes = GrantType::orderBy('name')->get();
-        $role = new Role;
 
         SgcLogger::writeLog(target: 'Role');
 
-        return view('role.create', compact('role', 'grantTypes'));
+        return view('role.create', compact('grantTypes'));
     }
 
     /**
@@ -71,16 +65,11 @@ class RoleController extends Controller
         //check access permission
         if (!Gate::allows('role-store')) return response()->view('access.denied')->setStatusCode(401);
 
-        $role = new Role;
-
-        $role->name = $request->name;
-        $role->description = $request->description;
-        $role->grant_value = $request->grantValue;
-        $role->grant_type_id = $request->grantTypes;
-
-        SgcLogger::writeLog(target: $role);
-
-        $role->save();
+        try {
+            $this->service->create($request->all());
+        } catch (\Exception $e) {
+            return redirect()->route('bonds.index')->withErrors(['noStore' => 'Não foi possível salvar a Atribuição: ' . $e->getMessage()]);
+        }
 
         return redirect()->route('roles.index')->with('success', 'Atribuição criada com sucesso.');
     }
@@ -131,18 +120,11 @@ class RoleController extends Controller
         //check access permission
         if (!Gate::allows('role-update')) return response()->view('access.denied')->setStatusCode(401);
 
-        $role->name = $request->name;
-        $role->description = $request->description;
-        $role->grant_value = $request->grantValue;
-        $role->grant_type_id = $request->grantTypes;
-
         try {
-            $role->save();
+            $this->service->update($request->all(), $role);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar a Atribuição: ' . $e->getMessage()]);
         }
-
-        SgcLogger::writeLog(target: $role);
 
         return redirect()->route('roles.index')->with('success', 'Atribuição atualizada com sucesso.');
     }
@@ -158,12 +140,10 @@ class RoleController extends Controller
         //check access permission
         if (!Gate::allows('role-destroy')) return response()->view('access.denied')->setStatusCode(401);
 
-        SgcLogger::writeLog(target: $role);
-
         try {
-            $role->delete();
+            $this->service->delete($role);
         } catch (\Exception $e) {
-            return back()->withErrors(['noDestroy' => 'Não foi possível salvar a Atribuição: ' . $e->getMessage()]);
+            return back()->withErrors(['noDestroy' => 'Não foi possível excluir a Atribuição: ' . $e->getMessage()]);
         }
 
         return redirect()->route('roles.index')->with('success', 'Atribuição excluída com sucesso.');

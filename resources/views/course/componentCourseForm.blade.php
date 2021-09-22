@@ -24,7 +24,7 @@
             <option value="">Selecione o tipo</option>
             @foreach ($courseTypes as $courseType)
                 <option value="{{ $courseType->id }}"
-                    {{ isset($course) ? ($courseType->id == $course->course_type_id ? 'selected' : '') : (old('courseTypes') == $courseType->id ? 'selected' : '') }}>
+                    {{ isset($course) ? ($course->course_type_id == $courseType->id ? 'selected' : '') : (old('courseTypes') == $courseType->id ? 'selected' : '') }}>
                     {{ $courseType->name }}
                 </option>
             @endforeach

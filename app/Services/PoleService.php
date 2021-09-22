@@ -8,6 +8,11 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class PoleService
 {
+    /**
+     * Undocumented function
+     *
+     * @return LengthAwarePaginator
+     */
     public function list(): LengthAwarePaginator
     {
         SgcLogger::writeLog(target: 'Pole', action: 'index');
@@ -21,6 +26,12 @@ class PoleService
         return $poles;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param array $attributes
+     * @return Pole
+     */
     public function create(array $attributes): Pole
     {
         $pole = new Pole;
@@ -34,6 +45,13 @@ class PoleService
         return $pole;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param array $attributes
+     * @param Pole $pole
+     * @return Pole
+     */
     public function update(array $attributes, Pole $pole): Pole
     {
 
@@ -47,6 +65,12 @@ class PoleService
         return $pole;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param Pole $pole
+     * @return void
+     */
     public function delete(Pole $pole)
     {
         SgcLogger::writeLog(target: $pole);
