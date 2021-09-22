@@ -168,7 +168,7 @@ class ApprovedController extends Controller
         $addressStates = State::orderBy('name')->get();
 
         try {
-            $employee = $this->service->designate($request->all(), $approved);
+            $employee = $this->service->designate($approved);
         } catch (EmployeeAlreadyExistsException $e) {
             return redirect()->route('approveds.index')->withErrors(['employeeAlreadyExists' => 'Já existe Colaborador no sistema com o mesmo email.']);
         } catch (\Exception $e) {

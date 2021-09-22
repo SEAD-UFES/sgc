@@ -4,11 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\CourseType;
 use Illuminate\Http\Request;
-use App\CustomClasses\SgcLogger;
+use App\Services\CourseTypeService;
 use App\CustomClasses\ModelFilterHelpers;
 
 class CourseTypeController extends Controller
 {
+    public function __construct(CourseTypeService $courseTypeService)
+    {
+        $this->service = $courseTypeService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,21 +21,10 @@ class CourseTypeController extends Controller
      */
     public function index(Request $request)
     {
-        $coursesTypes_query = new CourseType();
-
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, CourseType::$accepted_filters);
-        $coursesTypes_query = $coursesTypes_query->AcceptRequest(CourseType::$accepted_filters)->filter();
 
-        //sort
-        $coursesTypes_query = $coursesTypes_query->sortable(['name' => 'asc']);
-
-        //get paginate and add querystring on paginate links
-        $courseTypes = $coursesTypes_query->paginate(10);
-        $courseTypes->withQueryString();
-
-        //write on log
-        SgcLogger::writeLog(target: 'CourseType');
+        $courseTypes = $this->service->list();
 
         return view('coursetype.index', compact('courseTypes', 'filters'));
     }

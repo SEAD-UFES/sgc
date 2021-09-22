@@ -67,11 +67,10 @@ class ApprovedService
     /**
      * Undocumented function
      *
-     * @param array $attributes
      * @param Approved $approved
      * @return Employee
      */
-    public function designate(array $attributes, Approved $approved): Employee
+    public function designate(Approved $approved): Employee
     {
         if ($this->employeeAlreadyExists($approved))
             throw new EmployeeAlreadyExistsException("Employee already exists", 1);
