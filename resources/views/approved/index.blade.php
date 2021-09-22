@@ -67,7 +67,7 @@
                                         <td>
                                             <div class="d-inline-flex">
                                                 @can('approved-update-state')
-                                                    <form name="{{ 'formChangeState' . $approved->id }}" action={{ route('approveds.changestate', ['approved' => $approved]) }} method="POST">
+                                                    <form name="{{ 'formChangeState' . $approved->id }}" action={{ route('approveds.changestate', $approved) }} method="POST">
                                                         @csrf
                                                         <select name="states" id="selectState1" class="form-select form-select-sm w-auto" data-bs-toggle="tooltip" data-bs-placement="left" title="{{ $approved->approvedState->description ?? '' }}" onchange="{{ 'document.forms[\'formChangeState' . $approved->id . '\'].submit();' }}">
                                                             @foreach ($approvedStates as $approvedState)
@@ -81,9 +81,8 @@
                                                 @can('approved-designate')
                                                     @if ($approved->approvedState->name == 'Aceitante')
                                                         &nbsp;
-                                                        <form name="{{ 'formDesignate' . $approved->id }}" action={{ route('approveds.designate') }} method="POST">
+                                                        <form name="{{ 'formDesignate' . $approved->id }}" action={{ route('approveds.designate', $approved) }} method="POST">
                                                             @csrf
-                                                            <input type="hidden" name="approvedId" value="{{ $approved->id }}" />
                                                             <span onclick="{{ 'if(confirm(\'Tem certeza que deseja nomear esse Aprovado para Colaborador?\')) document.forms[\'formDesignate' . $approved->id . '\'].submit();' }}" data-bs-toggle="tooltip" title="Converter o aprovado em Colaborador" class="btn btn-warning btn-sm">Nomear</span>
                                                         </form>
                                                     @endif

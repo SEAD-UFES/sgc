@@ -18,7 +18,7 @@
                     @csrf
                     <div class="mb-3">
                         <label for="inputFile1" class="form-label">Selecione o arquivo</label>
-                        <input class="form-control" type="file" name="file" id="inputFile1">
+                        <input class="form-control" type="file" name="file" accept=".csv,.xlx,.xls,.xlsx" id="inputFile1">
                     </div>
                     <br />
                     <button type="submit" class="btn btn-primary">Enviar arquivo</button> <button type="button"

@@ -2,30 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Approved;
-use Illuminate\Http\Request;
-use App\CustomClasses\SgcLogger;
-use App\Models\ApprovedState;
-use App\Models\Gender;
-use App\Models\State;
-use App\Models\documentType;
-use App\Models\MaritalStatus;
-use App\Models\Employee;
-use App\Imports\ApprovedsImport;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Storage;
-use App\Models\Role;
-use App\Models\Course;
 use App\Models\Pole;
-use App\CustomClasses\ModelFilterHelpers;
+use App\Models\Role;
+use App\Models\State;
+use App\Models\Course;
+use App\Models\Gender;
+use App\Models\Approved;
+use App\Models\documentType;
+use Illuminate\Http\Request;
+use App\Models\ApprovedState;
+use App\Models\MaritalStatus;
+use App\CustomClasses\SgcLogger;
+use App\Services\ApprovedService;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\DB;
+use App\CustomClasses\ModelFilterHelpers;
+use App\Http\Requests\ImportApprovedRequest;
+use App\Exceptions\EmployeeAlreadyExistsException;
 
 class ApprovedController extends Controller
 {
+    public function __construct(ApprovedService $approvedService)
+    {
+        $this->service = $approvedService;
+    }
+
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -33,24 +37,13 @@ class ApprovedController extends Controller
         //check access permission
         if (!Gate::allows('approved-list')) return response()->view('access.denied')->setStatusCode(401);
 
-        $approveds_query = Approved::with(['approvedState', 'course', 'pole', 'role']);
-
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, Approved::$accepted_filters);
-        $approveds_query = $approveds_query->AcceptRequest(Approved::$accepted_filters)->filter();
-
-        //sort
-        $approveds_query = $approveds_query->sortable(['updated_at' => 'desc']);
-
-        //get paginate and add querystring on paginate links
-        $approveds = $approveds_query->paginate(10);
-        $approveds->withQueryString();
 
         //get approved states
         $approvedStates = ApprovedState::all();
 
-        //write on log
-        SgcLogger::writeLog(target: 'Approved');
+        $approveds = $this->service->list();
 
         return view('approved.index', compact('approveds', 'approvedStates', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
@@ -126,129 +119,105 @@ class ApprovedController extends Controller
         //check access permission
         if (!Gate::allows('approved-destroy')) return response()->view('access.denied')->setStatusCode(401);
 
-        SgcLogger::writeLog(target: $approved);
-
         try {
-            $approved->delete();
+            $this->service->delete($approved);
         } catch (\Exception $e) {
             return back()->withErrors(['noDestroy' => 'Não foi possível excluir o Aprovado: ' . $e->getMessage()]);
         }
 
         return redirect()->route('approveds.index')->with('success', 'Aprovado retirado da lista.');
     }
-
+    
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @param Approved $approved
+     * @return void
+     */
     public function changeState(Request $request, Approved $approved)
     {
         //check access permission
         if (!Gate::allows('approved-update-state')) return response()->view('access.denied')->setStatusCode(401);
 
-        $new_state_id = $request->states;
-
-        $approved->approved_state_id = $new_state_id;
-
-        SgcLogger::writeLog(target: $approved, action: 'edit');
-
         try {
-            $approved->save();
+            $this->service->changeState($request->all(), $approved);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o Aprovado: ' . $e->getMessage()]);
         }
 
         return redirect()->route('approveds.index')->with('success', 'Aprovado alterado com sucesso.');
     }
-
-    public function designate(Request $request)
+    
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @param Approved $approved
+     * @return void
+     */
+    public function designate(Request $request, Approved $approved)
     {
         //check access permission
         if (!Gate::allows('approved-designate')) return response()->view('access.denied')->setStatusCode(401);
 
-        $approved = Approved::find($request->approvedId);
-        $existantEmployee = Employee::where('email', $approved->email)->first();
+        $genders = Gender::orderBy('name')->get();
+        $birthStates = State::orderBy('name')->get();
+        $documentTypes = DocumentType::orderBy('name')->get();
+        $maritalStatuses = MaritalStatus::orderBy('name')->get();
+        $addressStates = State::orderBy('name')->get();
 
-        if (is_null($existantEmployee)) {
-            $genders = Gender::orderBy('name')->get();
-            $birthStates = State::orderBy('name')->get();
-            $documentTypes = DocumentType::orderBy('name')->get();
-            $maritalStatuses = MaritalStatus::orderBy('name')->get();
-            $addressStates = State::orderBy('name')->get();
-
-            $employee = new Employee;
-            $employee->name = $approved->name;
-            $employee->email = $approved->email;
-            $employee->area_code = $approved->area_code;
-            $employee->phone = $approved->phone;
-            $employee->mobile = $approved->mobile;
-
-            SgcLogger::writeLog(target: $approved, action: 'designate');
-
-            $this->destroy($approved);
-
-            return view('approved.designate', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee'));
-        } else {
-            $email = $approved->email;
-
-            $this->destroy($approved);
-
-            return redirect()->route('approveds.index')->with('success', "Colaborador de email [$email] já existente no sistema. " . ($existantEmployee->hasDocuments() ? 'Com' : 'Sem') . ' documentos.');
+        try {
+            $employee = $this->service->designate($request->all(), $approved);
+        } catch (EmployeeAlreadyExistsException $e) {
+            return redirect()->route('approveds.index')->withErrors(['employeeAlreadyExists' => 'Já existe Colaborador no sistema com o mesmo email.']);
+        } catch (\Exception $e) {
+            return redirect()->route('approveds.index')->withErrors($e->getMessage());
         }
+
+        return view('approved.designate', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee'));
     }
-
-    public function import(Request $request)
+    
+    /**
+     * Undocumented function
+     *
+     * @param ImportApprovedRequest $request
+     * @return void
+     */
+    public function import(ImportApprovedRequest $request)
     {
-        $request->validate([
-            'file' => 'required|mimes:csv,xlx,xls,xlsx|max:2048'
-        ]);
-
         //check access permission
         if (!Gate::allows('approved-store')) return response()->view('access.denied')->setStatusCode(401);
 
-        $approveds = collect();
         $roles = Role::orderBy('name')->get();
         $courses = Course::orderBy('name')->get();
         $poles = Pole::orderBy('name')->get();
 
-        if ($request->file()) {
-            $fileName = $request->file->getClientOriginalName();
-            $filePath = $request->file('file')->storeAs('temp', $fileName, 'local');
-
-            Excel::import(new ApprovedsImport($approveds), $filePath);
-            Storage::delete($filePath);
+        try {
+            $approveds = $this->service->importFile($request->file('file'));
+        } catch (\Exception $e) {
+            return redirect()->route('approveds.index')->withErrors($e->getMessage());
         }
-
-        //write on log
-        SgcLogger::writeLog(target: 'Approved', action: 'import');
 
         return view('approved.review', compact('approveds', 'roles', 'courses', 'poles'))->with('success', 'Aprovados importados da planilha.');
     }
-
+    
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @return void
+     */
     public function massStore(Request $request)
     {
         //check access permission
         if (!Gate::allows('approved-store')) return response()->view('access.denied')->setStatusCode(401);
 
-        
-        DB::transaction(function() use ($request) {
-            
-            $approvedsCount = $request->approvedsCount;
-            for ($i = 0; $i < $approvedsCount; $i++) {
-                if ($request->has('check_' . $i)) {
-                    $approved = new Approved();
-                    $approved->name = $request->input('name_' . $i);
-                    $approved->email = $request->input('email_' . $i);
-                    $approved->area_code = $request->input('area_' . $i);
-                    $approved->phone = $request->input('phone_' . $i);
-                    $approved->mobile = $request->input('mobile_' . $i);
-                    $approved->announcement = $request->input('announcement_' . $i);
-                    $approved->course_id = $request->input('courses_' . $i);
-                    $approved->role_id = $request->input('roles_' . $i);
-                    $approved->pole_id = $request->input('poles_' . $i);
-                    $approved->approved_state_id = 1;
-                    $approved->save();
-                }
-            }
-
-            SgcLogger::writeLog(target: 'Mass Approveds', action: 'create');
-        });
+        try {
+            $this->service->massStore($request->all());
+        } catch (\Exception $e) {
+            return redirect()->route('approveds.index')->withErrors($e->getMessage());
+        }
 
         return redirect()->route('approveds.index')->with('success', 'Aprovados importados com sucesso.');
     }
