@@ -3,20 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Foundation\Auth\User as AuthUser;
-use Illuminate\Support\Facades\Hash;
-use App\Models\Employee;
-use App\Models\Role;
+use App\Models\UserType;
 use Illuminate\Http\Request;
+use App\Services\UserService;
+use App\CustomClasses\SgcLogger;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\CustomClasses\SgcLogger;
-use App\Models\UserType;
 use App\CustomClasses\ModelFilterHelpers;
-use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
+    public function __construct(UserService $userService)
+    {
+        $this->service = $userService;
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -27,21 +29,10 @@ class UserController extends Controller
         //check access permission
         if (!Gate::allows('user-list')) return response()->view('access.denied')->setStatusCode(401);
 
-        $users_query = User::with(['userType', 'employee']);
-
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, User::$accepted_filters);
-        $users_query = $users_query->AcceptRequest(User::$accepted_filters)->filter();
-
-        //sort
-        $users_query = $users_query->sortable(['updated_at' => 'desc']);
-
-        //get paginate and add querystring on paginate links
-        $users = $users_query->paginate(10);
-        $users->withQueryString();
-
-        //write on log
-        SgcLogger::writeLog(target: 'User');
+        
+        $users = $this->service->list();
 
         return view('user.index', compact('users', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
@@ -57,7 +48,6 @@ class UserController extends Controller
         if (!Gate::allows('user-store')) return response()->view('access.denied')->setStatusCode(401);
 
         $userTypes = UserType::orderBy('name')->get();
-        $user = new User;
 
         SgcLogger::writeLog(target: 'User');
 
@@ -75,28 +65,11 @@ class UserController extends Controller
         //check access permission
         if (!Gate::allows('user-store')) return response()->view('access.denied')->setStatusCode(401);
 
-        $user = new User;
-
-        $user->email = $request->email;
-        $user->password =  Hash::make($request->password);
-        // $user->user_type_id = $request->userTypes;
-        $user->active = $request->has('active');
-
-        $existentEmployee = Employee::where('email', $request->email)->first();
-
-        if (!is_null($existentEmployee)) {
-            $user->employee_id = $existentEmployee->id;
-
-            SgcLogger::writeLog(target: $existentEmployee, action: 'Updated existent Employee info on User');
-        }
-
         try {
-            $user->save();
+            $this->service->create($request->all());
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
         }
-
-        SgcLogger::writeLog(target: $user);
 
         return redirect()->route('users.index')->with('success', 'Usuário criado com sucesso.');
     }
@@ -147,28 +120,11 @@ class UserController extends Controller
         //check access permission
         if (!Gate::allows('user-update')) return response()->view('access.denied')->setStatusCode(401);
 
-        $user->email = $request->email;
-
-        if ($request->password != '')
-            $user->password =  Hash::make($request->password);
-        // $user->user_type_id = $request->userTypes;
-        $user->active = $request->has('active');
-
-        $existentEmployee = Employee::where('email', $request->email)->first();
-
-        if (!is_null($existentEmployee)) {
-            $user->employee_id = $existentEmployee->id;
-
-            SgcLogger::writeLog(target: $existentEmployee, action: 'Updated existent Employee info on User');
-        }
-
         try {
-            $user->save();
+            $user = $this->service->update($request->all(), $user);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
         }
-
-        SgcLogger::writeLog(target: $user);
 
         return redirect()->route('users.index')->with('success', 'Usuário atualizado com sucesso.');
     }
@@ -184,10 +140,8 @@ class UserController extends Controller
         //check access permission
         if (!Gate::allows('user-destroy')) return response()->view('access.denied')->setStatusCode(401);
 
-        SgcLogger::writeLog(target: $user);
-
         try {
-            $user->delete();
+            $this->service->delete($user);
         } catch (\Exception $e) {
             return back()->withErrors(['noDestroy' => 'Não foi possível excluir o usuário: ' . $e->getMessage()]);
         }

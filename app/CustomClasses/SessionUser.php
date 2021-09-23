@@ -2,7 +2,6 @@
 
 namespace App\CustomClasses;
 
-use App\Models\Bond;
 use App\Models\User;
 
 class SessionUser
