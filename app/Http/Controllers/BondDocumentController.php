@@ -63,7 +63,7 @@ class BondDocumentController extends Controller
         //
     }
 
-    public function storeManyFase1(Request $request)
+    public function storeManyStep1(Request $request)
     {
         //validation
         $request->validate([
@@ -102,7 +102,7 @@ class BondDocumentController extends Controller
         return view('bond.document.create-many-2', compact('bondDocuments', 'documentTypes'));
     }
 
-    public function storeManyFase2(Request $request)
+    public function storeManyStep2(Request $request)
     {
         //check access permission
         if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);

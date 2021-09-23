@@ -22,7 +22,7 @@
                 <div class="col-xl-10 col-xxl-8">
                     @include('_components.alerts')
                     <br />
-                    <form action={{ route('bondDocuments.storeManyFase02') }} method="POST">
+                    <form action={{ route('bondDocuments.storeManyStep02') }} method="POST">
                         @csrf
                         <input type="hidden" name="bondDocumentsCount" value="{{ count($bondDocuments) }}">
                         <input type="hidden" name="bond_id" value="{{ $bondDocuments->first()->bond_id }}">

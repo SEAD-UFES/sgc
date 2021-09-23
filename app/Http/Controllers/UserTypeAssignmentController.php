@@ -2,19 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UserTypeAssignment;
+use App\Models\User;
+use App\Models\Course;
+use App\Models\UserType;
 use Illuminate\Http\Request;
 use App\CustomClasses\SgcLogger;
-use App\Models\UserType;
-use App\Models\Course;
-use App\Models\User;
+use App\Models\UserTypeAssignment;
 use Illuminate\Support\Facades\Gate;
 use App\CustomClasses\ModelFilterHelpers;
+use App\Services\UserTypeAssignmentService;
 use App\Http\Requests\StoreUserTypeAssignmentRequest;
 use App\Http\Requests\UpdateUserTypeAssignmentRequest;
 
 class UserTypeAssignmentController extends Controller
 {
+    public function __construct(UserTypeAssignmentService $service)
+    {
+        $this->service = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -25,20 +31,10 @@ class UserTypeAssignmentController extends Controller
         //check access permission
         if (!Gate::allows('userTypeAssignment-list')) return response()->view('access.denied')->setStatusCode(401);
 
-        $userTypeAssignments_query = new UserTypeAssignment();
-
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, UserTypeAssignment::$accepted_filters);
-        $userTypeAssignments_query = $userTypeAssignments_query->AcceptRequest(UserTypeAssignment::$accepted_filters)->filter();
-
-        //sort
-        $userTypeAssignments_query = $userTypeAssignments_query->sortable(['updated_at' => 'desc']);
-
-        //get paginate and add querystring on paginate links
-        $userTypeAssignments = $userTypeAssignments_query->paginate(10);
-        $userTypeAssignments->withQueryString();
-
-        SgcLogger::writeLog(target: 'userTypeAssignment');
+        
+        $userTypeAssignments = $this->service->list();
 
         return view('userTypeAssignment.index', compact('userTypeAssignments', 'filters'));
     }
@@ -56,12 +52,10 @@ class UserTypeAssignmentController extends Controller
         $users = User::orderBy('email')->get();
         $userTypes = UserType::orderBy('name')->get();
         $courses = Course::orderBy('name')->get();
-        $userTypeAssignment = new UserTypeAssignment;
-
-        //write on log
+        
         SgcLogger::writeLog(target: 'UserTypeAssignment');
 
-        return view('userTypeAssignment.create', compact('users', 'userTypes', 'courses', 'userTypeAssignment'));
+        return view('userTypeAssignment.create', compact('users', 'userTypes', 'courses'));
     }
 
     /**
@@ -75,17 +69,11 @@ class UserTypeAssignmentController extends Controller
         //check access permission
         if (!Gate::allows('userTypeAssignment-store')) return response()->view('access.denied')->setStatusCode(401);
 
-        //save the model
-        $userTypeAssignment = new UserTypeAssignment();
-        $userTypeAssignment->user_id = $request->user_id;
-        $userTypeAssignment->user_type_id = $request->userType_id;
-        $userTypeAssignment->course_id = $request->course_id;
-        $userTypeAssignment->begin = $request->begin;
-        $userTypeAssignment->end = $request->end;
-        $userTypeAssignment->save();
-
-        //write on log
-        SgcLogger::writeLog(target: $userTypeAssignment);
+        try {
+            $this->service->create($request->all());
+        } catch (\Exception $e) {
+            return redirect()->route('userTypeAssignments.index')->withErrors(['noStore' => 'Não foi possível salvar a Atribuição de Papel: ' . $e->getMessage()]);
+        }
 
         return redirect()->route('userTypeAssignments.index')->with('success', 'Atribuição de Papel criada com sucesso.');
     }
@@ -135,17 +123,11 @@ class UserTypeAssignmentController extends Controller
         //check access permission
         if (!Gate::allows('userTypeAssignment-update')) return response()->view('access.denied')->setStatusCode(401);
 
-        //save the model
-        $userTypeAssignment->user_id = $request->user_id;
-        $userTypeAssignment->user_type_id = $request->userType_id;
-        $userTypeAssignment->course_id = $request->course_id;
-        $userTypeAssignment->begin = $request->begin;
-        $userTypeAssignment->end = $request->end;
-        
-        //write on log
-        SgcLogger::writeLog(target: $userTypeAssignment);
-
-        $userTypeAssignment->save();
+        try {
+            $userTypeAssignment = $this->service->update($request->all(), $userTypeAssignment);
+        } catch (\Exception $e) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar a Atribuição de Papel: ' . $e->getMessage()]);
+        }
 
         return redirect()->route('userTypeAssignments.index')->with('success', 'Atribuição de Papel atualizada com sucesso.');
     }
@@ -161,10 +143,8 @@ class UserTypeAssignmentController extends Controller
         //check access permission
         if (!Gate::allows('userTypeAssignment-destroy')) return response()->view('access.denied')->setStatusCode(401);
 
-        SgcLogger::writeLog(target: $userTypeAssignment);
-
         try {
-            $userTypeAssignment->delete();
+            $this->service->delete($userTypeAssignment);
         } catch (\Exception $e) {
             return back()->withErrors(['noDestroy' => 'Não foi possível excluir a atribuição de papel: ' . $e->getMessage()]);
         }

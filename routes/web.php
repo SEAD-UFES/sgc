@@ -63,8 +63,8 @@ Route::middleware('auth')->group(function () {
     Route::post('bonddocuments', [DocumentController::class, 'bondsDocumentStore'])->name('bonds.document.store');
     // many bond doc create
     Route::get('bonddocuments/create-many/p1', [BondDocumentController::class, 'createMany'])->name('bondDocuments.createMany');
-    Route::post('bonddocuments/create-many/p2', [BondDocumentController::class, 'storeManyFase1'])->name('bondDocuments.storeManyFase01');
-    Route::post('bonddocuments/create-many/p3', [BondDocumentController::class, 'storeManyFase2'])->name('bondDocuments.storeManyFase02');
+    Route::post('bonddocuments/create-many/p2', [BondDocumentController::class, 'storeManyStep1'])->name('bondDocuments.storeManyStep01');
+    Route::post('bonddocuments/create-many/p3', [BondDocumentController::class, 'storeManyStep2'])->name('bondDocuments.storeManyStep02');
     //mass download
     Route::get('bonddocumentsmassdownload/{bond}', [DocumentController::class, 'bondDocumentsMassDownload'])->name('bonds.document.massdownload');
     Route::get('rights', [DocumentController::class, 'rightsIndex'])->name('bonds.rights.index');

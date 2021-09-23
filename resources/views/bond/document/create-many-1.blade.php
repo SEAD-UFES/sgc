@@ -14,7 +14,7 @@
             <div class="row justify-content-center">
                 <div class="col-xl-10 col-xxl-8">
                     @include('_components.alerts')
-                    <form action={{ route('bondDocuments.storeManyFase01') }} method="POST" enctype="multipart/form-data">
+                    <form action={{ route('bondDocuments.storeManyStep01') }} method="POST" enctype="multipart/form-data">
                         @csrf
                         
                         <div class="mb-3">
