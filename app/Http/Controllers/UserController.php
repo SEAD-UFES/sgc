@@ -51,7 +51,7 @@ class UserController extends Controller
 
         SgcLogger::writeLog(target: 'User');
 
-        return view('user.create', compact('userTypes', 'user'));
+        return view('user.create', compact('userTypes'));
     }
 
     /**
