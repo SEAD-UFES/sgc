@@ -46,44 +46,103 @@ class SgcLogger
     SgcLogger::writeLog($user); [chamado do método store do UserController]
     => 7:prof1@ufes.br|store| User:18:marco@gmail.com */
 
-
     public static function writeLog(mixed $target = null, mixed $action = null, mixed $executor = null)
     {
-        if ($executor == null) {
-            $executor = Auth::user();
+
+        $functionCaller = (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']);
+        $executorInfo = self::getExecutorInfo($executor);
+        $actionInfo = self::getActionInfo($action, $functionCaller);
+        $targetInfo = self::getTargetInfo($target);
+        $severity = self::getSeverityMapping($actionInfo);
+
+        $logText = "\t$executorInfo\t|\t$actionInfo\t|\t$targetInfo\t";
+
+        switch ($severity) {
+            case 'info':
+                Log::info($logText);
+                break;
+
+            case 'notice':
+                Log::notice($logText);
+                break;
+
+            case 'warning':
+                Log::warning($logText);
+                break;
+
+            case 'error':
+                Log::error($logText);
+                break;
+
+            case 'critical':
+                Log::critical($logText);
+                break;
+
+            case 'alert':
+                Log::alert($logText);
+                break;
+
+            case 'emergency':
+                Log::emergency($logText);
+                break;
+
+            default:
+                Log::info($logText);
+        }
+    }
+
+    private static function getExecutorInfo($executor): string
+    {
+        if (is_string($executor)) {
+            return $executor;
         }
 
-        if (isset($executor->id))
-            $strId = $executor->id;
-        else if (is_string($executor))
-            $strId = $executor;
-        else $strId = 'NoID';
+        if (is_int($executor)) {
+            return "NoID";
+        }
 
-        if (isset($executor->email))
-            $strEMail = ':' . $executor->email;
-        else
-            $strEMail = '';
+        $_executor = $executor ?? Auth::user();
+        $executorId = $_executor->id ?? "NoID";
+        $executorEmail = ($_executor->email) ? (':' . $_executor->email) : '';
 
-        if ($action == null)
-            $strAct = (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']);
-        else if (is_string($action))
-            $strAct = $action;
-        else $strAct = 'No Action';
+        return "$executorId$executorEmail";
+    }
 
-        $strTgtClass = '';
-        $strTgtEmail = '';
-        if ($target == null)
-            $strTgt = 'System';
-        else if (isset($target->id)) {
-            $strTgtClass = class_basename(get_class($target));
-            $strTgt = ':' . $target->id;
-            if (isset($target->email))
-                $strTgtEmail = ':' . $target->email;
-        } else if (is_string($target))
-            $strTgt = $target;
-        else $strTgt = 'No Target';
+    private static function getActionInfo($action, $functionCaller): string
+    {
+        if ($action == null) {
+            return $functionCaller;
+        }
 
-        $severityMapping = [
+        if (is_string($action)) {
+            return $action;
+        }
+
+        return "No Action";
+    }
+
+    private static function getTargetInfo($target): string
+    {
+        if ($target == null) {
+            return "System";
+        }
+
+        if (is_string($target)) {
+            return $target;
+        }
+
+        if (isset($target->id)) {
+            $targetId = ':' . $target->id;
+            $targetClass = class_basename(get_class($target));
+            $targetEmail = ($target->email) ? (':' . $target->email) : '';
+
+            return "$targetClass$targetId$targetEmail";
+        }
+    }
+
+    private static function getSeverityMapping(string $severityKey): string | null
+    {
+        $severityMapping = collect([
             'tried login' => 'notice',
             'authenticate' => 'info',
             'logout' => 'info',
@@ -102,32 +161,9 @@ class SgcLogger
             'bondDocuments download' => 'notice',
             'employeeDocuments download' => 'notice',
             'destroy' => 'warning',
-        ];
+        ]);
 
-        switch ($severityMapping[$strAct]) {
-            case 'info':
-                Log::info("\t" . $strId . $strEMail . "\t|\t" . $strAct . "\t|\t" . $strTgtClass . $strTgt . $strTgtEmail . "\t");
-                break;
-            case 'notice':
-                Log::notice("\t" . $strId . $strEMail . "\t|\t" . $strAct . "\t|\t" . $strTgtClass . $strTgt . $strTgtEmail . "\t");
-                break;
-            case 'warning':
-                Log::warning("\t" . $strId . $strEMail . "\t|\t" . $strAct . "\t|\t" . $strTgtClass . $strTgt . $strTgtEmail . "\t");
-                break;
-            case 'error':
-                Log::error("\t" . $strId . $strEMail . "\t|\t" . $strAct . "\t|\t" . $strTgtClass . $strTgt . $strTgtEmail . "\t");
-                break;
-            case 'critical':
-                Log::critical("\t" . $strId . $strEMail . "\t|\t" . $strAct . "\t|\t" . $strTgtClass . $strTgt . $strTgtEmail . "\t");
-                break;
-            case 'alert':
-                Log::alert("\t" . $strId . $strEMail . "\t|\t" . $strAct . "\t|\t" . $strTgtClass . $strTgt . $strTgtEmail . "\t");
-                break;
-            case 'emergency':
-                Log::emergency("\t" . $strId . $strEMail . "\t|\t" . $strAct . "\t|\t" . $strTgtClass . $strTgt . $strTgtEmail . "\t");
-                break;
-            default:
-                Log::debug("\t" . $strId . $strEMail . "\t|\t" . $strAct . "\t|\t" . $strTgtClass . $strTgt . $strTgtEmail . "\t");
-        }
+        return $severityMapping->get($severityKey);
     }
+
 }
