@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\UserType;
 use Illuminate\Http\Request;
-use App\CustomClasses\SgcLogger;
+use App\Services\UserTypeService;
 
 class UserTypeController extends Controller
 {
+    public function __construct(UserTypeService $userTypeService)
+    {
+        $this->service = $userTypeService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,9 +20,7 @@ class UserTypeController extends Controller
      */
     public function index()
     {
-        $userTypes = UserType::orderBy('name')->all();
-
-        SgcLogger::writeLog(target: 'UserType');
+        $rouserTypesles = $this->service->list();
 
         return view('userType.index', compact('userTypes'));
     }
