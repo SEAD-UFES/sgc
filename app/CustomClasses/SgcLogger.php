@@ -48,7 +48,6 @@ class SgcLogger
 
     public static function writeLog(mixed $target = null, mixed $action = null, mixed $executor = null)
     {
-
         $functionCaller = (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']);
         $executorInfo = self::getExecutorInfo($executor);
         $actionInfo = self::getActionInfo($action, $functionCaller);
@@ -138,6 +137,8 @@ class SgcLogger
 
             return "$targetClass$targetId$targetEmail";
         }
+
+        return 'Maybe there is something wrong with $target on logger';
     }
 
     private static function getSeverityMapping(string $severityKey): string | null

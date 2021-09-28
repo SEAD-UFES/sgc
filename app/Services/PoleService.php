@@ -38,9 +38,9 @@ class PoleService
         $pole->name = $attributes['name'];
         $pole->description = $attributes['description'];
 
-        SgcLogger::writeLog(target: $pole);
-
         $pole->save();
+
+        SgcLogger::writeLog(target: $pole, action: 'store');
 
         return $pole;
     }

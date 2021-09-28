@@ -59,8 +59,6 @@ class BondService
         $bond->impediment_description = 'Vínculo ainda não revisado';
         $bond->uaba_checked_at = null;
 
-        SgcLogger::writeLog(target: $bond, action: 'store');
-
         DB::transaction(function () use ($bond) {
             $bond->save();
 
@@ -81,6 +79,8 @@ class BondService
             $coordOrAssistants = User::where('active', true)->whereActiveUserType($ass_UT->id)->get();
             Notification::send($coordOrAssistants, new NewBondNotification($bond));
         });
+
+        SgcLogger::writeLog(target: $bond, action: 'store');
 
         return $bond;
     }

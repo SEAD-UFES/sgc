@@ -65,13 +65,13 @@ class EmployeeService
         $employee->mobile = $attributes['mobile'];
         $employee->email = $attributes['email'];
 
-        SgcLogger::writeLog(target: $employee, action: 'store');
-
         DB::transaction(function () use ($employee) {
             $employee->save();
 
             $this->userAttach($employee);
         });
+
+        SgcLogger::writeLog(target: $employee, action: 'store');
 
         return $employee;
     }

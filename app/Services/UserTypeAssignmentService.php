@@ -40,9 +40,10 @@ class UserTypeAssignmentService
         $userTypeAssignment->course_id = $attributes['course_id'];
         $userTypeAssignment->begin = $attributes['begin'];
         $userTypeAssignment->end = $attributes['end'];
+        
+        $userTypeAssignment->save();
 
         SgcLogger::writeLog(target: $userTypeAssignment, action: 'store');
-        $userTypeAssignment->save();
 
         return $userTypeAssignment;
     }

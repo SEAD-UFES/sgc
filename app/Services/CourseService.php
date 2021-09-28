@@ -43,9 +43,9 @@ class CourseService
         $course->begin = $attributes['begin'];
         $course->end = $attributes['end'];
 
-        SgcLogger::writeLog(target: $course, action: 'store');
-
         $course->save();
+
+        SgcLogger::writeLog(target: $course, action: 'store');
         
         return $course;
     }

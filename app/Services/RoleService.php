@@ -41,9 +41,9 @@ class RoleService
         $role->grant_value = $attributes['grantValue'];
         $role->grant_type_id = $attributes['grantTypes'];
 
-        SgcLogger::writeLog(target: $role);
-
         $role->save();
+
+        SgcLogger::writeLog(target: $role, action: 'store');
 
         return $role;
     }

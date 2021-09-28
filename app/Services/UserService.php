@@ -44,8 +44,9 @@ class UserService
 
         $this->employeeAttach($user);
 
-        SgcLogger::writeLog(target: $user, action: 'store');
         $user->save();
+
+        SgcLogger::writeLog(target: $user, action: 'store');
 
         return $user;
     }
@@ -69,6 +70,7 @@ class UserService
         $this->employeeAttach($user);
 
         SgcLogger::writeLog(target: $user, action: 'update');
+        
         $user->save();
 
         return $user;
