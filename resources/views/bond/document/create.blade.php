@@ -14,7 +14,7 @@
             <div class="row justify-content-center">
                 <div class="col-xl-10 col-xxl-8">
                     @include('_components.alerts')
-                    <form action={{ route('bonds.document.store') }} method="POST" enctype="multipart/form-data">
+                    <form action={{ route('bondsDocuments.store') }} method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
                             <label for="inputFile1" class="form-label">Selecione o arquivo</label>
@@ -49,7 +49,7 @@
                         <button type="submit" class="btn btn-primary">Enviar arquivo</button> 
                         <button type="button" onclick="history.back()" class="btn btn-secondary">Cancelar</button>
                         @can('bondDocument-store')
-                            <a href="{{ route('bondDocuments.createMany') }}" class="btn btn-warning">Desejo importar vários documentos de vínculo</a>
+                            <a href="{{ route('bondsDocuments.createMany') }}" class="btn btn-warning">Desejo importar vários documentos de vínculo</a>
                         @endcan
                         @error('noStore')
                             <div class="text-danger">> {{ $message }}</div>

@@ -27,7 +27,7 @@ class EmployeeDocumentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function employeesDocumentsCreate(Request $request)
     {
         //check access permission
         if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
@@ -47,7 +47,7 @@ class EmployeeDocumentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function employeesDocumentsStore(Request $request)
     {
         //validation
         $request->validate([
@@ -68,7 +68,7 @@ class EmployeeDocumentController extends Controller
         //write on log
         SgcLogger::writeLog(target: 'employeeDocument', action: 'store');
 
-        return redirect()->route('employees.document.index')->with('success', 'Arquivo importado com sucesso.');
+        return redirect()->route('employeesDocuments.index')->with('success', 'Arquivo importado com sucesso.');
     }
 
     /**

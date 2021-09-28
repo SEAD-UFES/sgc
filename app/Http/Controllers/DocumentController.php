@@ -45,7 +45,7 @@ class DocumentController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function employeesDocumentIndex(Request $request)
+    public function employeesDocumentsIndex(Request $request)
     {
         //check access permission
         if (!Gate::allows('employeeDocument-list')) return response()->view('access.denied')->setStatusCode(401);
@@ -58,7 +58,7 @@ class DocumentController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function bondsDocumentIndex(Request $request)
+    public function bondsDocumentsIndex(Request $request)
     {
         //check access permission
         if (!Gate::allows('bondDocument-list')) return response()->view('access.denied')->setStatusCode(401);
@@ -108,7 +108,7 @@ class DocumentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function employeeDocumentCreateMany(Request $request)
+    public function employeesDocumentsCreateMany(Request $request)
     {
         //check access permission
         if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
@@ -131,7 +131,7 @@ class DocumentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function bondsDocumentCreate()
+    public function bondsDocumentsCreate()
     {
         //check access permission
         if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);
@@ -194,7 +194,7 @@ class DocumentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function bondsDocumentStore(Request $request)
+    public function bondsDocumentsStore(Request $request)
     {
         //check access permission
         if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);
@@ -207,10 +207,10 @@ class DocumentController extends Controller
 
         SgcLogger::writeLog(target: 'bondDocument', action: 'store');
 
-        return redirect()->route('bonds.document.index')->with('success', 'Arquivo importado com sucesso.');
+        return redirect()->route('bondsDocuments.index')->with('success', 'Arquivo importado com sucesso.');
     }
 
-    public function employeeDocumentStoreManyFase1(Request $request)
+    public function employeesDocumentsStoreManyStep1(Request $request)
     {
         //check access permission
         if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
@@ -247,7 +247,7 @@ class DocumentController extends Controller
         return view('employee.document.create-many-2', compact('fileSet', 'documentTypes'));
     }
 
-    public function employeeDocumentStoreManyFase2(Request $request)
+    public function employeesDocumentsStoreManyStep2(Request $request)
     {
         //check access permission
         if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
@@ -281,7 +281,7 @@ class DocumentController extends Controller
             SgcLogger::writeLog(target: 'Mass Employees Documents', action: 'create');
         });
 
-        return redirect()->route('employees.document.index')->with('success', 'Arquivos importados com sucesso.');
+        return redirect()->route('employeesDocuments.index')->with('success', 'Arquivos importados com sucesso.');
     }
 
     /**
@@ -347,7 +347,7 @@ class DocumentController extends Controller
         //
     }
 
-    public function bondDocumentsMassDownload(Bond $bond)
+    public function bondsDocumentsMassDownload(Bond $bond)
     {
         //check access permission
         if (!Gate::allows('bondDocument-download')) return response()->view('access.denied')->setStatusCode(401);
@@ -374,7 +374,7 @@ class DocumentController extends Controller
         }
     }
 
-    public function employeeDocumentsMassDownload(Employee $employee)
+    public function employeesDocumentsMassDownload(Employee $employee)
     {
         //check access permission
         if (!Gate::allows('employeeDocument-download')) return response()->view('access.denied')->setStatusCode(401);

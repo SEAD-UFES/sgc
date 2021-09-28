@@ -34,7 +34,7 @@ class BondDocumentController extends Controller
         //
     }
 
-    public function createMany(Request $request)
+    public function bondsDocumentsCreateMany(Request $request)
     {
         //check access permission
         if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);
@@ -63,7 +63,7 @@ class BondDocumentController extends Controller
         //
     }
 
-    public function storeManyStep1(Request $request)
+    public function bondsDocumentsStoreManyStep1(Request $request)
     {
         //validation
         $request->validate([
@@ -78,7 +78,7 @@ class BondDocumentController extends Controller
             $files = $request->file('files');
             $bondDocuments = collect();
             foreach ($files as $file) {
-                //create tmp file. (deleted on fase02)
+                //create tmp file. (deleted on step02)
                 $tmp_file_name = time() . '.' . $file->getClientOriginalName();
                 $tmp_file_path = $file->storeAs('temp', $tmp_file_name, 'local');
 
@@ -102,7 +102,7 @@ class BondDocumentController extends Controller
         return view('bond.document.create-many-2', compact('bondDocuments', 'documentTypes'));
     }
 
-    public function storeManyStep2(Request $request)
+    public function bondsDocumentsStoreManyStep2(Request $request)
     {
         //check access permission
         if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);
@@ -146,7 +146,7 @@ class BondDocumentController extends Controller
         //log
         SgcLogger::writeLog(target: 'Create many BondDocuments', action: 'create');
 
-        return redirect()->route('bonds.document.index')->with('success', 'Arquivos importados com sucesso.');
+        return redirect()->route('bondsDocuments.index')->with('success', 'Arquivos importados com sucesso.');
     }
 
 

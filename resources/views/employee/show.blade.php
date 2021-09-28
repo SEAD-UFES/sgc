@@ -210,7 +210,7 @@
                                                         </td>
                                                         <td>{{ $document->documentType->name }}</td>
                                                         <td>
-                                                            <a href="{{ route('documents.show', ['id' => $document->id, 'type' => 'BondDocument', 'htmlTitle' => $document->original_name]) }}"
+                                                            <a href="{{ route('documents.show', ['id' => $document->id, 'type' => 'EmployeeDocument', 'htmlTitle' => $document->original_name]) }}"
                                                                 target="_blank">{{ $document->original_name }}</a>
                                                         </td>
                                                     </tr>
@@ -219,10 +219,10 @@
                                         </table>
 
                                         <div class="">
-                                            <a href="{{ route('employees.document.massdownload', $employee) }}" class="btn btn-primary btn-sm mt-1">
+                                            <a href="{{ route('employeesDocuments.massdownload', $employee) }}" class="btn btn-primary btn-sm mt-1">
                                                 &nbsp;&#8627; Fazer o download de todos os documentos do colaborador (zip)
                                             </a>
-                                            <a class="btn btn-primary btn-sm mt-1" href="{{ route('employees.document.index', ['employee_cpf_contains[0]' => $employee->cpf]) }}" target="_blank">
+                                            <a class="btn btn-primary btn-sm mt-1" href="{{ route('employeesDocuments.index', ['employee_cpf_contains[0]' => $employee->cpf]) }}" target="_blank">
                                                 Listagem avançada...
                                             </a>    
                                         </div>
@@ -230,7 +230,7 @@
                                 @else
                                     <p class="mb-0">O colaborador não possui documentos cadastrados.</p>
                                     <div class="">
-                                        <a class="btn btn-primary btn-sm mt-1" href="{{ route('employees.document.index', ['employee_cpf_contains[0]' => $employee->cpf]) }}" target="_blank">
+                                        <a class="btn btn-primary btn-sm mt-1" href="{{ route('employeesDocuments.index', ['employee_cpf_contains[0]' => $employee->cpf]) }}" target="_blank">
                                             Listagem avançada...
                                         </a>    
                                     </div>
