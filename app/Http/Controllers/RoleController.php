@@ -68,10 +68,10 @@ class RoleController extends Controller
         try {
             $this->service->create($request->all());
         } catch (\Exception $e) {
-            return redirect()->route('bonds.index')->withErrors(['noStore' => 'Não foi possível salvar a Atribuição: ' . $e->getMessage()]);
+            return redirect()->route('bonds.index')->withErrors(['noStore' => 'Não foi possível salvar a Função: ' . $e->getMessage()]);
         }
 
-        return redirect()->route('roles.index')->with('success', 'Atribuição criada com sucesso.');
+        return redirect()->route('roles.index')->with('success', 'Função criada com sucesso.');
     }
 
     /**
@@ -123,10 +123,10 @@ class RoleController extends Controller
         try {
             $this->service->update($request->all(), $role);
         } catch (\Exception $e) {
-            return back()->withErrors(['noStore' => 'Não foi possível salvar a Atribuição: ' . $e->getMessage()]);
+            return back()->withErrors(['noStore' => 'Não foi possível salvar a Função: ' . $e->getMessage()]);
         }
 
-        return redirect()->route('roles.index')->with('success', 'Atribuição atualizada com sucesso.');
+        return redirect()->route('roles.index')->with('success', 'Função atualizada com sucesso.');
     }
 
     /**
@@ -143,9 +143,9 @@ class RoleController extends Controller
         try {
             $this->service->delete($role);
         } catch (\Exception $e) {
-            return back()->withErrors(['noDestroy' => 'Não foi possível excluir a Atribuição: ' . $e->getMessage()]);
+            return back()->withErrors(['noDestroy' => 'Não foi possível excluir a Função: ' . $e->getMessage()]);
         }
 
-        return redirect()->route('roles.index')->with('success', 'Atribuição excluída com sucesso.');
+        return redirect()->route('roles.index')->with('success', 'Função excluída com sucesso.');
     }
 }

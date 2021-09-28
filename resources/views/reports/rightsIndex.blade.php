@@ -22,7 +22,7 @@
                             'filters' => $filters,
                             'options' => [
                                 ['label' => 'Colaborador', 'value' => 'bond_employee_name_contains', 'selected' => true], 
-                                ['label' => 'Atribuição', 'value' => 'bond_role_name_contains'], 
+                                ['label' => 'Função', 'value' => 'bond_role_name_contains'], 
                                 ['label' => 'Curso', 'value' => 'bond_course_name_contains'],
                                 ['label' => 'Polo', 'value' => 'bond_pole_name_contains'],  
                                 ['label' => 'Nome do arquivo', 'value' => 'originalname_contains'], 
@@ -34,7 +34,7 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <th>@sortablelink('bondEmployeeName', 'Colaborador')</th>
-                                <th>@sortablelink('bondRoleName', 'Atribuição')</th>
+                                <th>@sortablelink('bondRoleName', 'Função')</th>
                                 <th>@sortablelink('bondCourseName', 'Curso')</th>
                                 <th>@sortablelink('bondPoleName', 'Polo')</th>
                                 <th>@sortablelink('original_name', 'Nome')</th>

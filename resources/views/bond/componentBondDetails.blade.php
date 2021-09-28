@@ -9,7 +9,7 @@
     <div class="collapse show" id="bondDataContent" >
         <div class="card-body">
             <div class="mb-2 row">
-                <div class="col-sm-4 col-lg-3"><strong>Atribuição:</strong></div>
+                <div class="col-sm-4 col-lg-3"><strong>Função:</strong></div>
                 <div class="col-sm-8 col-lg-9">{{ $bond->role->name ?? '-' }}</div>
             </div>
             <div class="mb-2 row">

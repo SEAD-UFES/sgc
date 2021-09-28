@@ -1,12 +1,12 @@
 @extends('layouts.basic')
 
-@section('title', 'Cadastrar Atribuição')
+@section('title', 'Cadastrar Função')
 
 @section('content')
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb border-top border-bottom bg-light">
             <li class="breadcrumb-item">Sistema</li>
-            <li class="breadcrumb-item active" aria-current="page">Cadastrar Atribuição</li>
+            <li class="breadcrumb-item active" aria-current="page">Cadastrar Função</li>
         </ol>
     </nav>
     <section id="pageContent">

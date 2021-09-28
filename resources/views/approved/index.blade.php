@@ -28,7 +28,7 @@
                                 [ 'label'=>'Celular', 'value'=>'mobile_contains'],
                                 [ 'label'=>'Edital', 'value'=>'announcement_contains'],
                                 [ 'label'=>'Situação', 'value'=>'approvedState_name_contains'],
-                                [ 'label'=>'Atribuição', 'value'=>'role_name_contains'],
+                                [ 'label'=>'Função', 'value'=>'role_name_contains'],
                                 [ 'label'=>'Curso', 'value'=>'course_name_contains'],
                                 [ 'label'=>'Polo', 'value'=>'pole_name_contains'],
 
@@ -46,7 +46,7 @@
                                 <th>@sortablelink('mobile', 'Celular')</th>
                                 <th>@sortablelink('announcement', 'Edital')</th>
                                 <th>@sortablelink('approvedState.name', 'Situação')</th>
-                                <th>@sortablelink('role.name', 'Atribuição')</th>
+                                <th>@sortablelink('role.name', 'Função')</th>
                                 <th>@sortablelink('course.name', 'Curso')</th>
                                 <th>@sortablelink('pole.name', 'Polo')</th>
                                 <th class="text-center">Mudar Situação</th>

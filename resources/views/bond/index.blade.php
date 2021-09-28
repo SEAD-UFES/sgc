@@ -23,7 +23,7 @@
                             'options' => [
                                 [ 'label'=>'CPF', 'value'=>'employee_cpf_contains', 'selected'=>true],
                                 [ 'label'=>'Colaborador', 'value'=>'employee_name_contains'],
-                                [ 'label'=>'Atribuição', 'value'=>'role_name_contains'],
+                                [ 'label'=>'Função', 'value'=>'role_name_contains'],
                                 [ 'label'=>'Curso', 'value'=>'course_name_contains'],
                                 [ 'label'=>'Polo', 'value'=>'pole_name_contains'],
                                 [ 'label'=>'Voluntário', 'value'=>'volunteer_exactly'],
@@ -32,14 +32,14 @@
                         ]
                     )@endcomponent
 
-                    <p style="color: red"> Clique no Nome ou Atribuição para exibir/ocultar as informações de datas</p>
+                    <p style="color: red"> Clique no Nome ou Função para exibir/ocultar as informações de datas</p>
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>@sortablelink('employee.cpf', 'CPF')</th>
                                     <th>@sortablelink('employee.name', 'Colaborador')</th>
-                                    <th>@sortablelink('role.name', 'Atribuição')</th>
+                                    <th>@sortablelink('role.name', 'Função')</th>
                                     <th>@sortablelink('course.name', 'Curso')</th>
                                     <th>@sortablelink('pole.name', 'Polo')</th>
                                     <th>@sortablelink('volunteer', 'Voluntário') </th>

@@ -17,7 +17,7 @@
                     @include('_components.alerts')
                     <form action="{{ route('users.update', $user->id) }}" method="POST">
                         @method('PATCH')
-                        @component('user.componentUserForm', compact('user', 'userTypes'))@endcomponent
+                        @component('user.componentUserForm', compact('user'))@endcomponent
                         <br />
                         <button type="submit" class="btn btn-primary">Atualizar</button> <button type="button"
                             onclick="history.back()" class="btn btn-secondary">Cancelar</button>

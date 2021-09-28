@@ -101,11 +101,9 @@ class UserController extends Controller
         //check access permission
         if (!Gate::allows('user-update')) return response()->view('access.denied')->setStatusCode(401);
 
-        $userTypes = UserType::orderBy('name')->get();
-
         SgcLogger::writeLog(target: $user);
 
-        return view('user.edit', compact('user', 'userTypes'));
+        return view('user.edit', compact('user'));
     }
 
     /**

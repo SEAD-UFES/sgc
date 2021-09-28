@@ -1,12 +1,12 @@
 @extends('layouts.basic')
 
-@section('title', 'Atribuições')
+@section('title', 'Funções')
 
 @section('content')
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb border-top border-bottom bg-light">
             <li class="breadcrumb-item">Sistema</li>
-            <li class="breadcrumb-item active" aria-current="page">Listar Atribuições</li>
+            <li class="breadcrumb-item active" aria-current="page">Listar Funções</li>
         </ol>
     </nav>
     <section id="pageContent">
@@ -49,7 +49,7 @@
                                         <td>{{ $role->grantType->name }}</td>
                                         <td class="text-center"><div class="d-inline-flex">
                                             @can('role-update')
-                                                <a href="{{ route('roles.edit', $role) }}" data-bs-toggle="tooltip" title="Editar atribuição" class="btn btn-primary btn-sm">
+                                                <a href="{{ route('roles.edit', $role) }}" data-bs-toggle="tooltip" title="Editar Função" class="btn btn-primary btn-sm">
                                                     <i class="bi-pencil-fill"></i>
                                                 </a>&nbsp;
                                             @endcan
@@ -57,8 +57,8 @@
                                                 <form name="{{ 'formDelete' . $role->id }}" action="{{ route('roles.destroy', $role) }}" method="POST">
                                                     @method('DELETE')
                                                     @csrf
-                                                    <button type="button" data-bs-toggle="tooltip" title="Excluir atribuição" 
-                                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir essa Atribuição?\')) document.forms[\'formDelete' . $role->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
+                                                    <button type="button" data-bs-toggle="tooltip" title="Excluir Função" 
+                                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir essa Função?\')) document.forms[\'formDelete' . $role->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
                                                         <i class="bi-trash-fill"></i>
                                                     </button>
                                                 </form>
@@ -73,7 +73,7 @@
                     {!! $roles->links() !!}
                     <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
                     @can('role-store')
-                        <a href="{{ route('roles.create') }}" class="btn btn-warning">Cadastrar nova Atribuição</a>
+                        <a href="{{ route('roles.create') }}" class="btn btn-warning">Cadastrar nova Função</a>
                     @endcan
                     <br /><br />
                 </div>

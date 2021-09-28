@@ -72,10 +72,10 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toogle" href="" id="navbarSupportedContentMenuLink4" role="button" data-bs-toggle="dropdown" aria-expanded="false">Sistema</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarSupportedContentMenuLink4">
-                                <li><h6 class="dropdown-header">Atribuições</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('roles.index') }}">Listar Atribuições</a></li>
+                                <li><h6 class="dropdown-header">Funções</h6></li>
+                                <li><a class="dropdown-item" href="{{ route('roles.index') }}">Listar Funções</a></li>
                                 @can('role-store')
-                                    <li><a class="dropdown-item" href="{{ route('roles.create') }}">Cadastrar Atribuição</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('roles.create') }}">Cadastrar Função</a></li>
                                 @endcan
                                 <li><hr class="dropdown-divider"></li>
                                 <li><h6 class="dropdown-header">Cursos</h6></li>

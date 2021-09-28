@@ -254,7 +254,7 @@
                                             <thead>
                                                 <th>Início</th>
                                                 <th>Fim</th>
-                                                <th>Atribuição</th>
+                                                <th>Função</th>
                                                 <th>Curso</th>
                                                 <th>Polo</th>
                                                 <th>Voluntário</th>

@@ -49,7 +49,7 @@
                         <select name="roles_mass" id="roles_mass"
                             onchange="selectRotateAssign('roles', {{ count($approveds) }}, document.getElementById('roles_mass').value)"
                             class="form-select w-auto" data-live-search="true">
-                            <option value="">Selecione a atribuição</option>
+                            <option value="">Selecione a Função</option>
                             @foreach ($roles as $role)
                                 <option value="{{ $role->id }}">{{ $role->name }}</option>
                             @endforeach
@@ -88,7 +88,7 @@
                                     <th>Celular</th>
                                     <th>Edital</th>
                                     <th>Curso</th>
-                                    <th>Atribuição</th>
+                                    <th>Função</th>
                                     <th>Polo</th>
                                 </thead>
                                 <tbody>
@@ -137,7 +137,7 @@
                                             <td class="p-0">
                                                 <select name="roles_{{ $key }}" id="roles_{{ $key }}"
                                                     class="form-select" data-live-search="true">
-                                                    <option value="">Selecione a atribuição</option>
+                                                    <option value="">Selecione a Função</option>
                                                     @foreach ($roles as $role)
                                                         <option value="{{ $role->id }}">{{ $role->name }}</option>
                                                     @endforeach

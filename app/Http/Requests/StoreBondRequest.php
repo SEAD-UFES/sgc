@@ -36,7 +36,7 @@ class StoreBondRequest extends FormRequest
     {
         return [
             'employees.min' => 'O colaborador deve ser preenchido com uma das opções fornecidas',
-            'roles.min' => 'A atribuição deve ser preenchido com uma das opções fornecidas',
+            'roles.min' => 'A Função deve ser preenchido com uma das opções fornecidas',
             'courses.min' => 'O curso deve ser preenchido com uma das opções fornecidas',
             'poles.min' => 'O polo deve ser preenchido com uma das opções fornecidas',
         ];

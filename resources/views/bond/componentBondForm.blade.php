@@ -15,9 +15,9 @@
         @enderror
     </div>
     <div class="col-12 col-lg-6">
-        <label for="selectRole1" class="form-label">Atribuição*</label>
+        <label for="selectRole1" class="form-label">Função*</label>
         <select name="roles" id="selectRole1" class="form-select">
-            <option value="">Selecione a atribuição</option>
+            <option value="">Selecione a Função</option>
             @foreach ($roles as $role)
                 <option value="{{ $role->id }}"
                     {{ isset($bond) ? ($bond->role_id == $role->id ? 'selected' : '') : (old('roles') == $role->id ? 'selected' : '') }}>

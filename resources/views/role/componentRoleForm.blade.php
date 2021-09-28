@@ -3,7 +3,7 @@
 <div class="row g-3 mb-3">
     <div class="col-12">
         <label for="inputName1" class="form-label">Nome*</label>
-        <input name="name" type="text" id="inputName1" class="form-control" placeholder="Nome da atribuição"
+        <input name="name" type="text" id="inputName1" class="form-control" placeholder="Nome da Função"
             value="{{ isset($role) ? $role->name : old('name') }}" />
         @error('name')
             <div class="text-danger">> {{ $message }}</div>

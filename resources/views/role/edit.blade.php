@@ -1,12 +1,12 @@
 @extends('layouts.basic')
 
-@section('title', 'Editar Atribuição')
+@section('title', 'Editar Função')
 
 @section('content')
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb border-top border-bottom bg-light">
             <li class="breadcrumb-item">Sistema</li>
-            <li class="breadcrumb-item"><a href="{{ route('roles.index') }}">Listar Atribuições</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('roles.index') }}">Listar Funções</a></li>
             <li class="breadcrumb-item active" aria-current="page">Editar: {{ $role->name }}</li>
         </ol>
     </nav>
