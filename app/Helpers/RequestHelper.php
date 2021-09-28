@@ -10,25 +10,25 @@ class RequestHelper
     {
         //if file
         if ($request->file()) {
-            $file_name = time() . '.' . $request->file->getClientOriginalName();
-            $file_path = $request->file($field)->storeAs('temp', $file_name, 'local');
-            $file_content = file_get_contents(base_path('storage/app/' . $file_path), true);
-            $file_content_base64 = base64_encode($file_content);
-            Storage::delete($file_path);
-            return $file_content_base64;
+            $fileName = time() . '.' . $request->file->getClientOriginalName();
+            $filePath = $request->file($field)->storeAs('temp', $fileName, 'local');
+            $fileContent = file_get_contents(base_path('storage/app/' . $filePath), true);
+            $fileContentBase64 = base64_encode($fileContent);
+            Storage::delete($filePath);
+            return $fileContentBase64;
         }
 
         //if no file
         return null;
     }
 
-    public static function getFileDataFromFilePath($file_path)
+    public static function getFileDataFromFilePath($filePath)
     {
-        //if file_path
-        if ($file_path) {
-            $file_content = file_get_contents(base_path('storage/app/' . $file_path), true);
-            $file_content_base64 = base64_encode($file_content);
-            return $file_content_base64;
+        //if filePath
+        if ($filePath) {
+            $fileContent = file_get_contents(base_path('storage/app/' . $filePath), true);
+            $fileContentBase64 = base64_encode($fileContent);
+            return $fileContentBase64;
         }
 
         //if no file

@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EmployeeDocument;
+use App\Models\Bond;
+use App\Models\Employee;
 use App\Models\BondDocument;
 use App\Models\DocumentType;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Helpers\RequestHelper;
 use App\CustomClasses\SgcLogger;
-use App\Models\Employee;
-use App\Models\Bond;
-use Illuminate\Database\Eloquent\Collection;
+use App\Models\EmployeeDocument;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use App\CustomClasses\ModelFilterHelpers;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Collection;
 
 class DocumentController extends Controller
 {
@@ -24,17 +25,17 @@ class DocumentController extends Controller
 
         //get class
         $class = app("App\\Models\\$model");
-        $documents_query = $class;
+        $documentsQuery = $class;
 
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, $class::$accepted_filters);
-        $documents_query = $documents_query->AcceptRequest($class::$accepted_filters)->filter();
+        $documentsQuery = $documentsQuery->AcceptRequest($class::$accepted_filters)->filter();
 
         //sort
-        $documents_query = $documents_query->sortable(['updated_at' => 'desc']);
+        $documentsQuery = $documentsQuery->sortable(['updated_at' => 'desc']);
 
         //get paginate and add querystring on paginate links
-        $documents = $documents_query->paginate(10);
+        $documents = $documentsQuery->paginate(10);
         $documents->withQueryString();
 
         SgcLogger::writeLog(target: $model, action: 'index');
@@ -80,7 +81,7 @@ class DocumentController extends Controller
 
         $type = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
 
-        $documents_query = BondDocument::with('bond')
+        $documentsQuery = BondDocument::with('bond')
             ->where('bond_documents.document_type_id', $type->id)
             ->whereHas('bond', function ($query) {
                 $query->whereNotNull('uaba_checked_at')->where('impediment', false);
@@ -88,13 +89,13 @@ class DocumentController extends Controller
 
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, BondDocument::$accepted_filters);
-        $documents_query = $documents_query->AcceptRequest(BondDocument::$accepted_filters)->filter();
+        $documentsQuery = $documentsQuery->AcceptRequest(BondDocument::$accepted_filters)->filter();
 
         //sort
-        $documents_query = $documents_query->sortable(['updated_at' => 'desc']);
+        $documentsQuery = $documentsQuery->sortable(['updated_at' => 'desc']);
 
         //get paginate and add querystring on paginate links
-        $documents = $documents_query->paginate(10);
+        $documents = $documentsQuery->paginate(10);
         $documents->withQueryString();
 
         //write on log
@@ -108,22 +109,18 @@ class DocumentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function employeesDocumentsCreateMany(Request $request)
+    public function employeesDocumentsCreate(Request $request)
     {
         //check access permission
         if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
 
         $documentTypes = DocumentType::orderBy('name')->get();
-
-        $id = $request->id ?? null;
-        $employees = !is_null($id)
-            ? Employee::where('id', $id)->get()
-            : Employee::orderBy('name')->get();
+        $employees = Employee::all();
 
         //write on log
-        SgcLogger::writeLog(target: 'employeesDocument', action: 'create');
+        SgcLogger::writeLog(target: 'employeeDocument', action: 'create');
 
-        return view('employee.document.create-many-1', compact('documentTypes', 'employees', 'id'));
+        return view('employee.document.create', compact('documentTypes', 'employees'));
     }
 
     /**
@@ -145,47 +142,73 @@ class DocumentController extends Controller
         return view('bond.document.create', compact('documentTypes', 'bonds'));
     }
 
-    public function import(Request $request, $model)
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function employeesDocumentsCreateMany(Request $request)
     {
+        //check access permission
+        if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
+
+        $id = $request->id ?? null;
+        $employees = !is_null($id)
+            ? Employee::where('id', $id)->get()
+            : Employee::orderBy('name')->get();
+
+        //write on log
+        SgcLogger::writeLog(target: 'employeesDocument', action: 'create');
+
+        return view('employee.document.create-many-1', compact('employees', 'id'));
+    }
+
+    public function bondsDocumentsCreateMany(Request $request)
+    {
+        //check access permission
+        if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);
+
+        $id = $request->bond_id ?? null;
+        $bonds = !is_null($id)
+            ? Bond::where('id', $id)->get()
+            : Bond::with(['employee' => function ($q) {
+                return $q->orderBy('name');
+            }])->get();
+
+        //write on log
+        SgcLogger::writeLog(target: 'bondsDocument', action: 'create');
+
+        return view('bond.document.create-many-1', compact('bonds', 'id'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function employeesDocumentsStore(Request $request)
+    {
+        //validation
         $request->validate([
             'file' => 'required|mimes:pdf,jpeg,png,jpg|max:2048'
         ]);
 
         //check access permission
-        if ($model === 'EmployeeDocument' && !Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
-        elseif ($model === 'BondDocument' && !Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
 
-        if ($request->file()) {
-            $fileName = time() . '.' . $request->file->getClientOriginalName();
-            $filePath = $request->file('file')->storeAs('temp', $fileName, 'local');
+        //save the model
+        $employeeDocument = new EmployeeDocument();
+        $employeeDocument->employee_id = $request->employee_id;
+        $employeeDocument->document_type_id = $request->document_type_id;
+        $employeeDocument->original_name = $request->file() ? $request->file->getClientOriginalName() : null;
+        $employeeDocument->file_data = $request->file() ? RequestHelper::getFileDataFromRequest($request, 'file') : null;
+        $employeeDocument->save();
 
-            $doc = file_get_contents(base_path('storage/app/' . $filePath), true);
+        //write on log
+        SgcLogger::writeLog(target: 'employeeDocument', action: 'store');
 
-            $base64 = base64_encode($doc);
-
-            $class = app("App\\Models\\$model");
-
-            $document = new $class();
-
-            if ($request->has('employees'))
-                $document->employee_id = $request->employees;
-
-            if ($request->has('bonds'))
-                $document->bond_id = $request->bonds;
-
-
-            $document->original_name = $request->file->getClientOriginalName();
-            $document->document_type_id = $request->documentTypes;
-            $document->file_data = $base64;
-
-            $document->save();
-
-            SgcLogger::writeLog(target: $model, action: 'create');
-
-            Storage::delete($filePath);
-        }
-
-        //return redirect()->route('documents.index')->with('success', 'Arquivo importado com sucesso.');
+        return redirect()->route('employeesDocuments.index')->with('success', 'Arquivo importado com sucesso.');
     }
 
     /**
@@ -196,14 +219,20 @@ class DocumentController extends Controller
      */
     public function bondsDocumentsStore(Request $request)
     {
-        //check access permission
-        if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);
-
         $request->validate([
             'file' => 'required|mimes:pdf,jpeg,png,jpg|max:2048'
         ]);
 
-        $this->import($request, 'BondDocument');
+        //check access permission
+        if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);
+
+        //save the model
+        $bondDocument = new BondDocument();
+        $bondDocument->bond_id = $request->bonds;
+        $bondDocument->document_type_id = $request->documentTypes;
+        $bondDocument->original_name = $request->file() ? $request->file->getClientOriginalName() : null;
+        $bondDocument->file_data = $request->file() ? RequestHelper::getFileDataFromRequest($request, 'file') : null;
+        $bondDocument->save();
 
         SgcLogger::writeLog(target: 'bondDocument', action: 'store');
 
@@ -212,39 +241,73 @@ class DocumentController extends Controller
 
     public function employeesDocumentsStoreManyStep1(Request $request)
     {
-        //check access permission
-        if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
-
         $request->validate([
             'files.*' => 'required|mimes:pdf,jpeg,png,jpg|max:2048',
         ]);
 
+        //check access permission
+        if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
+
         if ($request->hasfile('files')) {
             $files = $request->file('files');
-
-            $fileSet = collect();
-
+            $employeeDocuments = collect();
             foreach ($files as $file) {
-                $fileName = time() . '.' . $file->getClientOriginalName();
-                $filePath = $file->storeAs('temp', $fileName, 'local');
+                $tmpFileName = time() . '.' . $file->getClientOriginalName();
+                $tmpFilePath = $file->storeAs('temp', $tmpFileName, 'local');
 
-                $document = new EmployeeDocument();
+                $employeeDocument = new EmployeeDocument();
+                $employeeDocument->employee_id = $request->employees;
+                $employeeDocument->original_name = $file->getClientOriginalName();
+                $employeeDocument->filePath = $tmpFilePath;
 
-                $document->employee_id = $request->employees;
-
-                $document->original_name = $file->getClientOriginalName();
-
-                $document->filePath = $filePath;
-
-                $fileSet->push($document);
-
-                SgcLogger::writeLog(target: 'employeeDocument', action: 'store');
-
-                $documentTypes = DocumentType::orderBy('name')->get();
+                $employeeDocuments->push($employeeDocument);
             }
         }
 
-        return view('employee.document.create-many-2', compact('fileSet', 'documentTypes'));
+        $documentTypes = DocumentType::orderBy('name')->get();
+
+        SgcLogger::writeLog(target: 'employeeDocument', action: 'store');
+
+        return view('employee.document.create-many-2', compact('employeeDocuments', 'documentTypes'));
+    }
+
+    public function bondsDocumentsStoreManyStep1(Request $request)
+    {
+        //validation
+        $request->validate([
+            'files.*' => 'required|mimes:pdf,jpeg,png,jpg|max:2048',
+        ]);
+
+        //check access permission
+        if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);
+
+        //set files data.
+        if ($request->hasfile('files')) {
+            $files = $request->file('files');
+            $bondDocuments = collect();
+            foreach ($files as $file) {
+                //create tmp file. (deleted on step02)
+                $tmpFileName = time() . '.' . $file->getClientOriginalName();
+                $tmpFilePath = $file->storeAs('temp', $tmpFileName, 'local');
+
+                //build model (with no document_type_id)
+                $bondDocument = new BondDocument();
+                $bondDocument->bond_id = $request->bond_id;
+                $bondDocument->original_name = $file->getClientOriginalName();
+                $bondDocument->tmp_file_path = $tmpFilePath;
+
+                //push on list
+                $bondDocuments->push($bondDocument);
+            }
+        }
+
+        //get documentTypes
+        $documentTypes = DocumentType::orderBy('name')->get();
+
+        //log
+        SgcLogger::writeLog(target: 'bondDocument', action: 'store');
+
+        return view('bond.document.create-many-2', compact('bondDocuments', 'documentTypes'));
     }
 
     public function employeesDocumentsStoreManyStep2(Request $request)
@@ -252,36 +315,86 @@ class DocumentController extends Controller
         //check access permission
         if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
 
-        DB::transaction(function () use ($request) {
-            $filesCount = $request->fileSetCount;
-            $employeeId = $request->employeeId;
+        $employeeDocumentsCount = $request->fileSetCount;
 
-            for ($i = 0; $i < $filesCount; $i++) {
-                $document = new EmployeeDocument();
+        DB::transaction(function () use ($request, $employeeDocumentsCount) {
 
-                $document->employee_id = $employeeId;
-                $document->document_type_id = $request->input('documentTypes_' . $i);
-
-                $oldDocuments = EmployeeDocument::where('document_type_id', $document->document_type_id)->where('employee_id', $document->employee_id)->get();
-                foreach ($oldDocuments as $old) $old->delete();
-
-                $document->original_name = $request->input('fileName_' . $i);
-
+            for ($i = 0; $i < $employeeDocumentsCount; $i++) {
                 $filePath = $request->input('filePath_' . $i);
 
-                $doc = file_get_contents(base_path('storage/app/' . $filePath), true);
-                $base64 = base64_encode($doc);
-                $document->file_data = $base64;
+                $employeeDocument = new EmployeeDocument();
+                $employeeDocument->employee_id = $request->employeeId;
+                $employeeDocument->document_type_id = $request->input('documentTypes_' . $i);
+                $employeeDocument->original_name = $request->input('fileName_' . $i);
+                $employeeDocument->file_data = RequestHelper::getFileDataFromFilePath($filePath);
 
-                $document->save();
+                $oldDocuments = new EmployeeDocument();
+                $oldDocuments = $oldDocuments
+                    ->where('employee_id', $employeeDocument->employee_id)
+                    ->where('document_type_id', $employeeDocument->document_type_id)
+                    ->get();
+                foreach ($oldDocuments as $old) $old->delete();
 
-                Storage::delete($filePath);
+                $employeeDocument->save();
             }
-
-            SgcLogger::writeLog(target: 'Mass Employees Documents', action: 'create');
         });
 
+        //delete tmp_files
+        for ($i = 0; $i < $employeeDocumentsCount; $i++) {
+            $filePath = $request->input('filePath_' . $i);
+            Storage::delete($filePath);
+        }
+
+        SgcLogger::writeLog(target: 'Mass Employees Documents', action: 'create');
+
         return redirect()->route('employeesDocuments.index')->with('success', 'Arquivos importados com sucesso.');
+    }
+
+    public function bondsDocumentsStoreManyStep2(Request $request)
+    {
+        //check access permission
+        if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);
+
+        //number of files
+        $bondDocumentsCount = $request->bondDocumentsCount;
+
+        //save all documents
+        DB::transaction(function () use ($request, $bondDocumentsCount) {
+            //save model for each file
+            for ($i = 0; $i < $bondDocumentsCount; $i++) {
+                //get file_path
+                $filePath = $request->input('filePath_' . $i);
+
+                //set the model
+                $bondDocument = new BondDocument();
+                $bondDocument->bond_id = $request->bond_id;
+                $bondDocument->document_type_id = $request->input('documentTypes_' . $i);
+                $bondDocument->original_name = $request->input('fileName_' . $i);
+                $bondDocument->file_data = RequestHelper::getFileDataFromFilePath($filePath);
+
+                //delete old same type document
+                $oldDocuments = new BondDocument();
+                $oldDocuments = $oldDocuments
+                    ->where('bond_id', $bondDocument->bond_id)
+                    ->where('document_type_id', $bondDocument->document_type_id)
+                    ->get();
+                foreach ($oldDocuments as $old) $old->delete();
+
+                //save new BondDocument
+                $bondDocument->save();
+            }
+        });
+
+        //delete tmp_files
+        for ($i = 0; $i < $bondDocumentsCount; $i++) {
+            $filePath = $request->input('filePath_' . $i);
+            Storage::delete($filePath);
+        }
+
+        //log
+        SgcLogger::writeLog(target: 'Create many BondDocuments', action: 'create');
+
+        return redirect()->route('bondsDocuments.index')->with('success', 'Arquivos importados com sucesso.');
     }
 
     /**
@@ -304,74 +417,13 @@ class DocumentController extends Controller
 
         $f = finfo_open();
 
-        $mime_type = finfo_buffer($f, $file, FILEINFO_MIME_TYPE);
+        $mimeType = finfo_buffer($f, $file, FILEINFO_MIME_TYPE);
 
         SgcLogger::writeLog(target: $model, action: 'show');
 
         return Response::make($file, 200, [
             'filename="' . $document->original_name . '"'
-        ])->header('Content-Type', $mime_type);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\BondDocument  $bondDocument
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(BondDocument $bondDocument)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\BondDocument  $bondDocument
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, BondDocument $bondDocument)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\BondDocument  $bondDocument
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(BondDocument $bondDocument)
-    {
-        //
-    }
-
-    public function bondsDocumentsMassDownload(Bond $bond)
-    {
-        //check access permission
-        if (!Gate::allows('bondDocument-download')) return response()->view('access.denied')->setStatusCode(401);
-
-        $documents = $bond->bondDocuments;
-
-        $zipFileName = date('Y-m-d') . '_' . $bond->employee->name . '_' . $bond->id;
-        $zipFile = $zipFileName . '.zip';
-
-        $zip = new \ZipArchive();
-
-        if ($zip->open($zipFile, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
-
-            foreach ($documents as $document)
-                $zip->addFromString($document->original_name, base64_decode($document->file_data));
-
-            $zip->close();
-
-            SgcLogger::writeLog(target: $bond, action: 'bondDocuments download');
-
-            return response()->download($zipFile)->deleteFileAfterSend(true);
-        } else {
-            echo 'failed: $zip->open()';
-        }
+        ])->header('Content-Type', $mimeType);
     }
 
     public function employeesDocumentsMassDownload(Employee $employee)
@@ -381,18 +433,42 @@ class DocumentController extends Controller
 
         $documents = $employee->employeeDocuments;
 
-        $zip_file_name = date('Y-m-d') . '_' . $employee->name . '.zip';
+        $zipFileName = date('Y-m-d') . '_' . $employee->name . '.zip';
 
         $zip = new \ZipArchive();
 
-        if ($zip->open($zip_file_name, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
+        if ($zip->open($zipFileName, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
 
             foreach ($documents as $document) $zip->addFromString($document->original_name, base64_decode($document->file_data));
             $zip->close();
 
             SgcLogger::writeLog(target: $employee, action: 'employeeDocuments download');
 
-            return response()->download($zip_file_name)->deleteFileAfterSend(true);
+            return response()->download($zipFileName)->deleteFileAfterSend(true);
+        } else {
+            echo 'failed: $zip->open()';
+        }
+    }
+
+    public function bondsDocumentsMassDownload(Bond $bond)
+    {
+        //check access permission
+        if (!Gate::allows('bondDocument-download')) return response()->view('access.denied')->setStatusCode(401);
+
+        $documents = $bond->bondDocuments;
+
+        $zipFileName = date('Y-m-d') . '_' . $bond->employee->name . '_' . $bond->id . '.zip';
+
+        $zip = new \ZipArchive();
+
+        if ($zip->open($zipFileName, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
+
+            foreach ($documents as $document) $zip->addFromString($document->original_name, base64_decode($document->file_data));
+            $zip->close();
+
+            SgcLogger::writeLog(target: $bond, action: 'bondDocuments download');
+
+            return response()->download($zipFileName)->deleteFileAfterSend(true);
         } else {
             echo 'failed: $zip->open()';
         }
