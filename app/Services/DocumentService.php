@@ -72,7 +72,7 @@ class DocumentService
         SgcLogger::writeLog(target: $document, action: 'store');
     }
 
-    public static function getFileData($file)
+    public function getFileData($file)
     {
         //if file
         if (isset($file)) {
@@ -211,7 +211,7 @@ class DocumentService
         SgcLogger::writeLog(target: 'Create many BondDocuments', action: 'create');
     }
 
-    public static function getFileDataFromPath($filePath)
+    public function getFileDataFromPath($filePath)
     {
         //if filePath
         if ($filePath) {
