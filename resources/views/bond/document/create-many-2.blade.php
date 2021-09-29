@@ -7,7 +7,6 @@
     <ol class="breadcrumb border-top border-bottom bg-light">
         <li class="breadcrumb-item">Colaboradores</li>
         <li class="breadcrumb-item">Importar Documentos de Vínculo</li>
-        {{-- {{dd($bondDocuments)}} --}}
         <li class="breadcrumb-item active" aria-current="page">
             Revisão de Importação: 
             {{ $bondDocuments->first()->bond->employee->name }}

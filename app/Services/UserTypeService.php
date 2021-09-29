@@ -18,7 +18,6 @@ class UserTypeService
         SgcLogger::writeLog(target: 'UserType', action: 'index');
 
         $userTypes = UserType::orderBy('name')->all();
-        dd($userTypes);
 
         return $userTypes;
     }

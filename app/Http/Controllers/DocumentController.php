@@ -13,7 +13,10 @@ use App\Services\DocumentService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Response;
 use App\CustomClasses\ModelFilterHelpers;
-use App\Http\Requests\DocumentStoreRequest;
+use App\Http\Requests\BondDocumentStoreRequest;
+use App\Http\Requests\EmployeeDocumentStoreRequest;
+use App\Http\Requests\BondMultipleDocumentsStoreRequest;
+use App\Http\Requests\EmployeeMultipleDocumentsStoreRequest;
 
 class DocumentController extends Controller
 {
@@ -118,7 +121,7 @@ class DocumentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function employeesDocumentsStore(DocumentStoreRequest $request)
+    public function employeesDocumentsStore(EmployeeDocumentStoreRequest $request)
     {
         //check access permission
         if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
@@ -135,7 +138,7 @@ class DocumentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function bondsDocumentsStore(DocumentStoreRequest $request)
+    public function bondsDocumentsStore(BondDocumentStoreRequest $request)
     {
         //check access permission
         if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);
@@ -183,7 +186,7 @@ class DocumentController extends Controller
         return view('bond.document.create-many-1', compact('bonds', 'id'));
     }
 
-    public function employeesDocumentsStoreManyStep1(DocumentStoreRequest $request)
+    public function employeesDocumentsStoreManyStep1(EmployeeMultipleDocumentsStoreRequest $request)
     {
         //check access permission
         if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
@@ -191,12 +194,17 @@ class DocumentController extends Controller
         $documentTypes = DocumentType::orderBy('name')->get();
 
         $this->service->documentModel = new EmployeeDocument;
-        $employeeDocuments = $this->service->createManyEmployeeDocumentsStep1($request->all());
+
+        try {
+            $employeeDocuments = $this->service->createManyEmployeeDocumentsStep1($request->all());
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors('Erro ao tentar obter arquivos: ' . $e->getMessage());
+        }
 
         return view('employee.document.create-many-2', compact('employeeDocuments', 'documentTypes'));
     }
 
-    public function bondsDocumentsStoreManyStep1(DocumentStoreRequest $request)
+    public function bondsDocumentsStoreManyStep1(BondMultipleDocumentsStoreRequest $request)
     {
         //check access permission
         if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);
@@ -204,7 +212,12 @@ class DocumentController extends Controller
         $documentTypes = DocumentType::orderBy('name')->get();
 
         $this->service->documentModel = new BondDocument;
-        $bondDocuments = $this->service->createManyBondDocumentsStep1($request->all());
+
+        try {
+            $bondDocuments = $this->service->createManyBondDocumentsStep1($request->all());
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors('Erro ao tentar obter arquivos: ' . $e->getMessage());
+        }
 
         return view('bond.document.create-many-2', compact('bondDocuments', 'documentTypes'));
     }
@@ -256,8 +269,8 @@ class DocumentController extends Controller
 
         try {
             $zipFileName = $this->service->getAllDocumentsOfEmployee($employee);
-        } catch (\Throwable $th) {
-            //throw $th;
+        } catch (\Exception $e) {
+            return redirect()->route('employees.show', $employee)->withErrors('Erro ao gerar o arquivo compactado: ' . $e->getMessage());
         }
 
         return response()->download($zipFileName)->deleteFileAfterSend(true);
@@ -270,8 +283,8 @@ class DocumentController extends Controller
 
         try {
             $zipFileName = $this->service->getAllDocumentsOfBond($bond);
-        } catch (\Throwable $th) {
-            //throw $th;
+        } catch (\Exception $e) {
+            return redirect()->route('bonds.show', $bond)->withErrors('Erro ao gerar o arquivo compactado: ' . $e->getMessage());
         }
 
         return response()->download($zipFileName)->deleteFileAfterSend(true);

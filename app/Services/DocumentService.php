@@ -8,12 +8,21 @@ use App\Models\Employee;
 use App\Models\BondDocument;
 use App\Models\DocumentType;
 use App\CustomClasses\SgcLogger;
+use App\Models\EmployeeDocument;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class DocumentService
 {
-    public function list()
+    /**
+     * Undocumented function
+     *
+     * @return LengthAwarePaginator
+     */
+    public function list(): LengthAwarePaginator
     {
         $documentClassName = class_basename($this->documentModel::class);
         SgcLogger::writeLog(target: $documentClassName, action: 'index');
@@ -27,7 +36,12 @@ class DocumentService
         return $documents;
     }
 
-    public function listRights()
+    /**
+     * Undocumented function
+     *
+     * @return LengthAwarePaginator
+     */
+    public function listRights(): LengthAwarePaginator
     {
         SgcLogger::writeLog(target: 'BondsRightsIndex', action: 'index');
 
@@ -46,6 +60,12 @@ class DocumentService
         return $documents;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param array $attributes
+     * @return void
+     */
     public function createEmployeeDocument(array $attributes)
     {
         //save the model
@@ -59,6 +79,12 @@ class DocumentService
         SgcLogger::writeLog(target: $document, action: 'store');
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param array $attributes
+     * @return void
+     */
     public function createBondDocument(array $attributes)
     {
         //save the model
@@ -72,7 +98,13 @@ class DocumentService
         SgcLogger::writeLog(target: $document, action: 'store');
     }
 
-    public function getFileData($file)
+    /**
+     * Undocumented function
+     *
+     * @param UploadedFile $file
+     * @return string
+     */
+    public function getFileData(UploadedFile $file): string
     {
         //if file
         if (isset($file)) {
@@ -81,6 +113,7 @@ class DocumentService
             $fileContent = file_get_contents(base_path('storage/app/' . $filePath), true);
             $fileContentBase64 = base64_encode($fileContent);
             Storage::delete($filePath);
+
             return $fileContentBase64;
         }
 
@@ -88,52 +121,74 @@ class DocumentService
         return null;
     }
 
-    public function createManyEmployeeDocumentsStep1(array $attributes)
+    /**
+     * Undocumented function
+     *
+     * @param array $attributes
+     * @return Collection
+     */
+    public function createManyEmployeeDocumentsStep1(array $attributes): Collection
     {
         if (isset($attributes['files'])) {
             $files = $attributes['files'];
             $employeeDocuments = collect();
+
             foreach ($files as $file) {
                 $tmpFileName = time() . '.' . $file->getClientOriginalName();
                 $tmpFilePath = $file->storeAs('temp', $tmpFileName, 'local');
 
-                $document = $this->documentModel;
+                $document = new EmployeeDocument();
                 $document->employee_id = $attributes['employees']; // <= Particular line
                 $document->original_name = $file->getClientOriginalName();
                 $document->filePath = $tmpFilePath;
 
                 $employeeDocuments->push($document);
             }
+
+            SgcLogger::writeLog(target: 'employeeDocument', action: 'store');
+
+            return $employeeDocuments;
         }
-
-        SgcLogger::writeLog(target: 'employeeDocument', action: 'store');
-
-        return $employeeDocuments;
+        throw new Exception('$attributes[files] not set.', 1);
     }
 
-    public function createManyBondDocumentsStep1(array $attributes)
+    /**
+     * Undocumented function
+     *
+     * @param array $attributes
+     * @return Collection
+     */
+    public function createManyBondDocumentsStep1(array $attributes): Collection
     {
         if (isset($attributes['files'])) {
             $files = $attributes['files'];
             $bondDocuments = collect();
+
             foreach ($files as $file) {
                 $tmpFileName = time() . '.' . $file->getClientOriginalName();
                 $tmpFilePath = $file->storeAs('temp', $tmpFileName, 'local');
 
-                $document = $this->documentModel;
+                $document = new BondDocument();
                 $document->bond_id = $attributes['bond_id']; // <= Particular line
                 $document->original_name = $file->getClientOriginalName();
                 $document->tmp_file_path = $tmpFilePath;
 
                 $bondDocuments->push($document);
             }
+
+            SgcLogger::writeLog(target: 'bondDocument', action: 'store');
+
+            return $bondDocuments;
         }
-
-        SgcLogger::writeLog(target: 'bondDocument', action: 'store');
-
-        return $bondDocuments;
+        throw new Exception('$attributes[files] not set.', 1);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param array $attributes
+     * @return void
+     */
     public function createManyEmployeeDocumentsStep2(array $attributes)
     {
         $documentsCount = $attributes['fileSetCount'];
@@ -143,13 +198,13 @@ class DocumentService
             for ($i = 0; $i < $documentsCount; $i++) {
                 $filePath = $attributes['filePath_' . $i];
 
-                $document = $this->documentModel;
+                $document = new EmployeeDocument();
                 $document->employee_id = $attributes['employeeId']; // <= Particular line
                 $document->document_type_id = $attributes['documentTypes_' . $i];
                 $document->original_name = $attributes['fileName_' . $i];
                 $document->file_data = $this->getFileDataFromPath($filePath);
 
-                $oldDocuments = $this->documentModel;
+                $oldDocuments = new EmployeeDocument();
                 $oldDocuments = $oldDocuments
                     ->where('employee_id', $document->employee_id) // <= Particular line
                     ->where('document_type_id', $document->document_type_id)
@@ -169,6 +224,12 @@ class DocumentService
         SgcLogger::writeLog(target: 'Create many EmployeeDocuments', action: 'create');
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param array $attributes
+     * @return void
+     */
     public function createManyBondDocumentsStep2(array $attributes)
     {
         //number of files
@@ -182,14 +243,14 @@ class DocumentService
                 $filePath = $attributes['filePath_' . $i];
 
                 //set the model
-                $document = $this->documentModel;
+                $document = new BondDocument();
                 $document->bond_id = $attributes['bond_id']; // <= Particular line
                 $document->document_type_id = $attributes['documentTypes_' . $i];
                 $document->original_name = $attributes['fileName_' . $i];
                 $document->file_data = $this->getFileDataFromPath($filePath);
 
                 //delete old same type document
-                $oldDocuments = $this->documentModel;
+                $oldDocuments = new BondDocument();
                 $oldDocuments = $oldDocuments
                     ->where('bond_id', $document->bond_id) // <= Particular line
                     ->where('document_type_id', $document->document_type_id)
@@ -211,7 +272,13 @@ class DocumentService
         SgcLogger::writeLog(target: 'Create many BondDocuments', action: 'create');
     }
 
-    public function getFileDataFromPath($filePath)
+    /**
+     * Undocumented function
+     *
+     * @param string $filePath
+     * @return string
+     */
+    public function getFileDataFromPath(string $filePath): string
     {
         //if filePath
         if ($filePath) {
@@ -224,7 +291,13 @@ class DocumentService
         return null;
     }
 
-    public function getDocument($id)
+    /**
+     * Undocumented function
+     *
+     * @param integer $id
+     * @return Collection
+     */
+    public function getDocument(int $id): Collection
     {
         $documentClassName = class_basename($this->documentModel::class);
         SgcLogger::writeLog(target: $documentClassName, action: 'show');
@@ -245,7 +318,13 @@ class DocumentService
         return $file;
     }
 
-    public function getAllDocumentsOfEmployee(Employee $employee)
+    /**
+     * Undocumented function
+     *
+     * @param Employee $employee
+     * @return string
+     */
+    public function getAllDocumentsOfEmployee(Employee $employee): string
     {
         SgcLogger::writeLog(target: $employee, action: 'getAllDocumentsOfEmployee');
 
@@ -266,7 +345,13 @@ class DocumentService
         throw new Exception('failed: $zip->open()', 1);
     }
 
-    public function getAllDocumentsOfBond(Bond $bond)
+    /**
+     * Undocumented function
+     *
+     * @param Bond $bond
+     * @return string
+     */
+    public function getAllDocumentsOfBond(Bond $bond): string
     {
         SgcLogger::writeLog(target: $bond, action: 'getAllDocumentsOfBond');
 

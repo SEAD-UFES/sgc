@@ -7,7 +7,7 @@
     <ol class="breadcrumb border-top border-bottom bg-light">
         <li class="breadcrumb-item">Colaboradores</li>
         <li class="breadcrumb-item">Importar Documentos de Colaborador</li>
-        <li class="breadcrumb-item active" aria-current="page">Revisão de Importação: {{ $fileSet->first()->employee->name }}</li>
+        <li class="breadcrumb-item active" aria-current="page">Revisão de Importação: {{ $employeeDocuments->first()->employee->name }}</li>
     </ol>
 </nav>
     <section id="pageContent">
@@ -18,8 +18,8 @@
                     <br />
                     <form action={{ route('employeesDocuments.storeManyStep02') }} method="POST">
                         @csrf
-                        <input type="hidden" name="fileSetCount" value="{{ count($fileSet) }}">
-                        <input type="hidden" name="employeeId" value="{{ $fileSet->first()->employee->id }}">
+                        <input type="hidden" name="fileSetCount" value="{{ count($employeeDocuments) }}">
+                        <input type="hidden" name="employeeId" value="{{ $employeeDocuments->first()->employee->id }}">
                         <div class="table-responsive">
                             <table class="table table-striped table-hover">
                                 <thead>
@@ -27,7 +27,7 @@
                                     <th>Tipo de documento</th>
                                 </thead>
                                 <tbody>
-                                    @foreach ($fileSet as $key => $file)
+                                    @foreach ($employeeDocuments as $key => $file)
                                         <input type="hidden" name="fileName_{{ $key }}" value="{{ $file->original_name }}">
                                         <input type="hidden" name="filePath_{{ $key }}" value="{{ $file->filePath }}" />
                                         <tr>
