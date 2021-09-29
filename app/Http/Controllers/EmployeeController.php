@@ -57,7 +57,7 @@ class EmployeeController extends Controller
         $maritalStatuses = MaritalStatus::orderBy('name')->get();
         $addressStates = State::orderBy('name')->get();
 
-        SgcLogger::writeLog(target: 'Employee');
+        SgcLogger::writeLog(target: 'Employee', action: 'create');
 
         return view('employee.create', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates'));
     }

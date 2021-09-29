@@ -159,8 +159,8 @@ class SgcLogger
             'review' => 'info',
             'request review' => 'info',
             'update' => 'notice',
-            'bondDocuments download' => 'notice',
-            'employeeDocuments download' => 'notice',
+            'getAllDocumentsOfBond' => 'notice',
+            'getAllDocumentsOfEmployee' => 'notice',
             'destroy' => 'warning',
         ]);
 
