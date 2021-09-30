@@ -2,6 +2,7 @@
 
 namespace App\CustomClasses;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -46,7 +47,7 @@ class SgcLogger
     SgcLogger::writeLog($user); [chamado do método store do UserController]
     => 7:prof1@ufes.br|store| User:18:marco@gmail.com */
 
-    public static function writeLog(mixed $target = null, mixed $action = null, mixed $executor = null)
+    public static function writeLog(mixed $target = null, mixed $action = null, mixed $executor = null, mixed $request = null, mixed $model = null)
     {
         $functionCaller = (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']);
         $executorInfo = self::getExecutorInfo($executor);
@@ -55,6 +56,14 @@ class SgcLogger
         $severity = self::getSeverityMapping($actionInfo);
 
         $logText = "\t$executorInfo\t|\t$actionInfo\t|\t$targetInfo\t";
+
+        if ($request) {
+            $logText .= "|\trequest-params: " . self::getRequestParams($request);
+        }
+
+        if ($model) {
+            $logText .= "|\tmodel-before-change: " . self::getCurrentModelData($model);
+        }
 
         switch ($severity) {
             case 'info':
@@ -139,6 +148,19 @@ class SgcLogger
         }
 
         return 'Maybe there is something wrong with $target on logger';
+    }
+
+    private static function getCurrentModelData(Model $model): string
+    {
+        return $model->toJson(JSON_UNESCAPED_UNICODE);
+    }
+
+    private static function getRequestParams(array $request): string
+    {
+        $json = collect($request)
+            ->toJson(JSON_UNESCAPED_UNICODE);
+
+        return $json;
     }
 
     private static function getSeverityMapping(string $severityKey): string | null

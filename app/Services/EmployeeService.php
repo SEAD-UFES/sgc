@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\User;
-use App\Models\Employee;
 use App\CustomClasses\SgcLogger;
-use Illuminate\Support\Facades\DB;
+use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeService
 {
@@ -15,9 +15,8 @@ class EmployeeService
      *
      * @return LengthAwarePaginator
      */
-    public function list(): LengthAwarePaginator
-    {
-        SgcLogger::writeLog(target: 'Employee', action: 'index');
+    function list(): LengthAwarePaginator {
+        SgcLogger::writeLog(target:'Employee', action:'index');
 
         $query = Employee::with(['gender', 'birthState', 'documentType', 'maritalStatus', 'addressState', 'user']);
         $query = $query->AcceptRequest(Employee::$accepted_filters)->filter();
@@ -71,7 +70,7 @@ class EmployeeService
             $this->userAttach($employee);
         });
 
-        SgcLogger::writeLog(target: $employee, action: 'store');
+        SgcLogger::writeLog(target:$employee, action:'store');
 
         return $employee;
     }
@@ -88,7 +87,7 @@ class EmployeeService
 
         if (!is_null($existentUser)) {
             $existentUser->employee = $employee;
-            SgcLogger::writeLog(target: $existentUser, action: 'Updating existent User with Employee info');
+            SgcLogger::writeLog(target:$existentUser, action:'Updating existent User with Employee info');
             $existentUser->save();
         }
     }
@@ -102,6 +101,9 @@ class EmployeeService
      */
     public function update(array $attributes, Employee $employee): Employee
     {
+
+        SgcLogger::writeLog(target:$employee, action:'update', request:$attributes, model:$employee);
+
         $employee->name = $attributes['name'];
         $employee->cpf = $attributes['cpf'];
         $employee->job = $attributes['job'];
@@ -129,8 +131,6 @@ class EmployeeService
         $employee->mobile = $attributes['mobile'];
         $employee->email = $attributes['email'];
 
-        SgcLogger::writeLog(target: $employee, action: 'update');
-
         DB::transaction(function () use ($employee) {
             $employee->save();
 
@@ -150,7 +150,7 @@ class EmployeeService
     {
         $employeeUser = $employee->user;
 
-        SgcLogger::writeLog(target: $employee, action: 'destroy');
+        SgcLogger::writeLog(target:$employee, action:'destroy', model:$employee);
 
         DB::transaction(function () use ($employee, $employeeUser) {
             if (!is_null($employeeUser)) {
@@ -158,7 +158,9 @@ class EmployeeService
                 $employeeUser->save();
             }
 
-            foreach ($employee->courses as $course) $course->bond->bondDocuments()->delete();
+            foreach ($employee->courses as $course) {
+                $course->bond->bondDocuments()->delete();
+            }
 
             $employee->courses()->detach();
             $employee->employeeDocuments()->delete();
