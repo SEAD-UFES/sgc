@@ -2,6 +2,7 @@
 
 namespace App\CustomClasses;
 
+use App\Helpers\NetworkHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -55,7 +56,7 @@ class SgcLogger
         $targetInfo = self::getTargetInfo($target);
         $severity = self::getSeverityMapping($actionInfo);
 
-        $logText =  "\t" . self::getIpAddress() . "\t|\t$executorInfo\t|\t$actionInfo\t|\t$targetInfo\t";
+        $logText =  "\t" . NetworkHelper::getClientIpAddress() . "\t|\t$executorInfo\t|\t$actionInfo\t|\t$targetInfo\t";
 
         if ($request) {
             $logText .= "|\trequest-params: " . self::getRequestParams($request);
@@ -188,20 +189,4 @@ class SgcLogger
 
         return $severityMapping->get($severityKey);
     }
-    
-    // Adapted from: https://stackoverflow.com/a/2031935
-    private static function getIpAddress(){
-        foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key){
-            if (array_key_exists($key, $_SERVER) === true){
-                foreach (explode(',', $_SERVER[$key]) as $ip){
-                    $ip = trim($ip); // just to be safe
-                    Log::info('IP: $_SERVER[' . $key . '] = '. $ip); //Testing behaviour on production server
-                    //if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false){
-                        return $ip;
-                    //}
-                }
-            }
-        }
-    }
-
 }
