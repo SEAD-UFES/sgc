@@ -22,6 +22,6 @@ class WebController extends Controller
     public function showSysInfo()
     {
         if (!Gate::allows('isAdm-global')) return response()->view('access.denied')->setStatusCode(401);
-        return view('sysinfo');
+        return view('sysInfo');
     }
 }
