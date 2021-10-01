@@ -25,20 +25,29 @@ class StoreBondRequest extends FormRequest
     {
         return [
             
-            'employees' => 'min:1',
-            'roles' => 'min:1',
-            'courses' => 'min:1',
-            'poles' => 'min:1',
+            'employees' => 'required|exists:employees,id',
+            'roles' => 'required|exists:roles,id',
+            'courses' => 'required|exists:courses,id',
+            'poles' => 'required|exists:poles,id',
+            'begin' => 'nullable|date',
+            'end' => 'nullable|date',
+            'volunteer' => 'sometimes',
         ];
     }
 
     public function messages()
     {
         return [
-            'employees.min' => 'O colaborador deve ser preenchido com uma das opções fornecidas',
-            'roles.min' => 'A Função deve ser preenchido com uma das opções fornecidas',
-            'courses.min' => 'O curso deve ser preenchido com uma das opções fornecidas',
-            'poles.min' => 'O polo deve ser preenchido com uma das opções fornecidas',
+            'employees.required' => 'O Colaborador é obrigatório',
+            'employees.exists' => 'O Colaborador deve estar entre os fornecidos',
+            'roles.required' => 'A Função é obrigatória',
+            'roles.exists' => 'A Função deve ser preenchido com uma das opções fornecidas',
+            'courses.required' => 'O curso é obrigatório',
+            'courses.exists' => 'O curso deve ser preenchido com uma das opções fornecidas',
+            'poles.required' => 'O polo é obrigatório',
+            'poles.exists' => 'O polo deve ser preenchido com uma das opções fornecidas',
+            'begin.date' => 'Início deve ser uma data',
+            'end.date' => 'Início deve ser uma data',
         ];
     }
 }

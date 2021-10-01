@@ -26,7 +26,7 @@ class BondMultipleDocumentsStoreRequest extends FormRequest
         return [
             'files' => 'required',
             'files.*' => 'mimes:pdf,jpeg,png,jpg|max:2048',
-            'bond_id' => 'min:1',
+            'bond_id' => 'required|exists:bonds,id',
         ];
     }
 
@@ -37,6 +37,7 @@ class BondMultipleDocumentsStoreRequest extends FormRequest
             'files.*.mimes' => 'O tipo de arquivo deve ser pdf, jpg, jpeg ou png,',
             'files.*.max' => 'O tamanho do arquivo deve ser de no máximo 2 MB',
             'bond_id.min' => 'O Vínculo é obrigatório',
+            'bond_id.exists' => 'O Vínculo deve estar entre os fornecidos',
         ];
     }
 }

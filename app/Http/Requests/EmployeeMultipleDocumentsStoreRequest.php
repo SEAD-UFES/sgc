@@ -26,7 +26,7 @@ class EmployeeMultipleDocumentsStoreRequest extends FormRequest
         return [
             'files' => 'required',
             'files.*' => 'mimes:pdf,jpeg,png,jpg|max:2048',
-            'employees' => 'min:1',
+            'employees' => 'required|exists:employees,id',
         ];
     }
 
@@ -36,7 +36,8 @@ class EmployeeMultipleDocumentsStoreRequest extends FormRequest
             'files.required' => 'O arquivo é obrigatório',
             'files.*.mimes' => 'O tipo de arquivo deve ser pdf, jpg, jpeg ou png,',
             'files.*.max' => 'O tamanho do arquivo deve ser de no máximo 2 MB',
-            'employees.min' => 'O Colaborador é obrigatório',
+            'employees.required' => 'O Colaborador é obrigatório',
+            'employees.exists' => 'O Colaborador deve estar entre os fornecidos',
         ];
     }
 }
