@@ -74,7 +74,7 @@ class EmployeeController extends Controller
         if (!Gate::allows('employee-store')) return response()->view('access.denied')->setStatusCode(401);
 
         try {
-            $employee = $this->service->create($request->all());
+            $employee = $this->service->create($request->validated());
         } catch (\Exception $e) {
             return redirect()->route('employees.index')->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $e->getMessage()]);
         }
@@ -136,7 +136,7 @@ class EmployeeController extends Controller
         if (!Gate::allows('employee-update')) return response()->view('access.denied')->setStatusCode(401);
 
         try {
-            $this->service->update($request->all(), $employee);
+            $this->service->update($request->validated(), $employee);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $e->getMessage()]);
         }

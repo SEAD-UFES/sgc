@@ -66,7 +66,7 @@ class UserController extends Controller
         if (!Gate::allows('user-store')) return response()->view('access.denied')->setStatusCode(401);
 
         try {
-            $this->service->create($request->all());
+            $this->service->create($request->validated());
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
         }
@@ -119,7 +119,7 @@ class UserController extends Controller
         if (!Gate::allows('user-update')) return response()->view('access.denied')->setStatusCode(401);
 
         try {
-            $user = $this->service->update($request->all(), $user);
+            $user = $this->service->update($request->validated(), $user);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
         }

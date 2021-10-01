@@ -79,7 +79,7 @@ class BondController extends Controller
         if (!Gate::allows('bond-store-course_id', $request->courses)) return back()->withErrors('courses', 'O usuário não pode escolher esse curso.');
 
         try {
-            $this->service->create($request->all());
+            $this->service->create($request->validated());
         } catch (\Exception $e) {
             return redirect()->route('bonds.index')->withErrors(['noStore' => 'Não foi possível salvar o Vínculo: ' . $e->getMessage()]);
         }
@@ -145,7 +145,7 @@ class BondController extends Controller
         if (!Gate::allows('bond-store-course_id', $request->courses)) return back()->withErrors('courses', 'O usuário não pode escolher este curso.');
         
         try {
-            $bond = $this->service->update($request->all(), $bond);
+            $bond = $this->service->update($request->validated(), $bond);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o vínculo: ' . $e->getMessage()]);
         }
@@ -186,7 +186,7 @@ class BondController extends Controller
         if (!Gate::allows('bond-review')) return response()->view('access.denied')->setStatusCode(401);
         
         try {
-            $this->service->review($request->all(), $bond);
+            $this->service->review($request->validated(), $bond);
         } catch (\Exception $e) {
             return redirect()->route('bonds.show', $bond)->withErrors(['noStore' => 'Não foi possível salvar o vínculo: ' . $e->getMessage()]);
         }

@@ -66,7 +66,7 @@ class CourseController extends Controller
         //check access permission
         if (!Gate::allows('course-store')) return response()->view('access.denied')->setStatusCode(401);
 
-        $this->service->create($request->all());
+        $this->service->create($request->validated());
 
         return redirect()->route('courses.index')->with('success', 'Curso criado com sucesso.');
     }
@@ -118,7 +118,7 @@ class CourseController extends Controller
         if (!Gate::allows('course-update')) return response()->view('access.denied')->setStatusCode(401);
 
         try {
-            $this->service->update($request->all(), $course);
+            $this->service->update($request->validated(), $course);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o curso: ' . $e->getMessage()]);
         }

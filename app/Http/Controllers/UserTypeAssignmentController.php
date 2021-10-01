@@ -70,7 +70,7 @@ class UserTypeAssignmentController extends Controller
         if (!Gate::allows('userTypeAssignment-store')) return response()->view('access.denied')->setStatusCode(401);
 
         try {
-            $this->service->create($request->all());
+            $this->service->create($request->validated());
         } catch (\Exception $e) {
             return redirect()->route('userTypeAssignments.index')->withErrors(['noStore' => 'Não foi possível salvar a Atribuição de Papel: ' . $e->getMessage()]);
         }
@@ -124,7 +124,7 @@ class UserTypeAssignmentController extends Controller
         if (!Gate::allows('userTypeAssignment-update')) return response()->view('access.denied')->setStatusCode(401);
 
         try {
-            $userTypeAssignment = $this->service->update($request->all(), $userTypeAssignment);
+            $userTypeAssignment = $this->service->update($request->validated(), $userTypeAssignment);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar a Atribuição de Papel: ' . $e->getMessage()]);
         }

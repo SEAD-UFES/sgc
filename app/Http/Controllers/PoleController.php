@@ -63,7 +63,7 @@ class PoleController extends Controller
         if (!Gate::allows('pole-store')) return response()->view('access.denied')->setStatusCode(401);
 
         try {
-            $this->service->create($request->all());
+            $this->service->create($request->validated());
         } catch (\Exception $e) {
             return redirect()->route('poles.index')->withErrors(['noStore' => 'Não foi possível salvar o Polo: ' . $e->getMessage()]);
         }
@@ -116,7 +116,7 @@ class PoleController extends Controller
         if (!Gate::allows('pole-update')) return response()->view('access.denied')->setStatusCode(401);
 
         try {
-            $pole = $this->service->update($request->all(), $pole);
+            $pole = $this->service->update($request->validated(), $pole);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o Polo: ' . $e->getMessage()]);
         }

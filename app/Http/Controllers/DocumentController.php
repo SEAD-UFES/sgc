@@ -127,7 +127,7 @@ class DocumentController extends Controller
         if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
 
         $this->service->documentModel = new EmployeeDocument;
-        $this->service->createEmployeeDocument($request->all());
+        $this->service->createEmployeeDocument($request->validated());
 
         return redirect()->route('employeesDocuments.index')->with('success', 'Arquivo importado com sucesso.');
     }
@@ -144,7 +144,7 @@ class DocumentController extends Controller
         if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);
 
         $this->service->documentModel = new BondDocument;
-        $this->service->createBondDocument($request->all());
+        $this->service->createBondDocument($request->validated());
 
         return redirect()->route('bondsDocuments.index')->with('success', 'Arquivo importado com sucesso.');
     }
@@ -196,7 +196,7 @@ class DocumentController extends Controller
         $this->service->documentModel = new EmployeeDocument;
 
         try {
-            $employeeDocuments = $this->service->createManyEmployeeDocumentsStep1($request->all());
+            $employeeDocuments = $this->service->createManyEmployeeDocumentsStep1($request->validated());
         } catch (\Exception $e) {
             return redirect()->back()->withErrors('Erro ao tentar obter arquivos: ' . $e->getMessage());
         }
@@ -214,7 +214,7 @@ class DocumentController extends Controller
         $this->service->documentModel = new BondDocument;
 
         try {
-            $bondDocuments = $this->service->createManyBondDocumentsStep1($request->all());
+            $bondDocuments = $this->service->createManyBondDocumentsStep1($request->validated());
         } catch (\Exception $e) {
             return redirect()->back()->withErrors('Erro ao tentar obter arquivos: ' . $e->getMessage());
         }
