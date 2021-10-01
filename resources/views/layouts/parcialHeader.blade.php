@@ -106,6 +106,7 @@
                                     <li><hr class="dropdown-divider"></li>
                                     <li><h6 class="dropdown-header">SGC</h6></li>
                                     <li><a class="dropdown-item" href="{{ route('logs') }}">Logs de sistema</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('sysinfo') }}">System Info</a></li>
                                 @endcan
                             </ul>
                         </li>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class WebController extends Controller
 {
@@ -17,4 +18,10 @@ class WebController extends Controller
     public function webHome() { return view('home'); }
 
     public function fallback() { return $this->rootFork(); }
+
+    public function showSysInfo()
+    {
+        if (!Gate::allows('isAdm-global')) return response()->view('access.denied')->setStatusCode(401);
+        return view('sysinfo');
+    }
 }
