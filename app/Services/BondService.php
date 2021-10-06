@@ -119,7 +119,13 @@ class BondService
     {
         SgcLogger::writeLog(target: $bond, action: 'destroy');
 
-        $bond->delete();
+        DB::transaction(function () use ($bond) {
+            foreach ($bond->bondDocuments as $document) {
+                $document->delete();
+            }
+
+            $bond->delete();
+        });
     }
 
     /**
