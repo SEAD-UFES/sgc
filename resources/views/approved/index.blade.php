@@ -81,10 +81,7 @@
                                                 @can('approved-designate')
                                                     @if ($approved->approvedState->name == 'Aceitante')
                                                         &nbsp;
-                                                        <form name="{{ 'formDesignate' . $approved->id }}" action={{ route('approveds.designate', $approved) }} method="POST">
-                                                            @csrf
-                                                            <span onclick="{{ 'if(confirm(\'Tem certeza que deseja nomear esse Aprovado para Colaborador?\')) document.forms[\'formDesignate' . $approved->id . '\'].submit();' }}" data-bs-toggle="tooltip" title="Converter o aprovado em Colaborador" class="btn btn-warning btn-sm">Nomear</span>
-                                                        </form>
+                                                        <span onclick="{{ 'if(confirm(\'Tem certeza que deseja nomear esse Aprovado para Colaborador?\')) window.open("' . route('approveds.designate', $approved) . '")' }}" data-bs-toggle="tooltip" title="Converter o aprovado em Colaborador" class="btn btn-warning btn-sm">Nomear</span>
                                                     @endif
                                                 @endcan
                                                 @can('approved-destroy')
