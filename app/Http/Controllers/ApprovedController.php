@@ -8,7 +8,7 @@ use App\Models\State;
 use App\Models\Course;
 use App\Models\Gender;
 use App\Models\Approved;
-use App\Models\documentType;
+use App\Models\DocumentType;
 use Illuminate\Http\Request;
 use App\Models\ApprovedState;
 use App\Models\MaritalStatus;
