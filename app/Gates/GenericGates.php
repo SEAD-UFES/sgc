@@ -200,15 +200,17 @@ class GenericGates
         });
 
         /* define a coord with course_id */
-        Gate::define('isCoord-course_id', function (User $user, $course_id) {
+        Gate::define('isCoord-course_id', function (User $user, int $course_id) {
             //need to have session UserTypeAssignment active.
             $currentUTA = session('sessionUser')->getCurrentUTA();
             if (!$currentUTA) return false;
 
             //if currentUTA (UserTypeAssignment) is coord, ok
             $is_coord = $currentUTA->userType->acronym === 'coord';
-            $course_id_math = $currentUTA->course_id === $course_id;
-            if ($is_coord && $course_id_math) return true;
+            
+            // Issue #36: For some reason, sometimes $course_id isn't integer, but string... Fixed with typed parameter.
+            $course_id_match = $currentUTA->course_id === $course_id;
+            if ($is_coord && $course_id_match) return true;
 
             //if no permission
             return false;

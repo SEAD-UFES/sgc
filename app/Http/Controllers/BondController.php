@@ -76,7 +76,7 @@ class BondController extends Controller
         if (!Gate::allows('bond-create')) return response()->view('access.denied')->setStatusCode(401);
 
         //user can only store bonds with allowed course_ids 
-        if (!Gate::allows('bond-store-course_id', $request->courses)) return back()->withErrors('courses', 'O usuário não pode escolher esse curso.');
+        if (!Gate::allows('bond-store-course_id', $request->courses)) return redirect()->route('bonds.index')->withErrors('O usuário não pode escolher esse curso.');
 
         try {
             $this->service->create($request->validated());
