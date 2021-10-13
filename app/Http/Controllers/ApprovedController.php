@@ -194,7 +194,7 @@ class ApprovedController extends Controller
         $poles = Pole::orderBy('name')->get();
 
         try {
-            $approveds = $this->service->importFile($request->file('file'));
+            $approveds = $this->service->importApproveds($request->file('file'));
         } catch (\Exception $e) {
             return redirect()->route('approveds.index')->withErrors($e->getMessage());
         }

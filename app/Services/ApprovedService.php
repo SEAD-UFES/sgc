@@ -23,7 +23,7 @@ class ApprovedService
      */
     public function list(): LengthAwarePaginator
     {
-        SgcLogger::writeLog(target: 'Approved', action: 'index');
+        //SgcLogger::writeLog(target: 'Approved', action: 'index');
 
         $query = Approved::with(['approvedState', 'course', 'pole', 'role']);
         $query = $query->AcceptRequest(Approved::$accepted_filters)->filter();
@@ -42,7 +42,7 @@ class ApprovedService
      */
     public function delete(Approved $approved): void
     {
-        SgcLogger::writeLog(target: $approved, action: 'destroy');
+        //SgcLogger::writeLog(target: $approved, action: 'destroy');
 
         $approved->delete();
     }
@@ -59,7 +59,7 @@ class ApprovedService
         $new_state_id = $attributes['states'];
         $approved->approved_state_id = $new_state_id;
 
-        SgcLogger::writeLog(target: $approved, action: 'edit');
+        //SgcLogger::writeLog(target: $approved, action: 'edit');
 
         $approved->save();
     }
@@ -82,7 +82,7 @@ class ApprovedService
         $employee->phone = $approved->phone;
         $employee->mobile = $approved->mobile;
 
-        SgcLogger::writeLog(target: $approved, action: 'designate');
+        //SgcLogger::writeLog(target: $approved, action: 'designate');
 
         //$this->delete($approved);
 
@@ -110,21 +110,45 @@ class ApprovedService
      * @param UploadedFile $file
      * @return Collection
      */
-    public function importFile(UploadedFile $file): Collection
+    public function importApproveds(UploadedFile $file): Collection
     {
-        $approveds = collect();
+        //SgcLogger::writeLog(target: 'Approved', action: 'import');
 
-        SgcLogger::writeLog(target: 'Approved', action: 'import');
+        $filePath = $this->getFilePath($file);
 
-        $fileName = $file->getClientOriginalName();
-        $filePath = $file->storeAs('temp', $fileName, 'local');
-
-        Excel::import(new ApprovedsImport($approveds), $filePath);
+        $approveds = $this->getApprovedsFromFile($filePath);
         Storage::delete($filePath);
 
         return $approveds;
     }
-    
+
+    /**
+     * Undocumented function
+     *
+     * @param UploadedFile $file
+     * @return string
+     */
+    protected function getFilePath(UploadedFile $file): string
+    {
+        $fileName = $file->getClientOriginalName();
+
+        return $file->storeAs('temp', $fileName, 'local');
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $filePath
+     * @return Collection
+     */
+    protected function getApprovedsFromFile(string $filePath): Collection
+    {
+        $approveds = collect();
+        Excel::import(new ApprovedsImport($approveds), $filePath);
+
+        return $approveds;
+    }
+
     /**
      * Undocumented function
      *
@@ -133,23 +157,26 @@ class ApprovedService
      */
     public function massStore(array $attributes): void
     {
-        SgcLogger::writeLog(target: 'Mass Approveds', action: 'create');
+        //SgcLogger::writeLog(target: 'Mass Approveds', action: 'create');
+
+        $attributes = collect($attributes);
 
         DB::transaction(function () use ($attributes) {
 
-            $approvedsCount = $attributes['approvedsCount'];
+            $approvedsCount = $attributes->get('approvedsCount');
+
             for ($i = 0; $i < $approvedsCount; $i++) {
-                if (isset($attributes['check_' . $i])) {
+                if ($attributes->get('check_' . $i)) {
                     $approved = new Approved();
-                    $approved->name = $attributes['name_' . $i];
-                    $approved->email = $attributes['email_' . $i];
-                    $approved->area_code = $attributes['area_' . $i];
-                    $approved->phone = $attributes['phone_' . $i];
-                    $approved->mobile = $attributes['mobile_' . $i];
-                    $approved->announcement = $attributes['announcement_' . $i];
-                    $approved->course_id = $attributes['courses_' . $i];
-                    $approved->role_id = $attributes['roles_' . $i];
-                    $approved->pole_id = $attributes['poles_' . $i];
+                    $approved->name = $attributes->get('name_' . $i);
+                    $approved->email = $attributes->get('email_' . $i);
+                    $approved->area_code = $attributes->get('area_' . $i);
+                    $approved->phone = $attributes->get('phone_' . $i);
+                    $approved->mobile = $attributes->get('mobile_' . $i);
+                    $approved->announcement = $attributes->get('announcement_' . $i);
+                    $approved->course_id = $attributes->get('courses_' . $i);
+                    $approved->role_id = $attributes->get('roles_' . $i);
+                    $approved->pole_id = $attributes->get('poles_' . $i);
                     $approved->approved_state_id = 1;
                     $approved->save();
                 }
