@@ -26,7 +26,7 @@ class BondService
      */
     public function list(): LengthAwarePaginator
     {
-        SgcLogger::writeLog(target: 'Bond', action: 'index');
+        //SgcLogger::writeLog(target: 'Bond', action: 'index');
 
         $query = Bond::with(['employee', 'course', 'role', 'pole']);
         $query = $query->AcceptRequest(Bond::$accepted_filters)->filter();
@@ -45,22 +45,17 @@ class BondService
      */
     public function create(array $attributes): Bond
     {
-        $bond = new Bond;
-
-        $bond->employee_id = $attributes['employees'];
-        $bond->role_id = $attributes['roles'];
-        $bond->course_id = $attributes['courses'];
-        $bond->pole_id = $attributes['poles'];
-        $bond->begin = $attributes['begin'];
-        $bond->end = $attributes['end'];
-        $bond->terminated_at = null;
-        $bond->volunteer = isset($attributes['volunteer']);
-        $bond->impediment = true;
-        $bond->impediment_description = 'Vínculo ainda não revisado';
-        $bond->uaba_checked_at = null;
+        $attributes['volunteer'] = isset($attributes['volunteer']);
+        $attributes['terminated_at'] = null;
+        $attributes['impediment'] = true;
+        $attributes['impediment_description'] = 'Vínculo ainda não revisado';
+        $attributes['uaba_checked_at'] = null;
+        
+        $bond = Bond::create($attributes);
 
         DB::transaction(function () use ($bond) {
-            $bond->save();
+
+            
 
             $documents = EmployeeDocument::where('employee_id', $bond->employee_id)->get();
 
@@ -80,7 +75,7 @@ class BondService
             Notification::send($coordOrAssistants, new NewBondNotification($bond));
         });
 
-        SgcLogger::writeLog(target: $bond, action: 'store');
+        //SgcLogger::writeLog(target: $bond, action: 'store');
 
         return $bond;
     }
@@ -94,17 +89,9 @@ class BondService
      */
     public function update(array $attributes, Bond $bond): Bond
     {
-        $bond->employee_id = $attributes['employees'];
-        $bond->role_id = $attributes['roles'];
-        $bond->course_id = $attributes['courses'];
-        $bond->pole_id = $attributes['poles'];
-        $bond->begin = $attributes['begin'];
-        $bond->end = $attributes['end'];
-        $bond->volunteer = isset($attributes['volunteer']);
+        $attributes['volunteer'] = isset($attributes['volunteer']);
 
-        SgcLogger::writeLog(target: $bond, action: 'update');
-
-        $bond->save();
+        $bond->update($attributes);
 
         return $bond;
     }
@@ -117,7 +104,7 @@ class BondService
      */
     public function delete(Bond $bond)
     {
-        SgcLogger::writeLog(target: $bond, action: 'destroy');
+        //SgcLogger::writeLog(target: $bond, action: 'destroy');
 
         DB::transaction(function () use ($bond) {
             foreach ($bond->bondDocuments as $document) {
@@ -147,7 +134,7 @@ class BondService
         $bond->impediment_description = $attributes['impedimentDescription'];
         $bond->uaba_checked_at = now();
 
-        SgcLogger::writeLog(target: $bond, action: 'review');
+        //SgcLogger::writeLog(target: $bond, action: 'review');
 
         $bond->save();
 
@@ -193,7 +180,7 @@ class BondService
 
         $users = $sec_users->merge($coord_users)->merge($ass_users);
 
-        SgcLogger::writeLog(target: $bond, action: 'request review');
+        //SgcLogger::writeLog(target: $bond, action: 'request review');
 
         Notification::send($users, new RequestReviewNotification($bond));
 

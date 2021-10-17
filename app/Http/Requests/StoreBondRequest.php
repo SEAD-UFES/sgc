@@ -25,10 +25,10 @@ class StoreBondRequest extends FormRequest
     {
         return [
             
-            'employees' => 'required|exists:employees,id',
-            'roles' => 'required|exists:roles,id',
-            'courses' => 'required|exists:courses,id',
-            'poles' => 'required|exists:poles,id',
+            'employee_id' => 'required|exists:employees,id',
+            'role_id' => 'required|exists:roles,id',
+            'course_id' => 'required|exists:courses,id',
+            'pole_id' => 'required|exists:poles,id',
             'begin' => 'nullable|date',
             'end' => 'nullable|date',
             'volunteer' => 'sometimes',
@@ -38,14 +38,14 @@ class StoreBondRequest extends FormRequest
     public function messages()
     {
         return [
-            'employees.required' => 'O Colaborador é obrigatório',
-            'employees.exists' => 'O Colaborador deve estar entre os fornecidos',
-            'roles.required' => 'A Função é obrigatória',
-            'roles.exists' => 'A Função deve ser preenchido com uma das opções fornecidas',
-            'courses.required' => 'O curso é obrigatório',
-            'courses.exists' => 'O curso deve ser preenchido com uma das opções fornecidas',
-            'poles.required' => 'O polo é obrigatório',
-            'poles.exists' => 'O polo deve ser preenchido com uma das opções fornecidas',
+            'employee_id.required' => 'O Colaborador é obrigatório',
+            'employee_id.exists' => 'O Colaborador deve estar entre os fornecidos',
+            'role_id.required' => 'A Função é obrigatória',
+            'role_id.exists' => 'A Função deve ser preenchido com uma das opções fornecidas',
+            'course_id.required' => 'O curso é obrigatório',
+            'course_id.exists' => 'O curso deve ser preenchido com uma das opções fornecidas',
+            'pole_id.required' => 'O polo é obrigatório',
+            'pole_id.exists' => 'O polo deve ser preenchido com uma das opções fornecidas',
             'begin.date' => 'Início deve ser uma data',
             'end.date' => 'Início deve ser uma data',
         ];
