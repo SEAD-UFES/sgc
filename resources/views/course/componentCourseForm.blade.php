@@ -20,16 +20,16 @@
     </div>
     <div class="col-12 col-md-6">
         <label for="selectType1" class="form-label">Tipo*</label>
-        <select name="courseTypes" id="selectType1" class="form-select">
+        <select name="course_type_id" id="selectType1" class="form-select">
             <option value="">Selecione o tipo</option>
             @foreach ($courseTypes as $courseType)
                 <option value="{{ $courseType->id }}"
-                    {{ isset($course) ? ($course->course_type_id == $courseType->id ? 'selected' : '') : (old('courseTypes') == $courseType->id ? 'selected' : '') }}>
+                    {{ isset($course) ? ($course->course_type_id == $courseType->id ? 'selected' : '') : (old('course_type_id') == $courseType->id ? 'selected' : '') }}>
                     {{ $courseType->name }}
                 </option>
             @endforeach
         </select>
-        @error('courseTypes')
+        @error('course_type_id')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>

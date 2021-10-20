@@ -15,7 +15,7 @@ class PoleService
      */
     public function list(): LengthAwarePaginator
     {
-        SgcLogger::writeLog(target: 'Pole', action: 'index');
+        //SgcLogger::writeLog(target: 'Pole', action: 'index');
 
         $poles_query = new Pole();
         $poles_query = $poles_query->AcceptRequest(Pole::$accepted_filters)->filter();
@@ -34,13 +34,9 @@ class PoleService
      */
     public function create(array $attributes): Pole
     {
-        $pole = new Pole;
-        $pole->name = $attributes['name'];
-        $pole->description = $attributes['description'];
+        $pole = Pole::create($attributes);
 
-        $pole->save();
-
-        SgcLogger::writeLog(target: $pole, action: 'store');
+        //SgcLogger::writeLog(target: $pole, action: 'store');
 
         return $pole;
     }
@@ -54,13 +50,9 @@ class PoleService
      */
     public function update(array $attributes, Pole $pole): Pole
     {
+        //SgcLogger::writeLog(target: $pole);
 
-        $pole->name = $attributes['name'];
-        $pole->description = $attributes['description'];
-
-        SgcLogger::writeLog(target: $pole);
-
-        $pole->save();
+        $pole->update($attributes);
 
         return $pole;
     }
@@ -73,7 +65,7 @@ class PoleService
      */
     public function delete(Pole $pole)
     {
-        SgcLogger::writeLog(target: $pole);
+        //SgcLogger::writeLog(target: $pole);
 
         $pole->delete();
     }

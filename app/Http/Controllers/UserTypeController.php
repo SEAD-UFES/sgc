@@ -20,7 +20,7 @@ class UserTypeController extends Controller
      */
     public function index()
     {
-        $rouserTypesles = $this->service->list();
+        $userTypes = $this->service->list();
 
         return view('userType.index', compact('userTypes'));
     }

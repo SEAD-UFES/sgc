@@ -15,7 +15,7 @@ class RoleService
      */
     public function list(): LengthAwarePaginator
     {
-        SgcLogger::writeLog(target: 'Role', action: 'index');
+        //SgcLogger::writeLog(target: 'Role', action: 'index');
 
         $roles_query = new Role();
         $roles_query = $roles_query->AcceptRequest(Role::$accepted_filters)->filter();
@@ -34,16 +34,9 @@ class RoleService
      */
     public function create(array $attributes): Role
     {
-        $role = new Role;
+        $role = Role::create($attributes);
 
-        $role->name = $attributes['name'];
-        $role->description = $attributes['description'];
-        $role->grant_value = $attributes['grantValue'];
-        $role->grant_type_id = $attributes['grantTypes'];
-
-        $role->save();
-
-        SgcLogger::writeLog(target: $role, action: 'store');
+        //SgcLogger::writeLog(target: $role, action: 'store');
 
         return $role;
     }
@@ -57,14 +50,9 @@ class RoleService
      */
     public function update(array $attributes, Role $role): Role
     {
-        $role->name = $attributes['name'];
-        $role->description = $attributes['description'];
-        $role->grant_value = $attributes['grantValue'];
-        $role->grant_type_id = $attributes['grantTypes'];
+        //SgcLogger::writeLog(target: $role, action: 'update');
 
-        SgcLogger::writeLog(target: $role, action: 'update');
-
-        $role->save();
+        $role->update($attributes);
 
         return $role;
     }
@@ -77,7 +65,7 @@ class RoleService
      */
     public function delete(Role $role)
     {
-        SgcLogger::writeLog(target: $role, action: 'destroy');
+        //SgcLogger::writeLog(target: $role, action: 'destroy');
 
         $role->delete();
     }

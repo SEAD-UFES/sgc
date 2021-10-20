@@ -19,23 +19,23 @@
     </div>
     <div class="col-6">
         <label for="inputValue1" class="form-label">Valor da bolsa</label>
-        <input name="grantValue" type="text" id="inputValue1" class="form-control" placeholder="R$"
-            value="{{ isset($role) ? $role->grant_value : old('grantValue') }}" />
-        @error('grantValue')
+        <input name="grant_value" type="text" id="inputValue1" class="form-control" placeholder="R$"
+            value="{{ isset($role) ? $role->grant_value : old('grant_value') }}" />
+        @error('grant_value')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-6">
         <label for="selectType1" class="form-label">Tipo*</label>
-        <select name="grantTypes" id="selectType1" class="form-select">
+        <select name="grant_type_id" id="selectType1" class="form-select">
             <option value="">Selecione o tipo</option>
             @foreach ($grantTypes as $grantType)
                 <option value="{{ $grantType->id }}"
-                    {{ isset($role) ? ($role->grant_type_id == $grantType->id ? 'selected' : '') : (old('grantTypes') == $grantType->id ? 'selected' : '') }}>
+                    {{ isset($role) ? ($role->grant_type_id == $grantType->id ? 'selected' : '') : (old('grant_type_id') == $grantType->id ? 'selected' : '') }}>
                     {{ $grantType->name }}</option>
             @endforeach
         </select>
-        @error('grantTypes')
+        @error('grant_type_id')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>

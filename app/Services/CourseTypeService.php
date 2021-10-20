@@ -10,7 +10,7 @@ class CourseTypeService
 {
     public function list(): LengthAwarePaginator
     {
-        SgcLogger::writeLog(target: 'CourseType', action: 'index');
+        //SgcLogger::writeLog(target: 'CourseType', action: 'index');
 
         $query = new CourseType();
         $query = $query->AcceptRequest(CourseType::$accepted_filters)->filter();

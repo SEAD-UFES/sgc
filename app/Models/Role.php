@@ -24,6 +24,7 @@ class Role extends Model
         'name',
         'description',
         'grant_value',
+        'grant_type_id',
     ];
 
     public $sortable = ['id', 'name', 'description', 'grant_value', 'created_at', 'updated_at'];

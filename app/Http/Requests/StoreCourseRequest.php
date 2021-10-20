@@ -26,7 +26,7 @@ class StoreCourseRequest extends FormRequest
         return [
             'name' => 'required|max:50',
             'description' => 'max:110',
-            'courseTypes' => 'required|exists:course_types,id',
+            'course_type_id' => 'required|exists:course_types,id',
             'begin' => 'nullable|date',
             'end' => 'nullable|date',
         ];
@@ -38,8 +38,8 @@ class StoreCourseRequest extends FormRequest
             'name.required' => 'O Nome é obrigatório',
             'name.max' => 'O Nome deve conter no máximo 50 caracteres',
             'description.max' => 'A Descrição deve conter no máximo 110 caracteres',
-            'courseTypes.required' => 'O Tipo é obrigatório',
-            'courseTypes.exists' => 'O Tipo deve estar entre os fornecidos',
+            'course_type_id.required' => 'O Tipo é obrigatório',
+            'course_type_id.exists' => 'O Tipo deve estar entre os fornecidos',
             'begin.date' => 'Início deve ser uma data',
             'end.date' => 'Início deve ser uma data',
         ];

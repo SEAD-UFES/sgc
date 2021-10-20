@@ -26,8 +26,8 @@ class StoreRoleRequest extends FormRequest
         return [
             'name' => 'required|max:50',
             'description' => 'max:110',
-            'grantValue' => 'numeric',
-            'grantTypes' => 'required|exists:grant_types,id',
+            'grant_value' => 'numeric',
+            'grant_type_id' => 'required|exists:grant_types,id',
         ];
     }
 
@@ -37,9 +37,9 @@ class StoreRoleRequest extends FormRequest
             'name.required' => 'O Nome é obrigatório',
             'name.max' => 'O Nome deve conter no máximo 50 caracteres',
             'description.max' => 'A Descrição deve conter no máximo 50 caracteres',
-            'grantValue.numeric' => 'O valor da bolsa deve ser numérico',
-            'grantTypes.required' => 'O Tipo de Bolsa é obrigatório',
-            'grantTypes.exists' => 'O Tipo de Bolsa deve estar entre os fornecidos',
+            'grant_value.numeric' => 'O valor da bolsa deve ser numérico',
+            'grant_type_id.required' => 'O Tipo de Bolsa é obrigatório',
+            'grant_type_id.exists' => 'O Tipo de Bolsa deve estar entre os fornecidos',
         ];
     }
 }
