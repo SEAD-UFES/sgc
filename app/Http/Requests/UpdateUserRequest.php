@@ -27,6 +27,8 @@ class UpdateUserRequest extends FormRequest
 
         return [
             'email' => 'required|email|unique:users,email,' . $id . ',id',
+            'password' => 'sometimes',
+            'active' => 'sometimes',
         ];
     }
 

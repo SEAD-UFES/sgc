@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use App\Models\Employee;
 use App\CustomClasses\SgcLogger;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -17,7 +18,7 @@ class UserService
      */
     public function list(): LengthAwarePaginator
     {
-        SgcLogger::writeLog(target: 'User', action: 'index');
+        //SgcLogger::writeLog(target: 'User', action: 'index');
 
         $query = User::with(['userType', 'employee']);
         $query = $query->AcceptRequest(User::$accepted_filters)->filter();
@@ -36,17 +37,14 @@ class UserService
      */
     public function create(array $attributes): User
     {
-        $user = new User;
+        $attributes['password'] = Hash::make($attributes['password']);
+        $attributes['active'] = isset($attributes['active']);
 
-        $user->email = $attributes['email'];
-        $user->password = Hash::make($attributes['password']);
-        $user->active = isset($attributes['active']);
+        $user = User::create($attributes);
 
         $this->employeeAttach($user);
 
-        $user->save();
-
-        SgcLogger::writeLog(target: $user, action: 'store');
+        //SgcLogger::writeLog(target: $user, action: 'store');
 
         return $user;
     }
@@ -60,18 +58,18 @@ class UserService
      */
     public function update(array $attributes, User $user): User
     {
-        $user->email = $attributes['email'];
+        if (isset($attributes['password']) and $attributes['password'] != '')
+            $attributes['password'] = Hash::make($attributes['password']);
+        else
+            unset($attributes['password']);
+            
+        $attributes['active'] = isset($attributes['active']);
 
-        if ($attributes['password'] != '')
-            $user->password = Hash::make($attributes['password']);
-
-        $user->active = isset($attributes['active']);
+        $user->update($attributes);
 
         $this->employeeAttach($user);
 
-        SgcLogger::writeLog(target: $user, action: 'update');
-        
-        $user->save();
+        //SgcLogger::writeLog(target: $user, action: 'update');
 
         return $user;
     }
@@ -84,13 +82,26 @@ class UserService
      */
     private function employeeAttach(User $user)
     {
-        $existentEmployee = Employee::where('email', $user->email)->first();
+        $existentEmployee = $this->getEmployeeByEmail($user->email);
 
-        if (!is_null($existentEmployee)) {
+        if ($existentEmployee) {
             $user->employee_id = $existentEmployee->id;
+            $user->save();
 
-            SgcLogger::writeLog(target: $existentEmployee, action: 'Updated existent Employee info on User');
+            //SgcLogger::writeLog(target: $existentEmployee, action: 'Updated existent Employee info on User');
         }
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $email
+     * @return Employee
+     */
+    private function getEmployeeByEmail(string $email): ?Employee
+    {
+        $employee = Employee::where('email', $email)->first();
+        return $employee;
     }
 
     /**
@@ -101,7 +112,7 @@ class UserService
      */
     public function delete(User $user)
     {
-        SgcLogger::writeLog(target: $user);
+        //SgcLogger::writeLog(target: $user);
 
         $user->delete();
     }

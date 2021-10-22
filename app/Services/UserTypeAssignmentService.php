@@ -15,7 +15,7 @@ class UserTypeAssignmentService
      */
     public function list(): LengthAwarePaginator
     {
-        SgcLogger::writeLog(target: 'userTypeAssignment', action: 'index');
+        //SgcLogger::writeLog(target: 'userTypeAssignment', action: 'index');
 
         $query = new UserTypeAssignment();
         $query = $query->AcceptRequest(UserTypeAssignment::$accepted_filters)->filter();
@@ -34,16 +34,9 @@ class UserTypeAssignmentService
      */
     public function create(array $attributes): UserTypeAssignment
     {
-        $userTypeAssignment = new UserTypeAssignment();
-        $userTypeAssignment->user_id = $attributes['user_id'];
-        $userTypeAssignment->user_type_id = $attributes['userType_id'];
-        $userTypeAssignment->course_id = $attributes['course_id'];
-        $userTypeAssignment->begin = $attributes['begin'];
-        $userTypeAssignment->end = $attributes['end'];
-        
-        $userTypeAssignment->save();
+        $userTypeAssignment = UserTypeAssignment::create($attributes);
 
-        SgcLogger::writeLog(target: $userTypeAssignment, action: 'store');
+        //SgcLogger::writeLog(target: $userTypeAssignment, action: 'store');
 
         return $userTypeAssignment;
     }
@@ -57,15 +50,9 @@ class UserTypeAssignmentService
      */
     public function update(array $attributes, UserTypeAssignment $userTypeAssignment): UserTypeAssignment
     {
-        $userTypeAssignment->user_id = $attributes['user_id'];
-        $userTypeAssignment->user_type_id = $attributes['userType_id'];
-        $userTypeAssignment->course_id = $attributes['course_id'];
-        $userTypeAssignment->begin = $attributes['begin'];
-        $userTypeAssignment->end = $attributes['end'];
+        //SgcLogger::writeLog(target: $userTypeAssignment, action: 'update');
 
-        SgcLogger::writeLog(target: $userTypeAssignment, action: 'update');
-
-        $userTypeAssignment->save();
+        $userTypeAssignment->update($attributes);
 
         return $userTypeAssignment;
     }
@@ -78,7 +65,7 @@ class UserTypeAssignmentService
      */
     public function delete(UserTypeAssignment $userTypeAssignment)
     {
-        SgcLogger::writeLog(target: $userTypeAssignment, action: 'destroy');
+        //SgcLogger::writeLog(target: $userTypeAssignment, action: 'destroy');
 
         $userTypeAssignment->delete();
     }

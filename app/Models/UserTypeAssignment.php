@@ -14,6 +14,19 @@ class UserTypeAssignment extends Model
     use Sortable;
     use userTypeAssignmentFilter, Filterable;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'user_id',
+        'user_type_id',
+        'course_id',
+        'begin',
+        'end',
+    ];
+
     public $sortable = [
         'id',
         'user.email',
