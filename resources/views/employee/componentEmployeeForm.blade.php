@@ -35,15 +35,15 @@
     </div>
     <div class="col-6 col-sm-4 col-md-3 col-lg-2">
         <label for="selectGender1" class="form-label">Gênero</label>
-        <select name="genders" id="selectGender1" class="form-select">
+        <select name="gender_id" id="selectGender1" class="form-select">
             <option value="">Gênero</option>
             @foreach ($genders as $gender)
                 <option value="{{ $gender->id }}"
-                    {{ isset($employee) ? ($employee->gender_id == $gender->id ? 'selected' : '') : (old('genders') == $gender->id ? 'selected' : '') }}>
+                    {{ isset($employee) ? ($employee->gender_id == $gender->id ? 'selected' : '') : (old('gender_id') == $gender->id ? 'selected' : '') }}>
                     {{ $gender->name }}</option>
             @endforeach
         </select>
-        @error('gender')
+        @error('gender_id')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
@@ -57,62 +57,62 @@
     </div>
     <div class="col-4 col-sm-4 col-md-3 col-lg-2">
         <label for="selectBirthState1" class="form-label">UF de Nascimento</label>
-        <select name="birthStates" id="selectBirthState1" class="form-select">
+        <select name="birth_state_id" id="selectBirthState1" class="form-select">
             <option value="">UF</option>
             @foreach ($birthStates as $birthState)
                 <option value="{{ $birthState->id }}"
-                    {{ isset($employee) ? ($employee->birth_state_id == $birthState->id ? 'selected' : '') : (old('birthStates') == $birthState->id ? 'selected' : '') }}>
+                    {{ isset($employee) ? ($employee->birth_state_id == $birthState->id ? 'selected' : '') : (old('birth_state_id') == $birthState->id ? 'selected' : '') }}>
                     {{ $birthState->uf }}
                 </option>
             @endforeach
         </select>
-        @error('birthStates')
+        @error('birth_state_id')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-8 col-sm-8 col-md-3 col-lg-5">
         <label for="inputBirthCity1" class="form-label">Cidade de Nascimento</label>
-        <input name="birthCity" type="text" id="inputBirthCity1" class="form-control" placeholder="Cidade"
-            value="{{ isset($employee) ? $employee->birth_city : old('birthCity') }}" maxlength="50" />
-        @error('birthCity')
+        <input name="birth_city" type="text" id="inputBirthCity1" class="form-control" placeholder="Cidade"
+            value="{{ isset($employee) ? $employee->birth_city : old('birth_city') }}" maxlength="50" />
+        @error('birth_city')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-7 col-sm-8 col-md-6 col-lg-4">
         <label for="selectIdType1" class="form-label">Tipo de Documento</label>
-        <select name="documentTypes" id="selectIdType1" class="form-select">
+        <select name="document_type_id" id="selectIdType1" class="form-select">
             <option value="">Selecione o tipo</option>
             @foreach ($documentTypes as $documentType)
                 <option value="{{ $documentType->id }}"
-                    {{ isset($employee) ? ($employee->document_type_id == $documentType->id ? 'selected' : '') : (old('documentTypes') == $documentType->id ? 'selected' : '') }}>
+                    {{ isset($employee) ? ($employee->document_type_id == $documentType->id ? 'selected' : '') : (old('document_type_id') == $documentType->id ? 'selected' : '') }}>
                     {{ $documentType->name }}</option>
             @endforeach
         </select>
-        @error('documentType')
+        @error('document_type_id')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-5 col-sm-4 col-md-3 col-lg-3">
         <label for="inputId1" class="form-label">Núm. do Documento</label>
-        <input name="idNumber" type="text" id="inputId1" class="form-control" placeholder="Número"
-            value="{{ isset($employee) ? $employee->id_number : old('idNumber') }}" maxlength="15" />
-        @error('idNumber')
+        <input name="id_number" type="text" id="inputId1" class="form-control" placeholder="Número"
+            value="{{ isset($employee) ? $employee->id_number : old('id_number') }}" maxlength="15" />
+        @error('id_number')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-5 col-sm-4 col-md-3 col-lg-3">
         <label for="inputIssueDate1" class="form-label">Data de Expedição</label>
-        <input name="idIssueDate" type="date" id="inputIssueDate1" class="form-control"
-            value="{{ isset($employee) ? $employee->id_issue_date : old('idIssueDate') }}" />
-        @error('idIssueDate')
+        <input name="id_issue_date" type="date" id="inputIssueDate1" class="form-control"
+            value="{{ isset($employee) ? $employee->id_issue_date : old('id_issue_date') }}" />
+        @error('id_issue_date')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-7 col-sm-8 col-md-3 col-lg-2">
         <label for="inpuIssueAgency1" class="form-label">Orgão Expedidor</label>
-        <input name="idIssueAgency" type="text" id="inpuIssueAgency1" class="form-control" placeholder="Orgão"
-            value="{{ isset($employee) ? $employee->id_issue_agency : old('idIssueAgency') }}" maxlength="10" />
-        @error('idIssueAgency')
+        <input name="id_issue_agency" type="text" id="inpuIssueAgency1" class="form-control" placeholder="Orgão"
+            value="{{ isset($employee) ? $employee->id_issue_agency : old('id_issue_agency') }}" maxlength="10" />
+        @error('id_issue_agency')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
@@ -120,40 +120,40 @@
 <div class="row g-3 mb-3">
     <div class="col-4 col-sm-4 col-md-3 col-lg-2">
         <label for="selectMarital1" class="form-label">Estado Civil</label>
-        <select name="maritalStatuses" id="selectMarital1" class="form-select">
+        <select name="marital_status_id" id="selectMarital1" class="form-select">
             <option value="">Estado Civil</option>
             @foreach ($maritalStatuses as $maritalStatus)
                 <option value="{{ $maritalStatus->id }}"
-                    {{ isset($employee) ? ($employee->marital_status_id == $maritalStatus->id ? 'selected' : '') : (old('maritalStatuses') == $maritalStatus->id ? 'selected' : '') }}>
+                    {{ isset($employee) ? ($employee->marital_status_id == $maritalStatus->id ? 'selected' : '') : (old('marital_status_id') == $maritalStatus->id ? 'selected' : '') }}>
                     {{ $maritalStatus->name }}
                 </option>
             @endforeach
         </select>
-        @error('maritalStatuses')
+        @error('marital_status_id')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-8 col-sm-8 col-md-9 col-lg-10">
         <label for="inputSpouse1" class="form-label">Nome cônjuge</label>
-        <input name="spouseName" type="text" id="inputSpouse1" class="form-control" placeholder="Nome"
-            value="{{ isset($employee) ? $employee->spouse_name : old('spouseName') }}" maxlength="50" />
-        @error('spouseName')
+        <input name="spouse_name" type="text" id="inputSpouse1" class="form-control" placeholder="Nome"
+            value="{{ isset($employee) ? $employee->spouse_name : old('spouse_name') }}" maxlength="50" />
+        @error('spouse_name')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-6 col-sm-6 col-md-6 col-lg-6">
         <label for="inputFather1" class="form-label">Nome do pai</label>
-        <input name="fatherName" type="text" id="inputFather1" class="form-control" placeholder="Nome"
-            value="{{ isset($employee) ? $employee->father_name : old('fatherName') }}" maxlength="50" />
-        @error('fatherName')
+        <input name="father_name" type="text" id="inputFather1" class="form-control" placeholder="Nome"
+            value="{{ isset($employee) ? $employee->father_name : old('father_name') }}" maxlength="50" />
+        @error('father_name')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-6 col-sm-6 col-md-6 col-lg-6">
         <label for="inputMother1" class="form-label">Nome da mãe</label>
-        <input name="motherName" type="text" id="inputMother1" class="form-control" placeholder="Nome"
-            value="{{ isset($employee) ? $employee->mother_name : old('motherName') }}" maxlength="50" />
-        @error('motherName')
+        <input name="mother_name" type="text" id="inputMother1" class="form-control" placeholder="Nome"
+            value="{{ isset($employee) ? $employee->mother_name : old('mother_name') }}" maxlength="50" />
+        @error('mother_name')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
@@ -161,68 +161,68 @@
 <div class="row g-3 mb-3">
     <div class="col-12 col-sm-12 col-md-6 col-lg-6">
         <label for="inputStreet1" class="form-label">Logradouro</label>
-        <input name="addressStreet" type="text" id="inputStreet1" class="form-control" placeholder="Logradouro"
-            value="{{ isset($employee) ? $employee->address_street : old('addressStreet') }}" maxlength="50" />
-        @error('addressStreet')
+        <input name="address_street" type="text" id="inputStreet1" class="form-control" placeholder="Logradouro"
+            value="{{ isset($employee) ? $employee->address_street : old('address_street') }}" maxlength="50" />
+        @error('address_street')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-12 col-sm-12 col-md-6 col-lg-6">
         <label for="inputComplement1" class="form-label">Complemento</label>
-        <input name="addressComplement" type="text" id="inputComplement1" class="form-control"
+        <input name="address_complement" type="text" id="inputComplement1" class="form-control"
             placeholder="Complemento"
-            value="{{ isset($employee) ? $employee->address_complement : old('addressComplement') }}"
+            value="{{ isset($employee) ? $employee->address_complement : old('address_complement') }}"
             maxlength="50" />
-        @error('addressComplement')
+        @error('address_complement')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-3 col-sm-3 col-md-2 col-lg-1">
         <label for="inputNumber1" class="form-label">Número</label>
-        <input name="addressNumber" type="text" id="inputNumber1" class="form-control" placeholder="Número"
-            value="{{ isset($employee) ? $employee->address_number : old('addressNumber') }}" maxlength="5" />
-        @error('addressNumber')
+        <input name="address_number" type="text" id="inputNumber1" class="form-control" placeholder="Número"
+            value="{{ isset($employee) ? $employee->address_number : old('address_number') }}" maxlength="5" />
+        @error('address_number')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-6 col-sm-6 col-md-3 col-lg-4">
         <label for="inputDistrict1" class="form-label">Bairro</label>
-        <input name="addressDistrict" type="text" id="inputDistrict1" class="form-control" placeholder="Bairro"
-            value="{{ isset($employee) ? $employee->address_district : old('addressDistrict') }}" maxlength="50" />
-        @error('addressDistrict')
+        <input name="address_district" type="text" id="inputDistrict1" class="form-control" placeholder="Bairro"
+            value="{{ isset($employee) ? $employee->address_district : old('address_district') }}" maxlength="50" />
+        @error('address_district')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-3 col-sm-3 col-md-2 col-lg-2">
         <label for="addressPostalCode" class="form-label">CEP</label>
-        <input name="addressPostalCode" id="addressPostalCode" type="text" id="inputPostal1" class="form-control"
+        <input name="address_postal_code" id="addressPostalCode" type="text" id="inputPostal1" class="form-control"
             placeholder="CEP"
-            value="{{ isset($employee) ? $employee->address_postal_code : old('addressPostalCode') }}" maxlength="8"
+            value="{{ isset($employee) ? $employee->address_postal_code : old('address_postal_code') }}" maxlength="8"
             onkeyup="validate('addressPostalCode');" />
-        @error('addressPostalCode')
+        @error('address_postal_code')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-3 col-sm-2 col-md-2 col-lg-2">
         <label for="selectAddressState1" class="form-label">UF</label>
-        <select name="addressStates" id="selectAddressState1" class="form-select">
+        <select name="address_state_id" id="selectAddressState1" class="form-select">
             <option value="">UF</option>
             @foreach ($addressStates as $addressState)
                 <option value="{{ $addressState->id }}"
-                    {{ isset($employee) ? ($employee->address_state_id == $addressState->id ? 'selected' : '') : (old('addressStates') == $addressState->id ? 'selected' : '') }}>
+                    {{ isset($employee) ? ($employee->address_state_id == $addressState->id ? 'selected' : '') : (old('address_state_id') == $addressState->id ? 'selected' : '') }}>
                     {{ $addressState->uf }}
                 </option>
             @endforeach
         </select>
-        @error('addressStates')
+        @error('address_state_id')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-9 col-sm-10 col-md-3 col-lg-3">
         <label for="inputAddressCity1" class="form-label">Cidade</label>
-        <input name="addressCity" type="text" id="inputAddressCity1" class="form-control" placeholder="Cidade"
-            value="{{ isset($employee) ? $employee->address_city : old('addressCity') }}" maxlength="50" />
-        @error('addressCity')
+        <input name="address_city" type="text" id="inputAddressCity1" class="form-control" placeholder="Cidade"
+            value="{{ isset($employee) ? $employee->address_city : old('address_city') }}" maxlength="50" />
+        @error('address_city')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
@@ -230,10 +230,10 @@
 <div class="row g-3 mb-3">
     <div class="col-2 col-sm-2 col-md-1 col-lg-1">
         <label for="inputArea1" class="form-label">DDD</label>
-        <input name="areaCode" id="areaCode" type="text" id="inputArea1" class="form-control" placeholder="DDD"
-            value="{{ isset($employee) ? $employee->area_code : old('areaCode') }}" maxlength="3"
+        <input name="area_code" id="areaCode" type="text" id="inputArea1" class="form-control" placeholder="DDD"
+            value="{{ isset($employee) ? $employee->area_code : old('area_code') }}" maxlength="3"
             onkeyup="validate('areaCode');" pattern="[0-9]{2}" />
-        @error('areaCode')
+        @error('area_code')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>

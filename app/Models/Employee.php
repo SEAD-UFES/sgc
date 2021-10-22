@@ -19,15 +19,15 @@ class Employee extends Model
         'name',
         'cpf',
         'job',
-        //gender
+        'gender_id',
         'birthday',
-        //'birth_state',
+        'birth_state_id',
         'birth_city',
         'id_number',
-        //document_type
+        'document_type_id',
         'id_issue_date',
         'id_issue_agency',
-        //marital_status
+        'marital_status_id',
         'spouse_name',
         'father_name',
         'mother_name',
@@ -36,7 +36,7 @@ class Employee extends Model
         'address_number',
         'address_district',
         'address_postal_code',
-        //address_state
+        'address_state_id',
         'address_city',
         'area_code',
         'phone',

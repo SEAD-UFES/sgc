@@ -70,7 +70,7 @@ class RoleServiceTest extends TestCase
     {
         //setting up scenario
 
-        $course = Role::find(1);
+        $role = Role::find(1);
 
         $attributes = array();
 
@@ -78,7 +78,7 @@ class RoleServiceTest extends TestCase
         $attributes['description'] = 'New 1st Role';
 
         //execution
-        $this->service->update($attributes, $course);
+        $this->service->update($attributes, $role);
 
         //verifications
         $this->assertEquals('Role Delta', Role::find(1)->name);
@@ -92,10 +92,10 @@ class RoleServiceTest extends TestCase
     public function roleShouldBeDeleted()
     {
         //setting up scenario
-        $course = Role::find(1);
+        $role = Role::find(1);
 
         //execution 
-        $this->service->delete($course);
+        $this->service->delete($role);
 
         //verifications
         $this->assertEquals('Role Beta', $this->service->list()->first()->name);

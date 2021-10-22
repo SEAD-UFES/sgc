@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
-use App\CustomClasses\SgcLogger;
-use App\Models\Employee;
 use App\Models\User;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\Employee;
+use App\CustomClasses\SgcLogger;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class EmployeeService
 {
@@ -16,7 +17,7 @@ class EmployeeService
      * @return LengthAwarePaginator
      */
     function list(): LengthAwarePaginator {
-        SgcLogger::writeLog(target:'Employee', action:'index');
+        //SgcLogger::writeLog(target:'Employee', action:'index');
 
         $query = Employee::with(['gender', 'birthState', 'documentType', 'maritalStatus', 'addressState', 'user']);
         $query = $query->AcceptRequest(Employee::$accepted_filters)->filter();
@@ -33,46 +34,16 @@ class EmployeeService
      * @param array $attributes
      * @return Employee
      */
-    public function create(array $attributes): Employee
+    public function create(array $attributes): ?Employee
     {
-        $employee = new Employee;
-
-        $employee->name = $attributes['name'];
-        $employee->cpf = $attributes['cpf'];
-        $employee->job = $attributes['job'];
-        $employee->gender_id = $attributes['genders'];
-        $employee->birthday = $attributes['birthday'];
-        $employee->birth_state_id = $attributes['birthStates'];
-        $employee->birth_city = $attributes['birthCity'];
-        $employee->id_number = $attributes['idNumber'];
-        $employee->document_type_id = $attributes['documentTypes'];
-        $employee->id_issue_date = $attributes['idIssueDate'];
-        $employee->id_issue_agency = $attributes['idIssueAgency'];
-        $employee->marital_status_id = $attributes['maritalStatuses'];
-        $employee->spouse_name = $attributes['spouseName'];
-        $employee->father_name = $attributes['fatherName'];
-        $employee->mother_name = $attributes['motherName'];
-        $employee->address_street = $attributes['addressStreet'];
-        $employee->address_complement = $attributes['addressComplement'];
-        $employee->address_number = $attributes['addressNumber'];
-        $employee->address_district = $attributes['addressDistrict'];
-        $employee->address_postal_code = $attributes['addressPostalCode'];
-        $employee->address_state_id = $attributes['addressStates'];
-        $employee->address_city = $attributes['addressCity'];
-        $employee->area_code = $attributes['areaCode'];
-        $employee->phone = $attributes['phone'];
-        $employee->mobile = $attributes['mobile'];
-        $employee->email = $attributes['email'];
-
-        DB::transaction(function () use ($employee) {
-            $employee->save();
-
+        DB::transaction(function () use ($attributes) {
+            $employee = Employee::create($attributes);
             $this->userAttach($employee);
+            return $employee;
         });
 
-        SgcLogger::writeLog(target:$employee, action:'store');
-
-        return $employee;
+        //SgcLogger::writeLog(target:$employee, action:'store');
+        return null;
     }
 
     /**
@@ -86,8 +57,8 @@ class EmployeeService
         $existentUser = User::where('email', $employee->email)->doesntHave('employee')->first();
 
         if (!is_null($existentUser)) {
-            $existentUser->employee = $employee;
-            SgcLogger::writeLog(target:$existentUser, action:'Updating existent User with Employee info');
+            $existentUser->employee_id = $employee->id;
+            //SgcLogger::writeLog(target:$existentUser, action:'Updating existent User with Employee info');
             $existentUser->save();
         }
     }
@@ -99,45 +70,17 @@ class EmployeeService
      * @param Employee $employee
      * @return Employee
      */
-    public function update(array $attributes, Employee $employee): Employee
+    public function update(array $attributes, Employee $employee): ?Employee
     {
+        //SgcLogger::writeLog(target:$employee, action:'update', request:$attributes, model:$employee);
 
-        SgcLogger::writeLog(target:$employee, action:'update', request:$attributes, model:$employee);
-
-        $employee->name = $attributes['name'];
-        $employee->cpf = $attributes['cpf'];
-        $employee->job = $attributes['job'];
-        $employee->gender_id = $attributes['genders'];
-        $employee->birthday = $attributes['birthday'];
-        $employee->birth_state_id = $attributes['birthStates'];
-        $employee->birth_city = $attributes['birthCity'];
-        $employee->id_number = $attributes['idNumber'];
-        $employee->document_type_id = $attributes['documentTypes'];
-        $employee->id_issue_date = $attributes['idIssueDate'];
-        $employee->id_issue_agency = $attributes['idIssueAgency'];
-        $employee->marital_status_id = $attributes['maritalStatuses'];
-        $employee->spouse_name = $attributes['spouseName'];
-        $employee->father_name = $attributes['fatherName'];
-        $employee->mother_name = $attributes['motherName'];
-        $employee->address_street = $attributes['addressStreet'];
-        $employee->address_complement = $attributes['addressComplement'];
-        $employee->address_number = $attributes['addressNumber'];
-        $employee->address_district = $attributes['addressDistrict'];
-        $employee->address_postal_code = $attributes['addressPostalCode'];
-        $employee->address_state_id = $attributes['addressStates'];
-        $employee->address_city = $attributes['addressCity'];
-        $employee->area_code = $attributes['areaCode'];
-        $employee->phone = $attributes['phone'];
-        $employee->mobile = $attributes['mobile'];
-        $employee->email = $attributes['email'];
-
-        DB::transaction(function () use ($employee) {
-            $employee->save();
-
+        DB::transaction(function () use ($attributes, $employee) {
+            $employee->update($attributes);
             $this->userAttach($employee);
+            return $employee;
         });
 
-        return $employee;
+        return null;
     }
 
     /**
@@ -150,11 +93,11 @@ class EmployeeService
     {
         $employeeUser = $employee->user;
 
-        SgcLogger::writeLog(target:$employee, action:'destroy', model:$employee);
+        //SgcLogger::writeLog(target:$employee, action:'destroy', model:$employee);
 
         DB::transaction(function () use ($employee, $employeeUser) {
             if (!is_null($employeeUser)) {
-                $employeeUser->employee = null;
+                $employeeUser->employee_id = null;
                 $employeeUser->save();
             }
 

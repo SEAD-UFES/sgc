@@ -74,7 +74,7 @@ class UserServiceTest extends TestCase
     {
         //setting up scenario
 
-        $course = User::find(1);
+        $user = User::find(1);
 
         $attributes = array();
 
@@ -82,7 +82,7 @@ class UserServiceTest extends TestCase
         $attributes['password'] = 'password4';
 
         //execution
-        $this->service->update($attributes, $course);
+        $this->service->update($attributes, $user);
 
         //verifications
         $this->assertEquals('marydoe@test4.com', User::find(1)->email);
@@ -98,7 +98,7 @@ class UserServiceTest extends TestCase
     {
         //setting up scenario
 
-        $course = User::find(1);
+        $user = User::find(1);
 
         $attributes = array();
 
@@ -107,7 +107,7 @@ class UserServiceTest extends TestCase
         $attributes['active'] = true;
 
         //execution
-        $this->service->update($attributes, $course);
+        $this->service->update($attributes, $user);
 
         //verifications
         $this->assertEquals('billdoe@test5.com', User::find(1)->email);
@@ -125,14 +125,14 @@ class UserServiceTest extends TestCase
 
         Employee::factory()->create(['email' => 'marydoe@test4.com', 'name' => 'Mary Doe']);
 
-        $course = User::find(1);
+        $user = User::find(1);
 
         $attributes = array();
 
         $attributes['email'] = 'marydoe@test4.com';
 
         //execution
-        $this->service->update($attributes, $course);
+        $this->service->update($attributes, $user);
 
         //verifications
         $this->assertEquals('marydoe@test4.com', User::find(1)->email);
@@ -146,10 +146,10 @@ class UserServiceTest extends TestCase
     public function userShouldBeDeleted()
     {
         //setting up scenario
-        $course = User::find(1);
+        $user = User::find(1);
 
         //execution 
-        $this->service->delete($course);
+        $this->service->delete($user);
 
         //verifications
         $this->assertEquals('janedoe@test2.com', $this->service->list()->first()->email);

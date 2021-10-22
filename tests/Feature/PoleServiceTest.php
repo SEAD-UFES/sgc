@@ -68,7 +68,7 @@ class PoleServiceTest extends TestCase
     {
         //setting up scenario
 
-        $course = Pole::find(1);
+        $pole = Pole::find(1);
 
         $attributes = array();
 
@@ -76,7 +76,7 @@ class PoleServiceTest extends TestCase
         $attributes['description'] = 'New 1st Pole';
 
         //execution
-        $this->service->update($attributes, $course);
+        $this->service->update($attributes, $pole);
 
         //verifications
         $this->assertEquals('Pole Delta', Pole::find(1)->name);
@@ -90,10 +90,10 @@ class PoleServiceTest extends TestCase
     public function poleShouldBeDeleted()
     {
         //setting up scenario
-        $course = Pole::find(1);
+        $pole = Pole::find(1);
 
         //execution 
-        $this->service->delete($course);
+        $this->service->delete($pole);
 
         //verifications
         $this->assertEquals('Pole Beta', $this->service->list()->first()->name);
