@@ -1,4 +1,5 @@
 # sgc
+[![Actions Status](https://github.com/LDI-Ufes/sgc/workflows/PHPUnit Test/badge.svg)](https://github.com/LDI-Ufes/sgc/actions)
 Repositório do Sistema de Gestão de Colaboradores da Sead/Ufes
 
 O SGC tem o objetivo de potencializar o trabalho nas atividades da Secretaria Acadêmica, Equipe de Projetos (na figura da Assistente UAB), coordenadores de cursos e Equipe de Ambientes Virtuais.
