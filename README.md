@@ -1,6 +1,6 @@
 # sgc
 
-[![Actions Status](https://github.com/LDI-Ufes/sgc/workflows/PHPUnit Test/badge.svg)](https://github.com/LDI-Ufes/sgc/actions)
+[![Actions Status](https://github.com/LDI-Ufes/sgc/workflows/PHPUnitTest/badge.svg)](https://github.com/LDI-Ufes/sgc/actions)
 
 Repositório do Sistema de Gestão de Colaboradores da Sead/Ufes
 
