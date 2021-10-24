@@ -42,8 +42,6 @@ class ApprovedService
      */
     public function delete(Approved $approved): void
     {
-        //SgcLogger::writeLog(target: $approved, action: 'destroy');
-
         $approved->delete();
     }
 

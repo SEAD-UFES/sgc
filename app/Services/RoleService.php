@@ -36,8 +36,6 @@ class RoleService
     {
         $role = Role::create($attributes);
 
-        //SgcLogger::writeLog(target: $role, action: 'store');
-
         return $role;
     }
 
@@ -50,8 +48,6 @@ class RoleService
      */
     public function update(array $attributes, Role $role): Role
     {
-        //SgcLogger::writeLog(target: $role, action: 'update');
-
         $role->update($attributes);
 
         return $role;
@@ -65,8 +61,6 @@ class RoleService
      */
     public function delete(Role $role)
     {
-        //SgcLogger::writeLog(target: $role, action: 'destroy');
-
         $role->delete();
     }
 }

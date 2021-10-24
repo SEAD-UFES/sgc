@@ -82,8 +82,6 @@ class DocumentService
             ])->id;
             
             $document = Document::create($attributes);
-            
-            //SgcLogger::writeLog(target: $document, action: 'store');
         });
     }
 

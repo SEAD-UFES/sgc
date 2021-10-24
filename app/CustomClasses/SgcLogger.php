@@ -172,6 +172,7 @@ class SgcLogger
             'logout' => 'info',
             'index' => 'info',
             'create' => 'info',
+            'created' => 'info',
             'designate' => 'info',
             'import' => 'info',
             'store' => 'notice',
@@ -182,9 +183,11 @@ class SgcLogger
             'review' => 'info',
             'request review' => 'info',
             'update' => 'notice',
+            'updated' => 'notice',
             'getAllDocumentsOfBond' => 'notice',
             'getAllDocumentsOfEmployee' => 'notice',
             'destroy' => 'warning',
+            'deleted' => 'warning',
         ]);
 
         return $severityMapping->get($severityKey);

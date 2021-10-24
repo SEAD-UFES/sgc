@@ -36,8 +36,6 @@ class PoleService
     {
         $pole = Pole::create($attributes);
 
-        //SgcLogger::writeLog(target: $pole, action: 'store');
-
         return $pole;
     }
 
@@ -50,8 +48,6 @@ class PoleService
      */
     public function update(array $attributes, Pole $pole): Pole
     {
-        //SgcLogger::writeLog(target: $pole);
-
         $pole->update($attributes);
 
         return $pole;
@@ -65,8 +61,6 @@ class PoleService
      */
     public function delete(Pole $pole)
     {
-        //SgcLogger::writeLog(target: $pole);
-
         $pole->delete();
     }
 }

@@ -41,7 +41,6 @@ class EmployeeService
             return $employee;
         });
 
-        //SgcLogger::writeLog(target:$employee, action:'store');
         return null;
     }
 
@@ -71,8 +70,6 @@ class EmployeeService
      */
     public function update(array $attributes, Employee $employee): ?Employee
     {
-        //SgcLogger::writeLog(target:$employee, action:'update', request:$attributes, model:$employee);
-
         DB::transaction(function () use ($attributes, $employee) {
             $employee->update($attributes);
             $this->userAttach($employee);
@@ -91,8 +88,6 @@ class EmployeeService
     public function delete(Employee $employee)
     {
         $employeeUser = $employee->user;
-
-        //SgcLogger::writeLog(target:$employee, action:'destroy', model:$employee);
 
         DB::transaction(function () use ($employee, $employeeUser) {
             if (!is_null($employeeUser)) {

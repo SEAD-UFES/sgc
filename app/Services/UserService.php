@@ -43,8 +43,6 @@ class UserService
 
         $this->employeeAttach($user);
 
-        //SgcLogger::writeLog(target: $user, action: 'store');
-
         return $user;
     }
 
@@ -67,8 +65,6 @@ class UserService
         $user->update($attributes);
 
         $this->employeeAttach($user);
-
-        //SgcLogger::writeLog(target: $user, action: 'update');
 
         return $user;
     }
@@ -111,8 +107,6 @@ class UserService
      */
     public function delete(User $user)
     {
-        //SgcLogger::writeLog(target: $user);
-
         $user->delete();
     }
 }

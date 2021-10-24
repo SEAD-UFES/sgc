@@ -78,8 +78,6 @@ class BondService
             Notification::send($coordOrAssistants, new NewBondNotification($bond));
         });
 
-        //SgcLogger::writeLog(target: $bond, action: 'store');
-
         return $bond;
     }
 
@@ -107,8 +105,6 @@ class BondService
      */
     public function delete(Bond $bond)
     {
-        //SgcLogger::writeLog(target: $bond, action: 'destroy');
-
         DB::transaction(function () use ($bond) {
             foreach ($bond->bondDocuments as $document) {
                 $document->delete();

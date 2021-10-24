@@ -36,8 +36,6 @@ class UserTypeAssignmentService
     {
         $userTypeAssignment = UserTypeAssignment::create($attributes);
 
-        //SgcLogger::writeLog(target: $userTypeAssignment, action: 'store');
-
         return $userTypeAssignment;
     }
 
@@ -50,8 +48,6 @@ class UserTypeAssignmentService
      */
     public function update(array $attributes, UserTypeAssignment $userTypeAssignment): UserTypeAssignment
     {
-        //SgcLogger::writeLog(target: $userTypeAssignment, action: 'update');
-
         $userTypeAssignment->update($attributes);
 
         return $userTypeAssignment;
@@ -65,8 +61,6 @@ class UserTypeAssignmentService
      */
     public function delete(UserTypeAssignment $userTypeAssignment)
     {
-        //SgcLogger::writeLog(target: $userTypeAssignment, action: 'destroy');
-
         $userTypeAssignment->delete();
     }
 }

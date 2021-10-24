@@ -37,15 +37,11 @@ class CourseService
     {
         $course = Course::create($attributes);
 
-        //SgcLogger::writeLog(target: $course, action: 'store');
-
         return $course;
     }
 
     public function update(array $attributes, Course $course): Course
     {
-        //SgcLogger::writeLog(target: $course, action: 'update');
-
         $course->update($attributes);
 
         return $course;
@@ -53,8 +49,6 @@ class CourseService
 
     public function delete(Course $course)
     {
-        //SgcLogger::writeLog(target: $course, action: 'destroy');
-
         $course->delete();
     }
 }

@@ -100,7 +100,6 @@ class BondController extends Controller
         //check access permission
         if (!Gate::allows('bond-show')) return response()->view('access.denied')->setStatusCode(401);
 
-        //$bondDocuments = BondDocument::where('bond_id', $bond->id)->with('document')->get()->sortByDesc('document.updated_at');
         $documents = Document::whereHasMorph('documentable', BondDocument::class, function ($query) use ($bond) {
             $query->where('bond_id', $bond->id);
         })->with('documentable')->get()/* ->sortByDesc('documentable.updated_at') */;
