@@ -41,17 +41,17 @@
                                 @foreach ($documents as $document)
                                     <tr>
                                         <td>
-                                            <a href="{{ route('employees.show', $document->employee->id) }}" target="_blank">
-                                                {{ $document->employee->cpf }}
+                                            <a href="{{ route('employees.show', $document->documentable->employee->id) }}" target="_blank">
+                                                {{ $document->documentable->employee->cpf }}
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="{{ route('employees.show', $document->employee->id) }}" target="_blank">
-                                                {{ $document->employee->name }}
+                                            <a href="{{ route('employees.show', $document->documentable->employee->id) }}" target="_blank">
+                                                {{ $document->documentable->employee->name }}
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="{{ route('documents.show', ['id' => $document->id, 'type' => 'EmployeeDocument', 'htmlTitle' => $document->original_name]) }}"
+                                            <a href="{{ route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]) }}"
                                                 target="_blank">{{ $document->original_name }}</a>
                                         </td>
                                         <td>{{ $document->documentType->name }}</td>

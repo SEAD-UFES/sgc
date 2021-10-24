@@ -15,15 +15,15 @@
 </div>
 <div class="mb-3">
     <label for="selectRole1" class="form-label">Papel*</label>
-    <select name="userType_id" id="selectRole1" class="form-select">
+    <select name="user_type_id" id="selectRole1" class="form-select">
         <option value="">Selecione o papel</option>
         @foreach ($userTypes as $userType)
             <option value="{{ $userType->id }}"
-                {{ isset($userTypeAssignment) ? ($userTypeAssignment->user_type_id == $userType->id ? 'selected' : '') : (old('userType_id') == $userType->id ? 'selected' : '') }}>
+                {{ isset($userTypeAssignment) ? ($userTypeAssignment->user_type_id == $userType->id ? 'selected' : '') : (old('user_type_id') == $userType->id ? 'selected' : '') }}>
                 {{ $userType->name }}</option>
         @endforeach
     </select>
-    @error('userType_id')
+    @error('user_type_id')
         <div class="text-danger">> {{ $message }}</div>
     @enderror
 </div>

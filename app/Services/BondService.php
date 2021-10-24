@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Bond;
 use App\Models\User;
+use App\Models\Document;
 use App\Models\UserType;
 use App\Models\BondDocument;
 use App\Models\DocumentType;
@@ -55,18 +56,20 @@ class BondService
 
         DB::transaction(function () use ($bond) {
 
-            
+            $employeeDocuments = EmployeeDocument::where('employee_id', $bond->employee_id)->get();
 
-            $documents = EmployeeDocument::where('employee_id', $bond->employee_id)->get();
-
-            foreach ($documents as $doc) {
+            foreach ($employeeDocuments as $employeeDocument) {
                 $bondDocument = new BondDocument();
-                $bondDocument->original_name = $doc->original_name;
-                $bondDocument->file_data = $doc->file_data;
-                $bondDocument->document_type_id = $doc->documentType->id;
                 $bondDocument->bond_id = $bond->id;
-
                 $bondDocument->save();
+                
+                $newDocument = new Document();
+                $newDocument->original_name = $employeeDocument->document->original_name;
+                $newDocument->file_data = $employeeDocument->document->file_data;
+                $newDocument->document_type_id = $employeeDocument->document->documentType->id;
+                $newDocument->documentable_type = 'App\Models\BondDocument';
+                $newDocument->documentable_id = $bondDocument->id;
+                $newDocument->save();
             }
 
             //Notify grantor assistants

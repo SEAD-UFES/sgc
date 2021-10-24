@@ -25,7 +25,7 @@ class StoreUserTypeAssignmentRequest extends FormRequest
     {
         return [
             'user_id' => 'required|exists:users,id',
-            'userType_id' => 'required|exists:user_types,id',
+            'user_type_id' => 'required|exists:user_types,id',
             'course_id' => 'nullable|exists:courses,id',
             'begin' => 'required|date',
             'end' => 'nullable|date'
@@ -37,8 +37,8 @@ class StoreUserTypeAssignmentRequest extends FormRequest
         return [
             'user_id.required' => 'O campo usuário é requerido.',
             'user_id.exists' => 'O usuário não existe na base de dados.',
-            'userType_id.required' => 'O campo tipo de usuário é requerido.',
-            'userType_id.exists' => 'O papel não existe na base de dados.',
+            'user_type_id.required' => 'O campo tipo de usuário é requerido.',
+            'user_type_id.exists' => 'O papel não existe na base de dados.',
             'course_id.exists' => 'O curso não existe na base de dados',
             'begin.required' => 'O campo Início é requerido.',
             'begin.date' => 'O início deve ser uma data.',

@@ -9,12 +9,12 @@
             @foreach ($documents as $document)
                 <tr>
                     <td>
-                        <a href="{{ route('bonds.show', $document->bond->id) }}" target="_blank">
-                            {{ $document->bond->employee->name . '-' . $document->bond->role->name . '-' . $document->bond->course->name }}
+                        <a href="{{ route('bonds.show', $document->documentable->bond->id) }}" target="_blank">
+                            {{ $document->documentable->bond->employee->name . '-' . $document->documentable->bond->role->name . '-' . $document->documentable->bond->course->name }}
                         </a>
                     </td>
                     <td>
-                        <a href="{{ route('documents.show', ['id' => $document->id, 'type' => 'BondDocument', 'htmlTitle' => $document->original_name]) }}"
+                        <a href="{{ route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]) }}"
                             target="_blank">{{ $document->original_name }}</a>
                     </td>
                     <td>{{ $document->documentType->name }}</td>

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Gender;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -33,6 +32,7 @@ class DatabaseSeeder extends Seeder
             ApprovedSeeder::class,
             EmployeeDocumentSeeder::class,
             BondDocumentSeeder::class,
+            DocumentSeeder::class,
             DummyEmployeeSeeder::class,
             UserTypeAssignmentSeeder::class
         ]);

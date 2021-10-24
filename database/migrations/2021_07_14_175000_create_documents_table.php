@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
-class CreateEmployeeDocumentsTable extends Migration
+class CreateDocumentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,11 +14,15 @@ class CreateEmployeeDocumentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('employee_documents', function (Blueprint $table) {
+        Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained('employees');
+            $table->string('original_name');
+            $table->foreignId('document_type_id')->constrained('document_types');
+            $table->morphs('documentable');
             $table->timestamps();
         });
+
+        DB::statement("ALTER TABLE documents ADD file_data MEDIUMBLOB");
     }
 
     /**

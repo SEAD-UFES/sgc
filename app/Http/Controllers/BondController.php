@@ -6,7 +6,9 @@ use App\Models\Bond;
 use App\Models\Pole;
 use App\Models\Role;
 use App\Models\Course;
+use App\Models\Document;
 use App\Models\Employee;
+use App\Models\BondDocument;
 use Illuminate\Http\Request;
 use App\Services\BondService;
 use App\CustomClasses\SgcLogger;
@@ -98,11 +100,12 @@ class BondController extends Controller
         //check access permission
         if (!Gate::allows('bond-show')) return response()->view('access.denied')->setStatusCode(401);
 
-        SgcLogger::writeLog(target: $bond);
+        //$bondDocuments = BondDocument::where('bond_id', $bond->id)->with('document')->get()->sortByDesc('document.updated_at');
+        $documents = Document::whereHasMorph('documentable', BondDocument::class, function ($query) use ($bond) {
+            $query->where('bond_id', $bond->id);
+        })->with('documentable')->get()/* ->sortByDesc('documentable.updated_at') */;
 
-        $documents = $bond->bondDocuments()->orderBy('updated_at', 'DESC')->get();
-
-        return view('bond.show', compact('bond', 'documents'));
+        return view('bond.show', compact(['bond', 'documents']));
     }
 
     /**
@@ -119,7 +122,7 @@ class BondController extends Controller
         //get only allowed courses
         $courses = Course::orderBy('name')->get();
         foreach ($courses as $key => $course) if (!Gate::allows('bond-store-course_id', $course->id)) $courses->forget($key);
-        
+
         $employees = Employee::orderBy('name')->get();
         $roles = Role::orderBy('name')->get();
         $poles = Pole::orderBy('name')->get();
@@ -143,7 +146,7 @@ class BondController extends Controller
 
         //user can only update bonds to allowed course_ids 
         if (!Gate::allows('bond-store-course_id', $request->course_id)) return back()->withErrors('courses', 'O usuário não pode escolher este curso.');
-        
+
         try {
             $bond = $this->service->update($request->validated(), $bond);
         } catch (\Exception $e) {
@@ -184,7 +187,7 @@ class BondController extends Controller
     {
         //check access permission
         if (!Gate::allows('bond-review')) return response()->view('access.denied')->setStatusCode(401);
-        
+
         try {
             $this->service->review($request->validated(), $bond);
         } catch (\Exception $e) {
@@ -205,7 +208,7 @@ class BondController extends Controller
     {
         //check access permission
         if (!Gate::allows('bond-requestReview')) return response()->view('access.denied')->setStatusCode(401);
-        
+
         $bond = $this->service->requestReview($request->all(), $bond);
 
         return redirect()->route('bonds.show', $bond->id)->with('success', 'Revisão de vínculo solicitada.');

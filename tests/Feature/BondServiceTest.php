@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\Bond;
 use App\Models\Course;
+use App\Models\Document;
 use App\Models\Employee;
 use App\Models\UserType;
 use App\Models\BondDocument;
@@ -108,9 +109,10 @@ class BondServiceTest extends TestCase
         //Should be mocked(?)
         UserType::create(['name' => 'Assistant', 'acronym' => 'ass', 'description' => '']);
 
-        EmployeeDocument::factory()->create([
-            'employee_id' => 1,
+        Document::factory()->create([
             'original_name' => 'EmployeeDummyFile.pdf',
+            'documentable_id' => EmployeeDocument::factory()->create(['employee_id' => $attributes['employee_id']])->id,
+            'documentable_type' => 'App\Models\EmployeeDocument',
         ]);
 
         //execution 
@@ -119,7 +121,7 @@ class BondServiceTest extends TestCase
         //verifications
         $this->assertEquals('John Doe', Bond::find(3)->employee->name);
         $this->assertEquals('Course Beta', Bond::find(3)->course->name);
-        $this->assertEquals('EmployeeDummyFile.pdf', Bond::find(3)->employee->EmployeeDocuments()->first()->original_name);
+        $this->assertEquals('EmployeeDummyFile.pdf', Bond::find(3)->employee->EmployeeDocuments()->first()->document->original_name);
         $this->assertEquals(3, Bond::all()->count());
     }
 
@@ -170,9 +172,10 @@ class BondServiceTest extends TestCase
         //setting up scenario
         $bond = Bond::find(1);
 
-        BondDocument::factory()->create([
-            'bond_id' => 1,
+        Document::factory()->create([
             'original_name' => 'BondDummyFile.pdf',
+            'documentable_id' => BondDocument::factory()->create(['bond_id' => $bond->id])->id,
+            'documentable_type' => 'App\Models\BondDocument',
         ]);
         
         //execution 

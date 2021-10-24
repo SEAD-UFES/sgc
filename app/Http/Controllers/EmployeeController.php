@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Gate;
 use App\CustomClasses\ModelFilterHelpers;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
+use App\Models\EmployeeDocument;
 
 class EmployeeController extends Controller
 {
@@ -96,9 +97,11 @@ class EmployeeController extends Controller
         //check access permission
         if (!Gate::allows('employee-show')) return response()->view('access.denied')->setStatusCode(401);
 
+        $employeeDocuments = EmployeeDocument::where('employee_id', $employee->id)->with('document')->get()->sortByDesc('document.updated_at');
+
         SgcLogger::writeLog(target: $employee);
 
-        return view('employee.show', compact('employee'));
+        return view('employee.show', compact(['employee', 'employeeDocuments']));
     }
 
     /**

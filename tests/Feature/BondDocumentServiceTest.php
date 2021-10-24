@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Models\Bond;
+use App\Models\Document;
 use Mockery\MockInterface;
 use App\Models\BondDocument;
 use App\Services\DocumentService;
@@ -19,16 +21,24 @@ class BondDocumentServiceTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        
-        BondDocument::factory()->create(
+
+        Document::factory()->create(
             [
                 'original_name' => 'Document Alpha.pdf',
+                'documentable_id' => BondDocument::factory()->create([
+                    'bond_id' => Bond::factory()->create()->id,
+                ])->id,
+                'documentable_type' => BondDocument::class,
             ]
         );
 
-        BondDocument::factory()->create(
+        Document::factory()->create(
             [
                 'original_name' => 'Document Beta.pdf',
+                'documentable_id' => BondDocument::factory()->create([
+                    'bond_id' => Bond::factory()->create()->id,
+                ])->id,
+                'documentable_type' => BondDocument::class,
             ]
         );
 
@@ -79,57 +89,8 @@ class BondDocumentServiceTest extends TestCase
         $service->create($attributes);
 
         //verifications
-        $this->assertEquals('Document Gama.pdf', BondDocument::find(3)->original_name);
-        $this->assertEquals(3, BondDocument::all()->count());
+        $this->assertEquals('Document Gama.pdf', Document::whereHasMorph('documentable', BondDocument::class)->skip(2)->first()->original_name);
+        $this->assertCount(3, Document::whereHasMorph('documentable', BondDocument::class)->get());
+        $this->assertCount(3, BondDocument::all());
     }
-
-    /**
-     * @test
-     */
-    /*public function documentShouldBeUpdated()
-    {
-        //setting up scenario
-
-        $document = BondDocument::find(1);
-        
-        $fileBase64 = "JVBERi0xLjIgCjkgMCBvYmoKPDwKPj4Kc3RyZWFtCkJULyA5IFRmKF"
-        . "Rlc3QpJyBFVAplbmRzdHJlYW0KZW5kb2JqCjQgMCBvYmoKPDwKL1R5cGUgL1Bh"
-        . "Z2UKL1BhcmVudCA1IDAgUgovQ29udGVudHMgOSAwIFIKPj4KZW5kb2JqCjUgMC"
-        . "BvYmoKPDwKL0tpZHMgWzQgMCBSIF0KL0NvdW50IDEKL1R5cGUgL1BhZ2VzCi9N"
-        . "ZWRpYUJveCBbIDAgMCA5OSA5IF0KPj4KZW5kb2JqCjMgMCBvYmoKPDwKL1BhZ2"
-        . "VzIDUgMCBSCi9UeXBlIC9DYXRhbG9nCj4+CmVuZG9iagp0cmFpbGVyCjw8Ci9S"
-        . "b290IDMgMCBSCj4+CiUlRU9G";
-
-        $attributes = array();
-        
-        $attributes['original_name'] = 'Document Delta.pdf';
-        $attributes['document_type_id'] = 2;
-        $attributes['employee_id'] = 2;
-        $attributes['file_data'] = $fileBase64;
-
-        //execution
-        $this->service->documentClass = BondDocument::class;
-        $this->service->update($attributes, $document);
-
-        //verifications
-        $this->assertEquals('Document Delta.pdf', BondDocument::find(1)->original_name);
-        $this->assertEquals(2, BondDocument::all()->count());
-    }*/
-
-    /**
-     * @test
-     */
-    /*public function documentShouldBeDeleted()
-    {
-        //setting up scenario
-        $document = BondDocument::find(1);
-
-        //execution
-        $this->service->documentClass = BondDocument::class;
-        $this->service->delete($document);
-
-        //verifications
-        $this->assertEquals('Document Beta.pdf', $this->service->list()->first()->original_name);
-        $this->assertEquals(1, $this->service->list()->count());
-    }*/
 }

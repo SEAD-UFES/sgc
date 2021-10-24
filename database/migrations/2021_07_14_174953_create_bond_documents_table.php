@@ -16,14 +16,9 @@ class CreateBondDocumentsTable extends Migration
     {
         Schema::create('bond_documents', function (Blueprint $table) {
             $table->id();
-            $table->string('original_name');
-            $table->foreignId('document_type_id')->constrained('document_types');
             $table->foreignId('bond_id')->constrained('bonds');
             $table->timestamps();
         });
-        
-        DB::statement("ALTER TABLE bond_documents ADD file_data MEDIUMBLOB");
-
     }
 
     /**

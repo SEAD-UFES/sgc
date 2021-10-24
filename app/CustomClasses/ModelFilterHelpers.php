@@ -59,12 +59,25 @@ class ModelFilterHelpers
         return $query_builder;
     }
 
-    public static function relation_contains($query_builder,  $relation, $column, $values)
+    public static function relation_contains($query_builder, $relation, $column, $values)
     {
         foreach ($values as $value) {
             $query_builder = $query_builder->wherehas($relation, function ($query) use ($column, $value) {
                 $query->where($column, 'like', '%' . $value . '%');
             });
+        }
+        return $query_builder;
+    }
+
+    public static function morph_relation_contains($query_builder, $relation, $morphClass, $childRelation, $column, $values)
+    {
+        foreach ($values as $value) {
+            $query_builder = $query_builder
+                ->wherehasMorph($relation, $morphClass, function ($query) use ($childRelation, $column, $value) {
+                    $query->whereHas($childRelation, function ($query) use ($column, $value) {
+                        $query->where($column, 'like', '%' . $value . '%');
+                    });
+                });
         }
         return $query_builder;
     }

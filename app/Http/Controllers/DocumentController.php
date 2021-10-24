@@ -250,14 +250,13 @@ class DocumentController extends Controller
      * @param  \App\Models\BondDocument  $bondDocument
      * @return \Illuminate\Http\Response
      */
-    public function showDocument($id, $model)
+    public function showDocument($id)
     {
-        //check access permission
-        if ($model === 'EmployeeDocument' && !Gate::allows('employeeDocument-download')) return response()->view('access.denied')->setStatusCode(401);
-        elseif ($model === 'BondDocument' && !Gate::allows('bondDocument-download')) return response()->view('access.denied')->setStatusCode(401);
-
-        $this->service->documentModel = app("App\\Models\\$model");
         $file = $this->service->getDocument($id);
+
+        //check access permission
+        if ($file->class === 'App\Models\EmployeeDocument' && !Gate::allows('employeeDocument-download')) return response()->view('access.denied')->setStatusCode(401);
+        elseif ($file->class === 'App\Models\BondDocument' && !Gate::allows('bondDocument-download')) return response()->view('access.denied')->setStatusCode(401);
 
         return Response::make($file->data, 200, ['filename="' . $file->name . '"'])->header('Content-Type', $file->mime);
     }

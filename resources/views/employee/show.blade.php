@@ -188,9 +188,6 @@
                         </div>
                         <div class="collapse show" id="employeeDocumentListContent" >
                             <div class="card-body">
-                                @php
-                                    $employeeDocuments = $employee->employeeDocuments()->orderBy('updated_at', 'DESC')->get();
-                                @endphp
                                 @if($employeeDocuments->count() > 0)
                                     <div class="table-responsive">
                                         <table class="table table-hover">
@@ -200,18 +197,18 @@
                                                 <th>Nome do arquivo</th>
                                             </thead>
                                             <tbody>
-                                                @foreach ($employeeDocuments as $document)
+                                                @foreach ($employeeDocuments as $employeeDocument)
                                                     <tr>
                                                         <td>
-                                                            {{$document->updated_at 
-                                                                ? \Carbon\Carbon::parse($document->updated_at)->isoFormat('DD/MM/Y hh:mm') 
+                                                            {{$employeeDocument->document->updated_at 
+                                                                ? \Carbon\Carbon::parse($employeeDocument->document->updated_at)->isoFormat('DD/MM/Y hh:mm') 
                                                                 : '-'
                                                             }}
                                                         </td>
-                                                        <td>{{ $document->documentType->name }}</td>
+                                                        <td>{{ $employeeDocument->document->documentType->name }}</td>
                                                         <td>
-                                                            <a href="{{ route('documents.show', ['id' => $document->id, 'type' => 'EmployeeDocument', 'htmlTitle' => $document->original_name]) }}"
-                                                                target="_blank">{{ $document->original_name }}</a>
+                                                            <a href="{{ route('documents.show', ['id' => $employeeDocument->document->id, 'type' => 'EmployeeDocument', 'htmlTitle' => $employeeDocument->document->original_name]) }}"
+                                                                target="_blank">{{ $employeeDocument->document->original_name }}</a>
                                                         </td>
                                                     </tr>
                                                 @endforeach

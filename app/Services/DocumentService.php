@@ -8,6 +8,7 @@ use App\Models\Employee;
 use App\Models\BondDocument;
 use App\Models\DocumentType;
 use App\CustomClasses\SgcLogger;
+use App\Models\Document;
 use App\Models\EmployeeDocument;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
@@ -24,10 +25,10 @@ class DocumentService
      */
     public function list(): LengthAwarePaginator
     {
-        //$documentClassName = class_basename($this->documentModel::class);
-        //SgcLogger::writeLog(target: $documentClassName, action: 'index');
+        //SgcLogger::writeLog(target: $this->documentClass, action: 'index');
 
-        $query = new $this->documentClass;
+        $query = new Document();
+        $query = $query->where('documentable_type', $this->documentClass)->with('documentable');
         $query = $query->AcceptRequest($this->documentClass::$accepted_filters)->filter();
         $query = $query->sortable(['updated_at' => 'desc']);
         $documents = $query->paginate(10);
@@ -69,12 +70,21 @@ class DocumentService
     public function create(array $attributes)
     {
         $attributes['original_name'] = isset($attributes['file']) ? $attributes['file']->getClientOriginalName() : null;
+        //$attributes['document_type_id'];
         $attributes['file_data'] = isset($attributes['file']) ? $this->getFileData($attributes['file']) : null;
-
-        //EmployeeDocument
-        $this->documentClass::create($attributes);
-
-        //SgcLogger::writeLog(target: $document, action: 'store');
+        
+        $attributes['documentable_type'] = $this->documentClass;
+        
+        DB::transaction(function () use ($attributes) {
+            
+            $attributes['documentable_id'] = $this->documentClass::create([
+                $this->documentClass::REFERENT_ID => $attributes[$this->documentClass::REFERENT_ID]
+            ])->id;
+            
+            $document = Document::create($attributes);
+            
+            //SgcLogger::writeLog(target: $document, action: 'store');
+        });
     }
 
     /**
@@ -278,10 +288,7 @@ class DocumentService
      */
     public function getDocument(int $id): Collection
     {
-        $documentClassName = class_basename($this->documentModel::class);
-        SgcLogger::writeLog(target: $documentClassName, action: 'show');
-
-        $document = $this->documentModel::find($id);
+        $document = Document::find($id);
 
         $documentName = $document->original_name;
         $fileData = base64_decode($document->file_data);
@@ -293,6 +300,9 @@ class DocumentService
         $file->name = $documentName;
         $file->mime = $mimeType;
         $file->data = $fileData;
+        $file->class = $document->documentable_type;
+
+        //SgcLogger::writeLog(target: $file->class, action: 'show');
 
         return $file;
     }

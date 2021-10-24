@@ -14,31 +14,29 @@ class EmployeeDocument extends Model
     use Sortable;
     use employeeDocumentFilter, Filterable;
 
+    protected $table = 'employee_documents';
+
+    const REFERENT_ID = 'employee_id';
+
     protected $fillable = [
-        'original_name',
-        'document_type_id',
         'employee_id',
-        'file_data',
     ];
 
     public $sortable = [
         'id',
-        'original_name',
-        'created_at',
-        'updated_at'
     ];
 
     private static $whiteListFilter = ['*'];
     public static $accepted_filters = [
         'employee_cpf_contains',
         'employee_name_contains',
-        'originalname_contains',
-        'documentType_name_contains'
+        /* 'originalname_contains',
+        'documentType_name_contains' */
     ];
 
-    public function documentType()
+    public function document()
     {
-        return $this->belongsTo(DocumentType::class);
+        return $this->morphOne(Document::class, 'documentable');
     }
 
     public function employee()

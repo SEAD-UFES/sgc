@@ -68,7 +68,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('rights', [DocumentController::class, 'rightsIndex'])->name('bonds.rights.index');
 
-    Route::get('/document/{id}/{type}/{htmlTitle}', [DocumentController::class, 'showDocument'])->name('documents.show');
+    Route::get('/document/{id}/{htmlTitle}', [DocumentController::class, 'showDocument'])->name('documents.show');
 
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
