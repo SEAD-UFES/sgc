@@ -48,7 +48,7 @@ class SgcLogger
     SgcLogger::writeLog($user); [chamado do método store do UserController]
     => 7:prof1@ufes.br|store| User:18:marco@gmail.com */
 
-    public static function writeLog(mixed $target = null, mixed $action = null, mixed $executor = null, mixed $request = null, mixed $model = null)
+    public static function writeLog(mixed $target = null, mixed $action = null, mixed $executor = null, mixed $request = null, Model $model = null)
     {
         $functionCaller = (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']);
         $executorInfo = self::getExecutorInfo($executor);
@@ -112,7 +112,7 @@ class SgcLogger
 
         $_executor = $executor ?? Auth::user();
         $executorId = $_executor->id ?? "NoID";
-        $executorEmail = ($_executor->email) ? (':' . $_executor->email) : '';
+        $executorEmail = isset($_executor->email) ? (':' . $_executor->email) : ":\t";
 
         return "$executorId$executorEmail";
     }

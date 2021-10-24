@@ -15,7 +15,7 @@ class ApprovedStateObserver
      */
     public function created(ApprovedState $approvedState)
     {
-        SgcLogger::writeLog(target: $approvedState, action: 'ApprovedState', model: 'created');
+        SgcLogger::writeLog(target: 'ApprovedState', action: 'created', model: $approvedState);
     }
 
     /**
@@ -26,7 +26,7 @@ class ApprovedStateObserver
      */
     public function updated(ApprovedState $approvedState)
     {
-        SgcLogger::writeLog(target: $approvedState, action: 'ApprovedState', model: 'updated');
+        SgcLogger::writeLog(target: 'ApprovedState', action: 'updated', model: $approvedState);
     }
 
     /**
@@ -37,7 +37,7 @@ class ApprovedStateObserver
      */
     public function deleted(ApprovedState $approvedState)
     {
-        SgcLogger::writeLog(target: $approvedState, action: 'ApprovedState', model: 'deleted');
+        SgcLogger::writeLog(target: 'ApprovedState', action: 'deleted', model: $approvedState);
     }
 
     /**
