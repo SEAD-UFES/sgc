@@ -29,10 +29,11 @@ jobs:
       run: |
         composer install --no-scripts
  
-    - name: Prepare Laravel Application
-      run: |
-        cp .env.phpunit .env
-        php artisan key:generate
+    - name: Copying .env
+      run: cp .env.phpunit .env
+ 
+    - name: Generating Key
+      run: php artisan key:generate
  
     - name: Run Testsuite
       run: php artisan test
