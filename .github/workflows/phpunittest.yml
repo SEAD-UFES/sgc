@@ -33,7 +33,9 @@ jobs:
       run: cp .env.phpunit .env
  
     - name: Generating Key
-      run: php artisan key:generate
+      run: |
+        php artisan key:generate
+        php artisan config:clear
  
     - name: Run Testsuite
       run: php artisan test
