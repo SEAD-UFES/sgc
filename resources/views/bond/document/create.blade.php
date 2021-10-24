@@ -22,27 +22,27 @@
                         </div>
                         <div class="mb-3">
                             <label for="selectType1" class="form-label">Tipo de Documento*</label>
-                            <select name="documentTypes" id="selectType1" class="form-select">
+                            <select name="document_type_id" id="selectType1" class="form-select">
                                 <option value="">Selecione o tipo</option>
                                 @foreach ($documentTypes as $documentType)
                                     <option value="{{ $documentType->id }}" {{-- {{($documentType->id == $document->document_type_id) ? 'selected' : ''}} --}}>{{ $documentType->name }}
                                     </option>
                                 @endforeach
                             </select>
-                            @error('documentTypes')
+                            @error('document_type_id')
                                 <div class="text-danger">> {{ $message }}</div>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label for="selectBond1" class="form-label">Vínculo*</label>
-                            <select name="bonds" id="selectBond1" class="form-select">
+                            <select name="bond_id" id="selectBond1" class="form-select">
                                 <option value="">Selecione o vínculo</option>
                                 @foreach ($bonds as $bond)
                                     <option value="{{ $bond->id }}" {{-- {{($documentType->id == $document->document_type_id) ? 'selected' : ''}} --}}>
                                         {{ $bond->employee->name . ' - ' . $bond->role->name . ' - ' . $bond->course->name }}</option>
                                 @endforeach
                             </select>
-                            @error('bonds')
+                            @error('bond_id')
                                 <div class="text-danger">> {{ $message }}</div>
                             @enderror
                         </div>

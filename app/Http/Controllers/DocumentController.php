@@ -13,10 +13,10 @@ use App\Services\DocumentService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Response;
 use App\CustomClasses\ModelFilterHelpers;
-use App\Http\Requests\BondDocumentStoreRequest;
-use App\Http\Requests\EmployeeDocumentStoreRequest;
-use App\Http\Requests\BondMultipleDocumentsStoreRequest;
-use App\Http\Requests\EmployeeMultipleDocumentsStoreRequest;
+use App\Http\Requests\StoreBondDocumentRequest;
+use App\Http\Requests\StoreEmployeeDocumentRequest;
+use App\Http\Requests\StoreBondMultipleDocumentsRequest;
+use App\Http\Requests\StoreEmployeeMultipleDocumentsRequest;
 
 class DocumentController extends Controller
 {
@@ -36,7 +36,7 @@ class DocumentController extends Controller
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, EmployeeDocument::$accepted_filters);
 
-        $this->service->documentModel = new EmployeeDocument;
+        $this->service->documentClass = EmployeeDocument::class;
 
         $documents = $this->service->list();
 
@@ -54,7 +54,7 @@ class DocumentController extends Controller
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, BondDocument::$accepted_filters);
 
-        $this->service->documentModel = new BondDocument;
+        $this->service->documentClass = BondDocument::class;
 
         $documents = $this->service->list();
 
@@ -121,13 +121,13 @@ class DocumentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function employeesDocumentsStore(EmployeeDocumentStoreRequest $request)
+    public function employeesDocumentsStore(StoreEmployeeDocumentRequest $request)
     {
         //check access permission
         if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
 
-        $this->service->documentModel = new EmployeeDocument;
-        $this->service->createEmployeeDocument($request->validated());
+        $this->service->documentClass = EmployeeDocument::class;
+        $this->service->create($request->validated());
 
         return redirect()->route('employeesDocuments.index')->with('success', 'Arquivo importado com sucesso.');
     }
@@ -138,13 +138,13 @@ class DocumentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function bondsDocumentsStore(BondDocumentStoreRequest $request)
+    public function bondsDocumentsStore(StoreBondDocumentRequest $request)
     {
         //check access permission
         if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);
 
-        $this->service->documentModel = new BondDocument;
-        $this->service->createBondDocument($request->validated());
+        $this->service->documentClass = BondDocument::class;
+        $this->service->create($request->validated());
 
         return redirect()->route('bondsDocuments.index')->with('success', 'Arquivo importado com sucesso.');
     }
@@ -186,7 +186,7 @@ class DocumentController extends Controller
         return view('bond.document.create-many-1', compact('bonds', 'id'));
     }
 
-    public function employeesDocumentsStoreManyStep1(EmployeeMultipleDocumentsStoreRequest $request)
+    public function employeesDocumentsStoreManyStep1(StoreEmployeeMultipleDocumentsRequest $request)
     {
         //check access permission
         if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
@@ -204,7 +204,7 @@ class DocumentController extends Controller
         return view('employee.document.create-many-2', compact('employeeDocuments', 'documentTypes'));
     }
 
-    public function bondsDocumentsStoreManyStep1(BondMultipleDocumentsStoreRequest $request)
+    public function bondsDocumentsStoreManyStep1(StoreBondMultipleDocumentsRequest $request)
     {
         //check access permission
         if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);

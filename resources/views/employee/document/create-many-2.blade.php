@@ -33,7 +33,7 @@
                                         <tr>
                                             <td title="{{ $file->original_name }}">{{ $file->original_name }}</td>
 
-                                            <td><select name="documentTypes_{{ $key }}" id="documentTypes_{{ $key }}" class="form-select">
+                                            <td><select name="document_type_id_{{ $key }}" id="documentTypes_{{ $key }}" class="form-select">
                                                     <option value="">Selecione o tipo de documento</option>
                                                     @foreach ($documentTypes as $documentType)
                                                         <option value="{{ $documentType->id }}">

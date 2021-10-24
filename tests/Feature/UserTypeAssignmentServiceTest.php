@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\Course;
 use App\Models\UserType;
 use App\Models\UserTypeAssignment;
-use Illuminate\Support\Facades\Log;
 use App\Services\UserTypeAssignmentService;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;

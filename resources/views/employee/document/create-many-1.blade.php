@@ -29,14 +29,14 @@
                         @endif
                         <div class="mb-3">
                             <label for="selectEmployee1" class="form-label">Colaborador*</label>
-                            <select name="employees" id="selectEmployee1" class="form-select">
+                            <select name="employee_id" id="selectEmployee1" class="form-select">
                                 <option value="">Selecione o colaborador</option>
                                 @foreach ($employees as $employee)
                                     <option value="{{ $employee->id }}" {{ $employee->id == $id ? 'selected' : '' }}>
                                         {{ $employee->name . ' - ' . $employee->cpf }}</option>
                                 @endforeach
                             </select>
-                            @error('employees')
+                            @error('employee_id')
                                 <div class="text-danger">> {{ $message }}</div>
                             @enderror
                         </div>

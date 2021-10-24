@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class EmployeeMultipleDocumentsStoreRequest extends FormRequest
+class StoreEmployeeMultipleDocumentsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,7 @@ class EmployeeMultipleDocumentsStoreRequest extends FormRequest
         return [
             'files' => 'required',
             'files.*' => 'mimes:pdf,jpeg,png,jpg|max:2048',
-            'employees' => 'required|exists:employees,id',
+            'employee_id' => 'required|exists:employees,id',
         ];
     }
 
@@ -36,8 +36,8 @@ class EmployeeMultipleDocumentsStoreRequest extends FormRequest
             'files.required' => 'O arquivo é obrigatório',
             'files.*.mimes' => 'O tipo de arquivo deve ser pdf, jpg, jpeg ou png,',
             'files.*.max' => 'O tamanho do arquivo deve ser de no máximo 2 MB',
-            'employees.required' => 'O Colaborador é obrigatório',
-            'employees.exists' => 'O Colaborador deve estar entre os fornecidos',
+            'employee_id.required' => 'O Colaborador é obrigatório',
+            'employee_id.exists' => 'O Colaborador deve estar entre os fornecidos',
         ];
     }
 }

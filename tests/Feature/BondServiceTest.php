@@ -7,7 +7,9 @@ use App\Models\Bond;
 use App\Models\Course;
 use App\Models\Employee;
 use App\Models\UserType;
+use App\Models\BondDocument;
 use App\Services\BondService;
+use App\Models\EmployeeDocument;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -93,6 +95,37 @@ class BondServiceTest extends TestCase
     /**
      * @test
      */
+    public function bondShouldBeCreatedWithEmployeeDocument()
+    {
+        //setting up scenario
+        $attributes = array();
+
+        $attributes['employee_id'] = 1;
+        $attributes['role_id'] = 2;
+        $attributes['course_id'] = 2;
+        $attributes['pole_id'] = 1;
+
+        //Should be mocked(?)
+        UserType::create(['name' => 'Assistant', 'acronym' => 'ass', 'description' => '']);
+
+        EmployeeDocument::factory()->create([
+            'employee_id' => 1,
+            'original_name' => 'EmployeeDummyFile.pdf',
+        ]);
+
+        //execution 
+        $this->service->create($attributes);
+
+        //verifications
+        $this->assertEquals('John Doe', Bond::find(3)->employee->name);
+        $this->assertEquals('Course Beta', Bond::find(3)->course->name);
+        $this->assertEquals('EmployeeDummyFile.pdf', Bond::find(3)->employee->EmployeeDocuments()->first()->original_name);
+        $this->assertEquals(3, Bond::all()->count());
+    }
+
+    /**
+     * @test
+     */
     public function bondShouldBeUpdated()
     {
         //setting up scenario
@@ -121,6 +154,27 @@ class BondServiceTest extends TestCase
         //setting up scenario
         $bond = Bond::find(1);
 
+        //execution 
+        $this->service->delete($bond);
+
+        //verifications
+        $this->assertEquals('Jane Doe', $this->service->list()->first()->employee->name);
+        $this->assertEquals(1, $this->service->list()->count());
+    }
+
+    /**
+     * @test
+     */
+    public function bondWithDocumentShouldBeDeleted()
+    {
+        //setting up scenario
+        $bond = Bond::find(1);
+
+        BondDocument::factory()->create([
+            'bond_id' => 1,
+            'original_name' => 'BondDummyFile.pdf',
+        ]);
+        
         //execution 
         $this->service->delete($bond);
 

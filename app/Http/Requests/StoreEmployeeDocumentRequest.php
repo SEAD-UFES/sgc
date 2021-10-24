@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BondDocumentStoreRequest extends FormRequest
+class StoreEmployeeDocumentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,8 @@ class BondDocumentStoreRequest extends FormRequest
     {
         return [
             'file' => 'required|mimes:pdf,jpeg,png,jpg|max:2048',
-            'documentTypes' => 'required|exists:document_types,id',
-            'bonds' => 'required|exists:bonds,id',
+            'document_type_id' => 'required|exists:document_types,id',
+            'employee_id' => 'required|exists:employees,id',
         ];
     }
 
@@ -36,10 +36,10 @@ class BondDocumentStoreRequest extends FormRequest
             'file.required' => 'O arquivo é obrigatório',
             'file.mimes' => 'O tipo de arquivo deve ser pdf, jpg, jpeg ou png,',
             'file.max' => 'O tamanho do arquivo deve ser de no máximo 2 MB',
-            'documentTypes.required' => 'O Tipo é obrigatório',
-            'documentTypes.exists' => 'O Tipo deve estar entre os fornecidos',
-            'bonds.required' => 'O Vínculo é obrigatório',
-            'bonds.exists' => 'O Vínculo deve estar entre os fornecidos',
+            'document_type_id.required' => 'O Tipo é obrigatório',
+            'document_type_id.exists' => 'O Tipo deve estar entre os fornecidos',
+            'employee_id.required' => 'O Colaborador é obrigatório',
+            'employee_id.exists' => 'O Colaborador deve estar entre os fornecidos',
         ];
     }
 }

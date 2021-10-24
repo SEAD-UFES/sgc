@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Models\Employee;
 use App\CustomClasses\SgcLogger;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class EmployeeService

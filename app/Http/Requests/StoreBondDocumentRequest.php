@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BondMultipleDocumentsStoreRequest extends FormRequest
+class StoreBondDocumentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class BondMultipleDocumentsStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'files' => 'required',
-            'files.*' => 'mimes:pdf,jpeg,png,jpg|max:2048',
+            'file' => 'required|mimes:pdf,jpeg,png,jpg|max:2048',
+            'document_type_id' => 'required|exists:document_types,id',
             'bond_id' => 'required|exists:bonds,id',
         ];
     }
@@ -33,10 +33,12 @@ class BondMultipleDocumentsStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'files.required' => 'O arquivo é obrigatório',
-            'files.*.mimes' => 'O tipo de arquivo deve ser pdf, jpg, jpeg ou png,',
-            'files.*.max' => 'O tamanho do arquivo deve ser de no máximo 2 MB',
-            'bond_id.min' => 'O Vínculo é obrigatório',
+            'file.required' => 'O arquivo é obrigatório',
+            'file.mimes' => 'O tipo de arquivo deve ser pdf, jpg, jpeg ou png,',
+            'file.max' => 'O tamanho do arquivo deve ser de no máximo 2 MB',
+            'document_type_id.required' => 'O Tipo é obrigatório',
+            'document_type_id.exists' => 'O Tipo deve estar entre os fornecidos',
+            'bond_id.required' => 'O Vínculo é obrigatório',
             'bond_id.exists' => 'O Vínculo deve estar entre os fornecidos',
         ];
     }

@@ -34,10 +34,10 @@
                                 <tbody>
                                     @foreach ($bondDocuments as $key => $bondDocument)
                                         <input type="hidden" name="fileName_{{ $key }}" value="{{ $bondDocument->original_name }}">
-                                        <input type="hidden" name="filePath_{{ $key }}" value="{{ $bondDocument->tmp_file_path }}" />
+                                        <input type="hidden" name="filePath_{{ $key }}" value="{{ $bondDocument->filePath }}" />
                                         <tr>
                                             <td title="{{ $bondDocument->original_name }}">{{ $bondDocument->original_name }}</td>
-                                            <td><select name="documentTypes_{{ $key }}" id="documentTypes_{{ $key }}" class="form-select">
+                                            <td><select name="document_type_id_{{ $key }}" id="documentTypes_{{ $key }}" class="form-select">
                                                     <option value="">Selecione o tipo de documento</option>
                                                     @foreach ($documentTypes as $documentType)
                                                         <option value="{{ $documentType->id }}">

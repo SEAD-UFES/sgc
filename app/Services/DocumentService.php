@@ -24,11 +24,11 @@ class DocumentService
      */
     public function list(): LengthAwarePaginator
     {
-        $documentClassName = class_basename($this->documentModel::class);
-        SgcLogger::writeLog(target: $documentClassName, action: 'index');
+        //$documentClassName = class_basename($this->documentModel::class);
+        //SgcLogger::writeLog(target: $documentClassName, action: 'index');
 
-        $query = $this->documentModel;
-        $query = $query->AcceptRequest($this->documentModel::$accepted_filters)->filter();
+        $query = new $this->documentClass;
+        $query = $query->AcceptRequest($this->documentClass::$accepted_filters)->filter();
         $query = $query->sortable(['updated_at' => 'desc']);
         $documents = $query->paginate(10);
         $documents->withQueryString();
@@ -43,7 +43,7 @@ class DocumentService
      */
     public function listRights(): LengthAwarePaginator
     {
-        SgcLogger::writeLog(target: 'BondsRightsIndex', action: 'index');
+        //SgcLogger::writeLog(target: 'BondsRightsIndex', action: 'index');
 
         $documentType = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
         $documentsQuery = BondDocument::with('bond')
@@ -66,36 +66,15 @@ class DocumentService
      * @param array $attributes
      * @return void
      */
-    public function createEmployeeDocument(array $attributes)
+    public function create(array $attributes)
     {
-        //save the model
-        $document = $this->documentModel;
-        $document->employee_id = $attributes['employee_id']; // <= Particular line
-        $document->document_type_id = $attributes['document_type_id'];
-        $document->original_name = isset($attributes['file']) ? $attributes['file']->getClientOriginalName() : null;
-        $document->file_data = isset($attributes['file']) ? $this->getFileData($attributes['file']) : null;
-        $document->save();
+        $attributes['original_name'] = isset($attributes['file']) ? $attributes['file']->getClientOriginalName() : null;
+        $attributes['file_data'] = isset($attributes['file']) ? $this->getFileData($attributes['file']) : null;
 
-        SgcLogger::writeLog(target: $document, action: 'store');
-    }
+        //EmployeeDocument
+        $this->documentClass::create($attributes);
 
-    /**
-     * Undocumented function
-     *
-     * @param array $attributes
-     * @return void
-     */
-    public function createBondDocument(array $attributes)
-    {
-        //save the model
-        $document = $this->documentModel;
-        $document->bond_id = $attributes['bonds']; // <= Particular line
-        $document->document_type_id = $attributes['documentTypes'];
-        $document->original_name = isset($attributes['file']) ? $attributes['file']->getClientOriginalName() : null;
-        $document->file_data = isset($attributes['file']) ? $this->getFileData($attributes['file']) : null;
-        $document->save();
-
-        SgcLogger::writeLog(target: $document, action: 'store');
+        //SgcLogger::writeLog(target: $document, action: 'store');
     }
 
     /**
@@ -138,7 +117,7 @@ class DocumentService
                 $tmpFilePath = $file->storeAs('temp', $tmpFileName, 'local');
 
                 $document = new EmployeeDocument();
-                $document->employee_id = $attributes['employees']; // <= Particular line
+                $document->employee_id = $attributes['employee_id']; // <= Particular line
                 $document->original_name = $file->getClientOriginalName();
                 $document->filePath = $tmpFilePath;
 
@@ -171,7 +150,7 @@ class DocumentService
                 $document = new BondDocument();
                 $document->bond_id = $attributes['bond_id']; // <= Particular line
                 $document->original_name = $file->getClientOriginalName();
-                $document->tmp_file_path = $tmpFilePath;
+                $document->filePath = $tmpFilePath;
 
                 $bondDocuments->push($document);
             }
@@ -200,7 +179,7 @@ class DocumentService
 
                 $document = new EmployeeDocument();
                 $document->employee_id = $attributes['employeeId']; // <= Particular line
-                $document->document_type_id = $attributes['documentTypes_' . $i];
+                $document->document_type_id = $attributes['document_type_id_' . $i];
                 $document->original_name = $attributes['fileName_' . $i];
                 $document->file_data = $this->getFileDataFromPath($filePath);
 
@@ -245,7 +224,7 @@ class DocumentService
                 //set the model
                 $document = new BondDocument();
                 $document->bond_id = $attributes['bond_id']; // <= Particular line
-                $document->document_type_id = $attributes['documentTypes_' . $i];
+                $document->document_type_id = $attributes['document_type_id_' . $i];
                 $document->original_name = $attributes['fileName_' . $i];
                 $document->file_data = $this->getFileDataFromPath($filePath);
 

@@ -18,6 +18,8 @@ class BondDocument extends Model
 
     protected $fillable = [
         'original_name',
+        'document_type_id',
+        'bond_id',
         'file_data',
     ];
 
