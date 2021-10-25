@@ -22,6 +22,11 @@ class BondDocument extends Model
         'bond_id',
     ];
 
+    protected $observables = [
+        'listed',
+        'viewed',
+    ];
+
     public $sortable = [
         'id',
     ];
@@ -88,5 +93,15 @@ class BondDocument extends Model
             ->orderBy('poles.name', $direction)
             ->select('bond_documents.*');
         return $query;
+    }
+
+    public function logListed()
+    {
+        $this->fireModelEvent('listed', false);
+    }
+
+    public function logViewed()
+    {
+        $this->fireModelEvent('viewed', false);
     }
 }

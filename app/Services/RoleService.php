@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Role;
-use App\CustomClasses\SgcLogger;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class RoleService
@@ -15,7 +14,7 @@ class RoleService
      */
     public function list(): LengthAwarePaginator
     {
-        //SgcLogger::writeLog(target: 'Role', action: 'index');
+        (new Role)->logListed();
 
         $roles_query = new Role();
         $roles_query = $roles_query->AcceptRequest(Role::$accepted_filters)->filter();
@@ -35,6 +34,19 @@ class RoleService
     public function create(array $attributes): Role
     {
         $role = Role::create($attributes);
+
+        return $role;
+    }
+
+    /**
+     * Undocumented function
+     * 
+     * @param Role $role
+     * @return Role
+     */
+    public function read(Role $role): Role
+    {
+        $role->logViewed($role);
 
         return $role;
     }

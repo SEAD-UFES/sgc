@@ -20,6 +20,11 @@ class State extends Model
         'ibge_uf_code',
     ];
 
+    protected $observables = [
+        'listed',
+        'viewed',
+    ];
+
     public function employee()
     {
         return $this->hasMany(Employee::class);
@@ -28,5 +33,15 @@ class State extends Model
     public function employeeBirth()
     {
         return $this->hasMany(Employee::class);
+    }
+
+    public function logListed()
+    {
+        $this->fireModelEvent('listed', false);
+    }
+
+    public function logViewed()
+    {
+        $this->fireModelEvent('viewed', false);
     }
 }

@@ -20,8 +20,23 @@ class UserType extends Model
         'description',
     ];
 
+    protected $observables = [
+        'listed',
+        'viewed',
+    ];
+
     public function users()
     {
         return $this->hasMany(User::class);
+    }
+
+    public function logListed()
+    {
+        $this->fireModelEvent('listed', false);
+    }
+
+    public function logViewed()
+    {
+        $this->fireModelEvent('viewed', false);
     }
 }

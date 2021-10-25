@@ -27,6 +27,11 @@ class UserTypeAssignment extends Model
         'end',
     ];
 
+    protected $observables = [
+        'listed',
+        'viewed',
+    ];
+
     public $sortable = [
         'id',
         'user.email',
@@ -64,5 +69,15 @@ class UserTypeAssignment extends Model
     public function course()
     {
         return $this->belongsTo(Course::class);
+    }
+
+    public function logListed()
+    {
+        $this->fireModelEvent('listed', false);
+    }
+
+    public function logViewed()
+    {
+        $this->fireModelEvent('viewed', false);
     }
 }

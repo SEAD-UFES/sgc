@@ -29,6 +29,11 @@ class User extends Authenticatable
         'active',
     ];
 
+    protected $observables = [
+        'listed',
+        'viewed',
+    ];
+
     public $sortable = ['id', 'email', 'active', 'created_at', 'updated_at'];
 
     private static $whiteListFilter = ['*'];
@@ -125,5 +130,15 @@ class User extends Authenticatable
             ->join('user_type_assignments AS user_type_assignments_B', 'users.id', '=', 'user_type_assignments_B.user_id')
             ->where('user_type_assignments_B.course_id', $id)
             ->select('users.*');
+    }
+
+    public function logListed()
+    {
+        $this->fireModelEvent('listed', false);
+    }
+
+    public function logViewed()
+    {
+        $this->fireModelEvent('viewed', false);
     }
 }

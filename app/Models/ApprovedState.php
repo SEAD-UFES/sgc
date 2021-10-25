@@ -19,6 +19,11 @@ class ApprovedState extends Model
         'description',
     ];
 
+    protected $observables = [
+        'listed',
+        'viewed',
+    ];
+
     public function approveds()
     {
         return $this->hasMany(Approved::class);
@@ -43,5 +48,15 @@ class ApprovedState extends Model
                     return ApprovedState::where('name', 'Aceitante')->orWhere('name', 'Desistente')->get();
                     break;
             }
+    }
+
+    public function logListed()
+    {
+        $this->fireModelEvent('listed', false);
+    }
+
+    public function logViewed()
+    {
+        $this->fireModelEvent('viewed', false);
     }
 }

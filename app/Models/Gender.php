@@ -18,8 +18,23 @@ class Gender extends Model
         'name',
     ];
 
+    protected $observables = [
+        'listed',
+        'viewed',
+    ];
+
     public function employee()
     {
         return $this->hasMany(Employee::class);
+    }
+
+    public function logListed()
+    {
+        $this->fireModelEvent('listed', false);
+    }
+
+    public function logViewed()
+    {
+        $this->fireModelEvent('viewed', false);
     }
 }

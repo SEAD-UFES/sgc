@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Models\Course;
 use App\Models\UserType;
 use Illuminate\Http\Request;
-use App\CustomClasses\SgcLogger;
 use App\Models\UserTypeAssignment;
 use Illuminate\Support\Facades\Gate;
 use App\CustomClasses\ModelFilterHelpers;
@@ -52,8 +51,6 @@ class UserTypeAssignmentController extends Controller
         $users = User::orderBy('email')->get();
         $userTypes = UserType::orderBy('name')->get();
         $courses = Course::orderBy('name')->get();
-        
-        SgcLogger::writeLog(target: 'UserTypeAssignment');
 
         return view('userTypeAssignment.create', compact('users', 'userTypes', 'courses'));
     }
@@ -88,6 +85,8 @@ class UserTypeAssignmentController extends Controller
     {
         //check access permission
         if (!Gate::allows('userTypeAssignment-show')) return response()->view('access.denied')->setStatusCode(401);
+
+        $this->service->read($userTypeAssignment);
     }
 
     /**
@@ -104,9 +103,6 @@ class UserTypeAssignmentController extends Controller
         $users = User::orderBy('email')->get();
         $userTypes = UserType::orderBy('name')->get();
         $courses = Course::orderBy('name')->get();
-
-        //write on log
-        SgcLogger::writeLog(target: $userTypeAssignment);
 
         return view('userTypeAssignment.edit', compact('users', 'userTypes', 'courses', 'userTypeAssignment'));
     }

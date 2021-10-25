@@ -24,6 +24,11 @@ class Document extends Model
         'file_data',
     ];
 
+    protected $observables = [
+        'listed',
+        'viewed',
+    ];
+
     public $sortable = [
         'id',
         'original_name',
@@ -52,6 +57,16 @@ class Document extends Model
     public function documentable()
     {
         return $this->morphTo();
+    }
+
+    public function logListed()
+    {
+        $this->fireModelEvent('listed', false);
+    }
+
+    public function logViewed()
+    {
+        $this->fireModelEvent('viewed', false);
     }
 
     /* public function bond()

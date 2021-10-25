@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\CustomClasses\SgcLogger;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -57,6 +58,8 @@ class BondImpededNotification extends Notification/* implements ShouldQueue */ /
      */
     public function toArray($notifiable)
     {
+        SgcLogger::writeLog(target: 'BondImpededNotification', model: $this->bond);
+
         return [
             'bond_id' => $this->bond->id,
             'course_name' => $this->bond->course->name,

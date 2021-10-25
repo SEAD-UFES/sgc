@@ -15,7 +15,18 @@ class DocumentTypeObserver
      */
     public function created(DocumentType $documentType)
     {
-        SgcLogger::writeLog(target: 'DocumentType', action: 'created', model: $documentType);
+        SgcLogger::writeLog(target: 'DocumentType', action: __FUNCTION__, model: $documentType);
+    }
+
+    /**
+     * Handle the DocumentType "updated" event.
+     *
+     * @param  \App\Models\DocumentType  $documentType
+     * @return void
+     */
+    public function updating(DocumentType $documentType)
+    {
+        SgcLogger::writeLog(target: 'DocumentType', action: __FUNCTION__, model: $documentType);
     }
 
     /**
@@ -26,7 +37,7 @@ class DocumentTypeObserver
      */
     public function updated(DocumentType $documentType)
     {
-        SgcLogger::writeLog(target: 'DocumentType', action: 'updated', model: $documentType);
+        SgcLogger::writeLog(target: 'DocumentType', action: __FUNCTION__, model: $documentType);
     }
 
     /**
@@ -37,7 +48,7 @@ class DocumentTypeObserver
      */
     public function deleted(DocumentType $documentType)
     {
-        SgcLogger::writeLog(target: 'DocumentType', action: 'deleted', model: $documentType);
+        SgcLogger::writeLog(target: 'DocumentType', action: __FUNCTION__, model: $documentType);
     }
 
     /**
@@ -60,5 +71,15 @@ class DocumentTypeObserver
     public function forceDeleted(DocumentType $documentType)
     {
         //
+    }
+
+    public function listed()
+    {
+        SgcLogger::writeLog(target: 'DocumentType', action: __FUNCTION__);
+    }
+
+    public function viewed(DocumentType $approved)
+    {
+        SgcLogger::writeLog(target: 'DocumentType', action: __FUNCTION__, model: $approved);
     }
 }

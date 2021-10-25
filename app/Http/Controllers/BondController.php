@@ -11,7 +11,6 @@ use App\Models\Employee;
 use App\Models\BondDocument;
 use Illuminate\Http\Request;
 use App\Services\BondService;
-use App\CustomClasses\SgcLogger;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StoreBondRequest;
 use App\Http\Requests\ReviewBondRequest;
@@ -61,8 +60,6 @@ class BondController extends Controller
         $courses = Course::orderBy('name')->get();
         foreach ($courses as $key => $course) if (!Gate::allows('bond-store-course_id', $course->id)) $courses->forget($key);
 
-        SgcLogger::writeLog(target: 'Bond');
-
         return view('bond.create', compact('employees', 'roles', 'courses', 'poles'));
     }
 
@@ -100,6 +97,8 @@ class BondController extends Controller
         //check access permission
         if (!Gate::allows('bond-show')) return response()->view('access.denied')->setStatusCode(401);
 
+        $this->service->read($bond);
+
         $documents = Document::whereHasMorph('documentable', BondDocument::class, function ($query) use ($bond) {
             $query->where('bond_id', $bond->id);
         })->with('documentable')->get()/* ->sortByDesc('documentable.updated_at') */;
@@ -125,8 +124,6 @@ class BondController extends Controller
         $employees = Employee::orderBy('name')->get();
         $roles = Role::orderBy('name')->get();
         $poles = Pole::orderBy('name')->get();
-
-        SgcLogger::writeLog(target: $bond);
 
         return view('bond.edit', compact('employees', 'roles', 'courses', 'poles', 'bond'));
     }

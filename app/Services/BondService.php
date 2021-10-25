@@ -8,7 +8,6 @@ use App\Models\Document;
 use App\Models\UserType;
 use App\Models\BondDocument;
 use App\Models\DocumentType;
-use App\CustomClasses\SgcLogger;
 use App\Models\EmployeeDocument;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\NewBondNotification;
@@ -27,7 +26,7 @@ class BondService
      */
     public function list(): LengthAwarePaginator
     {
-        //SgcLogger::writeLog(target: 'Bond', action: 'index');
+        (new Bond)->logListed();
 
         $query = Bond::with(['employee', 'course', 'role', 'pole']);
         $query = $query->AcceptRequest(Bond::$accepted_filters)->filter();
@@ -77,6 +76,19 @@ class BondService
             $coordOrAssistants = User::where('active', true)->whereActiveUserType($ass_UT->id)->get();
             Notification::send($coordOrAssistants, new NewBondNotification($bond));
         });
+
+        return $bond;
+    }
+
+    /**
+     * Undocumented function
+     * 
+     * @param Bond $bond
+     * @return Bond
+     */
+    public function read(Bond $bond): Bond
+    {
+        $bond->logViewed($bond);
 
         return $bond;
     }
@@ -133,8 +145,6 @@ class BondService
         $bond->impediment_description = $attributes['impedimentDescription'];
         $bond->uaba_checked_at = now();
 
-        //SgcLogger::writeLog(target: $bond, action: 'review');
-
         $bond->save();
 
         if ($bond->impediment == true) {
@@ -178,8 +188,6 @@ class BondService
         $ass_users = User::where('active', true)->whereActiveUserType($ass_UT->id)->get();
 
         $users = $sec_users->merge($coord_users)->merge($ass_users);
-
-        //SgcLogger::writeLog(target: $bond, action: 'request review');
 
         Notification::send($users, new RequestReviewNotification($bond));
 

@@ -26,6 +26,11 @@ class EmployeeDocument extends Model
         'id',
     ];
 
+    protected $observables = [
+        'listed',
+        'viewed',
+    ];
+
     private static $whiteListFilter = ['*'];
     public static $accepted_filters = [
         'employee_cpf_contains',
@@ -42,5 +47,15 @@ class EmployeeDocument extends Model
     public function employee()
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    public function logListed()
+    {
+        $this->fireModelEvent('listed', false);
+    }
+
+    public function logViewed()
+    {
+        $this->fireModelEvent('viewed', false);
     }
 }

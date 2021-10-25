@@ -13,6 +13,11 @@ class DocumentType extends Model
         'name',
         'description',
     ];
+
+    protected $observables = [
+        'listed',
+        'viewed',
+    ];
  
     public function employeeDocuments()
     {
@@ -22,5 +27,15 @@ class DocumentType extends Model
     public function bondDocuments()
     {
         return $this->hasMany(BondDocument::class);
+    }
+
+    public function logListed()
+    {
+        $this->fireModelEvent('listed', false);
+    }
+
+    public function logViewed()
+    {
+        $this->fireModelEvent('viewed', false);
     }
 }

@@ -6,7 +6,6 @@ use App\Models\Role;
 use App\Models\GrantType;
 use Illuminate\Http\Request;
 use App\Services\RoleService;
-use App\CustomClasses\SgcLogger;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
@@ -49,8 +48,6 @@ class RoleController extends Controller
 
         $grantTypes = GrantType::orderBy('name')->get();
 
-        SgcLogger::writeLog(target: 'Role');
-
         return view('role.create', compact('grantTypes'));
     }
 
@@ -85,7 +82,7 @@ class RoleController extends Controller
         //check access permission
         if (!Gate::allows('role-show')) return response()->view('access.denied')->setStatusCode(401);
 
-        SgcLogger::writeLog(target: $role);
+        $this->service->read($role);
 
         return view('role.show', compact('role'));
     }
@@ -102,8 +99,6 @@ class RoleController extends Controller
         if (!Gate::allows('role-update')) return response()->view('access.denied')->setStatusCode(401);
 
         $grantTypes = GrantType::orderBy('name')->get();
-
-        SgcLogger::writeLog(target: $role);
 
         return view('role.edit', compact('role', 'grantTypes'));
     }

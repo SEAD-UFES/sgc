@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\Employee;
-use App\CustomClasses\SgcLogger;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -17,7 +16,7 @@ class UserService
      */
     public function list(): LengthAwarePaginator
     {
-        //SgcLogger::writeLog(target: 'User', action: 'index');
+        (new User)->logListed();
 
         $query = User::with(['userType', 'employee']);
         $query = $query->AcceptRequest(User::$accepted_filters)->filter();
@@ -42,6 +41,19 @@ class UserService
         $user = User::create($attributes);
 
         $this->employeeAttach($user);
+
+        return $user;
+    }
+
+    /**
+     * Undocumented function
+     * 
+     * @param User $user
+     * @return User
+     */
+    public function read(User $user): User
+    {
+        $user->logViewed($user);
 
         return $user;
     }
@@ -82,8 +94,6 @@ class UserService
         if ($existentEmployee) {
             $user->employee_id = $existentEmployee->id;
             $user->save();
-
-            //SgcLogger::writeLog(target: $existentEmployee, action: 'Updated existent Employee info on User');
         }
     }
 

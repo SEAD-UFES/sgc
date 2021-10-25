@@ -8,7 +8,6 @@ use App\Models\Employee;
 use App\Models\DocumentType;
 use Illuminate\Http\Request;
 use App\Models\MaritalStatus;
-use App\CustomClasses\SgcLogger;
 use App\Services\EmployeeService;
 use Illuminate\Support\Facades\Gate;
 use App\CustomClasses\ModelFilterHelpers;
@@ -58,8 +57,6 @@ class EmployeeController extends Controller
         $maritalStatuses = MaritalStatus::orderBy('name')->get();
         $addressStates = State::orderBy('name')->get();
 
-        SgcLogger::writeLog(target: 'Employee', action: 'create');
-
         return view('employee.create', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates'));
     }
 
@@ -97,9 +94,9 @@ class EmployeeController extends Controller
         //check access permission
         if (!Gate::allows('employee-show')) return response()->view('access.denied')->setStatusCode(401);
 
-        $employeeDocuments = EmployeeDocument::where('employee_id', $employee->id)->with('document')->get()->sortByDesc('document.updated_at');
+        $this->service->read($employee);
 
-        SgcLogger::writeLog(target: $employee);
+        $employeeDocuments = EmployeeDocument::where('employee_id', $employee->id)->with('document')->get()->sortByDesc('document.updated_at');
 
         return view('employee.show', compact(['employee', 'employeeDocuments']));
     }
@@ -114,8 +111,6 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (!Gate::allows('employee-update')) return response()->view('access.denied')->setStatusCode(401);
-
-        SgcLogger::writeLog(target: $employee);
 
         $genders = Gender::orderBy('name')->get();
         $birthStates = State::orderBy('name')->get();

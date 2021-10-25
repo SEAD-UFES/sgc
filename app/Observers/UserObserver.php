@@ -15,7 +15,18 @@ class UserObserver
      */
     public function created(User $user)
     {
-        SgcLogger::writeLog(target: 'User', action: 'created', model: $user);
+        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model: $user);
+    }
+
+    /**
+     * Handle the User "updated" event.
+     *
+     * @param  \App\Models\User  $user
+     * @return void
+     */
+    public function updating(User $user)
+    {
+        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model: $user);
     }
 
     /**
@@ -26,7 +37,7 @@ class UserObserver
      */
     public function updated(User $user)
     {
-        SgcLogger::writeLog(target: 'User', action: 'updated', model: $user);
+        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model: $user);
     }
 
     /**
@@ -37,7 +48,7 @@ class UserObserver
      */
     public function deleted(User $user)
     {
-        SgcLogger::writeLog(target: 'User', action: 'deleted', model: $user);
+        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model: $user);
     }
 
     /**
@@ -60,5 +71,15 @@ class UserObserver
     public function forceDeleted(User $user)
     {
         //
+    }
+
+    public function listed()
+    {
+        SgcLogger::writeLog(target: 'User', action: __FUNCTION__);
+    }
+
+    public function viewed(User $user)
+    {
+        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model: $user);
     }
 }

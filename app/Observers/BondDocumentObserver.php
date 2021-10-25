@@ -15,7 +15,7 @@ class BondDocumentObserver
      */
     public function created(BondDocument $bondDocument)
     {
-        SgcLogger::writeLog(target: 'BondDocument', action: 'created', model: $bondDocument);
+        SgcLogger::writeLog(target: 'BondDocument', action: __FUNCTION__, model: $bondDocument);
     }
 
     /**
@@ -24,9 +24,20 @@ class BondDocumentObserver
      * @param  \App\Models\BondDocument  $bondDocument
      * @return void
      */
+    public function updating(BondDocument $bondDocument)
+    {
+        SgcLogger::writeLog(target: 'BondDocument', action: __FUNCTION__, model: $bondDocument);
+    }
+
+    /**
+     * Handle the BondDocument "updated" event.
+     *
+     * @param  BondDocument  $bondDocument
+     * @return void
+     */
     public function updated(BondDocument $bondDocument)
     {
-        SgcLogger::writeLog(target: 'BondDocument', action: 'updated', model: $bondDocument);
+        SgcLogger::writeLog(target: 'BondDocument', action: __FUNCTION__, model: $bondDocument);
     }
 
     /**
@@ -37,7 +48,7 @@ class BondDocumentObserver
      */
     public function deleted(BondDocument $bondDocument)
     {
-        SgcLogger::writeLog(target: 'BondDocument', action: 'deleted', model: $bondDocument);
+        SgcLogger::writeLog(target: 'BondDocument', action: __FUNCTION__, model: $bondDocument);
     }
 
     /**
@@ -60,5 +71,15 @@ class BondDocumentObserver
     public function forceDeleted(BondDocument $bondDocument)
     {
         //
+    }
+
+    public function listed()
+    {
+        SgcLogger::writeLog(target: 'BondDocument', action: __FUNCTION__);
+    }
+
+    public function viewed(BondDocument $approvedState)
+    {
+        SgcLogger::writeLog(target: 'BondDocument', action: __FUNCTION__, model: $approvedState);
     }
 }

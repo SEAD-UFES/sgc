@@ -19,8 +19,23 @@ class GrantType extends Model
         'description',
     ];
 
+    protected $observables = [
+        'listed',
+        'viewed',
+    ];
+
     public function roles()
     {
         return $this->hasMany(Role::class);
+    }
+
+    public function logListed()
+    {
+        $this->fireModelEvent('listed', false);
+    }
+
+    public function logViewed()
+    {
+        $this->fireModelEvent('viewed', false);
     }
 }

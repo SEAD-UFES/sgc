@@ -16,7 +16,7 @@ class NotificationController extends Controller
      */
     public function dismiss(DatabaseNotification $notification)
     {
-        SgcLogger::writeLog($notification, 'update');
+        SgcLogger::writeLog($notification, 'dismiss');
 
         try {
             $notification->markAsRead();

@@ -4,11 +4,11 @@ namespace App\Services;
 
 use Exception;
 use App\Models\Bond;
+use App\Models\Document;
 use App\Models\Employee;
 use App\Models\BondDocument;
 use App\Models\DocumentType;
 use App\CustomClasses\SgcLogger;
-use App\Models\Document;
 use App\Models\EmployeeDocument;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
@@ -25,7 +25,7 @@ class DocumentService
      */
     public function list(): LengthAwarePaginator
     {
-        //SgcLogger::writeLog(target: $this->documentClass, action: 'index');
+        (new Document)->logListed();
 
         $query = new Document();
         $query = $query->where('documentable_type', $this->documentClass)->with('documentable');
@@ -44,7 +44,7 @@ class DocumentService
      */
     public function listRights(): LengthAwarePaginator
     {
-        //SgcLogger::writeLog(target: 'BondsRightsIndex', action: 'index');
+        (new Document)->logListed();
 
         $documentType = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
         $documentsQuery = BondDocument::with('bond')
@@ -83,6 +83,19 @@ class DocumentService
             
             $document = Document::create($attributes);
         });
+    }
+
+    /**
+     * Undocumented function
+     * 
+     * @param Document $document
+     * @return Document
+     */
+    public function read(Document $document): Document
+    {
+        $document->logViewed($document);
+
+        return $document;
     }
 
     /**
@@ -132,8 +145,6 @@ class DocumentService
                 $employeeDocuments->push($document);
             }
 
-            SgcLogger::writeLog(target: 'employeeDocument', action: 'store');
-
             return $employeeDocuments;
         }
         throw new Exception('$attributes[files] not set.', 1);
@@ -162,8 +173,6 @@ class DocumentService
 
                 $bondDocuments->push($document);
             }
-
-            SgcLogger::writeLog(target: 'bondDocument', action: 'store');
 
             return $bondDocuments;
         }
@@ -207,8 +216,6 @@ class DocumentService
             $filePath = $attributes['filePath_' . $i];
             Storage::delete($filePath);
         }
-
-        SgcLogger::writeLog(target: 'Create many EmployeeDocuments', action: 'create');
     }
 
     /**
@@ -254,9 +261,6 @@ class DocumentService
             $filePath = $attributes['filePath_' . $i];
             Storage::delete($filePath);
         }
-
-        //log
-        SgcLogger::writeLog(target: 'Create many BondDocuments', action: 'create');
     }
 
     /**
@@ -288,6 +292,8 @@ class DocumentService
     {
         $document = Document::find($id);
 
+        $document->logViewed($document);
+
         $documentName = $document->original_name;
         $fileData = base64_decode($document->file_data);
 
@@ -299,8 +305,6 @@ class DocumentService
         $file->mime = $mimeType;
         $file->data = $fileData;
         $file->class = $document->documentable_type;
-
-        //SgcLogger::writeLog(target: $file->class, action: 'show');
 
         return $file;
     }

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Pole;
 use Illuminate\Http\Request;
 use App\Services\PoleService;
-use App\CustomClasses\SgcLogger;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StorePoleRequest;
 use App\Http\Requests\UpdatePoleRequest;
@@ -46,8 +45,6 @@ class PoleController extends Controller
         //check access permission
         if (!Gate::allows('pole-store')) return response()->view('access.denied')->setStatusCode(401);
 
-        SgcLogger::writeLog(target: 'Pole');
-
         return view('pole.create');
     }
 
@@ -82,7 +79,7 @@ class PoleController extends Controller
         //check access permission
         if (!Gate::allows('pole-show')) return response()->view('access.denied')->setStatusCode(401);
 
-        SgcLogger::writeLog(target: $pole);
+        $this->service->read($pole);
 
         return view('pole.show', compact('pole'));
     }
@@ -97,8 +94,6 @@ class PoleController extends Controller
     {
         //check access permission
         if (!Gate::allows('pole-update')) return response()->view('access.denied')->setStatusCode(401);
-
-        SgcLogger::writeLog(target: $pole);
 
         return view('pole.edit', compact('pole'));
     }

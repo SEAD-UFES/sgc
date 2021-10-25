@@ -6,7 +6,6 @@ use App\Models\Course;
 use App\Models\CourseType;
 use Illuminate\Http\Request;
 use App\Services\CourseService;
-use App\CustomClasses\SgcLogger;
 use Illuminate\Support\Facades\Gate;
 use App\CustomClasses\ModelFilterHelpers;
 use App\Http\Requests\StoreCourseRequest;
@@ -50,8 +49,6 @@ class CourseController extends Controller
 
         $courseTypes = CourseType::orderBy('name')->get();
 
-        SgcLogger::writeLog(target: 'Course');
-
         return view('course.create', compact('courseTypes'));
     }
 
@@ -82,7 +79,7 @@ class CourseController extends Controller
         //check access permission
         if (!Gate::allows('course-show')) return response()->view('access.denied')->setStatusCode(401);
 
-        SgcLogger::writeLog(target: $course);
+        $this->service->read($course);
 
         return view('course.show', compact('course'));
     }
@@ -97,8 +94,6 @@ class CourseController extends Controller
     {
         //check access permission
         if (!Gate::allows('course-update')) return response()->view('access.denied')->setStatusCode(401);
-
-        SgcLogger::writeLog(target: $course);
 
         $courseTypes = CourseType::orderBy('name')->get();
 

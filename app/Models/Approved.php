@@ -27,6 +27,11 @@ class Approved extends Model
         'approved_state_id', */
     ];
 
+    protected $observables = [
+        'listed',
+        'viewed',
+    ];
+
     public $sortable = [
         'id',
         'name',
@@ -71,5 +76,15 @@ class Approved extends Model
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function logListed()
+    {
+        $this->fireModelEvent('listed', false);
+    }
+
+    public function logViewed()
+    {
+        $this->fireModelEvent('viewed', false);
     }
 }

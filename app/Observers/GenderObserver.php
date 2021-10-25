@@ -15,7 +15,7 @@ class GenderObserver
      */
     public function created(Gender $gender)
     {
-        SgcLogger::writeLog(target: 'Gender', action: 'created', model: $gender);
+        SgcLogger::writeLog(target: 'Gender', action: __FUNCTION__, model: $gender);
     }
 
     /**
@@ -24,9 +24,20 @@ class GenderObserver
      * @param  \App\Models\Gender  $gender
      * @return void
      */
+    public function updating(Gender $gender)
+    {
+        SgcLogger::writeLog(target: 'Gender', action: __FUNCTION__, model: $gender);
+    }
+    
+    /**
+     * Handle the Gender "updated" event.
+     *
+     * @param  \App\Models\Gender  $gender
+     * @return void
+     */
     public function updated(Gender $gender)
     {
-        SgcLogger::writeLog(target: 'Gender', action: 'updated', model: $gender);
+        SgcLogger::writeLog(target: 'Gender', action: __FUNCTION__, model: $gender);
     }
 
     /**
@@ -37,7 +48,7 @@ class GenderObserver
      */
     public function deleted(Gender $gender)
     {
-        SgcLogger::writeLog(target: 'Gender', action: 'deleted', model: $gender);
+        SgcLogger::writeLog(target: 'Gender', action: __FUNCTION__, model: $gender);
     }
 
     /**
@@ -60,5 +71,15 @@ class GenderObserver
     public function forceDeleted(Gender $gender)
     {
         //
+    }
+
+    public function listed()
+    {
+        SgcLogger::writeLog(target: 'Gender', action: __FUNCTION__);
+    }
+
+    public function viewed(Gender $approved)
+    {
+        SgcLogger::writeLog(target: 'Gender', action: __FUNCTION__, model: $approved);
     }
 }

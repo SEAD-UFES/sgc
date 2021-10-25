@@ -15,7 +15,18 @@ class EmployeeObserver
      */
     public function created(Employee $employee)
     {
-        SgcLogger::writeLog(target: 'Employee', action: 'created', model: $employee);
+        SgcLogger::writeLog(target: 'Employee', action: __FUNCTION__, model: $employee);
+    }
+
+    /**
+     * Handle the Employee "updated" event.
+     *
+     * @param  \App\Models\Employee  $employee
+     * @return void
+     */
+    public function updating(Employee $employee)
+    {
+        SgcLogger::writeLog(target: 'Employee', action: __FUNCTION__, model: $employee);
     }
 
     /**
@@ -26,7 +37,7 @@ class EmployeeObserver
      */
     public function updated(Employee $employee)
     {
-        SgcLogger::writeLog(target: 'Employee', action: 'updated', model: $employee);
+        SgcLogger::writeLog(target: 'Employee', action: __FUNCTION__, model: $employee);
     }
 
     /**
@@ -37,7 +48,7 @@ class EmployeeObserver
      */
     public function deleted(Employee $employee)
     {
-        SgcLogger::writeLog(target: 'Employee', action: 'deleted', model: $employee);
+        SgcLogger::writeLog(target: 'Employee', action: __FUNCTION__, model: $employee);
     }
 
     /**
@@ -60,5 +71,15 @@ class EmployeeObserver
     public function forceDeleted(Employee $employee)
     {
         //
+    }
+
+    public function listed()
+    {
+        SgcLogger::writeLog(target: 'Employee', action: __FUNCTION__);
+    }
+
+    public function viewed(Employee $approved)
+    {
+        SgcLogger::writeLog(target: 'Employee', action: __FUNCTION__, model: $approved);
     }
 }

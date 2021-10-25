@@ -2,11 +2,12 @@
 
 namespace App\Notifications;
 
+use App\Models\Bond;
 use Illuminate\Bus\Queueable;
+use App\CustomClasses\SgcLogger;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
-use App\Models\Bond;
 
 class RequestReviewNotification extends Notification/* implements ShouldQueue */ //Queueing disabled while in development
 {
@@ -59,6 +60,8 @@ class RequestReviewNotification extends Notification/* implements ShouldQueue */
      */
     public function toArray($notifiable)
     {
+        SgcLogger::writeLog(target: 'RequestReviewNotification', model: $this->bond);
+
         return [
             'bond_id' => $this->bond->id,
             'course_name' => $this->bond->course->name,

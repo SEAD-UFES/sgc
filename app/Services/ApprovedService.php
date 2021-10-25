@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Approved;
 use App\Models\Employee;
-use App\CustomClasses\SgcLogger;
 use App\Imports\ApprovedsImport;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
@@ -23,7 +22,7 @@ class ApprovedService
      */
     public function list(): LengthAwarePaginator
     {
-        //SgcLogger::writeLog(target: 'Approved', action: 'index');
+        (new Approved)->logListed();
 
         $query = Approved::with(['approvedState', 'course', 'pole', 'role']);
         $query = $query->AcceptRequest(Approved::$accepted_filters)->filter();
@@ -32,6 +31,19 @@ class ApprovedService
         $approveds->withQueryString();
 
         return $approveds;
+    }
+
+    /**
+     * Undocumented function
+     * 
+     * @param Approved $approved
+     * @return Approved
+     */
+    public function read(Approved $approved): Approved
+    {
+        $approved->logViewed($approved);
+
+        return $approved;
     }
 
     /**
@@ -57,8 +69,6 @@ class ApprovedService
         $new_state_id = $attributes['states'];
         $approved->approved_state_id = $new_state_id;
 
-        //SgcLogger::writeLog(target: $approved, action: 'edit');
-
         $approved->save();
     }
 
@@ -79,8 +89,6 @@ class ApprovedService
         $employee->area_code = $approved->area_code;
         $employee->phone = $approved->phone;
         $employee->mobile = $approved->mobile;
-
-        //SgcLogger::writeLog(target: $approved, action: 'designate');
 
         //$this->delete($approved);
 
@@ -110,7 +118,6 @@ class ApprovedService
      */
     public function importApproveds(UploadedFile $file): Collection
     {
-        //SgcLogger::writeLog(target: 'Approved', action: 'import');
 
         $filePath = $this->getFilePath($file);
 
@@ -155,7 +162,6 @@ class ApprovedService
      */
     public function massStore(array $attributes): void
     {
-        //SgcLogger::writeLog(target: 'Mass Approveds', action: 'create');
 
         $attributes = collect($attributes);
 

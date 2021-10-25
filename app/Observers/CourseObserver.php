@@ -15,7 +15,18 @@ class CourseObserver
      */
     public function created(Course $course)
     {
-        SgcLogger::writeLog(target: 'Course', action: 'created', model: $course);
+        SgcLogger::writeLog(target: 'Course', action: __FUNCTION__, model: $course);
+    }
+
+    /**
+     * Handle the Course "updated" event.
+     *
+     * @param  \App\Models\Course  $course
+     * @return void
+     */
+    public function updating(Course $course)
+    {
+        SgcLogger::writeLog(target: 'Course', action: __FUNCTION__, model: $course);
     }
 
     /**
@@ -26,7 +37,7 @@ class CourseObserver
      */
     public function updated(Course $course)
     {
-        SgcLogger::writeLog(target: 'Course', action:'updated', model: $course);
+        SgcLogger::writeLog(target: 'Course', action: __FUNCTION__, model: $course);
     }
 
     /**
@@ -37,7 +48,7 @@ class CourseObserver
      */
     public function deleted(Course $course)
     {
-        SgcLogger::writeLog(target: 'Course', action:'deleted', model: $course);
+        SgcLogger::writeLog(target: 'Course', action: __FUNCTION__, model: $course);
     }
 
     /**
@@ -60,5 +71,15 @@ class CourseObserver
     public function forceDeleted(Course $course)
     {
         //
+    }
+
+    public function listed()
+    {
+        SgcLogger::writeLog(target: 'Course', action: __FUNCTION__);
+    }
+
+    public function viewed(Course $approved)
+    {
+        SgcLogger::writeLog(target: 'Course', action: __FUNCTION__, model: $approved);
     }
 }

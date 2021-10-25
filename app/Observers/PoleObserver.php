@@ -15,7 +15,18 @@ class PoleObserver
      */
     public function created(Pole $pole)
     {
-        SgcLogger::writeLog(target: 'Pole', action: 'created', model: $pole);
+        SgcLogger::writeLog(target: 'Pole', action: __FUNCTION__, model: $pole);
+    }
+
+    /**
+     * Handle the Pole "updated" event.
+     *
+     * @param  \App\Models\Pole  $pole
+     * @return void
+     */
+    public function updating(Pole $pole)
+    {
+        SgcLogger::writeLog(target: 'Pole', action: __FUNCTION__, model: $pole);
     }
 
     /**
@@ -26,7 +37,7 @@ class PoleObserver
      */
     public function updated(Pole $pole)
     {
-        SgcLogger::writeLog(target: 'Pole', action: 'updated', model: $pole);
+        SgcLogger::writeLog(target: 'Pole', action: __FUNCTION__, model: $pole);
     }
 
     /**
@@ -37,7 +48,7 @@ class PoleObserver
      */
     public function deleted(Pole $pole)
     {
-        SgcLogger::writeLog(target: 'Pole', action: 'deleted', model: $pole);
+        SgcLogger::writeLog(target: 'Pole', action: __FUNCTION__, model: $pole);
     }
 
     /**
@@ -60,5 +71,15 @@ class PoleObserver
     public function forceDeleted(Pole $pole)
     {
         //
+    }
+
+    public function listed()
+    {
+        SgcLogger::writeLog(target: 'Pole', action: __FUNCTION__);
+    }
+
+    public function viewed(Pole $pole)
+    {
+        SgcLogger::writeLog(target: 'Pole', action: __FUNCTION__, model: $pole);
     }
 }

@@ -2,13 +2,14 @@
 
 namespace App\Notifications;
 
+use App\Models\Bond;
+use App\Models\BondDocument;
+use App\Models\DocumentType;
 use Illuminate\Bus\Queueable;
+use App\CustomClasses\SgcLogger;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
-use App\Models\Bond;
-use App\Models\DocumentType;
-use App\Models\BondDocument;
 
 class NewRightsNotification extends Notification/* implements ShouldQueue */ //Queueing disabled while in development
 {
@@ -63,6 +64,8 @@ class NewRightsNotification extends Notification/* implements ShouldQueue */ //Q
      */
     public function toArray($notifiable)
     {
+        SgcLogger::writeLog(target: 'NewRightsNotification', model: $this->bond);
+
         return [
             'bond_id' => $this->bond->id,
             'course_name' => $this->bond->course->name,

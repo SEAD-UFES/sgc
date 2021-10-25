@@ -15,7 +15,18 @@ class CourseTypeObserver
      */
     public function created(CourseType $courseType)
     {
-        SgcLogger::writeLog(target: 'CourseType', action: 'created', model: $courseType);
+        SgcLogger::writeLog(target: 'CourseType', action: __FUNCTION__, model: $courseType);
+    }
+
+    /**
+     * Handle the CourseType "updated" event.
+     *
+     * @param  \App\Models\CourseType  $courseType
+     * @return void
+     */
+    public function updating(CourseType $courseType)
+    {
+        SgcLogger::writeLog(target: 'CourseType', action: __FUNCTION__, model: $courseType);
     }
 
     /**
@@ -26,7 +37,7 @@ class CourseTypeObserver
      */
     public function updated(CourseType $courseType)
     {
-        SgcLogger::writeLog(target: 'CourseType', action: 'updated', model: $courseType);
+        SgcLogger::writeLog(target: 'CourseType', action: __FUNCTION__, model: $courseType);
     }
 
     /**
@@ -37,7 +48,7 @@ class CourseTypeObserver
      */
     public function deleted(CourseType $courseType)
     {
-        SgcLogger::writeLog(target: 'CourseType', action: 'deleted', model: $courseType);
+        SgcLogger::writeLog(target: 'CourseType', action: __FUNCTION__, model: $courseType);
     }
 
     /**
@@ -60,5 +71,15 @@ class CourseTypeObserver
     public function forceDeleted(CourseType $courseType)
     {
         //
+    }
+
+    public function listed()
+    {
+        SgcLogger::writeLog(target: 'CourseType', action: __FUNCTION__);
+    }
+
+    public function viewed(CourseType $approved)
+    {
+        SgcLogger::writeLog(target: 'CourseType', action: __FUNCTION__, model: $approved);
     }
 }

@@ -16,7 +16,18 @@ class UserTypeObserver
      */
     public function created(UserType $userType)
     {
-        SgcLogger::writeLog(target: 'UserType', action: 'created', model: $userType);
+        SgcLogger::writeLog(target: 'UserType', action: __FUNCTION__, model: $userType);
+    }
+
+    /**
+     * Handle the UserType "updated" event.
+     *
+     * @param  \App\Models\UserType  $userType
+     * @return void
+     */
+    public function updating(UserType $userType)
+    {
+        SgcLogger::writeLog(target: 'UserType', action: __FUNCTION__, model: $userType);
     }
 
     /**
@@ -27,7 +38,7 @@ class UserTypeObserver
      */
     public function updated(UserType $userType)
     {
-        SgcLogger::writeLog(target: 'UserType', action: 'updated', model: $userType);
+        SgcLogger::writeLog(target: 'UserType', action: __FUNCTION__, model: $userType);
     }
 
     /**
@@ -38,7 +49,7 @@ class UserTypeObserver
      */
     public function deleted(UserType $userType)
     {
-        SgcLogger::writeLog(target: 'UserType', action: 'deleted', model: $userType);
+        SgcLogger::writeLog(target: 'UserType', action: __FUNCTION__, model: $userType);
     }
 
     /**
@@ -61,5 +72,15 @@ class UserTypeObserver
     public function forceDeleted(UserType $userType)
     {
         //
+    }
+
+    public function listed()
+    {
+        SgcLogger::writeLog(target: 'UserType', action: __FUNCTION__);
+    }
+
+    public function viewed(UserType $approved)
+    {
+        SgcLogger::writeLog(target: 'UserType', action: __FUNCTION__, model: $approved);
     }
 }

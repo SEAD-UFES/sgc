@@ -24,6 +24,11 @@ class CourseType extends Model
         'description',
     ];
 
+    protected $observables = [
+        'listed',
+        'viewed',
+    ];
+
     public $sortable = [
         'id',
         'name',
@@ -41,5 +46,15 @@ class CourseType extends Model
     public function courses()
     {
         return $this->hasMany(Course::class);
+    }
+
+    public function logListed()
+    {
+        $this->fireModelEvent('listed', false);
+    }
+
+    public function logViewed()
+    {
+        $this->fireModelEvent('viewed', false);
     }
 }

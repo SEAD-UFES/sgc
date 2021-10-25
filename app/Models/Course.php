@@ -22,6 +22,11 @@ class Course extends Model
         'end',
     ];
 
+    protected $observables = [
+        'listed',
+        'viewed',
+    ];
+
     public $sortable = [
         'id',
         'name',
@@ -62,5 +67,15 @@ class Course extends Model
     public function approveds()
     {
         return $this->hasMany(Approved::class);
+    }
+
+    public function logListed()
+    {
+        $this->fireModelEvent('listed', false);
+    }
+
+    public function logViewed()
+    {
+        $this->fireModelEvent('viewed', false);
     }
 }

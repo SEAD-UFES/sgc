@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Pole;
-use App\CustomClasses\SgcLogger;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class PoleService
@@ -15,8 +14,8 @@ class PoleService
      */
     public function list(): LengthAwarePaginator
     {
-        //SgcLogger::writeLog(target: 'Pole', action: 'index');
-
+        (new Pole)->logListed();
+        
         $poles_query = new Pole();
         $poles_query = $poles_query->AcceptRequest(Pole::$accepted_filters)->filter();
         $poles_query = $poles_query->sortable(['name' => 'asc']);
@@ -35,6 +34,19 @@ class PoleService
     public function create(array $attributes): Pole
     {
         $pole = Pole::create($attributes);
+
+        return $pole;
+    }
+
+    /**
+     * Undocumented function
+     * 
+     * @param Pole $pole
+     * @return Pole
+     */
+    public function read(Pole $pole): Pole
+    {
+        $pole->logViewed($pole);
 
         return $pole;
     }

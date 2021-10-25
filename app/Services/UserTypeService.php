@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\UserType;
-use App\CustomClasses\SgcLogger;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -16,7 +15,7 @@ class UserTypeService
      */
     public function list(): Collection
     {
-        //SgcLogger::writeLog(target: 'UserType', action: 'index');
+        (new UserType)->logListed();
 
         $userTypes = UserType::orderBy('name')->get();
 

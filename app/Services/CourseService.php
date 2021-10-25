@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Course;
-use App\CustomClasses\SgcLogger;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -16,7 +15,7 @@ class CourseService
      */
     public function list(): LengthAwarePaginator
     {
-        //SgcLogger::writeLog(target: 'Course', action: 'index');
+        (new Course)->logListed();
 
         $query = new Course();
         $query = $query->AcceptRequest(Course::$accepted_filters)->filter();
@@ -36,6 +35,19 @@ class CourseService
     public function create(array $attributes): Course
     {
         $course = Course::create($attributes);
+
+        return $course;
+    }
+
+    /**
+     * Undocumented function
+     * 
+     * @param Course $course
+     * @return Course
+     */
+    public function read(Course $course): Course
+    {
+        $course->logViewed($course);
 
         return $course;
     }

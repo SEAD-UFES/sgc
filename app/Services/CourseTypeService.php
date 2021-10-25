@@ -3,14 +3,13 @@
 namespace App\Services;
 
 use App\Models\CourseType;
-use App\CustomClasses\SgcLogger;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class CourseTypeService
 {
     public function list(): LengthAwarePaginator
     {
-        //SgcLogger::writeLog(target: 'CourseType', action: 'index');
+        (new CourseType)->logListed();
 
         $query = new CourseType();
         $query = $query->AcceptRequest(CourseType::$accepted_filters)->filter();

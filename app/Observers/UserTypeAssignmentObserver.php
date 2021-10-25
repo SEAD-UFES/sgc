@@ -15,7 +15,18 @@ class UserTypeAssignmentObserver
      */
     public function created(UserTypeAssignment $userTypeAssignment)
     {
-        SgcLogger::writeLog(target: 'UserTypeAssignment', action: 'created', model: $userTypeAssignment);
+        SgcLogger::writeLog(target: 'UserTypeAssignment', action: __FUNCTION__, model: $userTypeAssignment);
+    }
+
+    /**
+     * Handle the UserTypeAssignment "updated" event.
+     *
+     * @param  \App\Models\UserTypeAssignment  $userTypeAssignment
+     * @return void
+     */
+    public function updating(UserTypeAssignment $userTypeAssignment)
+    {
+        SgcLogger::writeLog(target: 'UserTypeAssignment', action: __FUNCTION__, model: $userTypeAssignment);
     }
 
     /**
@@ -26,7 +37,7 @@ class UserTypeAssignmentObserver
      */
     public function updated(UserTypeAssignment $userTypeAssignment)
     {
-        SgcLogger::writeLog(target: 'UserTypeAssignment', action: 'updated', model: $userTypeAssignment);
+        SgcLogger::writeLog(target: 'UserTypeAssignment', action: __FUNCTION__, model: $userTypeAssignment);
     }
 
     /**
@@ -37,7 +48,7 @@ class UserTypeAssignmentObserver
      */
     public function deleted(UserTypeAssignment $userTypeAssignment)
     {
-        SgcLogger::writeLog(target: 'UserTypeAssignment', action: 'deleted', model: $userTypeAssignment);
+        SgcLogger::writeLog(target: 'UserTypeAssignment', action: __FUNCTION__, model: $userTypeAssignment);
     }
 
     /**
@@ -60,5 +71,15 @@ class UserTypeAssignmentObserver
     public function forceDeleted(UserTypeAssignment $userTypeAssignment)
     {
         //
+    }
+
+    public function listed()
+    {
+        SgcLogger::writeLog(target: 'UserTypeAssignment', action: __FUNCTION__);
+    }
+
+    public function viewed(UserTypeAssignment $approved)
+    {
+        SgcLogger::writeLog(target: 'UserTypeAssignment', action: __FUNCTION__, model: $approved);
     }
 }

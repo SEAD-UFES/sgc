@@ -15,7 +15,18 @@ class ApprovedStateObserver
      */
     public function created(ApprovedState $approvedState)
     {
-        SgcLogger::writeLog(target: 'ApprovedState', action: 'created', model: $approvedState);
+        SgcLogger::writeLog(target: 'ApprovedState', action: __FUNCTION__, model: $approvedState);
+    }
+
+    /**
+     * Handle the ApprovedState "updated" event.
+     *
+     * @param  \App\Models\ApprovedState  $approvedState
+     * @return void
+     */
+    public function updating(ApprovedState $approvedState)
+    {
+        SgcLogger::writeLog(target: 'ApprovedState', action: __FUNCTION__, model: $approvedState);
     }
 
     /**
@@ -26,7 +37,7 @@ class ApprovedStateObserver
      */
     public function updated(ApprovedState $approvedState)
     {
-        SgcLogger::writeLog(target: 'ApprovedState', action: 'updated', model: $approvedState);
+        SgcLogger::writeLog(target: 'ApprovedState', action: __FUNCTION__, model: $approvedState);
     }
 
     /**
@@ -37,7 +48,7 @@ class ApprovedStateObserver
      */
     public function deleted(ApprovedState $approvedState)
     {
-        SgcLogger::writeLog(target: 'ApprovedState', action: 'deleted', model: $approvedState);
+        SgcLogger::writeLog(target: 'ApprovedState', action: __FUNCTION__, model: $approvedState);
     }
 
     /**
@@ -60,5 +71,15 @@ class ApprovedStateObserver
     public function forceDeleted(ApprovedState $approvedState)
     {
         //
+    }
+
+    public function listed()
+    {
+        SgcLogger::writeLog(target: 'ApprovedState', action: __FUNCTION__);
+    }
+
+    public function viewed(ApprovedState $approvedState)
+    {
+        SgcLogger::writeLog(target: 'ApprovedState', action: __FUNCTION__, model: $approvedState);
     }
 }

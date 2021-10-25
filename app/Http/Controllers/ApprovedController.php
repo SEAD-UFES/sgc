@@ -12,7 +12,6 @@ use App\Models\DocumentType;
 use Illuminate\Http\Request;
 use App\Models\ApprovedState;
 use App\Models\MaritalStatus;
-use App\CustomClasses\SgcLogger;
 use App\Services\ApprovedService;
 use Illuminate\Support\Facades\Gate;
 use App\CustomClasses\ModelFilterHelpers;
@@ -57,9 +56,6 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (!Gate::allows('approved-store')) return response()->view('access.denied')->setStatusCode(401);
-
-        //write on log
-        SgcLogger::writeLog(target: 'Approved');
 
         return view('approved.create');
     }

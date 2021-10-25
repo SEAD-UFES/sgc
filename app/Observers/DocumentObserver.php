@@ -15,7 +15,7 @@ class DocumentObserver
      */
     public function created(Document $document)
     {
-        SgcLogger::writeLog(target: 'Document', action: 'created', model: $document);
+        SgcLogger::writeLog(target: 'Document', action: __FUNCTION__, model: $document);
     }
 
     /**
@@ -24,9 +24,19 @@ class DocumentObserver
      * @param  \App\Models\Document  $document
      * @return void
      */
+    public function updating(Document $document)
+    {
+        SgcLogger::writeLog(target: 'Document', action: __FUNCTION__, model: $document);
+    }
+    /**
+     * Handle the Document "updated" event.
+     *
+     * @param  \App\Models\Document  $document
+     * @return void
+     */
     public function updated(Document $document)
     {
-        SgcLogger::writeLog(target: 'Document', action: 'updated', model: $document);
+        SgcLogger::writeLog(target: 'Document', action: __FUNCTION__, model: $document);
     }
 
     /**
@@ -37,7 +47,7 @@ class DocumentObserver
      */
     public function deleted(Document $document)
     {
-        SgcLogger::writeLog(target: 'Document', action: 'deleted', model: $document);
+        SgcLogger::writeLog(target: 'Document', action: __FUNCTION__, model: $document);
     }
 
     /**
@@ -60,5 +70,15 @@ class DocumentObserver
     public function forceDeleted(Document $document)
     {
         //
+    }
+
+    public function listed()
+    {
+        SgcLogger::writeLog(target: 'Document', action: __FUNCTION__);
+    }
+
+    public function viewed(Document $document)
+    {
+        SgcLogger::writeLog(target: class_basename($document->documentable_type), action: __FUNCTION__, model: $document);
     }
 }

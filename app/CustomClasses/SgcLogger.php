@@ -63,7 +63,7 @@ class SgcLogger
         }
 
         if ($model) {
-            $logText .= "|\tmodel-before-change: " . self::getCurrentModelData($model);
+            $logText .= "|\tmodel: " . self::getCurrentModelData($model);
         }
 
         switch ($severity) {
@@ -171,6 +171,7 @@ class SgcLogger
             'authenticate' => 'info',
             'logout' => 'info',
             'index' => 'info',
+            'listed' => 'info',
             'create' => 'info',
             'created' => 'info',
             'designate' => 'info',
@@ -178,16 +179,20 @@ class SgcLogger
             'store' => 'notice',
             'Updated existent Employee info on User' => 'warning',
             'updated user' => 'notice',
+            'retrieved' => 'info',
             'show' => 'info',
+            'viewed' => 'info',
             'edit' => 'info',
             'review' => 'info',
             'request review' => 'info',
+            'updating' => 'notice',
             'update' => 'notice',
             'updated' => 'notice',
             'getAllDocumentsOfBond' => 'notice',
             'getAllDocumentsOfEmployee' => 'notice',
             'destroy' => 'warning',
             'deleted' => 'warning',
+            'dismiss' => 'notice',
         ]);
 
         return $severityMapping->get($severityKey);

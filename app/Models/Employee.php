@@ -44,6 +44,11 @@ class Employee extends Model
         'email',
     ];
 
+    protected $observables = [
+        'listed',
+        'viewed',
+    ];
+
     public $sortable = [
         'id',
         'cpf',
@@ -133,5 +138,15 @@ class Employee extends Model
                 $isCoord = $isCoord || (substr($bonded_course->bond->role->name, 0, 20) == 'Coordenador de curso');
 
         return $isCoord;
+    }
+
+    public function logListed()
+    {
+        $this->fireModelEvent('listed', false);
+    }
+
+    public function logViewed()
+    {
+        $this->fireModelEvent('viewed', false);
     }
 }

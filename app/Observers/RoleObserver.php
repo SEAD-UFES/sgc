@@ -15,7 +15,18 @@ class RoleObserver
      */
     public function created(Role $role)
     {
-        SgcLogger::writeLog(target: 'Role', action: 'created', model: $role);
+        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model: $role);
+    }
+
+    /**
+     * Handle the Role "updated" event.
+     *
+     * @param  \App\Models\Role  $role
+     * @return void
+     */
+    public function updating(Role $role)
+    {
+        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model: $role);
     }
 
     /**
@@ -26,7 +37,7 @@ class RoleObserver
      */
     public function updated(Role $role)
     {
-        SgcLogger::writeLog(target: 'Role', action: 'updated', model: $role);
+        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model: $role);
     }
 
     /**
@@ -37,7 +48,7 @@ class RoleObserver
      */
     public function deleted(Role $role)
     {
-        SgcLogger::writeLog(target: 'Role', action: 'deleted', model: $role);
+        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model: $role);
     }
 
     /**
@@ -60,5 +71,15 @@ class RoleObserver
     public function forceDeleted(Role $role)
     {
         //
+    }
+
+    public function listed()
+    {
+        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__);
+    }
+
+    public function viewed(Role $approved)
+    {
+        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model: $approved);
     }
 }

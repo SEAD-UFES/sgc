@@ -15,7 +15,18 @@ class StateObserver
      */
     public function created(State $state)
     {
-        SgcLogger::writeLog(target: 'State', action: 'created', model: $state);
+        SgcLogger::writeLog(target: 'State', action: __FUNCTION__, model: $state);
+    }
+
+    /**
+     * Handle the State "updated" event.
+     *
+     * @param  \App\Models\State  $state
+     * @return void
+     */
+    public function updating(State $state)
+    {
+        SgcLogger::writeLog(target: 'State', action: __FUNCTION__, model: $state);
     }
 
     /**
@@ -26,7 +37,7 @@ class StateObserver
      */
     public function updated(State $state)
     {
-        SgcLogger::writeLog(target: 'State', action: 'updated', model: $state);
+        SgcLogger::writeLog(target: 'State', action: __FUNCTION__, model: $state);
     }
 
     /**
@@ -37,7 +48,7 @@ class StateObserver
      */
     public function deleted(State $state)
     {
-        SgcLogger::writeLog(target: 'State', action: 'deleted', model: $state);
+        SgcLogger::writeLog(target: 'State', action: __FUNCTION__, model: $state);
     }
 
     /**
@@ -60,5 +71,15 @@ class StateObserver
     public function forceDeleted(State $state)
     {
         //
+    }
+
+    public function listed()
+    {
+        SgcLogger::writeLog(target: 'State', action: __FUNCTION__);
+    }
+
+    public function viewed(State $approved)
+    {
+        SgcLogger::writeLog(target: 'State', action: __FUNCTION__, model: $approved);
     }
 }

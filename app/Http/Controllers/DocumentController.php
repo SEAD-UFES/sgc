@@ -7,7 +7,6 @@ use App\Models\Employee;
 use App\Models\BondDocument;
 use App\Models\DocumentType;
 use Illuminate\Http\Request;
-use App\CustomClasses\SgcLogger;
 use App\Models\EmployeeDocument;
 use App\Services\DocumentService;
 use Illuminate\Support\Facades\Gate;
@@ -92,8 +91,6 @@ class DocumentController extends Controller
         $documentTypes = DocumentType::orderBy('name')->get();
         $employees = Employee::all();
 
-        SgcLogger::writeLog(target: 'employeeDocument', action: 'create');
-
         return view('employee.document.create', compact('documentTypes', 'employees'));
     }
 
@@ -109,8 +106,6 @@ class DocumentController extends Controller
 
         $documentTypes = DocumentType::orderBy('name')->get();
         $bonds = Bond::all();
-
-        SgcLogger::writeLog(target: 'bondsDocument', action: 'create');
 
         return view('bond.document.create', compact('documentTypes', 'bonds'));
     }
@@ -164,8 +159,6 @@ class DocumentController extends Controller
             ? Employee::where('id', $id)->get()
             : Employee::orderBy('name')->get();
 
-        SgcLogger::writeLog(target: 'employeesDocument', action: 'create');
-
         return view('employee.document.create-many-1', compact('employees', 'id'));
     }
 
@@ -180,8 +173,6 @@ class DocumentController extends Controller
             : Bond::with(['employee' => function ($q) {
                 return $q->orderBy('name');
             }])->get();
-
-        SgcLogger::writeLog(target: 'bondsDocument', action: 'create');
 
         return view('bond.document.create-many-1', compact('bonds', 'id'));
     }

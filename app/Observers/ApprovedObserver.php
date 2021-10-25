@@ -15,7 +15,18 @@ class ApprovedObserver
      */
     public function created(Approved $approved)
     {
-        SgcLogger::writeLog(target:'Approved', action:'created', model: $approved);
+        SgcLogger::writeLog(target:'Approved', action: __FUNCTION__, model: $approved);
+    }
+
+    /**
+     * Handle the Approved "updated" event.
+     *
+     * @param  \App\Models\Approved  $approved
+     * @return void
+     */
+    public function updating(Approved $approved)
+    {
+        SgcLogger::writeLog(target:'Approved', action: __FUNCTION__, model: $approved);
     }
 
     /**
@@ -26,7 +37,7 @@ class ApprovedObserver
      */
     public function updated(Approved $approved)
     {
-        SgcLogger::writeLog(target:'Approved', action:'updated', model: $approved);
+        SgcLogger::writeLog(target:'Approved', action: __FUNCTION__, model: $approved);
     }
 
     /**
@@ -37,7 +48,7 @@ class ApprovedObserver
      */
     public function deleted(Approved $approved)
     {
-        SgcLogger::writeLog(target:'Approved', action:'deleted', model: $approved);
+        SgcLogger::writeLog(target:'Approved', action: __FUNCTION__, model: $approved);
     }
 
     /**
@@ -60,5 +71,15 @@ class ApprovedObserver
     public function forceDeleted(Approved $approved)
     {
         //
+    }
+
+    public function listed()
+    {
+        SgcLogger::writeLog(target: 'Approved', action: __FUNCTION__);
+    }
+
+    public function viewed(Approved $approved)
+    {
+        SgcLogger::writeLog(target: 'Approved', action: __FUNCTION__, model: $approved);
     }
 }

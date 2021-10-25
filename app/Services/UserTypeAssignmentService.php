@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\CustomClasses\SgcLogger;
 use App\Models\UserTypeAssignment;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -15,7 +14,7 @@ class UserTypeAssignmentService
      */
     public function list(): LengthAwarePaginator
     {
-        //SgcLogger::writeLog(target: 'userTypeAssignment', action: 'index');
+        (new UserTypeAssignment)->logListed();
 
         $query = new UserTypeAssignment();
         $query = $query->AcceptRequest(UserTypeAssignment::$accepted_filters)->filter();
@@ -35,6 +34,19 @@ class UserTypeAssignmentService
     public function create(array $attributes): UserTypeAssignment
     {
         $userTypeAssignment = UserTypeAssignment::create($attributes);
+
+        return $userTypeAssignment;
+    }
+
+    /**
+     * Undocumented function
+     * 
+     * @param UserTypeAssignment $user
+     * @return UserTypeAssignment
+     */
+    public function read(UserTypeAssignment $userTypeAssignment): UserTypeAssignment
+    {
+        $userTypeAssignment->logViewed($userTypeAssignment);
 
         return $userTypeAssignment;
     }

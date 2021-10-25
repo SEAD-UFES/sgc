@@ -35,6 +35,11 @@ class Bond extends Pivot
         'uaba_checked_at',
     ];
 
+    protected $observables = [
+        'listed',
+        'viewed',
+    ];
+
     public $sortable = [
         'id',
         'begin',
@@ -102,5 +107,15 @@ class Bond extends Pivot
                         ]);
                 }
             );
+    }
+
+    public function logListed()
+    {
+        $this->fireModelEvent('listed', false);
+    }
+
+    public function logViewed()
+    {
+        $this->fireModelEvent('viewed', false);
     }
 }

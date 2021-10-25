@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Models\UserType;
 use Illuminate\Http\Request;
 use App\Services\UserService;
-use App\CustomClasses\SgcLogger;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -49,8 +48,6 @@ class UserController extends Controller
 
         $userTypes = UserType::orderBy('name')->get();
 
-        SgcLogger::writeLog(target: 'User');
-
         return view('user.create', compact('userTypes'));
     }
 
@@ -85,7 +82,7 @@ class UserController extends Controller
         //check access permission
         if (!Gate::allows('user-show')) return response()->view('access.denied')->setStatusCode(401);
 
-        SgcLogger::writeLog(target: $user);
+        $this->service->read($user);
 
         return view('user.show', compact('user'));
     }
@@ -100,8 +97,6 @@ class UserController extends Controller
     {
         //check access permission
         if (!Gate::allows('user-update')) return response()->view('access.denied')->setStatusCode(401);
-
-        SgcLogger::writeLog(target: $user);
 
         return view('user.edit', compact('user'));
     }
