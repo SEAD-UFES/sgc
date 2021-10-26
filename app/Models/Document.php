@@ -59,6 +59,45 @@ class Document extends Model
         return $this->morphTo();
     }
 
+    public static function employeeDocumentsByEmployeeId($employeeId)
+    {
+        return Document::whereHasMorph('documentable', 'App\Models\EmployeeDocument', function ($query) use ($employeeId) {
+            $query->where('employee_documents.employee_id', $employeeId);
+        });
+    }
+
+    public static function bondDocumentsByBondId($bondId)
+    {
+        return Document::whereHasMorph('documentable', 'App\Models\BondDocument', function ($query) use ($bondId) {
+            $query->where('bond_documents.bond_id', $bondId);
+        });
+    }
+
+    public static function rightsDocumentsByBondId($bondId)
+    {
+        $documentType = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
+
+        return Document::where('documents.document_type_id', $documentType->id)
+            ->whereHasMorph('documentable', 'App\Models\BondDocument', function ($query) use ($bondId) {
+                $query->where('bond_documents.bond_id', $bondId);
+            });
+    }
+
+    public static function rightsWithBond()
+    {
+        $documentType = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
+
+        /* return Document::where('documents.document_type_id', $documentType->id)
+            ->whereHasMorph('documentable', 'App\Models\BondDocument')->with('documentable.bond'); */
+
+        return Document::where('documents.document_type_id', $documentType->id)
+            ->whereHasMorph('documentable', 'App\Models\BondDocument', function ($query) {
+                $query->whereHas('bond', function ($bondQuery) {
+                    $bondQuery->whereNotNull('uaba_checked_at')->where('impediment', false);
+                });
+            })->with('documentable.bond');
+    }
+
     public function logListed()
     {
         $this->fireModelEvent('listed', false);
@@ -68,11 +107,6 @@ class Document extends Model
     {
         $this->fireModelEvent('viewed', false);
     }
-
-    /* public function bond()
-    {
-        return $this->belongsTo(Bond::class, 'bond_id');
-    } */
 
     //metodo de ordenação para (bond->employee->name) no sortable
     /* public function bondEmployeeNameSortable($query, $direction)

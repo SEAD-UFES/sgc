@@ -3,7 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\Bond;
-use App\Models\BondDocument;
+use App\Models\Document;
 use App\Models\DocumentType;
 use Illuminate\Bus\Queueable;
 use App\CustomClasses\SgcLogger;
@@ -28,7 +28,9 @@ class NewRightsNotification extends Notification/* implements ShouldQueue */ //Q
         $this->bond = Bond::with(['course', 'employee', 'role', 'bondDocuments'])->find($bond->id);
 
         $type = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
-        $this->document = BondDocument::where('document_type_id', $type->id)->where('bond_id', $this->bond->id)->first();
+        $this->document = Document::where('document_type_id', $type->id)->whereHasMorph('documentable', 'App\Models\BondDocument', function ($query) {
+            $query->where('bond_id', $this->bond->id);
+        })->first();
     }
 
     /**

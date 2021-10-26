@@ -101,7 +101,7 @@ class BondController extends Controller
 
         $documents = Document::whereHasMorph('documentable', BondDocument::class, function ($query) use ($bond) {
             $query->where('bond_id', $bond->id);
-        })->with('documentable')->get()/* ->sortByDesc('documentable.updated_at') */;
+        })->with('documentable')->orderBy('updated_at', 'desc')->get();
 
         return view('bond.show', compact(['bond', 'documents']));
     }

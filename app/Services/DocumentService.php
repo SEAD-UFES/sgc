@@ -46,12 +46,7 @@ class DocumentService
     {
         (new Document)->logListed();
 
-        $documentType = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
-        $documentsQuery = BondDocument::with('bond')
-            ->where('bond_documents.document_type_id', $documentType->id)
-            ->whereHas('bond', function ($bondQuery) {
-                $bondQuery->whereNotNull('uaba_checked_at')->where('impediment', false);
-            });
+        $documentsQuery = Document::rightsWithBond();
 
         $documentsQuery = $documentsQuery->AcceptRequest(BondDocument::$accepted_filters)->filter();
         $documentsQuery = $documentsQuery->sortable(['updated_at' => 'desc']);

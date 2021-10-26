@@ -24,7 +24,14 @@ class ReviewBondRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'impediment' => 'sometimes',
+            'impediment_description' => 'sometimes',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
         ];
     }
 }

@@ -149,7 +149,7 @@
                                                 <label for="impedimentDescription" class="form-label">Motivo do
                                                     impedimento:</label><br />
                                                 <textarea class="form-control" id="impedimentDescription"
-                                                    name="impedimentDescription"
+                                                    name="impediment_description"
                                                     rows="4">{{ $bond->impediment_description ?? '' }}</textarea>
                                                 <script>
                                                     if ({{ $bond->impediment }} == '0')

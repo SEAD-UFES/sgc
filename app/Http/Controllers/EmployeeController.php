@@ -96,7 +96,7 @@ class EmployeeController extends Controller
 
         $this->service->read($employee);
 
-        $employeeDocuments = EmployeeDocument::where('employee_id', $employee->id)->with('document')->get()->sortByDesc('document.updated_at');
+        $employeeDocuments = EmployeeDocument::where('employee_id', $employee->id)->with('document')->orderBy('updated_at', 'desc')->get();
 
         return view('employee.show', compact(['employee', 'employeeDocuments']));
     }

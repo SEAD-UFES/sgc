@@ -50,7 +50,7 @@ class BondService
         $attributes['impediment'] = true;
         $attributes['impediment_description'] = 'Vínculo ainda não revisado';
         $attributes['uaba_checked_at'] = null;
-        
+
         $bond = Bond::create($attributes);
 
         DB::transaction(function () use ($bond) {
@@ -61,7 +61,7 @@ class BondService
                 $bondDocument = new BondDocument();
                 $bondDocument->bond_id = $bond->id;
                 $bondDocument->save();
-                
+
                 $newDocument = new Document();
                 $newDocument->original_name = $employeeDocument->document->original_name;
                 $newDocument->file_data = $employeeDocument->document->file_data;
@@ -136,16 +136,21 @@ class BondService
     public function review(array $attributes, Bond $bond): Bond
     {
         //get impediment; check if bond have 'termo'; if not, impediment = true.
-        $bond->impediment = isset($attributes['impediment']);
+        $attributes['impediment'] = $attributes['impediment'] == '1';
+        //$bond->impediment_description = $attributes['impediment_description'];
+        $attributes['uaba_checked_at'] = now();
 
         $termo_document_type_id = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first()->id;
-        $termo_document_count = BondDocument::where('document_type_id', $termo_document_type_id)->where('bond_id', $bond->id)->get()->count();
-        if ($termo_document_count <= 0) $bond->impediment = true;
+        $termo_document_count = Document::where('document_type_id', $termo_document_type_id)
+            ->whereHasMorph('documentable', 'App\Models\BondDocument', function ($query) use ($bond) {
+                $query->where('bond_id', $bond->id);
+            })->get()->count();
 
-        $bond->impediment_description = $attributes['impedimentDescription'];
-        $bond->uaba_checked_at = now();
+        if ($termo_document_count <= 0)
+            $attributes['impediment'] = true;
 
-        $bond->save();
+
+        $bond->update($attributes);
 
         if ($bond->impediment == true) {
             $sec_UT = UserType::firstWhere('acronym', 'sec');

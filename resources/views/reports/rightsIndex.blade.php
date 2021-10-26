@@ -42,10 +42,10 @@
                             <tbody>
                                 @foreach ($documents as $document)
                                     <tr>
-                                        <td>{{ $document->bond->employee->name }}</td>
-                                        <td>{{ $document->bond->role->name }}</td>
-                                        <td>{{ $document->bond->course->name }}</td>
-                                        <td>{{ $document->bond->pole->name }}</td>
+                                        <td>{{ $document->documentable->bond->employee->name }}</td>
+                                        <td>{{ $document->documentable->bond->role->name }}</td>
+                                        <td>{{ $document->documentable->bond->course->name }}</td>
+                                        <td>{{ $document->documentable->bond->pole->name }}</td>
                                         <td><a href={{ route('documents.show', ['id' => $document->id, 'type' => 'BondDocument', 'htmlTitle' => $document->original_name]) }}
                                                 target="_blank">{{ $document->original_name }}</a></td>
                                     </tr>
