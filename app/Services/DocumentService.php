@@ -7,7 +7,6 @@ use App\Models\Bond;
 use App\Models\Document;
 use App\Models\Employee;
 use App\Models\BondDocument;
-use App\Models\DocumentType;
 use App\CustomClasses\SgcLogger;
 use App\Models\EmployeeDocument;
 use Illuminate\Http\UploadedFile;
@@ -67,15 +66,15 @@ class DocumentService
         $attributes['original_name'] = isset($attributes['file']) ? $attributes['file']->getClientOriginalName() : null;
         //$attributes['document_type_id'];
         $attributes['file_data'] = isset($attributes['file']) ? $this->getFileData($attributes['file']) : null;
-        
+
         $attributes['documentable_type'] = $this->documentClass;
-        
+
         DB::transaction(function () use ($attributes) {
-            
+
             $attributes['documentable_id'] = $this->documentClass::create([
                 $this->documentClass::REFERENT_ID => $attributes[$this->documentClass::REFERENT_ID]
             ])->id;
-            
+
             $document = Document::create($attributes);
         });
     }

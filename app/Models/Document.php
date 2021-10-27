@@ -37,17 +37,16 @@ class Document extends Model
     ];
 
     private static $whiteListFilter = ['*'];
-    public static $accepted_filters = [
-        'bond',
-        'morph_employee_cpf_contains',
-        //'employee_cpf_contains',
-        'employee_name_contains',
-        'originalname_contains',
-        'documentType_name_contains',
-        'bond_employee_name_contains',
-        'bond_role_name_contains',
-        'bond_course_name_contains'
-    ];
+
+    public function employeeModel()
+    {
+        return $this->documentable()->first()->employee()->first();
+    }
+
+    public function employeeDocument()
+    {
+        return $this->belongsTo(EmployeeDocument::class, 'documentable_id');
+    }
 
     public function documentType()
     {
@@ -86,9 +85,6 @@ class Document extends Model
     public static function rightsWithBond()
     {
         $documentType = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
-
-        /* return Document::where('documents.document_type_id', $documentType->id)
-            ->whereHasMorph('documentable', 'App\Models\BondDocument')->with('documentable.bond'); */
 
         return Document::where('documents.document_type_id', $documentType->id)
             ->whereHasMorph('documentable', 'App\Models\BondDocument', function ($query) {

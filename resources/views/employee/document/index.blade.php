@@ -32,8 +32,8 @@
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
-                                <th>@sortablelink('employee.cpf', 'CPF')</th>
-                                <th>@sortablelink('employee.name', 'Colaborador')</th>
+                                <th>{{-- @sortablelink('employee.cpf', ' --}}CPF{{-- ') --}}</th>
+                                <th>{{-- @sortablelink('employee.name', ' --}}Colaborador{{-- ') --}}</th>
                                 <th>@sortablelink('original_name', 'Nome do arquivo')</th>
                                 <th>@sortablelink('documentType.name', 'Tipo')</th>
                             </thead>

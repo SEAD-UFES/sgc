@@ -5,14 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
-use eloquentFilter\QueryFilter\ModelFilters\Filterable;
-use App\ModelFilters\bondDocumentFilter;
 
 class BondDocument extends Model
 {
     use HasFactory;
     use Sortable;
-    use bondDocumentFilter, Filterable;
 
     protected $table = 'bond_documents';
 
@@ -31,13 +28,13 @@ class BondDocument extends Model
         'id',
     ];
 
-    private static $whiteListFilter = ['*'];
     public static $accepted_filters = [
+        'originalname_contains',
+        'documentType_name_contains',
         'bond',
-        /* 'originalname_contains',
-        'documentType_name_contains', */
         'bond_employee_name_contains',
         'bond_role_name_contains',
+        'bond_pole_name_contains',
         'bond_course_name_contains'
     ];
 

@@ -32,10 +32,10 @@ class DocumentController extends Controller
         //check access permission
         if (!Gate::allows('employeeDocument-list')) return response()->view('access.denied')->setStatusCode(401);
 
-        //filters
-        $filters = ModelFilterHelpers::buildFilters($request, EmployeeDocument::$accepted_filters);
-
         $this->service->documentClass = EmployeeDocument::class;
+
+        //filters
+        $filters = ModelFilterHelpers::buildFilters($request, $this->service->documentClass::$accepted_filters);
 
         $documents = $this->service->list();
 
@@ -113,7 +113,7 @@ class DocumentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function employeesDocumentsStore(StoreEmployeeDocumentRequest $request)
@@ -130,7 +130,7 @@ class DocumentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function bondsDocumentsStore(StoreBondDocumentRequest $request)
@@ -238,7 +238,7 @@ class DocumentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\BondDocument  $bondDocument
+     * @param \App\Models\BondDocument $bondDocument
      * @return \Illuminate\Http\Response
      */
     public function showDocument($id)

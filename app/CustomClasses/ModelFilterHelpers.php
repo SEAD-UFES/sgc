@@ -51,7 +51,7 @@ class ModelFilterHelpers
         return $query_builder;
     }
 
-    public static function contains($query_builder,  $column, $values)
+    public static function contains($query_builder, $column, $values)
     {
         foreach ($values as $value) {
             $query_builder = $query_builder->where($column, 'like', '%' . $value . '%');
@@ -73,7 +73,7 @@ class ModelFilterHelpers
     {
         foreach ($values as $value) {
             $query_builder = $query_builder
-                ->wherehasMorph($relation, $morphClass, function ($query) use ($childRelation, $column, $value) {
+                ->whereHasMorph($relation, $morphClass, function ($query) use ($childRelation, $column, $value) {
                     $query->whereHas($childRelation, function ($query) use ($column, $value) {
                         $query->where($column, 'like', '%' . $value . '%');
                     });
@@ -82,7 +82,7 @@ class ModelFilterHelpers
         return $query_builder;
     }
 
-    public static function relation_simple_operation($query_builder,  $relation, $column, $operation, $values)
+    public static function relation_simple_operation($query_builder, $relation, $column, $operation, $values)
     {
         foreach ($values as $value) {
             $query_builder = $query_builder->wherehas($relation, function ($query) use ($column, $operation, $value) {
