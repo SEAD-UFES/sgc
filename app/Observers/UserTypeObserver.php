@@ -2,8 +2,9 @@
 
 namespace App\Observers;
 
-use App\CustomClasses\SgcLogger;
 use App\Models\UserType;
+use App\CustomClasses\SgcLogger;
+use Illuminate\Support\Facades\Log;
 use PhpOffice\PhpSpreadsheet\Calculation\Statistical\AggregateBase;
 
 class UserTypeObserver
@@ -79,7 +80,7 @@ class UserTypeObserver
         SgcLogger::writeLog(target: 'UserType', action: __FUNCTION__);
     }
 
-    public function retrieved(UserType $approved)
+    public function fetched(UserType $approved)
     {
         SgcLogger::writeLog(target: 'UserType', action: __FUNCTION__, model: $approved);
     }

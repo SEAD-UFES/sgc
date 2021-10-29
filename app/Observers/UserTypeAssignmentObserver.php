@@ -78,7 +78,7 @@ class UserTypeAssignmentObserver
         SgcLogger::writeLog(target: 'UserTypeAssignment', action: __FUNCTION__);
     }
 
-    public function retrieved(UserTypeAssignment $approved)
+    public function fetched(UserTypeAssignment $approved)
     {
         SgcLogger::writeLog(target: 'UserTypeAssignment', action: __FUNCTION__, model: $approved);
     }

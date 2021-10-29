@@ -62,7 +62,7 @@ class CourseServiceTest extends TestCase
             $course = $this->service->read($course);
 
             //verifications
-            Event::assertDispatched('eloquent.retrieved: ' . Course::class);
+            Event::assertDispatched('eloquent.fetched: ' . Course::class);
             $this->assertEquals('Course Alpha', $course->name);
             $this->assertCount(2, Course::all());
         });

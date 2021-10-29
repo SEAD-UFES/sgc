@@ -78,7 +78,7 @@ class MaritalStatusObserver
         SgcLogger::writeLog(target: 'MaritalStatus', action: __FUNCTION__);
     }
 
-    public function retrieved(MaritalStatus $approved)
+    public function fetched(MaritalStatus $approved)
     {
         SgcLogger::writeLog(target: 'MaritalStatus', action: __FUNCTION__, model: $approved);
     }

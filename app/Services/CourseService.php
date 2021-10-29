@@ -47,7 +47,7 @@ class CourseService
      */
     public function read(Course $course): Course
     {
-        $course->logViewed($course);
+        $course->logFetched($course);
 
         return $course;
     }

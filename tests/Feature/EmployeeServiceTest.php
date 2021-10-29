@@ -69,7 +69,7 @@ class EmployeeServiceTest extends TestCase
             $employee = $this->service->read($employee);
 
             //verifications
-            Event::assertDispatched('eloquent.retrieved: ' . Employee::class);
+            Event::assertDispatched('eloquent.fetched: ' . Employee::class);
             $this->assertEquals('John Doe', $employee->name);
             $this->assertCount(2, Employee::all());
         });

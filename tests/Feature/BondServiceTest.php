@@ -91,7 +91,7 @@ class BondServiceTest extends TestCase
             $bond = $this->service->read($bond);
 
             //verifications
-            Event::assertDispatched('eloquent.retrieved: ' . Bond::class);
+            Event::assertDispatched('eloquent.fetched: ' . Bond::class);
             $this->assertEquals('Course Alpha', $bond->course->name);
             $this->assertCount(2, Bond::all());
         });

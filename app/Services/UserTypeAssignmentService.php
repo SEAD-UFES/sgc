@@ -46,7 +46,7 @@ class UserTypeAssignmentService
      */
     public function read(UserTypeAssignment $userTypeAssignment): UserTypeAssignment
     {
-        $userTypeAssignment->logViewed($userTypeAssignment);
+        $userTypeAssignment->logFetched($userTypeAssignment);
 
         return $userTypeAssignment;
     }

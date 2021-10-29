@@ -29,7 +29,7 @@ class Role extends Model
 
     protected $observables = [
         'listed',
-        'retrieved',
+        'fetched',
     ];
 
     public $sortable = ['id', 'name', 'description', 'grant_value', 'created_at', 'updated_at'];
@@ -69,8 +69,8 @@ class Role extends Model
         $this->fireModelEvent('listed', false);
     }
 
-    public function logViewed()
+    public function logFetched()
     {
-        $this->fireModelEvent('retrieved', false);
+        $this->fireModelEvent('fetched', false);
     }
 }

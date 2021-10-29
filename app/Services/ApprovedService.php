@@ -41,7 +41,7 @@ class ApprovedService
      */
     public function read(Approved $approved): Approved
     {
-        $approved->logViewed($approved);
+        $approved->logFetched($approved);
 
         return $approved;
     }

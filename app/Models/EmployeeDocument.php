@@ -21,7 +21,7 @@ class EmployeeDocument extends Model
 
     protected $observables = [
         'listed',
-        'retrieved',
+        'fetched',
     ];
 
     public $sortable = [
@@ -50,8 +50,8 @@ class EmployeeDocument extends Model
         $this->fireModelEvent('listed', false);
     }
 
-    public function logViewed()
+    public function logFetched()
     {
-        $this->fireModelEvent('retrieved', false);
+        $this->fireModelEvent('fetched', false);
     }
 }

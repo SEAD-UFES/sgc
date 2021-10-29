@@ -78,7 +78,7 @@ class CourseTypeObserver
         SgcLogger::writeLog(target: 'CourseType', action: __FUNCTION__);
     }
 
-    public function retrieved(CourseType $approved)
+    public function fetched(CourseType $approved)
     {
         SgcLogger::writeLog(target: 'CourseType', action: __FUNCTION__, model: $approved);
     }

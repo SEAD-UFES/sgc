@@ -46,7 +46,7 @@ class PoleService
      */
     public function read(Pole $pole): Pole
     {
-        $pole->logViewed($pole);
+        $pole->logFetched($pole);
 
         return $pole;
     }

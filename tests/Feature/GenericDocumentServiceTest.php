@@ -52,7 +52,7 @@ class GenericDocumentServiceTest extends TestCase
             $document = $this->service->read($document);
 
             //verifications
-            Event::assertDispatched('eloquent.retrieved: ' . Document::class);
+            Event::assertDispatched('eloquent.fetched: ' . Document::class);
             $this->assertEquals('Document Employee Alpha.pdf', $document->original_name);
             $this->assertCount(2, Document::all());
         });
@@ -68,7 +68,7 @@ class GenericDocumentServiceTest extends TestCase
             $document = $this->service->getDocument(1);
 
             //verifications
-            Event::assertDispatched('eloquent.retrieved: ' . Document::class);
+            Event::assertDispatched('eloquent.fetched: ' . Document::class);
             $this->assertEquals('Document Employee Alpha.pdf', $document->name);
             $this->assertEquals(EmployeeDocument::class, $document->class);
         });

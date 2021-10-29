@@ -78,7 +78,7 @@ class DocumentTypeObserver
         SgcLogger::writeLog(target: 'DocumentType', action: __FUNCTION__);
     }
 
-    public function retrieved(DocumentType $approved)
+    public function fetched(DocumentType $approved)
     {
         SgcLogger::writeLog(target: 'DocumentType', action: __FUNCTION__, model: $approved);
     }

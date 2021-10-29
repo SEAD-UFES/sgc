@@ -62,7 +62,7 @@ class PoleServiceTest extends TestCase
             $pole = $this->service->read($pole);
 
             //verifications
-            Event::assertDispatched('eloquent.retrieved: ' . Pole::class);
+            Event::assertDispatched('eloquent.fetched: ' . Pole::class);
             $this->assertEquals('Pole Alpha', $pole->name);
             $this->assertCount(2, Pole::all());
         });

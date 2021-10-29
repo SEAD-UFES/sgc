@@ -20,7 +20,7 @@ class MaritalStatus extends Model
 
     protected $observables = [
         'listed',
-        'retrieved',
+        'fetched',
     ];
 
     public function employee()
@@ -33,8 +33,8 @@ class MaritalStatus extends Model
         $this->fireModelEvent('listed', false);
     }
 
-    public function logViewed()
+    public function logFetched()
     {
-        $this->fireModelEvent('retrieved', false);
+        $this->fireModelEvent('fetched', false);
     }
 }

@@ -78,7 +78,7 @@ class ApprovedServiceTest extends TestCase
             $approved = $this->service->read($approved);
 
             //verifications
-            Event::assertDispatched('eloquent.retrieved: ' . Approved::class);
+            Event::assertDispatched('eloquent.fetched: ' . Approved::class);
             $this->assertEquals('John Doe', $approved->name);
             $this->assertCount(2, Approved::all());
         });

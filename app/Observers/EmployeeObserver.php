@@ -78,7 +78,7 @@ class EmployeeObserver
         SgcLogger::writeLog(target: 'Employee', action: __FUNCTION__);
     }
 
-    public function retrieved(Employee $approved)
+    public function fetched(Employee $approved)
     {
         SgcLogger::writeLog(target: 'Employee', action: __FUNCTION__, model: $approved);
     }

@@ -52,7 +52,7 @@ class EmployeeService
      */
     public function read(Employee $employee): Employee
     {
-        $employee->logViewed($employee);
+        $employee->logFetched($employee);
 
         return $employee;
     }

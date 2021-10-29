@@ -78,7 +78,7 @@ class ApprovedObserver
         SgcLogger::writeLog(target: 'Approved', action: __FUNCTION__);
     }
 
-    public function retrieved(Approved $approved)
+    public function fetched(Approved $approved)
     {
         SgcLogger::writeLog(target: 'Approved', action: __FUNCTION__, model: $approved);
     }

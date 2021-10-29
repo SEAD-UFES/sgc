@@ -61,7 +61,7 @@ class RoleServiceTest extends TestCase
             $role = $this->service->read($role);
 
             //verifications
-            Event::assertDispatched('eloquent.retrieved: ' . Role::class);
+            Event::assertDispatched('eloquent.fetched: ' . Role::class);
             $this->assertEquals('Role Alpha', $role->name);
             $this->assertCount(2, Role::all());
         });

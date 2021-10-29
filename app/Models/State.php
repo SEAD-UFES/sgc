@@ -22,7 +22,7 @@ class State extends Model
 
     protected $observables = [
         'listed',
-        'retrieved',
+        'fetched',
     ];
 
     public function employee()
@@ -40,8 +40,8 @@ class State extends Model
         $this->fireModelEvent('listed', false);
     }
 
-    public function logViewed()
+    public function logFetched()
     {
-        $this->fireModelEvent('retrieved', false);
+        $this->fireModelEvent('fetched', false);
     }
 }

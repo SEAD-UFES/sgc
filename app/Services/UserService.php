@@ -53,7 +53,7 @@ class UserService
      */
     public function read(User $user): User
     {
-        $user->logViewed($user);
+        $user->logFetched($user);
 
         return $user;
     }

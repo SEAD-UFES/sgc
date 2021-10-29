@@ -87,7 +87,7 @@ class DocumentService
      */
     public function read(Document $document): Document
     {
-        $document->logViewed($document);
+        $document->logFetched($document);
 
         return $document;
     }
@@ -286,7 +286,7 @@ class DocumentService
     {
         $document = Document::find($id);
 
-        $document->logViewed($document);
+        $document->logFetched($document);
 
         $documentName = $document->original_name;
         $fileData = base64_decode($document->file_data);

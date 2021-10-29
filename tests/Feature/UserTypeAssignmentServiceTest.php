@@ -73,7 +73,7 @@ class UserTypeAssignmentServiceTest extends TestCase
             $userTypeAssignment = $this->service->read($userTypeAssignment);
 
             //verifications
-            Event::assertDispatched('eloquent.retrieved: ' . UserTypeAssignment::class);
+            Event::assertDispatched('eloquent.fetched: ' . UserTypeAssignment::class);
             $this->assertEquals('johndoe@test.com', $userTypeAssignment->user->email);
             $this->assertCount(2, UserTypeAssignment::all());
         });

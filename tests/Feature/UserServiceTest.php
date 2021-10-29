@@ -67,7 +67,7 @@ class UserServiceTest extends TestCase
             $user = $this->service->read($user);
 
             //verifications
-            Event::assertDispatched('eloquent.retrieved: ' . User::class);
+            Event::assertDispatched('eloquent.fetched: ' . User::class);
             $this->assertEquals('johndoe@test1.com', $user->email);
             $this->assertCount(2, User::all());
         });

@@ -78,7 +78,7 @@ class GenderObserver
         SgcLogger::writeLog(target: 'Gender', action: __FUNCTION__);
     }
 
-    public function retrieved(Gender $approved)
+    public function fetched(Gender $approved)
     {
         SgcLogger::writeLog(target: 'Gender', action: __FUNCTION__, model: $approved);
     }
