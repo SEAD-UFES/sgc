@@ -80,6 +80,6 @@ class UserObserver
 
     public function retrieved(User $user)
     {
-        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model: $user);
+        //SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model: $user);
     }
 }
