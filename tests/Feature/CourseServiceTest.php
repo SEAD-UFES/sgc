@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Services\CourseService;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 
 class CourseServiceTest extends TestCase
 {
@@ -37,9 +38,34 @@ class CourseServiceTest extends TestCase
      */
     public function coursesShouldBeListed()
     {
-        //verifications
-        $this->assertEquals('Course Alpha', $this->service->list()->first()->name);
-        $this->assertEquals(2, $this->service->list()->count());
+        Event::fakeFor(function () {
+            //execution
+            $courses = $this->service->list();
+
+            //verifications
+            Event::assertDispatched('eloquent.listed: ' . Course::class);
+            $this->assertEquals('Course Alpha', $courses->first()->name);
+            $this->assertCount(2, $courses);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function courseShouldBeRetrieved()
+    {
+        //setting up scenario
+        $course = Course::find(1);
+
+        Event::fakeFor(function () use ($course) {
+            //execution 
+            $course = $this->service->read($course);
+
+            //verifications
+            Event::assertDispatched('eloquent.retrieved: ' . Course::class);
+            $this->assertEquals('Course Alpha', $course->name);
+            $this->assertCount(2, Course::all());
+        });
     }
 
     /**
@@ -56,12 +82,16 @@ class CourseServiceTest extends TestCase
         $attributes['begin'] = now();
         $attributes['end'] = now();
 
-        //execution 
-        $this->service->create($attributes);
+        //execution
+        Event::fakeFor(function () use ($attributes) {
+            $this->service->create($attributes);
 
-        //verifications
-        $this->assertEquals('Course Gama', Course::find(3)->name);
-        $this->assertEquals(3, Course::all()->count());
+            //verifications
+            Event::assertDispatched('eloquent.created: ' . Course::class);
+            $this->assertEquals('Course Gama', Course::find(3)->name);
+            $this->assertEquals('3rd course', Course::find(3)->description);
+            $this->assertCount(3, Course::all());
+        });
     }
 
     /**
@@ -78,13 +108,16 @@ class CourseServiceTest extends TestCase
         $attributes['name'] = 'Course Delta';
         $attributes['description'] = 'New 1st course';
 
-        //execution
-        $this->service->update($attributes, $course);
+        Event::fakeFor(function () use ($course, $attributes) {
+            //execution
+            $this->service->update($attributes, $course);
 
-        //verifications
-        $this->assertEquals('Course Delta', Course::find(1)->name);
-        $this->assertEquals('New 1st course', Course::find(1)->description);
-        $this->assertEquals(2, Course::all()->count());
+            //verifications
+            Event::assertDispatched('eloquent.updated: ' . Course::class);
+            $this->assertEquals('Course Delta', Course::find(1)->name);
+            $this->assertEquals('New 1st course', Course::find(1)->description);
+            $this->assertCount(2, Course::all());
+        });
     }
 
     /**
@@ -95,11 +128,14 @@ class CourseServiceTest extends TestCase
         //setting up scenario
         $course = Course::find(1);
 
-        //execution 
-        $this->service->delete($course);
+        Event::fakeFor(function () use ($course) {
+            //execution
+            $this->service->delete($course);
 
-        //verifications
-        $this->assertEquals('Course Beta', $this->service->list()->first()->name);
-        $this->assertEquals(1, $this->service->list()->count());
+            //verifications
+            Event::assertDispatched('eloquent.deleted: ' . Course::class);
+            $this->assertEquals('Course Beta', $this->service->list()->first()->name);
+            $this->assertCount(1, Course::all());
+        });
     }
 }

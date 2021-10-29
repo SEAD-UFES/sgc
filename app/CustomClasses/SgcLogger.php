@@ -181,7 +181,7 @@ class SgcLogger
             'updated user' => 'notice',
             'retrieved' => 'info',
             'show' => 'info',
-            'viewed' => 'info',
+            'retrieved' => 'info',
             'edit' => 'info',
             'review' => 'info',
             'request review' => 'info',

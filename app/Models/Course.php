@@ -24,7 +24,7 @@ class Course extends Model
 
     protected $observables = [
         'listed',
-        'viewed',
+        'retrieved',
     ];
 
     public $sortable = [
@@ -76,6 +76,6 @@ class Course extends Model
 
     public function logViewed()
     {
-        $this->fireModelEvent('viewed', false);
+        $this->fireModelEvent('retrieved', false);
     }
 }

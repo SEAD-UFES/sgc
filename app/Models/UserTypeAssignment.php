@@ -29,7 +29,7 @@ class UserTypeAssignment extends Model
 
     protected $observables = [
         'listed',
-        'viewed',
+        'retrieved',
     ];
 
     public $sortable = [
@@ -78,6 +78,6 @@ class UserTypeAssignment extends Model
 
     public function logViewed()
     {
-        $this->fireModelEvent('viewed', false);
+        $this->fireModelEvent('retrieved', false);
     }
 }

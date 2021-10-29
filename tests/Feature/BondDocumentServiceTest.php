@@ -7,8 +7,10 @@ use App\Models\Bond;
 use App\Models\Document;
 use Mockery\MockInterface;
 use App\Models\BondDocument;
+use App\Models\DocumentType;
 use App\Services\DocumentService;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -43,6 +45,7 @@ class BondDocumentServiceTest extends TestCase
         );
 
         $this->service = new DocumentService;
+        $this->service->documentClass = BondDocument::class;
     }
 
     /**
@@ -50,12 +53,52 @@ class BondDocumentServiceTest extends TestCase
      */
     public function documentsShouldBeListed()
     {
-        $this->service->documentClass = BondDocument::class;
-        $docList = $this->service->list();
+        Event::fakeFor(function () {
+            //execution
+            $documents = $this->service->list();
 
-        //verifications
-        $this->assertEquals('Document Alpha.pdf', $docList->first()->original_name);
-        $this->assertEquals(2, $docList->count());
+            //verifications
+            Event::assertDispatched('eloquent.listed: ' . Document::class);
+            $this->assertCount(2, $documents);
+            $this->assertEquals('Document Alpha.pdf', $documents[0]->original_name);
+            $this->assertEquals('Document Beta.pdf', $documents[1]->original_name);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function rightsShouldBeListed()
+    {
+        Document::factory()->create(
+            [
+                'original_name' => 'Document Rights.pdf',
+                'documentable_id' => BondDocument::factory()->create([
+                    'bond_id' => Bond::factory()->create(
+                        [
+                            'uaba_checked_at' => now(),
+                            'impediment' => false,
+                        ]
+                    )->id,
+                ])->id,
+                'documentable_type' => BondDocument::class,
+                'document_type_id' => DocumentType::factory()->create(
+                    [
+                        'name' => 'Ficha de Inscrição - Termos e Licença',
+                    ]
+                )->id,
+            ]
+        );
+
+        Event::fakeFor(function () {
+            //execution
+            $documents = $this->service->listRights();
+
+            //verifications
+            Event::assertDispatched('eloquent.listed: ' . Document::class);
+            $this->assertCount(1, $documents);
+            $this->assertEquals('Document Rights.pdf', $documents->first()->original_name);
+        });
     }
 
     /**
@@ -77,6 +120,7 @@ class BondDocumentServiceTest extends TestCase
 
             $service->shouldReceive('getFileData')->once()->andReturn($fileBase64);
         });
+        $service->documentClass = BondDocument::class;
 
         Storage::fake('local');
         $attributes['file'] = UploadedFile::fake()->create('Document Gama.pdf', 20, 'application/pdf');
@@ -84,13 +128,15 @@ class BondDocumentServiceTest extends TestCase
         $attributes['document_type_id'] = 1;
         $attributes['bond_id'] = 1;
 
-        //execution
-        $service->documentClass = BondDocument::class;
-        $service->create($attributes);
+        Event::fakeFor(function () use ($service, $attributes) {
+            //execution
+            $service->create($attributes);
 
-        //verifications
-        $this->assertEquals('Document Gama.pdf', Document::whereHasMorph('documentable', BondDocument::class)->skip(2)->first()->original_name);
-        $this->assertCount(3, Document::whereHasMorph('documentable', BondDocument::class)->get());
-        $this->assertCount(3, BondDocument::all());
+            //verifications
+            Event::assertDispatched('eloquent.created: ' . Document::class);
+            $this->assertEquals('Document Gama.pdf', Document::whereHasMorph('documentable', BondDocument::class)->skip(2)->first()->original_name);
+            $this->assertCount(3, Document::whereHasMorph('documentable', BondDocument::class)->get());
+            $this->assertCount(3, BondDocument::all());
+        });
     }
 }

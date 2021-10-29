@@ -22,7 +22,7 @@ class State extends Model
 
     protected $observables = [
         'listed',
-        'viewed',
+        'retrieved',
     ];
 
     public function employee()
@@ -42,6 +42,6 @@ class State extends Model
 
     public function logViewed()
     {
-        $this->fireModelEvent('viewed', false);
+        $this->fireModelEvent('retrieved', false);
     }
 }

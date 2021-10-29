@@ -16,7 +16,7 @@ class DocumentType extends Model
 
     protected $observables = [
         'listed',
-        'viewed',
+        'retrieved',
     ];
  
     public function employeeDocuments()
@@ -36,6 +36,6 @@ class DocumentType extends Model
 
     public function logViewed()
     {
-        $this->fireModelEvent('viewed', false);
+        $this->fireModelEvent('retrieved', false);
     }
 }

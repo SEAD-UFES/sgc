@@ -7,6 +7,7 @@ use App\Models\UserType;
 use App\Services\UserTypeService;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 
 class UserTypeServiceTest extends TestCase
 {
@@ -41,9 +42,13 @@ class UserTypeServiceTest extends TestCase
      */
     public function userTypesShouldBeListed()
     {
-        //verifications
-        $this->assertEquals('Type Alpha', $this->service->list()->first()->name);
-        $this->assertEquals(2, $this->service->list()->count());
+        Event::fakeFor(function () {
+            $userTypes = $this->service->list();
+
+            //verifications
+            $this->assertEquals('Type Alpha', $userTypes->first()->name);
+            $this->assertCount(2, $userTypes);
+        });
     }
 
     /**

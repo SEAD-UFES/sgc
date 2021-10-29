@@ -4,12 +4,15 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\Approved;
+use App\Models\Employee;
 use Mockery\MockInterface;
 use App\Models\ApprovedState;
 use App\Services\ApprovedService;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\WithFaker;
+use App\Exceptions\EmployeeAlreadyExistsException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ApprovedServiceTest extends TestCase
@@ -51,9 +54,34 @@ class ApprovedServiceTest extends TestCase
      */
     public function approvedsShouldBeListed()
     {
-        //verifications
-        $this->assertEquals('John Doe', $this->service->list()->first()->name);
-        $this->assertEquals(2, $this->service->list()->count());
+        Event::fakeFor(function () {
+            //execution 
+            $approveds = $this->service->list();
+
+            //verifications
+            Event::assertDispatched('eloquent.listed: ' . Approved::class);
+            $this->assertCount(2, $approveds);
+            $this->assertEquals('John Doe', $approveds->first()->name);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function approvedShouldBeRetrieved()
+    {
+        //setting up scenario
+        $approved = Approved::find(1);
+
+        Event::fakeFor(function () use ($approved) {
+            //execution 
+            $approved = $this->service->read($approved);
+
+            //verifications
+            Event::assertDispatched('eloquent.retrieved: ' . Approved::class);
+            $this->assertEquals('John Doe', $approved->name);
+            $this->assertCount(2, Approved::all());
+        });
     }
 
     /**
@@ -64,12 +92,15 @@ class ApprovedServiceTest extends TestCase
         //setting up scenario
         $approved = Approved::find(1);
 
-        //execution 
-        $this->service->delete($approved);
+        Event::fakeFor(function () use ($approved) {
+            //execution 
+            $approved = $this->service->delete($approved);
 
-        //verifications
-        $this->assertEquals('Jane Doe', $this->service->list()->first()->name);
-        $this->assertEquals(1, $this->service->list()->count());
+            //verifications
+            Event::assertDispatched('eloquent.deleted: ' . Approved::class);
+            $this->assertEquals('Jane Doe', $this->service->list()->first()->name);
+            $this->assertCount(1, Approved::all());
+        });
     }
 
     /**
@@ -87,11 +118,15 @@ class ApprovedServiceTest extends TestCase
         $attributes['states'] = $state_id;
         $approved = Approved::find(1);
 
-        //execution
-        $this->service->changeState($attributes, $approved);
+        Event::fakeFor(function () use ($approved, $attributes) {
+            //execution 
+            $this->service->changeState($attributes, $approved);
 
-        //verifications
-        $this->assertEquals('Foo', $approved->approvedState->name);
+            //verifications
+            Event::assertDispatched('eloquent.saved: ' . Approved::class);
+            $this->assertEquals('Foo', $approved->approvedState->name);
+            $this->assertCount(2, Approved::all());
+        });
     }
 
     /**
@@ -108,6 +143,30 @@ class ApprovedServiceTest extends TestCase
         //verifications
         $this->assertEquals('App\Models\Employee', get_class($employee));
         $this->assertEquals('John Doe', $employee->name);
+    }
+
+    /**
+     * @test
+     */
+    public function approvedShouldNotBecomesAnPreexistingEmployee()
+    {
+        //setting up scenario
+        $approved = Approved::find(1);
+
+        Employee::factory()->create(
+            [
+                'name' => 'Bob Doe',
+                'email' => 'john@test.com'
+            ]
+        );
+
+        $this->expectException(EmployeeAlreadyExistsException::class);
+
+        //execution
+        $this->service->designate($approved);
+
+        //verifications
+        $this->assertCount(1, Employee::all());
     }
 
     /**
@@ -137,7 +196,7 @@ class ApprovedServiceTest extends TestCase
     {
         //setting up scenario
         $approvedsArray = array();
-        
+
         $approvedsArray['check_0'] = true;
         $approvedsArray['name_0'] = 'Bob Doe';
         $approvedsArray['email_0'] = 'bob@test3.com';

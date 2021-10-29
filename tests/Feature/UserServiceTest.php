@@ -9,6 +9,7 @@ use App\Services\UserService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 
 class UserServiceTest extends TestCase
 {
@@ -42,9 +43,34 @@ class UserServiceTest extends TestCase
      */
     public function usersShouldBeListed()
     {
-        //verifications
-        $this->assertEquals('johndoe@test1.com', $this->service->list()->first()->email);
-        $this->assertEquals(2, $this->service->list()->count());
+        Event::fakeFor(function () {
+            //execution 
+            $users = $this->service->list();
+
+            //verifications
+            Event::assertDispatched('eloquent.listed: ' . User::class);
+            $this->assertEquals('johndoe@test1.com', $users->first()->email);
+            $this->assertCount(2, User::all());
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function userShouldBeRetrieved()
+    {
+        //setting up scenario
+        $user = User::find(1);
+
+        Event::fakeFor(function () use ($user) {
+            //execution 
+            $user = $this->service->read($user);
+
+            //verifications
+            Event::assertDispatched('eloquent.retrieved: ' . User::class);
+            $this->assertEquals('johndoe@test1.com', $user->email);
+            $this->assertCount(2, User::all());
+        });
     }
 
     /**
@@ -54,17 +80,20 @@ class UserServiceTest extends TestCase
     {
         //setting up scenario
         $attributes = array();
-        
+
         $attributes['email'] = 'bobdoe@test3.com';
         $attributes['password'] = 'password3';
         $attributes['active'] = true;
 
-        //execution 
-        $this->service->create($attributes);
+        Event::fakeFor(function () use ($attributes) {
+            //execution 
+            $this->service->create($attributes);
 
-        //verifications
-        $this->assertEquals('bobdoe@test3.com', User::find(3)->email);
-        $this->assertEquals(3, User::all()->count());
+            //verifications
+            Event::assertDispatched('eloquent.creating: ' . User::class);
+            $this->assertEquals('bobdoe@test3.com', User::find(3)->email);
+            $this->assertCount(3, User::all());
+        });
     }
 
     /**
@@ -81,14 +110,17 @@ class UserServiceTest extends TestCase
         $attributes['email'] = 'marydoe@test4.com';
         $attributes['password'] = 'password4';
 
-        //execution
-        $this->service->update($attributes, $user);
+        Event::fakeFor(function () use ($user, $attributes) {
+            //execution
+            $this->service->update($attributes, $user);
 
-        //verifications
-        $this->assertEquals('marydoe@test4.com', User::find(1)->email);
-        $this->assertTrue(Hash::check('password4', User::find(1)->password));
-        $this->assertEquals(0, User::find(1)->active);
-        $this->assertEquals(2, User::all()->count());
+            //verifications
+            Event::assertDispatched('eloquent.updating: ' . User::class);
+            $this->assertEquals('marydoe@test4.com', User::find(1)->email);
+            $this->assertTrue(Hash::check('password4', User::find(1)->password));
+            $this->assertEquals(0, User::find(1)->active);
+            $this->assertCount(2, User::all());
+        });
     }
 
     /**
@@ -106,14 +138,17 @@ class UserServiceTest extends TestCase
         $attributes['password'] = '';
         $attributes['active'] = true;
 
-        //execution
-        $this->service->update($attributes, $user);
+        Event::fakeFor(function () use ($user, $attributes) {
+            //execution
+            $this->service->update($attributes, $user);
 
-        //verifications
-        $this->assertEquals('billdoe@test5.com', User::find(1)->email);
-        $this->assertTrue(Hash::check('password1', User::find(1)->password));
-        $this->assertEquals(true, User::find(1)->active);
-        $this->assertEquals(2, User::all()->count());
+            //verifications
+            Event::assertDispatched('eloquent.updating: ' . User::class);
+            $this->assertEquals('billdoe@test5.com', User::find(1)->email);
+            $this->assertTrue(Hash::check('password1', User::find(1)->password));
+            $this->assertEquals(true, User::find(1)->active);
+            $this->assertCount(2, User::all());
+        });
     }
 
     /**
@@ -131,13 +166,16 @@ class UserServiceTest extends TestCase
 
         $attributes['email'] = 'marydoe@test4.com';
 
-        //execution
-        $this->service->update($attributes, $user);
+        Event::fakeFor(function () use ($user, $attributes) {
+            //execution
+            $this->service->update($attributes, $user);
 
-        //verifications
-        $this->assertEquals('marydoe@test4.com', User::find(1)->email);
-        $this->assertEquals('Mary Doe', User::find(1)->employee->name);
-        $this->assertEquals(2, User::all()->count());
+            //verifications
+            Event::assertDispatched('eloquent.updating: ' . User::class);
+            $this->assertEquals('marydoe@test4.com', User::find(1)->email);
+            $this->assertEquals('Mary Doe', User::find(1)->employee->name);
+            $this->assertCount(2, User::all());
+        });
     }
 
     /**
@@ -148,11 +186,14 @@ class UserServiceTest extends TestCase
         //setting up scenario
         $user = User::find(1);
 
-        //execution 
-        $this->service->delete($user);
+        Event::fakeFor(function () use ($user) {
+            //execution
+            $this->service->delete($user);
 
-        //verifications
-        $this->assertEquals('janedoe@test2.com', $this->service->list()->first()->email);
-        $this->assertEquals(1, $this->service->list()->count());
+            //verifications
+            Event::assertDispatched('eloquent.deleting: ' . User::class);
+            $this->assertEquals('janedoe@test2.com', $this->service->list()->first()->email);
+            $this->assertCount(1, User::all());
+        });
     }
 }

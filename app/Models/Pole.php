@@ -27,7 +27,7 @@ class Pole extends Model
 
     protected $observables = [
         'listed',
-        'viewed',
+        'retrieved',
     ];
 
     private static $whiteListFilter = [''];
@@ -55,6 +55,6 @@ class Pole extends Model
 
     public function logViewed()
     {
-        $this->fireModelEvent('viewed', false);
+        $this->fireModelEvent('retrieved', false);
     }
 }

@@ -3,11 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Document;
-use App\Models\BondDocument;
 use App\Models\DocumentType;
-use App\Models\EmployeeDocument;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Log;
 
 class DocumentFactory extends Factory
 {

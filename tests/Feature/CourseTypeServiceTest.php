@@ -7,6 +7,7 @@ use App\Models\CourseType;
 use App\Services\CourseTypeService;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 
 class CourseTypeServiceTest extends TestCase
 {
@@ -39,9 +40,14 @@ class CourseTypeServiceTest extends TestCase
      */
     public function courseTypesShouldBeListed()
     {
-        //verifications
-        $this->assertEquals('Type Alpha', $this->service->list()->first()->name);
-        $this->assertEquals(2, $this->service->list()->count());
+        Event::fakeFor(function () {
+            //execution
+            $courseTypes = $this->service->list();
+
+            //verifications
+            $this->assertEquals('Type Alpha', $courseTypes->first()->name);
+            $this->assertCount(2, $courseTypes);
+        });
     }
 
     /**

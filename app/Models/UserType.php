@@ -22,7 +22,7 @@ class UserType extends Model
 
     protected $observables = [
         'listed',
-        'viewed',
+        'retrieved',
     ];
 
     public function users()
@@ -37,6 +37,6 @@ class UserType extends Model
 
     public function logViewed()
     {
-        $this->fireModelEvent('viewed', false);
+        $this->fireModelEvent('retrieved', false);
     }
 }

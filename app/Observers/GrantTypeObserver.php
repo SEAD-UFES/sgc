@@ -78,7 +78,7 @@ class GrantTypeObserver
         SgcLogger::writeLog(target: 'GrantType', action: __FUNCTION__);
     }
 
-    public function viewed(GrantType $approved)
+    public function retrieved(GrantType $approved)
     {
         SgcLogger::writeLog(target: 'GrantType', action: __FUNCTION__, model: $approved);
     }

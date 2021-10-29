@@ -10,6 +10,7 @@ use App\Models\UserTypeAssignment;
 use App\Services\UserTypeAssignmentService;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 
 class UserTypeAssignmentServiceTest extends TestCase
 {
@@ -48,9 +49,34 @@ class UserTypeAssignmentServiceTest extends TestCase
      */
     public function userTypeAssignmentsShouldBeListed()
     {
-        //verifications
-        $this->assertEquals('johndoe@test.com', $this->service->list()->first()->user->email);
-        $this->assertEquals(2, $this->service->list()->count());
+        Event::fakeFor(function () {
+            //execution
+            $userTypeAssignments = $this->service->list();
+
+            //verifications
+            Event::assertDispatched('eloquent.listed: ' . UserTypeAssignment::class);
+            $this->assertEquals('johndoe@test.com', UserTypeAssignment::find(1)->user->email);
+            $this->assertCount(2, $userTypeAssignments);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function userTypeAssignmentShouldBeRetrieved()
+    {
+        //setting up scenario
+        $userTypeAssignment = UserTypeAssignment::find(1);
+
+        Event::fakeFor(function () use ($userTypeAssignment) {
+            //execution 
+            $userTypeAssignment = $this->service->read($userTypeAssignment);
+
+            //verifications
+            Event::assertDispatched('eloquent.retrieved: ' . UserTypeAssignment::class);
+            $this->assertEquals('johndoe@test.com', $userTypeAssignment->user->email);
+            $this->assertCount(2, UserTypeAssignment::all());
+        });
     }
 
     /**
@@ -60,20 +86,23 @@ class UserTypeAssignmentServiceTest extends TestCase
     {
         //setting up scenario
         $attributes = array();
-        
+
         $attributes['user_id'] = 2;
         $attributes['user_type_id'] = 1;
         $attributes['course_id'] = 2;
         $attributes['begin'] = now();
         $attributes['end'] = now();
 
-        //execution 
-        $this->service->create($attributes);
+        Event::fakeFor(function () use ($attributes) {
+            //execution
+            $userTypeAssignment = $this->service->create($attributes);
 
-        //verifications
-        $this->assertEquals('janedoe@test2.com', UserTypeAssignment::find(3)->user->email);
-        $this->assertEquals('Type one', UserTypeAssignment::find(3)->userType->name);
-        $this->assertEquals(3, UserTypeAssignment::all()->count());
+            //verifications
+            Event::assertDispatched('eloquent.created: ' . UserTypeAssignment::class);
+            $this->assertEquals('janedoe@test2.com', UserTypeAssignment::find(3)->user->email);
+            $this->assertEquals('Type one', UserTypeAssignment::find(3)->userType->name);
+            $this->assertCount(3, UserTypeAssignment::all());
+        });
     }
 
     /**
@@ -90,20 +119,23 @@ class UserTypeAssignmentServiceTest extends TestCase
         $newCourse = Course::factory()->create(['name' => 'Course Gama']);
 
         $attributes = array();
-        
+
         $attributes['user_id'] = $newUser->id;
         $attributes['user_type_id'] = $newUserType->id;
         $attributes['course_id'] = $newCourse->id;
         $attributes['begin'] = now();
         $attributes['end'] = now();
 
-        //execution
-        $this->service->update($attributes, $userTypeAssignment);
+        Event::fakeFor(function () use ($attributes, $userTypeAssignment) {
+            //execution
+            $this->service->update($attributes, $userTypeAssignment);
 
-        //verifications
-        $this->assertEquals('bobdoe@test3.com', UserTypeAssignment::find(1)->user->email);
-        $this->assertEquals('Course Gama', UserTypeAssignment::find(1)->course->name);
-        $this->assertEquals(2, UserTypeAssignment::all()->count());
+            //verifications
+            Event::assertDispatched('eloquent.updated: ' . UserTypeAssignment::class);
+            $this->assertEquals('bobdoe@test3.com', UserTypeAssignment::find(1)->user->email);
+            $this->assertEquals('Course Gama', UserTypeAssignment::find(1)->course->name);
+            $this->assertCount(2, UserTypeAssignment::all());
+        });
     }
 
     /**
@@ -114,11 +146,14 @@ class UserTypeAssignmentServiceTest extends TestCase
         //setting up scenario
         $userTypeAssignment = UserTypeAssignment::find(1);
 
-        //execution 
-        $this->service->delete($userTypeAssignment);
+        Event::fakeFor(function () use ($userTypeAssignment) {
+            //execution
+            $this->service->delete($userTypeAssignment);
 
-        //verifications
-        $this->assertEquals('janedoe@test2.com', $this->service->list()->first()->user->email);
-        $this->assertEquals(1, $this->service->list()->count());
+            //verifications
+            Event::assertDispatched('eloquent.deleted: ' . UserTypeAssignment::class);
+            $this->assertEquals('janedoe@test2.com', $this->service->list()->first()->user->email);
+            $this->assertCount(1, UserTypeAssignment::all());
+        });
     }
 }

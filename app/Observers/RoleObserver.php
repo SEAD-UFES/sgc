@@ -78,7 +78,7 @@ class RoleObserver
         SgcLogger::writeLog(target: 'Role', action: __FUNCTION__);
     }
 
-    public function viewed(Role $approved)
+    public function retrieved(Role $approved)
     {
         SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model: $approved);
     }

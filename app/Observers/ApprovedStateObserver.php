@@ -78,7 +78,7 @@ class ApprovedStateObserver
         SgcLogger::writeLog(target: 'ApprovedState', action: __FUNCTION__);
     }
 
-    public function viewed(ApprovedState $approvedState)
+    public function retrieved(ApprovedState $approvedState)
     {
         SgcLogger::writeLog(target: 'ApprovedState', action: __FUNCTION__, model: $approvedState);
     }

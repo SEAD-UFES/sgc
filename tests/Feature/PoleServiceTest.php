@@ -7,6 +7,7 @@ use App\Models\Pole;
 use App\Services\PoleService;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 
 class PoleServiceTest extends TestCase
 {
@@ -37,9 +38,34 @@ class PoleServiceTest extends TestCase
      */
     public function polesShouldBeListed()
     {
-        //verifications
-        $this->assertEquals('Pole Alpha', $this->service->list()->first()->name);
-        $this->assertEquals(2, $this->service->list()->count());
+        Event::fakeFor(function () {
+            //execution
+            $poles = $this->service->list();
+
+            //verifications
+            Event::assertDispatched('eloquent.listed: ' . Pole::class);
+            $this->assertEquals('Pole Alpha', $this->service->list()->first()->name);
+            $this->assertCount(2, $poles);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function poleShouldBeRetrieved()
+    {
+        //setting up scenario
+        $pole = Pole::find(1);
+
+        Event::fakeFor(function () use ($pole) {
+            //execution 
+            $pole = $this->service->read($pole);
+
+            //verifications
+            Event::assertDispatched('eloquent.retrieved: ' . Pole::class);
+            $this->assertEquals('Pole Alpha', $pole->name);
+            $this->assertCount(2, Pole::all());
+        });
     }
 
     /**
@@ -53,12 +79,15 @@ class PoleServiceTest extends TestCase
         $attributes['name'] = 'Pole Gama';
         $attributes['description'] = '3rd Pole';
 
-        //execution 
-        $this->service->create($attributes);
+        Event::fakeFor(function () use ($attributes) {
+            //execution
+            $this->service->create($attributes);
 
-        //verifications
-        $this->assertEquals('Pole Gama', Pole::find(3)->name);
-        $this->assertEquals(3, Pole::all()->count());
+            //verifications
+            Event::assertDispatched('eloquent.created: ' . Pole::class);
+            $this->assertEquals('Pole Gama', Pole::find(3)->name);
+            $this->assertCount(3, Pole::all());
+        });
     }
 
     /**
@@ -75,13 +104,16 @@ class PoleServiceTest extends TestCase
         $attributes['name'] = 'Pole Delta';
         $attributes['description'] = 'New 1st Pole';
 
-        //execution
-        $this->service->update($attributes, $pole);
+        Event::fakeFor(function () use ($attributes, $pole) {
+            //execution
+            $this->service->update($attributes, $pole);
 
-        //verifications
-        $this->assertEquals('Pole Delta', Pole::find(1)->name);
-        $this->assertEquals('New 1st Pole', Pole::find(1)->description);
-        $this->assertEquals(2, Pole::all()->count());
+            //verifications
+            Event::assertDispatched('eloquent.updated: ' . Pole::class);
+            $this->assertEquals('Pole Delta', Pole::find(1)->name);
+            $this->assertEquals('New 1st Pole', Pole::find(1)->description);
+            $this->assertCount(2, Pole::all());
+        });
     }
 
     /**
@@ -92,11 +124,14 @@ class PoleServiceTest extends TestCase
         //setting up scenario
         $pole = Pole::find(1);
 
-        //execution 
-        $this->service->delete($pole);
+        Event::fakeFor(function () use ($pole) {
+            //execution
+            $this->service->delete($pole);
 
-        //verifications
-        $this->assertEquals('Pole Beta', $this->service->list()->first()->name);
-        $this->assertEquals(1, $this->service->list()->count());
+            //verifications
+            Event::assertDispatched('eloquent.deleted: ' . Pole::class);
+            $this->assertEquals('Pole Beta', $this->service->list()->first()->name);
+            $this->assertCount(1, Pole::all());
+        });
     }
 }

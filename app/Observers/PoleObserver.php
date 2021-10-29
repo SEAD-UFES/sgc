@@ -78,7 +78,7 @@ class PoleObserver
         SgcLogger::writeLog(target: 'Pole', action: __FUNCTION__);
     }
 
-    public function viewed(Pole $pole)
+    public function retrieved(Pole $pole)
     {
         SgcLogger::writeLog(target: 'Pole', action: __FUNCTION__, model: $pole);
     }

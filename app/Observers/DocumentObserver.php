@@ -77,7 +77,7 @@ class DocumentObserver
         SgcLogger::writeLog(target: 'Document', action: __FUNCTION__);
     }
 
-    public function viewed(Document $document)
+    public function retrieved(Document $document)
     {
         SgcLogger::writeLog(target: class_basename($document->documentable_type), action: __FUNCTION__, model: $document);
     }

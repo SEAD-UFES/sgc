@@ -78,7 +78,7 @@ class BondObserver
         SgcLogger::writeLog(target: 'Bond', action: __FUNCTION__);
     }
 
-    public function viewed(Bond $approved)
+    public function retrieved(Bond $approved)
     {
         SgcLogger::writeLog(target: 'Bond', action: __FUNCTION__, model: $approved);
     }

@@ -78,7 +78,7 @@ class UserObserver
         SgcLogger::writeLog(target: 'User', action: __FUNCTION__);
     }
 
-    public function viewed(User $user)
+    public function retrieved(User $user)
     {
         SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model: $user);
     }

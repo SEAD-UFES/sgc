@@ -21,7 +21,7 @@ class ApprovedState extends Model
 
     protected $observables = [
         'listed',
-        'viewed',
+        'retrieved',
     ];
 
     public function approveds()
@@ -57,6 +57,6 @@ class ApprovedState extends Model
 
     public function logViewed()
     {
-        $this->fireModelEvent('viewed', false);
+        $this->fireModelEvent('retrieved', false);
     }
 }

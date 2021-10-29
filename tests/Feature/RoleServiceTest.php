@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Services\RoleService;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 
 class RoleServiceTest extends TestCase
 {
@@ -37,9 +38,33 @@ class RoleServiceTest extends TestCase
      */
     public function rolesShouldBeListed()
     {
-        //verifications
-        $this->assertEquals('Role Alpha', $this->service->list()->first()->name);
-        $this->assertEquals(2, $this->service->list()->count());
+        Event::fakeFor(function () {
+            //execution
+            $roles = $this->service->list();
+
+            //verifications
+            $this->assertEquals('Role Alpha', $roles->first()->name);
+            $this->assertCount(2, $roles);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function roleShouldBeRetrieved()
+    {
+        //setting up scenario
+        $role = Role::find(1);
+
+        Event::fakeFor(function () use ($role) {
+            //execution 
+            $role = $this->service->read($role);
+
+            //verifications
+            Event::assertDispatched('eloquent.retrieved: ' . Role::class);
+            $this->assertEquals('Role Alpha', $role->name);
+            $this->assertCount(2, Role::all());
+        });
     }
 
     /**
@@ -55,12 +80,15 @@ class RoleServiceTest extends TestCase
         $attributes['grant_value'] = 1234.56;
         $attributes['grant_type_id'] = 1;
 
-        //execution 
-        $this->service->create($attributes);
+        Event::fakeFor(function () use ($attributes) {
+            //execution
+            $this->service->create($attributes);
 
-        //verifications
-        $this->assertEquals('Role Gama', Role::find(3)->name);
-        $this->assertEquals(3, Role::all()->count());
+            //verifications
+            Event::assertDispatched('eloquent.created: ' . Role::class);
+            $this->assertEquals('Role Gama', Role::find(3)->name);
+            $this->assertCount(3, Role::all());
+        });
     }
 
     /**
@@ -77,13 +105,16 @@ class RoleServiceTest extends TestCase
         $attributes['name'] = 'Role Delta';
         $attributes['description'] = 'New 1st Role';
 
-        //execution
-        $this->service->update($attributes, $role);
+        Event::fakeFor(function () use ($attributes, $role) {
+            //execution
+            $this->service->update($attributes, $role);
 
-        //verifications
-        $this->assertEquals('Role Delta', Role::find(1)->name);
-        $this->assertEquals('New 1st Role', Role::find(1)->description);
-        $this->assertEquals(2, Role::all()->count());
+            //verifications
+            Event::assertDispatched('eloquent.updated: ' . Role::class);
+            $this->assertEquals('Role Delta', Role::find(1)->name);
+            $this->assertEquals('New 1st Role', Role::find(1)->description);
+            $this->assertCount(2, Role::all());
+        });
     }
 
     /**
@@ -94,11 +125,14 @@ class RoleServiceTest extends TestCase
         //setting up scenario
         $role = Role::find(1);
 
-        //execution 
-        $this->service->delete($role);
+        Event::fakeFor(function () use ($role) {
+            //execution
+            $this->service->delete($role);
 
-        //verifications
-        $this->assertEquals('Role Beta', $this->service->list()->first()->name);
-        $this->assertEquals(1, $this->service->list()->count());
+            //verifications
+            Event::assertDispatched('eloquent.deleted: ' . Role::class);
+            $this->assertEquals('Role Beta', $this->service->list()->first()->name);
+            $this->assertCount(1, Role::all());
+        });
     }
 }

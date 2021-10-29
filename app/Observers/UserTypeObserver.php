@@ -79,7 +79,7 @@ class UserTypeObserver
         SgcLogger::writeLog(target: 'UserType', action: __FUNCTION__);
     }
 
-    public function viewed(UserType $approved)
+    public function retrieved(UserType $approved)
     {
         SgcLogger::writeLog(target: 'UserType', action: __FUNCTION__, model: $approved);
     }

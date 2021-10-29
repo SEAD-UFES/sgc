@@ -37,7 +37,7 @@ class Bond extends Pivot
 
     protected $observables = [
         'listed',
-        'viewed',
+        'retrieved',
     ];
 
     public $sortable = [
@@ -116,6 +116,6 @@ class Bond extends Pivot
 
     public function logViewed()
     {
-        $this->fireModelEvent('viewed', false);
+        $this->fireModelEvent('retrieved', false);
     }
 }

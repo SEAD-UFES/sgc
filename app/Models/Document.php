@@ -26,7 +26,7 @@ class Document extends Model
 
     protected $observables = [
         'listed',
-        'viewed',
+        'retrieved',
     ];
 
     public $sortable = [
@@ -101,7 +101,7 @@ class Document extends Model
 
     public function logViewed()
     {
-        $this->fireModelEvent('viewed', false);
+        $this->fireModelEvent('retrieved', false);
     }
 
     //metodo de ordenação para (bond->employee->name) no sortable

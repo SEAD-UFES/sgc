@@ -31,7 +31,7 @@ class User extends Authenticatable
 
     protected $observables = [
         'listed',
-        'viewed',
+        'retrieved',
     ];
 
     public $sortable = ['id', 'email', 'active', 'created_at', 'updated_at'];
@@ -139,6 +139,6 @@ class User extends Authenticatable
 
     public function logViewed()
     {
-        $this->fireModelEvent('viewed', false);
+        $this->fireModelEvent('retrieved', false);
     }
 }
