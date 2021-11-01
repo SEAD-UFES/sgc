@@ -31,6 +31,11 @@ class BondDocumentServiceTest extends TestCase
                     'bond_id' => Bond::factory()->create()->id,
                 ])->id,
                 'documentable_type' => BondDocument::class,
+                'document_type_id' => DocumentType::factory()->create(
+                    [
+                        'name' => 'Type One',
+                    ]
+                )->id,
             ]
         );
 
@@ -41,6 +46,11 @@ class BondDocumentServiceTest extends TestCase
                     'bond_id' => Bond::factory()->create()->id,
                 ])->id,
                 'documentable_type' => BondDocument::class,
+                'document_type_id' => DocumentType::factory()->create(
+                    [
+                        'name' => 'Type Two',
+                    ]
+                )->id,
             ]
         );
 

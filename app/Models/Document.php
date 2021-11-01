@@ -103,48 +103,4 @@ class Document extends Model
     {
         $this->fireModelEvent('fetched', false);
     }
-
-    //metodo de ordenação para (bond->employee->name) no sortable
-    /* public function bondEmployeeNameSortable($query, $direction)
-    {
-        $query = $query
-            ->join('bonds', 'bond_documents.bond_id', '=', 'bonds.id')
-            ->join('employees', 'bonds.employee_id', '=', 'employees.id')
-            ->orderBy('employees.name', $direction)
-            ->select('bond_documents.*');
-        return $query;
-    } */
-
-    //metodo de ordenação para (bond->role->name) no sortable
-    /* public function bondRoleNameSortable($query, $direction)
-    {
-        $query = $query
-            ->join('bonds', 'bond_documents.bond_id', '=', 'bonds.id')
-            ->join('roles', 'bonds.role_id', '=', 'roles.id')
-            ->orderBy('roles.name', $direction)
-            ->select('bond_documents.*');
-        return $query;
-    } */
-
-    //metodo de ordenação para (bond->course->name) no sortable
-    /* public function bondCourseNameSortable($query, $direction)
-    {
-        $query = $query
-            ->join('bonds', 'bond_documents.bond_id', '=', 'bonds.id')
-            ->join('courses', 'bonds.course_id', '=', 'courses.id')
-            ->orderBy('courses.name', $direction)
-            ->select('bond_documents.*');
-        return $query;
-    } */
-
-    //metodo de ordenação para (bond->pole->name) no sortable
-    /* public function bondPoleNameSortable($query, $direction)
-    {
-        $query = $query
-            ->join('bonds', 'bond_documents.bond_id', '=', 'bonds.id')
-            ->join('poles', 'bonds.course_id', '=', 'poles.id')
-            ->orderBy('poles.name', $direction)
-            ->select('bond_documents.*');
-        return $query;
-    } */
 }

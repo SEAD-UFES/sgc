@@ -37,7 +37,7 @@ class DocumentController extends Controller
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, $this->service->documentClass::$accepted_filters);
 
-        $documents = $this->service->list();
+        $documents = $this->service->list(sort: $request->query('sort'), direction: $request->query('direction'));
 
         return view('employee.document.index', compact('documents', 'filters'));
     }
@@ -50,12 +50,12 @@ class DocumentController extends Controller
         //check access permission
         if (!Gate::allows('bondDocument-list')) return response()->view('access.denied')->setStatusCode(401);
 
-        //filters
-        $filters = ModelFilterHelpers::buildFilters($request, BondDocument::$accepted_filters);
-
         $this->service->documentClass = BondDocument::class;
 
-        $documents = $this->service->list();
+        //filters
+        $filters = ModelFilterHelpers::buildFilters($request, $this->service->documentClass::$accepted_filters);
+
+        $documents = $this->service->list(sort: $request->query('sort'), direction: $request->query('direction'));
 
         return view('bond.document.index', compact('documents', 'filters'));
     }
@@ -73,7 +73,7 @@ class DocumentController extends Controller
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, BondDocument::$accepted_filters);
 
-        $documents = $this->service->listRights();
+        $documents = $this->service->listRights(sort: $request->query('sort'), direction: $request->query('direction'));
 
         return view('reports.rightsIndex', compact('documents', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }

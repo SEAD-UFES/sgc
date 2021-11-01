@@ -61,7 +61,7 @@ class ApprovedServiceTest extends TestCase
             //verifications
             Event::assertDispatched('eloquent.listed: ' . Approved::class);
             $this->assertCount(2, $approveds);
-            $this->assertEquals('John Doe', $approveds->first()->name);
+            $this->assertEquals('John Doe', $approveds[0]->name);
         });
     }
 

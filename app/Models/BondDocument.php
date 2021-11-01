@@ -24,8 +24,16 @@ class BondDocument extends Model
         'fetched',
     ];
 
-    public $sortable = [
+    public static $sortable = [
         'id',
+        'original_name',
+        'document_type',
+        'created_at',
+        'updated_at',
+        'course_name',
+        'employee_name',
+        'role_name',
+        'pole_name',
     ];
 
     public static $accepted_filters = [
@@ -100,5 +108,74 @@ class BondDocument extends Model
     public function logFetched()
     {
         $this->fireModelEvent('fetched', false);
+    }
+
+    public function queryDocuments()
+    {
+        $this->query = Document::select(
+            [
+                'documents.id',
+                'documents.original_name',
+                'documents.document_type_id',
+                'document_types.name AS document_type',
+                'documents.created_at',
+                'documents.updated_at',
+
+                'bonds.id AS bond_id',
+                'bonds.course_id',
+                'courses.name AS course_name',
+                'bonds.employee_id',
+                'employees.name AS employee_name',
+                'bonds.role_id',
+                'roles.name AS role_name',
+                'bonds.pole_id',
+                'poles.name AS pole_name',
+            ]
+        )
+            ->whereHasMorph('documentable', 'App\Models\BondDocument')
+            ->join('document_types', 'document_types.id', '=', 'documents.document_type_id')
+            ->join('bond_documents', 'bond_documents.id', '=', 'documentable_id')
+            ->join('bonds', 'bonds.id', '=', 'bond_documents.bond_id')
+            ->join('courses', 'courses.id', '=', 'bonds.course_id')
+            ->join('roles', 'roles.id', '=', 'bonds.role_id')
+            ->join('poles', 'poles.id', '=', 'bonds.pole_id')
+            ->join('employees', 'employees.id', '=', 'bonds.employee_id');
+
+        return $this->query;
+    }
+
+    public function queryRights()
+    {
+        $documentType = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
+
+        $this->query = $this->queryDocuments()
+            ->select(
+                [
+                    'documents.id',
+                    'documents.original_name',
+                    'documents.document_type_id',
+                    'document_types.name AS document_type',
+                    'documents.created_at',
+                    'documents.updated_at',
+
+                    'bonds.id AS bond_id',
+                    'bonds.course_id',
+                    'courses.name AS course_name',
+                    'bonds.employee_id',
+                    'employees.name AS employee_name',
+                    'bonds.role_id',
+                    'roles.name AS role_name',
+                    'bonds.pole_id',
+                    'poles.name AS pole_name',
+
+                    'bonds.uaba_checked_at',
+                    'bonds.impediment',
+                ]
+            )
+            ->where('documents.document_type_id', $documentType->id)
+            ->whereNotNull('uaba_checked_at')
+            ->where('impediment', false);
+
+        return $this->query;
     }
 }

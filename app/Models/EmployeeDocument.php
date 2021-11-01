@@ -24,8 +24,15 @@ class EmployeeDocument extends Model
         'fetched',
     ];
 
-    public $sortable = [
+    public static $sortable = [
         'id',
+        'original_name',
+        'document_type',
+        'created_at',
+        'updated_at',
+
+        'employee_name',
+        'employee_cpf',
     ];
 
     public static $accepted_filters = [
@@ -53,5 +60,29 @@ class EmployeeDocument extends Model
     public function logFetched()
     {
         $this->fireModelEvent('fetched', false);
+    }
+
+    public function queryDocuments()
+    {
+        $this->query = Document::select(
+            [
+                'documents.id',
+                'documents.original_name',
+                'documents.document_type_id',
+                'document_types.name AS document_type',
+                'documents.created_at',
+                'documents.updated_at',
+
+                'employees.id AS employee_id',
+                'employees.name AS employee_name',
+                'employees.cpf AS employee_cpf',
+            ]
+        )
+            ->whereHasMorph('documentable', 'App\Models\EmployeeDocument')
+            ->join('document_types', 'document_types.id', '=', 'documents.document_type_id')
+            ->join('employee_documents', 'employee_documents.id', '=', 'documentable_id')
+            ->join('employees', 'employees.id', '=', 'employee_documents.employee_id');
+
+        return $this->query;
     }
 }

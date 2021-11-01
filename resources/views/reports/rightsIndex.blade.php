@@ -33,19 +33,19 @@
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
-                                <th>{{-- @sortablelink('bondEmployeeName', ' --}}Colaborador{{-- ') --}}</th>
-                                <th>{{-- @sortablelink('bondRoleName', ' --}}Função{{-- ') --}}</th>
-                                <th>{{-- @sortablelink('bondCourseName', ' --}}Curso{{-- ') --}}</th>
-                                <th>{{-- @sortablelink('bondPoleName', ' --}}Polo{{-- ') --}}</th>
+                                <th>@sortablelink('employee_name', 'Colaborador')</th>
+                                <th>@sortablelink('role_name', 'Função')</th>
+                                <th>@sortablelink('course_name', 'Curso')</th>
+                                <th>@sortablelink('pole_name', 'Polo')</th>
                                 <th>@sortablelink('original_name', 'Nome')</th>
                             </thead>
                             <tbody>
                                 @foreach ($documents as $document)
                                     <tr>
-                                        <td>{{ $document->documentable->bond->employee->name }}</td>
-                                        <td>{{ $document->documentable->bond->role->name }}</td>
-                                        <td>{{ $document->documentable->bond->course->name }}</td>
-                                        <td>{{ $document->documentable->bond->pole->name }}</td>
+                                        <td>{{ $document->employee_name }}</td>
+                                        <td>{{ $document->role_name }}</td>
+                                        <td>{{ $document->course_name }}</td>
+                                        <td>{{ $document->pole_name }}</td>
                                         <td><a href={{ route('documents.show', ['id' => $document->id, 'type' => 'BondDocument', 'htmlTitle' => $document->original_name]) }}
                                                 target="_blank">{{ $document->original_name }}</a></td>
                                     </tr>
@@ -53,6 +53,8 @@
                             </tbody>
                         </table>
                     </div>
+                    <br />
+                    {!! $documents->links() !!}
                     <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
                     <br /><br />
                 </div>

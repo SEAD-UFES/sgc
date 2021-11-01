@@ -32,34 +32,36 @@
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
-                                <th>{{-- @sortablelink('employee.cpf', ' --}}CPF{{-- ') --}}</th>
-                                <th>{{-- @sortablelink('employee.name', ' --}}Colaborador{{-- ') --}}</th>
+                                <th>@sortablelink('employee_cpf', 'CPF')</th>
+                                <th>@sortablelink('employee_name', 'Colaborador')</th>
                                 <th>@sortablelink('original_name', 'Nome do arquivo')</th>
-                                <th>@sortablelink('documentType.name', 'Tipo')</th>
+                                <th>@sortablelink('document_type', 'Tipo')</th>
                             </thead>
                             <tbody>
                                 @foreach ($documents as $document)
                                     <tr>
                                         <td>
-                                            <a href="{{ route('employees.show', $document->documentable->employee->id) }}" target="_blank">
-                                                {{ $document->documentable->employee->cpf }}
+                                            <a href="{{ route('employees.show', $document->employee_id) }}" target="_blank">
+                                                {{ $document->employee_cpf }}
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="{{ route('employees.show', $document->documentable->employee->id) }}" target="_blank">
-                                                {{ $document->documentable->employee->name }}
+                                            <a href="{{ route('employees.show', $document->employee_id) }}" target="_blank">
+                                                {{ $document->employee_name }}
                                             </a>
                                         </td>
                                         <td>
                                             <a href="{{ route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]) }}"
                                                 target="_blank">{{ $document->original_name }}</a>
                                         </td>
-                                        <td>{{ $document->documentType->name }}</td>
+                                        <td>{{ $document->document_type }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
+                    <br />
+                    {!! $documents->links() !!}
                     <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
                     @can('employeeDocument-store')
                         <a href="{{ route('employeesDocuments.create') }}" class="btn btn-warning">Importar Documento de Colaborador</a>

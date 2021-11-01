@@ -20,16 +20,24 @@ class DocumentService
     /**
      * Undocumented function
      *
+     * @param string|null $sort
+     * @param string|null $direction
      * @return LengthAwarePaginator
      */
-    public function list(): LengthAwarePaginator
+    public function list(string $sort = null, string $direction = null): LengthAwarePaginator
     {
         (new Document)->logListed();
 
-        $query = new Document();
-        $query = $query->where('documentable_type', $this->documentClass)->with('documentable');
+        $query = (new $this->documentClass)->queryDocuments();
         $query = $query->AcceptRequest($this->documentClass::$accepted_filters)->filter();
-        $query = $query->sortable(['updated_at' => 'desc']);
+
+        if (in_array($sort, $this->documentClass::$sortable) && in_array($direction, ['asc', 'desc'])) {
+
+            $query = $query->orderBy($sort, $direction);
+        } else {
+            $query = $query->orderBy('documents.updated_at', 'desc');
+        }
+
         $documents = $query->paginate(10);
         $documents->withQueryString();
 
@@ -39,17 +47,26 @@ class DocumentService
     /**
      * Undocumented function
      *
+     * @param string|null $sort
+     * @param string|null $direction
      * @return LengthAwarePaginator
      */
-    public function listRights(): LengthAwarePaginator
+    public function listRights(string $sort = null, string $direction = null): LengthAwarePaginator
     {
+        $this->documentClass = BondDocument::class;
+
         (new Document)->logListed();
 
-        $documentsQuery = Document::rightsWithBond();
+        $query = (new $this->documentClass)->queryRights();
+        $query = $query->AcceptRequest($this->documentClass::$accepted_filters)->filter();
+        if (in_array($sort, $this->documentClass::$sortable) && in_array($direction, ['asc', 'desc'])) {
 
-        $documentsQuery = $documentsQuery->AcceptRequest(BondDocument::$accepted_filters)->filter();
-        $documentsQuery = $documentsQuery->sortable(['updated_at' => 'desc']);
-        $documents = $documentsQuery->paginate(10);
+            $query = $query->orderBy($sort, $direction);
+        } else {
+            $query = $query->orderBy('documents.updated_at', 'desc');
+        }
+
+        $documents = $query->paginate(10);
         $documents->withQueryString();
 
         return $documents;
