@@ -11283,7 +11283,7 @@ textarea.form-control-lg {
 }
 @font-face {
   font-family: "bootstrap-icons";
-  src: url(/fonts/vendor/bootstrap-icons/bootstrap-icons.woff2?66e4109ec6241c76fdcfff101b46ce0b) format("woff2"), url(/fonts/vendor/bootstrap-icons/bootstrap-icons.woff?ea6f3dfe4ebb15134576260fe8dbc414) format("woff");
+  src: url(/fonts/vendor/bootstrap-icons/bootstrap-icons.woff2?2b56e79ae5013246de291c3bd46c2c1b) format("woff2"), url(/fonts/vendor/bootstrap-icons/bootstrap-icons.woff?38c4d2499557ae0379fd160e190c331c) format("woff");
 }
 .bi::before,
 [class^=bi-]::before,
@@ -17220,11 +17220,11 @@ textarea.form-control-lg {
   content: "\f6c8";
 }
 
-.bi-ticket-perferated-fill::before {
+.bi-ticket-perforated-fill::before {
   content: "\f6c9";
 }
 
-.bi-ticket-perferated::before {
+.bi-ticket-perforated::before {
   content: "\f6ca";
 }
 
