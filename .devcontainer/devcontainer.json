@@ -1,0 +1,22 @@
+// https://aka.ms/devcontainer.json
+{
+	"name": "SGC Container",
+	"dockerComposeFile": [
+		"../docker-compose-sail.yml"
+	],
+	"service": "laravel.app",
+	"workspaceFolder": "/var/www/html",
+	"settings": {},
+	"extensions": [
+		// "mikestead.dotenv",
+		// "amiralizadeh9480.laravel-extra-intellisense",
+		// "ryannaddy.laravel-artisan",
+		// "onecentlin.laravel5-snippets",
+		// "onecentlin.laravel-blade"
+	],
+	"remoteUser": "sail",
+	"forwardPorts": [80, 443],
+	// "runServices": [],
+	"postCreateCommand": "composer update && npm update && npm run dev && php artisan migrate:fresh --seed",
+	// "shutdownAction": "none",
+}
