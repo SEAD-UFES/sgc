@@ -57,7 +57,7 @@ class RoleServiceTest extends TestCase
         $role = Role::find(1);
 
         Event::fakeFor(function () use ($role) {
-            //execution 
+            //execution
             $role = $this->service->read($role);
 
             //verifications

@@ -31,23 +31,25 @@ class ApprovedState extends Model
 
     public function hasNext()
     {
-        if ($this->name == 'Desistente' or $this->name == 'Aceitante')
+        if ($this->name == 'Desistente' or $this->name == 'Aceitante') {
             return false;
+        }
 
         return true;
     }
 
     public function getNext()
     {
-        if ($this->hasNext())
+        if ($this->hasNext()) {
             switch ($this->name) {
                 case 'Não contatado':
                     return ApprovedState::where('name', 'Contatado')->get();
-                    break;
+                break;
                 case 'Contatado':
                     return ApprovedState::where('name', 'Aceitante')->orWhere('name', 'Desistente')->get();
-                    break;
+                break;
             }
+        }
     }
 
     public function logListed()

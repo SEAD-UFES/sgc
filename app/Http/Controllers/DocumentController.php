@@ -30,7 +30,9 @@ class DocumentController extends Controller
     public function employeesDocumentsIndex(Request $request)
     {
         //check access permission
-        if (!Gate::allows('employeeDocument-list')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('employeeDocument-list')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $this->service->documentClass = EmployeeDocument::class;
 
@@ -48,7 +50,9 @@ class DocumentController extends Controller
     public function bondsDocumentsIndex(Request $request)
     {
         //check access permission
-        if (!Gate::allows('bondDocument-list')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('bondDocument-list')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $this->service->documentClass = BondDocument::class;
 
@@ -68,7 +72,9 @@ class DocumentController extends Controller
     public function rightsIndex(Request $request)
     {
         //check access permission
-        if (!Gate::allows('bondDocument-rights')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('bondDocument-rights')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, BondDocument::$accepted_filters);
@@ -86,7 +92,9 @@ class DocumentController extends Controller
     public function employeesDocumentsCreate()
     {
         //check access permission
-        if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('employeeDocument-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $documentTypes = DocumentType::orderBy('name')->get();
         $employees = Employee::all();
@@ -102,7 +110,9 @@ class DocumentController extends Controller
     public function bondsDocumentsCreate()
     {
         //check access permission
-        if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('bondDocument-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $documentTypes = DocumentType::orderBy('name')->get();
         $bonds = Bond::all();
@@ -119,7 +129,9 @@ class DocumentController extends Controller
     public function employeesDocumentsStore(StoreEmployeeDocumentRequest $request)
     {
         //check access permission
-        if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('employeeDocument-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $this->service->documentClass = EmployeeDocument::class;
         $this->service->create($request->validated());
@@ -136,7 +148,9 @@ class DocumentController extends Controller
     public function bondsDocumentsStore(StoreBondDocumentRequest $request)
     {
         //check access permission
-        if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('bondDocument-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $this->service->documentClass = BondDocument::class;
         $this->service->create($request->validated());
@@ -152,7 +166,9 @@ class DocumentController extends Controller
     public function employeesDocumentsCreateMany(Request $request)
     {
         //check access permission
-        if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('employeeDocument-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $id = $request->id ?? null;
         $employees = !is_null($id)
@@ -165,7 +181,9 @@ class DocumentController extends Controller
     public function bondsDocumentsCreateMany(Request $request)
     {
         //check access permission
-        if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('bondDocument-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $id = $request->bond_id ?? null;
         $bonds = !is_null($id)
@@ -180,7 +198,9 @@ class DocumentController extends Controller
     public function employeesDocumentsStoreManyStep1(StoreEmployeeMultipleDocumentsRequest $request)
     {
         //check access permission
-        if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('employeeDocument-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $documentTypes = DocumentType::orderBy('name')->get();
 
@@ -198,7 +218,9 @@ class DocumentController extends Controller
     public function bondsDocumentsStoreManyStep1(StoreBondMultipleDocumentsRequest $request)
     {
         //check access permission
-        if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('bondDocument-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $documentTypes = DocumentType::orderBy('name')->get();
 
@@ -216,7 +238,9 @@ class DocumentController extends Controller
     public function employeesDocumentsStoreManyStep2(Request $request)
     {
         //check access permission
-        if (!Gate::allows('employeeDocument-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('employeeDocument-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $this->service->documentModel = new EmployeeDocument;
         $this->service->createManyEmployeeDocumentsStep2($request->all());
@@ -227,7 +251,9 @@ class DocumentController extends Controller
     public function bondsDocumentsStoreManyStep2(Request $request)
     {
         //check access permission
-        if (!Gate::allows('bondDocument-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('bondDocument-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $this->service->documentModel = new BondDocument;
         $this->service->createManyBondDocumentsStep2($request->all());
@@ -246,8 +272,11 @@ class DocumentController extends Controller
         $file = $this->service->getDocument($id);
 
         //check access permission
-        if ($file->class === 'App\Models\EmployeeDocument' && !Gate::allows('employeeDocument-download')) return response()->view('access.denied')->setStatusCode(401);
-        elseif ($file->class === 'App\Models\BondDocument' && !Gate::allows('bondDocument-download')) return response()->view('access.denied')->setStatusCode(401);
+        if ($file->class === 'App\Models\EmployeeDocument' && !Gate::allows('employeeDocument-download')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        } elseif ($file->class === 'App\Models\BondDocument' && !Gate::allows('bondDocument-download')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         return Response::make($file->data, 200, ['filename="' . $file->name . '"'])->header('Content-Type', $file->mime);
     }
@@ -255,7 +284,9 @@ class DocumentController extends Controller
     public function employeesDocumentsMassDownload(Employee $employee)
     {
         //check access permission
-        if (!Gate::allows('employeeDocument-download')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('employeeDocument-download')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         try {
             $zipFileName = $this->service->getAllDocumentsOfEmployee($employee);
@@ -269,7 +300,9 @@ class DocumentController extends Controller
     public function bondsDocumentsMassDownload(Bond $bond)
     {
         //check access permission
-        if (!Gate::allows('bondDocument-download')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('bondDocument-download')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         try {
             $zipFileName = $this->service->getAllDocumentsOfBond($bond);

@@ -23,7 +23,7 @@ class PoleTest extends TestCase
      * Guest cannot list poles
      * @return void
      */
-    public function test_guest_cannot_list_poles()
+    public function testGuestCannotListPoles()
     {
         $this->get(route('poles.index'))
             ->assertRedirect(route('auth.login'));
@@ -32,7 +32,7 @@ class PoleTest extends TestCase
      * Guest cannot create a pole
      * @return void
      */
-    public function test_guest_cannot_create_pole()
+    public function testGuestCannotCreatePole()
     {
         $this->post(route('poles.store'), $this->poleData)
             ->assertRedirect(route('auth.login'));
@@ -42,7 +42,7 @@ class PoleTest extends TestCase
      * Guest cannot update a pole
      * @return void
      */
-    public function test_guest_cannot_update_pole()
+    public function testGuestCannotUpdatePole()
     {
         $pole = $this->getTestPole();
 
@@ -54,7 +54,7 @@ class PoleTest extends TestCase
      * Guest cannot delete a pole
      * @return void
      */
-    public function test_guest_cannot_delete_pole()
+    public function testGuestCannotDeletePole()
     {
         $pole = $this->getTestPole();
 
@@ -66,7 +66,7 @@ class PoleTest extends TestCase
      * Guest cannot access pole create page
      * @return void
      */
-    public function test_guest_cannot_access_create_pole_page()
+    public function testGuestCannotAccessCreatePolePage()
     {
         $this->get(route('poles.create'))
             ->assertRedirect(route('auth.login'));
@@ -76,7 +76,7 @@ class PoleTest extends TestCase
      * Guest cannot access pole edit page
      * @return void
      */
-    public function test_guest_cannot_access_edit_pole_page()
+    public function testGuestCannotAccessEditPolePage()
     {
         $pole = $this->getTestPole();
 
@@ -88,7 +88,7 @@ class PoleTest extends TestCase
      * Authenticated user can list poles
      * @return void
      */
-    public function test_authenticated_user_whitout_permission_assignment_cannot_list_poles()
+    public function testAuthenticatedUserWhitoutPermissionAssignmentCannotListPoles()
     {
         $session = $this->getAuthenticatedSession();
 
@@ -100,7 +100,7 @@ class PoleTest extends TestCase
      * Authenticated user can create pole
      * @return void
      */
-    public function test_authenticated_user_without_permission_assignment_cannot_create_pole()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotCreatePole()
     {
         $session = $this->getAuthenticatedSession();
 
@@ -112,14 +112,16 @@ class PoleTest extends TestCase
      * Authenticated user can update pole
      * @return void
      */
-    public function test_authenticated_user_without_permission_assignment_cannot_update_pole()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotUpdatePole()
     {
         $session = $this->getAuthenticatedSession();
 
         $pole = $this->getTestPole();
 
-        $session->put(route('poles.update', $pole->id),
-                ["name" => "updated", "description" => "updated"])
+        $session->put(
+            route('poles.update', $pole->id),
+            ["name" => "updated", "description" => "updated"]
+        )
             ->assertSee('Acesso negado');
     }
 
@@ -127,7 +129,7 @@ class PoleTest extends TestCase
      * Authenticated user can delete pole
      * @return void
      */
-    public function test_authenticated_user_without_permission_assignment_cannot_delete_pole()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotDeletePole()
     {
         $session = $this->getAuthenticatedSession();
 
@@ -144,7 +146,7 @@ class PoleTest extends TestCase
      * Authenticated user can access pole create page
      * @return void
      */
-    public function test_authenticated_user_without_permission_assignment_cannot_access_create_pole_page()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotAccessCreatePolePage()
     {
         $session = $this->getAuthenticatedSession();
 
@@ -157,7 +159,7 @@ class PoleTest extends TestCase
      * Authenticated user can access pole edit page
      * @return void
      */
-    public function test_authenticated_user_without_permission_assignment_cannot_access_edit_pole_page()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotAccessEditPolePage()
     {
         $session = $this->getAuthenticatedSession();
 

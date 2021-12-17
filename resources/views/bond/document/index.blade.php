@@ -21,11 +21,11 @@
                         [
                             'filters' => $filters,
                             'options' => [
-                                ['label' => 'Colaborador', 'value' => 'bond_employee_name_contains', 'selected' => true], 
-                                ['label' => 'Cargo', 'value' => 'bond_role_name_contains'], 
-                                ['label' => 'Curso', 'value' => 'bond_course_name_contains'], 
-                                ['label' => 'Nome do arquivo', 'value' => 'originalname_contains'], 
-                                ['label' => 'Tipo do documento', 'value' => 'documentType_name_contains']
+                                ['label' => 'Colaborador', 'value' => 'bondEmployeeNameContains', 'selected' => true], 
+                                ['label' => 'Cargo', 'value' => 'bondRoleNameContains'], 
+                                ['label' => 'Curso', 'value' => 'bondCourseNameContains'], 
+                                ['label' => 'Nome do arquivo', 'value' => 'originalnameContains'], 
+                                ['label' => 'Tipo do documento', 'value' => 'documentTypeNameContains']
                             ], 
                         ]
                     )@endcomponent

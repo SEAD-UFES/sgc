@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
-use App\ModelFilters\roleFilter;
+use App\ModelFilters\RoleFilter;
 
 class Role extends Model
 {
     use HasFactory;
     use Sortable;
-    use roleFilter, Filterable;
+    use RoleFilter, Filterable;
 
 
     /**
@@ -36,12 +36,12 @@ class Role extends Model
 
     private static $whiteListFilter = ['*'];
     public static $accepted_filters = [
-        'name_contains',
-        'description_contains',
-        'grantvalue_exactly',
-        'grantvalue_BigOrEqu',
-        'grantvalue_LowOrEqu',
-        'grantType_name_contains'
+        'nameContains',
+        'descriptionContains',
+        'grantvalueExactly',
+        'grantvalueBigOrEqu',
+        'grantvalueLowOrEqu',
+        'grantTypeNameContains'
     ];
 
     /* public function bonds()

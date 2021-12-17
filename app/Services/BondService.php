@@ -82,7 +82,7 @@ class BondService
 
     /**
      * Undocumented function
-     * 
+     *
      * @param Bond $bond
      * @return Bond
      */
@@ -146,8 +146,9 @@ class BondService
                 $query->where('bond_id', $bond->id);
             })->get()->count();
 
-        if ($termo_document_count <= 0)
+        if ($termo_document_count <= 0) {
             $attributes['impediment'] = true;
+        }
 
 
         $bond->update($attributes);

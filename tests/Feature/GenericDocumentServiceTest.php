@@ -48,7 +48,7 @@ class GenericDocumentServiceTest extends TestCase
         $document = Document::find(1);
 
         Event::fakeFor(function () use ($document) {
-            //execution 
+            //execution
             $document = $this->service->read($document);
 
             //verifications
@@ -64,7 +64,7 @@ class GenericDocumentServiceTest extends TestCase
     public function documentShouldBePreparedToDownload()
     {
         Event::fakeFor(function () {
-            //execution 
+            //execution
             $document = $this->service->getDocument(1);
 
             //verifications

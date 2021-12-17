@@ -21,16 +21,16 @@
                         [
                             'filters' =>$filters,
                             'options' => [
-                                [ 'label'=>'Nome', 'value'=>'name_contains', 'selected'=>true],
-                                [ 'label'=>'E-mail', 'value'=>'email_contains'],
-                                [ 'label'=>'Área', 'value'=>'areacode_contains'],
-                                [ 'label'=>'Telefone', 'value'=>'phone_contains'],
-                                [ 'label'=>'Celular', 'value'=>'mobile_contains'],
-                                [ 'label'=>'Edital', 'value'=>'announcement_contains'],
-                                [ 'label'=>'Situação', 'value'=>'approvedState_name_contains'],
-                                [ 'label'=>'Função', 'value'=>'role_name_contains'],
-                                [ 'label'=>'Curso', 'value'=>'course_name_contains'],
-                                [ 'label'=>'Polo', 'value'=>'pole_name_contains'],
+                                [ 'label'=>'Nome', 'value'=>'nameContains', 'selected'=>true],
+                                [ 'label'=>'E-mail', 'value'=>'emailContains'],
+                                [ 'label'=>'Área', 'value'=>'areacodeContains'],
+                                [ 'label'=>'Telefone', 'value'=>'phoneContains'],
+                                [ 'label'=>'Celular', 'value'=>'mobileContains'],
+                                [ 'label'=>'Edital', 'value'=>'announcementContains'],
+                                [ 'label'=>'Situação', 'value'=>'approvedStateNameContains'],
+                                [ 'label'=>'Função', 'value'=>'roleNameContains'],
+                                [ 'label'=>'Curso', 'value'=>'courseNameContains'],
+                                [ 'label'=>'Polo', 'value'=>'poleNameContains'],
 
                             ]
                         ]

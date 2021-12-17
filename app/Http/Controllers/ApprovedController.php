@@ -34,7 +34,9 @@ class ApprovedController extends Controller
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('approved-list')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('approved-list')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, Approved::$accepted_filters);
@@ -55,7 +57,9 @@ class ApprovedController extends Controller
     public function create() // import spreadsheet file view
     {
         //check access permission
-        if (!Gate::allows('approved-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('approved-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         return view('approved.create');
     }
@@ -113,7 +117,9 @@ class ApprovedController extends Controller
     public function destroy(Approved $approved)
     {
         //check access permission
-        if (!Gate::allows('approved-destroy')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('approved-destroy')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         try {
             $this->service->delete($approved);
@@ -134,7 +140,9 @@ class ApprovedController extends Controller
     public function changeState(Request $request, Approved $approved)
     {
         //check access permission
-        if (!Gate::allows('approved-update-state')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('approved-update-state')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         try {
             $this->service->changeState($request->all(), $approved);
@@ -155,7 +163,9 @@ class ApprovedController extends Controller
     public function designate(Request $request, Approved $approved)
     {
         //check access permission
-        if (!Gate::allows('approved-designate')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('approved-designate')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $genders = Gender::orderBy('name')->get();
         $birthStates = State::orderBy('name')->get();
@@ -183,7 +193,9 @@ class ApprovedController extends Controller
     public function import(ImportApprovedRequest $request)
     {
         //check access permission
-        if (!Gate::allows('approved-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('approved-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $roles = Role::orderBy('name')->get();
         $courses = Course::orderBy('name')->get();
@@ -207,7 +219,9 @@ class ApprovedController extends Controller
     public function massStore(Request $request)
     {
         //check access permission
-        if (!Gate::allows('approved-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('approved-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         try {
             $this->service->massStore($request->all());

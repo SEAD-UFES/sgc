@@ -44,7 +44,7 @@ class UserServiceTest extends TestCase
     public function usersShouldBeListed()
     {
         Event::fakeFor(function () {
-            //execution 
+            //execution
             $users = $this->service->list();
 
             //verifications
@@ -63,7 +63,7 @@ class UserServiceTest extends TestCase
         $user = User::find(1);
 
         Event::fakeFor(function () use ($user) {
-            //execution 
+            //execution
             $user = $this->service->read($user);
 
             //verifications
@@ -86,7 +86,7 @@ class UserServiceTest extends TestCase
         $attributes['active'] = true;
 
         Event::fakeFor(function () use ($attributes) {
-            //execution 
+            //execution
             $this->service->create($attributes);
 
             //verifications

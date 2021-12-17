@@ -18,7 +18,7 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-    public function test_guest_can_view_a_login_form()
+    public function testGuestCanViewALoginForm()
     {
         $response = $this->get(route('auth.login'));
 
@@ -36,7 +36,7 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-    public function test_guest_is_redirected_from_root_login()
+    public function testGuestIsRedirectedFromRootLogin()
     {
         $response = $this->get(route('root'));
 
@@ -48,7 +48,7 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-    public function test_guest_cannot_see_home()
+    public function testGuestCannotSeeHome()
     {
         $response = $this->get(route('home'));
 
@@ -57,12 +57,12 @@ class LoginTest extends TestCase
 
     /**
      * A logged user must be redirected from the login page to
-     * the 'home'. 
+     * the 'home'.
      * A logged user must be redirected from 'root' to the 'home'.
      *
      * @return void
      */
-    public function test_user_cannot_view_login_form_authenticated()
+    public function testUserCannotViewLoginFormAuthenticated()
     {
         $user = User::factory()->make();
 
@@ -80,7 +80,7 @@ class LoginTest extends TestCase
      *
      * @return void
      */
-    public function test_user_cannot_authenticate_with_wrong_password()
+    public function testUserCannotAuthenticateWithWrongPassword()
     {
         $user = User::factory()->make();
 

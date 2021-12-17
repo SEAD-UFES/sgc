@@ -63,7 +63,7 @@ class UserTypeServiceTest extends TestCase
         $attributes['acronym'] = 'gam';
         $attributes['description'] = '3rd type';
 
-        //execution 
+        //execution
         $this->service->create($attributes);
 
         //verifications
@@ -103,7 +103,7 @@ class UserTypeServiceTest extends TestCase
         //setting up scenario
         $userType = UserType::find(1);
 
-        //execution 
+        //execution
         $this->service->delete($userType);
 
         //verifications

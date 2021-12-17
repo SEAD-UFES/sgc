@@ -40,7 +40,7 @@ class UserTypeAssignmentService
 
     /**
      * Undocumented function
-     * 
+     *
      * @param UserTypeAssignment $user
      * @return UserTypeAssignment
      */

@@ -69,7 +69,7 @@ class UserTypeAssignmentServiceTest extends TestCase
         $userTypeAssignment = UserTypeAssignment::find(1);
 
         Event::fakeFor(function () use ($userTypeAssignment) {
-            //execution 
+            //execution
             $userTypeAssignment = $this->service->read($userTypeAssignment);
 
             //verifications

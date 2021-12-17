@@ -14,7 +14,7 @@ class EmployeeService
      *
      * @return LengthAwarePaginator
      */
-    function list(): LengthAwarePaginator
+    public function list(): LengthAwarePaginator
     {
         (new Employee)->logListed();
 
@@ -46,7 +46,7 @@ class EmployeeService
 
     /**
      * Undocumented function
-     * 
+     *
      * @param Employee $employee
      * @return Employee
      */

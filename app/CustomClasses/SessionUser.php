@@ -26,8 +26,9 @@ class SessionUser
         if (!is_null($employeeResult)) {
             $this->hasEmployee = true;
             $this->name = $employeeResult->name;
-            if ($employeeResult->gender != null)
+            if ($employeeResult->gender != null) {
                 $this->genderArticle = (($employeeResult->gender->name) === 'Masculino') ? 'o' : 'a';
+            }
         }
 
         //set $currentUTA_id

@@ -21,13 +21,13 @@
                         [
                             'filters' =>$filters,
                             'options' => [
-                                [ 'label'=>'CPF', 'value'=>'employee_cpf_contains', 'selected'=>true],
-                                [ 'label'=>'Colaborador', 'value'=>'employee_name_contains'],
-                                [ 'label'=>'Função', 'value'=>'role_name_contains'],
-                                [ 'label'=>'Curso', 'value'=>'course_name_contains'],
-                                [ 'label'=>'Polo', 'value'=>'pole_name_contains'],
-                                [ 'label'=>'Voluntário', 'value'=>'volunteer_exactly'],
-                                [ 'label'=>'Impedido', 'value'=>'impediment_exactly'],
+                                [ 'label'=>'CPF', 'value'=>'employeeCpfContains', 'selected'=>true],
+                                [ 'label'=>'Colaborador', 'value'=>'employeeNameContains'],
+                                [ 'label'=>'Função', 'value'=>'roleNameContains'],
+                                [ 'label'=>'Curso', 'value'=>'courseNameContains'],
+                                [ 'label'=>'Polo', 'value'=>'poleNameContains'],
+                                [ 'label'=>'Voluntário', 'value'=>'volunteerExactly'],
+                                [ 'label'=>'Impedido', 'value'=>'impedimentExactly'],
                             ]
                         ]
                     )@endcomponent

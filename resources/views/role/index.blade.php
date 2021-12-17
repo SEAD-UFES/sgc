@@ -21,12 +21,12 @@
                         [
                             'filters' => $filters,
                             'options' => [
-                                ['label' => 'Nome', 'value' => 'name_contains', 'selected' => true],
-                                ['label' => 'Descrição', 'value' => 'description_contains'], 
-                                ['label' => 'Valor da Bolsa (=)', 'value' => 'grantvalue_exactly'], 
-                                ['label' => 'Valor da Bolsa (>=)', 'value' => 'grantvalue_BigOrEqu'], 
-                                ['label' => 'Valor da Bolsa (<=)', 'value'=> 'grantvalue_LowOrEqu'], 
-                                ['label' => 'Tipo da bolsa', 'value' => 'grantType_name_contains']
+                                ['label' => 'Nome', 'value' => 'nameContains', 'selected' => true],
+                                ['label' => 'Descrição', 'value' => 'descriptionContains'], 
+                                ['label' => 'Valor da Bolsa (=)', 'value' => 'grantvalueExactly'], 
+                                ['label' => 'Valor da Bolsa (>=)', 'value' => 'grantvalueBigOrEqu'], 
+                                ['label' => 'Valor da Bolsa (<=)', 'value'=> 'grantvalueLowOrEqu'], 
+                                ['label' => 'Tipo da bolsa', 'value' => 'grantTypeNameContains']
                             ],
                         ]
                     )@endcomponent

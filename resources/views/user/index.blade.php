@@ -21,10 +21,10 @@
                         [
                             'filters' => $filters,
                             'options' => [
-                                ['label' => 'E-mail', 'value' => 'email_contains', 'selected' => true], 
-                                // ['label' => 'Tipo', 'value' => 'usertype_name_contains'], 
-                                ['label' => 'Ativo', 'value' => 'active_exactly'], 
-                                ['label' => 'Colaborador', 'value' => 'employee_name_contains']
+                                ['label' => 'E-mail', 'value' => 'emailContains', 'selected' => true], 
+                                // ['label' => 'Tipo', 'value' => 'usertypeNameContains'], 
+                                ['label' => 'Ativo', 'value' => 'activeExactly'], 
+                                ['label' => 'Colaborador', 'value' => 'employeeNameContains']
                             ],
                         ]
                     )@endcomponent

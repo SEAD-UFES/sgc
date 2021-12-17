@@ -37,13 +37,13 @@ class BondDocument extends Model
     ];
 
     public static $accepted_filters = [
-        'originalname_contains',
-        'documentType_name_contains',
+        'originalnameContains',
+        'documentTypeNameContains',
         'bond',
-        'bond_employee_name_contains',
-        'bond_role_name_contains',
-        'bond_pole_name_contains',
-        'bond_course_name_contains'
+        'bondEmployeeNameContains',
+        'bondRoleNameContains',
+        'bondPoleNameContains',
+        'bondCourseNameContains'
     ];
 
     public function document()

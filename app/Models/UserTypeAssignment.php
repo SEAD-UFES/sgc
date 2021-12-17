@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
-use App\ModelFilters\userTypeAssignmentFilter;
+use App\ModelFilters\UserTypeAssignmentFilter;
 
 class UserTypeAssignment extends Model
 {
     use HasFactory;
     use Sortable;
-    use userTypeAssignmentFilter, Filterable;
+    use UserTypeAssignmentFilter, Filterable;
 
     /**
      * The attributes that are mass assignable.
@@ -44,16 +44,16 @@ class UserTypeAssignment extends Model
 
     private static $whiteListFilter = ['*'];
     public static $accepted_filters = [
-        'user_email_contains',
-        'usertype_name_contains',
-        'course_name_contains',
-        'begin_exactly',
-        'begin_BigOrEqu',
-        'begin_LowOrEqu',
-        'end_exactly',
-        'end_BigOrEqu',
-        'end_LowOrEqu',
-        'user_id'
+        'userEmailContains',
+        'usertypeNameContains',
+        'courseNameContains',
+        'beginExactly',
+        'beginBigOrEqu',
+        'beginLowOrEqu',
+        'endExactly',
+        'endBigOrEqu',
+        'endLowOrEqu',
+        'userId'
     ];
 
     public function user()

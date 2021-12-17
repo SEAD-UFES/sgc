@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Bond;
 use Kyslik\ColumnSortable\Sortable;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
-use App\ModelFilters\employeeFilter;
+use App\ModelFilters\EmployeeFilter;
 
 class Employee extends Model
 {
     use HasFactory;
     use Sortable;
-    use employeeFilter, Filterable;
+    use EmployeeFilter, Filterable;
 
     protected $fillable = [
         'name',
@@ -62,11 +62,11 @@ class Employee extends Model
 
     private static $whiteListFilter = ['*'];
     public static $accepted_filters = [
-        'cpf_contains',
-        'name_contains',
-        'job_contains',
-        'addresscity_contains',
-        'user_email_contains'
+        'cpfContains',
+        'nameContains',
+        'jobContains',
+        'addresscityContains',
+        'userEmailContains'
     ];
 
     public function gender()
@@ -106,7 +106,7 @@ class Employee extends Model
 
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'bonds')->withPivot('id', 'course_id', 'employee_id', 'role_id', 'pole_id', /* 'classroom_id',*/ 'begin', 'end', 'terminated_at', 'volunteer', 'impediment', 'impediment_description', 'uaba_checked_at',)->using(Bond::class)->as('bond')->withTimestamps();
+        return $this->belongsToMany(Course::class, 'bonds')->withPivot('id', 'course_id', 'employee_id', 'role_id', 'pole_id', /* 'classroom_id',*/ 'begin', 'end', 'terminated_at', 'volunteer', 'impediment', 'impediment_description', 'uaba_checked_at')->using(Bond::class)->as('bond')->withTimestamps();
     }
 
     public function employeeDocuments()
@@ -133,10 +133,11 @@ class Employee extends Model
     {
         $isCoord = false;
 
-        if ($this->hasBond())
-            foreach ($this->courses as $bonded_course)
+        if ($this->hasBond()) {
+            foreach ($this->courses as $bonded_course) {
                 $isCoord = $isCoord || (substr($bonded_course->bond->role->name, 0, 20) == 'Coordenador de curso');
-
+            }
+        }
         return $isCoord;
     }
 

@@ -8,11 +8,11 @@ use App\Helpers\TextHelper;
 class TextHelperTest extends TestCase
 {
     /**
-     * Test titleCase helper function works 
+     * Test titleCase helper function works
      *
      * @return void
      */
-    public function test_title_case_helper()
+    public function testTitleCaseHelper()
     {
         $this->assertEquals(TextHelper::titleCase("king henry viii"), "King Henry VIII");
         $this->assertEquals(TextHelper::titleCase("dom joão vi"), "Dom João VI");
@@ -20,12 +20,12 @@ class TextHelperTest extends TestCase
     }
 
     /**
-     * Test removeAccent helper function can deal 
+     * Test removeAccent helper function can deal
      * with Portuguese characters
      *
      * @return void
      */
-    public function test_remove_accent_helper()
+    public function testRemoveAccentHelper()
     {
         $this->assertEquals(
             TextHelper::removeAccents("Açalpão, Caçapa, Época, Açaí"),

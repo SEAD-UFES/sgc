@@ -58,7 +58,7 @@ class PoleServiceTest extends TestCase
         $pole = Pole::find(1);
 
         Event::fakeFor(function () use ($pole) {
-            //execution 
+            //execution
             $pole = $this->service->read($pole);
 
             //verifications

@@ -31,7 +31,9 @@ class EmployeeController extends Controller
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('employee-list')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('employee-list')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, Employee::$accepted_filters);
@@ -49,7 +51,9 @@ class EmployeeController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('employee-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('employee-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $genders = Gender::orderBy('name')->get();
         $birthStates = State::orderBy('name')->get();
@@ -69,7 +73,9 @@ class EmployeeController extends Controller
     public function store(StoreEmployeeRequest $request)
     {
         //check access permission
-        if (!Gate::allows('employee-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('employee-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         try {
             $employee = $this->service->create($request->validated());
@@ -77,10 +83,11 @@ class EmployeeController extends Controller
             return redirect()->route('employees.index')->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $e->getMessage()]);
         }
 
-        if ($request->importDocuments == 'true')
+        if ($request->importDocuments == 'true') {
             return redirect()->route('employeesDocuments.createMany', $employee->id)->with('success', 'Colaborador criado com sucesso.');
-        else
+        } else {
             return redirect()->route('employees.index')->with('success', 'Colaborador criado com sucesso.');
+        }
     }
 
     /**
@@ -92,7 +99,9 @@ class EmployeeController extends Controller
     public function show(Employee $employee)
     {
         //check access permission
-        if (!Gate::allows('employee-show')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('employee-show')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $this->service->read($employee);
 
@@ -110,7 +119,9 @@ class EmployeeController extends Controller
     public function edit(Employee $employee)
     {
         //check access permission
-        if (!Gate::allows('employee-update')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('employee-update')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $genders = Gender::orderBy('name')->get();
         $birthStates = State::orderBy('name')->get();
@@ -131,7 +142,9 @@ class EmployeeController extends Controller
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
         //check access permission
-        if (!Gate::allows('employee-update')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('employee-update')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         try {
             $this->service->update($request->validated(), $employee);
@@ -151,7 +164,9 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         //check access permission
-        if (!Gate::allows('employee-destroy')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('employee-destroy')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         try {
             $this->service->delete($employee);

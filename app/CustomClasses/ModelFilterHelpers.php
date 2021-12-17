@@ -20,8 +20,11 @@ class ModelFilterHelpers
 
     public static function inputToArray($value)
     {
-        if (is_string($value)) $values = [$value];
-        elseif (is_array($value)) $values = $value;
+        if (is_string($value)) {
+            $values = [$value];
+        } elseif (is_array($value)) {
+            $values = $value;
+        }
         return $values;
     }
 
@@ -43,7 +46,7 @@ class ModelFilterHelpers
         return $values;
     }
 
-    public static function simple_operation($query_builder, $column, $operation, $values)
+    public static function simpleOperation($query_builder, $column, $operation, $values)
     {
         foreach ($values as $value) {
             $query_builder = $query_builder->where($column, $operation, $value);
@@ -59,7 +62,7 @@ class ModelFilterHelpers
         return $query_builder;
     }
 
-    public static function relation_contains($query_builder, $relation, $column, $values)
+    public static function relationContains($query_builder, $relation, $column, $values)
     {
         foreach ($values as $value) {
             $query_builder = $query_builder->wherehas($relation, function ($query) use ($column, $value) {
@@ -69,7 +72,7 @@ class ModelFilterHelpers
         return $query_builder;
     }
 
-    public static function morph_relation_contains($query_builder, $relation, $morphClass, $childRelation, $column, $values)
+    public static function morphRelationContains($query_builder, $relation, $morphClass, $childRelation, $column, $values)
     {
         foreach ($values as $value) {
             $query_builder = $query_builder
@@ -82,7 +85,7 @@ class ModelFilterHelpers
         return $query_builder;
     }
 
-    public static function relation_simple_operation($query_builder, $relation, $column, $operation, $values)
+    public static function relationSimpleOperation($query_builder, $relation, $column, $operation, $values)
     {
         foreach ($values as $value) {
             $query_builder = $query_builder->wherehas($relation, function ($query) use ($column, $operation, $value) {

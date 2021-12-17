@@ -9,7 +9,6 @@ use App\Models\Bond;
 use App\Models\Role;
 use App\Models\Pole;
 
-
 class DummyEmployeeSeeder extends Seeder
 {
     /**
@@ -21,7 +20,7 @@ class DummyEmployeeSeeder extends Seeder
     {
 
         /* "Coordenador de Curso"
-         * 
+         *
          * - each course has only one coordinator
          * - coordinators only have one course
          */
@@ -58,7 +57,6 @@ class DummyEmployeeSeeder extends Seeder
 
         foreach ($courses as $course) {
             foreach ($poles as $pole) {
-
                 $employee = Employee::factory()
                     ->assumePopulatedDatabase()
                     ->create([

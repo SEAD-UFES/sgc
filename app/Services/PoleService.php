@@ -40,7 +40,7 @@ class PoleService
 
     /**
      * Undocumented function
-     * 
+     *
      * @param Pole $pole
      * @return Pole
      */

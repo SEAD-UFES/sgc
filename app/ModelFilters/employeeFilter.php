@@ -5,40 +5,40 @@ namespace App\ModelFilters;
 use Illuminate\Database\Eloquent\Builder;
 use App\CustomClasses\ModelFilterHelpers;
 
-trait employeeFilter
+trait EmployeeFilter
 {
-    public function cpf_contains(Builder $builder, $value)
+    public function cpfContains(Builder $builder, $value)
     {
         $values = ModelFilterHelpers::inputToArray($value);
         $builder = ModelFilterHelpers::contains($builder, 'cpf', $values);
         return $builder;
     }
 
-    public function name_contains(Builder $builder, $value)
+    public function nameContains(Builder $builder, $value)
     {
         $values = ModelFilterHelpers::inputToArray($value);
         $builder = ModelFilterHelpers::contains($builder, 'name', $values);
         return $builder;
     }
 
-    public function job_contains(Builder $builder, $value)
+    public function jobContains(Builder $builder, $value)
     {
         $values = ModelFilterHelpers::inputToArray($value);
         $builder = ModelFilterHelpers::contains($builder, 'job', $values);
         return $builder;
     }
 
-    public function addresscity_contains(Builder $builder, $value)
+    public function addresscityContains(Builder $builder, $value)
     {
         $values = ModelFilterHelpers::inputToArray($value);
         $builder = ModelFilterHelpers::contains($builder, 'address_city', $values);
         return $builder;
     }
 
-    public function user_email_contains(Builder $builder, $value)
+    public function userEmailContains(Builder $builder, $value)
     {
         $values = ModelFilterHelpers::inputToArray($value);
-        $builder = ModelFilterHelpers::relation_contains($builder, 'user', 'email', $values);
+        $builder = ModelFilterHelpers::relationContains($builder, 'user', 'email', $values);
         return $builder;
     }
 }

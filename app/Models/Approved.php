@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
-use App\ModelFilters\approvedFilter;
+use App\ModelFilters\ApprovedFilter;
 
 class Approved extends Model
 {
     use HasFactory;
     use Sortable;
-    use approvedFilter, Filterable;
+    use ApprovedFilter, Filterable;
 
     protected $fillable = [
         'name',
@@ -46,16 +46,16 @@ class Approved extends Model
 
     private static $whiteListFilter = ['*'];
     public static $accepted_filters = [
-        'name_contains',
-        'email_contains',
-        'areacode_contains',
-        'phone_contains',
-        'mobile_contains',
-        'announcement_contains',
-        'approvedState_name_contains',
-        'role_name_contains',
-        'course_name_contains',
-        'pole_name_contains'
+        'nameContains',
+        'emailContains',
+        'areacodeContains',
+        'phoneContains',
+        'mobileContains',
+        'announcementContains',
+        'approvedStateNameContains',
+        'roleNameContains',
+        'courseNameContains',
+        'poleNameContains'
     ];
 
     public function approvedState()

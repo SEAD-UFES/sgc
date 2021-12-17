@@ -28,7 +28,9 @@ class UserTypeAssignmentController extends Controller
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-list')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('userTypeAssignment-list')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, UserTypeAssignment::$accepted_filters);
@@ -46,7 +48,9 @@ class UserTypeAssignmentController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('userTypeAssignment-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $users = User::orderBy('email')->get();
         $userTypes = UserType::orderBy('name')->get();
@@ -64,7 +68,9 @@ class UserTypeAssignmentController extends Controller
     public function store(StoreUserTypeAssignmentRequest $request)
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('userTypeAssignment-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         try {
             $this->service->create($request->validated());
@@ -84,7 +90,9 @@ class UserTypeAssignmentController extends Controller
     public function show(UserTypeAssignment $userTypeAssignment)
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-show')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('userTypeAssignment-show')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $this->service->read($userTypeAssignment);
     }
@@ -98,7 +106,9 @@ class UserTypeAssignmentController extends Controller
     public function edit(UserTypeAssignment $userTypeAssignment)
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-update')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('userTypeAssignment-update')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $users = User::orderBy('email')->get();
         $userTypes = UserType::orderBy('name')->get();
@@ -117,7 +127,9 @@ class UserTypeAssignmentController extends Controller
     public function update(UpdateUserTypeAssignmentRequest $request, UserTypeAssignment $userTypeAssignment)
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-update')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('userTypeAssignment-update')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         try {
             $userTypeAssignment = $this->service->update($request->validated(), $userTypeAssignment);
@@ -137,7 +149,9 @@ class UserTypeAssignmentController extends Controller
     public function destroy(UserTypeAssignment $userTypeAssignment)
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-destroy')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('userTypeAssignment-destroy')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         try {
             $this->service->delete($userTypeAssignment);

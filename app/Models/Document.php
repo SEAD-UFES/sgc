@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
-use App\ModelFilters\documentFilter;
+use App\ModelFilters\DocumentFilter;
 
 class Document extends Model
 {
     use HasFactory;
     use Sortable;
-    use documentFilter, Filterable;
+    use DocumentFilter, Filterable;
 
     protected $table = 'documents';
 
