@@ -21,11 +21,11 @@
                         [
                             'filters' =>$filters,
                             'options' => [
-                                [ 'label'=>'CPF', 'value'=>'cpf_contains', 'selected'=>true],
-                                [ 'label'=>'Nome', 'value'=>'name_contains'],
-                                [ 'label'=>'Profissão', 'value'=>'job_contains'],
-                                [ 'label'=>'Cidade', 'value'=>'addresscity_contains'],
-                                [ 'label'=>'Usuário', 'value'=>'user_email_contains'],
+                                [ 'label'=>'CPF', 'value'=>'cpfContains', 'selected'=>true],
+                                [ 'label'=>'Nome', 'value'=>'nameContains'],
+                                [ 'label'=>'Profissão', 'value'=>'jobContains'],
+                                [ 'label'=>'Cidade', 'value'=>'addresscityContains'],
+                                [ 'label'=>'Usuário', 'value'=>'userEmailContains'],
                             ]
                         ]
                     )@endcomponent

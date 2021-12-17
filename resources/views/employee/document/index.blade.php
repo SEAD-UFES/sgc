@@ -21,10 +21,10 @@
                         [
                             'filters' =>$filters,
                             'options' => [
-                                [ 'label'=>'CPF', 'value'=>'employee_cpf_contains', 'selected'=>true],
-                                [ 'label'=>'Colaborador', 'value'=>'employee_name_contains'],
-                                [ 'label'=>'Nome do arquivo', 'value'=>'originalname_contains'],
-                                [ 'label'=>'Tipo', 'value'=>'documentType_name_contains'],
+                                [ 'label'=>'CPF', 'value'=>'employeeCpfContains', 'selected'=>true],
+                                [ 'label'=>'Colaborador', 'value'=>'employeeNameContains'],
+                                [ 'label'=>'Nome do arquivo', 'value'=>'originalnameContains'],
+                                [ 'label'=>'Tipo', 'value'=>'documentTypeNameContains'],
                             ]
                         ]
                     )@endcomponent

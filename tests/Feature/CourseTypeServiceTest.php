@@ -61,7 +61,7 @@ class CourseTypeServiceTest extends TestCase
         $attributes['name'] = 'Type Gama';
         $attributes['description'] = '3rd type';
 
-        //execution 
+        //execution
         $this->service->create($attributes);
 
         //verifications
@@ -100,7 +100,7 @@ class CourseTypeServiceTest extends TestCase
         //setting up scenario
         $courseType = CourseType::find(1);
 
-        //execution 
+        //execution
         $this->service->delete($courseType);
 
         //verifications

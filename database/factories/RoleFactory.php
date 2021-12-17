@@ -22,8 +22,8 @@ class RoleFactory extends Factory
      */
     public function definition()
     {
-      $wordsInDescription = 5;
-      $description = $this->faker->sentence($wordsInDescription);
+        $wordsInDescription = 5;
+        $description = $this->faker->sentence($wordsInDescription);
 
         return [
           'name' => $this->faker->word(),

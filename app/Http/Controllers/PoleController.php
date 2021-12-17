@@ -25,7 +25,9 @@ class PoleController extends Controller
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('pole-list')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('pole-list')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, Pole::$accepted_filters);
@@ -43,7 +45,9 @@ class PoleController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('pole-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('pole-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         return view('pole.create');
     }
@@ -57,7 +61,9 @@ class PoleController extends Controller
     public function store(StorePoleRequest $request)
     {
         //check access permission
-        if (!Gate::allows('pole-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('pole-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         try {
             $this->service->create($request->validated());
@@ -77,7 +83,9 @@ class PoleController extends Controller
     public function show(Pole $pole)
     {
         //check access permission
-        if (!Gate::allows('pole-show')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('pole-show')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $this->service->read($pole);
 
@@ -93,7 +101,9 @@ class PoleController extends Controller
     public function edit(Pole $pole)
     {
         //check access permission
-        if (!Gate::allows('pole-update')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('pole-update')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         return view('pole.edit', compact('pole'));
     }
@@ -108,7 +118,9 @@ class PoleController extends Controller
     public function update(UpdatePoleRequest $request, Pole $pole)
     {
         //check access permission
-        if (!Gate::allows('pole-update')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('pole-update')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         try {
             $pole = $this->service->update($request->validated(), $pole);
@@ -128,7 +140,9 @@ class PoleController extends Controller
     public function destroy(Pole $pole)
     {
         //check access permission
-        if (!Gate::allows('pole-destroy')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('pole-destroy')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         try {
             $this->service->delete($pole);

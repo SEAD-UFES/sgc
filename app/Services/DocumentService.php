@@ -32,7 +32,6 @@ class DocumentService
         $query = $query->AcceptRequest($this->documentClass::$accepted_filters)->filter();
 
         if (in_array($sort, $this->documentClass::$sortable) && in_array($direction, ['asc', 'desc'])) {
-
             $query = $query->orderBy($sort, $direction);
         } else {
             $query = $query->orderBy('documents.updated_at', 'desc');
@@ -60,7 +59,6 @@ class DocumentService
         $query = (new $this->documentClass)->queryRights();
         $query = $query->AcceptRequest($this->documentClass::$accepted_filters)->filter();
         if (in_array($sort, $this->documentClass::$sortable) && in_array($direction, ['asc', 'desc'])) {
-
             $query = $query->orderBy($sort, $direction);
         } else {
             $query = $query->orderBy('documents.updated_at', 'desc');
@@ -98,7 +96,7 @@ class DocumentService
 
     /**
      * Undocumented function
-     * 
+     *
      * @param Document $document
      * @return Document
      */
@@ -216,7 +214,9 @@ class DocumentService
                     ->where('employee_id', $document->employee_id) // <= Particular line
                     ->where('document_type_id', $document->document_type_id)
                     ->get();
-                foreach ($oldDocuments as $old) $old->delete();
+                foreach ($oldDocuments as $old) {
+                    $old->delete();
+                }
 
                 $document->save();
             }
@@ -260,7 +260,9 @@ class DocumentService
                     ->where('bond_id', $document->bond_id) // <= Particular line
                     ->where('document_type_id', $document->document_type_id)
                     ->get();
-                foreach ($oldDocuments as $old) $old->delete();
+                foreach ($oldDocuments as $old) {
+                    $old->delete();
+                }
 
                 //save new BondDocument
                 $document->save();
@@ -335,9 +337,10 @@ class DocumentService
         $zipFileName = date('Y-m-d') . '_' . $employee->name . '.zip'; // <= Particular line
         $zip = new \ZipArchive();
 
-        if ($zip->open($zipFileName, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
-
-            foreach ($documents as $document) $zip->addFromString($document->original_name, base64_decode($document->file_data));
+        if ($zip->open($zipFileName, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
+            foreach ($documents as $document) {
+                $zip->addFromString($document->original_name, base64_decode($document->file_data));
+            }
 
             $zip->close();
 
@@ -362,9 +365,10 @@ class DocumentService
         $zipFileName = date('Y-m-d') . '_' . $bond->employee->name . '_' . $bond->id . '.zip'; // <= Particular line
         $zip = new \ZipArchive();
 
-        if ($zip->open($zipFileName, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
-
-            foreach ($documents as $document) $zip->addFromString($document->original_name, base64_decode($document->file_data));
+        if ($zip->open($zipFileName, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
+            foreach ($documents as $document) {
+                $zip->addFromString($document->original_name, base64_decode($document->file_data));
+            }
 
             $zip->close();
 

@@ -21,15 +21,15 @@
                         [
                             'filters' =>$filters,
                             'options' => [
-                                [ 'label'=>'Nome', 'value'=>'name_contains', 'selected'=>true],
-                                [ 'label'=>'Descrição', 'value'=>'description_contains'],
-                                [ 'label'=>'Tipo', 'value'=>'courseType_name_contains'],
-                                [ 'label'=>'Início (=)', 'value'=>'begin_exactly'],
-                                [ 'label'=>'Início (>=)' , 'value'=>'begin_BigOrEqu'],
-                                [ 'label'=>'Início (<=)', 'value'=>'begin_LowOrEqu'],
-                                [ 'label'=>'Fim (=)', 'value'=>'end_exactly'],
-                                [ 'label'=>'Fim (>=)' , 'value'=>'end_BigOrEqu'],
-                                [ 'label'=>'Fim (<=)', 'value'=>'end_LowOrEqu'],
+                                [ 'label'=>'Nome', 'value'=>'nameContains', 'selected'=>true],
+                                [ 'label'=>'Descrição', 'value'=>'descriptionContains'],
+                                [ 'label'=>'Tipo', 'value'=>'courseTypeNameContains'],
+                                [ 'label'=>'Início (=)', 'value'=>'beginExactly'],
+                                [ 'label'=>'Início (>=)' , 'value'=>'beginBigOrEqu'],
+                                [ 'label'=>'Início (<=)', 'value'=>'beginLowOrEqu'],
+                                [ 'label'=>'Fim (=)', 'value'=>'endExactly'],
+                                [ 'label'=>'Fim (>=)' , 'value'=>'endBigOrEqu'],
+                                [ 'label'=>'Fim (<=)', 'value'=>'endLowOrEqu'],
                             ]
                         ]
                     )@endcomponent

@@ -87,7 +87,7 @@ class BondServiceTest extends TestCase
         $bond = Bond::find(1);
 
         Event::fakeFor(function () use ($bond) {
-            //execution 
+            //execution
             $bond = $this->service->read($bond);
 
             //verifications

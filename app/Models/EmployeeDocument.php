@@ -36,10 +36,10 @@ class EmployeeDocument extends Model
     ];
 
     public static $accepted_filters = [
-        'originalname_contains',
-        'documentType_name_contains',
-        'employee_name_contains',
-        'employee_cpf_contains',
+        'originalnameContains',
+        'documentTypeNameContains',
+        'employeeNameContains',
+        'employeeCpfContains',
     ];
 
     public function document()

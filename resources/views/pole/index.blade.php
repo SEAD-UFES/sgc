@@ -21,8 +21,8 @@
                         [
                             'filters' => $filters,
                             'options' => [
-                                ['label' => 'Nome', 'value' => 'name_contains', 'selected' => true], 
-                                ['label' => 'Descrição', 'value' => 'description_contains']
+                                ['label' => 'Nome', 'value' => 'nameContains', 'selected' => true], 
+                                ['label' => 'Descrição', 'value' => 'descriptionContains']
                             ], 
                         ]
                     )@endcomponent

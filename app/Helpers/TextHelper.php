@@ -5,7 +5,7 @@ namespace App\Helpers;
 class TextHelper
 {
     /*
-     * returns text correctly cased 
+     * returns text correctly cased
      *
      * @return string
      */
@@ -23,7 +23,6 @@ class TextHelper
             $words = explode($delimiter, $string);
             $newwords = array();
             foreach ($words as $wordnr => $word) {
-
                 if (in_array(mb_strtoupper($word, "UTF-8"), $exceptions)) {
                     // check exceptions list for any words that should be in upper case
                     $word = mb_strtoupper($word, "UTF-8");

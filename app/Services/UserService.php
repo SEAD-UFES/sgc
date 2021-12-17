@@ -47,7 +47,7 @@ class UserService
 
     /**
      * Undocumented function
-     * 
+     *
      * @param User $user
      * @return User
      */
@@ -67,10 +67,11 @@ class UserService
      */
     public function update(array $attributes, User $user): User
     {
-        if (isset($attributes['password']) and $attributes['password'] != '')
+        if (isset($attributes['password']) and $attributes['password'] != '') {
             $attributes['password'] = Hash::make($attributes['password']);
-        else
+        } else {
             unset($attributes['password']);
+        }
             
         $attributes['active'] = isset($attributes['active']);
 

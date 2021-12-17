@@ -35,7 +35,7 @@ class ApprovedService
 
     /**
      * Undocumented function
-     * 
+     *
      * @param Approved $approved
      * @return Approved
      */
@@ -80,8 +80,9 @@ class ApprovedService
      */
     public function designate(Approved $approved): Employee
     {
-        if ($this->employeeEmailAlreadyExists($approved))
+        if ($this->employeeEmailAlreadyExists($approved)) {
             throw new EmployeeAlreadyExistsException("Employee email already exists", 1);
+        }
 
         $employee = new Employee;
         $employee->name = $approved->name;
@@ -104,8 +105,9 @@ class ApprovedService
     public function employeeEmailAlreadyExists(Approved $approved): bool
     {
         $existantEmployee = Employee::where('email', $approved->email)->first();
-        if (is_null($existantEmployee))
+        if (is_null($existantEmployee)) {
             return false;
+        }
 
         return true;
     }

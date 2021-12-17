@@ -21,15 +21,15 @@
                         [
                             'filters' => $filters,
                             'options' => [
-                                ['label' => 'Usuário', 'value' => 'user_email_contains', 'selected' => true], 
-                                ['label' => 'Papel', 'value' => 'usertype_name_contains'],
-                                ['label' => 'Curso', 'value' => 'course_name_contains'], 
-                                [ 'label'=>'Início (=)', 'value'=>'begin_exactly'],
-                                [ 'label'=>'Início (>=)' , 'value'=>'begin_BigOrEqu'],
-                                [ 'label'=>'Início (<=)', 'value'=>'begin_LowOrEqu'],
-                                [ 'label'=>'Fim (=)', 'value'=>'end_exactly'],
-                                [ 'label'=>'Fim (>=)' , 'value'=>'end_BigOrEqu'],
-                                [ 'label'=>'Fim (<=)', 'value'=>'end_LowOrEqu'],
+                                ['label' => 'Usuário', 'value' => 'userEmailContains', 'selected' => true], 
+                                ['label' => 'Papel', 'value' => 'usertypeNameContains'],
+                                ['label' => 'Curso', 'value' => 'courseNameContains'], 
+                                [ 'label'=>'Início (=)', 'value'=>'beginExactly'],
+                                [ 'label'=>'Início (>=)' , 'value'=>'beginBigOrEqu'],
+                                [ 'label'=>'Início (<=)', 'value'=>'beginLowOrEqu'],
+                                [ 'label'=>'Fim (=)', 'value'=>'endExactly'],
+                                [ 'label'=>'Fim (>=)' , 'value'=>'endBigOrEqu'],
+                                [ 'label'=>'Fim (<=)', 'value'=>'endLowOrEqu'],
                             ],
                         ]
                     )@endcomponent

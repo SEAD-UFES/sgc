@@ -26,7 +26,9 @@ class UserController extends Controller
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('user-list')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('user-list')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, User::$accepted_filters);
@@ -44,7 +46,9 @@ class UserController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('user-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('user-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $userTypes = UserType::orderBy('name')->get();
 
@@ -60,7 +64,9 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         //check access permission
-        if (!Gate::allows('user-store')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('user-store')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         try {
             $this->service->create($request->validated());
@@ -80,7 +86,9 @@ class UserController extends Controller
     public function show(User $user)
     {
         //check access permission
-        if (!Gate::allows('user-show')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('user-show')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $this->service->read($user);
 
@@ -96,7 +104,9 @@ class UserController extends Controller
     public function edit(User $user)
     {
         //check access permission
-        if (!Gate::allows('user-update')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('user-update')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         return view('user.edit', compact('user'));
     }
@@ -111,7 +121,9 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         //check access permission
-        if (!Gate::allows('user-update')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('user-update')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         try {
             $user = $this->service->update($request->validated(), $user);
@@ -131,7 +143,9 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //check access permission
-        if (!Gate::allows('user-destroy')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('user-destroy')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         try {
             $this->service->delete($user);

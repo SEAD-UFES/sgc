@@ -10,7 +10,9 @@ class EmployeeDocumentGates
     {
         Gate::define('employeeDocument-list', function ($user) {
             //who can do it (global).
-            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global'])) return true;
+            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global'])) {
+                return true;
+            }
 
             //no permission
             return false;
@@ -18,7 +20,9 @@ class EmployeeDocumentGates
 
         Gate::define('employeeDocument-store', function ($user) {
             //who can do it (global).
-            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global'])) return true;
+            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global'])) {
+                return true;
+            }
 
             //no permission
             return false;
@@ -26,7 +30,9 @@ class EmployeeDocumentGates
 
         Gate::define('employeeDocument-download', function ($user) {
             //who can do it (global).
-            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global'])) return true;
+            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global'])) {
+                return true;
+            }
 
             //no permission
             return false;

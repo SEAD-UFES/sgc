@@ -25,7 +25,7 @@ class BondFactory extends Factory
      */
     public function definition()
     {
-        $issueStatus = random_int(1,3); // 1 - Not reviewed; 2 - Reviewed-Approved; 3 - Reviewed-Not approved
+        $issueStatus = random_int(1, 3); // 1 - Not reviewed; 2 - Reviewed-Approved; 3 - Reviewed-Not approved
 
         return [
             'course_id' => Course::factory(),

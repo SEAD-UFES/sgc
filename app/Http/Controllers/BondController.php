@@ -32,7 +32,9 @@ class BondController extends Controller
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('bond-list')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('bond-list')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, Bond::$accepted_filters);
@@ -50,7 +52,9 @@ class BondController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('bond-create')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('bond-create')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $employees = Employee::orderBy('name')->get();
         $roles = Role::orderBy('name')->get();
@@ -58,7 +62,11 @@ class BondController extends Controller
 
         //get only allowed courses
         $courses = Course::orderBy('name')->get();
-        foreach ($courses as $key => $course) if (!Gate::allows('bond-store-course_id', $course->id)) $courses->forget($key);
+        foreach ($courses as $key => $course) {
+            if (!Gate::allows('bond-store-course_id', $course->id)) {
+                $courses->forget($key);
+            }
+        }
 
         return view('bond.create', compact('employees', 'roles', 'courses', 'poles'));
     }
@@ -72,10 +80,14 @@ class BondController extends Controller
     public function store(StoreBondRequest $request)
     {
         //check access permission
-        if (!Gate::allows('bond-create')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('bond-create')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
-        //user can only store bonds with allowed course_ids 
-        if (!Gate::allows('bond-store-course_id', $request->course_id)) return redirect()->route('bonds.index')->withErrors('O usuário não pode escolher esse curso.');
+        //user can only store bonds with allowed course_ids
+        if (!Gate::allows('bond-store-course_id', $request->course_id)) {
+            return redirect()->route('bonds.index')->withErrors('O usuário não pode escolher esse curso.');
+        }
 
         try {
             $this->service->create($request->validated());
@@ -95,7 +107,9 @@ class BondController extends Controller
     public function show(Bond $bond)
     {
         //check access permission
-        if (!Gate::allows('bond-show')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('bond-show')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $this->service->read($bond);
 
@@ -115,11 +129,17 @@ class BondController extends Controller
     public function edit(Bond $bond)
     {
         //check access permission
-        if (!Gate::allows('bond-update', $bond)) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('bond-update', $bond)) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         //get only allowed courses
         $courses = Course::orderBy('name')->get();
-        foreach ($courses as $key => $course) if (!Gate::allows('bond-store-course_id', $course->id)) $courses->forget($key);
+        foreach ($courses as $key => $course) {
+            if (!Gate::allows('bond-store-course_id', $course->id)) {
+                $courses->forget($key);
+            }
+        }
 
         $employees = Employee::orderBy('name')->get();
         $roles = Role::orderBy('name')->get();
@@ -138,10 +158,14 @@ class BondController extends Controller
     public function update(UpdateBondRequest $request, Bond $bond)
     {
         //check access permission
-        if (!Gate::allows('bond-update', $bond)) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('bond-update', $bond)) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
-        //user can only update bonds to allowed course_ids 
-        if (!Gate::allows('bond-store-course_id', $request->course_id)) return back()->withErrors('courses', 'O usuário não pode escolher este curso.');
+        //user can only update bonds to allowed course_ids
+        if (!Gate::allows('bond-store-course_id', $request->course_id)) {
+            return back()->withErrors('courses', 'O usuário não pode escolher este curso.');
+        }
 
         try {
             $bond = $this->service->update($request->validated(), $bond);
@@ -161,7 +185,9 @@ class BondController extends Controller
     public function destroy(Bond $bond)
     {
         //check access permission
-        if (!Gate::allows('bond-destroy')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('bond-destroy')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         try {
             $this->service->delete($bond);
@@ -182,7 +208,9 @@ class BondController extends Controller
     public function review(ReviewBondRequest $request, Bond $bond)
     {
         //check access permission
-        if (!Gate::allows('bond-review')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('bond-review')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         try {
             $this->service->review($request->validated(), $bond);
@@ -203,7 +231,9 @@ class BondController extends Controller
     public function requestReview(Request $request, Bond $bond)
     {
         //check access permission
-        if (!Gate::allows('bond-requestReview')) return response()->view('access.denied')->setStatusCode(401);
+        if (!Gate::allows('bond-requestReview')) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
 
         $bond = $this->service->requestReview($request->all(), $bond);
 

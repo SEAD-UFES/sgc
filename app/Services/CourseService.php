@@ -41,7 +41,7 @@ class CourseService
 
     /**
      * Undocumented function
-     * 
+     *
      * @param Course $course
      * @return Course
      */

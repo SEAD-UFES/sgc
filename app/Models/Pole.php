@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
-use App\ModelFilters\poleFilter;
+use App\ModelFilters\PoleFilter;
 use Illuminate\Support\Facades\Log;
 
 class Pole extends Model
 {
     use HasFactory;
     use Sortable;
-    use poleFilter, Filterable;
+    use PoleFilter, Filterable;
 
     /**
      * The attributes that are mass assignable.
@@ -32,8 +32,8 @@ class Pole extends Model
 
     private static $whiteListFilter = [''];
     public static $accepted_filters = [
-        'name_contains',
-        'description_contains'
+        'nameContains',
+        'descriptionContains'
     ];
 
     public $sortable = ['id', 'name', 'description', 'created_at', 'updated_at'];

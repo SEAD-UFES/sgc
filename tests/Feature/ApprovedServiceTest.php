@@ -55,7 +55,7 @@ class ApprovedServiceTest extends TestCase
     public function approvedsShouldBeListed()
     {
         Event::fakeFor(function () {
-            //execution 
+            //execution
             $approveds = $this->service->list();
 
             //verifications
@@ -74,7 +74,7 @@ class ApprovedServiceTest extends TestCase
         $approved = Approved::find(1);
 
         Event::fakeFor(function () use ($approved) {
-            //execution 
+            //execution
             $approved = $this->service->read($approved);
 
             //verifications
@@ -93,7 +93,7 @@ class ApprovedServiceTest extends TestCase
         $approved = Approved::find(1);
 
         Event::fakeFor(function () use ($approved) {
-            //execution 
+            //execution
             $approved = $this->service->delete($approved);
 
             //verifications
@@ -119,7 +119,7 @@ class ApprovedServiceTest extends TestCase
         $approved = Approved::find(1);
 
         Event::fakeFor(function () use ($approved, $attributes) {
-            //execution 
+            //execution
             $this->service->changeState($attributes, $approved);
 
             //verifications

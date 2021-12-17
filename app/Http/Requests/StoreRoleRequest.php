@@ -40,6 +40,6 @@ class StoreRoleRequest extends FormRequest
             'grant_value.numeric' => 'O valor da bolsa deve ser numérico',
             'grant_type_id.required' => 'O Tipo de Bolsa é obrigatório',
             'grant_type_id.exists' => 'O Tipo de Bolsa deve estar entre os fornecidos',
-        ];
+         ];
     }
 }

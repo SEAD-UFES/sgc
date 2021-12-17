@@ -8,14 +8,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Kyslik\ColumnSortable\Sortable;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
-use App\ModelFilters\userFilter;
+use App\ModelFilters\UserFilter;
 use Carbon\Carbon;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
     use Sortable;
-    use userFilter, Filterable;
+    use UserFilter, Filterable;
 
     /**
      * The attributes that are mass assignable.
@@ -38,11 +38,11 @@ class User extends Authenticatable
 
     private static $whiteListFilter = ['*'];
     public static $accepted_filters = [
-        'email_contains',
-        // 'usertype_name_contains',
-        'active_exactly',
-        'employee_name_contains',
-        'employee_id'
+        'emailContains',
+        // 'usertypeNameContains',
+        'activeExactly',
+        'employeeNameContains',
+        'employeeId'
     ];
 
     /**

@@ -65,7 +65,7 @@ class EmployeeServiceTest extends TestCase
         $employee = Employee::find(1);
 
         Event::fakeFor(function () use ($employee) {
-            //execution 
+            //execution
             $employee = $this->service->read($employee);
 
             //verifications

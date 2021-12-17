@@ -58,7 +58,7 @@ class CourseServiceTest extends TestCase
         $course = Course::find(1);
 
         Event::fakeFor(function () use ($course) {
-            //execution 
+            //execution
             $course = $this->service->read($course);
 
             //verifications

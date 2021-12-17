@@ -76,7 +76,7 @@ class EmployeeTest extends TestCase
      * Guest cannot list employees
      * @return void
      */
-    public function test_guest_cannot_list_employees()
+    public function testGuestCannotListEmployees()
     {
         $this->get(route('employees.index'))
             ->assertRedirect(route('auth.login'));
@@ -86,7 +86,7 @@ class EmployeeTest extends TestCase
      * Guest cannot create an employee
      * @return void
      */
-    public function test_guest_cannot_create_employee()
+    public function testGuestCannotCreateEmployee()
     {
         $this->post(route('employees.store'), $this->employeeData)
             ->assertRedirect(route('auth.login'));
@@ -96,7 +96,7 @@ class EmployeeTest extends TestCase
      * Guest cannot update an employee
      * @return void
      */
-    public function test_guest_cannot_update_employee()
+    public function testGuestCannotUpdateEmployee()
     {
         $employee = $this->getTestEmployee();
 
@@ -108,7 +108,7 @@ class EmployeeTest extends TestCase
      * Guest cannot delete an employee
      * @return void
      */
-    public function test_guest_cannot_delete_employee()
+    public function testGuestCannotDeleteEmployee()
     {
         $employee = $this->getTestEmployee();
 
@@ -120,7 +120,7 @@ class EmployeeTest extends TestCase
      * Guest cannot access create employee page
      * @return void
      */
-    public function test_guest_cannot_access_create_employee_page()
+    public function testGuestCannotAccessCreateEmployeePage()
     {
         $this->get(route('employees.create'))
             ->assertRedirect(route('auth.login'));
@@ -130,7 +130,7 @@ class EmployeeTest extends TestCase
      * Guest cannot access edit employee page
      * @return void
      */
-    public function test_guest_cannot_access_edit_employee_page()
+    public function testGuestCannotAccessEditEmployeePage()
     {
         $employee = $this->getTestEmployee();
 
@@ -142,7 +142,7 @@ class EmployeeTest extends TestCase
      * Guest cannot access employee details page
      * @return void
      */
-    public function test_guest_cannot_access_employee_details()
+    public function testGuestCannotAccessEmployeeDetails()
     {
         $employee = $this->getTestEmployee();
 
@@ -154,7 +154,7 @@ class EmployeeTest extends TestCase
      * Authenticated user cannot list employees
      * @return void
      */
-    public function test_authenticated_user_without_permission_assignment_cannot_list_employees()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotListEmployees()
     {
         $session = $this->getAuthenticatedSession();
 
@@ -166,7 +166,7 @@ class EmployeeTest extends TestCase
      * Authenticated user cannot create employee
      * @return void
      */
-    public function test_authenticated_user_without_permission_assignment_cannot_create_employee()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotCreateEmployee()
     {
         $session = $this->getAuthenticatedSession();
 
@@ -178,7 +178,7 @@ class EmployeeTest extends TestCase
      * Authenticated user cannot update employee
      * @return void
      */
-    public function test_authenticated_user_without_permission_assignment_cannot_update_employee()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotUpdateEmployee()
     {
         $session = $this->getAuthenticatedSession();
 
@@ -192,7 +192,7 @@ class EmployeeTest extends TestCase
      * Authenticated user cannot delete employee
      * @return void
      */
-    public function test_authenticated_user_without_permission_assignment_cannot_delete_employee()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotDeleteEmployee()
     {
         $session = $this->getAuthenticatedSession();
 
@@ -209,7 +209,7 @@ class EmployeeTest extends TestCase
      * Authenticated user cannot access employee create page
      * @return void
      */
-    public function test_authenticated_user_without_permission_assignment_cannot_access_create_employee_page()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotAccessCreateEmployeePage()
     {
         $session = $this->getAuthenticatedSession();
 
@@ -222,7 +222,7 @@ class EmployeeTest extends TestCase
      * Authenticated user cannot access employee edit page
      * @return void
      */
-    public function test_authenticated_user_without_permission_assignment_cannot_access_employee_edit_page()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotAccessEmployeeEditPage()
     {
         $session = $this->getAuthenticatedSession();
 
@@ -237,7 +237,7 @@ class EmployeeTest extends TestCase
      * Authenticated user cannot access employee details page
      * @return void
      */
-    public function test_authenticated_user_without_permission_assignment_cannot_access_employee_details_page()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotAccessEmployeeDetailsPage()
     {
         $session = $this->getAuthenticatedSession();
 
@@ -251,7 +251,7 @@ class EmployeeTest extends TestCase
      * Admin user can list employees
      * @return void
      */
-    public function test_admin_user_can_list_employees()
+    public function testAdminUserCanListEmployees()
     {
         $session = $this->getAdminUser();
 
@@ -270,7 +270,7 @@ class EmployeeTest extends TestCase
      * Admin user can create employees
      * @return void
      */
-    public function test_admin_user_can_create_employee()
+    public function testAdminUserCanCreateEmployee()
     {
         $session = $this->getAdminUser();
 
@@ -292,7 +292,7 @@ class EmployeeTest extends TestCase
      * Admin user can update employee
      * @return void
      */
-    public function test_admin_user_can_update_employee()
+    public function testAdminUserCanUpdateEmployee()
     {
         $session = $this->getAdminUser();
 
@@ -310,7 +310,7 @@ class EmployeeTest extends TestCase
      * Admin user can delete employee
      * @return void
      */
-    public function test_admin_user_can_delete_employee()
+    public function testAdminUserCanDeleteEmployee()
     {
         $session = $this->getAdminUser();
 
@@ -329,7 +329,7 @@ class EmployeeTest extends TestCase
      * Admin user can access create employee page
      * @return void
      */
-    public function test_admin_user_can_access_create_employee_page()
+    public function testAdminUserCanAccessCreateEmployeePage()
     {
         $session = $this->getAdminUser();
 
@@ -342,7 +342,7 @@ class EmployeeTest extends TestCase
      * Admin user can access edit employee page
      * @return void
      */
-    public function test_admin_user_can_access_edit_employee_page()
+    public function testAdminUserCanAccessEditEmployeePage()
     {
         $session = $this->getAdminUser();
 
@@ -359,7 +359,7 @@ class EmployeeTest extends TestCase
      * Admin user can access employee details page
      * @return void
      */
-    public function test_admin_user_can_access_employee_details_page()
+    public function testAdminUserCanAccessEmployeeDetailsPage()
     {
         $session = $this->getAdminUser();
 

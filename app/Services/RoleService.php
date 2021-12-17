@@ -40,7 +40,7 @@ class RoleService
 
     /**
      * Undocumented function
-     * 
+     *
      * @param Role $role
      * @return Role
      */

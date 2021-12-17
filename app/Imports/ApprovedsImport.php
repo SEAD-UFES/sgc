@@ -35,7 +35,6 @@ class ApprovedsImport implements ToCollection, WithHeadingRow, WithColumnLimit, 
             }
 
             foreach (array_reverse($phones) as $phone) {
-
                 if (substr($phone, 2, 1) == "9") {
                     $tempMobile = $phone;
                 } else {
@@ -83,8 +82,9 @@ class ApprovedsImport implements ToCollection, WithHeadingRow, WithColumnLimit, 
 
     protected static function ensureAreaCode($str, $code)
     {
-        if ((strlen($str) < 10) and (strlen($str) > 3))
+        if ((strlen($str) < 10) and (strlen($str) > 3)) {
             return $code . $str;
+        }
 
         return $str;
     }
@@ -93,11 +93,13 @@ class ApprovedsImport implements ToCollection, WithHeadingRow, WithColumnLimit, 
     {
         $str = '';
 
-        if (!$mobile == '')
+        if (!$mobile == '') {
             $str = substr($mobile, 0, 2);
+        }
 
-        if (!$phone == '')
+        if (!$phone == '') {
             $str = substr($phone, 0, 2);
+        }
 
         return $str;
     }

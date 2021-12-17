@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
-use App\ModelFilters\courseFilter;
+use App\ModelFilters\CourseFilter;
 
 class Course extends Model
 {
     use HasFactory;
     use Sortable;
-    use courseFilter, Filterable;
+    use CourseFilter, Filterable;
 
     protected $fillable = [
         'name',
@@ -39,15 +39,15 @@ class Course extends Model
 
     private static $whiteListFilter = ['*'];
     public static $accepted_filters = [
-        'name_contains',
-        'description_contains',
-        'courseType_name_contains',
-        'begin_exactly',
-        'begin_BigOrEqu',
-        'begin_LowOrEqu',
-        'end_exactly',
-        'end_BigOrEqu',
-        'end_LowOrEqu'
+        'nameContains',
+        'descriptionContains',
+        'courseTypeNameContains',
+        'beginExactly',
+        'beginBigOrEqu',
+        'beginLowOrEqu',
+        'endExactly',
+        'endBigOrEqu',
+        'endLowOrEqu'
     ];
 
     public function courseType()
@@ -59,7 +59,7 @@ class Course extends Model
     {
         return $this
             ->belongsToMany(Employee::class, 'bonds')
-            ->withPivot('course_id', 'employee_id', 'role_id', 'pole_id', /* 'classroom_id',*/ 'begin', 'end', 'terminated_at', 'volunteer', 'impediment', 'impediment_description', 'uaba_checked_at',)
+            ->withPivot('course_id', 'employee_id', 'role_id', 'pole_id', /* 'classroom_id',*/ 'begin', 'end', 'terminated_at', 'volunteer', 'impediment', 'impediment_description', 'uaba_checked_at')
             ->using(Bond::class)->as('bond')
             ->withTimestamps();
     }
