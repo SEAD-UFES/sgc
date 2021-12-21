@@ -33,7 +33,7 @@ jobs:
         php artisan key:generate
 
     - name: Run PHP Code Sniffer
-      run: .\vendor\bin\phpcs
+      run: ./vendor/bin/phpcs
 
 
 
