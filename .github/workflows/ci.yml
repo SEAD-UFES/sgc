@@ -33,7 +33,7 @@ jobs:
         php artisan key:generate
 
     - name: Run PHP Code Sniffer
-      run: php artisan test
+      run: .\vendor\bin\phpcs
 
 
 
@@ -55,6 +55,7 @@ jobs:
       run: |
         cp .env.ci .env
         php artisan key:generate
+        php artisan config:clear
 
     - name: Run Test Suite
       run: php artisan test
