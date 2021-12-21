@@ -1,6 +1,6 @@
 # SGC
 <img src="https://img.shields.io/badge/PHP-8-blue" />&nbsp;<img src="https://img.shields.io/badge/Laravel-8-red" />&nbsp;<img src="https://img.shields.io/badge/Bootstrap-5-blueviolet" />
-[![Actions Status](https://github.com/LDI-Ufes/sgc/workflows/PHPUnitTest/badge.svg)](https://github.com/LDI-Ufes/sgc/actions)
+[![Actions Status](https://github.com/LDI-Ufes/sgc/workflows/Integration/badge.svg)](https://github.com/LDI-Ufes/sgc/actions)
 
 Repositório do Sistema de Gestão de Colaboradores da Sead/Ufes
 
