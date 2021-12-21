@@ -14,14 +14,14 @@ RUN apk add --no-cache php8-curl php8-phar php8-dom php8-simplexml php8-xmlwrite
 RUN ln -s /usr/bin/php8 /usr/bin/php
 
 
-COPY ./.docker/php.ini /etc/php8/php.ini
-COPY ./.docker/default.conf /etc/nginx/conf.d/default.conf
-COPY ./.docker/nginx.conf /etc/nginx/nginx.conf
+COPY .docker/php.ini /etc/php8/php.ini
+COPY .docker/default.conf /etc/nginx/conf.d/default.conf
+COPY .docker/nginx.conf /etc/nginx/nginx.conf
 
 RUN rm -rf /usr/share/nginx/html/*
 
 RUN apk add --no-cache supervisor
-COPY ./.docker/supervisord.conf /etc/supervisord.conf
+COPY .docker/supervisord.conf /etc/supervisord.conf
 CMD /usr/bin/supervisord -c "/etc/supervisord.conf"
 
 #####
