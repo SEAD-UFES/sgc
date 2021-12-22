@@ -113,6 +113,8 @@ RUN apk add --no-cache composer
 WORKDIR /www
 RUN composer dump-autoload --optimize --no-dev
 
+COPY --chown=www:www ./.env.deploy /www/.env
+
 RUN php8 artisan key:generate
 
 RUN php8 artisan optimize:clear
