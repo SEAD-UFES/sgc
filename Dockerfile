@@ -56,6 +56,8 @@ RUN touch /usr/share/nginx/html/storage/logs/laravel.log
 RUN chmod -R 777 /usr/share/nginx/html/storage/logs/laravel.log
 RUN chmod -R 777 /usr/share/nginx/html/storage/framework/sessions
 
+RUN chmod 777 /usr/share/nginx/html
+
 #####
 USER nginx
 RUN composer install --optimize-autoloader --no-dev
