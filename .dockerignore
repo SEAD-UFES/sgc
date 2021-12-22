@@ -48,3 +48,10 @@ README.md
 docker-compose-sail.yml
 reports
 tests
+
+
+vendor/
+node_modules/
+public/js/
+public/css/
+yarn-error.log
