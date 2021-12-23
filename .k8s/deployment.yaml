@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sgc-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sgc
+  template:
+    metadata:
+      labels:
+        app: sgc
+    spec:
+      containers:
+        - name: sgc
+          image: ldiufes/sgc:latest
+          ports:
+            - containerPort: 8080
