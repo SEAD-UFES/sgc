@@ -115,6 +115,9 @@ RUN composer dump-autoload --optimize --no-dev
 
 COPY --chown=www:www ./.env.deploy /www/.env
 
+RUN mkdir /www/storage/framework/cache/data
+RUN chown www:www /www/storage/framework/cache/data
+
 RUN php8 artisan key:generate
 
 RUN php8 artisan optimize:clear
