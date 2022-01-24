@@ -35,11 +35,13 @@
                                 <div class="text-danger">&gt; {{ $message }}</div>
                             @enderror
                         </form>
-                        <br /><br />
-                        <code>
-                            Usuário de teste: admin@ufes.br<br />
-                            Senha: senha123
-                        </code>
+                        @if (Illuminate\Support\Facades\App::class::Environment() != 'production')
+                            <br /><br />
+                            <code>
+                                Usuário de teste: admin@ufes.br<br />
+                                Senha: senha123
+                            </code>
+                        @endif
                     </div>
                 </div>
             </div>

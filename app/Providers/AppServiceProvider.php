@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\App;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['request']->server->set('HTTPS', true);
+        if (App::class::Environment() === 'production') {
+            $this->app['request']->server->set('HTTPS', true);
+        }
     }
 
     /**
