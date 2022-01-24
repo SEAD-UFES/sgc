@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\App;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,7 +14,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
         $this->call([
             GrantTypeSeeder::class,
             UserTypeSeeder::class,
@@ -22,19 +22,39 @@ class DatabaseSeeder extends Seeder
             StateSeeder::class,
             DocumentTypeSeeder::class,
             MaritalStatusSeeder::class,
-            EmployeeSeeder::class,
-            UserSeeder::class,
+            //EmployeeSeeder::class,
+            //UserSeeder::class,
             CourseTypeSeeder::class,
             CourseSeeder::class,
             PoleSeeder::class,
-            BondSeeder::class,
+            //BondSeeder::class,
             ApprovedStateSeeder::class,
-            ApprovedSeeder::class,
-            EmployeeDocumentSeeder::class,
-            BondDocumentSeeder::class,
-            DocumentSeeder::class,
-            DummyEmployeeSeeder::class,
-            UserTypeAssignmentSeeder::class
+            //ApprovedSeeder::class,
+            //EmployeeDocumentSeeder::class,
+            //BondDocumentSeeder::class,
+            //DocumentSeeder::class,
+            //DummyEmployeeSeeder::class,
+            //UserTypeAssignmentSeeder::class
         ]);
+
+        if (App::Environment() != 'production') {
+            $this->call([
+                EmployeeSeeder::class,
+                UserSeeder::class,
+                BondSeeder::class,
+                ApprovedSeeder::class,
+                EmployeeDocumentSeeder::class,
+                BondDocumentSeeder::class,
+                DocumentSeeder::class,
+                DummyEmployeeSeeder::class,
+                UserTypeAssignmentSeeder::class
+            ]);
+        }
+
+        if (App::Environment() === 'production') {
+            $this->call([
+                ProdAdminSeeder::class,
+            ]);
+        }
     }
 }
