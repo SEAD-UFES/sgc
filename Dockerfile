@@ -123,6 +123,7 @@ RUN chown www:www /www/storage/framework/cache/data
 RUN php8 artisan optimize:clear
 RUN php8 artisan optimize
 RUN php8 artisan view:cache
+RUN php8 artisan config:clear
 
 # Install Supervisor Process Control System
 RUN apk add --no-cache supervisor
