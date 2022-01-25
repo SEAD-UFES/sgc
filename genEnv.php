@@ -3,8 +3,8 @@ $envs = getenv();
 $envFileText = "";
 
 foreach ($envs as $key => $value) {
-    $envFileText .= $key . "=" . $value . "\n";
+    echo $envFileText .= $key . "=" . $value . "\n";
 }
 
-file_put_contents(".env", $envFileText);
+echo file_put_contents("/www/.env", $envFileText) . " bytes written to /www/.env\n";
 ?>
