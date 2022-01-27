@@ -152,6 +152,7 @@ RUN chown www:www /www/storage/logs/laravel.log
 #RUN chmod 666 /www/storage/logs/laravel.log
 
 RUN rm -f /etc/nginx/http.d/default.conf
+RUN echo "APP_BUILD=$(date +%Y%m%d_%H%M)" > BUILD
 
 EXPOSE 8080
 CMD /usr/bin/supervisord -c "/etc/supervisord.conf"
