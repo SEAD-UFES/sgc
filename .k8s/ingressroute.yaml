@@ -1,0 +1,15 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: sgc-ingressroute
+spec:
+  entryPoints: 
+  - websecure
+  routes:
+  - kind: Rule
+    match: Host(`sgc.sead.ufes.br`)
+    services:
+    - name: sgc-service
+      port: 8080
+  tls:
+    secretName: tls-secret

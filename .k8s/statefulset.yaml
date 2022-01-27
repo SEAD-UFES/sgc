@@ -18,7 +18,7 @@ spec:
         - name: mysql
           image: mysql:8.0
           ports:
-            - name: tpc
+            - name: tcp
               protocol: TCP
               containerPort: 3306
           env:
@@ -28,7 +28,10 @@ spec:
                 name: sgc-secret
                 key: DB_ROOT_PASSWORD
             - name: MYSQL_USER
-              value: sail
+              valueFrom:
+                configMapKeyRef:
+                  name: sgc-config
+                  key: DB_USERNAME
             - name: MYSQL_PASSWORD
               valueFrom: 
                secretKeyRef: 
@@ -48,4 +51,4 @@ spec:
           - ReadWriteOnce
         resources:
           requests:
-            storage: 1Gi
+            storage: 30Gi
