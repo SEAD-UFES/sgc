@@ -71,6 +71,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/document/{id}/{htmlTitle}', [DocumentController::class, 'showDocument'])->name('documents.show');
 
     Route::resource('users', UserController::class);
+    Route::get('user/currentPasswordEdit', [UserController::class, 'currentPasswordEdit'])->name('user.currentPasswordEdit');
+    Route::patch('user/currentPasswordEdit', [UserController::class, 'currentPasswordUpdate'])->name('user.currentPasswordUpdate');
+
     Route::resource('roles', RoleController::class);
     Route::resource('poles', PoleController::class);
     Route::resource('courses', CourseController::class);

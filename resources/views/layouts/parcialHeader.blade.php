@@ -128,7 +128,7 @@
                 @endif
 
                 <ul class="list-unstyled ms-1 mb-2 mb-lg-0">
-                    <li>Bem vind{{ session('sessionUser')->genderArticle }}, {{ session('sessionUser')->name }}!
+                    <li>Bem vind{{ session('sessionUser')->genderArticle }}, <a href="{{ route('user.currentPasswordEdit') }}" data-bs-toggle="tooltip" data-bs-placement="left" title="Alterar senha do Usuário">{{ session('sessionUser')->name }}</a>!
                         &nbsp;<a class="btn btn-sm btn-danger" href="{{ route('auth.logout') }}" data-bs-toggle="tooltip" data-bs-placement="left" title="Sair do sistema">Sair</a>
                     </li>
                 </ul>

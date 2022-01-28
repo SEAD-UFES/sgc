@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\CustomClasses\ModelFilterHelpers;
+use App\Http\Requests\UpdateCurrentPassworRequest;
 
 class UserController extends Controller
 {
@@ -160,5 +161,42 @@ class UserController extends Controller
     {
         session('sessionUser')->setCurrentUTA($request->activeUTAs);
         return redirect()->back();
+    }
+
+     /**
+      * Show the form for editing the specified resource.
+      *
+      * @return \Illuminate\Http\Response
+      */
+    public function currentPasswordEdit()
+    {
+        $user = session('sessionUser');
+        return view('user.currentPasswordEdit', compact('user'));
+    }
+
+     /**
+      * Update the specified resource in storage.
+      *
+      * @param UpdateCurrentPassworRequest $request
+      * @return \Illuminate\Http\Response
+      */
+    public function currentPasswordUpdate(UpdateCurrentPassworRequest $request)
+    {
+        //check access permission
+        if (false) {
+            return response()->view('access.denied')->setStatusCode(401);
+        }
+
+        $user = session('sessionUser')->currentUser;
+        $request = $request->validated();
+        $request['active'] = true;
+
+        try {
+            $user = $this->service->update($request, $user);
+        } catch (\Exception $e) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
+        }
+
+        return redirect()->route('home')->with('success', 'Usuário atualizado com sucesso.');
     }
 }
