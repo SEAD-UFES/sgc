@@ -30,7 +30,7 @@ WORKDIR /app
 RUN npm ci && npm run prod
 
 # ===================================== #
-FROM alpine:latest as deploy
+FROM alpine:3.15 as deploy
 
 RUN apk update && apk upgrade --no-cache
 
