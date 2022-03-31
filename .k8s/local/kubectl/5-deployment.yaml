@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sgc-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sgc
+  template:
+    metadata:
+      labels:
+        app: sgc
+    spec:
+      volumes:
+      - name: env-file
+        hostPath:
+          path: /home/sgc/sgc_env/.env
+          type: FileOrCreate
+      initContainers:
+        - name: gen-env
+          image: ldiufes/sgc:latest
+          envFrom:
+            - configMapRef:
+                name: sgc-config
+          args:
+            - /bin/ash
+            - -c
+            - php8 genEnv.php && cat BUILD >> .env
+          volumeMounts:
+            - mountPath: /www/.env
+              name: env-file
+      containers:
+        - name: sgc
+          envFrom:
+            - configMapRef:
+                name: sgc-config
+          image: ldiufes/sgc:latest
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: /www/.env
+              name: env-file
