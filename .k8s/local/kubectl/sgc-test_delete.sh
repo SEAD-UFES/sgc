@@ -1,12 +1,15 @@
 #!/bin/bash
 
-kubectl delete -f 7-ingress.yaml
+kubectl delete -f 8-ingress.yaml
 sleep 2
 
-kubectl delete -f 6-service.yaml
+kubectl delete -f 7-service.yaml
 sleep 2
 
-kubectl delete -f 5-deployment.yaml
+kubectl delete -f 6-deployment.yaml
+sleep 2
+
+kubectl delete -f 5-persistentVolumes.yaml
 sleep 2
 
 kubectl delete -f 4-dbService.yaml

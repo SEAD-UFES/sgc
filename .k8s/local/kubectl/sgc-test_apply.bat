@@ -12,10 +12,13 @@ ping 127.0.0.1 -n 2 > nul
 kubectl apply -f 4-dbService.yaml
 ping 127.0.0.1 -n 2 > nul
 
-kubectl apply -f 5-deployment.yaml
+kubectl apply -f 5-persistentVolumes.yaml
 ping 127.0.0.1 -n 2 > nul
 
-kubectl apply -f 6-service.yaml
+kubectl apply -f 6-deployment.yaml
 ping 127.0.0.1 -n 2 > nul
 
-kubectl apply -f 7-ingress.yaml
+kubectl apply -f 7-service.yaml
+ping 127.0.0.1 -n 2 > nul
+
+kubectl apply -f 8-ingress.yaml

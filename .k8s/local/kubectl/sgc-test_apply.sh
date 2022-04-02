@@ -12,10 +12,13 @@ sleep 2
 kubectl apply -f 4-dbService.yaml
 sleep 2
 
-kubectl apply -f 5-deployment.yaml
+kubectl apply -f 5-persistentVolumes.yaml
 sleep 2
 
-kubectl apply -f 6-service.yaml
+kubectl apply -f 6-deployment.yaml
 sleep 2
 
-kubectl apply -f 7-ingress.yaml
+kubectl apply -f 7-service.yaml
+sleep 2
+
+kubectl apply -f 8-ingress.yaml
