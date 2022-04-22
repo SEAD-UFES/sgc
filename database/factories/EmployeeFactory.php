@@ -27,6 +27,8 @@ class EmployeeFactory extends Factory
      */
     public function definition()
     {
+        $areaCode = $this->faker->areaCode();
+        
         return [
 
             'gender_id' => Gender::factory(),
@@ -56,9 +58,9 @@ class EmployeeFactory extends Factory
             'address_postal_code' => Str::of($this->faker->postcode())->replace('-', ''),
             'address_city' => $this->faker->city(),
 
-            'area_code' => $this->faker->areaCode(),
-            'phone' => $this->faker->landline($formatted = true),
-            'mobile' => $this->faker->cellphone($formatted = true),
+            'area_code' => $areaCode,
+            'phone' => $areaCode . $this->faker->landline($formatted = false),
+            'mobile' => $areaCode . $this->faker->cellphone($formatted = false),
             'email' => $this->faker->email(),
 
             'created_at' => now(),

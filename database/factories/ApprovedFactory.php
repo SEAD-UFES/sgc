@@ -25,15 +25,16 @@ class ApprovedFactory extends Factory
      */
     public function definition()
     {
+        $areaCode = $this->faker->areaCode();
         // annoucements are like 01/2020, 99/2021, etc.
         $announcement = $this->faker->numerify('##') . '/' . now()->year;
 
         return [
             'name' => $this->faker->word(),
             'email' => $this->faker->email(),
-            'area_code' => $this->faker->areaCode(),
-            'phone' => $this->faker->landline($formatted = true),
-            'mobile' => $this->faker->cellphone($formatted = true),
+            'area_code' => $areaCode,
+            'phone' => $areaCode . $this->faker->landline($formatted = false),
+            'mobile' => $areaCode . $this->faker->cellphone($formatted = false),
             'announcement' => $announcement,
             'course_id' => Course::factory(),
             'role_id' => Role::factory(),

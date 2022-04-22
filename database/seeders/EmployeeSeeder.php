@@ -40,9 +40,9 @@ class EmployeeSeeder extends Seeder
             'address_postal_code' => '35952654',
             'address_state_id' => 3,
             'address_city' => 'Água Branca',
-            'area_code' => '046',
-            'phone' => '35986521',
-            'mobile' => '9598652',
+            'area_code' => '46',
+            'phone' => '4635986521',
+            'mobile' => '46995598652',
             'email' => 'admin@ufes.br',
         ]);
 
@@ -69,9 +69,9 @@ class EmployeeSeeder extends Seeder
             'address_postal_code' => '35952654',
             'address_state_id' => 3,
             'address_city' => 'Água Branca',
-            'area_code' => '046',
-            'phone' => '35986521',
-            'mobile' => '9598652',
+            'area_code' => '46',
+            'phone' => '4635986521',
+            'mobile' => '9959866452',
             'email' => 'diretor@ufes.br',
         ]);
     }
