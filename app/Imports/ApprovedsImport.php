@@ -31,6 +31,7 @@ class ApprovedsImport implements ToCollection, WithHeadingRow, WithColumnLimit, 
             $phones = explode("\n", $row['telefone']);
 
             foreach ($phones as &$phone) {
+                $phone = str_replace('_x000D_', '', $phone); // remove carriage return on Excel multi-line cell text
                 $phone = ApprovedsImport::ensureAreaCode(ApprovedsImport::clearNumber($phone), '27');
             }
 
