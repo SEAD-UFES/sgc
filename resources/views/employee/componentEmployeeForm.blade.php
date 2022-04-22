@@ -231,7 +231,7 @@
     <div class="col-2 col-sm-2 col-md-1 col-lg-1">
         <label for="inputArea1" class="form-label">DDD</label>
         <input name="area_code" id="areaCode" type="text" id="inputArea1" class="form-control" placeholder="DDD"
-            value="{{ isset($employee) ? $employee->area_code : old('area_code') }}" maxlength="3"
+            value="{{ isset($employee) ? $employee->area_code : old('area_code') }}" maxlength="2"
             onkeyup="validate('areaCode');" pattern="[0-9]{2}" />
         @error('area_code')
             <div class="text-danger">> {{ $message }}</div>
@@ -241,7 +241,7 @@
         <label for="inputPhone1" class="form-label">Telefone</label>
         <input name="phone" id="phone" type="tel" id="inputPhone1" class="form-control" placeholder="Telefone"
             value="{{ isset($employee) ? $employee->phone : old('phone') }}" maxlength="10"
-            onkeyup="validate('phone');" pattern="[0-9]{8}" />
+            onkeyup="validate('phone');" pattern="[0-9]{10}" />
         @error('phone')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
@@ -249,8 +249,8 @@
     <div class="col-5 col-sm-5 col-md-2 col-lg-2">
         <label for="inputMobile1" class="form-label">Celular</label>
         <input name="mobile" id="mobile" type="tel" id="inputMobile1" class="form-control" placeholder="Celular"
-            value="{{ isset($employee) ? $employee->mobile : old('mobile') }}" maxlength="10"
-            onkeyup="validate('mobile');" pattern="[0-9]{9}" /><span class="validity"></span>
+            value="{{ isset($employee) ? $employee->mobile : old('mobile') }}" maxlength="11"
+            onkeyup="validate('mobile');" pattern="[0-9]{11}" /><span class="validity"></span>
         @error('mobile')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
