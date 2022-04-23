@@ -17,7 +17,7 @@
                     @include('_components.alerts')
                     <form action="{{ route('employees.update', $employee->id) }}" method="POST">
                         @method('PATCH')
-                        @component('employee.componentEmployeeForm',  compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee'))@endcomponent
+                        @component('employee.componentEmployeeForm',  compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee', 'fromApproved'))@endcomponent
                         <br />
                         <button type="submit" class="btn btn-primary">Atualizar</button> <button type="button" onclick="history.back()" class="btn btn-secondary">Cancelar</button>
                         @error('noStore')
