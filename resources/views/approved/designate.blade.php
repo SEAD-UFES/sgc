@@ -24,7 +24,7 @@
                     @include('_components.alerts')
                     <form action={{ route('employees.store') }} name="formCreate" method="POST">
                         @component('employee.componentEmployeeForm', compact('genders', 'birthStates', 'documentTypes',
-                        'maritalStatuses', 'addressStates', 'employee'))@endcomponent
+                        'maritalStatuses', 'addressStates', 'employee', 'fromApproved'))@endcomponent
                         <input type="hidden" name="importDocuments" id="importDocuments" value="false" />
                         <br />
                         <button type="submit" class="btn btn-primary">Cadastrar</button>

@@ -75,46 +75,6 @@ class ApprovedService
     /**
      * Undocumented function
      *
-     * @param Approved $approved
-     * @return Employee
-     */
-    public function designate(Approved $approved): Employee
-    {
-        if ($this->employeeEmailAlreadyExists($approved)) {
-            throw new EmployeeAlreadyExistsException("Employee email already exists", 1);
-        }
-
-        $employee = new Employee;
-        $employee->name = $approved->name;
-        $employee->email = $approved->email;
-        $employee->area_code = $approved->area_code;
-        $employee->phone = $approved->phone;
-        $employee->mobile = $approved->mobile;
-
-        //$this->delete($approved);
-
-        return $employee;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param Approved $approved
-     * @return boolean
-     */
-    public function employeeEmailAlreadyExists(Approved $approved): bool
-    {
-        $existantEmployee = Employee::where('email', $approved->email)->first();
-        if (is_null($existantEmployee)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Undocumented function
-     *
      * @param UploadedFile $file
      * @return Collection
      */

@@ -61,7 +61,9 @@ class EmployeeController extends Controller
         $maritalStatuses = MaritalStatus::orderBy('name')->get();
         $addressStates = State::orderBy('name')->get();
 
-        return view('employee.create', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates'));
+        $fromApproved = false;
+
+        return view('employee.create', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'fromApproved'));
     }
 
     /**

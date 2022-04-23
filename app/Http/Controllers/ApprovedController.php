@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Gate;
 use App\CustomClasses\ModelFilterHelpers;
 use App\Http\Requests\ImportApprovedRequest;
 use App\Exceptions\EmployeeAlreadyExistsException;
+use App\Models\Employee;
 
 class ApprovedController extends Controller
 {
@@ -167,21 +168,28 @@ class ApprovedController extends Controller
             return response()->view('access.denied')->setStatusCode(401);
         }
 
+        $existantEmployee = Employee::where('email', $approved->email)->first();
+        if ($existantEmployee) {
+            return redirect()->route('approveds.index')->withErrors(['employeeAlreadyExists' => 'Já existe Colaborador no sistema com o mesmo email do Aprovado.']);
+        }
+
         $genders = Gender::orderBy('name')->get();
         $birthStates = State::orderBy('name')->get();
         $documentTypes = DocumentType::orderBy('name')->get();
         $maritalStatuses = MaritalStatus::orderBy('name')->get();
         $addressStates = State::orderBy('name')->get();
 
-        try {
-            $employee = $this->service->designate($approved);
-        } catch (EmployeeAlreadyExistsException $e) {
-            return redirect()->route('approveds.index')->withErrors(['employeeAlreadyExists' => 'Já existe Colaborador no sistema com o mesmo email.']);
-        } catch (\Exception $e) {
-            return redirect()->route('approveds.index')->withErrors($e->getMessage());
-        }
+        // Create a temporary object Employee to fill with the approved current data
+        $employee = new Employee;
+        $employee->name = $approved->name;
+        $employee->email = $approved->email;
+        $employee->area_code = $approved->area_code;
+        $employee->phone = $approved->phone;
+        $employee->mobile = $approved->mobile;
 
-        return view('approved.designate', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee'));
+        $fromApproved = true;
+
+        return view('approved.designate', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee', 'fromApproved'));
     }
     
     /**

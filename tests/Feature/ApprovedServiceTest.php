@@ -4,15 +4,12 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\Approved;
-use App\Models\Employee;
 use Mockery\MockInterface;
 use App\Models\ApprovedState;
 use App\Services\ApprovedService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Testing\WithFaker;
-use App\Exceptions\EmployeeAlreadyExistsException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ApprovedServiceTest extends TestCase
@@ -127,46 +124,6 @@ class ApprovedServiceTest extends TestCase
             $this->assertEquals('Foo', $approved->approvedState->name);
             $this->assertCount(2, Approved::all());
         });
-    }
-
-    /**
-     * @test
-     */
-    public function approvedShouldBecomesAnEmployee()
-    {
-        //setting up scenario
-        $approved = Approved::find(1);
-
-        //execution
-        $employee = $this->service->designate($approved);
-
-        //verifications
-        $this->assertEquals('App\Models\Employee', get_class($employee));
-        $this->assertEquals('John Doe', $employee->name);
-    }
-
-    /**
-     * @test
-     */
-    public function approvedShouldNotBecomesAnPreexistingEmployee()
-    {
-        //setting up scenario
-        $approved = Approved::find(1);
-
-        Employee::factory()->create(
-            [
-                'name' => 'Bob Doe',
-                'email' => 'john@test.com'
-            ]
-        );
-
-        $this->expectException(EmployeeAlreadyExistsException::class);
-
-        //execution
-        $this->service->designate($approved);
-
-        //verifications
-        $this->assertCount(1, Employee::all());
     }
 
     /**
