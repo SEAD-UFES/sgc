@@ -43,7 +43,7 @@ class BondService
      * @param array $attributes
      * @return Bond
      */
-    public function create(array $attributes): Bond
+    public function create(array $attributes): ?Bond
     {
         $attributes['volunteer'] = isset($attributes['volunteer']);
         $attributes['terminated_at'] = null;
@@ -51,9 +51,11 @@ class BondService
         $attributes['impediment_description'] = 'Vínculo ainda não revisado';
         $attributes['uaba_checked_at'] = null;
 
-        $bond = Bond::create($attributes);
+        $bond = null;
 
-        DB::transaction(function () use ($bond) {
+        DB::transaction(function () use ($attributes, &$bond) {
+
+            $bond = Bond::create($attributes);
 
             $employeeDocuments = EmployeeDocument::where('employee_id', $bond->employee_id)->get();
 

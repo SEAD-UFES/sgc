@@ -204,10 +204,10 @@ class DocumentController extends Controller
 
         $documentTypes = DocumentType::orderBy('name')->get();
 
-        $this->service->documentModel = new EmployeeDocument;
+        $this->service->documentClass = EmployeeDocument::class;
 
         try {
-            $employeeDocuments = $this->service->createManyEmployeeDocumentsStep1($request->validated());
+            $employeeDocuments = $this->service->createManyDocumentsStep1($request->validated());
         } catch (\Exception $e) {
             return redirect()->back()->withErrors('Erro ao tentar obter arquivos: ' . $e->getMessage());
         }
@@ -224,10 +224,10 @@ class DocumentController extends Controller
 
         $documentTypes = DocumentType::orderBy('name')->get();
 
-        $this->service->documentModel = new BondDocument;
+        $this->service->documentClass = BondDocument::class;
 
         try {
-            $bondDocuments = $this->service->createManyBondDocumentsStep1($request->validated());
+            $bondDocuments = $this->service->createManyDocumentsStep1($request->validated());
         } catch (\Exception $e) {
             return redirect()->back()->withErrors('Erro ao tentar obter arquivos: ' . $e->getMessage());
         }
@@ -242,8 +242,8 @@ class DocumentController extends Controller
             return response()->view('access.denied')->setStatusCode(401);
         }
 
-        $this->service->documentModel = new EmployeeDocument;
-        $this->service->createManyEmployeeDocumentsStep2($request->all());
+        $this->service->documentClass = EmployeeDocument::class;
+        $this->service->createManyDocumentsStep2($request->all());
 
         return redirect()->route('employeesDocuments.index')->with('success', 'Arquivos importados com sucesso.');
     }
@@ -255,8 +255,8 @@ class DocumentController extends Controller
             return response()->view('access.denied')->setStatusCode(401);
         }
 
-        $this->service->documentModel = new BondDocument;
-        $this->service->createManyBondDocumentsStep2($request->all());
+        $this->service->documentClass = BondDocument::class;
+        $this->service->createManyDocumentsStep2($request->all());
 
         return redirect()->route('bondsDocuments.index')->with('success', 'Arquivos importados com sucesso.');
     }

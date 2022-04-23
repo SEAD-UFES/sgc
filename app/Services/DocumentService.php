@@ -8,12 +8,13 @@ use App\Models\Document;
 use App\Models\Employee;
 use App\Models\BondDocument;
 use App\CustomClasses\SgcLogger;
-use App\Models\EmployeeDocument;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+
+use Illuminate\Database\Eloquent\Builder;
 
 class DocumentService
 {
@@ -79,7 +80,7 @@ class DocumentService
     public function create(array $attributes)
     {
         $attributes['original_name'] = isset($attributes['file']) ? $attributes['file']->getClientOriginalName() : null;
-        //$attributes['document_type_id'];
+
         $attributes['file_data'] = isset($attributes['file']) ? $this->getFileData($attributes['file']) : null;
 
         $attributes['documentable_type'] = $this->documentClass;
@@ -136,54 +137,25 @@ class DocumentService
      * @param array $attributes
      * @return Collection
      */
-    public function createManyEmployeeDocumentsStep1(array $attributes): Collection
+    public function createManyDocumentsStep1(array $attributes): Collection
     {
         if (isset($attributes['files'])) {
             $files = $attributes['files'];
-            $employeeDocuments = collect();
+
+            $documents = collect();
 
             foreach ($files as $file) {
                 $tmpFileName = time() . '.' . $file->getClientOriginalName();
                 $tmpFilePath = $file->storeAs('temp', $tmpFileName, 'local');
 
-                $document = new EmployeeDocument();
-                $document->employee_id = $attributes['employee_id']; // <= Particular line
-                $document->original_name = $file->getClientOriginalName();
-                $document->filePath = $tmpFilePath;
+                $document[$this->documentClass::REFERENT_ID] = $attributes[$this->documentClass::REFERENT_ID];
+                $document['original_name'] = $file->getClientOriginalName();
+                $document['filePath'] = $tmpFilePath;
 
-                $employeeDocuments->push($document);
+                $documents->push($document);
             }
 
-            return $employeeDocuments;
-        }
-        throw new Exception('$attributes[files] not set.', 1);
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param array $attributes
-     * @return Collection
-     */
-    public function createManyBondDocumentsStep1(array $attributes): Collection
-    {
-        if (isset($attributes['files'])) {
-            $files = $attributes['files'];
-            $bondDocuments = collect();
-
-            foreach ($files as $file) {
-                $tmpFileName = time() . '.' . $file->getClientOriginalName();
-                $tmpFilePath = $file->storeAs('temp', $tmpFileName, 'local');
-
-                $document = new BondDocument();
-                $document->bond_id = $attributes['bond_id']; // <= Particular line
-                $document->original_name = $file->getClientOriginalName();
-                $document->filePath = $tmpFilePath;
-
-                $bondDocuments->push($document);
-            }
-
-            return $bondDocuments;
+            return $documents;
         }
         throw new Exception('$attributes[files] not set.', 1);
     }
@@ -194,86 +166,62 @@ class DocumentService
      * @param array $attributes
      * @return void
      */
-    public function createManyEmployeeDocumentsStep2(array $attributes)
+    public function createManyDocumentsStep2(array $attributes)
     {
         $documentsCount = $attributes['fileSetCount'];
 
         DB::transaction(function () use ($attributes, $documentsCount) {
 
+            $document[$this->documentClass::REFERENT_ID] = $attributes[$this->documentClass::REFERENT_ID];
+            $document['documentable_type'] = $this->documentClass;
+
             for ($i = 0; $i < $documentsCount; $i++) {
+                $document['original_name'] = $attributes['fileName_' . $i];
+                $document['document_type_id'] = $attributes['document_type_id_' . $i];
+
                 $filePath = $attributes['filePath_' . $i];
+                $document['file_data'] = $this->getFileDataFromPath($filePath);
 
-                $document = new EmployeeDocument();
-                $document->employee_id = $attributes['employeeId']; // <= Particular line
-                $document->document_type_id = $attributes['document_type_id_' . $i];
-                $document->original_name = $attributes['fileName_' . $i];
-                $document->file_data = $this->getFileDataFromPath($filePath);
+                /* Quering for the documents with specific documentable type (EmployeeDocument or BondDocument) and document type
+                where documentables referent (employee or bond) match the data from the form. */
+                $oldDocuments = Document::whereHasMorph(
+                    'documentable',
+                    $this->documentClass,
+                    function (Builder $query) use ($document) {
+                        $query->where($this->documentClass::REFERENT_ID, $document[$this->documentClass::REFERENT_ID]);
+                    }
+                )->where('document_type_id', $document['document_type_id'])->get();
 
-                $oldDocuments = new EmployeeDocument();
-                $oldDocuments = $oldDocuments
-                    ->where('employee_id', $document->employee_id) // <= Particular line
-                    ->where('document_type_id', $document->document_type_id)
-                    ->get();
-                foreach ($oldDocuments as $old) {
-                    $old->delete();
-                }
+                /* If there are old documents, get the documentables */
+                $oldDocumentables = $oldDocuments->map(function ($oldDocument) {
+                    return $oldDocument->documentable;
+                });
 
-                $document->save();
+                /* If there are old documentables, delete them */
+                $oldDocumentables->each(function ($oldDocumentable) {
+                    $oldDocumentable->delete();
+                });
+
+                /* If there are old documents, delete them */
+                $oldDocuments->each(function ($oldDocument) {
+                    $oldDocument->delete();
+                });
+
+
+                $document['documentable_id'] = $this->documentClass::create([
+                    $this->documentClass::REFERENT_ID => $attributes[$this->documentClass::REFERENT_ID]
+                ])->id;
+                /*
+                $document['documentable_id'] = $this->documentClass::create(['employee_id' => $attributes['employee_id']])->id;
+                $document['documentable_id'] = EmployeeDocument::create(['employee_id' => $attributes['employee_id']])->id;
+                */
+
+                Document::create($document);
+
+                //delete tmp_files
+                Storage::delete($filePath);
             }
         });
-
-        //delete tmp_files
-        for ($i = 0; $i < $documentsCount; $i++) {
-            $filePath = $attributes['filePath_' . $i];
-            Storage::delete($filePath);
-        }
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param array $attributes
-     * @return void
-     */
-    public function createManyBondDocumentsStep2(array $attributes)
-    {
-        //number of files
-        $documentsCount = $attributes['bondDocumentsCount'];
-
-        //save all documents
-        DB::transaction(function () use ($attributes, $documentsCount) {
-            //save model for each file
-            for ($i = 0; $i < $documentsCount; $i++) {
-                //get file_path
-                $filePath = $attributes['filePath_' . $i];
-
-                //set the model
-                $document = new BondDocument();
-                $document->bond_id = $attributes['bond_id']; // <= Particular line
-                $document->document_type_id = $attributes['document_type_id_' . $i];
-                $document->original_name = $attributes['fileName_' . $i];
-                $document->file_data = $this->getFileDataFromPath($filePath);
-
-                //delete old same type document
-                $oldDocuments = new BondDocument();
-                $oldDocuments = $oldDocuments
-                    ->where('bond_id', $document->bond_id) // <= Particular line
-                    ->where('document_type_id', $document->document_type_id)
-                    ->get();
-                foreach ($oldDocuments as $old) {
-                    $old->delete();
-                }
-
-                //save new BondDocument
-                $document->save();
-            }
-        });
-
-        //delete tmp_files
-        for ($i = 0; $i < $documentsCount; $i++) {
-            $filePath = $attributes['filePath_' . $i];
-            Storage::delete($filePath);
-        }
     }
 
     /**

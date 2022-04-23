@@ -35,13 +35,13 @@ class EmployeeService
      */
     public function create(array $attributes): ?Employee
     {
-        DB::transaction(function () use ($attributes) {
+        $employee = null;
+        DB::transaction(function () use ($attributes, &$employee) {
             $employee = Employee::create($attributes);
             $this->userAttach($employee);
-            return $employee;
         });
 
-        return null;
+        return $employee;
     }
 
     /**

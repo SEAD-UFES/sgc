@@ -7,12 +7,7 @@
     <ol class="breadcrumb border-top border-bottom bg-light">
         <li class="breadcrumb-item">Colaboradores</li>
         <li class="breadcrumb-item">Importar Documentos de Vínculo</li>
-        <li class="breadcrumb-item active" aria-current="page">
-            Revisão de Importação: 
-            {{ $bondDocuments->first()->bond->employee->name }}
-            {{ ' - ' . $bondDocuments->first()->bond->role->name }}
-            {{ $bondDocuments->first()->bond->course ? ' - ' . $bondDocuments->first()->bond->course->name : '' }}
-        </li>
+        <li class="breadcrumb-item active" aria-current="page">Revisão de Importação</li>
     </ol>
 </nav>
     <section id="pageContent">
@@ -23,8 +18,8 @@
                     <br />
                     <form action={{ route('bondsDocuments.storeManyStep02') }} method="POST">
                         @csrf
-                        <input type="hidden" name="bondDocumentsCount" value="{{ count($bondDocuments) }}">
-                        <input type="hidden" name="bond_id" value="{{ $bondDocuments->first()->bond_id }}">
+                        <input type="hidden" name="fileSetCount" value="{{ count($bondDocuments) }}">
+                        <input type="hidden" name="bond_id" value="{{ $bondDocuments->first()['bond_id'] }}">
                         <div class="table-responsive">
                             <table class="table table-striped table-hover">
                                 <thead>
@@ -32,11 +27,12 @@
                                     <th>Tipo de documento</th>
                                 </thead>
                                 <tbody>
-                                    @foreach ($bondDocuments as $key => $bondDocument)
-                                        <input type="hidden" name="fileName_{{ $key }}" value="{{ $bondDocument->original_name }}">
-                                        <input type="hidden" name="filePath_{{ $key }}" value="{{ $bondDocument->filePath }}" />
+                                    @foreach ($bondDocuments as $key => $file)
+                                        <input type="hidden" name="fileName_{{ $key }}" value="{{ $file['original_name'] }}">
+                                        <input type="hidden" name="filePath_{{ $key }}" value="{{ $file['filePath'] }}" />
                                         <tr>
-                                            <td title="{{ $bondDocument->original_name }}">{{ $bondDocument->original_name }}</td>
+                                            <td title="{{ $file['original_name'] }}">{{ $file['original_name'] }}</td>
+
                                             <td><select name="document_type_id_{{ $key }}" id="documentTypes_{{ $key }}" class="form-select">
                                                     <option value="">Selecione o tipo de documento</option>
                                                     @foreach ($documentTypes as $documentType)
@@ -51,8 +47,7 @@
                             </table>
                         </div>
                         <br />
-                        <button type="submit" class="btn btn-primary">Importar</button>
-                        <button type="button" onclick="history.back()" class="btn btn-secondary">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Importar</button> <button type="button" onclick="history.back()" class="btn btn-secondary">Cancelar</button>
                     </form>
                 </div>
             </div>
