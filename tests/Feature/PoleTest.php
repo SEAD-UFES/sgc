@@ -2,20 +2,17 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 use App\Models\User;
 use App\Models\Pole;
-use App\Models\UserType;
-use App\Models\UserTypeAssignment;
 
 use App\CustomClasses\SessionUser;
 
 class PoleTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     protected $poleData = ["name" => "Polo Teste", "description" => "Teste."];
 
@@ -105,7 +102,7 @@ class PoleTest extends TestCase
         $session = $this->getAuthenticatedSession();
 
         $session->post(route('poles.store'), $this->poleData)
-          ->assertSee('Acesso negado');
+            ->assertSee('Acesso negado');
     }
 
     /**

@@ -9,7 +9,6 @@ use App\Models\EmployeeDocument;
 use App\Services\DocumentService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 
@@ -54,8 +53,8 @@ class EmployeeDocumentServiceTest extends TestCase
             //verifications
             Event::assertDispatched('eloquent.listed: ' . Document::class);
             $this->assertCount(2, $documents);
-            $this->assertEquals('Document Alpha.pdf', $documents[0]->original_name);
-            $this->assertEquals('Document Beta.pdf', $documents[1]->original_name);
+            $this->assertContains('Document Alpha.pdf', $documents->pluck('original_name')->toArray());
+            $this->assertContains('Document Beta.pdf', $documents->pluck('original_name')->toArray());
         });
     }
 
@@ -78,23 +77,21 @@ class EmployeeDocumentServiceTest extends TestCase
 
             $service->shouldReceive('getFileData')->once()->andReturn($fileBase64);
         });
+        $service->documentClass = EmployeeDocument::class;
 
         Storage::fake('local');
         $attributes['file'] = UploadedFile::fake()->create('Document Gama.pdf', 20, 'application/pdf');
 
         $attributes['document_type_id'] = 1;
-        $attributes['employee_id'] = 1;
+        $attributes['employee_id'] = 2;
 
         Event::fakeFor(function () use ($service, $attributes) {
             //execution
-            $service->documentClass = EmployeeDocument::class;
             $service->create($attributes);
 
             //verifications
             Event::assertDispatched('eloquent.created: ' . Document::class);
-            $this->assertEquals('Document Gama.pdf', Document::whereHasMorph('documentable', EmployeeDocument::class)->skip(2)->first()->original_name);
-            $this->assertCount(3, Document::whereHasMorph('documentable', EmployeeDocument::class)->get());
-            $this->assertCount(3, EmployeeDocument::all());
+            $this->assertContains('Document Gama.pdf', Document::whereHasMorph('documentable', EmployeeDocument::class)->get()->pluck('original_name')->toArray());
         });
     }
 }

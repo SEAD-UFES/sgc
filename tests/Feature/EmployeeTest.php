@@ -7,12 +7,12 @@ use App\Models\Employee;
 use App\Models\User;
 use App\Models\UserType;
 use App\Models\UserTypeAssignment;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class EmployeeTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     protected $employeeData = [
         'name' => 'Fulano de Tal',
@@ -185,7 +185,7 @@ class EmployeeTest extends TestCase
         $employee = $this->getTestEmployee();
 
         $session->put(route('employees.update', $employee->id), $this->newEmployeeData)
-        ->assertSee('Acesso negado');
+            ->assertSee('Acesso negado');
     }
 
     /**

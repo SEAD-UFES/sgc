@@ -23,7 +23,7 @@ class DocumentTypeFactory extends Factory
     {
         return [
             'name' => $this->faker->word(),
-            'description' => $this->faker->text($maxChars = 40),
+            'description' => $this->faker->text($maxNbChars = 40),
             'created_at' => now(),
             'updated_at' => now(),
         ];
