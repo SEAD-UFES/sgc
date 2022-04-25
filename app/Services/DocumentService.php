@@ -87,6 +87,13 @@ class DocumentService
 
         DB::transaction(function () use ($attributes) {
 
+            // Get old versions of this document type
+            $oldDocuments = $this->getOldDocuments($attributes);
+
+            // Delete old versions of this document type
+            $this->deleteOldDocuments($oldDocuments);
+
+
             $attributes['documentable_id'] = $this->documentClass::create([
                 $this->documentClass::REFERENT_ID => $attributes[$this->documentClass::REFERENT_ID]
             ])->id;
@@ -182,31 +189,11 @@ class DocumentService
                 $filePath = $attributes['filePath_' . $i];
                 $document['file_data'] = $this->getFileDataFromPath($filePath);
 
-                /* Quering for the documents with specific documentable type (EmployeeDocument or BondDocument) and document type
-                where documentables referent (employee or bond) match the data from the form. */
-                $oldDocuments = Document::whereHasMorph(
-                    'documentable',
-                    $this->documentClass,
-                    function (Builder $query) use ($document) {
-                        $query->where($this->documentClass::REFERENT_ID, $document[$this->documentClass::REFERENT_ID]);
-                    }
-                )->where('document_type_id', $document['document_type_id'])->get();
+                // Get old versions of this document type
+                $oldDocuments = $this->getOldDocuments($document);
 
-                /* If there are old documents, get the documentables */
-                $oldDocumentables = $oldDocuments->map(function ($oldDocument) {
-                    return $oldDocument->documentable;
-                });
-
-                /* If there are old documentables, delete them */
-                $oldDocumentables->each(function ($oldDocumentable) {
-                    $oldDocumentable->delete();
-                });
-
-                /* If there are old documents, delete them */
-                $oldDocuments->each(function ($oldDocument) {
-                    $oldDocument->delete();
-                });
-
+                // Delete old versions of this document type
+                $this->deleteOldDocuments($oldDocuments);
 
                 $document['documentable_id'] = $this->documentClass::create([
                     $this->documentClass::REFERENT_ID => $attributes[$this->documentClass::REFERENT_ID]
@@ -221,6 +208,39 @@ class DocumentService
                 //delete tmp_files
                 Storage::delete($filePath);
             }
+        });
+    }
+
+    private function getOldDocuments($document): Collection
+    {
+        /* Quering for the documents with specific documentable type (EmployeeDocument or BondDocument) and document type
+        where documentables referent (employee or bond) match the data from the form. */
+        $oldDocuments = Document::whereHasMorph(
+            'documentable',
+            $this->documentClass,
+            function (Builder $query) use ($document) {
+                $query->where($this->documentClass::REFERENT_ID, $document[$this->documentClass::REFERENT_ID]);
+            }
+        )->where('document_type_id', $document['document_type_id'])->get();
+
+        return $oldDocuments;
+    }
+
+    private function deleteOldDocuments(Collection $oldDocuments): void
+    {
+        /* If there are old documents, get the documentables */
+        $oldDocumentables = $oldDocuments->map(function ($oldDocument) {
+            return $oldDocument->documentable;
+        });
+
+        /* If there are old documentables, delete them */
+        $oldDocumentables->each(function ($oldDocumentable) {
+            $oldDocumentable->delete();
+        });
+
+        /* If there are old documents, delete them */
+        $oldDocuments->each(function ($oldDocument) {
+            $oldDocument->delete();
         });
     }
 
