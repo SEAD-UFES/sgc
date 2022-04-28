@@ -51,7 +51,8 @@ class EmployeeServiceTest extends TestCase
 
             //verifications
             Event::assertDispatched('eloquent.listed: ' . Employee::class);
-            $this->assertEquals('John Doe', $employees->first()->name);
+            $this->assertContains('John Doe', $employees->pluck('name')->toArray());
+            $this->assertContains('Jane Doe', $employees->pluck('name')->toArray());
             $this->assertCount(2, $employees);
         });
     }
