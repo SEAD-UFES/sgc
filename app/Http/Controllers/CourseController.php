@@ -28,7 +28,7 @@ class CourseController extends Controller
     {
         //check access permission
         if (!Gate::allows('course-list')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         //filters
@@ -48,7 +48,7 @@ class CourseController extends Controller
     {
         //check access permission
         if (!Gate::allows('course-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $courseTypes = CourseType::orderBy('name')->get();
@@ -66,7 +66,7 @@ class CourseController extends Controller
     {
         //check access permission
         if (!Gate::allows('course-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $this->service->create($request->validated());
@@ -84,7 +84,7 @@ class CourseController extends Controller
     {
         //check access permission
         if (!Gate::allows('course-show')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $this->service->read($course);
@@ -102,7 +102,7 @@ class CourseController extends Controller
     {
         //check access permission
         if (!Gate::allows('course-update')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $courseTypes = CourseType::orderBy('name')->get();
@@ -121,7 +121,7 @@ class CourseController extends Controller
     {
         //check access permission
         if (!Gate::allows('course-update')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         try {
@@ -143,7 +143,7 @@ class CourseController extends Controller
     {
         //check access permission
         if (!Gate::allows('course-destroy')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         try {

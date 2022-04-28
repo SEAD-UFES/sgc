@@ -36,7 +36,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (!Gate::allows('approved-list')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         //filters
@@ -59,7 +59,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (!Gate::allows('approved-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         return view('approved.create');
@@ -119,7 +119,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (!Gate::allows('approved-destroy')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         try {
@@ -142,7 +142,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (!Gate::allows('approved-update-state')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         try {
@@ -165,7 +165,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (!Gate::allows('approved-designate')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $existantEmployee = Employee::where('email', $approved->email)->first();
@@ -202,7 +202,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (!Gate::allows('approved-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $roles = Role::orderBy('name')->get();
@@ -228,7 +228,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (!Gate::allows('approved-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         try {

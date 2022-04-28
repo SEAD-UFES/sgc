@@ -31,7 +31,7 @@ class DocumentController extends Controller
     {
         //check access permission
         if (!Gate::allows('employeeDocument-list')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $this->service->documentClass = EmployeeDocument::class;
@@ -51,7 +51,7 @@ class DocumentController extends Controller
     {
         //check access permission
         if (!Gate::allows('bondDocument-list')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $this->service->documentClass = BondDocument::class;
@@ -73,7 +73,7 @@ class DocumentController extends Controller
     {
         //check access permission
         if (!Gate::allows('bondDocument-rights')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         //filters
@@ -93,7 +93,7 @@ class DocumentController extends Controller
     {
         //check access permission
         if (!Gate::allows('employeeDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $documentTypes = DocumentType::orderBy('name')->get();
@@ -111,7 +111,7 @@ class DocumentController extends Controller
     {
         //check access permission
         if (!Gate::allows('bondDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $documentTypes = DocumentType::orderBy('name')->get();
@@ -130,7 +130,7 @@ class DocumentController extends Controller
     {
         //check access permission
         if (!Gate::allows('employeeDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $this->service->documentClass = EmployeeDocument::class;
@@ -149,7 +149,7 @@ class DocumentController extends Controller
     {
         //check access permission
         if (!Gate::allows('bondDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $this->service->documentClass = BondDocument::class;
@@ -167,7 +167,7 @@ class DocumentController extends Controller
     {
         //check access permission
         if (!Gate::allows('employeeDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $id = $request->id ?? null;
@@ -182,7 +182,7 @@ class DocumentController extends Controller
     {
         //check access permission
         if (!Gate::allows('bondDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $id = $request->bond_id ?? null;
@@ -199,7 +199,7 @@ class DocumentController extends Controller
     {
         //check access permission
         if (!Gate::allows('employeeDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $documentTypes = DocumentType::orderBy('name')->get();
@@ -219,7 +219,7 @@ class DocumentController extends Controller
     {
         //check access permission
         if (!Gate::allows('bondDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $documentTypes = DocumentType::orderBy('name')->get();
@@ -239,7 +239,7 @@ class DocumentController extends Controller
     {
         //check access permission
         if (!Gate::allows('employeeDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $this->service->documentClass = EmployeeDocument::class;
@@ -252,7 +252,7 @@ class DocumentController extends Controller
     {
         //check access permission
         if (!Gate::allows('bondDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $this->service->documentClass = BondDocument::class;
@@ -273,9 +273,9 @@ class DocumentController extends Controller
 
         //check access permission
         if ($file->class === 'App\Models\EmployeeDocument' && !Gate::allows('employeeDocument-download')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         } elseif ($file->class === 'App\Models\BondDocument' && !Gate::allows('bondDocument-download')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         return Response::make($file->data, 200, ['filename="' . $file->name . '"'])->header('Content-Type', $file->mime);
@@ -285,7 +285,7 @@ class DocumentController extends Controller
     {
         //check access permission
         if (!Gate::allows('employeeDocument-download')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         try {
@@ -301,7 +301,7 @@ class DocumentController extends Controller
     {
         //check access permission
         if (!Gate::allows('bondDocument-download')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         try {

@@ -27,7 +27,7 @@ class RoleController extends Controller
     {
         //check access permission
         if (!Gate::allows('role-list')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         //filters
@@ -47,7 +47,7 @@ class RoleController extends Controller
     {
         //check access permission
         if (!Gate::allows('role-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $grantTypes = GrantType::orderBy('name')->get();
@@ -65,7 +65,7 @@ class RoleController extends Controller
     {
         //check access permission
         if (!Gate::allows('role-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         try {
@@ -87,7 +87,7 @@ class RoleController extends Controller
     {
         //check access permission
         if (!Gate::allows('role-show')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $this->service->read($role);
@@ -105,7 +105,7 @@ class RoleController extends Controller
     {
         //check access permission
         if (!Gate::allows('role-update')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $grantTypes = GrantType::orderBy('name')->get();
@@ -124,7 +124,7 @@ class RoleController extends Controller
     {
         //check access permission
         if (!Gate::allows('role-update')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         try {
@@ -146,7 +146,7 @@ class RoleController extends Controller
     {
         //check access permission
         if (!Gate::allows('role-destroy')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         try {

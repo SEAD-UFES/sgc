@@ -32,7 +32,7 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (!Gate::allows('employee-list')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         //filters
@@ -52,7 +52,7 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (!Gate::allows('employee-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $genders = Gender::orderBy('name')->get();
@@ -76,7 +76,7 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (!Gate::allows('employee-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         try {
@@ -102,7 +102,7 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (!Gate::allows('employee-show')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $this->service->read($employee);
@@ -122,7 +122,7 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (!Gate::allows('employee-update')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $genders = Gender::orderBy('name')->get();
@@ -147,7 +147,7 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (!Gate::allows('employee-update')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         try {
@@ -169,7 +169,7 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (!Gate::allows('employee-destroy')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         try {

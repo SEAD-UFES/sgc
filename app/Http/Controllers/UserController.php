@@ -28,7 +28,7 @@ class UserController extends Controller
     {
         //check access permission
         if (!Gate::allows('user-list')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         //filters
@@ -48,7 +48,7 @@ class UserController extends Controller
     {
         //check access permission
         if (!Gate::allows('user-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $userTypes = UserType::orderBy('name')->get();
@@ -66,7 +66,7 @@ class UserController extends Controller
     {
         //check access permission
         if (!Gate::allows('user-store')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         try {
@@ -88,7 +88,7 @@ class UserController extends Controller
     {
         //check access permission
         if (!Gate::allows('user-show')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $this->service->read($user);
@@ -106,7 +106,7 @@ class UserController extends Controller
     {
         //check access permission
         if (!Gate::allows('user-update')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         return view('user.edit', compact('user'));
@@ -123,7 +123,7 @@ class UserController extends Controller
     {
         //check access permission
         if (!Gate::allows('user-update')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         try {
@@ -145,7 +145,7 @@ class UserController extends Controller
     {
         //check access permission
         if (!Gate::allows('user-destroy')) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         try {
@@ -184,7 +184,7 @@ class UserController extends Controller
     {
         //check access permission
         if (false) {
-            return response()->view('access.denied')->setStatusCode(401);
+            return response()->view('access.denied')->setStatusCode(403);
         }
 
         $user = session('sessionUser')->currentUser;
