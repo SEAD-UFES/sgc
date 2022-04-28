@@ -43,4 +43,74 @@ class UserTypeFactory extends Factory
             ];
         });
     }
+
+
+    /**
+     * Return an director User Type (acronym `dir`)
+     * @return \Illumintate\Database\Eloquent\Factories\Factory
+     */
+    public function director()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'acronym' => 'dir'
+            ];
+        });
+    }
+
+
+    /**
+     * Return an assistant User Type (acronym `ass`)
+     * @return \Illumintate\Database\Eloquent\Factories\Factory
+     */
+    public function assistant()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'acronym' => 'ass'
+            ];
+        });
+    }
+
+
+    /**
+     * Return an secretary User Type (acronym `sec`)
+     * @return \Illumintate\Database\Eloquent\Factories\Factory
+     */
+    public function secretary()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'acronym' => 'sec'
+            ];
+        });
+    }
+
+
+    /**
+     * Return an ldi User Type (acronym `ldi`)
+     * @return \Illumintate\Database\Eloquent\Factories\Factory
+     */
+    public function ldi()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'acronym' => 'ldi'
+            ];
+        });
+    }
+
+
+    /**
+     * Return an coordinator User Type (acronym `coord`)
+     * @return \Illumintate\Database\Eloquent\Factories\Factory
+     */
+    public function coordinator()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'acronym' => 'coord'
+            ];
+        });
+    }
 }
