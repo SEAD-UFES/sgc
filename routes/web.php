@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
 
     /* Route::resource('documents', DocumentController::class); */
 
-    Route::get('employeesdocumentindex', [DocumentController::class, 'employeesDocumentsIndex'])->name('employeesDocuments.index');
+    Route::get('employeesdocuments', [DocumentController::class, 'employeesDocumentsIndex'])->name('employeesDocuments.index');
     //single employee doc create
     Route::get('employeedocuments/create', [DocumentController::class, 'employeesDocumentsCreate'])->name('employeesDocuments.create');
     Route::post('employeedocuments', [DocumentController::class, 'employeesDocumentsStore'])->name('employeesDocuments.store');
@@ -55,7 +55,7 @@ Route::middleware('auth')->group(function () {
     //mass download
     Route::get('employeedocumentsmassdownload/{employee}', [DocumentController::class, 'employeesDocumentsMassDownload'])->name('employeesDocuments.massdownload');
 
-    Route::get('bondsdocumentindex', [DocumentController::class, 'bondsDocumentsIndex'])->name('bondsDocuments.index');
+    Route::get('bondsdocuments', [DocumentController::class, 'bondsDocumentsIndex'])->name('bondsDocuments.index');
     //single bond doc create
     Route::get('bonddocuments/create', [DocumentController::class, 'bondsDocumentsCreate'])->name('bondsDocuments.create');
     Route::post('bonddocuments', [DocumentController::class, 'bondsDocumentsStore'])->name('bondsDocuments.store');
@@ -68,7 +68,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('rights', [DocumentController::class, 'rightsIndex'])->name('bonds.rights.index');
 
-    Route::get('/document/{id}/{htmlTitle}', [DocumentController::class, 'showDocument'])->name('documents.show');
+    Route::get('/documents/{id}/{htmlTitle}', [DocumentController::class, 'showDocument'])->name('documents.show');
 
     Route::resource('users', UserController::class);
     Route::get('user/currentPasswordEdit', [UserController::class, 'currentPasswordEdit'])->name('user.currentPasswordEdit');
