@@ -159,7 +159,7 @@ class UserController extends Controller
 
     public function setCurrentUTA(Request $request)
     {
-        session('sessionUser')->setCurrentUTA($request->activeUTAs);
+        auth()->user()->setCurrentUTA($request->activeUTAs);
         return redirect()->back();
     }
 
@@ -170,7 +170,7 @@ class UserController extends Controller
       */
     public function currentPasswordEdit()
     {
-        $user = session('sessionUser');
+        $user = auth()->user();
         return view('user.currentPasswordEdit', compact('user'));
     }
 
@@ -187,7 +187,7 @@ class UserController extends Controller
             return response()->view('access.denied')->setStatusCode(403);
         }
 
-        $user = session('sessionUser')->currentUser;
+        $user = auth()->user();
         $request = $request->validated();
         $request['active'] = true;
 

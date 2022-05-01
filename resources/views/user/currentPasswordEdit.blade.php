@@ -14,7 +14,7 @@
             <div class="row justify-content-center">
                 <div class="col-xl-10 col-xxl-8">
                     @include('_components.alerts')
-                    <form action="{{ route('user.currentPasswordUpdate') }}" method="POST">
+                    <form action="{{ route('users.currentPasswordUpdate') }}" method="POST">
                         @method('PATCH')
                         @csrf
                         <div class="mb-3">

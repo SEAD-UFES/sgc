@@ -15,7 +15,7 @@ class GenericGates
             //return $user->userType->acronym == 'adm';
 
             //need to have session UserTypeAssignment active.
-            $currentUTA = session('sessionUser')->getCurrentUTA();
+            $currentUTA = auth()->user()->getCurrentUTA();
             if (!$currentUTA) {
                 return false;
             }
@@ -35,7 +35,7 @@ class GenericGates
             //return $user->userType->acronym == 'dir';
 
             //need to have session UserTypeAssignment active.
-            $currentUTA = session('sessionUser')->getCurrentUTA();
+            $currentUTA = auth()->user()->getCurrentUTA();
             if (!$currentUTA) {
                 return false;
             }
@@ -55,7 +55,7 @@ class GenericGates
             //return $user->userType->acronym == 'ass';
 
             //need to have session UserTypeAssignment active.
-            $currentUTA = session('sessionUser')->getCurrentUTA();
+            $currentUTA = auth()->user()->getCurrentUTA();
             if (!$currentUTA) {
                 return false;
             }
@@ -75,7 +75,7 @@ class GenericGates
             //return $user->userType->acronym == 'sec';
 
             //need to have session UserTypeAssignment active.
-            $currentUTA = session('sessionUser')->getCurrentUTA();
+            $currentUTA = auth()->user()->getCurrentUTA();
             if (!$currentUTA) {
                 return false;
             }
@@ -94,7 +94,7 @@ class GenericGates
         Gate::define('isLdi', function ($user) {
             //return $user->userType->acronym == 'ldi';
             //need to have session UserTypeAssignment active.
-            $currentUTA = session('sessionUser')->getCurrentUTA();
+            $currentUTA = auth()->user()->getCurrentUTA();
             if (!$currentUTA) {
                 return false;
             }
@@ -114,7 +114,7 @@ class GenericGates
             //return $user->userType->acronym == 'gra';
 
             //need to have session UserTypeAssignment active.
-            $currentUTA = session('sessionUser')->getCurrentUTA();
+            $currentUTA = auth()->user()->getCurrentUTA();
             if (!$currentUTA) {
                 return false;
             }
@@ -133,7 +133,7 @@ class GenericGates
         Gate::define('isAdm-global', function (User $user) {
 
             //need to have session UserTypeAssignment active.
-            $currentUTA = session('sessionUser')->getCurrentUTA();
+            $currentUTA = auth()->user()->getCurrentUTA();
             if (!$currentUTA) {
                 return false;
             }
@@ -153,7 +153,7 @@ class GenericGates
         Gate::define('isDir-global', function (User $user) {
 
             //need to have session UserTypeAssignment active.
-            $currentUTA = session('sessionUser')->getCurrentUTA();
+            $currentUTA = auth()->user()->getCurrentUTA();
             if (!$currentUTA) {
                 return false;
             }
@@ -173,7 +173,7 @@ class GenericGates
         Gate::define('isAss-global', function (User $user) {
 
             //need to have session UserTypeAssignment active.
-            $currentUTA = session('sessionUser')->getCurrentUTA();
+            $currentUTA = auth()->user()->getCurrentUTA();
             if (!$currentUTA) {
                 return false;
             }
@@ -193,7 +193,7 @@ class GenericGates
         Gate::define('isSec-global', function (User $user) {
 
             //need to have session UserTypeAssignment active.
-            $currentUTA = session('sessionUser')->getCurrentUTA();
+            $currentUTA = auth()->user()->getCurrentUTA();
             if (!$currentUTA) {
                 return false;
             }
@@ -212,7 +212,7 @@ class GenericGates
         /* define a grantee user role */
         Gate::define('isCoord-global', function (User $user) {
             //need to have session UserTypeAssignment active.
-            $currentUTA = session('sessionUser')->getCurrentUTA();
+            $currentUTA = auth()->user()->getCurrentUTA();
             if (!$currentUTA) {
                 return false;
             }
@@ -231,7 +231,7 @@ class GenericGates
         /* define a grantee user role */
         Gate::define('isLdi-global', function (User $user) {
             //need to have session UserTypeAssignment active.
-            $currentUTA = session('sessionUser')->getCurrentUTA();
+            $currentUTA = auth()->user()->getCurrentUTA();
             if (!$currentUTA) {
                 return false;
             }
@@ -250,7 +250,7 @@ class GenericGates
         /* define a coord with course_id */
         Gate::define('isCoord-course_id', function (User $user, int $course_id) {
             //need to have session UserTypeAssignment active.
-            $currentUTA = session('sessionUser')->getCurrentUTA();
+            $currentUTA = auth()->user()->getCurrentUTA();
             if (!$currentUTA) {
                 return false;
             }

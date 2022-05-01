@@ -112,14 +112,14 @@
                         </li>
                     @endcannot
                 </ul>
-
-                @if (session('sessionUser')->hasUTAs())
+                
+                @if (auth()->user()->hasUTAs())
                     <form class="d-flex" action={{ route('currentUTA.change') }} method="POST">
                         @csrf
                         <select class="form-select form-select-sm" aria-label="uta" name="activeUTAs" data-bs-toggle="tooltip" data-bs-placement="left" title="Mudar papel atual" onchange="submit();">
-                            @foreach (session('sessionUser')->getActiveUTAs() as $uta)
+                            @foreach (auth()->user()->getActiveUTAs as $uta)
                                 <option value="{{ $uta->id }}"
-                                    {{ session('sessionUser')->getCurrentUTA() && $uta->id === session('sessionUser')->getCurrentUTA()->id ? 'selected' : '' }}>
+                                    {{ auth()->user()->getCurrentUTA() && $uta->id === auth()->user()->getCurrentUTA()->id ? 'selected' : '' }}>
                                     {{ $uta->userType->name }}{{ $uta->course ? ' - ' . $uta->course->name : '' }}
                                 </option>
                             @endforeach
@@ -128,7 +128,7 @@
                 @endif
 
                 <ul class="list-unstyled ms-1 mb-2 mb-lg-0">
-                    <li>Bem vind{{ session('sessionUser')->genderArticle }}, <a href="{{ route('user.currentPasswordEdit') }}" data-bs-toggle="tooltip" data-bs-placement="left" title="Alterar senha do Usuário">{{ session('sessionUser')->name }}</a>!
+                    <li>Bem vind{{ auth()->user()->genderArticle }}, <a href="{{ route('users.currentPasswordEdit') }}" data-bs-toggle="tooltip" data-bs-placement="left" title="Alterar senha do Usuário">{{ auth()->user()->name }}</a>!
                         &nbsp;<a class="btn btn-sm btn-danger" href="{{ route('auth.logout') }}" data-bs-toggle="tooltip" data-bs-placement="left" title="Sair do sistema">Sair</a>
                     </li>
                 </ul>

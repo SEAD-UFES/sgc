@@ -24,7 +24,7 @@ class RequestReviewNotification extends Notification/* implements ShouldQueue */
     public function __construct($bond)
     {
         $this->bond = Bond::with(['course', 'employee', 'role', 'bondDocuments'])->find($bond->id);
-        $this->requesterName = session('sessionUser')->name;
+        $this->requesterName = auth()->user()->name;
     }
 
     /**

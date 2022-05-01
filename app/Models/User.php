@@ -10,6 +10,12 @@ use Kyslik\ColumnSortable\Sortable;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use App\ModelFilters\UserFilter;
 use Carbon\Carbon;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use InvalidArgumentException;
+use Psr\Container\NotFoundExceptionInterface;
+use Psr\Container\ContainerExceptionInterface;
 
 class User extends Authenticatable
 {
@@ -140,5 +146,92 @@ class User extends Authenticatable
     public function logFetched()
     {
         $this->fireModelEvent('fetched', false);
+    }
+
+    /**
+     * Get the user's name.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function name(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) => $this->employee ? $this->employee->name : $this->email,
+        );
+    }
+
+    /**
+     * Get the user's gender article.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function genderArticle(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) => $this->employee ? ($this->employee->gender ? ($this->employee->gender->name === 'Masculino' ? 'o' : 'a') : 'o(a)') : 'o(a)',
+        );
+    }
+
+    //permission system
+
+    /**
+     * @return bool
+     * @throws InvalidArgumentException
+     */
+    public function hasUTAs(): bool
+    {
+        return $this->getActiveUTAs()->get()->count() > 0;
+    }
+
+    /**
+     * @return null|UserTypeAssignment
+     * @throws InvalidArgumentException
+     */
+    public function getFirstUTA(): ?UserTypeAssignment
+    {
+        return $this->getActiveUTAs()?->first();
+    }
+
+    /**
+     * @param null|int $user_type_assignment_id
+     * @return void
+     * @throws InvalidArgumentException
+     * @throws ModelNotFoundException
+     * @throws BindingResolutionException
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     */
+    public function setCurrentUTA(?int $user_type_assignment_id): void
+    {
+        if ($user_type_assignment_id) {
+            $user_type_assignment = $this
+                ->getActiveUTAs()
+                ->where('user_type_assignments.id', $user_type_assignment_id)
+                ->firstOrFail();
+
+            session(['current_uta' => $user_type_assignment]);
+            session(['current_uta_id' => $user_type_assignment?->id]);
+        } else {
+            session(['current_uta' => null]);
+            session(['current_uta_id' => null]);
+        }
+    }
+
+    /**
+     * @return null|UserTypeAssignment
+     * @throws BindingResolutionException
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     */
+    public function getCurrentUTA(): ?UserTypeAssignment
+    {
+        /* $user_type_assignment = $this
+            ->getActiveUTAs()
+            ->where('user_type_assignments.id', session('current_uta_id'))
+            ->first();
+
+        return $user_type_assignment; */
+
+        return session('current_uta');
     }
 }

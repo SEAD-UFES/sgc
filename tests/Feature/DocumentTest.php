@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\CustomClasses\SessionUser;
 use App\Models\BondDocument;
 use App\Models\Document;
 use App\Models\EmployeeDocument;
@@ -78,7 +77,7 @@ class DocumentTest extends TestCase
             'course_id' => null,
         ]);
 
-        
+
 
         Document::factory()->create(
             [
@@ -117,9 +116,8 @@ class DocumentTest extends TestCase
      */
     public function administratorShouldSeeEmployeesDocuments()
     {
-        $this->be(self::$userAdm);
-
-        session(['sessionUser' => new SessionUser(Auth::user())]);
+        $this->be(self::$userAdm)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/employeesdocuments');
         $response->assertSee('Document Employee Alpha.pdf');
@@ -134,9 +132,8 @@ class DocumentTest extends TestCase
      */
     public function directorShouldSeeEmployeesDocuments()
     {
-        $this->be(self::$userDir);
-
-        session(['sessionUser' => new SessionUser(Auth::user())]);
+        $this->be(self::$userDir)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/employeesdocuments');
         $response->assertSee('Document Employee Alpha.pdf');
@@ -151,10 +148,9 @@ class DocumentTest extends TestCase
      */
     public function assistantShouldSeeEmployeesDocuments()
     {
-        $this->be(self::$userAss);
+        $this->be(self::$userAss)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        session(['sessionUser' => new SessionUser(Auth::user())]);
-        
         $response = $this->get('/employeesdocuments');
         $response->assertSee('Document Employee Alpha.pdf');
         $response->assertStatus(200);
@@ -168,10 +164,9 @@ class DocumentTest extends TestCase
      */
     public function secretaryShouldSeeEmployeesDocuments()
     {
-        $this->be(self::$userSec);
+        $this->be(self::$userSec)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        session(['sessionUser' => new SessionUser(Auth::user())]);
-        
         $response = $this->get('/employeesdocuments');
         $response->assertSee('Document Employee Alpha.pdf');
         $response->assertStatus(200);
@@ -185,10 +180,9 @@ class DocumentTest extends TestCase
      */
     public function ldiShouldntSeeEmployeesDocuments()
     {
-        $this->be(self::$userLdi);
+        $this->be(self::$userLdi)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        session(['sessionUser' => new SessionUser(Auth::user())]);
-        
         $response = $this->get('/employeesdocuments');
         $response->assertStatus(403);
     }
@@ -201,10 +195,9 @@ class DocumentTest extends TestCase
      */
     public function coordinatorShouldntSeeEmployeesDocuments()
     {
-        $this->be(self::$userCoord);
+        $this->be(self::$userCoord)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        session(['sessionUser' => new SessionUser(Auth::user())]);
-        
         $response = $this->get('/employeesdocuments');
         $response->assertStatus(403);
     }
@@ -229,9 +222,8 @@ class DocumentTest extends TestCase
      */
     public function administratorShouldSeeBondsDocuments()
     {
-        $this->be(self::$userAdm);
-
-        session(['sessionUser' => new SessionUser(Auth::user())]);
+        $this->be(self::$userAdm)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/bondsdocuments');
         $response->assertSee('Document Bond Beta.pdf');
@@ -246,9 +238,8 @@ class DocumentTest extends TestCase
      */
     public function directorShouldSeeBondsDocuments()
     {
-        $this->be(self::$userDir);
-
-        session(['sessionUser' => new SessionUser(Auth::user())]);
+        $this->be(self::$userDir)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/bondsdocuments');
         $response->assertSee('Document Bond Beta.pdf');
@@ -263,10 +254,9 @@ class DocumentTest extends TestCase
      */
     public function assistantShouldSeeBondsDocuments()
     {
-        $this->be(self::$userAss);
+        $this->be(self::$userAss)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        session(['sessionUser' => new SessionUser(Auth::user())]);
-        
         $response = $this->get('/bondsdocuments');
         $response->assertSee('Document Bond Beta.pdf');
         $response->assertStatus(200);
@@ -280,10 +270,9 @@ class DocumentTest extends TestCase
      */
     public function secretaryShouldSeeBondsDocuments()
     {
-        $this->be(self::$userSec);
+        $this->be(self::$userSec)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        session(['sessionUser' => new SessionUser(Auth::user())]);
-        
         $response = $this->get('/bondsdocuments');
         $response->assertSee('Document Bond Beta.pdf');
         $response->assertStatus(200);
@@ -297,10 +286,9 @@ class DocumentTest extends TestCase
      */
     public function ldiShouldntSeeBondsDocuments()
     {
-        $this->be(self::$userLdi);
+        $this->be(self::$userLdi)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        session(['sessionUser' => new SessionUser(Auth::user())]);
-        
         $response = $this->get('/bondsdocuments');
         $response->assertStatus(403);
     }
@@ -313,10 +301,9 @@ class DocumentTest extends TestCase
      */
     public function coordinatorShouldntSeeBondsDocuments()
     {
-        $this->be(self::$userCoord);
+        $this->be(self::$userCoord)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        session(['sessionUser' => new SessionUser(Auth::user())]);
-        
         $response = $this->get('/bondsdocuments');
         $response->assertStatus(403);
     }

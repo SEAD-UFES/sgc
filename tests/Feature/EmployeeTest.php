@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\CustomClasses\SessionUser;
 use App\Models\Employee;
 use App\Models\User;
 use App\Models\UserType;
@@ -392,7 +391,7 @@ class EmployeeTest extends TestCase
         ]);
 
         $session = $this->actingAs($user)
-            ->withSession(['sessionUser' => new SessionUser($user)]);
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         return $session;
     }
@@ -406,7 +405,7 @@ class EmployeeTest extends TestCase
         $user = User::factory()->create(["employee_id" => null]);
 
         $session = $this->actingAs($user)
-            ->withSession(['sessionUser' => new SessionUser($user)]);
+            ->withSession(['current_uta_id' => null, 'current_uta_id' => null]);
 
         return $session;
     }

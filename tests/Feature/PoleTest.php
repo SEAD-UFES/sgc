@@ -8,8 +8,6 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Pole;
 
-use App\CustomClasses\SessionUser;
-
 class PoleTest extends TestCase
 {
     use RefreshDatabase;
@@ -174,10 +172,10 @@ class PoleTest extends TestCase
      */
     private function getAuthenticatedSession()
     {
-        $user  = User::factory()->create(["employee_id" => null]);
+        $user = User::factory()->create(["employee_id" => null]);
 
         $session = $this->actingAs($user)
-            ->withSession(['sessionUser' => new SessionUser($user)]);
+            ->withSession(['current_uta_id' => null, 'current_uta_id' => null]);
 
         return $session;
     }

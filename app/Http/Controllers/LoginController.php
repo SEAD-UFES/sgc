@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use App\CustomClasses\SgcLogger;
-use App\CustomClasses\SessionUser;
 
 class LoginController extends Controller
 {
@@ -28,8 +27,8 @@ class LoginController extends Controller
 
             SgcLogger::writeLog();
 
-            $sessionUser = new SessionUser(Auth::user());
-            session(['sessionUser' => $sessionUser]);
+            $firstUtaId = auth()->user()->getFirstUTA()?->id;
+            auth()->user()->setCurrentUTA($firstUtaId);
 
             return redirect()->intended('home');
         }
