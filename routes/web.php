@@ -36,42 +36,46 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('auth.logout');
 Route::middleware('auth')->group(function () {
     Route::get('/webhome', [WebController::class, 'webHome'])->name('home');
 
+
+    Route::get('employees/documents', [DocumentController::class, 'employeesDocumentsIndex'])->name('employeesDocuments.index');
+    //single employee doc create
+    Route::get('employees/documents/create', [DocumentController::class, 'employeesDocumentsCreate'])->name('employeesDocuments.create');
+    Route::post('employees/documents', [DocumentController::class, 'employeesDocumentsStore'])->name('employeesDocuments.store');
+    //many employee doc create
+    Route::get('employees/documents/create-many/step-1/{id?}', [DocumentController::class, 'employeesDocumentsCreateMany'])->name('employeesDocuments.createMany');
+    Route::post('employees/documents/create-many/step-2', [DocumentController::class, 'employeesDocumentsStoreMany1'])->name('employeesDocuments.storeMany1');
+    Route::post('employees/documents/create-many/step-3', [DocumentController::class, 'employeesDocumentsStoreMany2'])->name('employeesDocuments.storeMany2');
+    //mass download
+    Route::get('employees/{employee}/documents-export/', [DocumentController::class, 'employeesDocumentsExport'])->name('employeesDocuments.export');
+
     Route::resource('employees', EmployeeController::class);
+
+
+    Route::get('bonds/documents', [DocumentController::class, 'bondsDocumentsIndex'])->name('bondsDocuments.index');
+    //single bond doc create
+    Route::get('bonds/documents/create', [DocumentController::class, 'bondsDocumentsCreate'])->name('bondsDocuments.create');
+    Route::post('bonds/documents', [DocumentController::class, 'bondsDocumentsStore'])->name('bondsDocuments.store');
+    // many bond doc create
+    Route::get('bonds/documents/create-many/step-1', [DocumentController::class, 'bondsDocumentsCreateMany'])->name('bondsDocuments.createMany');
+    Route::post('bonds/documents/create-many/step-2', [DocumentController::class, 'bondsDocumentsStoreMany1'])->name('bondsDocuments.storeMany1');
+    Route::post('bonds/documents/create-many/step-3', [DocumentController::class, 'bondsDocumentsStoreMany2'])->name('bondsDocuments.storeMany2');
+    //mass download
+    Route::get('bonds/{bond}/documents-export', [DocumentController::class, 'bondsDocumentsExport'])->name('bondsDocuments.export');
+
+    Route::get('reports/rights', [DocumentController::class, 'rightsIndex'])->name('bonds.rights.index');
+
     Route::resource('bonds', BondController::class);
+
 
     Route::post('bondreview/{bond}', [BondController::class, 'review'])->name('bonds.review');
     Route::get('bondrequestreview/{bond}', [BondController::class, 'requestReview'])->name('bonds.requestReview');
 
     /* Route::resource('documents', DocumentController::class); */
 
-    Route::get('employeesdocuments', [DocumentController::class, 'employeesDocumentsIndex'])->name('employeesDocuments.index');
-    //single employee doc create
-    Route::get('employeedocuments/create', [DocumentController::class, 'employeesDocumentsCreate'])->name('employeesDocuments.create');
-    Route::post('employeedocuments', [DocumentController::class, 'employeesDocumentsStore'])->name('employeesDocuments.store');
-    //many employee doc create
-    Route::get('employeedocuments/create-many/p1/{id?}', [DocumentController::class, 'employeesDocumentsCreateMany'])->name('employeesDocuments.createMany');
-    Route::post('employeedocuments/create-many/p2', [DocumentController::class, 'employeesDocumentsStoreManyStep1'])->name('employeesDocuments.storeManyStep01');
-    Route::post('employeedocuments/create-many/p3', [DocumentController::class, 'employeesDocumentsStoreManyStep2'])->name('employeesDocuments.storeManyStep02');
-    //mass download
-    Route::get('employeedocumentsmassdownload/{employee}', [DocumentController::class, 'employeesDocumentsMassDownload'])->name('employeesDocuments.massdownload');
-
-    Route::get('bondsdocuments', [DocumentController::class, 'bondsDocumentsIndex'])->name('bondsDocuments.index');
-    //single bond doc create
-    Route::get('bonddocuments/create', [DocumentController::class, 'bondsDocumentsCreate'])->name('bondsDocuments.create');
-    Route::post('bonddocuments', [DocumentController::class, 'bondsDocumentsStore'])->name('bondsDocuments.store');
-    // many bond doc create
-    Route::get('bonddocuments/create-many/p1', [DocumentController::class, 'bondsDocumentsCreateMany'])->name('bondsDocuments.createMany');
-    Route::post('bonddocuments/create-many/p2', [DocumentController::class, 'bondsDocumentsStoreManyStep1'])->name('bondsDocuments.storeManyStep01');
-    Route::post('bonddocuments/create-many/p3', [DocumentController::class, 'bondsDocumentsStoreManyStep2'])->name('bondsDocuments.storeManyStep02');
-    //mass download
-    Route::get('bonddocumentsmassdownload/{bond}', [DocumentController::class, 'bondsDocumentsMassDownload'])->name('bondsDocuments.massdownload');
-
-    Route::get('rights', [DocumentController::class, 'rightsIndex'])->name('bonds.rights.index');
-
     Route::get('/documents/{id}/{htmlTitle}', [DocumentController::class, 'showDocument'])->name('documents.show');
 
-    Route::get('users/currentpassword', [UserController::class, 'currentPasswordEdit'])->name('users.currentPasswordEdit');
-    Route::patch('users/currentpassword', [UserController::class, 'currentPasswordUpdate'])->name('users.currentPasswordUpdate');
+    Route::get('users/current/password', [UserController::class, 'currentPasswordEdit'])->name('users.currentPasswordEdit');
+    Route::patch('users/current/password', [UserController::class, 'currentPasswordUpdate'])->name('users.currentPasswordUpdate');
     Route::resource('users', UserController::class);
 
     Route::resource('roles', RoleController::class);
@@ -91,7 +95,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('userTypeAssignments', UserTypeAssignmentController::class);
     Route::post('/session/changeCurrentUTA', [UserController::class, 'setCurrentUTA'])->name('currentUTA.change');
 
-    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('logs')->middleware('can:isAdm-global');
-    
-    Route::get('sysinfo', [WebController::class, 'showSysInfo'])->name('sysinfo');
+    Route::get('system/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('logs')->middleware('can:isAdm-global');
+
+    Route::get('system/info', [WebController::class, 'showSysInfo'])->name('sysinfo');
 });

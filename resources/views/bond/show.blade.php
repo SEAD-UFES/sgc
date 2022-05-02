@@ -53,7 +53,7 @@
                                         </table>
                                     </div>
 
-                                    <a href="{{ route('bondsDocuments.massdownload', $bond) }}"
+                                    <a href="{{ route('bondsDocuments.export', $bond) }}"
                                         class="btn btn-primary btn-sm mt-1">
                                         &nbsp;&#8627; Fazer o download de todos os documentos do vínculo (zip)
                                     </a>

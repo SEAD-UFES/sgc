@@ -216,7 +216,7 @@
                                         </table>
 
                                         <div class="">
-                                            <a href="{{ route('employeesDocuments.massdownload', $employee) }}" class="btn btn-primary btn-sm mt-1">
+                                            <a href="{{ route('employeesDocuments.export', $employee) }}" class="btn btn-primary btn-sm mt-1">
                                                 &nbsp;&#8627; Fazer o download de todos os documentos do colaborador (zip)
                                             </a>
                                             <a class="btn btn-primary btn-sm mt-1" href="{{ route('employeesDocuments.index', ['employeeCpfContains[0]' => $employee->cpf]) }}" target="_blank">

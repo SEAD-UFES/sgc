@@ -195,7 +195,7 @@ class DocumentController extends Controller
         return view('bond.document.create-many-1', compact('bonds', 'id'));
     }
 
-    public function employeesDocumentsStoreManyStep1(StoreEmployeeMultipleDocumentsRequest $request)
+    public function employeesDocumentsStoreMany1(StoreEmployeeMultipleDocumentsRequest $request)
     {
         //check access permission
         if (!Gate::allows('employeeDocument-store')) {
@@ -215,7 +215,7 @@ class DocumentController extends Controller
         return view('employee.document.create-many-2', compact('employeeDocuments', 'documentTypes'));
     }
 
-    public function bondsDocumentsStoreManyStep1(StoreBondMultipleDocumentsRequest $request)
+    public function bondsDocumentsStoreMany1(StoreBondMultipleDocumentsRequest $request)
     {
         //check access permission
         if (!Gate::allows('bondDocument-store')) {
@@ -235,7 +235,7 @@ class DocumentController extends Controller
         return view('bond.document.create-many-2', compact('bondDocuments', 'documentTypes'));
     }
 
-    public function employeesDocumentsStoreManyStep2(Request $request)
+    public function employeesDocumentsStoreMany2(Request $request)
     {
         //check access permission
         if (!Gate::allows('employeeDocument-store')) {
@@ -248,7 +248,7 @@ class DocumentController extends Controller
         return redirect()->route('employeesDocuments.index')->with('success', 'Arquivos importados com sucesso.');
     }
 
-    public function bondsDocumentsStoreManyStep2(Request $request)
+    public function bondsDocumentsStoreMany2(Request $request)
     {
         //check access permission
         if (!Gate::allows('bondDocument-store')) {
@@ -281,7 +281,7 @@ class DocumentController extends Controller
         return Response::make($file->data, 200, ['filename="' . $file->name . '"'])->header('Content-Type', $file->mime);
     }
 
-    public function employeesDocumentsMassDownload(Employee $employee)
+    public function employeesDocumentsExport(Employee $employee)
     {
         //check access permission
         if (!Gate::allows('employeeDocument-download')) {
@@ -289,7 +289,7 @@ class DocumentController extends Controller
         }
 
         try {
-            $zipFileName = $this->service->getAllDocumentsOfEmployee($employee);
+            $zipFileName = $this->service->exportEmployeeDocuments($employee);
         } catch (\Exception $e) {
             return redirect()->route('employees.show', $employee)->withErrors('Erro ao gerar o arquivo compactado: ' . $e->getMessage());
         }
@@ -297,7 +297,7 @@ class DocumentController extends Controller
         return response()->download($zipFileName)->deleteFileAfterSend(true);
     }
 
-    public function bondsDocumentsMassDownload(Bond $bond)
+    public function bondsDocumentsExport(Bond $bond)
     {
         //check access permission
         if (!Gate::allows('bondDocument-download')) {
@@ -305,7 +305,7 @@ class DocumentController extends Controller
         }
 
         try {
-            $zipFileName = $this->service->getAllDocumentsOfBond($bond);
+            $zipFileName = $this->service->exportBondDocuments($bond);
         } catch (\Exception $e) {
             return redirect()->route('bonds.show', $bond)->withErrors('Erro ao gerar o arquivo compactado: ' . $e->getMessage());
         }

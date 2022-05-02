@@ -104,7 +104,7 @@ class DocumentTest extends TestCase
      */
     public function unloggedUserShouldntSeeEmployeesDocuments()
     {
-        $response = $this->get('/employeesdocuments');
+        $response = $this->get('/employees/documents');
         $response->assertRedirect(route('auth.login'));
     }
 
@@ -119,7 +119,7 @@ class DocumentTest extends TestCase
         $this->be(self::$userAdm)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/employeesdocuments');
+        $response = $this->get('/employees/documents');
         $response->assertSee('Document Employee Alpha.pdf');
         $response->assertStatus(200);
     }
@@ -135,7 +135,7 @@ class DocumentTest extends TestCase
         $this->be(self::$userDir)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/employeesdocuments');
+        $response = $this->get('/employees/documents');
         $response->assertSee('Document Employee Alpha.pdf');
         $response->assertStatus(200);
     }
@@ -151,7 +151,7 @@ class DocumentTest extends TestCase
         $this->be(self::$userAss)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/employeesdocuments');
+        $response = $this->get('/employees/documents');
         $response->assertSee('Document Employee Alpha.pdf');
         $response->assertStatus(200);
     }
@@ -167,7 +167,7 @@ class DocumentTest extends TestCase
         $this->be(self::$userSec)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/employeesdocuments');
+        $response = $this->get('/employees/documents');
         $response->assertSee('Document Employee Alpha.pdf');
         $response->assertStatus(200);
     }
@@ -183,7 +183,7 @@ class DocumentTest extends TestCase
         $this->be(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/employeesdocuments');
+        $response = $this->get('/employees/documents');
         $response->assertStatus(403);
     }
 
@@ -198,7 +198,7 @@ class DocumentTest extends TestCase
         $this->be(self::$userCoord)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/employeesdocuments');
+        $response = $this->get('/employees/documents');
         $response->assertStatus(403);
     }
 
@@ -210,7 +210,7 @@ class DocumentTest extends TestCase
      */
     public function unloggedUserShouldntSeeBondsDocuments()
     {
-        $response = $this->get('/bondsdocuments');
+        $response = $this->get('/bonds/documents');
         $response->assertRedirect(route('auth.login'));
     }
 
@@ -225,7 +225,7 @@ class DocumentTest extends TestCase
         $this->be(self::$userAdm)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/bondsdocuments');
+        $response = $this->get('/bonds/documents');
         $response->assertSee('Document Bond Beta.pdf');
         $response->assertStatus(200);
     }
@@ -241,7 +241,7 @@ class DocumentTest extends TestCase
         $this->be(self::$userDir)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/bondsdocuments');
+        $response = $this->get('/bonds/documents');
         $response->assertSee('Document Bond Beta.pdf');
         $response->assertStatus(200);
     }
@@ -257,7 +257,7 @@ class DocumentTest extends TestCase
         $this->be(self::$userAss)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/bondsdocuments');
+        $response = $this->get('/bonds/documents');
         $response->assertSee('Document Bond Beta.pdf');
         $response->assertStatus(200);
     }
@@ -273,7 +273,7 @@ class DocumentTest extends TestCase
         $this->be(self::$userSec)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/bondsdocuments');
+        $response = $this->get('/bonds/documents');
         $response->assertSee('Document Bond Beta.pdf');
         $response->assertStatus(200);
     }
@@ -289,7 +289,7 @@ class DocumentTest extends TestCase
         $this->be(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/bondsdocuments');
+        $response = $this->get('/bonds/documents');
         $response->assertStatus(403);
     }
 
@@ -304,7 +304,7 @@ class DocumentTest extends TestCase
         $this->be(self::$userCoord)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/bondsdocuments');
+        $response = $this->get('/bonds/documents');
         $response->assertStatus(403);
     }
 }

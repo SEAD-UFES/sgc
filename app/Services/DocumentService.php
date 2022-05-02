@@ -296,9 +296,9 @@ class DocumentService
      * @param Employee $employee
      * @return string
      */
-    public function getAllDocumentsOfEmployee(Employee $employee): string
+    public function exportEmployeeDocuments(Employee $employee): string
     {
-        SgcLogger::writeLog(target: $employee, action: 'getAllDocumentsOfEmployee');
+        SgcLogger::writeLog(target: $employee, action: 'exportEmployeeDocuments');
 
         $documents = $employee->employeeDocuments; // <= Particular line
 
@@ -324,9 +324,9 @@ class DocumentService
      * @param Bond $bond
      * @return string
      */
-    public function getAllDocumentsOfBond(Bond $bond): string
+    public function exportBondDocuments(Bond $bond): string
     {
-        SgcLogger::writeLog(target: $bond, action: 'getAllDocumentsOfBond');
+        SgcLogger::writeLog(target: $bond, action: 'exportBondDocuments');
 
         $documents = $bond->bondDocuments; // <= Particular line
 
