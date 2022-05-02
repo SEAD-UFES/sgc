@@ -8,6 +8,7 @@ use App\Models\Document;
 use App\Models\Employee;
 use App\Models\BondDocument;
 use App\CustomClasses\SgcLogger;
+use App\Models\EmployeeDocument;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -301,23 +302,9 @@ class DocumentService
         SgcLogger::writeLog(target: $employee, action: 'exportEmployeeDocuments');
 
         $documentables = $employee->employeeDocuments; // <= Particular line
-
         $zipFileName = date('Y-m-d') . '_' . $employee->name . '.zip'; // <= Particular line
-        $zip = new \ZipArchive();
 
-        if ($zip->open($zipFileName, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
-            foreach ($documentables as $documentable) {
-                $documentName = $documentable->document->original_name;
-                $documentData = base64_decode($documentable->document->file_data);
-                $zip->addFromString($documentName, $documentData);
-            }
-
-            $zip->close();
-
-            return $zipFileName;
-        }
-
-        throw new Exception('failed: $zip->open()', 1);
+        return $this->exportDocuments($documentables, $zipFileName);
     }
 
     /**
@@ -331,8 +318,19 @@ class DocumentService
         SgcLogger::writeLog(target: $bond, action: 'exportBondDocuments');
 
         $documentables = $bond->bondDocuments; // <= Particular line
-
         $zipFileName = date('Y-m-d') . '_' . $bond->employee->name . '_' . $bond->id . '.zip'; // <= Particular line
+
+        return $this->exportDocuments($documentables, $zipFileName);
+    }
+
+    /**
+     * @param Collection $documentables
+     * @param string $zipFileName
+     * @return string
+     * @throws Exception
+     */
+    public function exportDocuments(Collection $documentables, String $zipFileName): string
+    {
         $zip = new \ZipArchive();
 
         if ($zip->open($zipFileName, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
