@@ -300,14 +300,16 @@ class DocumentService
     {
         SgcLogger::writeLog(target: $employee, action: 'exportEmployeeDocuments');
 
-        $documents = $employee->employeeDocuments; // <= Particular line
+        $documentables = $employee->employeeDocuments; // <= Particular line
 
         $zipFileName = date('Y-m-d') . '_' . $employee->name . '.zip'; // <= Particular line
         $zip = new \ZipArchive();
 
         if ($zip->open($zipFileName, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
-            foreach ($documents as $document) {
-                $zip->addFromString($document->original_name, base64_decode($document->file_data));
+            foreach ($documentables as $documentable) {
+                $documentName = $documentable->document->original_name;
+                $documentData = base64_decode($documentable->document->file_data);
+                $zip->addFromString($documentName, $documentData);
             }
 
             $zip->close();
@@ -328,14 +330,16 @@ class DocumentService
     {
         SgcLogger::writeLog(target: $bond, action: 'exportBondDocuments');
 
-        $documents = $bond->bondDocuments; // <= Particular line
+        $documentables = $bond->bondDocuments; // <= Particular line
 
         $zipFileName = date('Y-m-d') . '_' . $bond->employee->name . '_' . $bond->id . '.zip'; // <= Particular line
         $zip = new \ZipArchive();
 
         if ($zip->open($zipFileName, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
-            foreach ($documents as $document) {
-                $zip->addFromString($document->original_name, base64_decode($document->file_data));
+            foreach ($documentables as $documentable) {
+                $documentName = $documentable->document->original_name;
+                $documentData = base64_decode($documentable->document->file_data);
+                $zip->addFromString($documentName, $documentData);
             }
 
             $zip->close();
