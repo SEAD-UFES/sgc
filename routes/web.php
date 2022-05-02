@@ -34,7 +34,7 @@ Route::post('/login', [LoginController::class, 'authenticate'])->name('auth.logi
 Route::get('/logout', [LoginController::class, 'logout'])->name('auth.logout');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/webhome', [WebController::class, 'webHome'])->name('home');
+    Route::get('/home', [WebController::class, 'home'])->name('home');
 
 
     Route::get('employees/documents', [DocumentController::class, 'employeesDocumentsIndex'])->name('employeesDocuments.index');

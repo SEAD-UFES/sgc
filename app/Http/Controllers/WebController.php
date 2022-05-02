@@ -16,7 +16,7 @@ class WebController extends Controller
         }
     }
 
-    public function webHome()
+    public function home()
     {
         return view('home');
     }
