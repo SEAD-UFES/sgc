@@ -10,6 +10,8 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\WebController;
 use App\Http\Controllers\ApprovedController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\EmployeeDocumentController;
+use App\Http\Controllers\BondDocumentController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CourseTypeController;
 use App\Http\Controllers\NotificationController;
@@ -37,32 +39,32 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [WebController::class, 'home'])->name('home');
 
 
-    Route::get('employees/documents', [DocumentController::class, 'employeesDocumentsIndex'])->name('employeesDocuments.index');
+    Route::get('employees/documents', [EmployeeDocumentController::class, 'employeesDocumentsIndex'])->name('employeesDocuments.index');
     //single employee doc create
-    Route::get('employees/documents/create', [DocumentController::class, 'employeesDocumentsCreate'])->name('employeesDocuments.create');
-    Route::post('employees/documents', [DocumentController::class, 'employeesDocumentsStore'])->name('employeesDocuments.store');
+    Route::get('employees/documents/create', [EmployeeDocumentController::class, 'employeesDocumentsCreate'])->name('employeesDocuments.create');
+    Route::post('employees/documents', [EmployeeDocumentController::class, 'employeesDocumentsStore'])->name('employeesDocuments.store');
     //many employee doc create
-    Route::get('employees/documents/create-many/step-1/{id?}', [DocumentController::class, 'employeesDocumentsCreateMany'])->name('employeesDocuments.createMany');
-    Route::post('employees/documents/create-many/step-2', [DocumentController::class, 'employeesDocumentsStoreMany1'])->name('employeesDocuments.storeMany1');
-    Route::post('employees/documents/create-many/step-3', [DocumentController::class, 'employeesDocumentsStoreMany2'])->name('employeesDocuments.storeMany2');
+    Route::get('employees/documents/create-many/step-1/{id?}', [EmployeeDocumentController::class, 'employeesDocumentsCreateMany'])->name('employeesDocuments.createMany');
+    Route::post('employees/documents/create-many/step-2', [EmployeeDocumentController::class, 'employeesDocumentsStoreMany1'])->name('employeesDocuments.storeMany1');
+    Route::post('employees/documents/create-many/step-3', [EmployeeDocumentController::class, 'employeesDocumentsStoreMany2'])->name('employeesDocuments.storeMany2');
     //mass download
-    Route::get('employees/{employee}/documents-export/', [DocumentController::class, 'employeesDocumentsExport'])->name('employeesDocuments.export');
+    Route::get('employees/{employee}/documents-export/', [EmployeeDocumentController::class, 'employeesDocumentsExport'])->name('employeesDocuments.export');
 
     Route::resource('employees', EmployeeController::class);
 
 
-    Route::get('bonds/documents', [DocumentController::class, 'bondsDocumentsIndex'])->name('bondsDocuments.index');
+    Route::get('bonds/documents', [BondDocumentController::class, 'bondsDocumentsIndex'])->name('bondsDocuments.index');
     //single bond doc create
-    Route::get('bonds/documents/create', [DocumentController::class, 'bondsDocumentsCreate'])->name('bondsDocuments.create');
-    Route::post('bonds/documents', [DocumentController::class, 'bondsDocumentsStore'])->name('bondsDocuments.store');
+    Route::get('bonds/documents/create', [BondDocumentController::class, 'bondsDocumentsCreate'])->name('bondsDocuments.create');
+    Route::post('bonds/documents', [BondDocumentController::class, 'bondsDocumentsStore'])->name('bondsDocuments.store');
     // many bond doc create
-    Route::get('bonds/documents/create-many/step-1', [DocumentController::class, 'bondsDocumentsCreateMany'])->name('bondsDocuments.createMany');
-    Route::post('bonds/documents/create-many/step-2', [DocumentController::class, 'bondsDocumentsStoreMany1'])->name('bondsDocuments.storeMany1');
-    Route::post('bonds/documents/create-many/step-3', [DocumentController::class, 'bondsDocumentsStoreMany2'])->name('bondsDocuments.storeMany2');
+    Route::get('bonds/documents/create-many/step-1', [BondDocumentController::class, 'bondsDocumentsCreateMany'])->name('bondsDocuments.createMany');
+    Route::post('bonds/documents/create-many/step-2', [BondDocumentController::class, 'bondsDocumentsStoreMany1'])->name('bondsDocuments.storeMany1');
+    Route::post('bonds/documents/create-many/step-3', [BondDocumentController::class, 'bondsDocumentsStoreMany2'])->name('bondsDocuments.storeMany2');
     //mass download
-    Route::get('bonds/{bond}/documents-export', [DocumentController::class, 'bondsDocumentsExport'])->name('bondsDocuments.export');
+    Route::get('bonds/{bond}/documents-export', [BondDocumentController::class, 'bondsDocumentsExport'])->name('bondsDocuments.export');
 
-    Route::get('reports/rights', [DocumentController::class, 'rightsIndex'])->name('bonds.rights.index');
+    Route::get('reports/rights', [BondDocumentController::class, 'rightsIndex'])->name('bonds.rights.index');
 
     Route::resource('bonds', BondController::class);
 
