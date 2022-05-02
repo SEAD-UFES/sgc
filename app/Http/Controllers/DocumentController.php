@@ -34,11 +34,9 @@ class DocumentController extends Controller
             return response()->view('access.denied')->setStatusCode(403);
         }
 
-        $this->service->documentClass = EmployeeDocument::class;
+        $this->service->documentClass = $documentClass = EmployeeDocument::class;
 
-        //filters
-        $filters = ModelFilterHelpers::buildFilters($request, $this->service->documentClass::$accepted_filters);
-
+        $filters = ModelFilterHelpers::buildFilters($request, $documentClass::$accepted_filters);
         $documents = $this->service->list(sort: $request->query('sort'), direction: $request->query('direction'));
 
         return view('employee.document.index', compact('documents', 'filters'));
@@ -54,11 +52,9 @@ class DocumentController extends Controller
             return response()->view('access.denied')->setStatusCode(403);
         }
 
-        $this->service->documentClass = BondDocument::class;
+        $this->service->documentClass = $documentClass = BondDocument::class;
 
-        //filters
-        $filters = ModelFilterHelpers::buildFilters($request, $this->service->documentClass::$accepted_filters);
-
+        $filters = ModelFilterHelpers::buildFilters($request, $documentClass::$accepted_filters);
         $documents = $this->service->list(sort: $request->query('sort'), direction: $request->query('direction'));
 
         return view('bond.document.index', compact('documents', 'filters'));
@@ -76,9 +72,9 @@ class DocumentController extends Controller
             return response()->view('access.denied')->setStatusCode(403);
         }
 
-        //filters
-        $filters = ModelFilterHelpers::buildFilters($request, BondDocument::$accepted_filters);
+        $this->service->documentClass = $documentClass = BondDocument::class;
 
+        $filters = ModelFilterHelpers::buildFilters($request, $documentClass::$accepted_filters);
         $documents = $this->service->listRights(sort: $request->query('sort'), direction: $request->query('direction'));
 
         return view('reports.rightsIndex', compact('documents', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
@@ -269,12 +265,18 @@ class DocumentController extends Controller
      */
     public function showDocument($id)
     {
+        if (!(Gate::allows('employeeDocument-download') || Gate::allows('bondDocument-download') || Gate::allows('bondDocument-rights'))) {
+            return response()->view('access.denied')->setStatusCode(403);
+        }
+
         $file = $this->service->getDocument($id);
 
         //check access permission
         if ($file->class === 'App\Models\EmployeeDocument' && !Gate::allows('employeeDocument-download')) {
             return response()->view('access.denied')->setStatusCode(403);
-        } elseif ($file->class === 'App\Models\BondDocument' && !Gate::allows('bondDocument-download')) {
+        } elseif ($file->isRights && !Gate::allows('bondDocument-rights')) {
+            return response()->view('access.denied')->setStatusCode(403);
+        } elseif (($file->class === 'App\Models\BondDocument' && !$file->isRights && !Gate::allows('bondDocument-download'))) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 

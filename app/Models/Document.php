@@ -94,6 +94,14 @@ class Document extends Model
             })->with('documentable.bond');
     }
 
+    /** @return bool  */
+    public function isRights()
+    {
+        $rightsTypeId = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first()?->id;
+
+        return $this->document_type_id == $rightsTypeId;
+    }
+
     public function logListed()
     {
         $this->fireModelEvent('listed', false);

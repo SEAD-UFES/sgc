@@ -6,9 +6,7 @@ use Exception;
 use App\Models\Bond;
 use App\Models\Document;
 use App\Models\Employee;
-use App\Models\BondDocument;
 use App\CustomClasses\SgcLogger;
-use App\Models\EmployeeDocument;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -54,8 +52,6 @@ class DocumentService
      */
     public function listRights(string $sort = null, string $direction = null): LengthAwarePaginator
     {
-        $this->documentClass = BondDocument::class;
-
         (new Document)->logListed();
 
         $query = (new $this->documentClass)->queryRights();
@@ -287,6 +283,7 @@ class DocumentService
         $file->mime = $mimeType;
         $file->data = $fileData;
         $file->class = $document->documentable_type;
+        $file->isRights = $document->isRights();
 
         return $file;
     }
