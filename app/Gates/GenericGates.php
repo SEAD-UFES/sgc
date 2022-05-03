@@ -48,7 +48,6 @@ class GenericGates
 
     public static function define()
     {
-
         /* define a system admin user role */
         Gate::define('isAdm', function ($user) {
             return self::checkGenericRoleUta('adm');
