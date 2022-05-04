@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Approved;
 use App\Models\User;
 use App\Models\UserType;
 use App\Models\UserTypeAssignment;
@@ -10,7 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class ApprovedTest extends TestCase
+class UserTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -74,25 +73,15 @@ class ApprovedTest extends TestCase
             'course_id' => null,
         ]);
 
-        Approved::factory()->create(
+        User::factory()->create(
             [
-                'name' => 'John Doe',
-                'email' => 'john@test.com',
-                'area_code' => '01',
-                'phone' => '12345678',
-                'mobile' => '123456789',
-                'announcement' => '001',
+                'email' => 'johndoe@test1.com',
             ]
         );
 
-        Approved::factory()->create(
+        User::factory()->create(
             [
-                'name' => 'Jane Doe',
-                'email' => 'jane@othertest.com',
-                'area_code' => '02',
-                'phone' => '01234567',
-                'mobile' => '012345678',
-                'announcement' => '002',
+                'email' => 'janedoe@test2.com',
             ]
         );
     }
@@ -103,9 +92,9 @@ class ApprovedTest extends TestCase
      * @return void
      * @test
      */
-    public function unloggedUserShouldntSeeApproveds()
+    public function unloggedUserShouldntSeeUsers()
     {
-        $response = $this->get('/approveds');
+        $response = $this->get('/users');
         $response->assertRedirect(route('auth.login'));
     }
 
@@ -115,13 +104,13 @@ class ApprovedTest extends TestCase
      * @return void
      * @test
      */
-    public function administratorShouldSeeApproveds()
+    public function administratorShouldSeeUsers()
     {
         $this->be(self::$userAdm)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/approveds');
-        $response->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com']);
+        $response = $this->get('/users');
+        $response->assertSee(['johndoe@test1.com', 'janedoe@test2.com']);
         $response->assertStatus(200);
     }
 
@@ -132,28 +121,12 @@ class ApprovedTest extends TestCase
      * @return void
      * @test
      */
-    public function directorShouldSeeApproveds()
-    {
-        $this->be(self::$userDir)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
-
-        $response = $this->get('/approveds');
-        $response->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com']);
-        $response->assertStatus(200);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     * @test
-     */
-    public function assistantShouldntSeeApproveds()
+    public function directorShouldntSeeUsers()
     {
         $this->be(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/approveds');
+        $response = $this->get('/users');
         $response->assertStatus(403);
     }
 
@@ -163,28 +136,12 @@ class ApprovedTest extends TestCase
      * @return void
      * @test
      */
-    public function secretaryShouldSeeApproveds()
-    {
-        $this->be(self::$userSec)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
-
-        $response = $this->get('/approveds');
-        $response->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com']);
-        $response->assertStatus(200);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     * @test
-     */
-    public function ldiShouldntSeeApproveds()
+    public function assistantShouldntSeeUsers()
     {
         $this->be(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/approveds');
+        $response = $this->get('/users');
         $response->assertStatus(403);
     }
 
@@ -194,13 +151,42 @@ class ApprovedTest extends TestCase
      * @return void
      * @test
      */
-    public function coordinatorShouldSeeApproveds()
+    public function secretaryShouldntSeeUsers()
     {
-        $this->be(self::$userCoord)
+        $this->be(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/approveds');
-        $response->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com']);
-        $response->assertStatus(200);
+        $response = $this->get('/users');
+        $response->assertStatus(403);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     * @test
+     */
+    public function ldiShouldntSeeUsers()
+    {
+        $this->be(self::$userLdi)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+
+        $response = $this->get('/users');
+        $response->assertStatus(403);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     * @test
+     */
+    public function coordinatorShouldntSeeUsers()
+    {
+        $this->be(self::$userLdi)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+
+        $response = $this->get('/users');
+        $response->assertStatus(403);
     }
 }
