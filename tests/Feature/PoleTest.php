@@ -7,12 +7,197 @@ use Tests\TestCase;
 
 use App\Models\User;
 use App\Models\Pole;
+use App\Models\UserType;
+use App\Models\UserTypeAssignment;
 
 class PoleTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $poleData = ["name" => "Polo Teste", "description" => "Teste."];
+    protected $poleData = ["name" => "Polo Teste", "description" => "Teste."]; //Pole for legacy tests
+
+    private static $userAdm;
+    private static $userDir;
+    private static $userAss;
+    private static $userSec;
+    private static $userCoord;
+    private static $userLdi;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        self::$userAdm = User::factory()->create();
+        $userTypeAdm = UserType::factory()->admin()->create();
+        UserTypeAssignment::factory()->create([
+            'user_id' => self::$userAdm->id,
+            'user_type_id' => $userTypeAdm->id,
+            'course_id' => null,
+        ]);
+
+        self::$userDir = User::factory()->create();
+        $userTypeDir = UserType::factory()->director()->create();
+        UserTypeAssignment::factory()->create([
+            'user_id' => self::$userDir->id,
+            'user_type_id' => $userTypeDir->id,
+            'course_id' => null,
+        ]);
+
+        self::$userAss = User::factory()->create();
+        $userTypeAss = UserType::factory()->assistant()->create();
+        UserTypeAssignment::factory()->create([
+            'user_id' => self::$userAss->id,
+            'user_type_id' => $userTypeAss->id,
+            'course_id' => null,
+        ]);
+
+        self::$userSec = User::factory()->create();
+        $userTypeSec = UserType::factory()->secretary()->create();
+        UserTypeAssignment::factory()->create([
+            'user_id' => self::$userSec->id,
+            'user_type_id' => $userTypeSec->id,
+            'course_id' => null,
+        ]);
+
+        self::$userCoord = User::factory()->create();
+        $userTypeCoord = UserType::factory()->coordinator()->create();
+        UserTypeAssignment::factory()->create([
+            'user_id' => self::$userCoord->id,
+            'user_type_id' => $userTypeCoord->id,
+            'course_id' => null,
+        ]);
+
+        self::$userLdi = User::factory()->create();
+        $userTypeLdi = UserType::factory()->ldi()->create();
+        UserTypeAssignment::factory()->create([
+            'user_id' => self::$userLdi->id,
+            'user_type_id' => $userTypeLdi->id,
+            'course_id' => null,
+        ]);
+
+        Pole::factory()->create(
+            [
+                'name' => 'Pole Alpha',
+            ]
+        );
+
+        Pole::factory()->create(
+            [
+                'name' => 'Pole Beta',
+            ]
+        );
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     * @test
+     */
+    public function unloggedUserShouldntSeePoles()
+    {
+        $response = $this->get('/poles');
+        $response->assertRedirect(route('auth.login'));
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     * @test
+     */
+    public function administratorShouldSeePoles()
+    {
+        $this->be(self::$userAdm)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+
+        $response = $this->get('/poles');
+        $response->assertSee(['Pole Alpha', 'Pole Beta']);
+        $response->assertStatus(200);
+    }
+
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     * @test
+     */
+    public function directorShouldSeePoles()
+    {
+        $this->be(self::$userDir)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+
+        $response = $this->get('/poles');
+        $response->assertSee(['Pole Alpha', 'Pole Beta']);
+        $response->assertStatus(200);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     * @test
+     */
+    public function assistantShouldSeePoles()
+    {
+        $this->be(self::$userAss)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+
+        $response = $this->get('/poles');
+        $response->assertSee(['Pole Alpha', 'Pole Beta']);
+        $response->assertStatus(200);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     * @test
+     */
+    public function secretaryShouldSeePoles()
+    {
+        $this->be(self::$userSec)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+
+        $response = $this->get('/poles');
+        $response->assertSee(['Pole Alpha', 'Pole Beta']);
+        $response->assertStatus(200);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     * @test
+     */
+    public function ldiShouldntSeePoles()
+    {
+        $this->be(self::$userLdi)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+
+        $response = $this->get('/poles');
+        $response->assertStatus(403);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     * @test
+     */
+    public function coordinatorShouldSeePoles()
+    {
+        $this->be(self::$userCoord)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+
+        $response = $this->get('/poles');
+        $response->assertSee(['Pole Alpha', 'Pole Beta']);
+        $response->assertStatus(200);
+    }
+
+
+    // == Legacy tests ==
 
     /**
      * Guest cannot list poles
@@ -23,6 +208,10 @@ class PoleTest extends TestCase
         $this->get(route('poles.index'))
             ->assertRedirect(route('auth.login'));
     }
+
+
+
+
     /**
      * Guest cannot create a pole
      * @return void
@@ -130,7 +319,7 @@ class PoleTest extends TestCase
 
         $pole = $this->getTestPole();
 
-        $this->assertEquals(Pole::count(), 1);
+        $this->assertGreaterThanOrEqual(1, Pole::count());
 
         $session
             ->delete(route('poles.destroy', $pole->id))
