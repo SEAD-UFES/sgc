@@ -84,7 +84,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('poles', PoleController::class);
     Route::resource('courses', CourseController::class);
 
-    Route::get('/coursetypes/index', [CourseTypeController::class, 'index'])->name('coursetypes.index');
+    Route::get('/coursetypes', [CourseTypeController::class, 'index'])->name('coursetypes.index');
 
     Route::resource('approveds', ApprovedController::class);
     Route::post('/approved/import', [ApprovedController::class, 'import'])->name('approveds.import');
