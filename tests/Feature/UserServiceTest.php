@@ -49,8 +49,9 @@ class UserServiceTest extends TestCase
 
             //verifications
             Event::assertDispatched('eloquent.listed: ' . User::class);
-            $this->assertEquals('johndoe@test1.com', $users[0]->email);
-            $this->assertCount(2, User::all());
+            $this->assertContains('johndoe@test1.com', $users->pluck('email')->toArray());
+            $this->assertContains('janedoe@test2.com', $users->pluck('email')->toArray());
+            $this->assertCount(2, $users);
         });
     }
 
