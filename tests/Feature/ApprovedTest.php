@@ -117,7 +117,7 @@ class ApprovedTest extends TestCase
      */
     public function administratorShouldSeeApproveds()
     {
-        $this->be(self::$userAdm)
+        $this->actingAs(self::$userAdm)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/approveds');
@@ -134,7 +134,7 @@ class ApprovedTest extends TestCase
      */
     public function directorShouldSeeApproveds()
     {
-        $this->be(self::$userDir)
+        $this->actingAs(self::$userDir)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/approveds');
@@ -150,7 +150,7 @@ class ApprovedTest extends TestCase
      */
     public function assistantShouldntSeeApproveds()
     {
-        $this->be(self::$userLdi)
+        $this->actingAs(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/approveds');
@@ -165,7 +165,7 @@ class ApprovedTest extends TestCase
      */
     public function secretaryShouldSeeApproveds()
     {
-        $this->be(self::$userSec)
+        $this->actingAs(self::$userSec)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/approveds');
@@ -181,7 +181,7 @@ class ApprovedTest extends TestCase
      */
     public function ldiShouldntSeeApproveds()
     {
-        $this->be(self::$userLdi)
+        $this->actingAs(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/approveds');
@@ -196,7 +196,7 @@ class ApprovedTest extends TestCase
      */
     public function coordinatorShouldSeeApproveds()
     {
-        $this->be(self::$userCoord)
+        $this->actingAs(self::$userCoord)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/approveds');

@@ -107,7 +107,7 @@ class CourseTest extends TestCase
      */
     public function administratorShouldSeeCourses()
     {
-        $this->be(self::$userAdm)
+        $this->actingAs(self::$userAdm)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/courses');
@@ -124,7 +124,7 @@ class CourseTest extends TestCase
      */
     public function directorShouldSeeCourses()
     {
-        $this->be(self::$userDir)
+        $this->actingAs(self::$userDir)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/courses');
@@ -140,7 +140,7 @@ class CourseTest extends TestCase
      */
     public function assistantShouldSeeCourses()
     {
-        $this->be(self::$userAss)
+        $this->actingAs(self::$userAss)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/courses');
@@ -156,7 +156,7 @@ class CourseTest extends TestCase
      */
     public function secretaryShouldSeeCourses()
     {
-        $this->be(self::$userSec)
+        $this->actingAs(self::$userSec)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/courses');
@@ -172,7 +172,7 @@ class CourseTest extends TestCase
      */
     public function ldiShouldntSeeCourses()
     {
-        $this->be(self::$userLdi)
+        $this->actingAs(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/courses');
@@ -187,7 +187,7 @@ class CourseTest extends TestCase
      */
     public function coordinatorShouldSeeCourses()
     {
-        $this->be(self::$userCoord)
+        $this->actingAs(self::$userCoord)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/courses');

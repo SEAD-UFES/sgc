@@ -106,7 +106,7 @@ class UserTest extends TestCase
      */
     public function administratorShouldSeeUsers()
     {
-        $this->be(self::$userAdm)
+        $this->actingAs(self::$userAdm)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/users');
@@ -123,7 +123,7 @@ class UserTest extends TestCase
      */
     public function directorShouldntSeeUsers()
     {
-        $this->be(self::$userLdi)
+        $this->actingAs(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/users');
@@ -138,7 +138,7 @@ class UserTest extends TestCase
      */
     public function assistantShouldntSeeUsers()
     {
-        $this->be(self::$userLdi)
+        $this->actingAs(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/users');
@@ -153,7 +153,7 @@ class UserTest extends TestCase
      */
     public function secretaryShouldntSeeUsers()
     {
-        $this->be(self::$userLdi)
+        $this->actingAs(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/users');
@@ -168,7 +168,7 @@ class UserTest extends TestCase
      */
     public function ldiShouldntSeeUsers()
     {
-        $this->be(self::$userLdi)
+        $this->actingAs(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/users');
@@ -183,7 +183,7 @@ class UserTest extends TestCase
      */
     public function coordinatorShouldntSeeUsers()
     {
-        $this->be(self::$userLdi)
+        $this->actingAs(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/users');

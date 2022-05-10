@@ -107,7 +107,7 @@ class RoleTest extends TestCase
      */
     public function administratorShouldSeeRoles()
     {
-        $this->be(self::$userAdm)
+        $this->actingAs(self::$userAdm)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/roles');
@@ -124,7 +124,7 @@ class RoleTest extends TestCase
      */
     public function directorShouldSeeRoles()
     {
-        $this->be(self::$userDir)
+        $this->actingAs(self::$userDir)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/roles');
@@ -140,7 +140,7 @@ class RoleTest extends TestCase
      */
     public function assistantShouldSeeRoles()
     {
-        $this->be(self::$userAss)
+        $this->actingAs(self::$userAss)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/roles');
@@ -156,7 +156,7 @@ class RoleTest extends TestCase
      */
     public function secretaryShouldSeeRoles()
     {
-        $this->be(self::$userSec)
+        $this->actingAs(self::$userSec)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/roles');
@@ -172,7 +172,7 @@ class RoleTest extends TestCase
      */
     public function ldiShouldntSeeRoles()
     {
-        $this->be(self::$userLdi)
+        $this->actingAs(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/roles');
@@ -187,7 +187,7 @@ class RoleTest extends TestCase
      */
     public function coordinatorShouldSeeRoles()
     {
-        $this->be(self::$userCoord)
+        $this->actingAs(self::$userCoord)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/roles');

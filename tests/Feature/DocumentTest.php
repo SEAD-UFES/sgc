@@ -116,7 +116,7 @@ class DocumentTest extends TestCase
      */
     public function administratorShouldSeeEmployeesDocuments()
     {
-        $this->be(self::$userAdm)
+        $this->actingAs(self::$userAdm)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/employees/documents');
@@ -132,7 +132,7 @@ class DocumentTest extends TestCase
      */
     public function directorShouldSeeEmployeesDocuments()
     {
-        $this->be(self::$userDir)
+        $this->actingAs(self::$userDir)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/employees/documents');
@@ -148,7 +148,7 @@ class DocumentTest extends TestCase
      */
     public function assistantShouldSeeEmployeesDocuments()
     {
-        $this->be(self::$userAss)
+        $this->actingAs(self::$userAss)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/employees/documents');
@@ -164,7 +164,7 @@ class DocumentTest extends TestCase
      */
     public function secretaryShouldSeeEmployeesDocuments()
     {
-        $this->be(self::$userSec)
+        $this->actingAs(self::$userSec)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/employees/documents');
@@ -180,7 +180,7 @@ class DocumentTest extends TestCase
      */
     public function ldiShouldntSeeEmployeesDocuments()
     {
-        $this->be(self::$userLdi)
+        $this->actingAs(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/employees/documents');
@@ -195,7 +195,7 @@ class DocumentTest extends TestCase
      */
     public function coordinatorShouldntSeeEmployeesDocuments()
     {
-        $this->be(self::$userCoord)
+        $this->actingAs(self::$userCoord)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/employees/documents');
@@ -222,7 +222,7 @@ class DocumentTest extends TestCase
      */
     public function administratorShouldSeeBondsDocuments()
     {
-        $this->be(self::$userAdm)
+        $this->actingAs(self::$userAdm)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/bonds/documents');
@@ -238,7 +238,7 @@ class DocumentTest extends TestCase
      */
     public function directorShouldSeeBondsDocuments()
     {
-        $this->be(self::$userDir)
+        $this->actingAs(self::$userDir)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/bonds/documents');
@@ -254,7 +254,7 @@ class DocumentTest extends TestCase
      */
     public function assistantShouldSeeBondsDocuments()
     {
-        $this->be(self::$userAss)
+        $this->actingAs(self::$userAss)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/bonds/documents');
@@ -270,7 +270,7 @@ class DocumentTest extends TestCase
      */
     public function secretaryShouldSeeBondsDocuments()
     {
-        $this->be(self::$userSec)
+        $this->actingAs(self::$userSec)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/bonds/documents');
@@ -286,7 +286,7 @@ class DocumentTest extends TestCase
      */
     public function ldiShouldntSeeBondsDocuments()
     {
-        $this->be(self::$userLdi)
+        $this->actingAs(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/bonds/documents');
@@ -301,7 +301,7 @@ class DocumentTest extends TestCase
      */
     public function coordinatorShouldntSeeBondsDocuments()
     {
-        $this->be(self::$userCoord)
+        $this->actingAs(self::$userCoord)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
         $response = $this->get('/bonds/documents');
