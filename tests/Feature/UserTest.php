@@ -289,7 +289,7 @@ class UserTest extends TestCase
      * @return void
      * @test
      */
-    public function coordinatorShouldSeeCreateUsersForm()
+    public function coordinatorShouldntSeeCreateUsersForm()
     {
         $this->actingAs(self::$userCoord)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
