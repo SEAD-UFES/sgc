@@ -28,11 +28,10 @@ class DocumentController extends Controller
         $file = $this->service->getDocument($id);
 
         //check access permission
-        if ($file->class === 'App\Models\EmployeeDocument' && !Gate::allows('employeeDocument-download')) {
-            return response()->view('access.denied')->setStatusCode(403);
-        } elseif ($file->isRights && !Gate::allows('bondDocument-rights')) {
-            return response()->view('access.denied')->setStatusCode(403);
-        } elseif (($file->class === 'App\Models\BondDocument' && !$file->isRights && !Gate::allows('bondDocument-download'))) {
+        if (($file->class === 'App\Models\EmployeeDocument' && !Gate::allows('employeeDocument-download')) ||
+        ($file->class === 'App\Models\BondDocument' && !$file->isRights && !Gate::allows('bondDocument-download')) ||
+        ($file->isRights && !Gate::allows('bondDocument-rights'))
+        ) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
