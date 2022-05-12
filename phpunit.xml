@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
-         bootstrap="vendor/autoload.php"
-         colors="true"
->
+    xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+    bootstrap="vendor/autoload.php" colors="true">
     <testsuites>
         <testsuite name="Unit">
             <directory suffix="Test.php">./tests/Unit</directory>
@@ -14,7 +12,18 @@
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>
-            <directory suffix=".php">./app</directory>
+            <directory suffix=".php">./app/CustomClasses</directory>
+            <directory suffix=".php">./app/Exceptions</directory>
+            <directory suffix=".php">./app/Gates</directory>
+            <directory suffix=".php">./app/Helpers</directory>
+            <directory suffix=".php">./app/Http/Controllers</directory>
+            <directory suffix=".php">./app/Http/Requests</directory>
+            <directory suffix=".php">./app/Imports</directory>
+            <directory suffix=".php">./app/ModelFilters</directory>
+            <directory suffix=".php">./app/Models</directory>
+            <directory suffix=".php">./app/Notifications</directory>
+            <directory suffix=".php">./app/Observers</directory>
+            <directory suffix=".php">./app/Services</directory>
         </include>
     </coverage>
     <php>
