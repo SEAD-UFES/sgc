@@ -23,7 +23,7 @@
                                     <li><a class="dropdown-item" href="{{ route('approveds.index') }}">Listar Aprovados</a></li>
                                 @endcan
                                 @can('approved-store')
-                                    <li><a class="dropdown-item" href="{{ route('approveds.create') }}">Importar Aprovados</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('approveds.create.step1') }}">Importar Aprovados</a></li>
                                 @endcan
                                 @canany(['approved-list', 'approved-store'])
                                     <li><hr class="dropdown-divider"></li>

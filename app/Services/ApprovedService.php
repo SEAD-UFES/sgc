@@ -3,15 +3,10 @@
 namespace App\Services;
 
 use App\Models\Approved;
-use App\Models\Employee;
-use App\Imports\ApprovedsImport;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Collection;
+use App\Models\ApprovedState;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Pagination\LengthAwarePaginator;
-use App\Exceptions\EmployeeAlreadyExistsException;
+use Illuminate\Support\Arr;
 
 class ApprovedService
 {
@@ -75,76 +70,18 @@ class ApprovedService
     /**
      * Undocumented function
      *
-     * @param UploadedFile $file
-     * @return Collection
-     */
-    public function importApproveds(UploadedFile $file): Collection
-    {
-
-        $filePath = $this->getFilePath($file);
-
-        $approveds = $this->getApprovedsFromFile($filePath);
-        Storage::delete($filePath);
-
-        return $approveds;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param UploadedFile $file
-     * @return string
-     */
-    protected function getFilePath(UploadedFile $file): string
-    {
-        $fileName = $file->getClientOriginalName();
-
-        return $file->storeAs('temp', $fileName, 'local');
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $filePath
-     * @return Collection
-     */
-    protected function getApprovedsFromFile(string $filePath): Collection
-    {
-        $approveds = collect();
-        Excel::import(new ApprovedsImport($approveds), $filePath);
-
-        return $approveds;
-    }
-
-    /**
-     * Undocumented function
-     *
      * @param array $attributes
      * @return void
      */
-    public function massStore(array $attributes): void
+    public function batchStore(array $attributes): void
     {
-
-        $attributes = collect($attributes);
-
         DB::transaction(function () use ($attributes) {
+            foreach ($attributes['approveds'] as $approved) {
+                if (Arr::exists($approved, 'check')) {
+                    $approved['approved_state_id'] = ApprovedState::where('name', 'Não contatado')->first()->id;
 
-            $approvedsCount = $attributes->get('approvedsCount');
-
-            for ($i = 0; $i < $approvedsCount; $i++) {
-                if ($attributes->get('check_' . $i)) {
-                    $approved = new Approved();
-                    $approved->name = $attributes->get('name_' . $i);
-                    $approved->email = $attributes->get('email_' . $i);
-                    $approved->area_code = $attributes->get('area_' . $i);
-                    $approved->phone = $attributes->get('phone_' . $i);
-                    $approved->mobile = $attributes->get('mobile_' . $i);
-                    $approved->announcement = $attributes->get('announcement_' . $i);
-                    $approved->course_id = $attributes->get('courses_' . $i);
-                    $approved->role_id = $attributes->get('roles_' . $i);
-                    $approved->pole_id = $attributes->get('poles_' . $i);
-                    $approved->approved_state_id = 1;
-                    $approved->save();
+                    $selectedApproved = new Approved($approved);
+                    $selectedApproved->save();
                 }
             }
         });

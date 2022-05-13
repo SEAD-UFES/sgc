@@ -15,15 +15,17 @@ use App\Models\MaritalStatus;
 use App\Services\ApprovedService;
 use Illuminate\Support\Facades\Gate;
 use App\CustomClasses\ModelFilterHelpers;
-use App\Http\Requests\ImportApprovedRequest;
-use App\Exceptions\EmployeeAlreadyExistsException;
+use App\Http\Requests\ImportApprovedsFileRequest;
+use App\Http\Requests\StoreApprovedsRequest;
 use App\Models\Employee;
+use App\Services\ApprovedsSourceService;
 
 class ApprovedController extends Controller
 {
-    public function __construct(ApprovedService $approvedService)
+    public function __construct(ApprovedService $approvedService, ApprovedsSourceService $fileService)
     {
         $this->service = $approvedService;
+        $this->fileService = $fileService;
     }
 
     /**
@@ -55,7 +57,7 @@ class ApprovedController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() // import spreadsheet file view
+    public function createStep1() // import spreadsheet file view
     {
         //check access permission
         if (!Gate::allows('approved-store')) {
@@ -71,8 +73,66 @@ class ApprovedController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function storeStep1(ImportApprovedsFileRequest $request)
     {
+        //check access permission
+        if (!Gate::allows('approved-store')) {
+            return response()->view('access.denied')->setStatusCode(403);
+        }
+
+        try {
+            $approveds = $this->fileService->importApprovedsFromFile($request->file('file'));
+
+            session(['approveds' => $approveds]);
+        } catch (\Exception $e) {
+            return back()->withErrors($e->getMessage());
+        }
+
+        return redirect()->route('approveds.create.step2')->with('success', 'Arquivo importado com sucesso.');
+        //return view('approved.review', compact('approveds', 'roles', 'courses', 'poles'))->with('success', 'Aprovados importados da planilha.');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createStep2() // import spreadsheet file view
+    {
+        //check access permission
+        if (!Gate::allows('approved-store')) {
+            return response()->view('access.denied')->setStatusCode(403);
+        }
+
+        $roles = Role::orderBy('name')->get();
+        $courses = Course::orderBy('name')->get();
+        $poles = Pole::orderBy('name')->get();
+
+        $approveds = session('approveds');
+
+        return view('approved.review', compact('approveds', 'roles', 'courses', 'poles'));
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function storeStep2(StoreApprovedsRequest $request)
+    {
+        //check access permission
+        if (!Gate::allows('approved-store')) {
+            return response()->view('access.denied')->setStatusCode(403);
+        }
+
+        try {
+            $this->service->batchStore($request->validated());
+        } catch (\Exception $e) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o(s) aprovado(s): ' . $e->getMessage()]);
+        }
+
+        return redirect()->route('approveds.index')->with('success', 'Aprovados importados com sucesso.');
     }
 
     /**
@@ -106,7 +166,18 @@ class ApprovedController extends Controller
      */
     public function update(Request $request, Approved $approved)
     {
-        //
+        //check access permission
+        if (!Gate::allows('approved-update-state')) {
+            return response()->view('access.denied')->setStatusCode(403);
+        }
+
+        try {
+            $this->service->changeState($request->all(), $approved);
+        } catch (\Exception $e) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o Aprovado: ' . $e->getMessage()]);
+        }
+
+        return redirect()->route('approveds.index')->with('success', 'Aprovado alterado com sucesso.');
     }
 
     /**
@@ -130,30 +201,7 @@ class ApprovedController extends Controller
 
         return redirect()->route('approveds.index')->with('success', 'Aprovado retirado da lista.');
     }
-    
-    /**
-     * Undocumented function
-     *
-     * @param Request $request
-     * @param Approved $approved
-     * @return void
-     */
-    public function changeState(Request $request, Approved $approved)
-    {
-        //check access permission
-        if (!Gate::allows('approved-update-state')) {
-            return response()->view('access.denied')->setStatusCode(403);
-        }
 
-        try {
-            $this->service->changeState($request->all(), $approved);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noStore' => 'Não foi possível salvar o Aprovado: ' . $e->getMessage()]);
-        }
-
-        return redirect()->route('approveds.index')->with('success', 'Aprovado alterado com sucesso.');
-    }
-    
     /**
      * Undocumented function
      *
@@ -180,63 +228,18 @@ class ApprovedController extends Controller
         $addressStates = State::orderBy('name')->get();
 
         // Create a temporary object Employee to fill with the approved current data
-        $employee = new Employee;
-        $employee->name = $approved->name;
-        $employee->email = $approved->email;
-        $employee->area_code = $approved->area_code;
-        $employee->phone = $approved->phone;
-        $employee->mobile = $approved->mobile;
+        $employee = new Employee(
+            [
+                'name' => $approved->name,
+                'email' => $approved->email,
+                'area_code' => $approved->area_code,
+                'phone' => $approved->phone,
+                'mobile' => $approved->mobile,
+            ]
+        );
 
         $fromApproved = true;
 
         return view('approved.designate', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee', 'fromApproved'));
-    }
-    
-    /**
-     * Undocumented function
-     *
-     * @param ImportApprovedRequest $request
-     * @return void
-     */
-    public function import(ImportApprovedRequest $request)
-    {
-        //check access permission
-        if (!Gate::allows('approved-store')) {
-            return response()->view('access.denied')->setStatusCode(403);
-        }
-
-        $roles = Role::orderBy('name')->get();
-        $courses = Course::orderBy('name')->get();
-        $poles = Pole::orderBy('name')->get();
-
-        try {
-            $approveds = $this->service->importApproveds($request->file('file'));
-        } catch (\Exception $e) {
-            return redirect()->route('approveds.index')->withErrors($e->getMessage());
-        }
-
-        return view('approved.review', compact('approveds', 'roles', 'courses', 'poles'))->with('success', 'Aprovados importados da planilha.');
-    }
-    
-    /**
-     * Undocumented function
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function massStore(Request $request)
-    {
-        //check access permission
-        if (!Gate::allows('approved-store')) {
-            return response()->view('access.denied')->setStatusCode(403);
-        }
-
-        try {
-            $this->service->massStore($request->all());
-        } catch (\Exception $e) {
-            return redirect()->route('approveds.index')->withErrors($e->getMessage());
-        }
-
-        return redirect()->route('approveds.index')->with('success', 'Aprovados importados com sucesso.');
     }
 }

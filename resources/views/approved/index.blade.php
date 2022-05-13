@@ -67,7 +67,8 @@
                                         <td>
                                             <div class="d-inline-flex">
                                                 @can('approved-update-state')
-                                                    <form name="{{ 'formChangeState' . $approved->id }}" action={{ route('approveds.changestate', $approved) }} method="POST">
+                                                    <form name="{{ 'formChangeState' . $approved->id }}" action={{ route('approveds.update', $approved) }} method="POST">
+                                                        @method('PATCH')
                                                         @csrf
                                                         <select name="states" id="selectState1" class="form-select form-select-sm w-auto" data-bs-toggle="tooltip" data-bs-placement="left" title="{{ $approved->approvedState->description ?? '' }}" onchange="{{ 'document.forms[\'formChangeState' . $approved->id . '\'].submit();' }}">
                                                             @foreach ($approvedStates as $approvedState)
@@ -105,7 +106,7 @@
                     {!! $approveds->links() !!}
                     <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
                     @can('approved-store')
-                        <a href="{{ route('approveds.create') }}" class="btn btn-warning">Importar novos Aprovados</a>
+                        <a href="{{ route('approveds.create.step1') }}" class="btn btn-warning">Importar novos Aprovados</a>
                     @endcan
                     <br /><br />
                 </div>

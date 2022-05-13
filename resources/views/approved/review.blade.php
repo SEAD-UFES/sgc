@@ -73,9 +73,8 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <form action={{ route('approveds.massstore') }} method="POST">
+                    <form action={{ route('approveds.store.step2') }} method="POST">
                         @csrf
-                        <input type="hidden" name="approvedsCount" value="{{ count($approveds) }}">
                         <div class="table-responsive">
                             <table class="table table-striped table-hover">
                                 <thead>
@@ -96,36 +95,36 @@
                                         <tr class="p-0">
                                             <td class="py-0 align-middle">
                                                 <input type="checkbox" class="form-check-input"
-                                                    name="check_{{ $key }}" id="check_{{ $key }}"
+                                                    name="approveds[{{ $key }}][check]" id="check_{{ $key }}"
                                                     checked="1" />
                                             </td>
                                             <td title="{{ $approved->name }}" class="p-0">
                                                 <input type="text" class="form-control w-100"
-                                                    name="name_{{ $key }}" value="{{ $approved->name }}" />
+                                                    name="approveds[{{ $key }}][name]" value="{{ $approved->name }}" />
                                             </td>
                                             <td title="{{ $approved->email }}" class="p-0">
                                                 <input type="text" class="form-control w-100"
-                                                    name="email_{{ $key }}" value="{{ $approved->email }}" />
+                                                    name="approveds[{{ $key }}][email]" value="{{ $approved->email }}" />
                                             </td>
                                             <td title="{{ $approved->area_code }}" class="p-0">
-                                                <input type="text" class="form-control" name="area_{{ $key }}"
+                                                <input type="text" class="form-control" name="approveds[{{ $key }}][area_code]"
                                                     value="{{ $approved->area_code }}" size="2" />
                                             </td>
                                             <td title="{{ $approved->phone }}" class="p-0">
-                                                <input type="text" class="form-control" name="phone_{{ $key }}"
+                                                <input type="text" class="form-control" name="approveds[{{ $key }}][phone]"
                                                     value="{{ $approved->phone }}" size="10" />
                                             </td>
                                             <td title="{{ $approved->mobile }}" class="p-0">
-                                                <input type="text" class="form-control" name="mobile_{{ $key }}"
+                                                <input type="text" class="form-control" name="approveds[{{ $key }}][mobile]"
                                                     value="{{ $approved->mobile }}" size="10" />
                                             </td>
                                             <td title="{{ $approved->announcement }}" class="p-0">
                                                 <input type="text" class="form-control"
-                                                    name="announcement_{{ $key }}"
+                                                    name="approveds[{{ $key }}][announcement]"
                                                     value="{{ $approved->announcement }}" size="8" />
                                             </td>
                                             <td class="p-0">
-                                                <select name="courses_{{ $key }}"
+                                                <select name="approveds[{{ $key }}][course_id]"
                                                     id="courses_{{ $key }}" class="form-select"
                                                     data-live-search="true">
                                                     <option value="">Selecione o curso</option>
@@ -135,7 +134,7 @@
                                                 </select>
                                             </td>
                                             <td class="p-0">
-                                                <select name="roles_{{ $key }}" id="roles_{{ $key }}"
+                                                <select name="approveds[{{ $key }}][role_id]" id="roles_{{ $key }}"
                                                     class="form-select" data-live-search="true">
                                                     <option value="">Selecione a Função</option>
                                                     @foreach ($roles as $role)
@@ -143,7 +142,7 @@
                                                     @endforeach
                                                 </select>
                                             </td>
-                                            <td class="p-0"><select name="poles_{{ $key }}"
+                                            <td class="p-0"><select name="approveds[{{ $key }}][pole_id]"
                                                     id="poles_{{ $key }}" class="form-select"
                                                     data-live-search="true">
                                                     <option value="">Selecione o polo</option>

@@ -32,7 +32,7 @@ class ApprovedsImport implements ToCollection, WithHeadingRow, WithColumnLimit, 
 
             foreach ($phones as &$phone) {
                 $phone = str_replace('_x000D_', '', $phone); // remove carriage return on Excel multi-line cell text
-                $phone = ApprovedsImport::ensureAreaCode(ApprovedsImport::clearNumber($phone), '27');
+                $phone = self::ensureAreaCode(self::clearNumber($phone), '27');
             }
 
             foreach (array_reverse($phones) as $phone) {
@@ -43,24 +43,17 @@ class ApprovedsImport implements ToCollection, WithHeadingRow, WithColumnLimit, 
                 }
             }
 
-            $data = [
-                'name'        => TextHelper::titleCase(mb_strtolower($row['nome'], 'UTF-8')),
-                'email'       => mb_strtolower($row['e_mail'], 'UTF-8'),
-                'area_code'   => ApprovedsImport::getFirstAreaCode($tempPhone, $tempMobile),
-                'phone'       => $tempPhone,
-                'mobile'      => $tempMobile,
-                'announcement' => $row['edital'],
-            ];
-
-            $approved = new Approved();
-
-            $approved->name = $data['name'];
-            $approved->email = $data['email'];
-            $approved->area_code = $data['area_code'];
-            $approved->phone = $data['phone'];
-            $approved->mobile = $data['mobile'];
-            $approved->announcement = $data['announcement'];
-            $approved->approved_state_id = ApprovedState::where('name', 'Não contatado')->first()->id;
+            $approved = new Approved(
+                [
+                    'name' => TextHelper::titleCase(mb_strtolower($row['nome'], 'UTF-8')),
+                    'email' => mb_strtolower($row['e_mail'], 'UTF-8'),
+                    'area_code' => self::getFirstAreaCode($tempPhone, $tempMobile),
+                    'phone' => $tempPhone,
+                    'mobile' => $tempMobile,
+                    'announcement' => $row['edital'],
+                    'approved_state_id' => ApprovedState::where('name', 'Não contatado')->first()->id,
+                ]
+            );
 
             $this->myApproveds->push($approved);
         }

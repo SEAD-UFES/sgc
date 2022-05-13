@@ -29,7 +29,7 @@ use App\Http\Controllers\UserTypeAssignmentController;
 */
 
 Route::get('/', [WebController::class, 'rootFork'])->name('root');
-Route::fallback([WebController::class, 'fallback']);
+//Route::fallback([WebController::class, 'fallback']);
 
 Route::get('/login', [LoginController::class, 'getLoginForm'])->name('auth.form');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('auth.login');
@@ -86,11 +86,16 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/coursetypes', [CourseTypeController::class, 'index'])->name('coursetypes.index');
 
-    Route::resource('approveds', ApprovedController::class);
-    Route::post('/approved/import', [ApprovedController::class, 'import'])->name('approveds.import');
-    Route::post('/approved/massstore', [ApprovedController::class, 'massStore'])->name('approveds.massstore');
-    Route::post('/approved/{approved}/changestate', [ApprovedController::class, 'changeState'])->name('approveds.changestate');
-    Route::get('/approved/{approved}/designate', [ApprovedController::class, 'designate'])->name('approveds.designate');
+    Route::get('/approveds/{approved}/designate', [ApprovedController::class, 'designate'])->name('approveds.designate');
+    
+    Route::get('/approveds', [ApprovedController::class, 'index'])->name('approveds.index');
+    Route::get('/approveds/create/step-1', [ApprovedController::class, 'createStep1'])->name('approveds.create.step1');
+    Route::post('/approveds/create/step-1', [ApprovedController::class, 'storeStep1'])->name('approveds.store.step1');
+    Route::get('/approveds/create/step-2', [ApprovedController::class, 'createStep2'])->name('approveds.create.step2');
+    Route::post('/approveds/create/step-2', [ApprovedController::class, 'storeStep2'])->name('approveds.store.step2');
+    Route::patch('/approveds/{approved}', [ApprovedController::class, 'update'])->name('approveds.update');
+    Route::delete('/approveds/{approved}', [ApprovedController::class, 'destroy'])->name('approveds.destroy');
+    //Route::resource('approveds', ApprovedController::class);
 
     Route::get('/notification/{notification}/dismiss', [NotificationController::class, 'dismiss'])->name('notifications.dismiss');
 

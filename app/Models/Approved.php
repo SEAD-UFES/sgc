@@ -21,10 +21,10 @@ class Approved extends Model
         'phone',
         'mobile',
         'announcement',
-        /* 'course_id',
+        'course_id',
         'pole_id',
         'role_id',
-        'approved_state_id', */
+        'approved_state_id',
     ];
 
     protected $observables = [

@@ -1,0 +1,64 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreApprovedsRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, mixed>
+     */
+    public function rules()
+    {
+        return [
+            'approveds.*.check' => 'sometimes',
+            'approveds.*.name' => 'required|string|max:255',
+            'approveds.*.email' => 'required|email|max:255',
+            'approveds.*.area_code' => 'required|string|max:2',
+            'approveds.*.phone' => 'required|string|max:10',
+            'approveds.*.mobile' => 'required|string|max:11',
+            'approveds.*.announcement' => 'required|string|max:8',
+            'approveds.*.course_id' => 'required|exists:courses,id',
+            'approveds.*.role_id' => 'required|exists:roles,id',
+            'approveds.*.pole_id' => 'required|exists:poles,id',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'approveds.*.name.required' => 'O nome é obrigatório',
+            'approveds.*.name.max' => 'O nome deve ter no máximo 255 caracteres',
+            'approveds.*.email.required' => 'O e-mail é obrigatório',
+            'approveds.*.email.email' => 'O e-mail deve ser válido',
+            'approveds.*.email.max' => 'O e-mail deve ter no máximo 255 caracteres',
+            'approveds.*.area_code.required' => 'O código de área é obrigatório',
+            'approveds.*.area_code.max' => 'O código de área deve ter no máximo 2 caracteres',
+            'approveds.*.phone.required' => 'O telefone é obrigatório',
+            'approveds.*.phone.max' => 'O telefone deve ter no máximo 10 caracteres',
+            'approveds.*.mobile.required' => 'O celular é obrigatório',
+            'approveds.*.mobile.max' => 'O celular deve ter no máximo 11 caracteres',
+            'approveds.*.announcement.required' => 'O edital é obrigatório',
+            'approveds.*.announcement.max' => 'O edital deve ter no máximo 8 caracteres',
+            'approveds.*.course_id.required' => 'O curso é obrigatório',
+            'approveds.*.course_id.exists' => 'O curso deve estar entre os fornecidos',
+            'approveds.*.role_id.required' => 'A função é obrigatório',
+            'approveds.*.role_id.exists' => 'A função deve estar entre as fornecidas',
+            'approveds.*.pole_id.required' => 'O pólo é obrigatório',
+            'approveds.*.pole_id.exists' => 'O pólo deve estar entre os fornecidos',
+        ];
+    }
+}

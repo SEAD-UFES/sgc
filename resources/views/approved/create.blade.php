@@ -14,7 +14,7 @@
         <div class="row justify-content-center">
             <div class="col-xl-10 col-xxl-8">
                 @include('_components.alerts')
-                <form action={{ route('approveds.import') }} method="POST" enctype="multipart/form-data">
+                <form action={{ route('approveds.store.step1') }} method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="inputFile1" class="form-label">Selecione o arquivo</label>
