@@ -81,15 +81,14 @@ class ApprovedController extends Controller
         }
 
         try {
-            $approveds = $this->fileService->importApprovedsFromFile($request->file('file'));
+            $importedApproveds = $this->fileService->importApprovedsFromFile($request->file('file'));
 
-            session(['approveds' => $approveds]);
+            session(['approveds' => $importedApproveds]);
         } catch (\Exception $e) {
             return back()->withErrors($e->getMessage());
         }
 
         return redirect()->route('approveds.create.step2')->with('success', 'Arquivo importado com sucesso.');
-        //return view('approved.review', compact('approveds', 'roles', 'courses', 'poles'))->with('success', 'Aprovados importados da planilha.');
     }
 
     /**
@@ -108,9 +107,9 @@ class ApprovedController extends Controller
         $courses = Course::orderBy('name')->get();
         $poles = Pole::orderBy('name')->get();
 
-        $approveds = session('approveds');
+        $importedApproveds = session('approveds');
 
-        return view('approved.review', compact('approveds', 'roles', 'courses', 'poles'));
+        return view('approved.review', compact('importedApproveds', 'roles', 'courses', 'poles'));
     }
 
     /**
@@ -131,6 +130,8 @@ class ApprovedController extends Controller
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o(s) aprovado(s): ' . $e->getMessage()]);
         }
+
+        session()->forget('approveds');
 
         return redirect()->route('approveds.index')->with('success', 'Aprovados importados com sucesso.');
     }
