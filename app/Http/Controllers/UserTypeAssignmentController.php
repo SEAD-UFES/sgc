@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Course;
-use App\Models\UserType;
-use Illuminate\Http\Request;
-use App\Models\UserTypeAssignment;
-use Illuminate\Support\Facades\Gate;
 use App\CustomClasses\ModelFilterHelpers;
-use App\Services\UserTypeAssignmentService;
 use App\Http\Requests\StoreUserTypeAssignmentRequest;
 use App\Http\Requests\UpdateUserTypeAssignmentRequest;
+use App\Models\Course;
+use App\Models\User;
+use App\Models\UserType;
+use App\Models\UserTypeAssignment;
+use App\Services\UserTypeAssignmentService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class UserTypeAssignmentController extends Controller
 {
@@ -28,13 +28,13 @@ class UserTypeAssignmentController extends Controller
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-list')) {
+        if (! Gate::allows('userTypeAssignment-list')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, UserTypeAssignment::$accepted_filters);
-        
+
         $userTypeAssignments = $this->service->list();
 
         return view('userTypeAssignment.index', compact('userTypeAssignments', 'filters'));
@@ -48,7 +48,7 @@ class UserTypeAssignmentController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-store')) {
+        if (! Gate::allows('userTypeAssignment-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -63,12 +63,13 @@ class UserTypeAssignmentController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(StoreUserTypeAssignmentRequest $request)
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-store')) {
+        if (! Gate::allows('userTypeAssignment-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -85,12 +86,13 @@ class UserTypeAssignmentController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\UserTypeAssignment  $userTypeAssignment
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(UserTypeAssignment $userTypeAssignment)
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-show')) {
+        if (! Gate::allows('userTypeAssignment-show')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -101,12 +103,13 @@ class UserTypeAssignmentController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\UserTypeAssignment  $userTypeAssignment
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(UserTypeAssignment $userTypeAssignment)
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-update')) {
+        if (! Gate::allows('userTypeAssignment-update')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -122,12 +125,13 @@ class UserTypeAssignmentController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\UserTypeAssignment  $userTypeAssignment
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateUserTypeAssignmentRequest $request, UserTypeAssignment $userTypeAssignment)
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-update')) {
+        if (! Gate::allows('userTypeAssignment-update')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -144,12 +148,13 @@ class UserTypeAssignmentController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\UserTypeAssignment  $userTypeAssignment
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(UserTypeAssignment $userTypeAssignment)
     {
         //check access permission
-        if (!Gate::allows('userTypeAssignment-destroy')) {
+        if (! Gate::allows('userTypeAssignment-destroy')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 

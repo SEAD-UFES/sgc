@@ -9,7 +9,7 @@ class CourseTypeService
 {
     public function list(): LengthAwarePaginator
     {
-        (new CourseType)->logListed();
+        (new CourseType())->logListed();
 
         $query = new CourseType();
         $query = $query->AcceptRequest(CourseType::$accepted_filters)->filter();

@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Notifications\DatabaseNotification;
 use App\CustomClasses\SgcLogger;
+use Illuminate\Notifications\DatabaseNotification;
 
 class NotificationController extends Controller
 {
@@ -12,6 +11,7 @@ class NotificationController extends Controller
      * Mark notification as read.
      *
      * @param  \lluminate\Notifications\DatabaseNotification  $notification
+     *
      * @return \Illuminate\Http\Response
      */
     public function dismiss(DatabaseNotification $notification)

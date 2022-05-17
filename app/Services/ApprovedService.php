@@ -4,9 +4,9 @@ namespace App\Services;
 
 use App\Models\Approved;
 use App\Models\ApprovedState;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class ApprovedService
 {
@@ -17,7 +17,7 @@ class ApprovedService
      */
     public function list(): LengthAwarePaginator
     {
-        (new Approved)->logListed();
+        (new Approved())->logListed();
 
         $query = Approved::with(['approvedState', 'course', 'pole', 'role']);
         $query = $query->AcceptRequest(Approved::$accepted_filters)->filter();
@@ -32,6 +32,7 @@ class ApprovedService
      * Undocumented function
      *
      * @param Approved $approved
+     *
      * @return Approved
      */
     public function read(Approved $approved): Approved
@@ -45,6 +46,7 @@ class ApprovedService
      * Undocumented function
      *
      * @param Approved $approved
+     *
      * @return void
      */
     public function delete(Approved $approved): void
@@ -57,6 +59,7 @@ class ApprovedService
      *
      * @param array $attributes
      * @param Approved $approved
+     *
      * @return void
      */
     public function changeState(array $attributes, Approved $approved): void
@@ -71,6 +74,7 @@ class ApprovedService
      * Undocumented function
      *
      * @param array $attributes
+     *
      * @return void
      */
     public function batchStore(array $attributes): void

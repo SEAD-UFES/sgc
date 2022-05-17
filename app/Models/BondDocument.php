@@ -11,18 +11,7 @@ class BondDocument extends Model
     use HasFactory;
     use Sortable;
 
-    protected $table = 'bond_documents';
-
-    const REFERENT_ID = 'bond_id';
-
-    protected $fillable = [
-        'bond_id',
-    ];
-
-    protected $observables = [
-        'listed',
-        'fetched',
-    ];
+    public const REFERENT_ID = 'bond_id';
 
     public static $sortable = [
         'id',
@@ -43,7 +32,18 @@ class BondDocument extends Model
         'bondEmployeeNameContains',
         'bondRoleNameContains',
         'bondPoleNameContains',
-        'bondCourseNameContains'
+        'bondCourseNameContains',
+    ];
+
+    protected $table = 'bond_documents';
+
+    protected $fillable = [
+        'bond_id',
+    ];
+
+    protected $observables = [
+        'listed',
+        'fetched',
     ];
 
     public function document()
@@ -59,45 +59,41 @@ class BondDocument extends Model
     //metodo de ordenação para (bond->employee->name) no sortable
     public function bondEmployeeNameSortable($query, $direction)
     {
-        $query = $query
+        return $query
             ->join('bonds', 'bond_documents.bond_id', '=', 'bonds.id')
             ->join('employees', 'bonds.employee_id', '=', 'employees.id')
             ->orderBy('employees.name', $direction)
             ->select('bond_documents.*');
-        return $query;
     }
 
     //metodo de ordenação para (bond->role->name) no sortable
     public function bondRoleNameSortable($query, $direction)
     {
-        $query = $query
+        return $query
             ->join('bonds', 'bond_documents.bond_id', '=', 'bonds.id')
             ->join('roles', 'bonds.role_id', '=', 'roles.id')
             ->orderBy('roles.name', $direction)
             ->select('bond_documents.*');
-        return $query;
     }
 
     //metodo de ordenação para (bond->course->name) no sortable
     public function bondCourseNameSortable($query, $direction)
     {
-        $query = $query
+        return $query
             ->join('bonds', 'bond_documents.bond_id', '=', 'bonds.id')
             ->join('courses', 'bonds.course_id', '=', 'courses.id')
             ->orderBy('courses.name', $direction)
             ->select('bond_documents.*');
-        return $query;
     }
 
     //metodo de ordenação para (bond->pole->name) no sortable
     public function bondPoleNameSortable($query, $direction)
     {
-        $query = $query
+        return $query
             ->join('bonds', 'bond_documents.bond_id', '=', 'bonds.id')
             ->join('poles', 'bonds.course_id', '=', 'poles.id')
             ->orderBy('poles.name', $direction)
             ->select('bond_documents.*');
-        return $query;
     }
 
     public function logListed()

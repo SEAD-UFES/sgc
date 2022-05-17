@@ -2,14 +2,12 @@
 
 namespace App\Notifications;
 
+use App\CustomClasses\SgcLogger;
 use App\Models\Bond;
 use Illuminate\Bus\Queueable;
-use App\CustomClasses\SgcLogger;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 
-class RequestReviewNotification extends Notification/* implements ShouldQueue */ //Queueing disabled while in development
+class RequestReviewNotification extends Notification /* implements ShouldQueue */ //Queueing disabled while in development
 {
     use Queueable;
 
@@ -31,6 +29,7 @@ class RequestReviewNotification extends Notification/* implements ShouldQueue */
      * Get the notification's delivery channels.
      *
      * @param  mixed  $notifiable
+     *
      * @return array
      */
     public function via($notifiable)
@@ -42,6 +41,7 @@ class RequestReviewNotification extends Notification/* implements ShouldQueue */
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
+     *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     /* public function toMail($notifiable)
@@ -56,6 +56,7 @@ class RequestReviewNotification extends Notification/* implements ShouldQueue */
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
+     *
      * @return array
      */
     public function toArray($notifiable)

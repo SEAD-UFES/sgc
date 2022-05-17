@@ -24,7 +24,7 @@ class StoreBondRequest extends FormRequest
     public function rules()
     {
         return [
-            
+
             'employee_id' => 'required|exists:employees,id',
             'role_id' => 'required|exists:roles,id',
             'course_id' => 'required|exists:courses,id',

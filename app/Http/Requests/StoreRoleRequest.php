@@ -33,13 +33,13 @@ class StoreRoleRequest extends FormRequest
 
     public function messages()
     {
-         return [
-            'name.required' => 'O Nome é obrigatório',
-            'name.max' => 'O Nome deve conter no máximo 50 caracteres',
-            'description.max' => 'A Descrição deve conter no máximo 50 caracteres',
-            'grant_value.numeric' => 'O valor da bolsa deve ser numérico',
-            'grant_type_id.required' => 'O Tipo de Bolsa é obrigatório',
-            'grant_type_id.exists' => 'O Tipo de Bolsa deve estar entre os fornecidos',
+        return [
+             'name.required' => 'O Nome é obrigatório',
+             'name.max' => 'O Nome deve conter no máximo 50 caracteres',
+             'description.max' => 'A Descrição deve conter no máximo 50 caracteres',
+             'grant_value.numeric' => 'O valor da bolsa deve ser numérico',
+             'grant_type_id.required' => 'O Tipo de Bolsa é obrigatório',
+             'grant_type_id.exists' => 'O Tipo de Bolsa deve estar entre os fornecidos',
          ];
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\ModelFilters\RoleFilter;
+use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
-use eloquentFilter\QueryFilter\ModelFilters\Filterable;
-use App\ModelFilters\RoleFilter;
 
 class Role extends Model
 {
@@ -14,6 +14,15 @@ class Role extends Model
     use Sortable;
     use RoleFilter, Filterable;
 
+    public $sortable = ['id', 'name', 'description', 'grant_value', 'created_at', 'updated_at'];
+    public static $accepted_filters = [
+        'nameContains',
+        'descriptionContains',
+        'grantvalueExactly',
+        'grantvalueBigOrEqu',
+        'grantvalueLowOrEqu',
+        'grantTypeNameContains',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -32,17 +41,7 @@ class Role extends Model
         'fetched',
     ];
 
-    public $sortable = ['id', 'name', 'description', 'grant_value', 'created_at', 'updated_at'];
-
     private static $whiteListFilter = ['*'];
-    public static $accepted_filters = [
-        'nameContains',
-        'descriptionContains',
-        'grantvalueExactly',
-        'grantvalueBigOrEqu',
-        'grantvalueLowOrEqu',
-        'grantTypeNameContains'
-    ];
 
     /* public function bonds()
     {

@@ -2,18 +2,17 @@
 
 namespace App\Services;
 
-use Exception;
+use App\CustomClasses\SgcLogger;
 use App\Models\Bond;
 use App\Models\Document;
 use App\Models\Employee;
-use App\CustomClasses\SgcLogger;
+use Exception;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-
-use Illuminate\Database\Eloquent\Builder;
 
 class DocumentService
 {
@@ -22,13 +21,14 @@ class DocumentService
      *
      * @param string|null $sort
      * @param string|null $direction
+     *
      * @return LengthAwarePaginator
      */
-    public function list(string $sort = null, string $direction = null): LengthAwarePaginator
+    public function list(?string $sort = null, ?string $direction = null): LengthAwarePaginator
     {
-        (new Document)->logListed();
+        (new Document())->logListed();
 
-        $query = (new $this->documentClass)->queryDocuments();
+        $query = (new $this->documentClass())->queryDocuments();
         $query = $query->AcceptRequest($this->documentClass::$accepted_filters)->filter();
 
         if (in_array($sort, $this->documentClass::$sortable) && in_array($direction, ['asc', 'desc'])) {
@@ -48,13 +48,14 @@ class DocumentService
      *
      * @param string|null $sort
      * @param string|null $direction
+     *
      * @return LengthAwarePaginator
      */
-    public function listRights(string $sort = null, string $direction = null): LengthAwarePaginator
+    public function listRights(?string $sort = null, ?string $direction = null): LengthAwarePaginator
     {
-        (new Document)->logListed();
+        (new Document())->logListed();
 
-        $query = (new $this->documentClass)->queryRights();
+        $query = (new $this->documentClass())->queryRights();
         $query = $query->AcceptRequest($this->documentClass::$accepted_filters)->filter();
         if (in_array($sort, $this->documentClass::$sortable) && in_array($direction, ['asc', 'desc'])) {
             $query = $query->orderBy($sort, $direction);
@@ -72,6 +73,7 @@ class DocumentService
      * Undocumented function
      *
      * @param array $attributes
+     *
      * @return void
      */
     public function create(array $attributes)
@@ -90,9 +92,8 @@ class DocumentService
             // Delete old versions of this document type
             $this->deleteOldDocuments($oldDocuments);
 
-
             $attributes['documentable_id'] = $this->documentClass::create([
-                $this->documentClass::REFERENT_ID => $attributes[$this->documentClass::REFERENT_ID]
+                $this->documentClass::REFERENT_ID => $attributes[$this->documentClass::REFERENT_ID],
             ])->id;
 
             $document = Document::create($attributes);
@@ -103,6 +104,7 @@ class DocumentService
      * Undocumented function
      *
      * @param Document $document
+     *
      * @return Document
      */
     public function read(Document $document): Document
@@ -116,6 +118,7 @@ class DocumentService
      * Undocumented function
      *
      * @param UploadedFile $file
+     *
      * @return string
      */
     public function getFileData(UploadedFile $file): string
@@ -139,6 +142,7 @@ class DocumentService
      * Undocumented function
      *
      * @param array $attributes
+     *
      * @return Collection
      */
     public function createManyDocumentsStep1(array $attributes): Collection
@@ -168,6 +172,7 @@ class DocumentService
      * Undocumented function
      *
      * @param array $attributes
+     *
      * @return void
      */
     public function createManyDocumentsStep2(array $attributes)
@@ -175,7 +180,6 @@ class DocumentService
         $documentsCount = $attributes['fileSetCount'];
 
         DB::transaction(function () use ($attributes, $documentsCount) {
-
             $document[$this->documentClass::REFERENT_ID] = $attributes[$this->documentClass::REFERENT_ID];
             $document['documentable_type'] = $this->documentClass;
 
@@ -193,7 +197,7 @@ class DocumentService
                 $this->deleteOldDocuments($oldDocuments);
 
                 $document['documentable_id'] = $this->documentClass::create([
-                    $this->documentClass::REFERENT_ID => $attributes[$this->documentClass::REFERENT_ID]
+                    $this->documentClass::REFERENT_ID => $attributes[$this->documentClass::REFERENT_ID],
                 ])->id;
                 /*
                 $document['documentable_id'] = $this->documentClass::create(['employee_id' => $attributes['employee_id']])->id;
@@ -208,43 +212,11 @@ class DocumentService
         });
     }
 
-    private function getOldDocuments($document): Collection
-    {
-        /* Quering for the documents with specific documentable type (EmployeeDocument or BondDocument) and document type
-        where documentables referent (employee or bond) match the data from the form. */
-        $oldDocuments = Document::whereHasMorph(
-            'documentable',
-            $this->documentClass,
-            function (Builder $query) use ($document) {
-                $query->where($this->documentClass::REFERENT_ID, $document[$this->documentClass::REFERENT_ID]);
-            }
-        )->where('document_type_id', $document['document_type_id'])->get();
-
-        return $oldDocuments;
-    }
-
-    private function deleteOldDocuments(Collection $oldDocuments): void
-    {
-        /* If there are old documents, get the documentables */
-        $oldDocumentables = $oldDocuments->map(function ($oldDocument) {
-            return $oldDocument->documentable;
-        });
-
-        /* If there are old documentables, delete them */
-        $oldDocumentables->each(function ($oldDocumentable) {
-            $oldDocumentable->delete();
-        });
-
-        /* If there are old documents, delete them */
-        $oldDocuments->each(function ($oldDocument) {
-            $oldDocument->delete();
-        });
-    }
-
     /**
      * Undocumented function
      *
      * @param string $filePath
+     *
      * @return string
      */
     public function getFileDataFromPath(string $filePath): string
@@ -252,8 +224,7 @@ class DocumentService
         //if filePath
         if ($filePath) {
             $fileContent = file_get_contents(base_path('storage/app/' . $filePath), true);
-            $fileContentBase64 = base64_encode($fileContent);
-            return $fileContentBase64;
+            return base64_encode($fileContent);
         }
 
         //if no file
@@ -263,7 +234,8 @@ class DocumentService
     /**
      * Undocumented function
      *
-     * @param integer $id
+     * @param int $id
+     *
      * @return Collection
      */
     public function getDocument(int $id): Collection
@@ -292,6 +264,7 @@ class DocumentService
      * Undocumented function
      *
      * @param Employee $employee
+     *
      * @return string
      */
     public function exportEmployeeDocuments(Employee $employee): string
@@ -308,6 +281,7 @@ class DocumentService
      * Undocumented function
      *
      * @param Bond $bond
+     *
      * @return string
      */
     public function exportBondDocuments(Bond $bond): string
@@ -323,10 +297,12 @@ class DocumentService
     /**
      * @param Collection $documentables
      * @param string $zipFileName
+     *
      * @return string
+     *
      * @throws Exception
      */
-    public function exportDocuments(Collection $documentables, String $zipFileName): string
+    public function exportDocuments(Collection $documentables, string $zipFileName): string
     {
         $zip = new \ZipArchive();
 
@@ -343,5 +319,36 @@ class DocumentService
         }
 
         throw new Exception('failed: $zip->open()', 1);
+    }
+
+    private function getOldDocuments($document): Collection
+    {
+        /* Quering for the documents with specific documentable type (EmployeeDocument or BondDocument) and document type
+        where documentables referent (employee or bond) match the data from the form. */
+        return Document::whereHasMorph(
+            'documentable',
+            $this->documentClass,
+            function (Builder $query) use ($document) {
+                $query->where($this->documentClass::REFERENT_ID, $document[$this->documentClass::REFERENT_ID]);
+            }
+        )->where('document_type_id', $document['document_type_id'])->get();
+    }
+
+    private function deleteOldDocuments(Collection $oldDocuments): void
+    {
+        /* If there are old documents, get the documentables */
+        $oldDocumentables = $oldDocuments->map(function ($oldDocument) {
+            return $oldDocument->documentable;
+        });
+
+        /* If there are old documentables, delete them */
+        $oldDocumentables->each(function ($oldDocumentable) {
+            $oldDocumentable->delete();
+        });
+
+        /* If there are old documents, delete them */
+        $oldDocuments->each(function ($oldDocument) {
+            $oldDocument->delete();
+        });
     }
 }

@@ -2,18 +2,23 @@
 
 namespace App\Models;
 
+use App\ModelFilters\PoleFilter;
+use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
-use eloquentFilter\QueryFilter\ModelFilters\Filterable;
-use App\ModelFilters\PoleFilter;
-use Illuminate\Support\Facades\Log;
 
 class Pole extends Model
 {
     use HasFactory;
     use Sortable;
     use PoleFilter, Filterable;
+    public static $accepted_filters = [
+        'nameContains',
+        'descriptionContains',
+    ];
+
+    public $sortable = ['id', 'name', 'description', 'created_at', 'updated_at'];
 
     /**
      * The attributes that are mass assignable.
@@ -31,12 +36,6 @@ class Pole extends Model
     ];
 
     private static $whiteListFilter = [''];
-    public static $accepted_filters = [
-        'nameContains',
-        'descriptionContains'
-    ];
-
-    public $sortable = ['id', 'name', 'description', 'created_at', 'updated_at'];
 
     public function bonds()
     {

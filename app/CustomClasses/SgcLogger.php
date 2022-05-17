@@ -48,7 +48,7 @@ class SgcLogger
     SgcLogger::writeLog($user); [chamado do método store do UserController]
     => 7:prof1@ufes.br|store| User:18:marco@gmail.com */
 
-    public static function writeLog(mixed $target = null, mixed $action = null, mixed $executor = null, mixed $request = null, Model $model = null)
+    public static function writeLog(mixed $target = null, mixed $action = null, mixed $executor = null, mixed $request = null, ?Model $model = null)
     {
         $functionCaller = (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']);
         $executorInfo = self::getExecutorInfo($executor);
@@ -56,7 +56,7 @@ class SgcLogger
         $targetInfo = self::getTargetInfo($target);
         $severity = self::getSeverityMapping($actionInfo);
 
-        $logText =  "\t" . NetworkHelper::getClientIpAddress() . "\t|\t$executorInfo\t|\t$actionInfo\t|\t$targetInfo\t";
+        $logText = "\t" . NetworkHelper::getClientIpAddress() . "\t|\t${executorInfo}\t|\t${actionInfo}\t|\t${targetInfo}\t";
 
         if ($request) {
             $logText .= "|\trequest-params: " . self::getRequestParams($request);
@@ -107,19 +107,19 @@ class SgcLogger
         }
 
         if (is_int($executor)) {
-            return "NoID";
+            return 'NoID';
         }
 
         $_executor = $executor ?? Auth::user();
-        $executorId = $_executor->id ?? "NoID";
-        $executorEmail = isset($_executor->email) ? (':' . $_executor->email) : ":\t";
+        $executorId = $_executor->id ?? 'NoID';
+        $executorEmail = isset($_executor->email) ? ':' . $_executor->email : ":\t";
 
-        return "$executorId$executorEmail";
+        return "${executorId}${executorEmail}";
     }
 
     private static function getActionInfo($action, $functionCaller): string
     {
-        if ($action == null) {
+        if ($action === null) {
             return $functionCaller;
         }
 
@@ -127,13 +127,13 @@ class SgcLogger
             return $action;
         }
 
-        return "No Action";
+        return 'No Action';
     }
 
     private static function getTargetInfo($target): string
     {
-        if ($target == null) {
-            return "System";
+        if ($target === null) {
+            return 'System';
         }
 
         if (is_string($target)) {
@@ -142,10 +142,10 @@ class SgcLogger
 
         if (isset($target->id)) {
             $targetId = ':' . $target->id;
-            $targetClass = class_basename(get_class($target));
-            $targetEmail = ($target->email) ? (':' . $target->email) : '';
+            $targetClass = class_basename($target::class);
+            $targetEmail = $target->email ? ':' . $target->email : '';
 
-            return "$targetClass$targetId$targetEmail";
+            return "${targetClass}${targetId}${targetEmail}";
         }
 
         return 'Maybe there is something wrong with $target on logger';
@@ -158,10 +158,8 @@ class SgcLogger
 
     private static function getRequestParams(array $request): string
     {
-        $json = collect($request)
+        return collect($request)
             ->toJson(JSON_UNESCAPED_UNICODE);
-
-        return $json;
     }
 
     private static function getSeverityMapping(string $severityKey): string | null

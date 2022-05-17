@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Course;
-use App\Models\CourseType;
-use Illuminate\Http\Request;
-use App\Services\CourseService;
-use Illuminate\Support\Facades\Gate;
 use App\CustomClasses\ModelFilterHelpers;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
+use App\Models\Course;
+use App\Models\CourseType;
+use App\Services\CourseService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CourseController extends Controller
 {
@@ -22,12 +22,13 @@ class CourseController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('course-list')) {
+        if (! Gate::allows('course-list')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -47,7 +48,7 @@ class CourseController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('course-store')) {
+        if (! Gate::allows('course-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -60,12 +61,13 @@ class CourseController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreCourseRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(StoreCourseRequest $request)
     {
         //check access permission
-        if (!Gate::allows('course-store')) {
+        if (! Gate::allows('course-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -78,12 +80,13 @@ class CourseController extends Controller
      * Display the specified resource.
      *
      * @param Course $course
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Course $course)
     {
         //check access permission
-        if (!Gate::allows('course-show')) {
+        if (! Gate::allows('course-show')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -96,12 +99,13 @@ class CourseController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Course $course
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Course $course)
     {
         //check access permission
-        if (!Gate::allows('course-update')) {
+        if (! Gate::allows('course-update')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -115,12 +119,13 @@ class CourseController extends Controller
      *
      * @param UpdateCourseRequest $request
      * @param Course $course
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateCourseRequest $request, Course $course)
     {
         //check access permission
-        if (!Gate::allows('course-update')) {
+        if (! Gate::allows('course-update')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -137,12 +142,13 @@ class CourseController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Course $course
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Course $course)
     {
         //check access permission
-        if (!Gate::allows('course-destroy')) {
+        if (! Gate::allows('course-destroy')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 

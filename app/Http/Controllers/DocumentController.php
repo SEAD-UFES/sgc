@@ -17,20 +17,21 @@ class DocumentController extends Controller
      * Display the specified resource.
      *
      * @param \App\Models\BondDocument $bondDocument
+     *
      * @return \Illuminate\Http\Response
      */
     public function showDocument($id)
     {
-        if (!(Gate::allows('employeeDocument-download') || Gate::allows('bondDocument-download') || Gate::allows('bondDocument-rights'))) {
+        if (! (Gate::allows('employeeDocument-download') || Gate::allows('bondDocument-download') || Gate::allows('bondDocument-rights'))) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
         $file = $this->service->getDocument($id);
 
         //check access permission
-        if (($file->class === 'App\Models\EmployeeDocument' && !Gate::allows('employeeDocument-download')) ||
-        ($file->class === 'App\Models\BondDocument' && !$file->isRights && !Gate::allows('bondDocument-download')) ||
-        ($file->isRights && !Gate::allows('bondDocument-rights'))
+        if (($file->class === 'App\Models\EmployeeDocument' && ! Gate::allows('employeeDocument-download')) ||
+        ($file->class === 'App\Models\BondDocument' && ! $file->isRights && ! Gate::allows('bondDocument-download')) ||
+        ($file->isRights && ! Gate::allows('bondDocument-rights'))
         ) {
             return response()->view('access.denied')->setStatusCode(403);
         }

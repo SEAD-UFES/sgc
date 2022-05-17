@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pole;
-use Illuminate\Http\Request;
-use App\Services\PoleService;
-use Illuminate\Support\Facades\Gate;
+use App\CustomClasses\ModelFilterHelpers;
 use App\Http\Requests\StorePoleRequest;
 use App\Http\Requests\UpdatePoleRequest;
-use App\CustomClasses\ModelFilterHelpers;
+use App\Models\Pole;
+use App\Services\PoleService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PoleController extends Controller
 {
@@ -25,7 +25,7 @@ class PoleController extends Controller
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('pole-list')) {
+        if (! Gate::allows('pole-list')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -45,7 +45,7 @@ class PoleController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('pole-store')) {
+        if (! Gate::allows('pole-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -56,12 +56,13 @@ class PoleController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(StorePoleRequest $request)
     {
         //check access permission
-        if (!Gate::allows('pole-store')) {
+        if (! Gate::allows('pole-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -78,12 +79,13 @@ class PoleController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Pole  $pole
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Pole $pole)
     {
         //check access permission
-        if (!Gate::allows('pole-show')) {
+        if (! Gate::allows('pole-show')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -96,12 +98,13 @@ class PoleController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Pole  $pole
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Pole $pole)
     {
         //check access permission
-        if (!Gate::allows('pole-update')) {
+        if (! Gate::allows('pole-update')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -113,12 +116,13 @@ class PoleController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Pole  $pole
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(UpdatePoleRequest $request, Pole $pole)
     {
         //check access permission
-        if (!Gate::allows('pole-update')) {
+        if (! Gate::allows('pole-update')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -135,12 +139,13 @@ class PoleController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Pole  $pole
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Pole $pole)
     {
         //check access permission
-        if (!Gate::allows('pole-destroy')) {
+        if (! Gate::allows('pole-destroy')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 

@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pole;
-use App\Models\Role;
-use App\Models\State;
-use App\Models\Course;
-use App\Models\Gender;
-use App\Models\Approved;
-use App\Models\DocumentType;
-use Illuminate\Http\Request;
-use App\Models\ApprovedState;
-use App\Models\MaritalStatus;
-use App\Services\ApprovedService;
-use Illuminate\Support\Facades\Gate;
 use App\CustomClasses\ModelFilterHelpers;
 use App\Http\Requests\ImportApprovedsFileRequest;
 use App\Http\Requests\StoreApprovedsRequest;
+use App\Models\Approved;
+use App\Models\ApprovedState;
+use App\Models\Course;
+use App\Models\DocumentType;
 use App\Models\Employee;
+use App\Models\Gender;
+use App\Models\MaritalStatus;
+use App\Models\Pole;
+use App\Models\Role;
+use App\Models\State;
+use App\Services\ApprovedService;
 use App\Services\ApprovedsSourceService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ApprovedController extends Controller
 {
@@ -32,12 +32,13 @@ class ApprovedController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('approved-list')) {
+        if (! Gate::allows('approved-list')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -60,7 +61,7 @@ class ApprovedController extends Controller
     public function createStep1() // import spreadsheet file view
     {
         //check access permission
-        if (!Gate::allows('approved-store')) {
+        if (! Gate::allows('approved-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -71,12 +72,13 @@ class ApprovedController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function storeStep1(ImportApprovedsFileRequest $request)
     {
         //check access permission
-        if (!Gate::allows('approved-store')) {
+        if (! Gate::allows('approved-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -99,7 +101,7 @@ class ApprovedController extends Controller
     public function createStep2() // import spreadsheet file view
     {
         //check access permission
-        if (!Gate::allows('approved-store')) {
+        if (! Gate::allows('approved-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -116,12 +118,13 @@ class ApprovedController extends Controller
      * Undocumented function
      *
      * @param Request $request
+     *
      * @return void
      */
     public function storeStep2(StoreApprovedsRequest $request)
     {
         //check access permission
-        if (!Gate::allows('approved-store')) {
+        if (! Gate::allows('approved-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -140,22 +143,22 @@ class ApprovedController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Approved  $approved
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Approved $approved)
     {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Approved  $approved
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Approved $approved)
     {
-        //
     }
 
     /**
@@ -163,12 +166,13 @@ class ApprovedController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Approved  $approved
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Approved $approved)
     {
         //check access permission
-        if (!Gate::allows('approved-update-state')) {
+        if (! Gate::allows('approved-update-state')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -185,12 +189,13 @@ class ApprovedController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Approved  $approved
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Approved $approved)
     {
         //check access permission
-        if (!Gate::allows('approved-destroy')) {
+        if (! Gate::allows('approved-destroy')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -208,12 +213,13 @@ class ApprovedController extends Controller
      *
      * @param Request $request
      * @param Approved $approved
+     *
      * @return void
      */
     public function designate(Request $request, Approved $approved)
     {
         //check access permission
-        if (!Gate::allows('approved-designate')) {
+        if (! Gate::allows('approved-designate')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 

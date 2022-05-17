@@ -2,23 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
-use App\Models\DocumentType;
-use Illuminate\Http\Request;
-use App\Models\EmployeeDocument;
-use App\Services\DocumentService;
-use Illuminate\Support\Facades\Gate;
 use App\CustomClasses\ModelFilterHelpers;
 use App\Http\Requests\StoreEmployeeDocumentRequest;
 use App\Http\Requests\StoreEmployeeMultipleDocumentsRequest;
-use Illuminate\Http\Response;
+use App\Models\DocumentType;
+use App\Models\Employee;
+use App\Models\EmployeeDocument;
+use App\Services\DocumentService;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 use InvalidArgumentException;
 
 class EmployeeDocumentController extends DocumentController
 {
     /**
      * @param DocumentService $documentService
+     *
      * @return void
      */
     public function __construct(DocumentService $documentService)
@@ -33,7 +34,7 @@ class EmployeeDocumentController extends DocumentController
     public function employeesDocumentsIndex(Request $request)
     {
         //check access permission
-        if (!Gate::allows('employeeDocument-list')) {
+        if (! Gate::allows('employeeDocument-list')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -51,7 +52,7 @@ class EmployeeDocumentController extends DocumentController
     public function employeesDocumentsCreate()
     {
         //check access permission
-        if (!Gate::allows('employeeDocument-store')) {
+        if (! Gate::allows('employeeDocument-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -65,12 +66,13 @@ class EmployeeDocumentController extends DocumentController
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function employeesDocumentsStore(StoreEmployeeDocumentRequest $request)
     {
         //check access permission
-        if (!Gate::allows('employeeDocument-store')) {
+        if (! Gate::allows('employeeDocument-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -81,19 +83,21 @@ class EmployeeDocumentController extends DocumentController
 
     /**
      * @param Request $request
+     *
      * @return Response
+     *
      * @throws BindingResolutionException
      * @throws InvalidArgumentException
      */
     public function employeesDocumentsCreateMany(Request $request)
     {
         //check access permission
-        if (!Gate::allows('employeeDocument-store')) {
+        if (! Gate::allows('employeeDocument-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
         $id = $request->id ?? null;
-        $employees = !is_null($id)
+        $employees = ! is_null($id)
             ? Employee::where('id', $id)->get()
             : Employee::orderBy('name')->get();
 
@@ -103,7 +107,7 @@ class EmployeeDocumentController extends DocumentController
     public function employeesDocumentsStoreMany1(StoreEmployeeMultipleDocumentsRequest $request)
     {
         //check access permission
-        if (!Gate::allows('employeeDocument-store')) {
+        if (! Gate::allows('employeeDocument-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -121,7 +125,7 @@ class EmployeeDocumentController extends DocumentController
     public function employeesDocumentsStoreMany2(Request $request)
     {
         //check access permission
-        if (!Gate::allows('employeeDocument-store')) {
+        if (! Gate::allows('employeeDocument-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -133,7 +137,7 @@ class EmployeeDocumentController extends DocumentController
     public function employeesDocumentsExport(Employee $employee)
     {
         //check access permission
-        if (!Gate::allows('employeeDocument-download')) {
+        if (! Gate::allows('employeeDocument-download')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 

@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\User;
 use App\Models\Employee;
-use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -16,7 +16,7 @@ class UserService
      */
     public function list(): LengthAwarePaginator
     {
-        (new User)->logListed();
+        (new User())->logListed();
 
         $query = User::with(['userType', 'employee']);
         $query = $query->AcceptRequest(User::$accepted_filters)->filter();
@@ -31,6 +31,7 @@ class UserService
      * Undocumented function
      *
      * @param array $attributes
+     *
      * @return User
      */
     public function create(array $attributes): User
@@ -49,6 +50,7 @@ class UserService
      * Undocumented function
      *
      * @param User $user
+     *
      * @return User
      */
     public function read(User $user): User
@@ -63,16 +65,17 @@ class UserService
      *
      * @param array $attributes
      * @param User $user
+     *
      * @return User
      */
     public function update(array $attributes, User $user): User
     {
-        if (isset($attributes['password']) and $attributes['password'] != '') {
+        if (isset($attributes['password']) and $attributes['password'] !== '') {
             $attributes['password'] = Hash::make($attributes['password']);
         } else {
             unset($attributes['password']);
         }
-            
+
         $attributes['active'] = isset($attributes['active']);
 
         $user->update($attributes);
@@ -86,6 +89,19 @@ class UserService
      * Undocumented function
      *
      * @param User $user
+     *
+     * @return void
+     */
+    public function delete(User $user)
+    {
+        $user->delete();
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param User $user
+     *
      * @return void
      */
     private function employeeAttach(User $user)
@@ -102,22 +118,11 @@ class UserService
      * Undocumented function
      *
      * @param string $email
+     *
      * @return Employee
      */
     private function getEmployeeByEmail(string $email): ?Employee
     {
-        $employee = Employee::where('email', $email)->first();
-        return $employee;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param User $user
-     * @return void
-     */
-    public function delete(User $user)
-    {
-        $user->delete();
+        return Employee::where('email', $email)->first();
     }
 }

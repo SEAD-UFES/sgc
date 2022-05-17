@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
-use App\Models\GrantType;
-use Illuminate\Http\Request;
-use App\Services\RoleService;
-use Illuminate\Support\Facades\Gate;
+use App\CustomClasses\ModelFilterHelpers;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
-use App\CustomClasses\ModelFilterHelpers;
+use App\Models\GrantType;
+use App\Models\Role;
+use App\Services\RoleService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class RoleController extends Controller
 {
@@ -26,7 +26,7 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('role-list')) {
+        if (! Gate::allows('role-list')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -46,7 +46,7 @@ class RoleController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('role-store')) {
+        if (! Gate::allows('role-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -59,12 +59,13 @@ class RoleController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(StoreRoleRequest $request)
     {
         //check access permission
-        if (!Gate::allows('role-store')) {
+        if (! Gate::allows('role-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -81,12 +82,13 @@ class RoleController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Role  $role
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Role $role)
     {
         //check access permission
-        if (!Gate::allows('role-show')) {
+        if (! Gate::allows('role-show')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -99,12 +101,13 @@ class RoleController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Role  $role
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Role $role)
     {
         //check access permission
-        if (!Gate::allows('role-update')) {
+        if (! Gate::allows('role-update')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -118,12 +121,13 @@ class RoleController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Role  $role
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateRoleRequest $request, Role $role)
     {
         //check access permission
-        if (!Gate::allows('role-update')) {
+        if (! Gate::allows('role-update')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -140,12 +144,13 @@ class RoleController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Role  $role
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Role $role)
     {
         //check access permission
-        if (!Gate::allows('role-destroy')) {
+        if (! Gate::allows('role-destroy')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 

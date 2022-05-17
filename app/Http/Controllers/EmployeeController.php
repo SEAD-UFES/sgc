@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\State;
-use App\Models\Gender;
-use App\Models\Employee;
-use App\Models\DocumentType;
-use Illuminate\Http\Request;
-use App\Models\MaritalStatus;
-use App\Services\EmployeeService;
-use Illuminate\Support\Facades\Gate;
 use App\CustomClasses\ModelFilterHelpers;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
+use App\Models\DocumentType;
+use App\Models\Employee;
 use App\Models\EmployeeDocument;
+use App\Models\Gender;
+use App\Models\MaritalStatus;
+use App\Models\State;
+use App\Services\EmployeeService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class EmployeeController extends Controller
 {
@@ -26,12 +26,13 @@ class EmployeeController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('employee-list')) {
+        if (! Gate::allows('employee-list')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -51,7 +52,7 @@ class EmployeeController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('employee-store')) {
+        if (! Gate::allows('employee-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -70,12 +71,13 @@ class EmployeeController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreEmployeeRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(StoreEmployeeRequest $request)
     {
         //check access permission
-        if (!Gate::allows('employee-store')) {
+        if (! Gate::allows('employee-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -85,23 +87,23 @@ class EmployeeController extends Controller
             return redirect()->route('employees.index')->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $e->getMessage()]);
         }
 
-        if ($request->importDocuments == 'true') {
+        if ($request->importDocuments === 'true') {
             return redirect()->route('employeesDocuments.createMany', $employee->id)->with('success', 'Colaborador criado com sucesso.');
-        } else {
-            return redirect()->route('employees.index')->with('success', 'Colaborador criado com sucesso.');
         }
+        return redirect()->route('employees.index')->with('success', 'Colaborador criado com sucesso.');
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\Employee  $employee
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Employee $employee)
     {
         //check access permission
-        if (!Gate::allows('employee-show')) {
+        if (! Gate::allows('employee-show')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -116,12 +118,13 @@ class EmployeeController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Employee  $employee
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Employee $employee)
     {
         //check access permission
-        if (!Gate::allows('employee-update')) {
+        if (! Gate::allows('employee-update')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -141,12 +144,13 @@ class EmployeeController extends Controller
      *
      * @param UpdateEmployeeRequest $request
      * @param Employee $employee
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
         //check access permission
-        if (!Gate::allows('employee-update')) {
+        if (! Gate::allows('employee-update')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -163,12 +167,13 @@ class EmployeeController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Employee  $employee
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Employee $employee)
     {
         //check access permission
-        if (!Gate::allows('employee-destroy')) {
+        if (! Gate::allows('employee-destroy')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 

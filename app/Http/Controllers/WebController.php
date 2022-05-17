@@ -11,9 +11,8 @@ class WebController extends Controller
     {
         if (Auth::check()) {
             return redirect()->route('home');
-        } else {
-            return redirect()->route('auth.form');
         }
+        return redirect()->route('auth.form');
     }
 
     public function home()
@@ -28,7 +27,7 @@ class WebController extends Controller
 
     public function showSysInfo()
     {
-        if (!Gate::allows('isAdm-global')) {
+        if (! Gate::allows('isAdm-global')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
         return view('sysInfo');

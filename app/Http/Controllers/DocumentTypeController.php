@@ -14,7 +14,6 @@ class DocumentTypeController extends Controller
      */
     public function index()
     {
-        //
     }
 
     /**
@@ -24,40 +23,39 @@ class DocumentTypeController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\DocumentType  $documentType
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(DocumentType $documentType)
     {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\DocumentType  $documentType
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(DocumentType $documentType)
     {
-        //
     }
 
     /**
@@ -65,21 +63,21 @@ class DocumentTypeController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\DocumentType  $documentType
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, DocumentType $documentType)
     {
-        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\DocumentType  $documentType
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(DocumentType $documentType)
     {
-        //
     }
 }

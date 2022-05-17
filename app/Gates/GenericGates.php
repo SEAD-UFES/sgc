@@ -2,49 +2,11 @@
 
 namespace App\Gates;
 
-use Illuminate\Support\Facades\Gate;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 
 class GenericGates
 {
-    private static function checkGenericRoleUta(String $acronym): bool
-    {
-        //return $user->userType->acronym == $acronym;
-
-        //need to have session UserTypeAssignment active.
-        $currentUTA = auth()->user()->getCurrentUTA();
-        if (!$currentUTA) {
-            return false;
-        }
-
-        //if currentUTA (UserTypeAssignment) is $acronym, ok
-        $acronymMatch = $currentUTA->userType->acronym === $acronym;
-        if ($acronymMatch) {
-            return true;
-        }
-
-        //if no permission
-        return false;
-    }
-
-    private static function checkGlobalRoleUta(String $acronym): bool
-    {
-        //need to have session UserTypeAssignment active.
-        $currentUTA = auth()->user()->getCurrentUTA();
-        if (!$currentUTA) {
-            return false;
-        }
-
-        //if currentUTA (UserTypeAssignment) is $acronym, ok
-        $acronymMatch = $currentUTA->userType->acronym === $acronym;
-        $course_id_null = $currentUTA->course_id === null;
-        if ($acronymMatch && $course_id_null) {
-            return true;
-        }
-
-        //if no permission
-        return false;
-    }
 
     public static function define()
     {
@@ -112,7 +74,7 @@ class GenericGates
         Gate::define('isCoord-course_id', function (User $user, int $course_id) {
             //need to have session UserTypeAssignment active.
             $currentUTA = auth()->user()->getCurrentUTA();
-            if (!$currentUTA) {
+            if (! $currentUTA) {
                 return false;
             }
 
@@ -128,5 +90,43 @@ class GenericGates
             //if no permission
             return false;
         });
+    }
+    private static function checkGenericRoleUta(string $acronym): bool
+    {
+        //return $user->userType->acronym == $acronym;
+
+        //need to have session UserTypeAssignment active.
+        $currentUTA = auth()->user()->getCurrentUTA();
+        if (! $currentUTA) {
+            return false;
+        }
+
+        //if currentUTA (UserTypeAssignment) is $acronym, ok
+        $acronymMatch = $currentUTA->userType->acronym === $acronym;
+        if ($acronymMatch) {
+            return true;
+        }
+
+        //if no permission
+        return false;
+    }
+
+    private static function checkGlobalRoleUta(string $acronym): bool
+    {
+        //need to have session UserTypeAssignment active.
+        $currentUTA = auth()->user()->getCurrentUTA();
+        if (! $currentUTA) {
+            return false;
+        }
+
+        //if currentUTA (UserTypeAssignment) is $acronym, ok
+        $acronymMatch = $currentUTA->userType->acronym === $acronym;
+        $course_id_null = $currentUTA->course_id === null;
+        if ($acronymMatch && $course_id_null) {
+            return true;
+        }
+
+        //if no permission
+        return false;
     }
 }

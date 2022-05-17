@@ -14,11 +14,11 @@ class ApprovedsSourceService
      * Undocumented function
      *
      * @param UploadedFile $file
+     *
      * @return Collection
      */
     public function importApprovedsFromFile(UploadedFile $file): Collection
     {
-
         $filePath = $this->getFilePath($file);
 
         $approveds = $this->getApprovedsFromFile($filePath);
@@ -31,6 +31,7 @@ class ApprovedsSourceService
      * Undocumented function
      *
      * @param UploadedFile $file
+     *
      * @return string
      */
     protected function getFilePath(UploadedFile $file): string
@@ -44,6 +45,7 @@ class ApprovedsSourceService
      * Undocumented function
      *
      * @param string $filePath
+     *
      * @return Collection
      */
     protected function getApprovedsFromFile(string $filePath): Collection

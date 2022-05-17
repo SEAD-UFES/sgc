@@ -1,21 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\PoleController;
-use App\Http\Controllers\BondController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\WebController;
 use App\Http\Controllers\ApprovedController;
-use App\Http\Controllers\DocumentController;
-use App\Http\Controllers\EmployeeDocumentController;
+use App\Http\Controllers\BondController;
 use App\Http\Controllers\BondDocumentController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseTypeController;
+use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EmployeeDocumentController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PoleController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserTypeAssignmentController;
+use App\Http\Controllers\WebController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +38,6 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('auth.logout');
 Route::middleware('auth')->group(function () {
     Route::get('/home', [WebController::class, 'home'])->name('home');
 
-
     Route::get('employees/documents', [EmployeeDocumentController::class, 'employeesDocumentsIndex'])->name('employeesDocuments.index');
     //single employee doc create
     Route::get('employees/documents/create', [EmployeeDocumentController::class, 'employeesDocumentsCreate'])->name('employeesDocuments.create');
@@ -51,7 +50,6 @@ Route::middleware('auth')->group(function () {
     Route::get('employees/{employee}/documents-export/', [EmployeeDocumentController::class, 'employeesDocumentsExport'])->name('employeesDocuments.export');
 
     Route::resource('employees', EmployeeController::class);
-
 
     Route::get('bonds/documents', [BondDocumentController::class, 'bondsDocumentsIndex'])->name('bondsDocuments.index');
     //single bond doc create
@@ -67,7 +65,6 @@ Route::middleware('auth')->group(function () {
     Route::get('reports/rights', [BondDocumentController::class, 'rightsIndex'])->name('bonds.rights.index');
 
     Route::resource('bonds', BondController::class);
-
 
     Route::post('bondreview/{bond}', [BondController::class, 'review'])->name('bonds.review');
     Route::get('bondrequestreview/{bond}', [BondController::class, 'requestReview'])->name('bonds.requestReview');
@@ -87,7 +84,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/coursetypes', [CourseTypeController::class, 'index'])->name('coursetypes.index');
 
     Route::get('/approveds/{approved}/designate', [ApprovedController::class, 'designate'])->name('approveds.designate');
-    
+
     Route::get('/approveds', [ApprovedController::class, 'index'])->name('approveds.index');
     Route::get('/approveds/create/step-1', [ApprovedController::class, 'createStep1'])->name('approveds.create.step1');
     Route::post('/approveds/create/step-1', [ApprovedController::class, 'storeStep1'])->name('approveds.store.step1');

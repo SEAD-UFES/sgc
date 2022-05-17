@@ -14,7 +14,6 @@ class ApprovedStateController extends Controller
      */
     public function index()
     {
-        //
     }
 
     /**
@@ -24,40 +23,39 @@ class ApprovedStateController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\ApprovedState  $approvedState
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(ApprovedState $approvedState)
     {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\ApprovedState  $approvedState
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(ApprovedState $approvedState)
     {
-        //
     }
 
     /**
@@ -65,21 +63,21 @@ class ApprovedStateController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\ApprovedState  $approvedState
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, ApprovedState $approvedState)
     {
-        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\ApprovedState  $approvedState
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(ApprovedState $approvedState)
     {
-        //
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DocumentType extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'name',
         'description',
@@ -18,12 +18,12 @@ class DocumentType extends Model
         'listed',
         'fetched',
     ];
- 
+
     public function employeeDocuments()
     {
         return $this->hasMany(EmployeeDocument::class);
     }
- 
+
     public function bondDocuments()
     {
         return $this->hasMany(BondDocument::class);

@@ -14,8 +14,8 @@ class PoleService
      */
     public function list(): LengthAwarePaginator
     {
-        (new Pole)->logListed();
-        
+        (new Pole())->logListed();
+
         $poles_query = new Pole();
         $poles_query = $poles_query->AcceptRequest(Pole::$accepted_filters)->filter();
         $poles_query = $poles_query->sortable(['name' => 'asc']);
@@ -29,19 +29,19 @@ class PoleService
      * Undocumented function
      *
      * @param array $attributes
+     *
      * @return Pole
      */
     public function create(array $attributes): Pole
     {
-        $pole = Pole::create($attributes);
-
-        return $pole;
+        return Pole::create($attributes);
     }
 
     /**
      * Undocumented function
      *
      * @param Pole $pole
+     *
      * @return Pole
      */
     public function read(Pole $pole): Pole
@@ -56,6 +56,7 @@ class PoleService
      *
      * @param array $attributes
      * @param Pole $pole
+     *
      * @return Pole
      */
     public function update(array $attributes, Pole $pole): Pole
@@ -69,6 +70,7 @@ class PoleService
      * Undocumented function
      *
      * @param Pole $pole
+     *
      * @return void
      */
     public function delete(Pole $pole)

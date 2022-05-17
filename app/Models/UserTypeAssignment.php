@@ -2,17 +2,39 @@
 
 namespace App\Models;
 
+use App\ModelFilters\UserTypeAssignmentFilter;
+use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
-use eloquentFilter\QueryFilter\ModelFilters\Filterable;
-use App\ModelFilters\UserTypeAssignmentFilter;
 
 class UserTypeAssignment extends Model
 {
     use HasFactory;
     use Sortable;
     use UserTypeAssignmentFilter, Filterable;
+
+    public $sortable = [
+        'id',
+        'user.email',
+        'userType.name',
+        'begin',
+        'end',
+        'created_at',
+        'updated_at',
+    ];
+    public static $accepted_filters = [
+        'userEmailContains',
+        'usertypeNameContains',
+        'courseNameContains',
+        'beginExactly',
+        'beginBigOrEqu',
+        'beginLowOrEqu',
+        'endExactly',
+        'endBigOrEqu',
+        'endLowOrEqu',
+        'userId',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -32,29 +54,7 @@ class UserTypeAssignment extends Model
         'fetched',
     ];
 
-    public $sortable = [
-        'id',
-        'user.email',
-        'userType.name',
-        'begin',
-        'end',
-        'created_at',
-        'updated_at'
-    ];
-
     private static $whiteListFilter = ['*'];
-    public static $accepted_filters = [
-        'userEmailContains',
-        'usertypeNameContains',
-        'courseNameContains',
-        'beginExactly',
-        'beginBigOrEqu',
-        'beginLowOrEqu',
-        'endExactly',
-        'endBigOrEqu',
-        'endLowOrEqu',
-        'userId'
-    ];
 
     public function user()
     {

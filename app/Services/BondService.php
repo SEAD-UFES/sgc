@@ -3,19 +3,19 @@
 namespace App\Services;
 
 use App\Models\Bond;
-use App\Models\User;
-use App\Models\Document;
-use App\Models\UserType;
 use App\Models\BondDocument;
+use App\Models\Document;
 use App\Models\DocumentType;
 use App\Models\EmployeeDocument;
-use Illuminate\Support\Facades\DB;
+use App\Models\User;
+use App\Models\UserType;
+use App\Notifications\BondImpededNotification;
 use App\Notifications\NewBondNotification;
 use App\Notifications\NewRightsNotification;
-use Illuminate\Support\Facades\Notification;
-use App\Notifications\BondImpededNotification;
-use Illuminate\Pagination\LengthAwarePaginator;
 use App\Notifications\RequestReviewNotification;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class BondService
 {
@@ -26,7 +26,7 @@ class BondService
      */
     public function list(): LengthAwarePaginator
     {
-        (new Bond)->logListed();
+        (new Bond())->logListed();
 
         $query = Bond::with(['employee', 'course', 'role', 'pole']);
         $query = $query->AcceptRequest(Bond::$accepted_filters)->filter();
@@ -41,6 +41,7 @@ class BondService
      * Undocumented function
      *
      * @param array $attributes
+     *
      * @return Bond
      */
     public function create(array $attributes): ?Bond
@@ -54,7 +55,6 @@ class BondService
         $bond = null;
 
         DB::transaction(function () use ($attributes, &$bond) {
-
             $bond = Bond::create($attributes);
 
             $employeeDocuments = EmployeeDocument::where('employee_id', $bond->employee_id)->get();
@@ -86,6 +86,7 @@ class BondService
      * Undocumented function
      *
      * @param Bond $bond
+     *
      * @return Bond
      */
     public function read(Bond $bond): Bond
@@ -100,6 +101,7 @@ class BondService
      *
      * @param array $attributes
      * @param Bond $bond
+     *
      * @return Bond
      */
     public function update(array $attributes, Bond $bond): Bond
@@ -115,6 +117,7 @@ class BondService
      * Undocumented function
      *
      * @param Bond $bond
+     *
      * @return void
      */
     public function delete(Bond $bond)
@@ -133,12 +136,13 @@ class BondService
      *
      * @param array $attributes
      * @param Bond $bond
+     *
      * @return Bond
      */
     public function review(array $attributes, Bond $bond): Bond
     {
         //get impediment; check if bond have 'termo'; if not, impediment = true.
-        $attributes['impediment'] = $attributes['impediment'] == '1';
+        $attributes['impediment'] = $attributes['impediment'] === '1';
         //$bond->impediment_description = $attributes['impediment_description'];
         $attributes['uaba_checked_at'] = now();
 
@@ -152,10 +156,9 @@ class BondService
             $attributes['impediment'] = true;
         }
 
-
         $bond->update($attributes);
 
-        if ($bond->impediment == true) {
+        if ($bond->impediment === true) {
             $sec_UT = UserType::firstWhere('acronym', 'sec');
             $sec_users = User::where('active', true)->whereActiveUserType($sec_UT->id)->get();
 
@@ -181,6 +184,7 @@ class BondService
      *
      * @param array $attributes
      * @param Bond $bond
+     *
      * @return Bond
      */
     public function requestReview(array $attributes, Bond $bond): Bond

@@ -23,13 +23,13 @@ class UpdateCourseRequest extends FormRequest
      */
     public function rules()
     {
-        $scr = new StoreCourseRequest;
+        $scr = new StoreCourseRequest();
         return $scr->rules();
     }
 
     public function messages()
     {
-        $scr = new StoreCourseRequest;
+        $scr = new StoreCourseRequest();
         return $scr->messages();
     }
 }

@@ -2,16 +2,14 @@
 
 namespace App\Notifications;
 
+use App\CustomClasses\SgcLogger;
 use App\Models\Bond;
 use App\Models\Document;
 use App\Models\DocumentType;
 use Illuminate\Bus\Queueable;
-use App\CustomClasses\SgcLogger;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 
-class NewRightsNotification extends Notification/* implements ShouldQueue */ //Queueing disabled while in development
+class NewRightsNotification extends Notification /* implements ShouldQueue */ //Queueing disabled while in development
 {
     use Queueable;
 
@@ -37,6 +35,7 @@ class NewRightsNotification extends Notification/* implements ShouldQueue */ //Q
      * Get the notification's delivery channels.
      *
      * @param  mixed  $notifiable
+     *
      * @return array
      */
     public function via($notifiable)
@@ -48,6 +47,7 @@ class NewRightsNotification extends Notification/* implements ShouldQueue */ //Q
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
+     *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     /* public function toMail($notifiable)
@@ -62,6 +62,7 @@ class NewRightsNotification extends Notification/* implements ShouldQueue */ //Q
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
+     *
      * @return array
      */
     public function toArray($notifiable)

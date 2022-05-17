@@ -2,17 +2,24 @@
 
 namespace App\Models;
 
+use App\ModelFilters\DocumentFilter;
+use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
-use eloquentFilter\QueryFilter\ModelFilters\Filterable;
-use App\ModelFilters\DocumentFilter;
 
 class Document extends Model
 {
     use HasFactory;
     use Sortable;
     use DocumentFilter, Filterable;
+
+    public $sortable = [
+        'id',
+        'original_name',
+        'created_at',
+        'updated_at',
+    ];
 
     protected $table = 'documents';
 
@@ -27,13 +34,6 @@ class Document extends Model
     protected $observables = [
         'listed',
         'fetched',
-    ];
-
-    public $sortable = [
-        'id',
-        'original_name',
-        'created_at',
-        'updated_at'
     ];
 
     private static $whiteListFilter = ['*'];
@@ -99,7 +99,7 @@ class Document extends Model
     {
         $rightsTypeId = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first()?->id;
 
-        return $this->document_type_id == $rightsTypeId;
+        return $this->document_type_id === $rightsTypeId;
     }
 
     public function logListed()

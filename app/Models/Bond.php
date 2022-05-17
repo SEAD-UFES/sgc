@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Pivot;
-use Kyslik\ColumnSortable\Sortable;
-use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use App\ModelFilters\BondFilter;
 use Carbon\Carbon;
+use eloquentFilter\QueryFilter\ModelFilters\Filterable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\Pivot;
+use Kyslik\ColumnSortable\Sortable;
 
 class Bond extends Pivot
 {
@@ -17,6 +16,25 @@ class Bond extends Pivot
     use BondFilter, Filterable;
 
     public $incrementing = true;
+
+    public $sortable = [
+        'id',
+        'begin',
+        'end',
+        'volunteer',
+        'impediment',
+        'created_at',
+        'updated_at',
+    ];
+    public static $accepted_filters = [
+        'employeeCpfContains',
+        'employeeNameContains',
+        'roleNameContains',
+        'courseNameContains',
+        'poleNameContains',
+        'volunteerExactly',
+        'impedimentExactly',
+    ];
 
     protected $table = 'bonds';
 
@@ -40,26 +58,7 @@ class Bond extends Pivot
         'fetched',
     ];
 
-    public $sortable = [
-        'id',
-        'begin',
-        'end',
-        'volunteer',
-        'impediment',
-        'created_at',
-        'updated_at'
-    ];
-
     private static $whiteListFilter = ['*'];
-    public static $accepted_filters = [
-        'employeeCpfContains',
-        'employeeNameContains',
-        'roleNameContains',
-        'courseNameContains',
-        'poleNameContains',
-        'volunteerExactly',
-        'impedimentExactly'
-    ];
 
     public function course()
     {

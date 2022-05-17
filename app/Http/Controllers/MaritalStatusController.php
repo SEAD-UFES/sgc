@@ -14,7 +14,6 @@ class MaritalStatusController extends Controller
      */
     public function index()
     {
-        //
     }
 
     /**
@@ -24,40 +23,39 @@ class MaritalStatusController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\MaritalStatus  $maritalStatus
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(MaritalStatus $maritalStatus)
     {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\MaritalStatus  $maritalStatus
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(MaritalStatus $maritalStatus)
     {
-        //
     }
 
     /**
@@ -65,21 +63,21 @@ class MaritalStatusController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\MaritalStatus  $maritalStatus
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, MaritalStatus $maritalStatus)
     {
-        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\MaritalStatus  $maritalStatus
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(MaritalStatus $maritalStatus)
     {
-        //
     }
 }

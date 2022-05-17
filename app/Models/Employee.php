@@ -2,18 +2,35 @@
 
 namespace App\Models;
 
+use App\ModelFilters\EmployeeFilter;
+use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Bond;
 use Kyslik\ColumnSortable\Sortable;
-use eloquentFilter\QueryFilter\ModelFilters\Filterable;
-use App\ModelFilters\EmployeeFilter;
 
 class Employee extends Model
 {
     use HasFactory;
     use Sortable;
     use EmployeeFilter, Filterable;
+
+    public $sortable = [
+        'id',
+        'cpf',
+        'name',
+        'job',
+        'address_city',
+        'user.email',
+        'created_at',
+        'updated_at',
+    ];
+    public static $accepted_filters = [
+        'cpfContains',
+        'nameContains',
+        'jobContains',
+        'addresscityContains',
+        'userEmailContains',
+    ];
 
     protected $fillable = [
         'name',
@@ -49,25 +66,7 @@ class Employee extends Model
         'fetched',
     ];
 
-    public $sortable = [
-        'id',
-        'cpf',
-        'name',
-        'job',
-        'address_city',
-        'user.email',
-        'created_at',
-        'updated_at'
-    ];
-
     private static $whiteListFilter = ['*'];
-    public static $accepted_filters = [
-        'cpfContains',
-        'nameContains',
-        'jobContains',
-        'addresscityContains',
-        'userEmailContains'
-    ];
 
     public function gender()
     {
@@ -121,12 +120,12 @@ class Employee extends Model
 
     public function hasDocuments()
     {
-        return !is_null($this->employeeDocuments->first());
+        return ! is_null($this->employeeDocuments->first());
     }
 
     public function hasBond()
     {
-        return ($this->courses->count() > 0);
+        return $this->courses->count() > 0;
     }
 
     public function isCourseCoordinator()
@@ -135,7 +134,7 @@ class Employee extends Model
 
         if ($this->hasBond()) {
             foreach ($this->courses as $bonded_course) {
-                $isCoord = $isCoord || (substr($bonded_course->bond->role->name, 0, 20) == 'Coordenador de curso');
+                $isCoord = $isCoord || (substr($bonded_course->bond->role->name, 0, 20) === 'Coordenador de curso');
             }
         }
         return $isCoord;

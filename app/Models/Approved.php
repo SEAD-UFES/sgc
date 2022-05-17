@@ -2,17 +2,41 @@
 
 namespace App\Models;
 
+use App\ModelFilters\ApprovedFilter;
+use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
-use eloquentFilter\QueryFilter\ModelFilters\Filterable;
-use App\ModelFilters\ApprovedFilter;
 
 class Approved extends Model
 {
     use HasFactory;
     use Sortable;
     use ApprovedFilter, Filterable;
+
+    public $sortable = [
+        'id',
+        'name',
+        'email',
+        'area_code',
+        'phone',
+        'mobile',
+        'announcement',
+        'created_at',
+        'updated_at',
+    ];
+    public static $accepted_filters = [
+        'nameContains',
+        'emailContains',
+        'areacodeContains',
+        'phoneContains',
+        'mobileContains',
+        'announcementContains',
+        'approvedStateNameContains',
+        'roleNameContains',
+        'courseNameContains',
+        'poleNameContains',
+    ];
 
     protected $fillable = [
         'name',
@@ -32,31 +56,7 @@ class Approved extends Model
         'fetched',
     ];
 
-    public $sortable = [
-        'id',
-        'name',
-        'email',
-        'area_code',
-        'phone',
-        'mobile',
-        'announcement',
-        'created_at',
-        'updated_at'
-    ];
-
     private static $whiteListFilter = ['*'];
-    public static $accepted_filters = [
-        'nameContains',
-        'emailContains',
-        'areacodeContains',
-        'phoneContains',
-        'mobileContains',
-        'announcementContains',
-        'approvedStateNameContains',
-        'roleNameContains',
-        'courseNameContains',
-        'poleNameContains'
-    ];
 
     public function approvedState()
     {

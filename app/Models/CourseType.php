@@ -2,17 +2,29 @@
 
 namespace App\Models;
 
+use App\ModelFilters\CourseTypeFilter;
+use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
-use eloquentFilter\QueryFilter\ModelFilters\Filterable;
-use App\ModelFilters\CourseTypeFilter;
 
 class CourseType extends Model
 {
     use HasFactory;
     use Sortable;
     use CourseTypeFilter, Filterable;
+
+    public $sortable = [
+        'id',
+        'name',
+        'description',
+        'created_at',
+        'updated_at',
+    ];
+    public static $accepted_filters = [
+        'nameContains',
+        'descriptionContains',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -29,19 +41,7 @@ class CourseType extends Model
         'fetched',
     ];
 
-    public $sortable = [
-        'id',
-        'name',
-        'description',
-        'created_at',
-        'updated_at'
-    ];
-
     private static $whiteListFilter = ['*'];
-    public static $accepted_filters = [
-        'nameContains',
-        'descriptionContains'
-    ];
 
     public function courses()
     {

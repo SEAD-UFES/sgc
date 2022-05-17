@@ -2,13 +2,13 @@
 
 namespace App\Imports;
 
+use App\Helpers\TextHelper;
 use App\Models\Approved;
 use App\Models\ApprovedState;
-use App\Helpers\TextHelper;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithColumnLimit;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithLimit;
 
 class ApprovedsImport implements ToCollection, WithHeadingRow, WithColumnLimit, WithLimit
@@ -36,10 +36,10 @@ class ApprovedsImport implements ToCollection, WithHeadingRow, WithColumnLimit, 
             }
 
             foreach (array_reverse($phones) as $phone) {
-                if (substr($phone, 2, 1) == "9") {
+                if (substr($phone, 2, 1) === '9') {
                     $tempMobile = $phone;
                 } else {
-                    $tempPhone =  $phone;
+                    $tempPhone = $phone;
                 }
             }
 
@@ -87,11 +87,11 @@ class ApprovedsImport implements ToCollection, WithHeadingRow, WithColumnLimit, 
     {
         $str = '';
 
-        if (!$mobile == '') {
+        if (! $mobile === '') {
             $str = substr($mobile, 0, 2);
         }
 
-        if (!$phone == '') {
+        if (! $phone === '') {
             $str = substr($phone, 0, 2);
         }
 

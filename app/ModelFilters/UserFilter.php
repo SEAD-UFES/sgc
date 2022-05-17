@@ -2,16 +2,15 @@
 
 namespace App\ModelFilters;
 
-use Illuminate\Database\Eloquent\Builder;
 use App\CustomClasses\ModelFilterHelpers;
+use Illuminate\Database\Eloquent\Builder;
 
 trait UserFilter
 {
     public function emailContains(Builder $builder, $value)
     {
         $values = ModelFilterHelpers::inputToArray($value);
-        $builder = ModelFilterHelpers::contains($builder, 'email', $values);
-        return $builder;
+        return ModelFilterHelpers::contains($builder, 'email', $values);
     }
 
     // public function usertypeNameContains(Builder $builder, $value)
@@ -28,28 +27,25 @@ trait UserFilter
         foreach ($values as $key => $value) {
             if (in_array(strtolower($value), ['sim', '1', 'true'])) {
                 $values[$key] = 1;
-            } else if (in_array(strtolower($value), ['não', 'nao', '0', 'false'])) {
+            } elseif (in_array(strtolower($value), ['não', 'nao', '0', 'false'])) {
                 $values[$key] = 0;
             } else {
                 $values[$key] = null;
             }
         }
 
-        $builder = ModelFilterHelpers::simpleOperation($builder, 'active', '=', $values);
-        return $builder;
+        return ModelFilterHelpers::simpleOperation($builder, 'active', '=', $values);
     }
 
     public function employeeNameContains(Builder $builder, $value)
     {
         $values = ModelFilterHelpers::inputToArray($value);
-        $builder = ModelFilterHelpers::relationContains($builder, 'employee', 'name', $values);
-        return $builder;
+        return ModelFilterHelpers::relationContains($builder, 'employee', 'name', $values);
     }
 
     public function employeeId(Builder $builder, $value)
     {
         $values = ModelFilterHelpers::inputToArray($value);
-        $builder = ModelFilterHelpers::relationSimpleOperation($builder, 'employee', 'id', '=', $values);
-        return $builder;
+        return ModelFilterHelpers::relationSimpleOperation($builder, 'employee', 'id', '=', $values);
     }
 }

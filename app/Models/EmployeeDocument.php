@@ -11,18 +11,7 @@ class EmployeeDocument extends Model
     use HasFactory;
     use Sortable;
 
-    protected $table = 'employee_documents';
-
-    const REFERENT_ID = 'employee_id';
-
-    protected $fillable = [
-        'employee_id',
-    ];
-
-    protected $observables = [
-        'listed',
-        'fetched',
-    ];
+    public const REFERENT_ID = 'employee_id';
 
     public static $sortable = [
         'id',
@@ -40,6 +29,17 @@ class EmployeeDocument extends Model
         'documentTypeNameContains',
         'employeeNameContains',
         'employeeCpfContains',
+    ];
+
+    protected $table = 'employee_documents';
+
+    protected $fillable = [
+        'employee_id',
+    ];
+
+    protected $observables = [
+        'listed',
+        'fetched',
     ];
 
     public function document()

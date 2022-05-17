@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\UserType;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
 class UserTypeService
@@ -15,10 +14,8 @@ class UserTypeService
      */
     public function list(): Collection
     {
-        (new UserType)->logListed();
+        (new UserType())->logListed();
 
-        $userTypes = UserType::orderBy('name')->get();
-
-        return $userTypes;
+        return UserType::orderBy('name')->get();
     }
 }

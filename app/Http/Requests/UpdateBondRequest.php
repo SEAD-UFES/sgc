@@ -23,13 +23,13 @@ class UpdateBondRequest extends FormRequest
      */
     public function rules()
     {
-        $sbr = new StoreBondRequest;
+        $sbr = new StoreBondRequest();
         return $sbr->rules();
     }
 
     public function messages()
     {
-        $sbr = new StoreBondRequest;
+        $sbr = new StoreBondRequest();
         return $sbr->messages();
     }
 }

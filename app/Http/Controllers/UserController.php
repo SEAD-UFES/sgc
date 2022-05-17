@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\CustomClasses\ModelFilterHelpers;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateCurrentPassworRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use App\Models\UserType;
-use Illuminate\Http\Request;
 use App\Services\UserService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
-use App\CustomClasses\ModelFilterHelpers;
-use App\Http\Requests\UpdateCurrentPassworRequest;
 
 class UserController extends Controller
 {
@@ -18,7 +18,7 @@ class UserController extends Controller
     {
         $this->service = $userService;
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -27,13 +27,13 @@ class UserController extends Controller
     public function index(Request $request)
     {
         //check access permission
-        if (!Gate::allows('user-list')) {
+        if (! Gate::allows('user-list')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
         //filters
         $filters = ModelFilterHelpers::buildFilters($request, User::$accepted_filters);
-        
+
         $users = $this->service->list();
 
         return view('user.index', compact('users', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
@@ -47,7 +47,7 @@ class UserController extends Controller
     public function create()
     {
         //check access permission
-        if (!Gate::allows('user-store')) {
+        if (! Gate::allows('user-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -60,12 +60,13 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(StoreUserRequest $request)
     {
         //check access permission
-        if (!Gate::allows('user-store')) {
+        if (! Gate::allows('user-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -82,12 +83,13 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\User  $user
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
     {
         //check access permission
-        if (!Gate::allows('user-show')) {
+        if (! Gate::allows('user-show')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -100,12 +102,13 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\User  $user
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(User $user)
     {
         //check access permission
-        if (!Gate::allows('user-update')) {
+        if (! Gate::allows('user-update')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -117,12 +120,13 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateUserRequest $request, User $user)
     {
         //check access permission
-        if (!Gate::allows('user-update')) {
+        if (! Gate::allows('user-update')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -139,12 +143,13 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\User  $user
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)
     {
         //check access permission
-        if (!Gate::allows('user-destroy')) {
+        if (! Gate::allows('user-destroy')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -163,23 +168,24 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-     /**
-      * Show the form for editing the specified resource.
-      *
-      * @return \Illuminate\Http\Response
-      */
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function currentPasswordEdit()
     {
         $user = auth()->user();
         return view('user.currentPasswordEdit', compact('user'));
     }
 
-     /**
-      * Update the specified resource in storage.
-      *
-      * @param UpdateCurrentPassworRequest $request
-      * @return \Illuminate\Http\Response
-      */
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param UpdateCurrentPassworRequest $request
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function currentPasswordUpdate(UpdateCurrentPassworRequest $request)
     {
         //check access permission

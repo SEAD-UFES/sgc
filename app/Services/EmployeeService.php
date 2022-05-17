@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\User;
 use App\Models\Employee;
-use Illuminate\Support\Facades\DB;
+use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeService
 {
@@ -16,7 +16,7 @@ class EmployeeService
      */
     public function list(): LengthAwarePaginator
     {
-        (new Employee)->logListed();
+        (new Employee())->logListed();
 
         $query = Employee::with(['gender', 'birthState', 'documentType', 'maritalStatus', 'addressState', 'user']);
         $query = $query->AcceptRequest(Employee::$accepted_filters)->filter();
@@ -31,6 +31,7 @@ class EmployeeService
      * Undocumented function
      *
      * @param array $attributes
+     *
      * @return Employee
      */
     public function create(array $attributes): ?Employee
@@ -48,6 +49,7 @@ class EmployeeService
      * Undocumented function
      *
      * @param Employee $employee
+     *
      * @return Employee
      */
     public function read(Employee $employee): Employee
@@ -60,24 +62,9 @@ class EmployeeService
     /**
      * Undocumented function
      *
-     * @param Employee $employee
-     * @return void
-     */
-    private function userAttach(Employee $employee)
-    {
-        $existentUser = User::where('email', $employee->email)->doesntHave('employee')->first();
-
-        if (!is_null($existentUser)) {
-            $existentUser->employee_id = $employee->id;
-            $existentUser->save();
-        }
-    }
-
-    /**
-     * Undocumented function
-     *
      * @param array $attributes
      * @param Employee $employee
+     *
      * @return Employee
      */
     public function update(array $attributes, Employee $employee): ?Employee
@@ -95,6 +82,7 @@ class EmployeeService
      * Undocumented function
      *
      * @param Employee $employee
+     *
      * @return void
      */
     public function delete(Employee $employee)
@@ -102,7 +90,7 @@ class EmployeeService
         $employeeUser = $employee->user;
 
         DB::transaction(function () use ($employee, $employeeUser) {
-            if (!is_null($employeeUser)) {
+            if (! is_null($employeeUser)) {
                 $employeeUser->employee_id = null;
                 $employeeUser->save();
             }
@@ -115,5 +103,22 @@ class EmployeeService
             $employee->employeeDocuments()->delete();
             $employee->delete();
         });
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Employee $employee
+     *
+     * @return void
+     */
+    private function userAttach(Employee $employee)
+    {
+        $existentUser = User::where('email', $employee->email)->doesntHave('employee')->first();
+
+        if (! is_null($existentUser)) {
+            $existentUser->employee_id = $employee->id;
+            $existentUser->save();
+        }
     }
 }

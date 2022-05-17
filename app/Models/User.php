@@ -2,26 +2,34 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Kyslik\ColumnSortable\Sortable;
-use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use App\ModelFilters\UserFilter;
 use Carbon\Carbon;
+use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use InvalidArgumentException;
-use Psr\Container\NotFoundExceptionInterface;
+use Kyslik\ColumnSortable\Sortable;
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
     use Sortable;
     use UserFilter, Filterable;
+
+    public $sortable = ['id', 'email', 'active', 'created_at', 'updated_at'];
+    public static $accepted_filters = [
+        'emailContains',
+        // 'usertypeNameContains',
+        'activeExactly',
+        'employeeNameContains',
+        'employeeId',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -38,17 +46,6 @@ class User extends Authenticatable
     protected $observables = [
         'listed',
         'fetched',
-    ];
-
-    public $sortable = ['id', 'email', 'active', 'created_at', 'updated_at'];
-
-    private static $whiteListFilter = ['*'];
-    public static $accepted_filters = [
-        'emailContains',
-        // 'usertypeNameContains',
-        'activeExactly',
-        'employeeNameContains',
-        'employeeId'
     ];
 
     /**
@@ -70,6 +67,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    private static $whiteListFilter = ['*'];
+
     public function userType()
     {
         return $this->belongsTo(UserType::class);
@@ -88,7 +87,7 @@ class User extends Authenticatable
     //dynamic > static :)
     public function getActiveUTAs()
     {
-        $result =  $this->userTypeAssignments()
+        return $this->userTypeAssignments()
             ->with('userType', 'course')
             ->join('user_types', 'user_type_assignments.user_type_id', '=', 'user_types.id')
             ->select('user_type_assignments.*')
@@ -106,7 +105,6 @@ class User extends Authenticatable
                 }
             )
             ->orderBy('user_types.name', 'asc');
-        return $result;
     }
 
     public function scopeWhereActiveUserType($query, $id)
@@ -148,34 +146,11 @@ class User extends Authenticatable
         $this->fireModelEvent('fetched', false);
     }
 
-    /**
-     * Get the user's name.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
-    protected function name(): Attribute
-    {
-        return new Attribute(
-            get: fn ($value) => $this->employee ? $this->employee->name : $this->email,
-        );
-    }
-
-    /**
-     * Get the user's gender article.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
-    protected function genderArticle(): Attribute
-    {
-        return new Attribute(
-            get: fn ($value) => $this->employee ? ($this->employee->gender ? ($this->employee->gender->name === 'Masculino' ? 'o' : 'a') : 'o(a)') : 'o(a)',
-        );
-    }
-
     //permission system
 
     /**
      * @return bool
+     *
      * @throws InvalidArgumentException
      */
     public function hasUTAs(): bool
@@ -184,7 +159,8 @@ class User extends Authenticatable
     }
 
     /**
-     * @return null|UserTypeAssignment
+     * @return UserTypeAssignment|null
+     *
      * @throws InvalidArgumentException
      */
     public function getFirstUTA(): ?UserTypeAssignment
@@ -193,8 +169,10 @@ class User extends Authenticatable
     }
 
     /**
-     * @param null|int $user_type_assignment_id
+     * @param int|null $user_type_assignment_id
+     *
      * @return void
+     *
      * @throws InvalidArgumentException
      * @throws ModelNotFoundException
      * @throws BindingResolutionException
@@ -218,7 +196,8 @@ class User extends Authenticatable
     }
 
     /**
-     * @return null|UserTypeAssignment
+     * @return UserTypeAssignment|null
+     *
      * @throws BindingResolutionException
      * @throws NotFoundExceptionInterface
      * @throws ContainerExceptionInterface
@@ -233,5 +212,29 @@ class User extends Authenticatable
         return $user_type_assignment; */
 
         return session('current_uta');
+    }
+
+    /**
+     * Get the user's name.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function name(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) => $this->employee ? $this->employee->name : $this->email,
+        );
+    }
+
+    /**
+     * Get the user's gender article.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function genderArticle(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) => $this->employee ? ($this->employee->gender ? ($this->employee->gender->name === 'Masculino' ? 'o' : 'a') : 'o(a)') : 'o(a)',
+        );
     }
 }

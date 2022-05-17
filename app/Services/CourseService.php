@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Course;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class CourseService
@@ -15,7 +14,7 @@ class CourseService
      */
     public function list(): LengthAwarePaginator
     {
-        (new Course)->logListed();
+        (new Course())->logListed();
 
         $query = new Course();
         $query = $query->AcceptRequest(Course::$accepted_filters)->filter();
@@ -30,19 +29,19 @@ class CourseService
      * Undocumented function
      *
      * @param array $attributes
+     *
      * @return Course
      */
     public function create(array $attributes): Course
     {
-        $course = Course::create($attributes);
-
-        return $course;
+        return Course::create($attributes);
     }
 
     /**
      * Undocumented function
      *
      * @param Course $course
+     *
      * @return Course
      */
     public function read(Course $course): Course

@@ -2,23 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bond;
-use App\Models\BondDocument;
-use App\Models\DocumentType;
-use Illuminate\Http\Request;
-use App\Services\DocumentService;
-use Illuminate\Support\Facades\Gate;
 use App\CustomClasses\ModelFilterHelpers;
 use App\Http\Requests\StoreBondDocumentRequest;
 use App\Http\Requests\StoreBondMultipleDocumentsRequest;
-use Illuminate\Http\Response;
+use App\Models\Bond;
+use App\Models\BondDocument;
+use App\Models\DocumentType;
+use App\Services\DocumentService;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 use InvalidArgumentException;
 
 class BondDocumentController extends DocumentController
 {
     /**
      * @param DocumentService $documentService
+     *
      * @return void
      */
     public function __construct(DocumentService $documentService)
@@ -33,7 +34,7 @@ class BondDocumentController extends DocumentController
     public function bondsDocumentsIndex(Request $request)
     {
         //check access permission
-        if (!Gate::allows('bondDocument-list')) {
+        if (! Gate::allows('bondDocument-list')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -51,7 +52,7 @@ class BondDocumentController extends DocumentController
     public function rightsIndex(Request $request)
     {
         //check access permission
-        if (!Gate::allows('bondDocument-rights')) {
+        if (! Gate::allows('bondDocument-rights')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -69,7 +70,7 @@ class BondDocumentController extends DocumentController
     public function bondsDocumentsCreate()
     {
         //check access permission
-        if (!Gate::allows('bondDocument-store')) {
+        if (! Gate::allows('bondDocument-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -83,12 +84,13 @@ class BondDocumentController extends DocumentController
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function bondsDocumentsStore(StoreBondDocumentRequest $request)
     {
         //check access permission
-        if (!Gate::allows('bondDocument-store')) {
+        if (! Gate::allows('bondDocument-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -99,23 +101,26 @@ class BondDocumentController extends DocumentController
 
     /**
      * @param Request $request
+     *
      * @return Response
+     *
      * @throws BindingResolutionException
      * @throws InvalidArgumentException
      */
     public function bondsDocumentsCreateMany(Request $request)
     {
         //check access permission
-        if (!Gate::allows('bondDocument-store')) {
+        if (! Gate::allows('bondDocument-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
         $id = $request->bond_id ?? null;
-        $bonds = !is_null($id)
+        $bonds = ! is_null($id)
             ? Bond::where('id', $id)->get()
             : Bond::with(['employee' => function ($q) {
                 return $q->orderBy('name');
-            }])->get();
+            },
+            ])->get();
 
         return view('bond.document.create-many-1', compact('bonds', 'id'));
     }
@@ -123,7 +128,7 @@ class BondDocumentController extends DocumentController
     public function bondsDocumentsStoreMany1(StoreBondMultipleDocumentsRequest $request)
     {
         //check access permission
-        if (!Gate::allows('bondDocument-store')) {
+        if (! Gate::allows('bondDocument-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -141,7 +146,7 @@ class BondDocumentController extends DocumentController
     public function bondsDocumentsStoreMany2(Request $request)
     {
         //check access permission
-        if (!Gate::allows('bondDocument-store')) {
+        if (! Gate::allows('bondDocument-store')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 
@@ -153,7 +158,7 @@ class BondDocumentController extends DocumentController
     public function bondsDocumentsExport(Bond $bond)
     {
         //check access permission
-        if (!Gate::allows('bondDocument-download')) {
+        if (! Gate::allows('bondDocument-download')) {
             return response()->view('access.denied')->setStatusCode(403);
         }
 

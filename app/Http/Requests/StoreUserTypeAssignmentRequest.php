@@ -28,7 +28,7 @@ class StoreUserTypeAssignmentRequest extends FormRequest
             'user_type_id' => 'required|exists:user_types,id',
             'course_id' => 'nullable|exists:courses,id',
             'begin' => 'required|date',
-            'end' => 'nullable|date'
+            'end' => 'nullable|date',
         ];
     }
 

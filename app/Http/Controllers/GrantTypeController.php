@@ -14,7 +14,6 @@ class GrantTypeController extends Controller
      */
     public function index()
     {
-        //
     }
 
     /**
@@ -24,40 +23,39 @@ class GrantTypeController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\GrantType  $grantType
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(GrantType $grantType)
     {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\GrantType  $grantType
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(GrantType $grantType)
     {
-        //
     }
 
     /**
@@ -65,21 +63,21 @@ class GrantTypeController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\GrantType  $grantType
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, GrantType $grantType)
     {
-        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\GrantType  $grantType
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(GrantType $grantType)
     {
-        //
     }
 }

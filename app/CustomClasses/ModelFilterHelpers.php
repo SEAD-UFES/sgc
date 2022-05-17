@@ -2,8 +2,8 @@
 
 namespace App\CustomClasses;
 
-use Illuminate\Http\Request;
 use DateTime;
+use Illuminate\Http\Request;
 
 class ModelFilterHelpers
 {
@@ -27,7 +27,6 @@ class ModelFilterHelpers
         }
         return $values;
     }
-
 
     public static function validateDate($date, $form = 'Y-m-d')
     {

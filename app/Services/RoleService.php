@@ -14,7 +14,7 @@ class RoleService
      */
     public function list(): LengthAwarePaginator
     {
-        (new Role)->logListed();
+        (new Role())->logListed();
 
         $roles_query = new Role();
         $roles_query = $roles_query->AcceptRequest(Role::$accepted_filters)->filter();
@@ -29,19 +29,19 @@ class RoleService
      * Undocumented function
      *
      * @param array $attributes
+     *
      * @return Role
      */
     public function create(array $attributes): Role
     {
-        $role = Role::create($attributes);
-
-        return $role;
+        return Role::create($attributes);
     }
 
     /**
      * Undocumented function
      *
      * @param Role $role
+     *
      * @return Role
      */
     public function read(Role $role): Role
@@ -56,6 +56,7 @@ class RoleService
      *
      * @param array $attributes
      * @param Role $role
+     *
      * @return Role
      */
     public function update(array $attributes, Role $role): Role
@@ -69,6 +70,7 @@ class RoleService
      * Undocumented function
      *
      * @param Role $role
+     *
      * @return void
      */
     public function delete(Role $role)
