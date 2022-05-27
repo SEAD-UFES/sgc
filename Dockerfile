@@ -117,6 +117,8 @@ RUN php81 -r "if (hash_file('sha384', 'composer-setup.php') === '55ce33d7678c5a6
 RUN php81 composer-setup.php
 RUN php81 -r "unlink('composer-setup.php');"
 
+RUN mv composer.phar /usr/local/bin/composer
+
 WORKDIR /www
 RUN composer dump-autoload --optimize --no-dev
 
