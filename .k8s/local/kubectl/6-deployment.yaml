@@ -32,7 +32,7 @@ spec:
           args:
             - /bin/ash
             - -c
-            - php8 genEnv.php && cat BUILD >> .env
+            - php81 genEnv.php && cat BUILD >> .env
           volumeMounts:
             - name: env-file
               mountPath: /www/.env

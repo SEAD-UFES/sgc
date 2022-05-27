@@ -14,6 +14,6 @@
 9- Run the script './kubectl/sgc-test_apply'
 10- Run 'kubectl get pods' and copy the SGC's pod name
 11- Run 'kubectl exec <SGC_POD_NAME> -c sgc -it -- "ash"'
-12- Inside the pod, run 'php8 artisan migrate:fresh --seed' and afterwards 'exit' when the seeding is complete
+12- Inside the pod, run 'php81 artisan migrate:fresh --seed' and afterwards 'exit' when the seeding is complete
 
 13- Browse http://localhost
