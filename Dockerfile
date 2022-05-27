@@ -104,6 +104,9 @@ RUN apk add --no-cache php81-gd php81-intl php81-pdo_mysql
 #More Dependencies that brake Laravel on run time
 RUN apk add --no-cache php81-session php81-dom php81-simplexml php81-xmlwriter php81-xmlreader
 
+#More Dependencies... Composer with php81 this time
+RUN apk add --no-cache php81-phar
+
 COPY --chown=www:www --from=vendor /app/ /www/
 
 COPY --chown=www:www --from=frontend /app/public/js/ /www/public/js/
