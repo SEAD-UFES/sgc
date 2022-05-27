@@ -119,6 +119,8 @@ RUN php81 -r "unlink('composer-setup.php');"
 
 RUN mv composer.phar /usr/local/bin/composer
 
+RUN cp /usr/bin/php81 /usr/bin/php
+
 WORKDIR /www
 RUN composer dump-autoload --optimize --no-dev
 
