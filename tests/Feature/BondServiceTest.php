@@ -68,13 +68,19 @@ class BondServiceTest extends TestCase
             //execution
             $bonds = $this->service->list();
 
+            foreach ($bonds as $bond) {
+                $this->assertInstanceOf(Bond::class, $bond);
+                $employeesNames[] = $bond->employee->name;
+                $employeesCourses[] = $bond->course->name;
+            }
+
             //verifications
             Event::assertDispatched('eloquent.listed: ' . Bond::class);
             $this->assertCount(2, $bonds);
-            $this->assertEquals('Course Alpha', $bonds[0]->course->name);
-            $this->assertEquals('John Doe', $bonds[0]->employee->name);
-            $this->assertEquals('Course Beta', $bonds[1]->course->name);
-            $this->assertEquals('Jane Doe', $bonds[1]->employee->name);
+            $this->assertContains('John Doe', $employeesNames);
+            $this->assertContains('Jane Doe', $employeesNames);
+            $this->assertContains('Course Alpha', $employeesCourses);
+            $this->assertContains('Course Beta', $employeesCourses);
         });
     }
 

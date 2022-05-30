@@ -70,8 +70,8 @@ class BondDocumentServiceTest extends TestCase
             //verifications
             Event::assertDispatched('eloquent.listed: ' . Document::class);
             $this->assertCount(2, $documents);
-            $this->assertEquals('Document Alpha.pdf', $documents[0]->original_name);
-            $this->assertEquals('Document Beta.pdf', $documents[1]->original_name);
+            $this->assertContains('Document Alpha.pdf', $documents->pluck('original_name')->toArray());
+            $this->assertContains('Document Beta.pdf', $documents->pluck('original_name')->toArray());
         });
     }
 
