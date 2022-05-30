@@ -29,6 +29,10 @@
 
             checkboxFlag = !checkboxFlag;
         }
+        
+        $(document).ready(function(){
+            Inputmask().mask(document.querySelectorAll("input"));
+        });
     </script>
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb border-top border-bottom bg-light">
@@ -122,11 +126,13 @@
                                             </td>
                                             <td title="{{ $approved->phone }}" class="p-0">
                                                 <input type="text" class="form-control" name="approveds[{{ $key }}][phone]"
-                                                value="{{ old('approveds') ? old('approveds')[$key]['phone'] : $approved->phone }}" maxlength="10" size="10" />
+                                                value="{{ old('approveds') ? old('approveds')[$key]['phone'] : $approved->phone }}" maxlength="14" size="14"
+                                                data-inputmask="'mask': '(99) 9999-9999', 'removeMaskOnSubmit': true" />
                                             </td>
                                             <td title="{{ $approved->mobile }}" class="p-0">
                                                 <input type="text" class="form-control" name="approveds[{{ $key }}][mobile]"
-                                                value="{{ old('approveds') ? old('approveds')[$key]['mobile'] : $approved->mobile }}" maxlength="11" size="11" />
+                                                value="{{ old('approveds') ? old('approveds')[$key]['mobile'] : $approved->mobile }}" maxlength="16" size="16"
+                                                data-inputmask="'mask': '(99) 9 9999-9999', 'removeMaskOnSubmit': true" />
                                             </td>
                                             <td title="{{ $approved->announcement }}" class="p-0">
                                                 <input type="text" class="form-control"
@@ -176,6 +182,8 @@
                 </div>
             </div>
             <br />
+            <script>
+            </script>
         </main>
     </section>
 @endsection
