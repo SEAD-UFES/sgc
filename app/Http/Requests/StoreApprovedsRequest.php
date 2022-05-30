@@ -27,8 +27,8 @@ class StoreApprovedsRequest extends FormRequest
             'approveds.*.check' => 'sometimes',
             'approveds.*.name' => 'required|string|max:255',
             'approveds.*.email' => 'required|email|max:255',
-            'approveds.*.area_code' => 'required|string|max:2',
-            'approveds.*.phone' => 'required|string|max:10',
+            //'approveds.*.area_code' => 'required|string|max:2',   //Relaxed form
+            //'approveds.*.phone' => 'required|string|max:10',      //Relaxed form
             'approveds.*.mobile' => 'required|string|max:11',
             'approveds.*.announcement' => 'required|string|max:8',
             'approveds.*.course_id' => 'required|exists:courses,id',
