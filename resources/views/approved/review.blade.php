@@ -4,6 +4,8 @@
 
 @section('content')
     <script>
+        let checkboxFlag = false;
+
         function selectAssign(id, valueToSelect) {
             let element = document.getElementById(id);
             element.value = valueToSelect;
@@ -17,8 +19,15 @@
         function toggleCheck(keyCount) {
             for (let i = 0; i < keyCount; i++) {
                 var box = document.getElementById("check_" + i);
-                box.checked = !box.checked;
+
+                if (checkboxFlag) {
+                    box.checked = false;
+                } else {
+                    box.checked = true;
+                }
             }
+
+            checkboxFlag = !checkboxFlag;
         }
     </script>
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
