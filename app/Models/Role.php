@@ -7,6 +7,7 @@ use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Role extends Model
 {
@@ -71,5 +72,12 @@ class Role extends Model
     public function logFetched()
     {
         $this->fireModelEvent('fetched', false);
+    }
+
+    protected function grantValueReal(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $this->grant_value / 100,
+        );
     }
 }

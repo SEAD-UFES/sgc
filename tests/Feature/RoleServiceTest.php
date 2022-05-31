@@ -77,7 +77,7 @@ class RoleServiceTest extends TestCase
 
         $attributes['name'] = 'Role Gama';
         $attributes['description'] = '3rd Role';
-        $attributes['grant_value'] = 1234.56;
+        $attributes['grant_value'] = 123456;
         $attributes['grant_type_id'] = 1;
 
         Event::fakeFor(function () use ($attributes) {

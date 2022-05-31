@@ -28,7 +28,7 @@ class RoleFactory extends Factory
         return [
           'name' => $this->faker->word(),
           'description' => $description,
-          'grant_value' => $this->faker->numberBetween(500, 3500),
+          'grant_value' => $this->faker->numberBetween(50000, 350000),
           'grant_type_id' => GrantType::factory(),
           'created_at' => now(),
           'updated_at' => now(),
