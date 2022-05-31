@@ -3,6 +3,10 @@
         var element = document.getElementById(elementId);
         element.value = element.value.replace(/[^a-zA-Z0-9]+/, '');
     };
+        
+    $(document).ready(function(){
+        Inputmask().mask(document.querySelectorAll("input"));
+    });
 </script>
 
 @csrf
@@ -19,7 +23,8 @@
     <div class="col-4 col-sm-3 col-md-3 col-lg-2">
         <label for="inputCpf1" class="form-label">CPF*</label>
         <input name="cpf" id="cpf" type="text" id="inputCpf1" class="form-control" placeholder="CPF"
-            value="{{ (isset($employee) and !$fromApproved) ? $employee->cpf : old('cpf') }}" maxlength="11" onkeyup="validate('cpf')"
+            value="{{ (isset($employee) and !$fromApproved) ? $employee->cpf : old('cpf') }}" maxlength="14" onkeyup="validate('cpf')"
+            data-inputmask="'mask': '999.999.999-99', 'removeMaskOnSubmit': true"
             required />
         @error('cpf')
             <div class="text-danger">> {{ $message }}</div>
@@ -197,7 +202,8 @@
         <label for="addressPostalCode" class="form-label">CEP</label>
         <input name="address_postal_code" id="addressPostalCode" type="text" id="inputPostal1" class="form-control"
             placeholder="CEP"
-            value="{{ (isset($employee) and !$fromApproved) ? $employee->address_postal_code : old('address_postal_code') }}" maxlength="8"
+            value="{{ (isset($employee) and !$fromApproved) ? $employee->address_postal_code : old('address_postal_code') }}" maxlength="9"
+            data-inputmask="'mask': '99999-999', 'removeMaskOnSubmit': true"
             onkeyup="validate('addressPostalCode');" />
         @error('address_postal_code')
             <div class="text-danger">> {{ $message }}</div>
@@ -240,8 +246,9 @@
     <div class="col-5 col-sm-5 col-md-2 col-lg-2">
         <label for="inputPhone1" class="form-label">Telefone</label>
         <input name="phone" id="phone" type="tel" id="inputPhone1" class="form-control" placeholder="Telefone"
-            value="{{ isset($employee) ? $employee->phone : old('phone') }}" maxlength="10"
-            onkeyup="validate('phone');" pattern="[0-9]{10}" />
+            value="{{ isset($employee) ? $employee->phone : old('phone') }}" maxlength="14"
+            data-inputmask="'mask': '(99) 9999-9999', 'removeMaskOnSubmit': true"
+            pattern="[0-9]{10}" />
         @error('phone')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
@@ -249,8 +256,9 @@
     <div class="col-5 col-sm-5 col-md-2 col-lg-2">
         <label for="inputMobile1" class="form-label">Celular</label>
         <input name="mobile" id="mobile" type="tel" id="inputMobile1" class="form-control" placeholder="Celular"
-            value="{{ isset($employee) ? $employee->mobile : old('mobile') }}" maxlength="11"
-            onkeyup="validate('mobile');" pattern="[0-9]{11}" /><span class="validity"></span>
+            value="{{ isset($employee) ? $employee->mobile : old('mobile') }}" maxlength="16"
+            data-inputmask="'mask': '(99) 9 9999-9999', 'removeMaskOnSubmit': true"
+            pattern="[0-9]{11}" />
         @error('mobile')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
