@@ -1,3 +1,21 @@
+<script>
+    $(document).ready(function(){
+        Inputmask("decimal", { 
+            onUnMask: function(maskedValue, unmaskedValue) {
+                return unmaskedValue *100;
+            },
+            "groupSeparator": ".",
+            "autoGroup": true,
+            "radixPoint": ",",
+            "digits": "2",
+            "digitsOptional": false,
+            "prefix": "R$ ",
+            "placeholder": "0",
+            "removeMaskOnSubmit": true
+        }).mask(document.getElementById("inputValue1"));
+    });
+</script>
+
 @csrf
 
 <div class="row g-3 mb-3">
