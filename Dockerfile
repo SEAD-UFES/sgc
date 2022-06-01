@@ -41,6 +41,10 @@ RUN cp /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 RUN echo $TIMEZONE >  /etc/timezone
 RUN apk del tzdata
 
+# Change ICU lib data to full version
+RUN apk del icu-data-en
+RUN apk add --no-cache icu-data-full
+
 # Install Nginx
 RUN apk add --no-cache nginx
 
