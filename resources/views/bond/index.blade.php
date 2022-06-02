@@ -51,7 +51,7 @@
                                 @foreach ($bonds as $bond)
                                     <tr>
                                         <td>
-                                            {{ $bond->employee->cpf }}
+                                            {{ isset($bond->employee->cpf) ? preg_replace('~(\d{3})(\d{3})(\d{3})(\d{2})~', '$1.$2.$3-$4', $bond->employee->cpf) : '-' }}
                                         </td>
                                         <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
                                             data-bs-content="
