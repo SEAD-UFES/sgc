@@ -41,7 +41,7 @@
                                 <option value="">Selecione o colaborador</option>
                                 @foreach ($employees as $employee)
                                     <option value="{{ $employee->id }}">
-                                        {{ $employee->name . ' - ' . $employee->cpf}}
+                                        {{ isset($employee->cpf) ? $employee->name . ' - ' . preg_replace('~(\d{3})(\d{3})(\d{3})(\d{2})~', '$1.$2.$3-$4', $employee->cpf) : $employee->name . ' - N/D' }}
                                     </option>
                                 @endforeach
                             </select>
