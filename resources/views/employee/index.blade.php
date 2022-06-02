@@ -47,11 +47,11 @@
                                 @foreach ($employees as $employee)
                                     <tr>
                                         <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
-                                        data-bs-content="<strong>E-mail:</strong> <a href='mailto:{{ $employee->email }}'>{{ $employee->email }}</a> | <strong>Área:</strong> {{ $employee->area_code }} | <strong>Telefone:</strong> <a href='tel:{{ $employee->phone }}'>{{ $employee->phone }}</a> | <strong>Celular:</strong> <a href='tel:{{ $employee->mobile }}'>{{ $employee->mobile }}</a>">
-                                            {{ $employee->cpf }}
+                                        data-bs-content="<strong>E-mail:</strong> <a href='mailto:{{ $employee->email }}'>{{ $employee->email }}</a> | <strong>Área:</strong> {{ $employee->area_code }} | <strong>Telefone:</strong> <a href='tel:{{ $employee->phone }}'>{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{4})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $employee->phone) }}</a> | <strong>Celular:</strong> <a href='tel:{{ $employee->mobile }}'>{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{5})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $employee->mobile) }}</a>">
+                                            {{ preg_replace('~(\d{3})(\d{3})(\d{3})(\d{2})~', '$1.$2.$3-$4', $employee->cpf) }}
                                         </td>
                                         <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
-                                        data-bs-content="<strong>E-mail:</strong> <a href='mailto:{{ $employee->email }}'>{{ $employee->email }}</a> | <strong>Área:</strong> {{ $employee->area_code }} | <strong>Telefone:</strong> <a href='tel:{{ $employee->phone }}'>{{ $employee->phone }}</a> | <strong>Celular:</strong> <a href='tel:{{ $employee->mobile }}'>{{ $employee->mobile }}</a>">
+                                        data-bs-content="<strong>E-mail:</strong> <a href='mailto:{{ $employee->email }}'>{{ $employee->email }}</a> | <strong>Área:</strong> {{ $employee->area_code }} | <strong>Telefone:</strong> <a href='tel:{{ $employee->phone }}'>{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{4})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $employee->phone) }}</a> | <strong>Celular:</strong> <a href='tel:{{ $employee->mobile }}'>{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{5})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $employee->mobile) }}</a>">
                                             {{ $employee->name }}
                                         </td>
                                         <td>{{ $employee->job }}</td>
