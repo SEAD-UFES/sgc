@@ -256,8 +256,7 @@
         <label for="inputMobile1" class="form-label">Celular</label>
         <input name="mobile" id="mobile" type="tel" id="inputMobile1" class="form-control" placeholder="Celular"
             value="{{ isset($employee) ? $employee->mobile : old('mobile') }}" maxlength="16"
-            data-inputmask="'mask': '(99) 9 9999-9999', 'removeMaskOnSubmit': true"
-            pattern="[0-9]{11}" />
+            data-inputmask="'mask': '(99) 9 9999-9999', 'removeMaskOnSubmit': true" />
         @error('mobile')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
