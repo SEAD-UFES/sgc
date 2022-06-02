@@ -247,8 +247,7 @@
         <label for="inputPhone1" class="form-label">Telefone</label>
         <input name="phone" id="phone" type="tel" id="inputPhone1" class="form-control" placeholder="Telefone"
             value="{{ isset($employee) ? $employee->phone : old('phone') }}" maxlength="14"
-            data-inputmask="'mask': '(99) 9999-9999', 'removeMaskOnSubmit': true"
-            pattern="[0-9]{10}" />
+            data-inputmask="'mask': '(99) 9999-9999', 'removeMaskOnSubmit': true" />
         @error('phone')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
