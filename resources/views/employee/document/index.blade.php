@@ -42,7 +42,7 @@
                                     <tr>
                                         <td>
                                             <a href="{{ route('employees.show', $document->employee_id) }}" target="_blank">
-                                                {{ $document->employee_cpf }}
+                                                {{ isset($document->employee_cpf) ? preg_replace('~(\d{3})(\d{3})(\d{3})(\d{2})~', '$1.$2.$3-$4', $document->employee_cpf) : '-' }}
                                             </a>
                                         </td>
                                         <td>
