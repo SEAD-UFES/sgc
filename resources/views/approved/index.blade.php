@@ -41,7 +41,6 @@
                             <thead>
                                 <th>@sortablelink('name', 'Nome')</th>
                                 <th>@sortablelink('email', 'E-mail')</th>
-                                <th>@sortablelink('area_code', 'Área')</th>
                                 <th>@sortablelink('phone', 'Telefone')</th>
                                 <th>@sortablelink('mobile', 'Celular')</th>
                                 <th>@sortablelink('announcement', 'Edital')</th>
@@ -56,9 +55,8 @@
                                     <tr>
                                         <td>{{ $approved->name }}</td>
                                         <td><a href="mailto:{{ $approved->email }}">{{ $approved->email }}</a></td>
-                                        <td>{{ $approved->area_code }}</td>
-                                        <td><a href="tel:{{ /* $approved->area_code .  */$approved->phone }}">{{ $approved->phone }}</a></td>
-                                        <td><a href="tel:{{ /* $approved->area_code .  */$approved->mobile }}">{{ $approved->mobile }}</a></td>
+                                        <td><a href="tel:{{ $approved->phone }}">{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{4})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $approved->phone) }}</a></td>
+                                        <td><a href="tel:{{ $approved->mobile }}">{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{5})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $approved->mobile) }}</a></td>
                                         <td>{{ $approved->announcement }}</td>
                                         <td data-bs-toggle="tooltip" data-bs-placement="left" title="{{ $approved->approvedState->description ?? '' }}">{!! $approved->approvedState->name ?? '&nbsp;' !!}</td>
                                         <td>{!! $approved->role->name ?? '&nbsp;' !!}</td>
