@@ -2,7 +2,7 @@
     $(document).ready(function(){
         Inputmask("decimal", { 
             onUnMask: function(maskedValue, unmaskedValue) {
-                return unmaskedValue *100;
+                return parseInt(unmaskedValue);
             },
             "groupSeparator": ".",
             "autoGroup": true,
