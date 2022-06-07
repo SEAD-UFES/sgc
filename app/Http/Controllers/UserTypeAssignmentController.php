@@ -29,7 +29,7 @@ class UserTypeAssignmentController extends Controller
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-list')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         //filters
@@ -49,7 +49,7 @@ class UserTypeAssignmentController extends Controller
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-store')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $users = User::orderBy('email')->get();
@@ -70,7 +70,7 @@ class UserTypeAssignmentController extends Controller
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-store')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         try {
@@ -93,7 +93,7 @@ class UserTypeAssignmentController extends Controller
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-show')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $this->service->read($userTypeAssignment);
@@ -110,7 +110,7 @@ class UserTypeAssignmentController extends Controller
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-update')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $users = User::orderBy('email')->get();
@@ -132,7 +132,7 @@ class UserTypeAssignmentController extends Controller
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-update')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         try {
@@ -155,7 +155,7 @@ class UserTypeAssignmentController extends Controller
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-destroy')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         try {

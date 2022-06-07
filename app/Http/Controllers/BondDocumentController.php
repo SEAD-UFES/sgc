@@ -35,7 +35,7 @@ class BondDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('bondDocument-list')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $filters = ModelFilterHelpers::buildFilters($request, $this->service->documentClass::$accepted_filters);
@@ -53,7 +53,7 @@ class BondDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('bondDocument-rights')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $filters = ModelFilterHelpers::buildFilters($request, $this->service->documentClass::$accepted_filters);
@@ -71,7 +71,7 @@ class BondDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('bondDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $documentTypes = DocumentType::orderBy('name')->get();
@@ -91,7 +91,7 @@ class BondDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('bondDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $this->service->create($request->validated());
@@ -111,7 +111,7 @@ class BondDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('bondDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $id = $request->bond_id ?? null;
@@ -129,7 +129,7 @@ class BondDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('bondDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $documentTypes = DocumentType::orderBy('name')->get();
@@ -147,7 +147,7 @@ class BondDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('bondDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $this->service->createManyDocumentsStep2($request->all());
@@ -159,7 +159,7 @@ class BondDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('bondDocument-download')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         try {

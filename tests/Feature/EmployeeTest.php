@@ -158,7 +158,7 @@ class EmployeeTest extends TestCase
         $session = $this->getAuthenticatedSession();
 
         $session->get(route('employees.index'))
-            ->assertSee('Acesso negado');
+            ->assertSee('Proibido');
     }
 
     /**
@@ -170,7 +170,7 @@ class EmployeeTest extends TestCase
         $session = $this->getAuthenticatedSession();
 
         $session->post(route('employees.store'), $this->employeeData)
-            ->assertSee('Acesso negado');
+            ->assertSee('Proibido');
     }
 
     /**
@@ -184,7 +184,7 @@ class EmployeeTest extends TestCase
         $employee = $this->getTestEmployee();
 
         $session->put(route('employees.update', $employee->id), $this->newEmployeeData)
-            ->assertSee('Acesso negado');
+            ->assertSee('Proibido');
     }
 
     /**
@@ -201,7 +201,7 @@ class EmployeeTest extends TestCase
 
         $session
             ->delete(route('employees.destroy', $employee->id))
-            ->assertSee('Acesso negado');
+            ->assertSee('Proibido');
     }
 
     /**
@@ -214,7 +214,7 @@ class EmployeeTest extends TestCase
 
         $session
             ->get(route('employees.create'))
-            ->assertSee('Acesso negado');
+            ->assertSee('Proibido');
     }
 
     /**
@@ -229,7 +229,7 @@ class EmployeeTest extends TestCase
 
         $session
             ->get(route('employees.edit', $employee->id))
-            ->assertSee('Acesso negado');
+            ->assertSee('Proibido');
     }
 
     /**
@@ -243,7 +243,7 @@ class EmployeeTest extends TestCase
         $employee = $this->getTestEmployee();
 
         $session->get(route('employees.show', $employee->id))
-            ->assertSee('Acesso negado');
+            ->assertSee('Proibido');
     }
 
     /**

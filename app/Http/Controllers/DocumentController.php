@@ -23,7 +23,7 @@ class DocumentController extends Controller
     public function showDocument($id)
     {
         if (! (Gate::allows('employeeDocument-download') || Gate::allows('bondDocument-download') || Gate::allows('bondDocument-rights'))) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $file = $this->service->getDocument($id);
@@ -33,7 +33,7 @@ class DocumentController extends Controller
         ($file->class === 'App\Models\BondDocument' && ! $file->isRights && ! Gate::allows('bondDocument-download')) ||
         ($file->isRights && ! Gate::allows('bondDocument-rights'))
         ) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         return Response::make($file->data, 200, ['filename="' . $file->name . '"'])->header('Content-Type', $file->mime);

@@ -277,7 +277,7 @@ class PoleTest extends TestCase
         $session = $this->getAuthenticatedSession();
 
         $session->get(route('poles.index'))
-            ->assertSee('Acesso negado');
+            ->assertSee('Proibido');
     }
 
     /**
@@ -289,7 +289,7 @@ class PoleTest extends TestCase
         $session = $this->getAuthenticatedSession();
 
         $session->post(route('poles.store'), $this->poleData)
-            ->assertSee('Acesso negado');
+            ->assertSee('Proibido');
     }
 
     /**
@@ -306,7 +306,7 @@ class PoleTest extends TestCase
             route('poles.update', $pole->id),
             ["name" => "updated", "description" => "updated"]
         )
-            ->assertSee('Acesso negado');
+            ->assertSee('Proibido');
     }
 
     /**
@@ -323,7 +323,7 @@ class PoleTest extends TestCase
 
         $session
             ->delete(route('poles.destroy', $pole->id))
-            ->assertSee('Acesso negado');
+            ->assertSee('Proibido');
     }
 
     /**
@@ -336,7 +336,7 @@ class PoleTest extends TestCase
 
         $session
             ->get(route('poles.create'))
-            ->assertSee('Acesso negado');
+            ->assertSee('Proibido');
     }
 
     /**
@@ -351,7 +351,7 @@ class PoleTest extends TestCase
 
         $session
             ->get(route('poles.edit', $pole->id))
-            ->assertSee('Acesso negado');
+            ->assertSee('Proibido');
     }
 
 

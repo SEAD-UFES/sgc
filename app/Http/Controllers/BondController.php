@@ -34,7 +34,7 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-list')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         //filters
@@ -54,7 +54,7 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-create')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $employees = Employee::orderBy('name')->get();
@@ -85,7 +85,7 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-create')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         //user can only store bonds with allowed course_ids
@@ -113,7 +113,7 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-show')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $this->service->read($bond);
@@ -136,7 +136,7 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-update', $bond)) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         //get only allowed courses
@@ -168,7 +168,7 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-update', $bond)) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         //user can only update bonds to allowed course_ids
@@ -196,7 +196,7 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-destroy')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         try {
@@ -220,7 +220,7 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-review')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         try {
@@ -244,7 +244,7 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-requestReview')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $bond = $this->service->requestReview($request->all(), $bond);

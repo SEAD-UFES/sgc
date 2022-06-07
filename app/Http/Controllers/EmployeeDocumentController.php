@@ -35,7 +35,7 @@ class EmployeeDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('employeeDocument-list')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $filters = ModelFilterHelpers::buildFilters($request, $this->service->documentClass::$accepted_filters);
@@ -53,7 +53,7 @@ class EmployeeDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('employeeDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $documentTypes = DocumentType::orderBy('name')->get();
@@ -73,7 +73,7 @@ class EmployeeDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('employeeDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $this->service->create($request->validated());
@@ -93,7 +93,7 @@ class EmployeeDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('employeeDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $id = $request->id ?? null;
@@ -108,7 +108,7 @@ class EmployeeDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('employeeDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $documentTypes = DocumentType::orderBy('name')->get();
@@ -126,7 +126,7 @@ class EmployeeDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('employeeDocument-store')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $this->service->createManyDocumentsStep2($request->all());
@@ -138,7 +138,7 @@ class EmployeeDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('employeeDocument-download')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         try {

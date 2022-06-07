@@ -26,7 +26,7 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-list')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         //filters
@@ -46,7 +46,7 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-store')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         return view('pole.create');
@@ -63,7 +63,7 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-store')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         try {
@@ -86,7 +86,7 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-show')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         $this->service->read($pole);
@@ -105,7 +105,7 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-update')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         return view('pole.edit', compact('pole'));
@@ -123,7 +123,7 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-update')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         try {
@@ -146,7 +146,7 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-destroy')) {
-            return response()->view('access.denied')->setStatusCode(403);
+            abort(403);
         }
 
         try {
