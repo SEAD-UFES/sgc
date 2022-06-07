@@ -48,7 +48,7 @@ class SgcLogger
     SgcLogger::writeLog($user); [chamado do método store do UserController]
     => 7:prof1@ufes.br|store| User:18:marco@gmail.com */
 
-    public static function writeLog(mixed $target = null, mixed $action = null, mixed $executor = null, mixed $request = null, ?Model $model = null)
+    public static function writeLog(mixed $target = null, mixed $action = null, mixed $executor = null, mixed $request = null, string $model_json = null)
     {
         $functionCaller = (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']);
         $executorInfo = self::getExecutorInfo($executor);
@@ -62,8 +62,8 @@ class SgcLogger
             $logText .= "|\trequest-params: " . self::getRequestParams($request);
         }
 
-        if ($model) {
-            $logText .= "|\tmodel: " . self::getCurrentModelData($model);
+        if ($model_json) {
+            $logText .= "|\tmodel: " . $model_json;
         }
 
         switch ($severity) {
@@ -149,11 +149,6 @@ class SgcLogger
         }
 
         return 'Maybe there is something wrong with $target on logger';
-    }
-
-    private static function getCurrentModelData(Model $model): string
-    {
-        return $model->toJson(JSON_UNESCAPED_UNICODE);
     }
 
     private static function getRequestParams(array $request): string

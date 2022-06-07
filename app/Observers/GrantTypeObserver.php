@@ -15,7 +15,7 @@ class GrantTypeObserver
      */
     public function created(GrantType $grantType)
     {
-        SgcLogger::writeLog(target: 'GrantType', action: __FUNCTION__, model: $grantType);
+        SgcLogger::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: $grantType->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class GrantTypeObserver
      */
     public function updating(GrantType $grantType)
     {
-        SgcLogger::writeLog(target: 'GrantType', action: __FUNCTION__, model: $grantType);
+        SgcLogger::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: json_encode($grantType->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +37,7 @@ class GrantTypeObserver
      */
     public function updated(GrantType $grantType)
     {
-        SgcLogger::writeLog(target: 'GrantType', action: __FUNCTION__, model: $grantType);
+        SgcLogger::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: $grantType->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class GrantTypeObserver
      */
     public function deleted(GrantType $grantType)
     {
-        SgcLogger::writeLog(target: 'GrantType', action: __FUNCTION__, model: $grantType);
+        SgcLogger::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: $grantType->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -78,8 +78,8 @@ class GrantTypeObserver
         SgcLogger::writeLog(target: 'GrantType', action: __FUNCTION__);
     }
 
-    public function fetched(GrantType $approved)
+    public function fetched(GrantType $grantType)
     {
-        SgcLogger::writeLog(target: 'GrantType', action: __FUNCTION__, model: $approved);
+        SgcLogger::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: $grantType->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

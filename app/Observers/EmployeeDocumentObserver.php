@@ -15,7 +15,7 @@ class EmployeeDocumentObserver
      */
     public function created(EmployeeDocument $employeeDocument)
     {
-        SgcLogger::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model: $employeeDocument);
+        SgcLogger::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: $employeeDocument->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class EmployeeDocumentObserver
      */
     public function updating(EmployeeDocument $employeeDocument)
     {
-        SgcLogger::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model: $employeeDocument);
+        SgcLogger::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: json_encode($employeeDocument->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +37,7 @@ class EmployeeDocumentObserver
      */
     public function updated(EmployeeDocument $employeeDocument)
     {
-        SgcLogger::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model: $employeeDocument);
+        SgcLogger::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: $employeeDocument->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class EmployeeDocumentObserver
      */
     public function deleted(EmployeeDocument $employeeDocument)
     {
-        SgcLogger::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model: $employeeDocument);
+        SgcLogger::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: $employeeDocument->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -78,8 +78,8 @@ class EmployeeDocumentObserver
         SgcLogger::writeLog(target: 'EmployeeDocument', action: __FUNCTION__);
     }
 
-    public function fetched(EmployeeDocument $approved)
+    public function fetched(EmployeeDocument $employeeDocument)
     {
-        SgcLogger::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model: $approved);
+        SgcLogger::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: $employeeDocument->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

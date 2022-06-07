@@ -15,7 +15,7 @@ class StateObserver
      */
     public function created(State $state)
     {
-        SgcLogger::writeLog(target: 'State', action: __FUNCTION__, model: $state);
+        SgcLogger::writeLog(target: 'State', action: __FUNCTION__, model_json: $state->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class StateObserver
      */
     public function updating(State $state)
     {
-        SgcLogger::writeLog(target: 'State', action: __FUNCTION__, model: $state);
+        SgcLogger::writeLog(target: 'State', action: __FUNCTION__, model_json: json_encode($state->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +37,7 @@ class StateObserver
      */
     public function updated(State $state)
     {
-        SgcLogger::writeLog(target: 'State', action: __FUNCTION__, model: $state);
+        SgcLogger::writeLog(target: 'State', action: __FUNCTION__, model_json: $state->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class StateObserver
      */
     public function deleted(State $state)
     {
-        SgcLogger::writeLog(target: 'State', action: __FUNCTION__, model: $state);
+        SgcLogger::writeLog(target: 'State', action: __FUNCTION__, model_json: $state->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -78,8 +78,8 @@ class StateObserver
         SgcLogger::writeLog(target: 'State', action: __FUNCTION__);
     }
 
-    public function fetched(State $approved)
+    public function fetched(State $state)
     {
-        SgcLogger::writeLog(target: 'State', action: __FUNCTION__, model: $approved);
+        SgcLogger::writeLog(target: 'State', action: __FUNCTION__, model_json: $state->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

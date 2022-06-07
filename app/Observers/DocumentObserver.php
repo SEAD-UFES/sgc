@@ -15,7 +15,7 @@ class DocumentObserver
      */
     public function created(Document $document)
     {
-        SgcLogger::writeLog(target: 'Document', action: __FUNCTION__, model: $document);
+        SgcLogger::writeLog(target: 'Document', action: __FUNCTION__, model_json: $document->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class DocumentObserver
      */
     public function updating(Document $document)
     {
-        SgcLogger::writeLog(target: 'Document', action: __FUNCTION__, model: $document);
+        SgcLogger::writeLog(target: 'Document', action: __FUNCTION__, model_json: json_encode($document->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
     /**
      * Handle the Document "updated" event.
@@ -36,7 +36,7 @@ class DocumentObserver
      */
     public function updated(Document $document)
     {
-        SgcLogger::writeLog(target: 'Document', action: __FUNCTION__, model: $document);
+        SgcLogger::writeLog(target: 'Document', action: __FUNCTION__, model_json: $document->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -47,7 +47,7 @@ class DocumentObserver
      */
     public function deleted(Document $document)
     {
-        SgcLogger::writeLog(target: 'Document', action: __FUNCTION__, model: $document);
+        SgcLogger::writeLog(target: 'Document', action: __FUNCTION__, model_json: $document->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -79,6 +79,6 @@ class DocumentObserver
 
     public function fetched(Document $document)
     {
-        SgcLogger::writeLog(target: class_basename($document->documentable_type), action: __FUNCTION__, model: $document);
+        SgcLogger::writeLog(target: class_basename($document->documentable_type), action: __FUNCTION__, model_json: $document->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

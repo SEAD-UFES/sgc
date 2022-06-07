@@ -61,7 +61,7 @@ class RequestReviewNotification extends Notification /* implements ShouldQueue *
      */
     public function toArray($notifiable)
     {
-        SgcLogger::writeLog(target: 'RequestReviewNotification', model: $this->bond);
+        SgcLogger::writeLog(target: 'RequestReviewNotification', model_json: $this->bond->toJson(JSON_UNESCAPED_UNICODE));
 
         return [
             'bond_id' => $this->bond->id,

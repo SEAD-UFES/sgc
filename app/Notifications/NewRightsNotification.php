@@ -67,7 +67,7 @@ class NewRightsNotification extends Notification /* implements ShouldQueue */ //
      */
     public function toArray($notifiable)
     {
-        SgcLogger::writeLog(target: 'NewRightsNotification', model: $this->bond);
+        SgcLogger::writeLog(target: 'NewRightsNotification', model_json: $this->bond->toJson(JSON_UNESCAPED_UNICODE));
 
         return [
             'bond_id' => $this->bond->id,

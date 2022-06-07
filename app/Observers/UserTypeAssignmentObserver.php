@@ -15,7 +15,7 @@ class UserTypeAssignmentObserver
      */
     public function created(UserTypeAssignment $userTypeAssignment)
     {
-        SgcLogger::writeLog(target: 'UserTypeAssignment', action: __FUNCTION__, model: $userTypeAssignment);
+        SgcLogger::writeLog(target: 'UserTypeAssignment', action: __FUNCTION__, model_json: $userTypeAssignment->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class UserTypeAssignmentObserver
      */
     public function updating(UserTypeAssignment $userTypeAssignment)
     {
-        SgcLogger::writeLog(target: 'UserTypeAssignment', action: __FUNCTION__, model: $userTypeAssignment);
+        SgcLogger::writeLog(target: 'UserTypeAssignment', action: __FUNCTION__, model_json: json_encode($userTypeAssignment->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +37,7 @@ class UserTypeAssignmentObserver
      */
     public function updated(UserTypeAssignment $userTypeAssignment)
     {
-        SgcLogger::writeLog(target: 'UserTypeAssignment', action: __FUNCTION__, model: $userTypeAssignment);
+        SgcLogger::writeLog(target: 'UserTypeAssignment', action: __FUNCTION__, model_json: $userTypeAssignment->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class UserTypeAssignmentObserver
      */
     public function deleted(UserTypeAssignment $userTypeAssignment)
     {
-        SgcLogger::writeLog(target: 'UserTypeAssignment', action: __FUNCTION__, model: $userTypeAssignment);
+        SgcLogger::writeLog(target: 'UserTypeAssignment', action: __FUNCTION__, model_json: $userTypeAssignment->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -78,8 +78,8 @@ class UserTypeAssignmentObserver
         SgcLogger::writeLog(target: 'UserTypeAssignment', action: __FUNCTION__);
     }
 
-    public function fetched(UserTypeAssignment $approved)
+    public function fetched(UserTypeAssignment $userTypeAssignment)
     {
-        SgcLogger::writeLog(target: 'UserTypeAssignment', action: __FUNCTION__, model: $approved);
+        SgcLogger::writeLog(target: 'UserTypeAssignment', action: __FUNCTION__, model_json: $userTypeAssignment->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

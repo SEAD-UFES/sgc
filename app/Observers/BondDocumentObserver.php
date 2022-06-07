@@ -15,7 +15,7 @@ class BondDocumentObserver
      */
     public function created(BondDocument $bondDocument)
     {
-        SgcLogger::writeLog(target: 'BondDocument', action: __FUNCTION__, model: $bondDocument);
+        SgcLogger::writeLog(target: 'BondDocument', action: __FUNCTION__, model_json: $bondDocument->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class BondDocumentObserver
      */
     public function updating(BondDocument $bondDocument)
     {
-        SgcLogger::writeLog(target: 'BondDocument', action: __FUNCTION__, model: $bondDocument);
+        SgcLogger::writeLog(target: 'BondDocument', action: __FUNCTION__, model_json:  json_encode($bondDocument->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +37,7 @@ class BondDocumentObserver
      */
     public function updated(BondDocument $bondDocument)
     {
-        SgcLogger::writeLog(target: 'BondDocument', action: __FUNCTION__, model: $bondDocument);
+        SgcLogger::writeLog(target: 'BondDocument', action: __FUNCTION__, model_json: $bondDocument->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class BondDocumentObserver
      */
     public function deleted(BondDocument $bondDocument)
     {
-        SgcLogger::writeLog(target: 'BondDocument', action: __FUNCTION__, model: $bondDocument);
+        SgcLogger::writeLog(target: 'BondDocument', action: __FUNCTION__, model_json: $bondDocument->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -78,8 +78,8 @@ class BondDocumentObserver
         SgcLogger::writeLog(target: 'BondDocument', action: __FUNCTION__);
     }
 
-    public function fetched(BondDocument $approvedState)
+    public function fetched(BondDocument $bondDocument)
     {
-        SgcLogger::writeLog(target: 'BondDocument', action: __FUNCTION__, model: $approvedState);
+        SgcLogger::writeLog(target: 'BondDocument', action: __FUNCTION__, model_json: $bondDocument->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

@@ -15,7 +15,7 @@ class ApprovedStateObserver
      */
     public function created(ApprovedState $approvedState)
     {
-        SgcLogger::writeLog(target: 'ApprovedState', action: __FUNCTION__, model: $approvedState);
+        SgcLogger::writeLog(target: 'ApprovedState', action: __FUNCTION__, model_json: $approvedState->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class ApprovedStateObserver
      */
     public function updating(ApprovedState $approvedState)
     {
-        SgcLogger::writeLog(target: 'ApprovedState', action: __FUNCTION__, model: $approvedState);
+        SgcLogger::writeLog(target: 'ApprovedState', action: __FUNCTION__, model_json:  json_encode($approvedState->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +37,7 @@ class ApprovedStateObserver
      */
     public function updated(ApprovedState $approvedState)
     {
-        SgcLogger::writeLog(target: 'ApprovedState', action: __FUNCTION__, model: $approvedState);
+        SgcLogger::writeLog(target: 'ApprovedState', action: __FUNCTION__, model_json: $approvedState->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class ApprovedStateObserver
      */
     public function deleted(ApprovedState $approvedState)
     {
-        SgcLogger::writeLog(target: 'ApprovedState', action: __FUNCTION__, model: $approvedState);
+        SgcLogger::writeLog(target: 'ApprovedState', action: __FUNCTION__, model_json: $approvedState->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -80,6 +80,6 @@ class ApprovedStateObserver
 
     public function fetched(ApprovedState $approvedState)
     {
-        SgcLogger::writeLog(target: 'ApprovedState', action: __FUNCTION__, model: $approvedState);
+        SgcLogger::writeLog(target: 'ApprovedState', action: __FUNCTION__, model_json: $approvedState->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

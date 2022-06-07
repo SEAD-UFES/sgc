@@ -15,7 +15,7 @@ class CourseTypeObserver
      */
     public function created(CourseType $courseType)
     {
-        SgcLogger::writeLog(target: 'CourseType', action: __FUNCTION__, model: $courseType);
+        SgcLogger::writeLog(target: 'CourseType', action: __FUNCTION__, model_json: $courseType->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class CourseTypeObserver
      */
     public function updating(CourseType $courseType)
     {
-        SgcLogger::writeLog(target: 'CourseType', action: __FUNCTION__, model: $courseType);
+        SgcLogger::writeLog(target: 'CourseType', action: __FUNCTION__, model_json: json_encode($courseType->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +37,7 @@ class CourseTypeObserver
      */
     public function updated(CourseType $courseType)
     {
-        SgcLogger::writeLog(target: 'CourseType', action: __FUNCTION__, model: $courseType);
+        SgcLogger::writeLog(target: 'CourseType', action: __FUNCTION__, model_json: $courseType->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class CourseTypeObserver
      */
     public function deleted(CourseType $courseType)
     {
-        SgcLogger::writeLog(target: 'CourseType', action: __FUNCTION__, model: $courseType);
+        SgcLogger::writeLog(target: 'CourseType', action: __FUNCTION__, model_json: $courseType->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -78,8 +78,8 @@ class CourseTypeObserver
         SgcLogger::writeLog(target: 'CourseType', action: __FUNCTION__);
     }
 
-    public function fetched(CourseType $approved)
+    public function fetched(CourseType $courseType)
     {
-        SgcLogger::writeLog(target: 'CourseType', action: __FUNCTION__, model: $approved);
+        SgcLogger::writeLog(target: 'CourseType', action: __FUNCTION__, model_json: $courseType->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

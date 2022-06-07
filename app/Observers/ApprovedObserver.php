@@ -15,7 +15,7 @@ class ApprovedObserver
      */
     public function created(Approved $approved)
     {
-        SgcLogger::writeLog(target:'Approved', action: __FUNCTION__, model: $approved);
+        SgcLogger::writeLog(target:'Approved', action: __FUNCTION__, model_json: $approved->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class ApprovedObserver
      */
     public function updating(Approved $approved)
     {
-        SgcLogger::writeLog(target:'Approved', action: __FUNCTION__, model: $approved);
+        SgcLogger::writeLog(target:'Approved', action: __FUNCTION__, model_json:  json_encode($approved->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +37,7 @@ class ApprovedObserver
      */
     public function updated(Approved $approved)
     {
-        SgcLogger::writeLog(target:'Approved', action: __FUNCTION__, model: $approved);
+        SgcLogger::writeLog(target:'Approved', action: __FUNCTION__, model_json: $approved->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class ApprovedObserver
      */
     public function deleted(Approved $approved)
     {
-        SgcLogger::writeLog(target:'Approved', action: __FUNCTION__, model: $approved);
+        SgcLogger::writeLog(target:'Approved', action: __FUNCTION__, model_json: $approved->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -80,6 +80,6 @@ class ApprovedObserver
 
     public function fetched(Approved $approved)
     {
-        SgcLogger::writeLog(target: 'Approved', action: __FUNCTION__, model: $approved);
+        SgcLogger::writeLog(target: 'Approved', action: __FUNCTION__, model_json: $approved->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

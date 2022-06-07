@@ -15,7 +15,7 @@ class GenderObserver
      */
     public function created(Gender $gender)
     {
-        SgcLogger::writeLog(target: 'Gender', action: __FUNCTION__, model: $gender);
+        SgcLogger::writeLog(target: 'Gender', action: __FUNCTION__, model_json: $gender->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class GenderObserver
      */
     public function updating(Gender $gender)
     {
-        SgcLogger::writeLog(target: 'Gender', action: __FUNCTION__, model: $gender);
+        SgcLogger::writeLog(target: 'Gender', action: __FUNCTION__, model_json: json_encode($gender->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
     
     /**
@@ -37,7 +37,7 @@ class GenderObserver
      */
     public function updated(Gender $gender)
     {
-        SgcLogger::writeLog(target: 'Gender', action: __FUNCTION__, model: $gender);
+        SgcLogger::writeLog(target: 'Gender', action: __FUNCTION__, model_json: $gender->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class GenderObserver
      */
     public function deleted(Gender $gender)
     {
-        SgcLogger::writeLog(target: 'Gender', action: __FUNCTION__, model: $gender);
+        SgcLogger::writeLog(target: 'Gender', action: __FUNCTION__, model_json: $gender->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -78,8 +78,8 @@ class GenderObserver
         SgcLogger::writeLog(target: 'Gender', action: __FUNCTION__);
     }
 
-    public function fetched(Gender $approved)
+    public function fetched(Gender $gender)
     {
-        SgcLogger::writeLog(target: 'Gender', action: __FUNCTION__, model: $approved);
+        SgcLogger::writeLog(target: 'Gender', action: __FUNCTION__, model_json: $gender->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

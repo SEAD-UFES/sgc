@@ -4,6 +4,8 @@ namespace App\Observers;
 
 use App\CustomClasses\SgcLogger;
 use App\Models\Role;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 
 class RoleObserver
 {
@@ -15,7 +17,7 @@ class RoleObserver
      */
     public function created(Role $role)
     {
-        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model: $role);
+        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model_json: $role->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +28,7 @@ class RoleObserver
      */
     public function updating(Role $role)
     {
-        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model: $role);
+        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model_json: json_encode($role->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +39,7 @@ class RoleObserver
      */
     public function updated(Role $role)
     {
-        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model: $role);
+        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model_json: $role->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +50,7 @@ class RoleObserver
      */
     public function deleted(Role $role)
     {
-        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model: $role);
+        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model_json: $role->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -78,8 +80,8 @@ class RoleObserver
         SgcLogger::writeLog(target: 'Role', action: __FUNCTION__);
     }
 
-    public function fetched(Role $approved)
+    public function fetched(Role $role)
     {
-        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model: $approved);
+        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model_json: $role->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

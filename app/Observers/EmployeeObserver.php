@@ -15,7 +15,7 @@ class EmployeeObserver
      */
     public function created(Employee $employee)
     {
-        SgcLogger::writeLog(target: 'Employee', action: __FUNCTION__, model: $employee);
+        SgcLogger::writeLog(target: 'Employee', action: __FUNCTION__, model_json: $employee->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class EmployeeObserver
      */
     public function updating(Employee $employee)
     {
-        SgcLogger::writeLog(target: 'Employee', action: __FUNCTION__, model: $employee);
+        SgcLogger::writeLog(target: 'Employee', action: __FUNCTION__, model_json: json_encode($employee->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +37,7 @@ class EmployeeObserver
      */
     public function updated(Employee $employee)
     {
-        SgcLogger::writeLog(target: 'Employee', action: __FUNCTION__, model: $employee);
+        SgcLogger::writeLog(target: 'Employee', action: __FUNCTION__, model_json: $employee->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class EmployeeObserver
      */
     public function deleted(Employee $employee)
     {
-        SgcLogger::writeLog(target: 'Employee', action: __FUNCTION__, model: $employee);
+        SgcLogger::writeLog(target: 'Employee', action: __FUNCTION__, model_json: $employee->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -78,8 +78,8 @@ class EmployeeObserver
         SgcLogger::writeLog(target: 'Employee', action: __FUNCTION__);
     }
 
-    public function fetched(Employee $approved)
+    public function fetched(Employee $employee)
     {
-        SgcLogger::writeLog(target: 'Employee', action: __FUNCTION__, model: $approved);
+        SgcLogger::writeLog(target: 'Employee', action: __FUNCTION__, model_json: $employee->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

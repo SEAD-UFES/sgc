@@ -59,7 +59,7 @@ class BondImpededNotification extends Notification /* implements ShouldQueue */ 
      */
     public function toArray($notifiable)
     {
-        SgcLogger::writeLog(target: 'BondImpededNotification', model: $this->bond);
+        SgcLogger::writeLog(target: 'BondImpededNotification', model_json: $this->bond->toJson(JSON_UNESCAPED_UNICODE));
 
         return [
             'bond_id' => $this->bond->id,

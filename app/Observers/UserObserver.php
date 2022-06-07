@@ -15,7 +15,7 @@ class UserObserver
      */
     public function created(User $user)
     {
-        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model: $user);
+        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model_json: $user->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class UserObserver
      */
     public function updating(User $user)
     {
-        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model: $user);
+        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model_json: json_encode($user->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +37,7 @@ class UserObserver
      */
     public function updated(User $user)
     {
-        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model: $user);
+        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model_json: $user->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class UserObserver
      */
     public function deleted(User $user)
     {
-        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model: $user);
+        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model_json: $user->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -80,6 +80,6 @@ class UserObserver
 
     public function fetched(User $user)
     {
-        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model: $user);
+        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model_json: $user->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

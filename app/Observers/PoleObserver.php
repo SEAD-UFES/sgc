@@ -15,7 +15,7 @@ class PoleObserver
      */
     public function created(Pole $pole)
     {
-        SgcLogger::writeLog(target: 'Pole', action: __FUNCTION__, model: $pole);
+        SgcLogger::writeLog(target: 'Pole', action: __FUNCTION__, model_json: $pole->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class PoleObserver
      */
     public function updating(Pole $pole)
     {
-        SgcLogger::writeLog(target: 'Pole', action: __FUNCTION__, model: $pole);
+        SgcLogger::writeLog(target: 'Pole', action: __FUNCTION__, model_json: json_encode($pole->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +37,7 @@ class PoleObserver
      */
     public function updated(Pole $pole)
     {
-        SgcLogger::writeLog(target: 'Pole', action: __FUNCTION__, model: $pole);
+        SgcLogger::writeLog(target: 'Pole', action: __FUNCTION__, model_json: $pole->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class PoleObserver
      */
     public function deleted(Pole $pole)
     {
-        SgcLogger::writeLog(target: 'Pole', action: __FUNCTION__, model: $pole);
+        SgcLogger::writeLog(target: 'Pole', action: __FUNCTION__, model_json: $pole->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -80,6 +80,6 @@ class PoleObserver
 
     public function fetched(Pole $pole)
     {
-        SgcLogger::writeLog(target: 'Pole', action: __FUNCTION__, model: $pole);
+        SgcLogger::writeLog(target: 'Pole', action: __FUNCTION__, model_json: $pole->toJson(JSON_UNESCAPED_UNICODE));
     }
 }
