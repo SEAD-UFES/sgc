@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CustomClasses\ModelFilterHelpers;
+use App\CustomClasses\SgcLogger;
 use App\Http\Requests\ImportApprovedsFileRequest;
 use App\Http\Requests\StoreApprovedsRequest;
 use App\Models\Approved;
@@ -39,6 +40,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (! Gate::allows('approved-list')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -58,10 +60,11 @@ class ApprovedController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function createStep1() // import spreadsheet file view
+    public function createStep1(Request $request) // import spreadsheet file view
     {
         //check access permission
         if (! Gate::allows('approved-store')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -79,6 +82,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (! Gate::allows('approved-store')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -98,10 +102,11 @@ class ApprovedController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function createStep2() // import spreadsheet file view
+    public function createStep2(Request $request) // import spreadsheet file view
     {
         //check access permission
         if (! Gate::allows('approved-store')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -125,6 +130,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (! Gate::allows('approved-store')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -173,6 +179,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (! Gate::allows('approved-update-state')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -192,10 +199,11 @@ class ApprovedController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Approved $approved)
+    public function destroy(Approved $approved, Request $request)
     {
         //check access permission
         if (! Gate::allows('approved-destroy')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -220,6 +228,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (! Gate::allows('approved-designate')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 

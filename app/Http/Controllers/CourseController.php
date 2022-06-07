@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CustomClasses\ModelFilterHelpers;
+use App\CustomClasses\SgcLogger;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
 use App\Models\Course;
@@ -29,6 +30,7 @@ class CourseController extends Controller
     {
         //check access permission
         if (! Gate::allows('course-list')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -45,10 +47,11 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //check access permission
         if (! Gate::allows('course-store')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -68,6 +71,7 @@ class CourseController extends Controller
     {
         //check access permission
         if (! Gate::allows('course-store')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -83,10 +87,11 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Course $course)
+    public function show(Course $course, Request $request)
     {
         //check access permission
         if (! Gate::allows('course-show')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -102,10 +107,11 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit(Course $course)
+    public function edit(Course $course, Request $request)
     {
         //check access permission
         if (! Gate::allows('course-update')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -126,6 +132,7 @@ class CourseController extends Controller
     {
         //check access permission
         if (! Gate::allows('course-update')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -145,10 +152,11 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Course $course)
+    public function destroy(Course $course, Request $request)
     {
         //check access permission
         if (! Gate::allows('course-destroy')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CustomClasses\ModelFilterHelpers;
+use App\CustomClasses\SgcLogger;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\GrantType;
@@ -27,6 +28,8 @@ class RoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('role-list')) {
+            //SgcLogger::badAttemptLog($request, 403);
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -43,10 +46,11 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //check access permission
         if (! Gate::allows('role-store')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -66,6 +70,7 @@ class RoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('role-store')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -85,10 +90,11 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Role $role)
+    public function show(Role $role, Request $request)
     {
         //check access permission
         if (! Gate::allows('role-show')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -104,10 +110,11 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit(Role $role)
+    public function edit(Role $role, Request $request)
     {
         //check access permission
         if (! Gate::allows('role-update')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -128,6 +135,7 @@ class RoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('role-update')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -147,10 +155,11 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Role $role)
+    public function destroy(Role $role, Request $request)
     {
         //check access permission
         if (! Gate::allows('role-destroy')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 

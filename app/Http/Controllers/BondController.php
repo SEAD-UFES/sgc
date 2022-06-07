@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CustomClasses\ModelFilterHelpers;
+use App\CustomClasses\SgcLogger;
 use App\Http\Requests\ReviewBondRequest;
 use App\Http\Requests\StoreBondRequest;
 use App\Http\Requests\UpdateBondRequest;
@@ -34,6 +35,7 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-list')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -50,10 +52,11 @@ class BondController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //check access permission
         if (! Gate::allows('bond-create')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -85,6 +88,7 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-create')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -109,10 +113,11 @@ class BondController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Bond $bond)
+    public function show(Bond $bond, Request $request)
     {
         //check access permission
         if (! Gate::allows('bond-show')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -132,10 +137,11 @@ class BondController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit(Bond $bond)
+    public function edit(Bond $bond, Request $request)
     {
         //check access permission
         if (! Gate::allows('bond-update', $bond)) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -168,6 +174,7 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-update', $bond)) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -192,10 +199,11 @@ class BondController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bond $bond)
+    public function destroy(Bond $bond, Request $request)
     {
         //check access permission
         if (! Gate::allows('bond-destroy')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -220,6 +228,7 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-review')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 
@@ -244,6 +253,7 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-requestReview')) {
+            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
 

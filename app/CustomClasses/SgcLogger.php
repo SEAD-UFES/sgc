@@ -99,6 +99,17 @@ class SgcLogger
         }
     }
 
+    public static function logBadAttemptOnUri(string $uri, int $httpErrorCode)
+    {
+        $executor = Auth::user();
+        $executorId = $executor->id ?? 'NoID';
+        $executorEmail = isset($executor->email) ? ':' . $executor->email : ":\t";
+
+        $logText = "\t" . NetworkHelper::getClientIpAddress() . "\t|\t${executorId}${executorEmail}\t|\tattempted URI: '" . $uri . "' with result: " . $httpErrorCode;
+
+        Log::warning($logText);
+    }
+
     private static function getExecutorInfo($executor): string
     {
         if (is_string($executor)) {
