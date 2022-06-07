@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Gate;
 
 class GenericGates
 {
-
     public static function define()
     {
         /* define a system admin user role */

@@ -3,7 +3,6 @@
 namespace App\CustomClasses;
 
 use App\Helpers\NetworkHelper;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -48,7 +47,7 @@ class SgcLogger
     SgcLogger::writeLog($user); [chamado do método store do UserController]
     => 7:prof1@ufes.br|store| User:18:marco@gmail.com */
 
-    public static function writeLog(mixed $target = null, mixed $action = null, mixed $executor = null, mixed $request = null, string $model_json = null)
+    public static function writeLog(mixed $target = null, mixed $action = null, mixed $executor = null, mixed $request = null, ?string $model_json = null)
     {
         $functionCaller = (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']);
         $executorInfo = self::getExecutorInfo($executor);

@@ -13,6 +13,7 @@ class AssignRequestId
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -20,7 +21,7 @@ class AssignRequestId
         $requestId = (string) Str::uuid();
 
         Log::withContext([
-            'request-id' => $requestId
+            'request-id' => $requestId,
         ]);
 
         return $next($request)->header('Request-Id', $requestId);

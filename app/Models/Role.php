@@ -4,10 +4,10 @@ namespace App\Models;
 
 use App\ModelFilters\RoleFilter;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Role extends Model
 {
