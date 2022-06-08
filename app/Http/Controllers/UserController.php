@@ -10,7 +10,9 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use App\Models\UserType;
 use App\Services\UserService;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
@@ -28,7 +30,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         //check access permission
-        if (! Gate::allows('user-list')) {
+        if (!Gate::allows('user-list')) {
             SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
@@ -49,7 +51,7 @@ class UserController extends Controller
     public function create(Request $request)
     {
         //check access permission
-        if (! Gate::allows('user-store')) {
+        if (!Gate::allows('user-store')) {
             SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
@@ -69,7 +71,7 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         //check access permission
-        if (! Gate::allows('user-store')) {
+        if (!Gate::allows('user-store')) {
             SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
@@ -93,7 +95,7 @@ class UserController extends Controller
     public function show(User $user, Request $request)
     {
         //check access permission
-        if (! Gate::allows('user-show')) {
+        if (!Gate::allows('user-show')) {
             SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
@@ -113,7 +115,7 @@ class UserController extends Controller
     public function edit(User $user, Request $request)
     {
         //check access permission
-        if (! Gate::allows('user-update')) {
+        if (!Gate::allows('user-update')) {
             SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
@@ -132,7 +134,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         //check access permission
-        if (! Gate::allows('user-update')) {
+        if (!Gate::allows('user-update')) {
             SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
@@ -156,7 +158,7 @@ class UserController extends Controller
     public function destroy(User $user, Request $request)
     {
         //check access permission
-        if (! Gate::allows('user-destroy')) {
+        if (!Gate::allows('user-destroy')) {
             SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
             abort(403);
         }
@@ -196,12 +198,6 @@ class UserController extends Controller
      */
     public function currentPasswordUpdate(UpdateCurrentPassworRequest $request)
     {
-        //check access permission
-        if (false) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
-            abort(403);
-        }
-
         $user = auth()->user();
         $request = $request->validated();
         $request['active'] = true;
