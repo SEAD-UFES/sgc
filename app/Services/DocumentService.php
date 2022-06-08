@@ -96,7 +96,7 @@ class DocumentService
                 $this->documentClass::REFERENT_ID => $attributes[$this->documentClass::REFERENT_ID],
             ])->id;
 
-            $document = Document::create($attributes);
+            return Document::create($attributes);
         });
     }
 

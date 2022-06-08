@@ -22,8 +22,6 @@ class ApprovedsImport implements ToCollection, WithHeadingRow, WithColumnLimit, 
 
     public function collection(Collection $rows)
     {
-        $myCollection = collect();
-
         foreach ($rows as $row) {
             $tempPhone = '';
             $tempMobile = '';

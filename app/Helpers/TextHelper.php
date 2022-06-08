@@ -19,10 +19,10 @@ class TextHelper
         */
         $string = mb_convert_case($string, MB_CASE_TITLE, 'UTF-8');
 
-        foreach ($delimiters as $dlnr => $delimiter) {
+        foreach ($delimiters as $delimiter) {
             $words = explode($delimiter, $string);
             $newwords = [];
-            foreach ($words as $wordnr => $word) {
+            foreach ($words as $word) {
                 if (in_array(mb_strtoupper($word, 'UTF-8'), $exceptions)) {
                     // check exceptions list for any words that should be in upper case
                     $word = mb_strtoupper($word, 'UTF-8');
