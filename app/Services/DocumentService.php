@@ -150,6 +150,7 @@ class DocumentService
         if (isset($attributes['files'])) {
             $files = $attributes['files'];
 
+            $document = [];
             $documents = collect();
 
             foreach ($files as $file) {
@@ -180,6 +181,7 @@ class DocumentService
         $documentsCount = $attributes['fileSetCount'];
 
         DB::transaction(function () use ($attributes, $documentsCount) {
+            $document = [];
             $document[$this->documentClass::REFERENT_ID] = $attributes[$this->documentClass::REFERENT_ID];
             $document['documentable_type'] = $this->documentClass;
 
