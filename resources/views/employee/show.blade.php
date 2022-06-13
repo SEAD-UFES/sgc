@@ -353,13 +353,13 @@
                                                             {{ $user->active === 1 ? 'Sim' : 'Não' }}
                                                         </td>
                                                         <td>
-                                                            {{$user->created_at 
+                                                            {{ (isset($bond) && $user->created_at )
                                                                 ? \Carbon\Carbon::parse($bond->end)->isoFormat('DD/MM/Y') 
                                                                 : '-'
                                                             }}
                                                         </td>
                                                         <td>
-                                                            {{$user->updated_at 
+                                                            {{ (isset($bond) && $user->updated_at) 
                                                                 ? \Carbon\Carbon::parse($bond->end)->isoFormat('DD/MM/Y') 
                                                                 : '-'
                                                             }}
