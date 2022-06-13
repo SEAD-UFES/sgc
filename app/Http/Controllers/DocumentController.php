@@ -25,7 +25,7 @@ class DocumentController extends Controller
     public function showDocument($id, Request $request)
     {
         if (! (Gate::allows('employeeDocument-download') || Gate::allows('bondDocument-download') || Gate::allows('bondDocument-rights'))) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -36,7 +36,7 @@ class DocumentController extends Controller
         ($file->class === 'App\Models\BondDocument' && ! $file->isRights && ! Gate::allows('bondDocument-download')) ||
         ($file->isRights && ! Gate::allows('bondDocument-rights'))
         ) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 

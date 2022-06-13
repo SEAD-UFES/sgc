@@ -30,7 +30,7 @@ class UserTypeAssignmentController extends Controller
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-list')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -51,7 +51,7 @@ class UserTypeAssignmentController extends Controller
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-store')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -73,7 +73,7 @@ class UserTypeAssignmentController extends Controller
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-store')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -97,7 +97,7 @@ class UserTypeAssignmentController extends Controller
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-show')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -115,7 +115,7 @@ class UserTypeAssignmentController extends Controller
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-update')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -138,7 +138,7 @@ class UserTypeAssignmentController extends Controller
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-update')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -162,7 +162,7 @@ class UserTypeAssignmentController extends Controller
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-destroy')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 

@@ -30,7 +30,7 @@ class CourseController extends Controller
     {
         //check access permission
         if (! Gate::allows('course-list')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -51,7 +51,7 @@ class CourseController extends Controller
     {
         //check access permission
         if (! Gate::allows('course-store')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -71,7 +71,7 @@ class CourseController extends Controller
     {
         //check access permission
         if (! Gate::allows('course-store')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -91,7 +91,7 @@ class CourseController extends Controller
     {
         //check access permission
         if (! Gate::allows('course-show')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -111,7 +111,7 @@ class CourseController extends Controller
     {
         //check access permission
         if (! Gate::allows('course-update')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -132,7 +132,7 @@ class CourseController extends Controller
     {
         //check access permission
         if (! Gate::allows('course-update')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -156,7 +156,7 @@ class CourseController extends Controller
     {
         //check access permission
         if (! Gate::allows('course-destroy')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 

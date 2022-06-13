@@ -40,7 +40,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (! Gate::allows('approved-list')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -64,7 +64,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (! Gate::allows('approved-store')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -82,7 +82,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (! Gate::allows('approved-store')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -106,7 +106,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (! Gate::allows('approved-store')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -130,7 +130,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (! Gate::allows('approved-store')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -179,7 +179,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (! Gate::allows('approved-update-state')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -203,7 +203,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (! Gate::allows('approved-destroy')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -228,7 +228,7 @@ class ApprovedController extends Controller
     {
         //check access permission
         if (! Gate::allows('approved-designate')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 

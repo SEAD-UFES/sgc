@@ -31,7 +31,7 @@ class UserController extends Controller
     {
         //check access permission
         if (!Gate::allows('user-list')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -52,7 +52,7 @@ class UserController extends Controller
     {
         //check access permission
         if (!Gate::allows('user-store')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -72,7 +72,7 @@ class UserController extends Controller
     {
         //check access permission
         if (!Gate::allows('user-store')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -96,7 +96,7 @@ class UserController extends Controller
     {
         //check access permission
         if (!Gate::allows('user-show')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -116,7 +116,7 @@ class UserController extends Controller
     {
         //check access permission
         if (!Gate::allows('user-update')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -135,7 +135,7 @@ class UserController extends Controller
     {
         //check access permission
         if (!Gate::allows('user-update')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -159,7 +159,7 @@ class UserController extends Controller
     {
         //check access permission
         if (!Gate::allows('user-destroy')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 

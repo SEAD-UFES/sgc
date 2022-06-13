@@ -3,6 +3,8 @@
 namespace App\CustomClasses;
 
 use App\Helpers\NetworkHelper;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -47,13 +49,15 @@ class SgcLogger
     SgcLogger::writeLog($user); [chamado do método store do UserController]
     => 7:prof1@ufes.br|store| User:18:marco@gmail.com */
 
+    private static $severities = ['info', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency'];
+
     public static function writeLog(mixed $target = null, mixed $action = null, mixed $executor = null, mixed $request = null, ?string $model_json = null)
     {
         $functionCaller = (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']);
         $executorInfo = self::getExecutorInfo($executor);
         $actionInfo = self::getActionInfo($action, $functionCaller);
         $targetInfo = self::getTargetInfo($target);
-        $severity = self::getSeverityMapping($actionInfo);
+        $severity = self::severityMap($actionInfo);
 
         $logText = "\t" . NetworkHelper::getClientIpAddress() . "\t|\t${executorInfo}\t|\t${actionInfo}\t|\t${targetInfo}\t";
 
@@ -65,47 +69,19 @@ class SgcLogger
             $logText .= "|\tmodel: " . $model_json;
         }
 
-        switch ($severity) {
-            case 'info':
-                Log::info($logText);
-                break;
-
-            case 'notice':
-                Log::notice($logText);
-                break;
-
-            case 'warning':
-                Log::warning($logText);
-                break;
-
-            case 'error':
-                Log::error($logText);
-                break;
-
-            case 'critical':
-                Log::critical($logText);
-                break;
-
-            case 'alert':
-                Log::alert($logText);
-                break;
-
-            case 'emergency':
-                Log::emergency($logText);
-                break;
-
-            default:
-                Log::info($logText);
-        }
+        Log::$severity($logText);
     }
 
-    public static function logBadAttemptOnUri(string $uri, int $httpErrorCode)
+    public static function logBadAttemptOnUri(Request $request, int $httpErrorCode)
     {
+        $uri = $request->getRequestUri();
+        $method = $request->getMethod();
         $executor = Auth::user();
-        $executorId = $executor->id ?? 'NoID';
+        $executorId = $executor?->id ?? 'NoID';
         $executorEmail = isset($executor->email) ? ':' . $executor->email : ":\t";
+        $executorRole = $executor->getCurrentUTA()->userType->name ?? 'NULL UTA';
 
-        $logText = "\t" . NetworkHelper::getClientIpAddress() . "\t|\t${executorId}${executorEmail}\t|\tattempted URI: '" . $uri . "' with result: " . $httpErrorCode;
+        $logText = "\t" . NetworkHelper::getClientIpAddress() . "\t|\t${executorId}${executorEmail} [${executorRole}]\t|\tattempted " . $method . " on '" . $uri . "' with result " . $httpErrorCode;
 
         Log::warning($logText);
     }
@@ -123,8 +99,9 @@ class SgcLogger
         $_executor = $executor ?? Auth::user();
         $executorId = $_executor->id ?? 'NoID';
         $executorEmail = isset($_executor->email) ? ':' . $_executor->email : ":\t";
+        $executorRole = ($_executor instanceof User) ? ((! is_null($_executor->getCurrentUTA())) ? $_executor->getCurrentUTA()->userType->name : 'Null Current UTA') : 'NoRole';
 
-        return "${executorId}${executorEmail}";
+        return "${executorId}${executorEmail} [${executorRole}]";
     }
 
     private static function getActionInfo($action, $functionCaller): string
@@ -167,36 +144,55 @@ class SgcLogger
             ->toJson(JSON_UNESCAPED_UNICODE);
     }
 
-    private static function getSeverityMapping(string $severityKey): string | null
+    /**
+     * @param string $action
+     * 
+     * @return string
+     */
+    private static function severityMap(string $action): string
     {
-        $severityMapping = collect([
-            'tried login' => 'notice',
-            'authenticate' => 'info',
-            'logout' => 'info',
-            'index' => 'info',
-            'listed' => 'info',
-            'create' => 'info',
-            'created' => 'info',
-            'designate' => 'info',
-            'import' => 'info',
-            'store' => 'notice',
-            'Updated existent Employee info on User' => 'warning',
-            'updated user' => 'notice',
-            'show' => 'info',
-            'fetched' => 'info',
-            'edit' => 'info',
-            'review' => 'info',
-            'request review' => 'info',
-            'updating' => 'notice',
-            'update' => 'notice',
-            'updated' => 'notice',
-            'exportBondDocuments' => 'notice',
-            'exportEmployeeDocuments' => 'notice',
-            'destroy' => 'warning',
-            'deleted' => 'warning',
-            'dismiss' => 'notice',
-        ]);
+        $loggedActions = [];
 
-        return $severityMapping->get($severityKey);
+        $loggedActions['info'] = [
+            'authenticate',
+            'logout',
+            'index',
+            'listed',
+            'create',
+            'created',
+            'designate',
+            'import',
+            'show',
+            'fetched',
+            'edit',
+            'review',
+            'request review',
+        ];
+
+        $loggedActions['notice'] = [
+            'tried login',
+            'store',
+            'updated user',
+            'updating',
+            'update',
+            'updated',
+            'exportBondDocuments',
+            'exportEmployeeDocuments',
+            'dismiss',
+        ];
+
+        $loggedActions['warning'] = [
+            'Updated existent Employee info on User',
+            'destroy',
+            'deleted',
+        ];
+
+        foreach (self::$severities as $severity) {
+            if (in_array($action, $loggedActions[$severity])) {
+                return $severity;
+            }
+        }
+
+        return 'info';
     }
 }

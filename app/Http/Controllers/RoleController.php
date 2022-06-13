@@ -29,7 +29,7 @@ class RoleController extends Controller
         //check access permission
         if (! Gate::allows('role-list')) {
             //SgcLogger::badAttemptLog($request, 403);
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -50,7 +50,7 @@ class RoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('role-store')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -70,7 +70,7 @@ class RoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('role-store')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -94,7 +94,7 @@ class RoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('role-show')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -114,7 +114,7 @@ class RoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('role-update')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -135,7 +135,7 @@ class RoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('role-update')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -159,7 +159,7 @@ class RoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('role-destroy')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 

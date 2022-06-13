@@ -30,7 +30,7 @@ class WebController extends Controller
     public function showSysInfo(Request $request)
     {
         if (! Gate::allows('isAdm-global')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
         return view('sysInfo');
