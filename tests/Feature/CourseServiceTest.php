@@ -74,7 +74,7 @@ class CourseServiceTest extends TestCase
     public function courseShouldBeCreated()
     {
         //setting up scenario
-        $attributes = array();
+        $attributes = [];
 
         $attributes['name'] = 'Course Gama';
         $attributes['description'] = '3rd course';
@@ -103,7 +103,7 @@ class CourseServiceTest extends TestCase
 
         $course = Course::find(1);
 
-        $attributes = array();
+        $attributes = [];
 
         $attributes['name'] = 'Course Delta';
         $attributes['description'] = 'New 1st course';

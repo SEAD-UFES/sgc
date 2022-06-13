@@ -57,7 +57,7 @@ class UserTypeServiceTest extends TestCase
     /*public function userTypeShouldBeCreated()
     {
         //setting up scenario
-        $attributes = array();
+        $attributes = [];
 
         $attributes['name'] = 'Type Gama';
         $attributes['acronym'] = 'gam';
@@ -80,7 +80,7 @@ class UserTypeServiceTest extends TestCase
 
         $userType = UserType::find(1);
 
-        $attributes = array();
+        $attributes = [];
 
         $attributes['name'] = 'Type Delta';
         $attributes['acronym'] = 'del';

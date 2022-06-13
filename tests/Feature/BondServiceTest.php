@@ -109,7 +109,7 @@ class BondServiceTest extends TestCase
     public function bondShouldBeCreated()
     {
         //setting up scenario
-        $attributes = array();
+        $attributes = [];
 
         $attributes['employee_id'] = 1;
         $attributes['role_id'] = 2;
@@ -137,7 +137,7 @@ class BondServiceTest extends TestCase
     public function bondShouldBeCreatedWithEmployeeDocument()
     {
         //setting up scenario
-        $attributes = array();
+        $attributes = [];
 
         $attributes['employee_id'] = 1;
         $attributes['role_id'] = 2;
@@ -175,7 +175,7 @@ class BondServiceTest extends TestCase
 
         $bond = Bond::find(1);
 
-        $attributes = array();
+        $attributes = [];
 
         $attributes['employee_id'] = 2;
         $attributes['course_id'] = 2;

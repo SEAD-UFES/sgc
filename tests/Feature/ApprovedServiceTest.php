@@ -137,7 +137,7 @@ class ApprovedServiceTest extends TestCase
             ]
         )->id;
 
-        $approveds = array();
+        $approveds = [];
 
         $approveds[0]['check'] = true;
         $approveds[0]['name'] = 'Bob Doe';

@@ -56,7 +56,7 @@ class CourseTypeServiceTest extends TestCase
     /*public function courseTypeShouldBeCreated()
     {
         //setting up scenario
-        $attributes = array();
+        $attributes = [];
 
         $attributes['name'] = 'Type Gama';
         $attributes['description'] = '3rd type';
@@ -78,7 +78,7 @@ class CourseTypeServiceTest extends TestCase
 
         $courseType = CourseType::find(1);
 
-        $attributes = array();
+        $attributes = [];
 
         $attributes['name'] = 'Type Delta';
         $attributes['description'] = 'New 1st type';

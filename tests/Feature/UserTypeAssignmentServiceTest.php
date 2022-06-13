@@ -85,7 +85,7 @@ class UserTypeAssignmentServiceTest extends TestCase
     public function userTypeAssignmentShouldBeCreated()
     {
         //setting up scenario
-        $attributes = array();
+        $attributes = [];
 
         $attributes['user_id'] = 2;
         $attributes['user_type_id'] = 1;
@@ -118,7 +118,7 @@ class UserTypeAssignmentServiceTest extends TestCase
         $newUserType = UserType::factory()->create(['name' => 'Type three']);
         $newCourse = Course::factory()->create(['name' => 'Course Gama']);
 
-        $attributes = array();
+        $attributes = [];
 
         $attributes['user_id'] = $newUser->id;
         $attributes['user_type_id'] = $newUserType->id;

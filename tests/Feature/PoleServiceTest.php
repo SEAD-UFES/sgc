@@ -74,7 +74,7 @@ class PoleServiceTest extends TestCase
     public function poleShouldBeCreated()
     {
         //setting up scenario
-        $attributes = array();
+        $attributes = [];
 
         $attributes['name'] = 'Pole Gama';
         $attributes['description'] = '3rd Pole';
@@ -99,7 +99,7 @@ class PoleServiceTest extends TestCase
 
         $pole = Pole::find(1);
 
-        $attributes = array();
+        $attributes = [];
 
         $attributes['name'] = 'Pole Delta';
         $attributes['description'] = 'New 1st Pole';

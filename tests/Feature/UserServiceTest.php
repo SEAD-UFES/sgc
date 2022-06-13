@@ -80,7 +80,7 @@ class UserServiceTest extends TestCase
     public function userShouldBeCreated()
     {
         //setting up scenario
-        $attributes = array();
+        $attributes = [];
 
         $attributes['email'] = 'bobdoe@test3.com';
         $attributes['password'] = 'password3';
@@ -106,7 +106,7 @@ class UserServiceTest extends TestCase
 
         $user = User::find(1);
 
-        $attributes = array();
+        $attributes = [];
 
         $attributes['email'] = 'marydoe@test4.com';
         $attributes['password'] = 'password4';
@@ -133,7 +133,7 @@ class UserServiceTest extends TestCase
 
         $user = User::find(1);
 
-        $attributes = array();
+        $attributes = [];
 
         $attributes['email'] = 'billdoe@test5.com';
         $attributes['password'] = '';
@@ -163,7 +163,7 @@ class UserServiceTest extends TestCase
 
         $user = User::find(1);
 
-        $attributes = array();
+        $attributes = [];
 
         $attributes['email'] = 'marydoe@test4.com';
 

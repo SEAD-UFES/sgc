@@ -73,7 +73,7 @@ class RoleServiceTest extends TestCase
     public function roleShouldBeCreated()
     {
         //setting up scenario
-        $attributes = array();
+        $attributes = [];
 
         $attributes['name'] = 'Role Gama';
         $attributes['description'] = '3rd Role';
@@ -100,7 +100,7 @@ class RoleServiceTest extends TestCase
 
         $role = Role::find(1);
 
-        $attributes = array();
+        $attributes = [];
 
         $attributes['name'] = 'Role Delta';
         $attributes['description'] = 'New 1st Role';

@@ -82,7 +82,7 @@ class EmployeeServiceTest extends TestCase
     public function employeeShouldBeCreated()
     {
         //setting up scenario
-        $attributes = array();
+        $attributes = [];
 
         $attributes['name'] = 'Mary Doe';
         $attributes['cpf'] = '33333333333';
@@ -105,7 +105,7 @@ class EmployeeServiceTest extends TestCase
     public function employeeShouldBeCreatedWithUser()
     {
         //setting up scenario
-        $attributes = array();
+        $attributes = [];
 
         $attributes['name'] = 'Mary Doe';
         $attributes['cpf'] = '33333333333';
@@ -134,7 +134,7 @@ class EmployeeServiceTest extends TestCase
 
         $employee = Employee::find(1);
 
-        $attributes = array();
+        $attributes = [];
 
         $attributes['name'] = 'Bob Doe';
         $attributes['cpf'] = '44444444444';
