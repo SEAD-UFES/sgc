@@ -93,10 +93,10 @@ class RoleTest extends TestCase
      * @return void
      * @test
      */
-    public function unloggedUserShouldntSeeRoles()
+    public function guestShouldntListRoles()
     {
-        $response = $this->get('/roles');
-        $response->assertRedirect(route('auth.login'));
+        $this->get('/roles')
+            ->assertRedirect(route('auth.login'));
     }
 
     /**
@@ -105,14 +105,14 @@ class RoleTest extends TestCase
      * @return void
      * @test
      */
-    public function administratorShouldSeeRoles()
+    public function administratorShouldListRoles()
     {
         $this->actingAs(self::$userAdm)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/roles');
-        $response->assertSee(['Role Alpha', 'Role Beta']);
-        $response->assertStatus(200);
+        $this->get('/roles')
+            ->assertSee(['Role Alpha', 'Role Beta'])
+            ->assertStatus(200);
     }
 
 
@@ -122,14 +122,14 @@ class RoleTest extends TestCase
      * @return void
      * @test
      */
-    public function directorShouldSeeRoles()
+    public function directorShouldListRoles()
     {
         $this->actingAs(self::$userDir)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/roles');
-        $response->assertSee(['Role Alpha', 'Role Beta']);
-        $response->assertStatus(200);
+        $this->get('/roles')
+            ->assertSee(['Role Alpha', 'Role Beta'])
+            ->assertStatus(200);
     }
 
     /**
@@ -138,14 +138,14 @@ class RoleTest extends TestCase
      * @return void
      * @test
      */
-    public function assistantShouldSeeRoles()
+    public function assistantShouldListRoles()
     {
         $this->actingAs(self::$userAss)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/roles');
-        $response->assertSee(['Role Alpha', 'Role Beta']);
-        $response->assertStatus(200);
+        $this->get('/roles')
+            ->assertSee(['Role Alpha', 'Role Beta'])
+            ->assertStatus(200);
     }
 
     /**
@@ -154,14 +154,14 @@ class RoleTest extends TestCase
      * @return void
      * @test
      */
-    public function secretaryShouldSeeRoles()
+    public function secretaryShouldListRoles()
     {
         $this->actingAs(self::$userSec)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/roles');
-        $response->assertSee(['Role Alpha', 'Role Beta']);
-        $response->assertStatus(200);
+        $this->get('/roles')
+            ->assertSee(['Role Alpha', 'Role Beta'])
+            ->assertStatus(200);
     }
 
     /**
@@ -170,13 +170,13 @@ class RoleTest extends TestCase
      * @return void
      * @test
      */
-    public function ldiShouldntSeeRoles()
+    public function ldiShouldntListRoles()
     {
         $this->actingAs(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/roles');
-        $response->assertStatus(403);
+        $this->get('/roles')
+            ->assertStatus(403);
     }
 
     /**
@@ -185,13 +185,13 @@ class RoleTest extends TestCase
      * @return void
      * @test
      */
-    public function coordinatorShouldSeeRoles()
+    public function coordinatorShouldListRoles()
     {
         $this->actingAs(self::$userCoord)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/roles');
-        $response->assertSee(['Role Alpha', 'Role Beta']);
-        $response->assertStatus(200);
+        $this->get('/roles')
+            ->assertSee(['Role Alpha', 'Role Beta'])
+            ->assertStatus(200);
     }
 }

@@ -93,10 +93,10 @@ class CourseTest extends TestCase
      * @return void
      * @test
      */
-    public function unloggedUserShouldntSeeCourses()
+    public function guestShouldntListCourses()
     {
-        $response = $this->get('/courses');
-        $response->assertRedirect(route('auth.login'));
+        $this->get('/courses')
+            ->assertRedirect(route('auth.login'));
     }
 
     /**
@@ -105,14 +105,14 @@ class CourseTest extends TestCase
      * @return void
      * @test
      */
-    public function administratorShouldSeeCourses()
+    public function administratorShouldListCourses()
     {
         $this->actingAs(self::$userAdm)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/courses');
-        $response->assertSee(['Course Alpha', 'Course Beta']);
-        $response->assertStatus(200);
+        $this->get('/courses')
+            ->assertSee(['Course Alpha', 'Course Beta'])
+            ->assertStatus(200);
     }
 
 
@@ -122,14 +122,14 @@ class CourseTest extends TestCase
      * @return void
      * @test
      */
-    public function directorShouldSeeCourses()
+    public function directorShouldListCourses()
     {
         $this->actingAs(self::$userDir)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/courses');
-        $response->assertSee(['Course Alpha', 'Course Beta']);
-        $response->assertStatus(200);
+        $this->get('/courses')
+            ->assertSee(['Course Alpha', 'Course Beta'])
+            ->assertStatus(200);
     }
 
     /**
@@ -138,14 +138,14 @@ class CourseTest extends TestCase
      * @return void
      * @test
      */
-    public function assistantShouldSeeCourses()
+    public function assistantShouldListCourses()
     {
         $this->actingAs(self::$userAss)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/courses');
-        $response->assertSee(['Course Alpha', 'Course Beta']);
-        $response->assertStatus(200);
+        $this->get('/courses')
+            ->assertSee(['Course Alpha', 'Course Beta'])
+            ->assertStatus(200);
     }
 
     /**
@@ -154,14 +154,14 @@ class CourseTest extends TestCase
      * @return void
      * @test
      */
-    public function secretaryShouldSeeCourses()
+    public function secretaryShouldListCourses()
     {
         $this->actingAs(self::$userSec)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/courses');
-        $response->assertSee(['Course Alpha', 'Course Beta']);
-        $response->assertStatus(200);
+        $this->get('/courses')
+            ->assertSee(['Course Alpha', 'Course Beta'])
+            ->assertStatus(200);
     }
 
     /**
@@ -170,13 +170,13 @@ class CourseTest extends TestCase
      * @return void
      * @test
      */
-    public function ldiShouldntSeeCourses()
+    public function ldiShouldntListCourses()
     {
         $this->actingAs(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/courses');
-        $response->assertStatus(403);
+        $this->get('/courses')
+            ->assertStatus(403);
     }
 
     /**
@@ -185,13 +185,13 @@ class CourseTest extends TestCase
      * @return void
      * @test
      */
-    public function coordinatorShouldSeeCourses()
+    public function coordinatorShouldListCourses()
     {
         $this->actingAs(self::$userCoord)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/courses');
-        $response->assertSee(['Course Alpha', 'Course Beta']);
-        $response->assertStatus(200);
+        $this->get('/courses')
+            ->assertSee(['Course Alpha', 'Course Beta'])
+            ->assertStatus(200);
     }
 }

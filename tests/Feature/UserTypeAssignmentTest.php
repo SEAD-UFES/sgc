@@ -101,10 +101,10 @@ class UserTypeAssignmentTest extends TestCase
      * @return void
      * @test
      */
-    public function unloggedUserShouldntSeeUserTypeAssignments()
+    public function guestShouldntListUserTypeAssignments()
     {
-        $response = $this->get('/userTypeAssignments');
-        $response->assertRedirect(route('auth.login'));
+        $this->get('/userTypeAssignments')
+            ->assertRedirect(route('auth.login'));
     }
 
     /**
@@ -113,14 +113,14 @@ class UserTypeAssignmentTest extends TestCase
      * @return void
      * @test
      */
-    public function administratorShouldSeeUserTypeAssignments()
+    public function administratorShouldListUserTypeAssignments()
     {
         $this->actingAs(self::$userAdm)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/userTypeAssignments');
-        $response->assertSee(['johndoe@test.com', 'janedoe@test2.com', 'Type one (Course Alpha)', 'Type two (Course Beta)']);
-        $response->assertStatus(200);
+        $this->get('/userTypeAssignments')
+            ->assertSee(['johndoe@test.com', 'janedoe@test2.com', 'Type one (Course Alpha)', 'Type two (Course Beta)'])
+            ->assertStatus(200);
     }
 
 
@@ -130,13 +130,13 @@ class UserTypeAssignmentTest extends TestCase
      * @return void
      * @test
      */
-    public function directorShouldntSeeUserTypeAssignments()
+    public function directorShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userDir)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/userTypeAssignments');
-        $response->assertStatus(403);
+        $this->get('/userTypeAssignments')
+            ->assertStatus(403);
     }
 
     /**
@@ -145,13 +145,13 @@ class UserTypeAssignmentTest extends TestCase
      * @return void
      * @test
      */
-    public function assistantShouldntSeeUserTypeAssignments()
+    public function assistantShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userAss)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/userTypeAssignments');
-        $response->assertStatus(403);
+        $this->get('/userTypeAssignments')
+            ->assertStatus(403);
     }
 
     /**
@@ -160,13 +160,13 @@ class UserTypeAssignmentTest extends TestCase
      * @return void
      * @test
      */
-    public function secretaryShouldntSeeUserTypeAssignments()
+    public function secretaryShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userSec)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/userTypeAssignments');
-        $response->assertStatus(403);
+        $this->get('/userTypeAssignments')
+            ->assertStatus(403);
     }
 
     /**
@@ -175,13 +175,13 @@ class UserTypeAssignmentTest extends TestCase
      * @return void
      * @test
      */
-    public function ldiShouldntSeeUserTypeAssignments()
+    public function ldiShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/userTypeAssignments');
-        $response->assertStatus(403);
+        $this->get('/userTypeAssignments')
+            ->assertStatus(403);
     }
 
     /**
@@ -190,12 +190,12 @@ class UserTypeAssignmentTest extends TestCase
      * @return void
      * @test
      */
-    public function coordinatorShouldntSeeUserTypeAssignments()
+    public function coordinatorShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userCoord)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/userTypeAssignments');
-        $response->assertStatus(403);
+        $this->get('/userTypeAssignments')
+            ->assertStatus(403);
     }
 }

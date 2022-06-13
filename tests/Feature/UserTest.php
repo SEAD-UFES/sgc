@@ -94,10 +94,10 @@ class UserTest extends TestCase
      * @return void
      * @test
      */
-    public function unloggedUserShouldntSeeUsers()
+    public function guestShouldntListUsers()
     {
-        $response = $this->get('/users');
-        $response->assertRedirect(route('auth.login'));
+        $this->get('/users')
+            ->assertRedirect(route('auth.login'));
     }
 
     /**
@@ -106,14 +106,14 @@ class UserTest extends TestCase
      * @return void
      * @test
      */
-    public function administratorShouldSeeUsers()
+    public function administratorShouldListUsers()
     {
         $this->actingAs(self::$userAdm)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/users');
-        $response->assertSee(['johndoe@test1.com', 'janedoe@test2.com']);
-        $response->assertStatus(200);
+        $this->get('/users')
+            ->assertSee(['johndoe@test1.com', 'janedoe@test2.com'])
+            ->assertStatus(200);
     }
 
 
@@ -123,13 +123,13 @@ class UserTest extends TestCase
      * @return void
      * @test
      */
-    public function directorShouldntSeeUsers()
+    public function directorShouldntListUsers()
     {
         $this->actingAs(self::$userDir)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/users');
-        $response->assertStatus(403);
+        $this->get('/users')
+            ->assertStatus(403);
     }
 
     /**
@@ -138,13 +138,13 @@ class UserTest extends TestCase
      * @return void
      * @test
      */
-    public function assistantShouldntSeeUsers()
+    public function assistantShouldntListUsers()
     {
         $this->actingAs(self::$userAss)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/users');
-        $response->assertStatus(403);
+        $this->get('/users')
+            ->assertStatus(403);
     }
 
     /**
@@ -153,13 +153,13 @@ class UserTest extends TestCase
      * @return void
      * @test
      */
-    public function secretaryShouldntSeeUsers()
+    public function secretaryShouldntListUsers()
     {
         $this->actingAs(self::$userSec)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/users');
-        $response->assertStatus(403);
+        $this->get('/users')
+            ->assertStatus(403);
     }
 
     /**
@@ -168,13 +168,13 @@ class UserTest extends TestCase
      * @return void
      * @test
      */
-    public function ldiShouldntSeeUsers()
+    public function ldiShouldntListUsers()
     {
         $this->actingAs(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/users');
-        $response->assertStatus(403);
+        $this->get('/users')
+            ->assertStatus(403);
     }
 
     /**
@@ -183,13 +183,13 @@ class UserTest extends TestCase
      * @return void
      * @test
      */
-    public function coordinatorShouldntSeeUsers()
+    public function coordinatorShouldntListUsers()
     {
         $this->actingAs(self::$userCoord)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/users');
-        $response->assertStatus(403);
+        $this->get('/users')
+            ->assertStatus(403);
     }
 
 
@@ -201,10 +201,10 @@ class UserTest extends TestCase
      * @return void
      * @test
      */
-    public function unloggedUserShouldntSeeCreateUsersForm()
+    public function guestShouldntAccessCreateUsersPage()
     {
-        $response = $this->get('/users/create');
-        $response->assertRedirect(route('auth.login'));
+        $this->get('/users/create')
+            ->assertRedirect(route('auth.login'));
     }
 
     /**
@@ -213,14 +213,14 @@ class UserTest extends TestCase
      * @return void
      * @test
      */
-    public function administratorShouldSeeCreateUsersForm()
+    public function administratorShouldAccessCreateUsersPage()
     {
         $this->actingAs(self::$userAdm)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/users/create');
-        $response->assertSee(['Cadastrar Usuário', 'E-Mail*', 'Nova Senha', 'Ativo', 'Cadastrar']);
-        $response->assertStatus(200);
+        $this->get('/users/create')
+            ->assertSee(['Cadastrar Usuário', 'E-Mail*', 'Nova Senha', 'Ativo', 'Cadastrar'])
+            ->assertStatus(200);
     }
 
     /**
@@ -229,13 +229,13 @@ class UserTest extends TestCase
      * @return void
      * @test
      */
-    public function directorShouldntSeeCreateUsersForm()
+    public function directorShouldntAccessCreateUsersPage()
     {
         $this->actingAs(self::$userDir)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/users/create');
-        $response->assertStatus(403);
+        $this->get('/users/create')
+            ->assertStatus(403);
     }
 
     /**
@@ -244,13 +244,13 @@ class UserTest extends TestCase
      * @return void
      * @test
      */
-    public function assistantShouldntSeeCreateUsersForm()
+    public function assistantShouldntAccessCreateUsersPage()
     {
         $this->actingAs(self::$userAss)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/users/create');
-        $response->assertStatus(403);
+        $this->get('/users/create')
+            ->assertStatus(403);
     }
 
     /**
@@ -259,13 +259,13 @@ class UserTest extends TestCase
      * @return void
      * @test
      */
-    public function secretaryShouldntSeeCreateUsersForm()
+    public function secretaryShouldntAccessCreateUsersPage()
     {
         $this->actingAs(self::$userSec)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/users/create');
-        $response->assertStatus(403);
+        $this->get('/users/create')
+            ->assertStatus(403);
     }
 
     /**
@@ -274,13 +274,13 @@ class UserTest extends TestCase
      * @return void
      * @test
      */
-    public function ldiShouldntSeeCreateUsersForm()
+    public function ldiShouldntAccessCreateUsersPage()
     {
         $this->actingAs(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/users/create');
-        $response->assertStatus(403);
+        $this->get('/users/create')
+            ->assertStatus(403);
     }
 
     /**
@@ -289,13 +289,13 @@ class UserTest extends TestCase
      * @return void
      * @test
      */
-    public function coordinatorShouldntSeeCreateUsersForm()
+    public function coordinatorShouldntAccessCreateUsersPage()
     {
         $this->actingAs(self::$userCoord)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/users/create');
-        $response->assertStatus(403);
+        $this->get('/users/create')
+            ->assertStatus(403);
     }
 
 
@@ -335,12 +335,12 @@ class UserTest extends TestCase
      * @return void
      * @test
      */
-    public function unloggedUserShouldntCreateUser()
+    public function guestShouldntCreateUser()
     {
         $user = $this->createTestUserAsArray();
 
-        $response = $this->post('/users', $user);
-        $response->assertRedirect(route('auth.login'));
+        $this->post('/users', $user)
+            ->assertRedirect(route('auth.login'));
     }
 
     /**
@@ -356,10 +356,9 @@ class UserTest extends TestCase
 
         $user = $this->createTestUserAsArray();
 
-        $response = $this->followingRedirects()->post('/users', $user);
-
-        $response->assertSee($this->expectedUserInfo());
-        $response->assertStatus(200);
+        $this->followingRedirects()->post('/users', $user)
+            ->assertSee($this->expectedUserInfo())
+            ->assertStatus(200);
     }
 
     /**
@@ -375,8 +374,8 @@ class UserTest extends TestCase
 
         $user = $this->createTestUserAsArray();
 
-        $response = $response = $this->followingRedirects()->post('/users', $user);
-        $response->assertStatus(403);
+        $this->followingRedirects()->post('/users', $user)
+            ->assertStatus(403);
     }
 
     /**
@@ -392,8 +391,8 @@ class UserTest extends TestCase
 
         $user = $this->createTestUserAsArray();
 
-        $response = $response = $this->followingRedirects()->post('/users', $user);
-        $response->assertStatus(403);
+        $this->followingRedirects()->post('/users', $user)
+            ->assertStatus(403);
     }
 
     /**
@@ -409,8 +408,8 @@ class UserTest extends TestCase
 
         $user = $this->createTestUserAsArray();
 
-        $response = $response = $this->followingRedirects()->post('/users', $user);
-        $response->assertStatus(403);
+        $this->followingRedirects()->post('/users', $user)
+            ->assertStatus(403);
     }
 
     /**
@@ -426,8 +425,8 @@ class UserTest extends TestCase
 
         $user = $this->createTestUserAsArray();
 
-        $response = $response = $this->followingRedirects()->post('/users', $user);
-        $response->assertStatus(403);
+        $this->followingRedirects()->post('/users', $user)
+            ->assertStatus(403);
     }
 
     /**
@@ -443,7 +442,7 @@ class UserTest extends TestCase
 
         $user = $this->createTestUserAsArray();
 
-        $response = $response = $this->followingRedirects()->post('/users', $user);
-        $response->assertStatus(403);
+        $this->followingRedirects()->post('/users', $user)
+            ->assertStatus(403);
     }
 }

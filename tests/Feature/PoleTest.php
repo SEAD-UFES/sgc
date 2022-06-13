@@ -89,134 +89,120 @@ class PoleTest extends TestCase
     }
 
     /**
-     * A basic feature test example.
-     *
-     * @return void
-     * @test
-     */
-    public function unloggedUserShouldntSeePoles()
-    {
-        $response = $this->get('/poles');
-        $response->assertRedirect(route('auth.login'));
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     * @test
-     */
-    public function administratorShouldSeePoles()
-    {
-        $this->actingAs(self::$userAdm)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
-
-        $response = $this->get('/poles');
-        $response->assertSee(['Pole Alpha', 'Pole Beta']);
-        $response->assertStatus(200);
-    }
-
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     * @test
-     */
-    public function directorShouldSeePoles()
-    {
-        $this->actingAs(self::$userDir)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
-
-        $response = $this->get('/poles');
-        $response->assertSee(['Pole Alpha', 'Pole Beta']);
-        $response->assertStatus(200);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     * @test
-     */
-    public function assistantShouldSeePoles()
-    {
-        $this->actingAs(self::$userAss)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
-
-        $response = $this->get('/poles');
-        $response->assertSee(['Pole Alpha', 'Pole Beta']);
-        $response->assertStatus(200);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     * @test
-     */
-    public function secretaryShouldSeePoles()
-    {
-        $this->actingAs(self::$userSec)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
-
-        $response = $this->get('/poles');
-        $response->assertSee(['Pole Alpha', 'Pole Beta']);
-        $response->assertStatus(200);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     * @test
-     */
-    public function ldiShouldntSeePoles()
-    {
-        $this->actingAs(self::$userLdi)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
-
-        $response = $this->get('/poles');
-        $response->assertStatus(403);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     * @test
-     */
-    public function coordinatorShouldSeePoles()
-    {
-        $this->actingAs(self::$userCoord)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
-
-        $response = $this->get('/poles');
-        $response->assertSee(['Pole Alpha', 'Pole Beta']);
-        $response->assertStatus(200);
-    }
-
-
-    // == Legacy tests ==
-
-    /**
      * Guest cannot list poles
      * @return void
      */
-    public function testGuestCannotListPoles()
+    public function guestShouldntListPoles()
     {
         $this->get(route('poles.index'))
             ->assertRedirect(route('auth.login'));
     }
 
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     * @test
+     */
+    public function administratorShouldListPoles()
+    {
+        $this->actingAs(self::$userAdm)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
+        $this->get('/poles')
+            ->assertSee(['Pole Alpha', 'Pole Beta'])
+            ->assertStatus(200);
+    }
+
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     * @test
+     */
+    public function directorShouldListPoles()
+    {
+        $this->actingAs(self::$userDir)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+
+        $this->get('/poles')
+            ->assertSee(['Pole Alpha', 'Pole Beta'])
+            ->assertStatus(200);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     * @test
+     */
+    public function assistantShouldListPoles()
+    {
+        $this->actingAs(self::$userAss)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+
+        $this->get('/poles')
+            ->assertSee(['Pole Alpha', 'Pole Beta'])
+            ->assertStatus(200);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     * @test
+     */
+    public function secretaryShouldListPoles()
+    {
+        $this->actingAs(self::$userSec)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+
+        $this->get('/poles')
+            ->assertSee(['Pole Alpha', 'Pole Beta'])
+            ->assertStatus(200);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     * @test
+     */
+    public function ldiShouldntListPoles()
+    {
+        $this->actingAs(self::$userLdi)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+
+        $this->get('/poles')
+            ->assertStatus(403);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     * @test
+     */
+    public function coordinatorShouldListPoles()
+    {
+        $this->actingAs(self::$userCoord)
+            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+
+        $this->get('/poles')
+            ->assertSee(['Pole Alpha', 'Pole Beta'])
+            ->assertStatus(200);
+    }
+
+
+    // == Legacy tests ==
 
 
     /**
      * Guest cannot create a pole
      * @return void
      */
-    public function testGuestCannotCreatePole()
+    public function guestShouldntCreatePole()
     {
         $this->post(route('poles.store'), $this->poleData)
             ->assertRedirect(route('auth.login'));
@@ -226,7 +212,7 @@ class PoleTest extends TestCase
      * Guest cannot update a pole
      * @return void
      */
-    public function testGuestCannotUpdatePole()
+    public function guestShouldntUpdatePole()
     {
         $pole = $this->getTestPole();
 
@@ -238,7 +224,7 @@ class PoleTest extends TestCase
      * Guest cannot delete a pole
      * @return void
      */
-    public function testGuestCannotDeletePole()
+    public function guestShouldntDeletePole()
     {
         $pole = $this->getTestPole();
 
@@ -250,7 +236,7 @@ class PoleTest extends TestCase
      * Guest cannot access pole create page
      * @return void
      */
-    public function testGuestCannotAccessCreatePolePage()
+    public function guestShouldntAccessCreatePolePage()
     {
         $this->get(route('poles.create'))
             ->assertRedirect(route('auth.login'));
@@ -260,7 +246,7 @@ class PoleTest extends TestCase
      * Guest cannot access pole edit page
      * @return void
      */
-    public function testGuestCannotAccessEditPolePage()
+    public function guestShouldntAccessEditPolePage()
     {
         $pole = $this->getTestPole();
 
@@ -321,8 +307,7 @@ class PoleTest extends TestCase
 
         $this->assertGreaterThanOrEqual(1, Pole::count());
 
-        $session
-            ->delete(route('poles.destroy', $pole->id))
+        $session->delete(route('poles.destroy', $pole->id))
             ->assertSee('Proibido');
     }
 

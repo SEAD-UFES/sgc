@@ -103,10 +103,10 @@ class ApprovedTest extends TestCase
      * @return void
      * @test
      */
-    public function unloggedUserShouldntSeeApproveds()
+    public function guestShouldntListApproveds()
     {
-        $response = $this->get('/approveds');
-        $response->assertRedirect(route('auth.login'));
+        $this->get('/approveds')
+            ->assertRedirect(route('auth.login'));
     }
 
     /**
@@ -115,14 +115,14 @@ class ApprovedTest extends TestCase
      * @return void
      * @test
      */
-    public function administratorShouldSeeApproveds()
+    public function administratorShouldListApproveds()
     {
         $this->actingAs(self::$userAdm)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/approveds');
-        $response->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com']);
-        $response->assertStatus(200);
+        $this->get('/approveds')
+            ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])
+            ->assertStatus(200);
     }
 
 
@@ -132,14 +132,14 @@ class ApprovedTest extends TestCase
      * @return void
      * @test
      */
-    public function directorShouldSeeApproveds()
+    public function directorShouldListApproveds()
     {
         $this->actingAs(self::$userDir)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/approveds');
-        $response->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com']);
-        $response->assertStatus(200);
+        $this->get('/approveds')
+            ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])
+            ->assertStatus(200);
     }
 
     /**
@@ -148,13 +148,13 @@ class ApprovedTest extends TestCase
      * @return void
      * @test
      */
-    public function assistantShouldntSeeApproveds()
+    public function assistantShouldntListApproveds()
     {
         $this->actingAs(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/approveds');
-        $response->assertStatus(403);
+        $this->get('/approveds')
+            ->assertStatus(403);
     }
 
     /**
@@ -163,14 +163,14 @@ class ApprovedTest extends TestCase
      * @return void
      * @test
      */
-    public function secretaryShouldSeeApproveds()
+    public function secretaryShouldListApproveds()
     {
         $this->actingAs(self::$userSec)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/approveds');
-        $response->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com']);
-        $response->assertStatus(200);
+        $this->get('/approveds')
+            ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])
+            ->assertStatus(200);
     }
 
     /**
@@ -179,13 +179,13 @@ class ApprovedTest extends TestCase
      * @return void
      * @test
      */
-    public function ldiShouldntSeeApproveds()
+    public function ldiShouldntListApproveds()
     {
         $this->actingAs(self::$userLdi)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/approveds');
-        $response->assertStatus(403);
+        $this->get('/approveds')
+            ->assertStatus(403);
     }
 
     /**
@@ -194,13 +194,13 @@ class ApprovedTest extends TestCase
      * @return void
      * @test
      */
-    public function coordinatorShouldSeeApproveds()
+    public function coordinatorShouldListApproveds()
     {
         $this->actingAs(self::$userCoord)
             ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
 
-        $response = $this->get('/approveds');
-        $response->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com']);
-        $response->assertStatus(200);
+        $this->get('/approveds')
+            ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])
+            ->assertStatus(200);
     }
 }

@@ -17,42 +17,40 @@ class LoginTest extends TestCase
      * Ensures a guest (unauthenticated user) sees the login form
      *
      * @return void
+     * @test
      */
-    public function testGuestCanViewALoginForm()
+    public function guestShouldAccessLoginPage()
     {
-        $response = $this->get(route('auth.login'));
-
-        $response->assertSuccessful();
-
-        $response->assertViewIs('login');
-
-        $response->assertSee('email');
-        $response->assertSee('password');
-        $response->assertSee('submit');
+        $this->get(route('auth.login'))
+            ->assertSuccessful()
+            ->assertViewIs('login')
+            ->assertSee('email')
+            ->assertSee('password')
+            ->assertSee('submit');
     }
 
     /**
      * A guest must be redirected from the root '/' to the login route
      *
      * @return void
+     * @test
      */
-    public function testGuestIsRedirectedFromRootLogin()
+    public function guestIsRedirectedFromRootLogin()
     {
-        $response = $this->get(route('root'));
-
-        $response->assertRedirect(route('auth.login'));
+        $this->get(route('root'))
+            ->assertRedirect(route('auth.login'));
     }
 
     /**
      * A guest must not be able to access the home route
      *
      * @return void
+     * @test
      */
-    public function testGuestCannotSeeHome()
+    public function guestShouldntSeeHome()
     {
-        $response = $this->get(route('home'));
-
-        $response->assertRedirect(route('auth.login'));
+        $this->get(route('home'))
+            ->assertRedirect(route('auth.login'));
     }
 
     /**
@@ -61,34 +59,34 @@ class LoginTest extends TestCase
      * A logged user must be redirected from 'root' to the 'home'.
      *
      * @return void
+     * @test
      */
-    public function testUserCannotViewLoginFormAuthenticated()
+    public function authenticatedUserShouldntAccessLoginPage()
     {
         $user = User::factory()->make();
 
         // it must redirect from / to /home
-        $response = $this->actingAs($user)->get(route('root'));
-        $response->assertRedirect(route('home'));
+        $this->actingAs($user)->get(route('root'))
+            ->assertRedirect(route('home'));
 
         // it must redirect from /login to /home
-        $response = $this->actingAs($user)->get(route('auth.login'));
-        $response->assertRedirect(route('home'));
+        $this->actingAs($user)->get(route('auth.login'))
+            ->assertRedirect(route('home'));
     }
 
     /**
      * An existing user cannot login with the wrong password
      *
      * @return void
+     * @test
      */
-    public function testUserCannotAuthenticateWithWrongPassword()
+    public function userShouldntAuthenticateWithWrongPassword()
     {
         $user = User::factory()->make();
 
-        $response = $this->post(route('auth.login'), [
+        $this->post(route('auth.login'), [
             'email' => $user->email,
             'password' =>  Hash::make('wrong-password'),
-        ]);
-
-        $response->assertStatus(302);
+        ])->assertStatus(302);
     }
 }
