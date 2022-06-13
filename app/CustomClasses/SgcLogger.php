@@ -146,7 +146,7 @@ class SgcLogger
 
     /**
      * @param string $action
-     * 
+     *
      * @return string
      */
     private static function severityMap(string $action): string
