@@ -34,7 +34,7 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (! Gate::allows('employee-list')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -55,7 +55,7 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (! Gate::allows('employee-store')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -81,7 +81,7 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (! Gate::allows('employee-store')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -108,15 +108,16 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (! Gate::allows('employee-show')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
         $this->service->read($employee);
 
         $employeeDocuments = EmployeeDocument::where('employee_id', $employee->id)->with('document')->orderBy('updated_at', 'desc')->get();
+        $activeBonds = $employee->bonds()->inActivePeriod()->orderBy('begin', 'ASC')->get();
 
-        return view('employee.show', compact(['employee', 'employeeDocuments']));
+        return view('employee.show', compact(['employee', 'employeeDocuments', 'activeBonds']));
     }
 
     /**
@@ -130,7 +131,7 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (! Gate::allows('employee-update')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -157,7 +158,7 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (! Gate::allows('employee-update')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -181,7 +182,7 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (! Gate::allows('employee-destroy')) {
-            SgcLogger::logBadAttemptOnUri($request->getRequestUri(), 403);
+            SgcLogger::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
