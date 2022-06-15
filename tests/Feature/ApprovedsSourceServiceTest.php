@@ -62,6 +62,6 @@ class ApprovedsSourceServiceTest extends TestCase
         $fakeUploadedFile = UploadedFile::fake()->create('approvedsSpreadsheet.xlsx', 20, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
         //execution
-        $approveds = $service->importApprovedsFromFile($fakeUploadedFile);
+        $service->importApprovedsFromFile($fakeUploadedFile);
     }
 }

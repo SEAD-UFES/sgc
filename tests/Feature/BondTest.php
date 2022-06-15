@@ -34,7 +34,11 @@ class BondTest extends TestCase
     {
         parent::setUp();
 
-        self::$userAdm = User::factory()->create();
+        self::$userAdm = User::factory()->create(
+            [
+                'email' => 'adm_email@test.com',
+            ]
+        );
         $userTypeAdm = UserType::factory()->admin()->create();
         UserTypeAssignment::factory()->create([
             'user_id' => self::$userAdm->id,
@@ -42,7 +46,11 @@ class BondTest extends TestCase
             'course_id' => null,
         ]);
 
-        self::$userDir = User::factory()->create();
+        self::$userDir = User::factory()->create(
+            [
+                'email' => 'dir_email@test.com',
+            ]
+        );
         $userTypeDir = UserType::factory()->director()->create();
         UserTypeAssignment::factory()->create([
             'user_id' => self::$userDir->id,
@@ -50,7 +58,11 @@ class BondTest extends TestCase
             'course_id' => null,
         ]);
 
-        self::$userAss = User::factory()->create();
+        self::$userAss = User::factory()->create(
+            [
+                'email' => 'ass_email@test.com',
+            ]
+        );
         $userTypeAss = UserType::factory()->assistant()->create();
         UserTypeAssignment::factory()->create([
             'user_id' => self::$userAss->id,
@@ -58,7 +70,11 @@ class BondTest extends TestCase
             'course_id' => null,
         ]);
 
-        self::$userSec = User::factory()->create();
+        self::$userSec = User::factory()->create(
+            [
+                'email' => 'sec_email@test.com',
+            ]
+        );
         $userTypeSec = UserType::factory()->secretary()->create();
         UserTypeAssignment::factory()->create([
             'user_id' => self::$userSec->id,
@@ -66,7 +82,11 @@ class BondTest extends TestCase
             'course_id' => null,
         ]);
 
-        self::$userCoord = User::factory()->create();
+        self::$userCoord = User::factory()->create(
+            [
+                'email' => 'coord_email@test.com',
+            ]
+        );
         $userTypeCoord = UserType::factory()->coordinator()->create();
         UserTypeAssignment::factory()->create([
             'user_id' => self::$userCoord->id,
@@ -74,7 +94,11 @@ class BondTest extends TestCase
             'course_id' => Course::factory()->create()->id,
         ]);
 
-        self::$userLdi = User::factory()->create();
+        self::$userLdi = User::factory()->create(
+            [
+                'email' => 'ldi_email@test.com',
+            ]
+        );
         $userTypeLdi = UserType::factory()->ldi()->create();
         UserTypeAssignment::factory()->create([
             'user_id' => self::$userLdi->id,
@@ -119,10 +143,10 @@ class BondTest extends TestCase
      * @return void
      * @test
      */
-    public function unloggedUserShouldntSeeBonds()
+    public function guestShouldntListBonds()
     {
-        $response = $this->get('/bonds');
-        $response->assertRedirect(route('auth.login'));
+        $this->get('/bonds')
+            ->assertRedirect(route('auth.login'));
     }
 
     /**
@@ -131,14 +155,14 @@ class BondTest extends TestCase
      * @return void
      * @test
      */
-    public function administratorShouldSeeBonds()
+    public function administratorShouldListBonds()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
-        $response = $this->get('/bonds');
-        $response->assertSee(['John Doe', 'Jane Doe', 'Course Alpha', 'Course Beta']);
-        $response->assertStatus(200);
+        $this->get('/bonds')
+            ->assertSee(['John Doe', 'Jane Doe', 'Course Alpha', 'Course Beta'])
+            ->assertStatus(200);
     }
 
     /**
@@ -147,14 +171,14 @@ class BondTest extends TestCase
      * @return void
      * @test
      */
-    public function directorShouldSeeBonds()
+    public function directorShouldListBonds()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
-        $response = $this->get('/bonds');
-        $response->assertSee(['John Doe', 'Jane Doe', 'Course Alpha', 'Course Beta']);
-        $response->assertStatus(200);
+        $this->get('/bonds')
+            ->assertSee(['John Doe', 'Jane Doe', 'Course Alpha', 'Course Beta'])
+            ->assertStatus(200);
     }
 
     /**
@@ -163,14 +187,14 @@ class BondTest extends TestCase
      * @return void
      * @test
      */
-    public function assistantShouldSeeBonds()
+    public function assistantShouldListBonds()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
-        $response = $this->get('/bonds');
-        $response->assertSee(['John Doe', 'Jane Doe', 'Course Alpha', 'Course Beta']);
-        $response->assertStatus(200);
+        $this->get('/bonds')
+            ->assertSee(['John Doe', 'Jane Doe', 'Course Alpha', 'Course Beta'])
+            ->assertStatus(200);
     }
 
     /**
@@ -179,14 +203,14 @@ class BondTest extends TestCase
      * @return void
      * @test
      */
-    public function secretaryShouldSeeBonds()
+    public function secretaryShouldListBonds()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
-        $response = $this->get('/bonds');
-        $response->assertSee(['John Doe', 'Jane Doe', 'Course Alpha', 'Course Beta']);
-        $response->assertStatus(200);
+        $this->get('/bonds')
+            ->assertSee(['John Doe', 'Jane Doe', 'Course Alpha', 'Course Beta'])
+            ->assertStatus(200);
     }
 
     /**
@@ -195,13 +219,13 @@ class BondTest extends TestCase
      * @return void
      * @test
      */
-    public function ldiShouldntSeeBonds()
+    public function ldiShouldntListBonds()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
-        $response = $this->get('/bonds');
-        $response->assertStatus(403);
+        $this->get('/bonds')
+            ->assertStatus(403);
     }
 
     /**
@@ -210,14 +234,14 @@ class BondTest extends TestCase
      * @return void
      * @test
      */
-    public function coordinatorShouldSeeBonds()
+    public function coordinatorShouldListBonds()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
-        $response = $this->get('/bonds');
-        $response->assertSee(['John Doe', 'Jane Doe', 'Course Alpha', 'Course Beta']);
-        $response->assertStatus(200);
+        $this->get('/bonds')
+            ->assertSee(['John Doe', 'Jane Doe', 'Course Alpha', 'Course Beta'])
+            ->assertStatus(200);
     }
 
 
@@ -229,10 +253,10 @@ class BondTest extends TestCase
      * @return void
      * @test
      */
-    public function unloggedUserShouldntSeeCreateBondsForm()
+    public function guestShouldntAccessCreateBondsPage()
     {
-        $response = $this->get('/bonds/create');
-        $response->assertRedirect(route('auth.login'));
+        $this->get('/bonds/create')
+            ->assertRedirect(route('auth.login'));
     }
 
     /**
@@ -241,14 +265,14 @@ class BondTest extends TestCase
      * @return void
      * @test
      */
-    public function administratorShouldSeeCreateBondsForm()
+    public function administratorShouldAccessCreateBondsPage()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
-        $response = $this->get('/bonds/create');
-        $response->assertSee(['Cadastrar Vínculo', 'Colaborador*', 'Função*', 'Curso*', 'Polo*', 'Voluntário', 'Cadastrar']);
-        $response->assertStatus(200);
+        $this->get('/bonds/create')
+            ->assertSee(['Cadastrar Vínculo', 'Colaborador*', 'Função*', 'Curso*', 'Polo*', 'Voluntário', 'Cadastrar'])
+            ->assertStatus(200);
     }
 
     /**
@@ -257,14 +281,14 @@ class BondTest extends TestCase
      * @return void
      * @test
      */
-    public function directorShouldSeeCreateBondsForm()
+    public function directorShouldAccessCreateBondsPage()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
-        $response = $this->get('/bonds/create');
-        $response->assertSee(['Cadastrar Vínculo', 'Colaborador*', 'Função*', 'Curso*', 'Polo*', 'Voluntário', 'Cadastrar']);
-        $response->assertStatus(200);
+        $this->get('/bonds/create')
+            ->assertSee(['Cadastrar Vínculo', 'Colaborador*', 'Função*', 'Curso*', 'Polo*', 'Voluntário', 'Cadastrar'])
+            ->assertStatus(200);
     }
 
     /**
@@ -273,14 +297,14 @@ class BondTest extends TestCase
      * @return void
      * @test
      */
-    public function assistantShouldSeeCreateBondsForm()
+    public function assistantShouldAccessCreateBondsPage()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
-        $response = $this->get('/bonds/create');
-        $response->assertSee(['Cadastrar Vínculo', 'Colaborador*', 'Função*', 'Curso*', 'Polo*', 'Voluntário', 'Cadastrar']);
-        $response->assertStatus(200);
+        $this->get('/bonds/create')
+            ->assertSee(['Cadastrar Vínculo', 'Colaborador*', 'Função*', 'Curso*', 'Polo*', 'Voluntário', 'Cadastrar'])
+            ->assertStatus(200);
     }
 
     /**
@@ -289,14 +313,14 @@ class BondTest extends TestCase
      * @return void
      * @test
      */
-    public function secretaryShouldSeeCreateBondsForm()
+    public function secretaryShouldAccessCreateBondsPage()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
-        $response = $this->get('/bonds/create');
-        $response->assertSee(['Cadastrar Vínculo', 'Colaborador*', 'Função*', 'Curso*', 'Polo*', 'Voluntário', 'Cadastrar']);
-        $response->assertStatus(200);
+        $this->get('/bonds/create')
+            ->assertSee(['Cadastrar Vínculo', 'Colaborador*', 'Função*', 'Curso*', 'Polo*', 'Voluntário', 'Cadastrar'])
+            ->assertStatus(200);
     }
 
     /**
@@ -305,13 +329,13 @@ class BondTest extends TestCase
      * @return void
      * @test
      */
-    public function ldiShouldntSeeCreateBondsForm()
+    public function ldiShouldntAccessCreateBondsPage()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
-        $response = $this->get('/bonds/create');
-        $response->assertStatus(403);
+        $this->get('/bonds/create')
+            ->assertStatus(403);
     }
 
     /**
@@ -320,14 +344,14 @@ class BondTest extends TestCase
      * @return void
      * @test
      */
-    public function coordinatorShouldSeeCreateBondsForm()
+    public function coordinatorShouldAccessCreateBondsPage()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
-        $response = $this->get('/bonds/create');
-        $response->assertSee(['Cadastrar Vínculo', 'Colaborador*', 'Função*', 'Curso*', 'Polo*', 'Voluntário', 'Cadastrar']);
-        $response->assertStatus(200);
+        $this->get('/bonds/create')
+            ->assertSee(['Cadastrar Vínculo', 'Colaborador*', 'Função*', 'Curso*', 'Polo*', 'Voluntário', 'Cadastrar'])
+            ->assertStatus(200);
     }
 
 
@@ -337,43 +361,39 @@ class BondTest extends TestCase
     /**
      * @param null|bool $volunteer
      * @param null|int $courseId
-     * @return array
+     * @return Bond
      * @throws InvalidFormatException
      * @throws InvalidCastException
      */
-    private function createTestBondAsArray(?bool $volunteer = false, ?int $courseId = null): array
+    private function createTestBond(?bool $volunteer = false, ?int $courseId = null): Bond
     {
-        $bondArr = Bond::factory()->make(
+        return Bond::factory()->create(
             [
                 'course_id' => $courseId ?? Course::factory()->create(
                     [
                         'name' => 'Course Gama',
                     ]
-                ),
+                )->id,
                 'employee_id' => Employee::factory()->create(
                     [
                         'name' => 'Carl Doe',
                     ]
-                ),
+                )->id,
                 'role_id' => Role::factory()->create(
                     [
                         'name' => 'Role A',
                     ]
-                ),
+                )->id,
                 'pole_id' => Pole::factory()->create(
                     [
                         'name' => 'Alabama Pole',
                     ]
-                ),
+                )->id,
                 'begin' => Carbon::today()->format('Y-m-d H:i:s'),
                 'end' => Carbon::today()->addYear()->format('Y-m-d H:i:s'),
                 'volunteer' => $volunteer,
             ]
-        )->toArray();
-
-        Arr::forget($bondArr, ['id', 'impediment', 'impediment_description', 'uaba_checked_at', 'created_at', 'updated_at']);
-
-        return $bondArr;
+        );
     }
 
     /**
@@ -391,12 +411,13 @@ class BondTest extends TestCase
      * @return void
      * @test
      */
-    public function unloggedUserShouldntCreateBond()
+    public function guestShouldntCreateBond()
     {
-        $bond = $this->createTestBondAsArray();
+        $bondArr = $this->createTestBond()->toArray();
+        Arr::forget($bondArr, ['id', 'impediment', 'impediment_description', 'uaba_checked_at', 'created_at', 'updated_at']);
 
-        $response = $this->post('/bonds', $bond);
-        $response->assertRedirect(route('auth.login'));
+        $this->post('/bonds', $bondArr)
+            ->assertRedirect(route('auth.login'));
     }
 
     /**
@@ -408,13 +429,14 @@ class BondTest extends TestCase
     public function administratorShouldCreateBond()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
-        $bond = $this->createTestBondAsArray();
-        $response = $this->followingRedirects()->post('/bonds', $bond);
+        $bondArr = $this->createTestBond()->toArray();
+        Arr::forget($bondArr, ['id', 'impediment', 'impediment_description', 'uaba_checked_at', 'created_at', 'updated_at']);
 
-        $response->assertSee($this->expectedBondInfo());
-        $response->assertStatus(200);
+        $this->followingRedirects()->post('/bonds', $bondArr)
+            ->assertSee($this->expectedBondInfo())
+            ->assertStatus(200);
     }
 
     /**
@@ -426,13 +448,14 @@ class BondTest extends TestCase
     public function directorShouldCreateBond()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
-        $bond = $this->createTestBondAsArray();
-        $response = $this->followingRedirects()->post('/bonds', $bond);
+        $bondArr = $this->createTestBond()->toArray();
+        Arr::forget($bondArr, ['id', 'impediment', 'impediment_description', 'uaba_checked_at', 'created_at', 'updated_at']);
 
-        $response->assertSee($this->expectedBondInfo());
-        $response->assertStatus(200);
+        $this->followingRedirects()->post('/bonds', $bondArr)
+            ->assertSee($this->expectedBondInfo())
+            ->assertStatus(200);
     }
 
     /**
@@ -444,13 +467,14 @@ class BondTest extends TestCase
     public function assistantShouldCreateBond()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
-        $bond = $this->createTestBondAsArray();
-        $response = $this->followingRedirects()->post('/bonds', $bond);
+        $bondArr = $this->createTestBond()->toArray();
+        Arr::forget($bondArr, ['id', 'impediment', 'impediment_description', 'uaba_checked_at', 'created_at', 'updated_at']);
 
-        $response->assertSee($this->expectedBondInfo());
-        $response->assertStatus(200);
+        $this->followingRedirects()->post('/bonds', $bondArr)
+            ->assertSee($this->expectedBondInfo())
+            ->assertStatus(200);
     }
 
     /**
@@ -462,14 +486,14 @@ class BondTest extends TestCase
     public function secretaryShouldCreateBond()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
-        $bond = $this->createTestBondAsArray();
+        $bondArr = $this->createTestBond()->toArray();
+        Arr::forget($bondArr, ['id', 'impediment', 'impediment_description', 'uaba_checked_at', 'created_at', 'updated_at']);
 
-        $response = $response = $this->followingRedirects()->post('/bonds', $bond);
-
-        $response->assertSee($this->expectedBondInfo());
-        $response->assertStatus(200);
+        $this->followingRedirects()->post('/bonds', $bondArr)
+            ->assertSee($this->expectedBondInfo())
+            ->assertStatus(200);
     }
 
     /**
@@ -481,12 +505,13 @@ class BondTest extends TestCase
     public function ldiShouldntCreateBond()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
-        $bond = $this->createTestBondAsArray();
+        $bondArr = $this->createTestBond()->toArray();
+        Arr::forget($bondArr, ['id', 'impediment', 'impediment_description', 'uaba_checked_at', 'created_at', 'updated_at']);
 
-        $response = $response = $this->followingRedirects()->post('/bonds', $bond);
-        $response->assertStatus(403);
+        $this->followingRedirects()->post('/bonds', $bondArr)
+            ->assertStatus(403);
     }
 
     /**
@@ -498,15 +523,16 @@ class BondTest extends TestCase
     public function coordinatorOfSameCourseShouldCreateBond()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
-        $coordinatorCourse = auth()->user()->getCurrentUTA()->course;
+        $coordinatorCourse = auth()->user()->getCurrentUta()->course;
 
-        $bond = $this->createTestBondAsArray(courseId: $coordinatorCourse->id);
-        $response = $this->followingRedirects()->post('/bonds', $bond);
+        $bondArr = $this->createTestBond(courseId: $coordinatorCourse->id)->toArray();
+        Arr::forget($bondArr, ['id', 'impediment', 'impediment_description', 'uaba_checked_at', 'created_at', 'updated_at']);
 
-        $response->assertSee($this->expectedBondInfo($coordinatorCourse->id));
-        $response->assertStatus(200);
+        $this->followingRedirects()->post('/bonds', $bondArr)
+            ->assertSee($this->expectedBondInfo($coordinatorCourse->id))
+            ->assertStatus(200);
     }
 
     /**
@@ -518,12 +544,13 @@ class BondTest extends TestCase
     public function coordinatorOfAnotherCourseShouldntCreateBond()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
-        $bond = $this->createTestBondAsArray();
-        $response = $this->followingRedirects()->post('/bonds', $bond);
+        $bondArr = $this->createTestBond()->toArray();
+        Arr::forget($bondArr, ['id', 'impediment', 'impediment_description', 'uaba_checked_at', 'created_at', 'updated_at']);
 
-        $response->assertSee('O usuário não pode escolher esse curso');
-        $response->assertStatus(200);
+        $this->followingRedirects()->post('/bonds', $bondArr)
+            ->assertSee('O usuário não pode escolher esse curso')
+            ->assertStatus(200);
     }
 }
