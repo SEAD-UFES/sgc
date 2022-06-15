@@ -107,7 +107,7 @@ class PoleTest extends TestCase
     public function administratorShouldListPoles()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/poles')
             ->assertSee(['Pole Alpha', 'Pole Beta'])
@@ -124,7 +124,7 @@ class PoleTest extends TestCase
     public function directorShouldListPoles()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/poles')
             ->assertSee(['Pole Alpha', 'Pole Beta'])
@@ -140,7 +140,7 @@ class PoleTest extends TestCase
     public function assistantShouldListPoles()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/poles')
             ->assertSee(['Pole Alpha', 'Pole Beta'])
@@ -156,7 +156,7 @@ class PoleTest extends TestCase
     public function secretaryShouldListPoles()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/poles')
             ->assertSee(['Pole Alpha', 'Pole Beta'])
@@ -172,7 +172,7 @@ class PoleTest extends TestCase
     public function ldiShouldntListPoles()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/poles')
             ->assertStatus(403);
@@ -187,7 +187,7 @@ class PoleTest extends TestCase
     public function coordinatorShouldListPoles()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/poles')
             ->assertSee(['Pole Alpha', 'Pole Beta'])
@@ -349,7 +349,7 @@ class PoleTest extends TestCase
         $user = User::factory()->create(["employee_id" => null]);
 
         $session = $this->actingAs($user)
-            ->withSession(['current_uta_id' => null, 'current_uta_id' => null]);
+            ->withSession(['loggedInUser.currentUtaId' => null, 'loggedInUser.currentUtaId' => null]);
 
         return $session;
     }

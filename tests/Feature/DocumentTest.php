@@ -117,7 +117,7 @@ class DocumentTest extends TestCase
     public function administratorShouldListEmployeesDocuments()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/employees/documents')
             ->assertSee('Document Employee Alpha.pdf')
@@ -133,7 +133,7 @@ class DocumentTest extends TestCase
     public function directorShouldListEmployeesDocuments()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/employees/documents')
             ->assertSee('Document Employee Alpha.pdf')
@@ -149,7 +149,7 @@ class DocumentTest extends TestCase
     public function assistantShouldListEmployeesDocuments()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/employees/documents')
             ->assertSee('Document Employee Alpha.pdf')
@@ -165,7 +165,7 @@ class DocumentTest extends TestCase
     public function secretaryShouldListEmployeesDocuments()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/employees/documents')
             ->assertSee('Document Employee Alpha.pdf')
@@ -181,7 +181,7 @@ class DocumentTest extends TestCase
     public function ldiShouldntListEmployeesDocuments()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/employees/documents')
             ->assertStatus(403);
@@ -196,7 +196,7 @@ class DocumentTest extends TestCase
     public function coordinatorShouldntListEmployeesDocuments()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/employees/documents')
             ->assertStatus(403);
@@ -223,7 +223,7 @@ class DocumentTest extends TestCase
     public function administratorShouldListBondsDocuments()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/bonds/documents')
             ->assertSee('Document Bond Beta.pdf')
@@ -239,7 +239,7 @@ class DocumentTest extends TestCase
     public function directorShouldListBondsDocuments()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/bonds/documents')
             ->assertSee('Document Bond Beta.pdf')
@@ -255,7 +255,7 @@ class DocumentTest extends TestCase
     public function assistantShouldListBondsDocuments()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/bonds/documents')
             ->assertSee('Document Bond Beta.pdf')
@@ -271,7 +271,7 @@ class DocumentTest extends TestCase
     public function secretaryShouldListBondsDocuments()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/bonds/documents')
             ->assertSee('Document Bond Beta.pdf')
@@ -287,7 +287,7 @@ class DocumentTest extends TestCase
     public function ldiShouldntListBondsDocuments()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/bonds/documents')
             ->assertStatus(403);
@@ -302,7 +302,7 @@ class DocumentTest extends TestCase
     public function coordinatorShouldntListBondsDocuments()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/bonds/documents')
             ->assertStatus(403);

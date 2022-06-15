@@ -108,7 +108,7 @@ class RoleTest extends TestCase
     public function administratorShouldListRoles()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/roles')
             ->assertSee(['Role Alpha', 'Role Beta'])
@@ -125,7 +125,7 @@ class RoleTest extends TestCase
     public function directorShouldListRoles()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/roles')
             ->assertSee(['Role Alpha', 'Role Beta'])
@@ -141,7 +141,7 @@ class RoleTest extends TestCase
     public function assistantShouldListRoles()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/roles')
             ->assertSee(['Role Alpha', 'Role Beta'])
@@ -157,7 +157,7 @@ class RoleTest extends TestCase
     public function secretaryShouldListRoles()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/roles')
             ->assertSee(['Role Alpha', 'Role Beta'])
@@ -173,7 +173,7 @@ class RoleTest extends TestCase
     public function ldiShouldntListRoles()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/roles')
             ->assertStatus(403);
@@ -188,7 +188,7 @@ class RoleTest extends TestCase
     public function coordinatorShouldListRoles()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/roles')
             ->assertSee(['Role Alpha', 'Role Beta'])

@@ -108,7 +108,7 @@ class CourseTest extends TestCase
     public function administratorShouldListCourses()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])
@@ -125,7 +125,7 @@ class CourseTest extends TestCase
     public function directorShouldListCourses()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])
@@ -141,7 +141,7 @@ class CourseTest extends TestCase
     public function assistantShouldListCourses()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])
@@ -157,7 +157,7 @@ class CourseTest extends TestCase
     public function secretaryShouldListCourses()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])
@@ -173,7 +173,7 @@ class CourseTest extends TestCase
     public function ldiShouldntListCourses()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/courses')
             ->assertStatus(403);
@@ -188,7 +188,7 @@ class CourseTest extends TestCase
     public function coordinatorShouldListCourses()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])

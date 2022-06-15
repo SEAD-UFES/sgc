@@ -7,10 +7,10 @@
     <ol class="breadcrumb border-top border-bottom bg-light">
         <li class="breadcrumb-item active" aria-current="page">
             Home&nbsp;
-            @if (session('current_uta_id') != null)
-                [{{ auth()->user()->getCurrentUTA()->user->email }} -
-                {{ auth()->user()->getCurrentUTA()->userType->name }}
-                {{ auth()->user()->getCurrentUTA()->course_id ? " - " . auth()->user()->getCurrentUTA()->course->name : "" }}]
+            @if (session('loggedInUser.currentUta')?->id != null)
+                [{{ auth()->user()->getCurrentUta()->user->email }} -
+                {{ auth()->user()->getCurrentUta()->userType->name }}
+                {{ auth()->user()->getCurrentUta()->course_id ? " - " . auth()->user()->getCurrentUta()->course->name : "" }}]
             @endif
         </li>
     </ol>

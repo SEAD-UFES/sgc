@@ -85,7 +85,7 @@ class User extends Authenticatable
     }
 
     //dynamic > static :)
-    public function getActiveUTAs()
+    public function getActiveUtas()
     {
         return $this->userTypeAssignments()
             ->with('userType', 'course')
@@ -153,9 +153,9 @@ class User extends Authenticatable
      *
      * @throws InvalidArgumentException
      */
-    public function hasUTAs(): bool
+    public function hasUtas(): bool
     {
-        return $this->getActiveUTAs()->get()->count() > 0;
+        return $this->getActiveUtas()->get()->count() > 0;
     }
 
     /**
@@ -163,9 +163,9 @@ class User extends Authenticatable
      *
      * @throws InvalidArgumentException
      */
-    public function getFirstUTA(): ?UserTypeAssignment
+    public function getFirstUta(): ?UserTypeAssignment
     {
-        return $this->getActiveUTAs()?->first();
+        return $this->getActiveUtas()?->first();
     }
 
     /**
@@ -179,19 +179,19 @@ class User extends Authenticatable
      * @throws NotFoundExceptionInterface
      * @throws ContainerExceptionInterface
      */
-    public function setCurrentUTA(?int $user_type_assignment_id): void
+    public function setCurrentUta(?int $user_type_assignment_id): void
     {
         if ($user_type_assignment_id) {
             $user_type_assignment = $this
-                ->getActiveUTAs()
+                ->getActiveUtas()
                 ->where('user_type_assignments.id', $user_type_assignment_id)
                 ->firstOrFail();
 
-            session(['current_uta' => $user_type_assignment]);
-            session(['current_uta_id' => $user_type_assignment?->id]);
+            session(['loggedInUser.currentUta' => $user_type_assignment]);
+            //session(['loggedInUser.currentUtaId' => $user_type_assignment?->id]);
         } else {
-            session(['current_uta' => null]);
-            session(['current_uta_id' => null]);
+            session(['loggedInUser.currentUta' => null]);
+            //session(['loggedInUser.currentUtaId' => null]);
         }
     }
 
@@ -202,16 +202,16 @@ class User extends Authenticatable
      * @throws NotFoundExceptionInterface
      * @throws ContainerExceptionInterface
      */
-    public function getCurrentUTA(): ?UserTypeAssignment
+    public function getCurrentUta(): ?UserTypeAssignment
     {
         /* $user_type_assignment = $this
-            ->getActiveUTAs()
-            ->where('user_type_assignments.id', session('current_uta_id'))
+            ->getActiveUtas()
+            ->where('user_type_assignments.id', session('loggedInUser.currentUtaId'))
             ->first();
 
         return $user_type_assignment; */
 
-        return session('current_uta');
+        return session('loggedInUser.currentUta');
     }
 
     /**

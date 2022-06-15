@@ -109,7 +109,7 @@ class UserTest extends TestCase
     public function administratorShouldListUsers()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/users')
             ->assertSee(['johndoe@test1.com', 'janedoe@test2.com'])
@@ -126,7 +126,7 @@ class UserTest extends TestCase
     public function directorShouldntListUsers()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/users')
             ->assertStatus(403);
@@ -141,7 +141,7 @@ class UserTest extends TestCase
     public function assistantShouldntListUsers()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/users')
             ->assertStatus(403);
@@ -156,7 +156,7 @@ class UserTest extends TestCase
     public function secretaryShouldntListUsers()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/users')
             ->assertStatus(403);
@@ -171,7 +171,7 @@ class UserTest extends TestCase
     public function ldiShouldntListUsers()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/users')
             ->assertStatus(403);
@@ -186,7 +186,7 @@ class UserTest extends TestCase
     public function coordinatorShouldntListUsers()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/users')
             ->assertStatus(403);
@@ -216,7 +216,7 @@ class UserTest extends TestCase
     public function administratorShouldAccessCreateUsersPage()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/users/create')
             ->assertSee(['Cadastrar Usuário', 'E-Mail*', 'Nova Senha', 'Ativo', 'Cadastrar'])
@@ -232,7 +232,7 @@ class UserTest extends TestCase
     public function directorShouldntAccessCreateUsersPage()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/users/create')
             ->assertStatus(403);
@@ -247,7 +247,7 @@ class UserTest extends TestCase
     public function assistantShouldntAccessCreateUsersPage()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/users/create')
             ->assertStatus(403);
@@ -262,7 +262,7 @@ class UserTest extends TestCase
     public function secretaryShouldntAccessCreateUsersPage()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/users/create')
             ->assertStatus(403);
@@ -277,7 +277,7 @@ class UserTest extends TestCase
     public function ldiShouldntAccessCreateUsersPage()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/users/create')
             ->assertStatus(403);
@@ -292,7 +292,7 @@ class UserTest extends TestCase
     public function coordinatorShouldntAccessCreateUsersPage()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/users/create')
             ->assertStatus(403);
@@ -352,7 +352,7 @@ class UserTest extends TestCase
     public function administratorShouldCreateUser()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $user = $this->createTestUserAsArray();
 
@@ -370,7 +370,7 @@ class UserTest extends TestCase
     public function directorShouldntCreateUser()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $user = $this->createTestUserAsArray();
 
@@ -387,7 +387,7 @@ class UserTest extends TestCase
     public function assistantShouldntCreateUser()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $user = $this->createTestUserAsArray();
 
@@ -404,7 +404,7 @@ class UserTest extends TestCase
     public function secretaryShouldntCreateUser()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $user = $this->createTestUserAsArray();
 
@@ -421,7 +421,7 @@ class UserTest extends TestCase
     public function ldiShouldntCreateUser()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $user = $this->createTestUserAsArray();
 
@@ -438,7 +438,7 @@ class UserTest extends TestCase
     public function coordinatorShouldntCreateUser()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $user = $this->createTestUserAsArray();
 

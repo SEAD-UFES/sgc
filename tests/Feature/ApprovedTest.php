@@ -118,7 +118,7 @@ class ApprovedTest extends TestCase
     public function administratorShouldListApproveds()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/approveds')
             ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])
@@ -135,7 +135,7 @@ class ApprovedTest extends TestCase
     public function directorShouldListApproveds()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/approveds')
             ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])
@@ -151,7 +151,7 @@ class ApprovedTest extends TestCase
     public function assistantShouldntListApproveds()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/approveds')
             ->assertStatus(403);
@@ -166,7 +166,7 @@ class ApprovedTest extends TestCase
     public function secretaryShouldListApproveds()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/approveds')
             ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])
@@ -182,7 +182,7 @@ class ApprovedTest extends TestCase
     public function ldiShouldntListApproveds()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/approveds')
             ->assertStatus(403);
@@ -197,7 +197,7 @@ class ApprovedTest extends TestCase
     public function coordinatorShouldListApproveds()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/approveds')
             ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])

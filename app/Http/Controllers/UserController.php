@@ -174,7 +174,7 @@ class UserController extends Controller
 
     public function setCurrentUTA(Request $request)
     {
-        auth()->user()->setCurrentUTA($request->activeUTAs);
+        auth()->user()->setCurrentUta($request->activeUTAs);
         return redirect()->back();
     }
 

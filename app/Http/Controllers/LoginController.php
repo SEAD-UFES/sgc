@@ -27,8 +27,8 @@ class LoginController extends Controller
 
             SgcLogger::writeLog();
 
-            $firstUtaId = auth()->user()->getFirstUTA()?->id;
-            auth()->user()->setCurrentUTA($firstUtaId);
+            $firstUtaId = auth()->user()->getFirstUta()?->id;
+            auth()->user()->setCurrentUta($firstUtaId);
 
             return redirect()->intended('home');
         }

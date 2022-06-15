@@ -72,7 +72,7 @@ class GenericGates
         /* define a coord with course_id */
         Gate::define('isCoord-course_id', function (User $user, int $course_id) {
             //need to have session UserTypeAssignment active.
-            $currentUTA = auth()->user()->getCurrentUTA();
+            $currentUTA = auth()->user()->getCurrentUta();
             if (! $currentUTA) {
                 return false;
             }
@@ -95,7 +95,7 @@ class GenericGates
         //return $user->userType->acronym == $acronym;
 
         //need to have session UserTypeAssignment active.
-        $currentUTA = auth()->user()->getCurrentUTA();
+        $currentUTA = auth()->user()->getCurrentUta();
         if (! $currentUTA) {
             return false;
         }
@@ -113,7 +113,7 @@ class GenericGates
     private static function checkGlobalRoleUta(string $acronym): bool
     {
         //need to have session UserTypeAssignment active.
-        $currentUTA = auth()->user()->getCurrentUTA();
+        $currentUTA = auth()->user()->getCurrentUta();
         if (! $currentUTA) {
             return false;
         }

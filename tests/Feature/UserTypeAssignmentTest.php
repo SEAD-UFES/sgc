@@ -116,7 +116,7 @@ class UserTypeAssignmentTest extends TestCase
     public function administratorShouldListUserTypeAssignments()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/userTypeAssignments')
             ->assertSee(['johndoe@test.com', 'janedoe@test2.com', 'Type one (Course Alpha)', 'Type two (Course Beta)'])
@@ -133,7 +133,7 @@ class UserTypeAssignmentTest extends TestCase
     public function directorShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/userTypeAssignments')
             ->assertStatus(403);
@@ -148,7 +148,7 @@ class UserTypeAssignmentTest extends TestCase
     public function assistantShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/userTypeAssignments')
             ->assertStatus(403);
@@ -163,7 +163,7 @@ class UserTypeAssignmentTest extends TestCase
     public function secretaryShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/userTypeAssignments')
             ->assertStatus(403);
@@ -178,7 +178,7 @@ class UserTypeAssignmentTest extends TestCase
     public function ldiShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/userTypeAssignments')
             ->assertStatus(403);
@@ -193,7 +193,7 @@ class UserTypeAssignmentTest extends TestCase
     public function coordinatorShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['current_uta' => auth()->user()->getFirstUTA(), 'current_uta_id' => auth()->user()->getFirstUTA()->id]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
 
         $this->get('/userTypeAssignments')
             ->assertStatus(403);

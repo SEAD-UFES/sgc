@@ -79,7 +79,7 @@ class SgcLogger
         $executor = Auth::user();
         $executorId = $executor?->id ?? 'NoID';
         $executorEmail = isset($executor->email) ? ':' . $executor->email : ":\t";
-        $executorRole = $executor->getCurrentUTA()->userType->name ?? 'NULL UTA';
+        $executorRole = $executor->getCurrentUta()->userType->name ?? 'NULL UTA';
 
         $logText = "\t" . NetworkHelper::getClientIpAddress() . "\t|\t${executorId}${executorEmail} [${executorRole}]\t|\tattempted " . $method . " on '" . $uri . "' with result " . $httpErrorCode;
 
@@ -99,7 +99,7 @@ class SgcLogger
         $_executor = $executor ?? Auth::user();
         $executorId = $_executor->id ?? 'NoID';
         $executorEmail = isset($_executor->email) ? ':' . $_executor->email : ":\t";
-        $executorRole = ($_executor instanceof User) ? ((! is_null($_executor->getCurrentUTA())) ? $_executor->getCurrentUTA()->userType->name : 'Null Current UTA') : 'NoRole';
+        $executorRole = ($_executor instanceof User) ? ((! is_null($_executor->getCurrentUta())) ? $_executor->getCurrentUta()->userType->name : 'Null Current UTA') : 'NoRole';
 
         return "${executorId}${executorEmail} [${executorRole}]";
     }
