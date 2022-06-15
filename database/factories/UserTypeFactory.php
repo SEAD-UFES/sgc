@@ -39,7 +39,8 @@ class UserTypeFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'acronym' => 'adm'
+                'acronym' => 'adm',
+                'name' => 'Administrador',
             ];
         });
     }
@@ -53,7 +54,8 @@ class UserTypeFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'acronym' => 'dir'
+                'acronym' => 'dir',
+                'name' => 'Diretor',
             ];
         });
     }
@@ -67,7 +69,8 @@ class UserTypeFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'acronym' => 'ass'
+                'acronym' => 'ass',
+                'name' => 'Assistente',
             ];
         });
     }
@@ -81,7 +84,8 @@ class UserTypeFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'acronym' => 'sec'
+                'acronym' => 'sec',
+                'name' => 'Secretário',
             ];
         });
     }
@@ -95,7 +99,8 @@ class UserTypeFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'acronym' => 'ldi'
+                'acronym' => 'ldi',
+                'name' => 'Ldi',
             ];
         });
     }
@@ -109,7 +114,23 @@ class UserTypeFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'acronym' => 'coord'
+                'acronym' => 'coord',
+                'name' => 'Coordenador',
+            ];
+        });
+    }
+
+
+    /**
+     * Return an alien User Type (acronym `alien`)
+     * @return \Illumintate\Database\Eloquent\Factories\Factory
+     */
+    public function alien()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'acronym' => 'alien',
+                'name' => 'Alien',
             ];
         });
     }

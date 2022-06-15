@@ -37,7 +37,7 @@ class EmployeeFactory extends Factory
             'document_type_id' => DocumentType::factory(),
             'marital_status_id' => MaritalStatus::factory(),
 
-            'cpf' => $this->faker->cpf($formatted = false),
+            'cpf' => $this->faker->unique()->cpf($formatted = false),
             'name' => $this->faker->name(),
             'job' => $this->faker->jobTitle(),
             'birthday' => $this->faker->dateTimeBetween('-50 years', '-19 years'),
@@ -61,7 +61,7 @@ class EmployeeFactory extends Factory
             'area_code' => $areaCode,
             'phone' => $areaCode . $this->faker->landline($formatted = false),
             'mobile' => $areaCode . $this->faker->cellphone($formatted = false),
-            'email' => $this->faker->email(),
+            'email' => $this->faker->unique()->email(),
 
             'created_at' => now(),
             'updated_at' => now(),
