@@ -4,7 +4,8 @@
 *.css diff=css
 *.html diff=html
 *.md diff=markdown
-*.php diff=php
+*.php diff=php eol=lf
+*.js eol=lf
 
 /.github export-ignore
 CHANGELOG.md export-ignore
