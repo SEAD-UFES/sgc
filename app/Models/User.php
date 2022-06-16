@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\ModelFilters\UserFilter;
 use Carbon\Carbon;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+// use Laravel\Sanctum\HasApiTokens;
 use InvalidArgumentException;
 use Kyslik\ColumnSortable\Sortable;
 use Psr\Container\ContainerExceptionInterface;
@@ -18,7 +20,7 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use /* HasApiTokens, */HasFactory, Notifiable;
     use Sortable;
     use UserFilter, Filterable;
 
