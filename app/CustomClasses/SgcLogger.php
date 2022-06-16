@@ -99,7 +99,7 @@ class SgcLogger
         $_executor = $executor ?? Auth::user();
         $executorId = $_executor->id ?? 'NoID';
         $executorEmail = isset($_executor->email) ? ':' . $_executor->email : ":\t";
-        $executorRole = ($_executor instanceof User) ? ((! is_null($_executor->getCurrentUta())) ? $_executor->getCurrentUta()->userType->name : 'Null Current UTA') : 'NoRole';
+        $executorRole = $_executor instanceof User ? (! is_null($_executor->getCurrentUta()) ? $_executor->getCurrentUta()->userType->name : 'Null Current UTA') : 'NoRole';
 
         return "${executorId}${executorEmail} [${executorRole}]";
     }

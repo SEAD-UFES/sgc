@@ -23,14 +23,14 @@ use App\Models\UserType;
 use App\Models\UserTypeAssignment;
 use App\Observers\ApprovedObserver;
 use App\Observers\ApprovedStateObserver;
-use App\Observers\BondObserver;
 use App\Observers\BondDocumentObserver;
+use App\Observers\BondObserver;
 use App\Observers\CourseObserver;
 use App\Observers\CourseTypeObserver;
 use App\Observers\DocumentObserver;
 use App\Observers\DocumentTypeObserver;
-use App\Observers\EmployeeObserver;
 use App\Observers\EmployeeDocumentObserver;
+use App\Observers\EmployeeObserver;
 use App\Observers\GenderObserver;
 use App\Observers\GrantTypeObserver;
 use App\Observers\MaritalStatusObserver;
@@ -38,12 +38,11 @@ use App\Observers\PoleObserver;
 use App\Observers\RoleObserver;
 use App\Observers\StateObserver;
 use App\Observers\UserObserver;
-use App\Observers\UserTypeObserver;
 use App\Observers\UserTypeAssignmentObserver;
+use App\Observers\UserTypeObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
