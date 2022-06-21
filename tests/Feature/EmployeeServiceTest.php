@@ -2,15 +2,14 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\Bond;
-use App\Models\User;
-use App\Models\Employee;
 use App\Models\BondDocument;
+use App\Models\Employee;
+use App\Models\User;
 use App\Services\EmployeeService;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
+use Tests\TestCase;
 
 class EmployeeServiceTest extends TestCase
 {
@@ -37,7 +36,7 @@ class EmployeeServiceTest extends TestCase
             ]
         );
 
-        $this->service = new EmployeeService;
+        $this->service = new EmployeeService();
     }
 
     /**
@@ -185,7 +184,7 @@ class EmployeeServiceTest extends TestCase
 
         $user = User::find(1);
 
-        Event::fakeFor(function () use ($employee, $user) {
+        Event::fakeFor(function () use ($employee) {
             //execution
             $this->service->delete($employee);
 

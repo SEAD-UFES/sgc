@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\Approved;
 use App\Models\ApprovedState;
 use App\Services\ApprovedService;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
+use Tests\TestCase;
 
 class ApprovedServiceTest extends TestCase
 {
@@ -40,7 +40,7 @@ class ApprovedServiceTest extends TestCase
             ]
         );
 
-        $this->service = new ApprovedService;
+        $this->service = new ApprovedService();
     }
 
     /**

@@ -2,18 +2,17 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\Bond;
+use App\Models\BondDocument;
 use App\Models\Course;
 use App\Models\Document;
 use App\Models\Employee;
-use App\Models\UserType;
-use App\Models\BondDocument;
-use App\Services\BondService;
 use App\Models\EmployeeDocument;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\UserType;
+use App\Services\BondService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
+use Tests\TestCase;
 
 class BondServiceTest extends TestCase
 {
@@ -56,7 +55,7 @@ class BondServiceTest extends TestCase
             ]
         );
 
-        $this->service = new BondService;
+        $this->service = new BondService();
     }
 
     /**

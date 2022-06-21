@@ -2,18 +2,17 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\Bond;
-use App\Models\Document;
-use Mockery\MockInterface;
 use App\Models\BondDocument;
+use App\Models\Document;
 use App\Models\DocumentType;
 use App\Services\DocumentService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery\MockInterface;
+use Tests\TestCase;
 
 class BondDocumentServiceTest extends TestCase
 {
@@ -54,7 +53,7 @@ class BondDocumentServiceTest extends TestCase
             ]
         );
 
-        $this->service = new DocumentService;
+        $this->service = new DocumentService();
         $this->service->documentClass = BondDocument::class;
     }
 
@@ -120,13 +119,13 @@ class BondDocumentServiceTest extends TestCase
 
         //overwriting 'getFileData' method and asserting parameter
         $service = $this->partialMock(DocumentService::class, function (MockInterface $service) {
-            $fileBase64 = "JVBERi0xLjIgCjkgMCBvYmoKPDwKPj4Kc3RyZWFtCkJULyA5IFRmKF"
-                . "Rlc3QpJyBFVAplbmRzdHJlYW0KZW5kb2JqCjQgMCBvYmoKPDwKL1R5cGUgL1Bh"
-                . "Z2UKL1BhcmVudCA1IDAgUgovQ29udGVudHMgOSAwIFIKPj4KZW5kb2JqCjUgMC"
-                . "BvYmoKPDwKL0tpZHMgWzQgMCBSIF0KL0NvdW50IDEKL1R5cGUgL1BhZ2VzCi9N"
-                . "ZWRpYUJveCBbIDAgMCA5OSA5IF0KPj4KZW5kb2JqCjMgMCBvYmoKPDwKL1BhZ2"
-                . "VzIDUgMCBSCi9UeXBlIC9DYXRhbG9nCj4+CmVuZG9iagp0cmFpbGVyCjw8Ci9S"
-                . "b290IDMgMCBSCj4+CiUlRU9G";
+            $fileBase64 = 'JVBERi0xLjIgCjkgMCBvYmoKPDwKPj4Kc3RyZWFtCkJULyA5IFRmKF'
+                . 'Rlc3QpJyBFVAplbmRzdHJlYW0KZW5kb2JqCjQgMCBvYmoKPDwKL1R5cGUgL1Bh'
+                . 'Z2UKL1BhcmVudCA1IDAgUgovQ29udGVudHMgOSAwIFIKPj4KZW5kb2JqCjUgMC'
+                . 'BvYmoKPDwKL0tpZHMgWzQgMCBSIF0KL0NvdW50IDEKL1R5cGUgL1BhZ2VzCi9N'
+                . 'ZWRpYUJveCBbIDAgMCA5OSA5IF0KPj4KZW5kb2JqCjMgMCBvYmoKPDwKL1BhZ2'
+                . 'VzIDUgMCBSCi9UeXBlIC9DYXRhbG9nCj4+CmVuZG9iagp0cmFpbGVyCjw8Ci9S'
+                . 'b290IDMgMCBSCj4+CiUlRU9G';
 
             $service->shouldReceive('getFileData')->once()->andReturn($fileBase64);
         });

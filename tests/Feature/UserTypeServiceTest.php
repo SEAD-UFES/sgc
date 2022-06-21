@@ -2,12 +2,11 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\UserType;
 use App\Services\UserTypeService;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
+use Tests\TestCase;
 
 class UserTypeServiceTest extends TestCase
 {
@@ -34,7 +33,7 @@ class UserTypeServiceTest extends TestCase
             ]
         );
 
-        $this->service = new UserTypeService;
+        $this->service = new UserTypeService();
     }
 
     /**

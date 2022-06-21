@@ -2,12 +2,11 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\Course;
 use App\Services\CourseService;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
+use Tests\TestCase;
 
 class CourseServiceTest extends TestCase
 {
@@ -30,7 +29,7 @@ class CourseServiceTest extends TestCase
             ]
         );
 
-        $this->service = new CourseService;
+        $this->service = new CourseService();
     }
 
     /**

@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\UserType;
 use App\Models\UserTypeAssignment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class CourseTest extends TestCase
@@ -20,7 +19,6 @@ class CourseTest extends TestCase
     private static $userSec;
     private static $userCoord;
     private static $userLdi;
-
 
     public function setUp(): void
     {
@@ -91,6 +89,7 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function guestShouldntListCourses()
@@ -103,29 +102,30 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function administratorShouldListCourses()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])
             ->assertStatus(200);
     }
 
-
     /**
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function directorShouldListCourses()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])
@@ -136,12 +136,13 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function assistantShouldListCourses()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])
@@ -152,12 +153,13 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function secretaryShouldListCourses()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])
@@ -168,12 +170,13 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function ldiShouldntListCourses()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/courses')
             ->assertStatus(403);
@@ -183,12 +186,13 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function coordinatorShouldListCourses()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])

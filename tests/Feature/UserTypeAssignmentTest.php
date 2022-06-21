@@ -2,12 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\Course;
 use App\Models\User;
 use App\Models\UserType;
 use App\Models\UserTypeAssignment;
-use App\Models\Course;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class UserTypeAssignmentTest extends TestCase
@@ -20,7 +19,6 @@ class UserTypeAssignmentTest extends TestCase
     private static $userSec;
     private static $userCoord;
     private static $userLdi;
-
 
     public function setUp(): void
     {
@@ -99,6 +97,7 @@ class UserTypeAssignmentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function guestShouldntListUserTypeAssignments()
@@ -111,29 +110,30 @@ class UserTypeAssignmentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function administratorShouldListUserTypeAssignments()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/userTypeAssignments')
             ->assertSee(['johndoe@test.com', 'janedoe@test2.com', 'Type one (Course Alpha)', 'Type two (Course Beta)'])
             ->assertStatus(200);
     }
 
-
     /**
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function directorShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/userTypeAssignments')
             ->assertStatus(403);
@@ -143,12 +143,13 @@ class UserTypeAssignmentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function assistantShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/userTypeAssignments')
             ->assertStatus(403);
@@ -158,12 +159,13 @@ class UserTypeAssignmentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function secretaryShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/userTypeAssignments')
             ->assertStatus(403);
@@ -173,12 +175,13 @@ class UserTypeAssignmentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function ldiShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/userTypeAssignments')
             ->assertStatus(403);
@@ -188,12 +191,13 @@ class UserTypeAssignmentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function coordinatorShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/userTypeAssignments')
             ->assertStatus(403);

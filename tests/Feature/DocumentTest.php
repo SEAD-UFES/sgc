@@ -9,8 +9,6 @@ use App\Models\User;
 use App\Models\UserType;
 use App\Models\UserTypeAssignment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class DocumentTest extends TestCase
@@ -23,7 +21,6 @@ class DocumentTest extends TestCase
     private static $userSec;
     private static $userCoord;
     private static $userLdi;
-
 
     public function setUp(): void
     {
@@ -77,8 +74,6 @@ class DocumentTest extends TestCase
             'course_id' => null,
         ]);
 
-
-
         Document::factory()->create(
             [
                 'original_name' => 'Document Employee Alpha.pdf',
@@ -100,6 +95,7 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function guestShouldntListEmployeesDocuments()
@@ -112,12 +108,13 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function administratorShouldListEmployeesDocuments()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/employees/documents')
             ->assertSee('Document Employee Alpha.pdf')
@@ -128,12 +125,13 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function directorShouldListEmployeesDocuments()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/employees/documents')
             ->assertSee('Document Employee Alpha.pdf')
@@ -144,12 +142,13 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function assistantShouldListEmployeesDocuments()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/employees/documents')
             ->assertSee('Document Employee Alpha.pdf')
@@ -160,12 +159,13 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function secretaryShouldListEmployeesDocuments()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/employees/documents')
             ->assertSee('Document Employee Alpha.pdf')
@@ -176,12 +176,13 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function ldiShouldntListEmployeesDocuments()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/employees/documents')
             ->assertStatus(403);
@@ -191,12 +192,13 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function coordinatorShouldntListEmployeesDocuments()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/employees/documents')
             ->assertStatus(403);
@@ -206,6 +208,7 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function guestShouldntListBondsDocuments()
@@ -218,12 +221,13 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function administratorShouldListBondsDocuments()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/bonds/documents')
             ->assertSee('Document Bond Beta.pdf')
@@ -234,12 +238,13 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function directorShouldListBondsDocuments()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/bonds/documents')
             ->assertSee('Document Bond Beta.pdf')
@@ -250,12 +255,13 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function assistantShouldListBondsDocuments()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/bonds/documents')
             ->assertSee('Document Bond Beta.pdf')
@@ -266,12 +272,13 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function secretaryShouldListBondsDocuments()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/bonds/documents')
             ->assertSee('Document Bond Beta.pdf')
@@ -282,12 +289,13 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function ldiShouldntListBondsDocuments()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/bonds/documents')
             ->assertStatus(403);
@@ -297,12 +305,13 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function coordinatorShouldntListBondsDocuments()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/bonds/documents')
             ->assertStatus(403);

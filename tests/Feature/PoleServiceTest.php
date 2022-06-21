@@ -2,12 +2,11 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\Pole;
 use App\Services\PoleService;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
+use Tests\TestCase;
 
 class PoleServiceTest extends TestCase
 {
@@ -30,7 +29,7 @@ class PoleServiceTest extends TestCase
             ]
         );
 
-        $this->service = new PoleService;
+        $this->service = new PoleService();
     }
 
     /**

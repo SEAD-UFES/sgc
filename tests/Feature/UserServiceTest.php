@@ -3,13 +3,12 @@
 namespace Tests\Feature;
 
 use App\Models\Employee;
-use Tests\TestCase;
 use App\Models\User;
 use App\Services\UserService;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Hash;
+use Tests\TestCase;
 
 class UserServiceTest extends TestCase
 {
@@ -35,7 +34,7 @@ class UserServiceTest extends TestCase
             ]
         );
 
-        $this->service = new UserService;
+        $this->service = new UserService();
     }
 
     /**

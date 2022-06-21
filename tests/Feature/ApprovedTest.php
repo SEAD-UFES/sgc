@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\UserType;
 use App\Models\UserTypeAssignment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ApprovedTest extends TestCase
@@ -20,7 +19,6 @@ class ApprovedTest extends TestCase
     private static $userSec;
     private static $userCoord;
     private static $userLdi;
-
 
     public function setUp(): void
     {
@@ -101,6 +99,7 @@ class ApprovedTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function guestShouldntListApproveds()
@@ -113,29 +112,30 @@ class ApprovedTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function administratorShouldListApproveds()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/approveds')
             ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])
             ->assertStatus(200);
     }
 
-
     /**
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function directorShouldListApproveds()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/approveds')
             ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])
@@ -146,12 +146,13 @@ class ApprovedTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function assistantShouldntListApproveds()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/approveds')
             ->assertStatus(403);
@@ -161,12 +162,13 @@ class ApprovedTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function secretaryShouldListApproveds()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/approveds')
             ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])
@@ -177,12 +179,13 @@ class ApprovedTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function ldiShouldntListApproveds()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/approveds')
             ->assertStatus(403);
@@ -192,12 +195,13 @@ class ApprovedTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function coordinatorShouldListApproveds()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/approveds')
             ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])

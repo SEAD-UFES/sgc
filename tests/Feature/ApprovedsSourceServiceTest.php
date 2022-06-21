@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Approved;
 use App\Services\ApprovedsSourceService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Mockery\MockInterface;
@@ -42,7 +41,7 @@ class ApprovedsSourceServiceTest extends TestCase
             ]
         );
 
-        $this->service = new ApprovedsSourceService;
+        $this->service = new ApprovedsSourceService();
     }
 
     /**

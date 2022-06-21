@@ -2,14 +2,13 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\Document;
 use App\Models\BondDocument;
+use App\Models\Document;
 use App\Models\EmployeeDocument;
 use App\Services\DocumentService;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
+use Tests\TestCase;
 
 class GenericDocumentServiceTest extends TestCase
 {
@@ -36,7 +35,7 @@ class GenericDocumentServiceTest extends TestCase
             ]
         );
 
-        $this->service = new DocumentService;
+        $this->service = new DocumentService();
     }
 
     /**

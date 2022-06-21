@@ -2,19 +2,18 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
-
-use App\Models\User;
 use App\Models\Pole;
+use App\Models\User;
 use App\Models\UserType;
 use App\Models\UserTypeAssignment;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class PoleTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $poleData = ["name" => "Polo Teste", "description" => "Teste."]; //Pole for legacy tests
+    protected $poleData = ['name' => 'Polo Teste', 'description' => 'Teste.']; //Pole for legacy tests
 
     private static $userAdm;
     private static $userDir;
@@ -90,6 +89,7 @@ class PoleTest extends TestCase
 
     /**
      * Guest cannot list poles
+     *
      * @return void
      */
     public function guestShouldntListPoles()
@@ -102,29 +102,30 @@ class PoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function administratorShouldListPoles()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/poles')
             ->assertSee(['Pole Alpha', 'Pole Beta'])
             ->assertStatus(200);
     }
 
-
     /**
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function directorShouldListPoles()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/poles')
             ->assertSee(['Pole Alpha', 'Pole Beta'])
@@ -135,12 +136,13 @@ class PoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function assistantShouldListPoles()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/poles')
             ->assertSee(['Pole Alpha', 'Pole Beta'])
@@ -151,12 +153,13 @@ class PoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function secretaryShouldListPoles()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/poles')
             ->assertSee(['Pole Alpha', 'Pole Beta'])
@@ -167,12 +170,13 @@ class PoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function ldiShouldntListPoles()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/poles')
             ->assertStatus(403);
@@ -182,24 +186,24 @@ class PoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function coordinatorShouldListPoles()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/poles')
             ->assertSee(['Pole Alpha', 'Pole Beta'])
             ->assertStatus(200);
     }
 
-
     // == Legacy tests ==
-
 
     /**
      * Guest cannot create a pole
+     *
      * @return void
      */
     public function guestShouldntCreatePole()
@@ -210,6 +214,7 @@ class PoleTest extends TestCase
 
     /**
      * Guest cannot update a pole
+     *
      * @return void
      */
     public function guestShouldntUpdatePole()
@@ -222,6 +227,7 @@ class PoleTest extends TestCase
 
     /**
      * Guest cannot delete a pole
+     *
      * @return void
      */
     public function guestShouldntDeletePole()
@@ -234,6 +240,7 @@ class PoleTest extends TestCase
 
     /**
      * Guest cannot access pole create page
+     *
      * @return void
      */
     public function guestShouldntAccessCreatePolePage()
@@ -244,6 +251,7 @@ class PoleTest extends TestCase
 
     /**
      * Guest cannot access pole edit page
+     *
      * @return void
      */
     public function guestShouldntAccessEditPolePage()
@@ -256,6 +264,7 @@ class PoleTest extends TestCase
 
     /**
      * Authenticated user can list poles
+     *
      * @return void
      */
     public function testAuthenticatedUserWhitoutPermissionAssignmentCannotListPoles()
@@ -268,6 +277,7 @@ class PoleTest extends TestCase
 
     /**
      * Authenticated user can create pole
+     *
      * @return void
      */
     public function testAuthenticatedUserWithoutPermissionAssignmentCannotCreatePole()
@@ -280,6 +290,7 @@ class PoleTest extends TestCase
 
     /**
      * Authenticated user can update pole
+     *
      * @return void
      */
     public function testAuthenticatedUserWithoutPermissionAssignmentCannotUpdatePole()
@@ -290,13 +301,14 @@ class PoleTest extends TestCase
 
         $session->put(
             route('poles.update', $pole->id),
-            ["name" => "updated", "description" => "updated"]
+            ['name' => 'updated', 'description' => 'updated']
         )
             ->assertSee('Proibido');
     }
 
     /**
      * Authenticated user can delete pole
+     *
      * @return void
      */
     public function testAuthenticatedUserWithoutPermissionAssignmentCannotDeletePole()
@@ -313,6 +325,7 @@ class PoleTest extends TestCase
 
     /**
      * Authenticated user can access pole create page
+     *
      * @return void
      */
     public function testAuthenticatedUserWithoutPermissionAssignmentCannotAccessCreatePolePage()
@@ -326,6 +339,7 @@ class PoleTest extends TestCase
 
     /**
      * Authenticated user can access pole edit page
+     *
      * @return void
      */
     public function testAuthenticatedUserWithoutPermissionAssignmentCannotAccessEditPolePage()
@@ -339,29 +353,26 @@ class PoleTest extends TestCase
             ->assertSee('Proibido');
     }
 
-
     /**
      * Get user with SessionUser attached
+     *
      * @return \App\Models\User
      */
     private function getAuthenticatedSession()
     {
-        $user = User::factory()->create(["employee_id" => null]);
+        $user = User::factory()->create(['employee_id' => null]);
 
-        $session = $this->actingAs($user)
+        return $this->actingAs($user)
             ->withSession(['loggedInUser.currentUtaId' => null, 'loggedInUser.currentUtaId' => null]);
-
-        return $session;
     }
 
     /**
      * Get Pole for testing
+     *
      * @return \App\Models\Pole
      */
     private function getTestPole()
     {
-        $pole = Pole::factory()->create();
-
-        return $pole;
+        return Pole::factory()->create();
     }
 }

@@ -2,12 +2,10 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
-
-use App\Models\User;
 
 class LoginTest extends TestCase
 {
@@ -17,6 +15,7 @@ class LoginTest extends TestCase
      * Ensures a guest (unauthenticated user) sees the login form
      *
      * @return void
+     *
      * @test
      */
     public function guestShouldAccessLoginPage()
@@ -33,6 +32,7 @@ class LoginTest extends TestCase
      * A guest must be redirected from the root '/' to the login route
      *
      * @return void
+     *
      * @test
      */
     public function guestIsRedirectedFromRootLogin()
@@ -45,6 +45,7 @@ class LoginTest extends TestCase
      * A guest must not be able to access the home route
      *
      * @return void
+     *
      * @test
      */
     public function guestShouldntSeeHome()
@@ -59,6 +60,7 @@ class LoginTest extends TestCase
      * A logged user must be redirected from 'root' to the 'home'.
      *
      * @return void
+     *
      * @test
      */
     public function authenticatedUserShouldntAccessLoginPage()
@@ -78,6 +80,7 @@ class LoginTest extends TestCase
      * An existing user cannot login with the wrong password
      *
      * @return void
+     *
      * @test
      */
     public function userShouldntAuthenticateWithWrongPassword()
@@ -86,7 +89,7 @@ class LoginTest extends TestCase
 
         $this->post(route('auth.login'), [
             'email' => $user->email,
-            'password' =>  Hash::make('wrong-password'),
+            'password' => Hash::make('wrong-password'),
         ])->assertStatus(302);
     }
 }

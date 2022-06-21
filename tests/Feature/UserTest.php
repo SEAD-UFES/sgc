@@ -7,7 +7,6 @@ use App\Models\UserType;
 use App\Models\UserTypeAssignment;
 use Illuminate\Database\Eloquent\InvalidCastException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Arr;
 use Tests\TestCase;
 
@@ -21,7 +20,6 @@ class UserTest extends TestCase
     private static $userSec;
     private static $userCoord;
     private static $userLdi;
-
 
     public function setUp(): void
     {
@@ -92,6 +90,7 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function guestShouldntListUsers()
@@ -104,29 +103,30 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function administratorShouldListUsers()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/users')
             ->assertSee(['johndoe@test1.com', 'janedoe@test2.com'])
             ->assertStatus(200);
     }
 
-
     /**
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function directorShouldntListUsers()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/users')
             ->assertStatus(403);
@@ -136,12 +136,13 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function assistantShouldntListUsers()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/users')
             ->assertStatus(403);
@@ -151,12 +152,13 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function secretaryShouldntListUsers()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/users')
             ->assertStatus(403);
@@ -166,12 +168,13 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function ldiShouldntListUsers()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/users')
             ->assertStatus(403);
@@ -181,17 +184,17 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function coordinatorShouldntListUsers()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/users')
             ->assertStatus(403);
     }
-
 
     // ================= See Create Form Tests =================
 
@@ -199,6 +202,7 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function guestShouldntAccessCreateUsersPage()
@@ -211,12 +215,13 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function administratorShouldAccessCreateUsersPage()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/users/create')
             ->assertSee(['Cadastrar Usuário', 'E-Mail*', 'Nova Senha', 'Ativo', 'Cadastrar'])
@@ -227,12 +232,13 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function directorShouldntAccessCreateUsersPage()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/users/create')
             ->assertStatus(403);
@@ -242,12 +248,13 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function assistantShouldntAccessCreateUsersPage()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/users/create')
             ->assertStatus(403);
@@ -257,12 +264,13 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function secretaryShouldntAccessCreateUsersPage()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/users/create')
             ->assertStatus(403);
@@ -272,12 +280,13 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function ldiShouldntAccessCreateUsersPage()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
 
         $this->get('/users/create')
             ->assertStatus(403);
@@ -287,24 +296,152 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
+     *
      * @test
      */
     public function coordinatorShouldntAccessCreateUsersPage()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
-
-        $this->get('/users/create')
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+            
+            $this->get('/users/create')
             ->assertStatus(403);
     }
 
 
     // ================= Create User Tests =================
+        
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function guestShouldntCreateUser()
+    {
+        $user = $this->createTestUserAsArray();
+
+        $this->post('/users', $user)
+            ->assertRedirect(route('auth.login'));
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function administratorShouldCreateUser()
+    {
+        $this->actingAs(self::$userAdm)
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+
+        $user = $this->createTestUserAsArray();
+
+        $this->followingRedirects()->post('/users', $user)
+            ->assertSee($this->expectedUserInfo())
+            ->assertStatus(200);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function directorShouldntCreateUser()
+    {
+        $this->actingAs(self::$userDir)
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+
+        $user = $this->createTestUserAsArray();
+
+        $this->followingRedirects()->post('/users', $user)
+            ->assertStatus(403);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function assistantShouldntCreateUser()
+    {
+        $this->actingAs(self::$userAss)
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+
+        $user = $this->createTestUserAsArray();
+
+        $this->followingRedirects()->post('/users', $user)
+            ->assertStatus(403);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function secretaryShouldntCreateUser()
+    {
+        $this->actingAs(self::$userSec)
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+
+        $user = $this->createTestUserAsArray();
+
+        $this->followingRedirects()->post('/users', $user)
+            ->assertStatus(403);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function ldiShouldntCreateUser()
+    {
+        $this->actingAs(self::$userLdi)
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+
+        $user = $this->createTestUserAsArray();
+
+        $this->followingRedirects()->post('/users', $user)
+            ->assertStatus(403);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function coordinatorShouldntCreateUser()
+    {
+        $this->actingAs(self::$userCoord)
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+
+        $user = $this->createTestUserAsArray();
+
+        $this->followingRedirects()->post('/users', $user)
+            ->assertStatus(403);
+    }
+
 
     // $this->createTestUserAsArray(volunteer: true, courseId: 24)
     /**
-     * @param null|bool $active
+     * @param bool|null $active
+     *
      * @return array
+     *
      * @throws InvalidCastException
      */
     private function createTestUserAsArray(?bool $active = true): array
@@ -327,122 +464,5 @@ class UserTest extends TestCase
     private function expectedUserInfo(): array
     {
         return ['carl.doe@test.com'];
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     * @test
-     */
-    public function guestShouldntCreateUser()
-    {
-        $user = $this->createTestUserAsArray();
-
-        $this->post('/users', $user)
-            ->assertRedirect(route('auth.login'));
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     * @test
-     */
-    public function administratorShouldCreateUser()
-    {
-        $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
-
-        $user = $this->createTestUserAsArray();
-
-        $this->followingRedirects()->post('/users', $user)
-            ->assertSee($this->expectedUserInfo())
-            ->assertStatus(200);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     * @test
-     */
-    public function directorShouldntCreateUser()
-    {
-        $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
-
-        $user = $this->createTestUserAsArray();
-
-        $this->followingRedirects()->post('/users', $user)
-            ->assertStatus(403);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     * @test
-     */
-    public function assistantShouldntCreateUser()
-    {
-        $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
-
-        $user = $this->createTestUserAsArray();
-
-        $this->followingRedirects()->post('/users', $user)
-            ->assertStatus(403);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     * @test
-     */
-    public function secretaryShouldntCreateUser()
-    {
-        $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
-
-        $user = $this->createTestUserAsArray();
-
-        $this->followingRedirects()->post('/users', $user)
-            ->assertStatus(403);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     * @test
-     */
-    public function ldiShouldntCreateUser()
-    {
-        $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
-
-        $user = $this->createTestUserAsArray();
-
-        $this->followingRedirects()->post('/users', $user)
-            ->assertStatus(403);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     * @test
-     */
-    public function coordinatorShouldntCreateUser()
-    {
-        $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta(),]);
-
-        $user = $this->createTestUserAsArray();
-
-        $this->followingRedirects()->post('/users', $user)
-            ->assertStatus(403);
     }
 }

@@ -2,12 +2,11 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\Role;
 use App\Services\RoleService;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
+use Tests\TestCase;
 
 class RoleServiceTest extends TestCase
 {
@@ -30,7 +29,7 @@ class RoleServiceTest extends TestCase
             ]
         );
 
-        $this->service = new RoleService;
+        $this->service = new RoleService();
     }
 
     /**
