@@ -303,14 +303,14 @@ class UserTest extends TestCase
     {
         $this->actingAs(self::$userCoord)
             ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
-            
-            $this->get('/users/create')
+
+        $this->get('/users/create')
             ->assertStatus(403);
     }
 
 
     // ================= Create User Tests =================
-        
+
     /**
      * A basic feature test example.
      *

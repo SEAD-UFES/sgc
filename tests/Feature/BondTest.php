@@ -249,7 +249,7 @@ class BondTest extends TestCase
             ->assertStatus(200);
     }
 
-    
+
     // ================= See Create Form Tests =================
 
     /**
@@ -359,14 +359,14 @@ class BondTest extends TestCase
     public function coordinatorShouldAccessCreateBondsPage()
     {
         $this->actingAs(self::$userCoord)
-        ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
-        
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+
         $this->get('/bonds/create')
-        ->assertSee(['Cadastrar Vínculo', 'Colaborador*', 'Função*', 'Curso*', 'Polo*', 'Voluntário', 'Cadastrar'])
-        ->assertStatus(200);
+            ->assertSee(['Cadastrar Vínculo', 'Colaborador*', 'Função*', 'Curso*', 'Polo*', 'Voluntário', 'Cadastrar'])
+            ->assertStatus(200);
     }
-    
-    
+
+
     // ================= Create Bond Tests =================
 
     /**

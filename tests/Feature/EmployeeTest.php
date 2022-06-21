@@ -574,12 +574,12 @@ class EmployeeTest extends TestCase
     public function coordinatorShouldntAccessCreateEmployeesPage()
     {
         $this->actingAs(self::$userCoord)
-        ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
-        
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+
         $this->get(route('employees.create'))
-        ->assertStatus(403);
+            ->assertStatus(403);
     }
-    
+
 
     // ================= Create Employee Tests =================
 
@@ -859,15 +859,15 @@ class EmployeeTest extends TestCase
     public function coordinatorShouldntAccessEditEmployeesPage()
     {
         $this->actingAs(self::$userCoord)
-        ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
-        
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+
         $this->get(route('employees.edit', 1))
-        ->assertStatus(403);
+            ->assertStatus(403);
     }
-    
+
 
     // ================= Update Employee Tests =================
-    
+
     /**
      * Guest Shouldnt update employee
      *
