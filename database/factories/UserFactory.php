@@ -9,14 +9,14 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends Factory<User>
  */
 class UserFactory extends Factory
 {
     /**
      * User Factory
      *
-     * @var string
+     * @var \Illuminate\Database\Eloquent\Model
      */
     protected $model = User::class;
 
