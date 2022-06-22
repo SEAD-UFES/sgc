@@ -89,7 +89,7 @@ class ApprovedController extends Controller
         try {
             $importedApproveds = $this->fileService->importApprovedsFromFile($request->file('file'));
 
-            session(['approveds' => $importedApproveds]);
+            session(['importedApproveds' => $importedApproveds]);
         } catch (\Exception $e) {
             return back()->withErrors($e->getMessage());
         }
@@ -114,7 +114,7 @@ class ApprovedController extends Controller
         $courses = Course::orderBy('name')->get();
         $poles = Pole::orderBy('name')->get();
 
-        $importedApproveds = session('approveds');
+        $importedApproveds = session('importedApproveds');
 
         return view('approved.review', compact('importedApproveds', 'roles', 'courses', 'poles'));
     }
@@ -140,7 +140,7 @@ class ApprovedController extends Controller
             return back()->withErrors(['noStore' => 'Não foi possível salvar o(s) aprovado(s): ' . $e->getMessage()]);
         }
 
-        session()->forget('approveds');
+        session()->forget('importedApproveds');
 
         return redirect()->route('approveds.index')->with('success', 'Aprovados importados com sucesso.');
     }
