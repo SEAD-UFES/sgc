@@ -5,6 +5,10 @@ namespace Database\Factories;
 use App\Models\UserType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ *
+ * @extends Factory<UserType>
+ */
 class UserTypeFactory extends Factory
 {
     /**
@@ -33,7 +37,7 @@ class UserTypeFactory extends Factory
 
     /**
      * Return an Administrator User Type (acronym `adm`)
-     * @return \Illumintate\Database\Eloquent\Factories\Factory
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
     public function admin()
     {
@@ -48,7 +52,7 @@ class UserTypeFactory extends Factory
 
     /**
      * Return an director User Type (acronym `dir`)
-     * @return \Illumintate\Database\Eloquent\Factories\Factory
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
     public function director()
     {
@@ -63,7 +67,7 @@ class UserTypeFactory extends Factory
 
     /**
      * Return an assistant User Type (acronym `ass`)
-     * @return \Illumintate\Database\Eloquent\Factories\Factory
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
     public function assistant()
     {
@@ -78,7 +82,7 @@ class UserTypeFactory extends Factory
 
     /**
      * Return an secretary User Type (acronym `sec`)
-     * @return \Illumintate\Database\Eloquent\Factories\Factory
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
     public function secretary()
     {
@@ -93,7 +97,7 @@ class UserTypeFactory extends Factory
 
     /**
      * Return an ldi User Type (acronym `ldi`)
-     * @return \Illumintate\Database\Eloquent\Factories\Factory
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
     public function ldi()
     {
@@ -108,7 +112,7 @@ class UserTypeFactory extends Factory
 
     /**
      * Return an coordinator User Type (acronym `coord`)
-     * @return \Illumintate\Database\Eloquent\Factories\Factory
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
     public function coordinator()
     {
@@ -123,7 +127,7 @@ class UserTypeFactory extends Factory
 
     /**
      * Return an alien User Type (acronym `alien`)
-     * @return \Illumintate\Database\Eloquent\Factories\Factory
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
     public function alien()
     {

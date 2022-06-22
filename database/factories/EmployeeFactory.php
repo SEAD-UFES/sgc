@@ -70,7 +70,7 @@ class EmployeeFactory extends Factory
 
     /**
      * Indicates the created Employee must use data already in the Database.
-     * @return \Illumintate\Database\Eloquent\Factories\Factory
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
     public function assumePopulatedDatabase()
     {
