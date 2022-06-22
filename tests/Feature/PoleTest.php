@@ -363,7 +363,7 @@ class PoleTest extends TestCase
         $user = User::factory()->create(['employee_id' => null]);
 
         return $this->actingAs($user)
-            ->withSession(['loggedInUser.currentUtaId' => null, 'loggedInUser.currentUtaId' => null]);
+            ->withSession(['loggedInUser.currentUtaId' => null]);
     }
 
     /**

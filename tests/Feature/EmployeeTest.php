@@ -146,6 +146,9 @@ class EmployeeTest extends TestCase
         );
     }
 
+
+    // ================= See Employees list Tests =================
+
     /**
      * Guest Shouldnt list employees
      *
@@ -169,7 +172,7 @@ class EmployeeTest extends TestCase
     public function authenticatedUserWithoutPermissionShouldntListEmployees()
     {
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null, 'loggedInUser.currentUtaId' => null]);
+            ->withSession(['loggedInUser.currentUta' => null]);
 
         $this->get(route('employees.index'))
             ->assertStatus(403);
@@ -327,7 +330,7 @@ class EmployeeTest extends TestCase
     public function authenticatedUserWithoutPermissionShouldntAccessEmployeesDetailsPage()
     {
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null, 'loggedInUser.currentUtaId' => null]);
+            ->withSession(['loggedInUser.currentUta' => null]);
 
         $this->get(route('employees.show', 1))
             ->assertStatus(403);
@@ -483,7 +486,7 @@ class EmployeeTest extends TestCase
     public function authenticatedUserWithoutPermissionShouldntAccessCreateEmployeesPage()
     {
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null, 'loggedInUser.currentUtaId' => null]);
+            ->withSession(['loggedInUser.currentUta' => null]);
 
         $this->get(route('employees.create'))
             ->assertStatus(403);
@@ -645,7 +648,7 @@ class EmployeeTest extends TestCase
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
 
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null, 'loggedInUser.currentUtaId' => null])
+            ->withSession(['loggedInUser.currentUta' => null])
             ->followingRedirects()->post(route('employees.store'), $employeeArr)
             ->assertStatus(403);
     }
@@ -817,7 +820,7 @@ class EmployeeTest extends TestCase
     public function authenticatedUserWithoutPermissionShouldntAccessEditEmployeesPage()
     {
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null, 'loggedInUser.currentUtaId' => null]);
+            ->withSession(['loggedInUser.currentUta' => null]);
 
         $this->get(route('employees.edit', 1))
             ->assertStatus(403);
@@ -982,7 +985,7 @@ class EmployeeTest extends TestCase
     public function authenticatedUserWithoutPermissionShouldntUpdateEmployee()
     {
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null, 'loggedInUser.currentUtaId' => null]);
+            ->withSession(['loggedInUser.currentUta' => null]);
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
@@ -1206,7 +1209,7 @@ class EmployeeTest extends TestCase
     public function authenticatedUserWithoutPermissionShouldntDeleteEmployees()
     {
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null, 'loggedInUser.currentUtaId' => null]);
+            ->withSession(['loggedInUser.currentUta' => null]);
 
         $employeeBefore = Employee::find(1);
 
