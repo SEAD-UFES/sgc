@@ -731,15 +731,16 @@ class ApprovedTest extends TestCase
      */
     public function administratorShouldCreateApproved()
     {
-        $approvedArr = $this->createTestImportedApprovedsArray();
-
         $this->actingAs(self::$userAdm);
 
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withoutExceptionHandling()->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()])
-            ->followingRedirects()->post(route('approveds.store.step2'), $approvedArr)
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+
+        $approvedArr = $this->createTestImportedApprovedsArray();
+
+        $this->followingRedirects()->post(route('approveds.store.step2'), $approvedArr)
             ->assertSee($this->expectedApprovedInfo())
             ->assertStatus(200);
     }
