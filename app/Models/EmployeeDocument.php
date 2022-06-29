@@ -85,4 +85,10 @@ class EmployeeDocument extends Model
 
         return $this->query;
     }
+
+    /** @return string  */
+    public static function referentId()
+    {
+        return self::REFERENT_ID;
+    }
 }
