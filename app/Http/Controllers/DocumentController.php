@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Response;
 
 class DocumentController extends Controller
 {
+    /** @var DocumentService $service */
+    public $service;
+
     public function __construct(DocumentService $documentService)
     {
         $this->service = $documentService;
@@ -17,8 +20,6 @@ class DocumentController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param \App\Models\BondDocument $bondDocument
      *
      * @return \Illuminate\Http\Response
      */

@@ -16,6 +16,9 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use InvalidArgumentException;
 
+/**
+ * @property DocumentService $service
+ */
 class EmployeeDocumentController extends DocumentController
 {
     /**
