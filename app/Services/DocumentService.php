@@ -4,8 +4,10 @@ namespace App\Services;
 
 use App\CustomClasses\SgcLogger;
 use App\Models\Bond;
+use App\Models\BondDocument;
 use App\Models\Document;
 use App\Models\Employee;
+use App\Models\EmployeeDocument;
 use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,6 +18,8 @@ use Illuminate\Support\Facades\Storage;
 
 class DocumentService
 {
+    public string $documentClass;
+
     /**
      * Undocumented function
      *
@@ -92,11 +96,19 @@ class DocumentService
             // Delete old versions of this document type
             $this->deleteOldDocuments($oldDocuments);
 
-            $attributes['documentable_id'] = $this->documentClass::create([
-                $this->documentClass::REFERENT_ID => $attributes[$this->documentClass::REFERENT_ID],
-            ])->id;
+            // 'employee_id' or 'bond_id'
+            $referentId = $this->documentClass::referentId();
+            
+            /** @var EmployeeDocument|BondDocument $documentable */
+            $documentable = $this->documentClass::create([
+                $referentId => $attributes[$referentId],
+            ]);
 
-            return Document::create($attributes);
+            /** @var Document $document */
+            $document = new Document($attributes);
+            $documentable->document()->save($document);
+
+            return $document;
         });
     }
 
@@ -325,13 +337,15 @@ class DocumentService
 
     private function getOldDocuments($document): Collection
     {
+        $referentId = $this->documentClass::referentId();
+
         /* Quering for the documents with specific documentable type (EmployeeDocument or BondDocument) and document type
         where documentables referent (employee or bond) match the data from the form. */
         return Document::whereHasMorph(
             'documentable',
             $this->documentClass,
-            function (Builder $query) use ($document) {
-                $query->where($this->documentClass::REFERENT_ID, $document[$this->documentClass::REFERENT_ID]);
+            function (Builder $query) use ($document, $referentId) {
+                $query->where($referentId, $document[$referentId]);
             }
         )->where('document_type_id', $document['document_type_id'])->get();
     }
