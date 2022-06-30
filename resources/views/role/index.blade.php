@@ -71,7 +71,7 @@
                     </div>
                     <br />
                     {!! $roles->links() !!}
-                    <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    <a href="{{ route('home') }}" class="btn btn-secondary">Voltar para o Início</a>
                     @can('role-store')
                         <a href="{{ route('roles.create') }}" class="btn btn-warning">Cadastrar nova Função</a>
                     @endcan

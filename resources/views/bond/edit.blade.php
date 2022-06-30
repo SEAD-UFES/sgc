@@ -21,8 +21,8 @@
                         @method('PATCH')
                         @component('bond.componentBondForm', compact('employees', 'roles', 'courses', 'poles', 'bond'))@endcomponent
                         <br />
-                        <button type="submit" class="btn btn-primary">Atualizar</button> <button type="button"
-                            onclick="history.back()" class="btn btn-secondary">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Atualizar</button>
+                        <a href="{{ route('bonds.index') }}" class="btn btn-secondary">Cancelar</a>
                         @error('noStore')
                             <div class="text-danger">> {{ $message }}</div>
                         @enderror

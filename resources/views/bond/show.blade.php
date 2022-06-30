@@ -164,8 +164,7 @@
                             </div>
                         </div>
                     </div>
-
-                    <button type="button mb-1" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    <a href="{{ route('bonds.index') }}" class="btn btn-secondary">Lista de Vínculos</a>
                 </div>
             </div>
         </main>

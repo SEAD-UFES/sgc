@@ -395,11 +395,10 @@
                                         Listagem avançada...
                                     </a>    
                                 </div>
-
                             </div>
                         </div>
-                    </div>   
-                    <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    </div>
+                    <a href="{{ route('employees.index') }}" class="btn btn-secondary">Lista de Colaboradores</a>
                     <br/>
                 </div>
             </div>

@@ -47,7 +47,8 @@
                             </table>
                         </div>
                         <br />
-                        <button type="submit" class="btn btn-primary">Importar</button> <button type="button" onclick="history.back()" class="btn btn-secondary">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Importar</button>
+                        <button type="button" onclick="history.back()" class="btn btn-secondary">< Voltar</button>
                     </form>
                 </div>
             </div>

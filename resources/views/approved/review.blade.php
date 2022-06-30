@@ -176,8 +176,8 @@
                             </table>
                         </div>
                         <br />
-                        <button type="submit" class="btn btn-primary">Importar</button>&nbsp;<button type="button"
-                            class="btn btn-secondary" onclick="history.back()">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Importar</button>
+                        <button type="button" class="btn btn-secondary" onclick="history.back()">< Voltar</button>
                     </form>
                 </div>
             </div>

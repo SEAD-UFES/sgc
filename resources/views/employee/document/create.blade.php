@@ -51,8 +51,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary">Enviar arquivo</button>
-                        <button type="button" onclick="history.back()" class="btn btn-secondary">Cancelar</button>
-
+                        <a href="{{ route('employeesDocuments.index') }}" class="btn btn-secondary">Cancelar</a>
                         @can('employeeDocument-store')
                             <a href="{{ route('employeesDocuments.createMany') }}" class="btn btn-warning">Desejo importar vários documentos de colaborador</a>
                         @endcan

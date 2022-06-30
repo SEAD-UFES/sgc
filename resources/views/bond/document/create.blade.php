@@ -46,8 +46,8 @@
                                 <div class="text-danger">> {{ $message }}</div>
                             @enderror
                         </div>
-                        <button type="submit" class="btn btn-primary">Enviar arquivo</button> 
-                        <button type="button" onclick="history.back()" class="btn btn-secondary">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Enviar arquivo</button>
+                        <a href="{{ route('bondsDocuments.index') }}" class="btn btn-secondary">Cancelar</a>
                         @can('bondDocument-store')
                             <a href="{{ route('bondsDocuments.createMany') }}" class="btn btn-warning">Desejo importar vários documentos de vínculo</a>
                         @endcan

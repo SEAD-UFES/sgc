@@ -17,8 +17,8 @@
                     <form action={{ route('courses.store') }} method="POST">
                         @component('course.componentCourseForm', compact('courseTypes'))@endcomponent
                         <br />
-                        <button type="submit" class="btn btn-primary">Cadastrar</button> <button type="button"
-                            onclick="history.back()" class="btn btn-secondary">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Cadastrar</button>
+                        <a href="{{ route('courses.index') }}" class="btn btn-secondary">Cancelar</a>
                         @error('noStore')
                             <div class="text-danger">> {{ $message }}</div>
                         @enderror

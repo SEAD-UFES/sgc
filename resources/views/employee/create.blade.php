@@ -30,7 +30,7 @@
                         <button type="submit" class="btn btn-primary">Cadastrar</button>
                         <button type="button" onclick="submitAndImport();" class="btn btn-primary">Cadastrar e importar
                             documentos</button>
-                        <button type="button" onclick="history.back()" class="btn btn-secondary">Cancelar</button>
+                        <a href="{{ route('employees.index') }}" class="btn btn-secondary">Cancelar</a>
                         @error('noStore')
                             <div class="text-danger">> {{ $message }}</div>
                         @enderror

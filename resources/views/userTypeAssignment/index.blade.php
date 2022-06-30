@@ -79,8 +79,7 @@
                         <p>Sem resultados para exibir.</p>
                         <br />
                     @endif
-
-                    <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    <a href="{{ route('home') }}" class="btn btn-secondary">Voltar para o Início</a>
                     @can('isAdm-global')
                         <a href="{{ route('userTypeAssignments.create') }}" class="btn btn-warning">Cadastrar nova Atrib. de Papel</a>
                     @endcan

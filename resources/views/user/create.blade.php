@@ -17,8 +17,8 @@
                     <form action={{ route('users.store') }} method="POST">
                         @component('user.componentUserForm', compact('userTypes'))@endcomponent
                         <br />
-                        <button type="submit" class="btn btn-primary">Cadastrar</button> <button type="button"
-                            onclick="history.back()" class="btn btn-secondary">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Cadastrar</button>
+                        <a href="{{ route('users.index') }}" class="btn btn-secondary">Cancelar</a>
                             <br /><br />
                         @error('noStore')
                             <div class="text-danger">> {{ $message }}</div>

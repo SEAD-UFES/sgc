@@ -17,8 +17,8 @@
                     <form action={{ route('userTypeAssignments.update', $userTypeAssignment) }} method="POST">
                         @method('PATCH')
                         @component('userTypeAssignment.componentUTAForm', compact('users', 'userTypes', 'courses', 'userTypeAssignment'))@endcomponent
-                        <button type="submit" class="btn btn-primary">Cadastrar</button> <button type="button"
-                            onclick="history.back()" class="btn btn-secondary">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Cadastrar</button>
+                        <a href="{{ route('userTypeAssignments.index') }}" class="btn btn-secondary">Cancelar</a>
                         @error('noStore')
                             <div class="error">> {{ $message }}</div>
                         @enderror

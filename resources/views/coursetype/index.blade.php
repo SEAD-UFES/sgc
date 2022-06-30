@@ -43,7 +43,8 @@
                             </tbody>
                         </table>
                     </div>
-                    <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    <a href="{{ route('home') }}" class="btn btn-secondary">Voltar para o Início</a>
+                    <a href="{{ route('courses.index') }}" class="btn btn-primary">Listar Cursos</a>
                     <br /><br />
                 </div>
             </div>

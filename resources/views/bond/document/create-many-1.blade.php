@@ -45,7 +45,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary">Enviar arquivos</button>
-                        <button type="button" onclick="history.back()" class="btn btn-secondary">Cancelar</button>
+                        <a href="{{ route('bondsDocuments.index') }}" class="btn btn-secondary">Cancelar</a>
 
                         @error('noStore')
                             <div class="text-danger">> {{ $message }}</div>

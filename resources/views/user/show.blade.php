@@ -126,8 +126,7 @@
                             </div>
                         </div>
                     </div>
-
-                    <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    <a href="{{ route('users.index') }}" class="btn btn-secondary">Lista de Usuários</a>
                     <br/>
                 </div>
             </div>

@@ -76,7 +76,7 @@
                     </div>
                     <br />
                     {!! $courses->links() !!}
-                    <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    <a href="{{ route('home') }}" class="btn btn-secondary">Voltar para o Início</a>
                     @can('course-store')
                         <a href="{{ route('courses.create') }}" class="btn btn-warning">Cadastrar novo Curso</a>
                     @endcan

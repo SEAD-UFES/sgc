@@ -90,7 +90,7 @@
                     </div>
                     <br />
                     {!! $employees->links() !!}
-                    <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                    <a href="{{ route('home') }}" class="btn btn-secondary">Voltar para o Início</a>
                     @can('employee-store')
                         <a href="{{ route('employees.create') }}" class="btn btn-warning">Cadastrar novo Colaborador</a>
                     @endcan

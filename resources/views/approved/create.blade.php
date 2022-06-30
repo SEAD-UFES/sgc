@@ -21,8 +21,8 @@
                         <input class="form-control" type="file" name="file" accept=".csv,.xlx,.xls,.xlsx" id="inputFile1">
                     </div>
                     <br />
-                    <button type="submit" class="btn btn-primary">Enviar arquivo</button> <button type="button"
-                        onclick="history.back()" class="btn btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Enviar arquivo</button>
+                    <a href="{{ route('approveds.index') }}" class="btn btn-secondary">Cancelar</a>
                     @error('noStore')
                         <div class="text-danger">> {{ $message }}</div>
                     @enderror

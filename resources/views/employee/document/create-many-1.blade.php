@@ -40,8 +40,8 @@
                                 <div class="text-danger">> {{ $message }}</div>
                             @enderror
                         </div>
-                        <button type="submit" class="btn btn-primary">Enviar arquivos</button> <button type="button"
-                            onclick="history.back()" class="btn btn-secondary">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Enviar arquivos</button>
+                        <a href="{{ route('employeesDocuments.index') }}" class="btn btn-secondary">Cancelar</a>
                         @error('noStore')
                             <div class="text-danger">> {{ $message }}</div>
                         @enderror
