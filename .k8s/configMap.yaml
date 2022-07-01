@@ -19,6 +19,7 @@ data:
   DB_DATABASE: sgc
   DB_USERNAME: <db_user>
   DB_PASSWORD: <db_user_pass>
+  BACKUP_ARCHIVE_PASSWORD: <backup_pass>
 
   BROADCAST_DRIVER: log
   CACHE_DRIVER: file

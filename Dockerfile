@@ -144,6 +144,9 @@ RUN php81 artisan config:clear
 RUN apk add --no-cache supervisor
 COPY ./.docker/supervisord.conf /etc/supervisord.conf
 
+# Install mysqldump to backup database
+RUN apk add --no-cache mysql-client
+
 # RTAs
 
 RUN touch /var/log/nginx/access.log
