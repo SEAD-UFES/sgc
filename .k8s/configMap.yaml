@@ -30,3 +30,10 @@ data:
   #SESSION_SAVE_PATH: storage/framework/sessions
 
   MEMCACHED_HOST: memcached
+
+  FILESYSTEM_CLOUD=google
+  GOOGLE_DRIVE_CLIENT_ID=xxx.apps.googleusercontent.com
+  GOOGLE_DRIVE_CLIENT_SECRET=xxx
+  GOOGLE_DRIVE_REFRESH_TOKEN=xxx
+  GOOGLE_DRIVE_FOLDER=backup
+  #GOOGLE_DRIVE_TEAM_DRIVE_ID=xxx

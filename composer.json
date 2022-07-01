@@ -12,6 +12,7 @@
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "maatwebsite/excel": "^3.1",
+        "masbug/flysystem-google-drive-ext": "^2.2",
         "mehdi-fathi/eloquent-filter": "^2.6",
         "rap2hpoutre/laravel-log-viewer": "^2.2",
         "spatie/laravel-backup": "^8.1"

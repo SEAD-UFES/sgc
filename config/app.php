@@ -202,6 +202,10 @@ return [
          *  Laravel log viewer
          */
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+
+        // Google Drive Service Provider
+        App\Providers\GoogleDriveServiceProvider::class,
+
     ],
 
     /*
