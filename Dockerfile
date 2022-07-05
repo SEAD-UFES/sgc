@@ -56,11 +56,14 @@ RUN mkdir /www
 RUN chown -R www:www /var/lib/nginx
 RUN chown -R www:www /www
 
-RUN rm -f /etc/nginx/nginx.conf
+RUN mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
 COPY ./.docker/nginx.conf /etc/nginx/nginx.conf
 
 # Installing PHP
 RUN apk add --no-cache php81 php81-fpm
+
+RUN ln -s /usr/bin/php81 /usr/bin/php
+RUN ln -s /usr/sbin/php-fpm81 /usr/sbin/php-fpm
 
 # Defining ENV variables which will be used in configuration
 ENV PHP_FPM_USER="www"
@@ -111,15 +114,20 @@ RUN apk add --no-cache php81-session php81-dom php81-simplexml php81-xmlwriter p
 #More Dependencies... Composer with php81 this time
 RUN apk add --no-cache php81-phar
 
+#More Dependencies... Required for laravel-backup
+RUN apk add --no-cache php81-zip
+
 COPY --chown=www:www --from=vendor /app/ /www/
 
 COPY --chown=www:www --from=frontend /app/public/js/ /www/public/js/
 COPY --chown=www:www --from=frontend /app/public/css/ /www/public/css/
 
-RUN php81 -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-RUN php81 -r "if (hash_file('sha384', 'composer-setup.php') === '55ce33d7678c5a611085589f1f3ddf8b3c52d662cd01d4ba75c0ee0459970c2200a51f492d557530c71c15d8dba01eae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-RUN php81 composer-setup.php
-RUN php81 -r "unlink('composer-setup.php');"
+
+
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+RUN php -r "if (hash_file('sha384', 'composer-setup.php') === '55ce33d7678c5a611085589f1f3ddf8b3c52d662cd01d4ba75c0ee0459970c2200a51f492d557530c71c15d8dba01eae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+RUN php composer-setup.php
+RUN php -r "unlink('composer-setup.php');"
 
 RUN mv composer.phar /usr/local/bin/composer
 
@@ -133,12 +141,12 @@ RUN composer dump-autoload --optimize --no-dev
 RUN mkdir /www/storage/framework/cache/data
 RUN chown www:www /www/storage/framework/cache/data
 
-#RUN php81 artisan key:generate
+#RUN php artisan key:generate
 
-RUN php81 artisan optimize:clear
-RUN php81 artisan optimize
-RUN php81 artisan view:cache
-RUN php81 artisan config:clear
+RUN php artisan optimize:clear
+RUN php artisan optimize
+RUN php artisan view:cache
+RUN php artisan config:clear
 
 # Install Supervisor Process Control System
 RUN apk add --no-cache supervisor
