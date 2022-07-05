@@ -115,7 +115,7 @@ RUN apk add --no-cache php81-session php81-dom php81-simplexml php81-xmlwriter p
 RUN apk add --no-cache php81-phar
 
 #More Dependencies... Required for laravel-backup
-RUN apk add --no-cache php81-zip
+RUN apk add --no-cache php81-zip mariadb-connector-c
 
 COPY --chown=www:www --from=vendor /app/ /www/
 
