@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Listeners\BackupEventSubscriber;
 use App\Models\Approved;
 use App\Models\ApprovedState;
 use App\Models\Bond;
@@ -55,6 +56,15 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+    ];
+
+    /**
+     * Register any events for your application.
+     *
+     * @return void
+     */
+    protected $subscribe = [
+        BackupEventSubscriber::class,
     ];
 
     /**
