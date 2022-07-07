@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Listeners\BackupEventSubscriber;
 use App\Models\Approved;
 use App\Models\ApprovedState;
 use App\Models\Bond;
@@ -63,9 +62,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected $subscribe = [
-        BackupEventSubscriber::class,
-    ];
+    protected $subscribe = [];
 
     /**
      * Register any events for your application.
