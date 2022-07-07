@@ -50,4 +50,14 @@ class TextHelper
     {
         return transliterator_transliterate('NFKC; [:Nonspacing Mark:] Remove; NFKC; Any-Latin; Latin-ASCII', $str);
     }
+
+    /**
+     * @param string $str
+     *
+     * @return string
+     */
+    public static function removeNonDigits($str)
+    {
+        return preg_replace('/\D/', '', $str);
+    }
 }

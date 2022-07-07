@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\CustomClasses\SgcLogger;
+use App\Helpers\SgcLogHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -30,7 +30,7 @@ class WebController extends Controller
     public function showSysInfo(Request $request)
     {
         if (! Gate::allows('isAdm-global')) {
-            SgcLogger::logBadAttemptOnUri($request, 403);
+            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
         return view('sysInfo');

@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\CustomClasses\SgcLogger;
+use App\Helpers\SgcLogHelper;
 use App\Models\DocumentType;
 
 class DocumentTypeObserver
@@ -15,7 +15,7 @@ class DocumentTypeObserver
      */
     public function created(DocumentType $documentType)
     {
-        SgcLogger::writeLog(target: 'DocumentType', action: __FUNCTION__, model_json: $documentType->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'DocumentType', action: __FUNCTION__, model_json: $documentType->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class DocumentTypeObserver
      */
     public function updating(DocumentType $documentType)
     {
-        SgcLogger::writeLog(target: 'DocumentType', action: __FUNCTION__, model_json: json_encode($documentType->getOriginal(), JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'DocumentType', action: __FUNCTION__, model_json: json_encode($documentType->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +37,7 @@ class DocumentTypeObserver
      */
     public function updated(DocumentType $documentType)
     {
-        SgcLogger::writeLog(target: 'DocumentType', action: __FUNCTION__, model_json: $documentType->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'DocumentType', action: __FUNCTION__, model_json: $documentType->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class DocumentTypeObserver
      */
     public function deleted(DocumentType $documentType)
     {
-        SgcLogger::writeLog(target: 'DocumentType', action: __FUNCTION__, model_json: $documentType->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'DocumentType', action: __FUNCTION__, model_json: $documentType->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -75,11 +75,11 @@ class DocumentTypeObserver
 
     public function listed()
     {
-        SgcLogger::writeLog(target: 'DocumentType', action: __FUNCTION__);
+        SgcLogHelper::writeLog(target: 'DocumentType', action: __FUNCTION__);
     }
 
     public function fetched(DocumentType $documentType)
     {
-        SgcLogger::writeLog(target: 'DocumentType', action: __FUNCTION__, model_json: $documentType->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'DocumentType', action: __FUNCTION__, model_json: $documentType->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

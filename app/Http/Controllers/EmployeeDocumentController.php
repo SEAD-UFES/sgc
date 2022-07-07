@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\CustomClasses\ModelFilterHelpers;
-use App\CustomClasses\SgcLogger;
+use App\Helpers\ModelFilterHelper;
+use App\Helpers\SgcLogHelper;
 use App\Http\Requests\StoreEmployeeDocumentRequest;
 use App\Http\Requests\StoreEmployeeMultipleDocumentsRequest;
 use App\Models\DocumentType;
@@ -39,11 +39,11 @@ class EmployeeDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('employeeDocument-list')) {
-            SgcLogger::logBadAttemptOnUri($request, 403);
+            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
-        $filters = ModelFilterHelpers::buildFilters($request, $this->service->documentClass::$accepted_filters);
+        $filters = ModelFilterHelper::buildFilters($request, $this->service->documentClass::$accepted_filters);
         $documents = $this->service->list(sort: $request->query('sort'), direction: $request->query('direction'));
 
         return view('employee.document.index', compact('documents', 'filters'));
@@ -58,7 +58,7 @@ class EmployeeDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('employeeDocument-store')) {
-            SgcLogger::logBadAttemptOnUri($request, 403);
+            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -79,7 +79,7 @@ class EmployeeDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('employeeDocument-store')) {
-            SgcLogger::logBadAttemptOnUri($request, 403);
+            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -100,7 +100,7 @@ class EmployeeDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('employeeDocument-store')) {
-            SgcLogger::logBadAttemptOnUri($request, 403);
+            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -116,7 +116,7 @@ class EmployeeDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('employeeDocument-store')) {
-            SgcLogger::logBadAttemptOnUri($request, 403);
+            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -135,7 +135,7 @@ class EmployeeDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('employeeDocument-store')) {
-            SgcLogger::logBadAttemptOnUri($request, 403);
+            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -148,7 +148,7 @@ class EmployeeDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('employeeDocument-download')) {
-            SgcLogger::logBadAttemptOnUri($request, 403);
+            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 

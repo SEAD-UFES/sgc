@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\CustomClasses\SgcLogger;
+use App\Helpers\SgcLogHelper;
 use App\Models\Bond;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
@@ -59,7 +59,7 @@ class NewBondNotification extends Notification /* implements ShouldQueue */ //Qu
      */
     public function toArray($notifiable)
     {
-        SgcLogger::writeLog(target: 'NewBondNotification', model_json: $this->bond->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'NewBondNotification', model_json: $this->bond->toJson(JSON_UNESCAPED_UNICODE));
 
         return [
             'bond_id' => $this->bond->id,

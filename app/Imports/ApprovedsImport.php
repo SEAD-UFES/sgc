@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Helpers\PhoneHelper;
 use App\Helpers\TextHelper;
 use App\Models\Approved;
 use App\Models\ApprovedState;
@@ -13,39 +14,65 @@ use Maatwebsite\Excel\Concerns\WithLimit;
 
 class ApprovedsImport implements ToCollection, WithHeadingRow, WithColumnLimit, WithLimit
 {
-    public $myApproveds;
+    /**
+     * @var Collection<Approved> $myApproveds
+     */
+    private $myApproveds;
 
+    /**
+     * @param Collection<Approved> $approvedsVar
+     */
     public function __construct(&$approvedsVar)
     {
         $this->myApproveds = $approvedsVar;
     }
 
-    public function collection(Collection $rows)
+    /**
+     * @param Collection $rows
+     *
+     * @return void
+     */
+    public function collection(Collection $rows): void
     {
         foreach ($rows as $row) {
+            /**
+             * @var string $tempPhone
+             */
             $tempPhone = '';
+
+            /**
+             * @var string $tempMobile
+             */
             $tempMobile = '';
 
+            /**
+             * @var array<string> $phones
+             */
             $phones = explode("\n", $row['telefone']);
 
+            /**
+             * @var string $phone
+             */
             foreach ($phones as &$phone) {
                 $phone = str_replace('_x000D_', '', $phone); // remove carriage return on Excel multi-line cell text
-                $phone = self::ensureAreaCode(self::clearNumber($phone), '27');
+                $phone = PhoneHelper::ensureAreaCode(TextHelper::removeNonDigits($phone), '27');
             }
 
             foreach (array_reverse($phones) as $phone) {
-                if (substr($phone, 2, 1) === '9') {
+                if (PhoneHelper::analysePhone($phone)['type'] === 'mobile') {
                     $tempMobile = $phone;
                 } else {
                     $tempPhone = $phone;
                 }
             }
-
+            /**
+             * @var Approved $approved
+             */
             $approved = new Approved(
                 [
                     'name' => TextHelper::titleCase(mb_strtolower($row['nome'], 'UTF-8')),
                     'email' => mb_strtolower($row['e_mail'], 'UTF-8'),
-                    'area_code' => self::getFirstAreaCode($tempPhone, $tempMobile),
+                    'area_code' => PhoneHelper::firstAreaCode($tempPhone, $tempMobile, '27'),
                     'phone' => $tempPhone,
                     'mobile' => $tempMobile,
                     'announcement' => $row['edital'],
@@ -57,42 +84,19 @@ class ApprovedsImport implements ToCollection, WithHeadingRow, WithColumnLimit, 
         }
     }
 
+    /**
+     * @return string
+     */
     public function endColumn(): string
     {
         return 'Z';
     }
 
+    /**
+     * @return int
+     */
     public function limit(): int
     {
         return 100;
-    }
-
-    protected static function clearNumber($c)
-    {
-        return preg_replace('/\D/', '', $c);
-    }
-
-    protected static function ensureAreaCode($str, $code)
-    {
-        if ((strlen($str) < 10) and (strlen($str) > 3)) {
-            return $code . $str;
-        }
-
-        return $str;
-    }
-
-    protected static function getFirstAreaCode($phone, $mobile)
-    {
-        $str = '';
-
-        if (! $mobile === '') {
-            $str = substr($mobile, 0, 2);
-        }
-
-        if (! $phone === '') {
-            $str = substr($phone, 0, 2);
-        }
-
-        return $str;
     }
 }

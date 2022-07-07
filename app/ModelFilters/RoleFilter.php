@@ -2,46 +2,46 @@
 
 namespace App\ModelFilters;
 
-use App\CustomClasses\ModelFilterHelpers;
+use App\Helpers\ModelFilterHelper;
 use Illuminate\Database\Eloquent\Builder;
 
 trait RoleFilter
 {
     public function nameContains(Builder $builder, $value)
     {
-        $values = ModelFilterHelpers::inputToArray($value);
-        return ModelFilterHelpers::contains($builder, 'name', $values);
+        $values = ModelFilterHelper::inputToArray($value);
+        return ModelFilterHelper::contains($builder, 'name', $values);
     }
 
     public function descriptionContains(Builder $builder, $value)
     {
-        $values = ModelFilterHelpers::inputToArray($value);
-        return ModelFilterHelpers::contains($builder, 'description', $values);
+        $values = ModelFilterHelper::inputToArray($value);
+        return ModelFilterHelper::contains($builder, 'description', $values);
     }
 
     public function grantvalueExactly(Builder $builder, $value)
     {
-        $values = ModelFilterHelpers::inputToArray($value);
-        return ModelFilterHelpers::simpleOperation($builder, 'grant_value', '=', $values);
+        $values = ModelFilterHelper::inputToArray($value);
+        return ModelFilterHelper::simpleOperation($builder, 'grant_value', '=', $values);
     }
 
     public function grantvalueBigOrEqu(Builder $builder, $value)
     {
-        $values = ModelFilterHelpers::inputToArray($value);
-        $values = ModelFilterHelpers::convertDateFormat($values);
-        return ModelFilterHelpers::simpleOperation($builder, 'grant_value', '>=', $values);
+        $values = ModelFilterHelper::inputToArray($value);
+        $values = ModelFilterHelper::convertDateFormat($values);
+        return ModelFilterHelper::simpleOperation($builder, 'grant_value', '>=', $values);
     }
 
     public function grantvalueLowOrEqu(Builder $builder, $value)
     {
-        $values = ModelFilterHelpers::inputToArray($value);
-        $values = ModelFilterHelpers::convertDateFormat($values);
-        return ModelFilterHelpers::simpleOperation($builder, 'grant_value', '<=', $values);
+        $values = ModelFilterHelper::inputToArray($value);
+        $values = ModelFilterHelper::convertDateFormat($values);
+        return ModelFilterHelper::simpleOperation($builder, 'grant_value', '<=', $values);
     }
 
     public function grantTypeNameContains(Builder $builder, $value)
     {
-        $values = ModelFilterHelpers::inputToArray($value);
-        return ModelFilterHelpers::relationContains($builder, 'grantType', 'name', $values);
+        $values = ModelFilterHelper::inputToArray($value);
+        return ModelFilterHelper::relationContains($builder, 'grantType', 'name', $values);
     }
 }

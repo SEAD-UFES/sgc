@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\CustomClasses\SgcLogger;
+use App\Helpers\SgcLogHelper;
 use Illuminate\Notifications\DatabaseNotification;
 
 class NotificationController extends Controller
@@ -16,7 +16,7 @@ class NotificationController extends Controller
      */
     public function dismiss(DatabaseNotification $notification)
     {
-        SgcLogger::writeLog($notification, 'dismiss');
+        SgcLogHelper::writeLog($notification, 'dismiss');
 
         try {
             $notification->markAsRead();

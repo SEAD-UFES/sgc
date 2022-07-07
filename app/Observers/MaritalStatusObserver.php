@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\CustomClasses\SgcLogger;
+use App\Helpers\SgcLogHelper;
 use App\Models\MaritalStatus;
 
 class MaritalStatusObserver
@@ -15,7 +15,7 @@ class MaritalStatusObserver
      */
     public function created(MaritalStatus $maritalStatus)
     {
-        SgcLogger::writeLog(target: 'MaritalStatus', action: __FUNCTION__, model_json: $maritalStatus->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'MaritalStatus', action: __FUNCTION__, model_json: $maritalStatus->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class MaritalStatusObserver
      */
     public function updating(MaritalStatus $maritalStatus)
     {
-        SgcLogger::writeLog(target: 'MaritalStatus', action: __FUNCTION__, model_json: json_encode($maritalStatus->getOriginal(), JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'MaritalStatus', action: __FUNCTION__, model_json: json_encode($maritalStatus->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +37,7 @@ class MaritalStatusObserver
      */
     public function updated(MaritalStatus $maritalStatus)
     {
-        SgcLogger::writeLog(target: 'MaritalStatus', action: __FUNCTION__, model_json: $maritalStatus->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'MaritalStatus', action: __FUNCTION__, model_json: $maritalStatus->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class MaritalStatusObserver
      */
     public function deleted(MaritalStatus $maritalStatus)
     {
-        SgcLogger::writeLog(target: 'MaritalStatus', action: __FUNCTION__, model_json: $maritalStatus->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'MaritalStatus', action: __FUNCTION__, model_json: $maritalStatus->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -75,11 +75,11 @@ class MaritalStatusObserver
 
     public function listed()
     {
-        SgcLogger::writeLog(target: 'MaritalStatus', action: __FUNCTION__);
+        SgcLogHelper::writeLog(target: 'MaritalStatus', action: __FUNCTION__);
     }
 
     public function fetched(MaritalStatus $maritalStatus)
     {
-        SgcLogger::writeLog(target: 'MaritalStatus', action: __FUNCTION__, model_json: $maritalStatus->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'MaritalStatus', action: __FUNCTION__, model_json: $maritalStatus->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

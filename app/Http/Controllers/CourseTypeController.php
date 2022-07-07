@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\CustomClasses\ModelFilterHelpers;
+use App\Helpers\ModelFilterHelper;
 use App\Models\CourseType;
 use App\Services\CourseTypeService;
 use Illuminate\Http\Request;
@@ -22,7 +22,7 @@ class CourseTypeController extends Controller
     public function index(Request $request)
     {
         //filters
-        $filters = ModelFilterHelpers::buildFilters($request, CourseType::$accepted_filters);
+        $filters = ModelFilterHelper::buildFilters($request, CourseType::$accepted_filters);
 
         $courseTypes = $this->service->list();
 

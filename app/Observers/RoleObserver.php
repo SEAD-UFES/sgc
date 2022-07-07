@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\CustomClasses\SgcLogger;
+use App\Helpers\SgcLogHelper;
 use App\Models\Role;
 
 class RoleObserver
@@ -15,7 +15,7 @@ class RoleObserver
      */
     public function created(Role $role)
     {
-        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model_json: $role->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'Role', action: __FUNCTION__, model_json: $role->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class RoleObserver
      */
     public function updating(Role $role)
     {
-        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model_json: json_encode($role->getOriginal(), JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'Role', action: __FUNCTION__, model_json: json_encode($role->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +37,7 @@ class RoleObserver
      */
     public function updated(Role $role)
     {
-        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model_json: $role->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'Role', action: __FUNCTION__, model_json: $role->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class RoleObserver
      */
     public function deleted(Role $role)
     {
-        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model_json: $role->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'Role', action: __FUNCTION__, model_json: $role->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -75,11 +75,11 @@ class RoleObserver
 
     public function listed()
     {
-        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__);
+        SgcLogHelper::writeLog(target: 'Role', action: __FUNCTION__);
     }
 
     public function fetched(Role $role)
     {
-        SgcLogger::writeLog(target: 'Role', action: __FUNCTION__, model_json: $role->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'Role', action: __FUNCTION__, model_json: $role->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

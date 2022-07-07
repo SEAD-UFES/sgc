@@ -1,6 +1,6 @@
 <?php
 
-namespace App\CustomClasses;
+namespace App\Helpers;
 
 use App\Helpers\NetworkHelper;
 use App\Models\User;
@@ -8,13 +8,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class SgcLogger
+class SgcLogHelper
 {
     /* Classe personalizada para log do sistema.
 
-    use App\CustomClasses\SgcLogger;
+    use App\Helpers\SgcLogHelper;
     ...
-    SgcLogger::writeLog();
+    SgcLogHelper::writeLog();
 
     O método 'writeLog' tem 3 parâmetros opcionais: $target, $action, $executor
     Assim, lendo de trás pra frente, Quem->O que->Onde
@@ -37,16 +37,16 @@ class SgcLogger
     - Com uma classe com id, usa o id e email.
 
     Ex.:
-    SgcLogger::writeLog(null, 'tried login', $request); [chamado do método authenticate com senha errada]
+    SgcLogHelper::writeLog(null, 'tried login', $request); [chamado do método authenticate com senha errada]
     => NoID:prof1@ufes.br|tried login|System
 
-    SgcLogger::writeLog(); [chamando do método authenticate]
+    SgcLogHelper::writeLog(); [chamando do método authenticate]
     => 7:prof1@ufes.br|authenticate|System
 
-    SgcLogger::writeLog(); [chamando do método index do UserController]
+    SgcLogHelper::writeLog(); [chamando do método index do UserController]
     => 7:prof1@ufes.br|index|User
 
-    SgcLogger::writeLog($user); [chamado do método store do UserController]
+    SgcLogHelper::writeLog($user); [chamado do método store do UserController]
     => 7:prof1@ufes.br|store| User:18:marco@gmail.com */
 
     private static $severities = ['info', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency'];

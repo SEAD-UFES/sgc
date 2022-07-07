@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\CustomClasses\SgcLogger;
+use App\Helpers\SgcLogHelper;
 use App\Models\Bond;
 
 class BondObserver
@@ -15,7 +15,7 @@ class BondObserver
      */
     public function created(Bond $bond)
     {
-        SgcLogger::writeLog(target: 'Bond', action: __FUNCTION__, model_json: $bond->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'Bond', action: __FUNCTION__, model_json: $bond->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class BondObserver
      */
     public function updating(Bond $bond)
     {
-        SgcLogger::writeLog(target: 'Bond', action: __FUNCTION__, model_json: json_encode($bond->getOriginal(), JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'Bond', action: __FUNCTION__, model_json: json_encode($bond->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +37,7 @@ class BondObserver
      */
     public function updated(Bond $bond)
     {
-        SgcLogger::writeLog(target: 'Bond', action: __FUNCTION__, model_json: $bond->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'Bond', action: __FUNCTION__, model_json: $bond->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class BondObserver
      */
     public function deleted(Bond $bond)
     {
-        SgcLogger::writeLog(target: 'Bond', action: __FUNCTION__, model_json: $bond->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'Bond', action: __FUNCTION__, model_json: $bond->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -75,11 +75,11 @@ class BondObserver
 
     public function listed()
     {
-        SgcLogger::writeLog(target: 'Bond', action: __FUNCTION__);
+        SgcLogHelper::writeLog(target: 'Bond', action: __FUNCTION__);
     }
 
     public function fetched(Bond $bond)
     {
-        SgcLogger::writeLog(target: 'Bond', action: __FUNCTION__, model_json: $bond->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'Bond', action: __FUNCTION__, model_json: $bond->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

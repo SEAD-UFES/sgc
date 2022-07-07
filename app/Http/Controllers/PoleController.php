@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\CustomClasses\ModelFilterHelpers;
-use App\CustomClasses\SgcLogger;
+use App\Helpers\ModelFilterHelper;
+use App\Helpers\SgcLogHelper;
 use App\Http\Requests\StorePoleRequest;
 use App\Http\Requests\UpdatePoleRequest;
 use App\Models\Pole;
@@ -27,12 +27,12 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-list')) {
-            SgcLogger::logBadAttemptOnUri($request, 403);
+            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
         //filters
-        $filters = ModelFilterHelpers::buildFilters($request, Pole::$accepted_filters);
+        $filters = ModelFilterHelper::buildFilters($request, Pole::$accepted_filters);
 
         $poles = $this->service->list();
 
@@ -48,7 +48,7 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-store')) {
-            SgcLogger::logBadAttemptOnUri($request, 403);
+            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -66,7 +66,7 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-store')) {
-            SgcLogger::logBadAttemptOnUri($request, 403);
+            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -90,7 +90,7 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-show')) {
-            SgcLogger::logBadAttemptOnUri($request, 403);
+            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -110,7 +110,7 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-update')) {
-            SgcLogger::logBadAttemptOnUri($request, 403);
+            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -129,7 +129,7 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-update')) {
-            SgcLogger::logBadAttemptOnUri($request, 403);
+            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -153,7 +153,7 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-destroy')) {
-            SgcLogger::logBadAttemptOnUri($request, 403);
+            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 

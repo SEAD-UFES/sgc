@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\CustomClasses\SgcLogger;
+use App\Helpers\SgcLogHelper;
 use App\Models\User;
 
 class UserObserver
@@ -15,7 +15,7 @@ class UserObserver
      */
     public function created(User $user)
     {
-        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model_json: $user->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'User', action: __FUNCTION__, model_json: $user->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class UserObserver
      */
     public function updating(User $user)
     {
-        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model_json: json_encode($user->getOriginal(), JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'User', action: __FUNCTION__, model_json: json_encode($user->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +37,7 @@ class UserObserver
      */
     public function updated(User $user)
     {
-        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model_json: $user->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'User', action: __FUNCTION__, model_json: $user->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class UserObserver
      */
     public function deleted(User $user)
     {
-        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model_json: $user->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'User', action: __FUNCTION__, model_json: $user->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -75,11 +75,11 @@ class UserObserver
 
     public function listed()
     {
-        SgcLogger::writeLog(target: 'User', action: __FUNCTION__);
+        SgcLogHelper::writeLog(target: 'User', action: __FUNCTION__);
     }
 
     public function fetched(User $user)
     {
-        SgcLogger::writeLog(target: 'User', action: __FUNCTION__, model_json: $user->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'User', action: __FUNCTION__, model_json: $user->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

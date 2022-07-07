@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\Models\UserType;
-use App\CustomClasses\SgcLogger;
+use App\Helpers\SgcLogHelper;
 use Illuminate\Support\Facades\Log;
 use PhpOffice\PhpSpreadsheet\Calculation\Statistical\AggregateBase;
 
@@ -17,7 +17,7 @@ class UserTypeObserver
      */
     public function created(UserType $userType)
     {
-        SgcLogger::writeLog(target: 'UserType', action: __FUNCTION__, model_json: $userType->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'UserType', action: __FUNCTION__, model_json: $userType->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -28,7 +28,7 @@ class UserTypeObserver
      */
     public function updating(UserType $userType)
     {
-        SgcLogger::writeLog(target: 'UserType', action: __FUNCTION__, model_json: json_encode($userType->getOriginal(), JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'UserType', action: __FUNCTION__, model_json: json_encode($userType->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -39,7 +39,7 @@ class UserTypeObserver
      */
     public function updated(UserType $userType)
     {
-        SgcLogger::writeLog(target: 'UserType', action: __FUNCTION__, model_json: $userType->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'UserType', action: __FUNCTION__, model_json: $userType->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -50,7 +50,7 @@ class UserTypeObserver
      */
     public function deleted(UserType $userType)
     {
-        SgcLogger::writeLog(target: 'UserType', action: __FUNCTION__, model_json: $userType->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'UserType', action: __FUNCTION__, model_json: $userType->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -77,11 +77,11 @@ class UserTypeObserver
 
     public function listed()
     {
-        SgcLogger::writeLog(target: 'UserType', action: __FUNCTION__);
+        SgcLogHelper::writeLog(target: 'UserType', action: __FUNCTION__);
     }
 
     public function fetched(UserType $userType)
     {
-        SgcLogger::writeLog(target: 'UserType', action: __FUNCTION__, model_json: $userType->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'UserType', action: __FUNCTION__, model_json: $userType->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

@@ -12,7 +12,6 @@
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>
-            <directory suffix=".php">./app/CustomClasses</directory>
             <directory suffix=".php">./app/Exceptions</directory>
             <directory suffix=".php">./app/Gates</directory>
             <directory suffix=".php">./app/Helpers</directory>

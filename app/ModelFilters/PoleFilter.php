@@ -2,20 +2,20 @@
 
 namespace App\ModelFilters;
 
-use App\CustomClasses\ModelFilterHelpers;
+use App\Helpers\ModelFilterHelper;
 use Illuminate\Database\Eloquent\Builder;
 
 trait PoleFilter
 {
     public function nameContains(Builder $builder, $value)
     {
-        $values = ModelFilterHelpers::inputToArray($value);
-        return ModelFilterHelpers::contains($builder, 'name', $values);
+        $values = ModelFilterHelper::inputToArray($value);
+        return ModelFilterHelper::contains($builder, 'name', $values);
     }
 
     public function descriptionContains(Builder $builder, $value)
     {
-        $values = ModelFilterHelpers::inputToArray($value);
-        return ModelFilterHelpers::contains($builder, 'description', $values);
+        $values = ModelFilterHelper::inputToArray($value);
+        return ModelFilterHelper::contains($builder, 'description', $values);
     }
 }

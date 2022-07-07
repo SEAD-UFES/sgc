@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\CustomClasses\SgcLogger;
+use App\Helpers\SgcLogHelper;
 use App\Models\GrantType;
 
 class GrantTypeObserver
@@ -15,7 +15,7 @@ class GrantTypeObserver
      */
     public function created(GrantType $grantType)
     {
-        SgcLogger::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: $grantType->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: $grantType->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class GrantTypeObserver
      */
     public function updating(GrantType $grantType)
     {
-        SgcLogger::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: json_encode($grantType->getOriginal(), JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: json_encode($grantType->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +37,7 @@ class GrantTypeObserver
      */
     public function updated(GrantType $grantType)
     {
-        SgcLogger::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: $grantType->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: $grantType->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class GrantTypeObserver
      */
     public function deleted(GrantType $grantType)
     {
-        SgcLogger::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: $grantType->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: $grantType->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -75,11 +75,11 @@ class GrantTypeObserver
 
     public function listed()
     {
-        SgcLogger::writeLog(target: 'GrantType', action: __FUNCTION__);
+        SgcLogHelper::writeLog(target: 'GrantType', action: __FUNCTION__);
     }
 
     public function fetched(GrantType $grantType)
     {
-        SgcLogger::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: $grantType->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: $grantType->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

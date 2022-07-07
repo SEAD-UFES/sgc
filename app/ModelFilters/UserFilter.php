@@ -2,27 +2,27 @@
 
 namespace App\ModelFilters;
 
-use App\CustomClasses\ModelFilterHelpers;
+use App\Helpers\ModelFilterHelper;
 use Illuminate\Database\Eloquent\Builder;
 
 trait UserFilter
 {
     public function emailContains(Builder $builder, $value)
     {
-        $values = ModelFilterHelpers::inputToArray($value);
-        return ModelFilterHelpers::contains($builder, 'email', $values);
+        $values = ModelFilterHelper::inputToArray($value);
+        return ModelFilterHelper::contains($builder, 'email', $values);
     }
 
     // public function usertypeNameContains(Builder $builder, $value)
     // {
-    //     $values = ModelFilterHelpers::inputToArray($value);
-    //     $builder = ModelFilterHelpers::relationContains($builder, 'userType', 'name', $values);
+    //     $values = ModelFilterHelper::inputToArray($value);
+    //     $builder = ModelFilterHelper::relationContains($builder, 'userType', 'name', $values);
     //     return $builder;
     // }
 
     public function activeExactly(Builder $builder, $value)
     {
-        $values = ModelFilterHelpers::inputToArray($value);
+        $values = ModelFilterHelper::inputToArray($value);
 
         foreach ($values as $key => $value) {
             if (in_array(strtolower($value), ['sim', '1', 'true'])) {
@@ -34,18 +34,18 @@ trait UserFilter
             }
         }
 
-        return ModelFilterHelpers::simpleOperation($builder, 'active', '=', $values);
+        return ModelFilterHelper::simpleOperation($builder, 'active', '=', $values);
     }
 
     public function employeeNameContains(Builder $builder, $value)
     {
-        $values = ModelFilterHelpers::inputToArray($value);
-        return ModelFilterHelpers::relationContains($builder, 'employee', 'name', $values);
+        $values = ModelFilterHelper::inputToArray($value);
+        return ModelFilterHelper::relationContains($builder, 'employee', 'name', $values);
     }
 
     public function employeeId(Builder $builder, $value)
     {
-        $values = ModelFilterHelpers::inputToArray($value);
-        return ModelFilterHelpers::relationSimpleOperation($builder, 'employee', 'id', '=', $values);
+        $values = ModelFilterHelper::inputToArray($value);
+        return ModelFilterHelper::relationSimpleOperation($builder, 'employee', 'id', '=', $values);
     }
 }

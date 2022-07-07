@@ -1,11 +1,11 @@
 <?php
 
-namespace App\CustomClasses;
+namespace App\Helpers;
 
 use DateTime;
 use Illuminate\Http\Request;
 
-class ModelFilterHelpers
+class ModelFilterHelper
 {
     public static function buildFilters(Request $request, array $accepted_filters)
     {
@@ -37,7 +37,7 @@ class ModelFilterHelpers
     public static function convertDateFormat($values)
     {
         foreach ($values as $key => $value) {
-            if (ModelFilterHelpers::validateDate($value, 'd/m/Y')) {
+            if (ModelFilterHelper::validateDate($value, 'd/m/Y')) {
                 $dt = DateTime::createFromFormat('d/m/Y', $value);
                 $values[$key] = $dt->format('Y-m-d');
             }

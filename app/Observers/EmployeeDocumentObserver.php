@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\CustomClasses\SgcLogger;
+use App\Helpers\SgcLogHelper;
 use App\Models\EmployeeDocument;
 
 class EmployeeDocumentObserver
@@ -15,7 +15,7 @@ class EmployeeDocumentObserver
      */
     public function created(EmployeeDocument $employeeDocument)
     {
-        SgcLogger::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: $employeeDocument->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: $employeeDocument->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class EmployeeDocumentObserver
      */
     public function updating(EmployeeDocument $employeeDocument)
     {
-        SgcLogger::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: json_encode($employeeDocument->getOriginal(), JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: json_encode($employeeDocument->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +37,7 @@ class EmployeeDocumentObserver
      */
     public function updated(EmployeeDocument $employeeDocument)
     {
-        SgcLogger::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: $employeeDocument->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: $employeeDocument->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class EmployeeDocumentObserver
      */
     public function deleted(EmployeeDocument $employeeDocument)
     {
-        SgcLogger::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: $employeeDocument->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: $employeeDocument->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -75,11 +75,11 @@ class EmployeeDocumentObserver
 
     public function listed()
     {
-        SgcLogger::writeLog(target: 'EmployeeDocument', action: __FUNCTION__);
+        SgcLogHelper::writeLog(target: 'EmployeeDocument', action: __FUNCTION__);
     }
 
     public function fetched(EmployeeDocument $employeeDocument)
     {
-        SgcLogger::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: $employeeDocument->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: $employeeDocument->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

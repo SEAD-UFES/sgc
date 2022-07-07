@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\CustomClasses\SgcLogger;
+use App\Helpers\SgcLogHelper;
 use App\Models\Approved;
 
 class ApprovedObserver
@@ -15,7 +15,7 @@ class ApprovedObserver
      */
     public function created(Approved $approved)
     {
-        SgcLogger::writeLog(target:'Approved', action: __FUNCTION__, model_json: $approved->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target:'Approved', action: __FUNCTION__, model_json: $approved->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -26,7 +26,7 @@ class ApprovedObserver
      */
     public function updating(Approved $approved)
     {
-        SgcLogger::writeLog(target:'Approved', action: __FUNCTION__, model_json:  json_encode($approved->getOriginal(), JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target:'Approved', action: __FUNCTION__, model_json:  json_encode($approved->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -37,7 +37,7 @@ class ApprovedObserver
      */
     public function updated(Approved $approved)
     {
-        SgcLogger::writeLog(target:'Approved', action: __FUNCTION__, model_json: $approved->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target:'Approved', action: __FUNCTION__, model_json: $approved->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -48,7 +48,7 @@ class ApprovedObserver
      */
     public function deleted(Approved $approved)
     {
-        SgcLogger::writeLog(target:'Approved', action: __FUNCTION__, model_json: $approved->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target:'Approved', action: __FUNCTION__, model_json: $approved->toJson(JSON_UNESCAPED_UNICODE));
     }
 
     /**
@@ -75,11 +75,11 @@ class ApprovedObserver
 
     public function listed()
     {
-        SgcLogger::writeLog(target: 'Approved', action: __FUNCTION__);
+        SgcLogHelper::writeLog(target: 'Approved', action: __FUNCTION__);
     }
 
     public function fetched(Approved $approved)
     {
-        SgcLogger::writeLog(target: 'Approved', action: __FUNCTION__, model_json: $approved->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: 'Approved', action: __FUNCTION__, model_json: $approved->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

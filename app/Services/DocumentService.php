@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\CustomClasses\SgcLogger;
+use App\Helpers\SgcLogHelper;
 use App\Models\Bond;
 use App\Models\BondDocument;
 use App\Models\Document;
@@ -283,7 +283,7 @@ class DocumentService
      */
     public function exportEmployeeDocuments(Employee $employee): string
     {
-        SgcLogger::writeLog(target: $employee, action: 'exportEmployeeDocuments');
+        SgcLogHelper::writeLog(target: $employee, action: 'exportEmployeeDocuments');
 
         $documentables = $employee->employeeDocuments; // <= Particular line
         $zipFileName = date('Y-m-d') . '_' . $employee->name . '.zip'; // <= Particular line
@@ -300,7 +300,7 @@ class DocumentService
      */
     public function exportBondDocuments(Bond $bond): string
     {
-        SgcLogger::writeLog(target: $bond, action: 'exportBondDocuments');
+        SgcLogHelper::writeLog(target: $bond, action: 'exportBondDocuments');
 
         $documentables = $bond->bondDocuments; // <= Particular line
         $zipFileName = date('Y-m-d') . '_' . $bond->employee->name . '_' . $bond->id . '.zip'; // <= Particular line
