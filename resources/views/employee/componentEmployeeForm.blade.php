@@ -14,7 +14,7 @@
 <div class="row g-3 mb-3">
     <div class="col-12 col-sm-12 col-md-6 col-lg-6">
         <label for="inputName1" class="form-label">Nome*</label>
-        <input name="name" type="text" id="inputName1" class="form-control" placeholder="Nome"
+        <input name="name" id="inputName1" type="text" class="form-control" placeholder="Nome"
             value="{{ isset($employee) ? $employee->name : old('name') }}" maxlength="50" required />
         @error('name')
             <div class="text-danger">> {{ $message }}</div>
@@ -22,8 +22,8 @@
     </div>
     <div class="col-4 col-sm-3 col-md-3 col-lg-2">
         <label for="inputCpf1" class="form-label">CPF*</label>
-        <input name="cpf" id="cpf" type="text" id="inputCpf1" class="form-control" placeholder="CPF"
-            value="{{ (isset($employee) and !$fromApproved) ? $employee->cpf : old('cpf') }}" maxlength="14" onkeyup="validate('cpf')"
+        <input name="cpf" id="inputCpf1" type="text" class="form-control" placeholder="CPF"
+            value="{{ (isset($employee) and !$fromApproved) ? $employee->cpf : old('cpf') }}" maxlength="14" onkeyup="validate('inputCpf1')"
             data-inputmask="'mask': '999.999.999-99', 'removeMaskOnSubmit': true"
             required />
         @error('cpf')
@@ -32,7 +32,7 @@
     </div>
     <div class="col-8 col-sm-9 col-md-3 col-lg-4">
         <label for="inputJob1" class="form-label">Profissão</label>
-        <input name="job" type="text" id="inputJob1" class="form-control" placeholder="Profissão"
+        <input name="job" id="inputJob1" type="text" class="form-control" placeholder="Profissão"
             value="{{ (isset($employee) and !$fromApproved) ? $employee->job : old('job') }}" maxlength="50" />
         @error('job')
             <div class="text-danger">> {{ $message }}</div>
@@ -54,7 +54,7 @@
     </div>
     <div class="col-6 col-sm-4 col-md-3 col-lg-3">
         <label for="inputBirthday1" class="form-label">Dt de Nascimento</label>
-        <input name="birthday" type="date" id="inputBirthday1"
+        <input name="birthday" id="inputBirthday1" type="date"
             value="{{ (isset($employee) and !$fromApproved) ? $employee->birthday : old('birthday') }}" class="form-control" />
         @error('birthday')
             <div class="text-danger">> {{ $message }}</div>
@@ -99,7 +99,7 @@
     </div>
     <div class="col-5 col-sm-4 col-md-3 col-lg-3">
         <label for="inputId1" class="form-label">Núm. do Documento</label>
-        <input name="id_number" type="text" id="inputId1" class="form-control" placeholder="Número"
+        <input name="id_number" id="inputId1" type="text" class="form-control" placeholder="Número"
             value="{{ (isset($employee) and !$fromApproved) ? $employee->id_number : old('id_number') }}" maxlength="15" />
         @error('id_number')
             <div class="text-danger">> {{ $message }}</div>
@@ -107,7 +107,7 @@
     </div>
     <div class="col-5 col-sm-4 col-md-3 col-lg-3">
         <label for="inputIssueDate1" class="form-label">Data de Expedição</label>
-        <input name="id_issue_date" type="date" id="inputIssueDate1" class="form-control"
+        <input name="id_issue_date" id="inputIssueDate1" type="date" class="form-control"
             value="{{ (isset($employee) and !$fromApproved) ? $employee->id_issue_date : old('id_issue_date') }}" />
         @error('id_issue_date')
             <div class="text-danger">> {{ $message }}</div>
@@ -115,7 +115,7 @@
     </div>
     <div class="col-7 col-sm-8 col-md-3 col-lg-2">
         <label for="inpuIssueAgency1" class="form-label">Orgão Expedidor</label>
-        <input name="id_issue_agency" type="text" id="inpuIssueAgency1" class="form-control" placeholder="Orgão"
+        <input name="id_issue_agency" id="inpuIssueAgency1" type="text" class="form-control" placeholder="Orgão"
             value="{{ (isset($employee) and !$fromApproved) ? $employee->id_issue_agency : old('id_issue_agency') }}" maxlength="10" />
         @error('id_issue_agency')
             <div class="text-danger">> {{ $message }}</div>
@@ -140,7 +140,7 @@
     </div>
     <div class="col-8 col-sm-8 col-md-9 col-lg-10">
         <label for="inputSpouse1" class="form-label">Nome cônjuge</label>
-        <input name="spouse_name" type="text" id="inputSpouse1" class="form-control" placeholder="Nome"
+        <input name="spouse_name" id="inputSpouse1" type="text" class="form-control" placeholder="Nome"
             value="{{ (isset($employee) and !$fromApproved) ? $employee->spouse_name : old('spouse_name') }}" maxlength="50" />
         @error('spouse_name')
             <div class="text-danger">> {{ $message }}</div>
@@ -148,7 +148,7 @@
     </div>
     <div class="col-6 col-sm-6 col-md-6 col-lg-6">
         <label for="inputFather1" class="form-label">Nome do pai</label>
-        <input name="father_name" type="text" id="inputFather1" class="form-control" placeholder="Nome"
+        <input name="father_name" id="inputFather1" type="text" class="form-control" placeholder="Nome"
             value="{{ (isset($employee) and !$fromApproved) ? $employee->father_name : old('father_name') }}" maxlength="50" />
         @error('father_name')
             <div class="text-danger">> {{ $message }}</div>
@@ -156,7 +156,7 @@
     </div>
     <div class="col-6 col-sm-6 col-md-6 col-lg-6">
         <label for="inputMother1" class="form-label">Nome da mãe</label>
-        <input name="mother_name" type="text" id="inputMother1" class="form-control" placeholder="Nome"
+        <input name="mother_name" id="inputMother1" type="text" class="form-control" placeholder="Nome"
             value="{{ (isset($employee) and !$fromApproved) ? $employee->mother_name : old('mother_name') }}" maxlength="50" />
         @error('mother_name')
             <div class="text-danger">> {{ $message }}</div>
@@ -166,7 +166,7 @@
 <div class="row g-3 mb-3">
     <div class="col-12 col-sm-12 col-md-6 col-lg-6">
         <label for="inputStreet1" class="form-label">Logradouro</label>
-        <input name="address_street" type="text" id="inputStreet1" class="form-control" placeholder="Logradouro"
+        <input name="address_street" id="inputStreet1" type="text" class="form-control" placeholder="Logradouro"
             value="{{ (isset($employee) and !$fromApproved) ? $employee->address_street : old('address_street') }}" maxlength="50" />
         @error('address_street')
             <div class="text-danger">> {{ $message }}</div>
@@ -174,7 +174,7 @@
     </div>
     <div class="col-12 col-sm-12 col-md-6 col-lg-6">
         <label for="inputComplement1" class="form-label">Complemento</label>
-        <input name="address_complement" type="text" id="inputComplement1" class="form-control"
+        <input name="address_complement" id="inputComplement1" type="text" class="form-control"
             placeholder="Complemento"
             value="{{ (isset($employee) and !$fromApproved) ? $employee->address_complement : old('address_complement') }}"
             maxlength="50" />
@@ -184,7 +184,7 @@
     </div>
     <div class="col-3 col-sm-3 col-md-2 col-lg-1">
         <label for="inputNumber1" class="form-label">Número</label>
-        <input name="address_number" type="text" id="inputNumber1" class="form-control" placeholder="Número"
+        <input name="address_number" id="inputNumber1" type="text" class="form-control" placeholder="Número"
             value="{{ (isset($employee) and !$fromApproved) ? $employee->address_number : old('address_number') }}" maxlength="5" />
         @error('address_number')
             <div class="text-danger">> {{ $message }}</div>
@@ -192,19 +192,19 @@
     </div>
     <div class="col-6 col-sm-6 col-md-3 col-lg-4">
         <label for="inputDistrict1" class="form-label">Bairro</label>
-        <input name="address_district" type="text" id="inputDistrict1" class="form-control" placeholder="Bairro"
+        <input name="address_district" id="inputDistrict1" type="text" class="form-control" placeholder="Bairro"
             value="{{ (isset($employee) and !$fromApproved) ? $employee->address_district : old('address_district') }}" maxlength="50" />
         @error('address_district')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-3 col-sm-3 col-md-2 col-lg-2">
-        <label for="addressPostalCode" class="form-label">CEP</label>
-        <input name="address_postal_code" id="addressPostalCode" type="text" id="inputPostal1" class="form-control"
+        <label for="inputPostal1" class="form-label">CEP</label>
+        <input name="address_postal_code" id="inputPostal1" type="text" class="form-control"
             placeholder="CEP"
             value="{{ (isset($employee) and !$fromApproved) ? $employee->address_postal_code : old('address_postal_code') }}" maxlength="9"
             data-inputmask="'mask': '99999-999', 'removeMaskOnSubmit': true"
-            onkeyup="validate('addressPostalCode');" />
+            onkeyup="validate('inputPostal1');" />
         @error('address_postal_code')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
@@ -226,7 +226,7 @@
     </div>
     <div class="col-9 col-sm-10 col-md-3 col-lg-3">
         <label for="inputAddressCity1" class="form-label">Cidade</label>
-        <input name="address_city" type="text" id="inputAddressCity1" class="form-control" placeholder="Cidade"
+        <input name="address_city" id="inputAddressCity1" type="text" class="form-control" placeholder="Cidade"
             value="{{ (isset($employee) and !$fromApproved) ? $employee->address_city : old('address_city') }}" maxlength="50" />
         @error('address_city')
             <div class="text-danger">> {{ $message }}</div>
@@ -236,16 +236,16 @@
 <div class="row g-3 mb-3">
     <div class="col-2 col-sm-2 col-md-1 col-lg-1">
         <label for="inputArea1" class="form-label">DDD</label>
-        <input name="area_code" id="areaCode" type="text" id="inputArea1" class="form-control" placeholder="DDD"
+        <input name="area_code" id="inputArea1" type="text" class="form-control" placeholder="DDD"
             value="{{ isset($employee) ? $employee->area_code : old('area_code') }}" maxlength="2"
-            onkeyup="validate('areaCode');" pattern="[0-9]{2}" />
+            onkeyup="validate('inputArea1');" pattern="[0-9]{2}" />
         @error('area_code')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-5 col-sm-5 col-md-2 col-lg-2">
         <label for="inputPhone1" class="form-label">Telefone</label>
-        <input name="phone" id="phone" type="tel" id="inputPhone1" class="form-control" placeholder="Telefone"
+        <input name="phone" id="inputPhone1" type="tel" class="form-control" placeholder="Telefone"
             value="{{ isset($employee) ? $employee->phone : old('phone') }}" maxlength="14"
             data-inputmask="'mask': '(99) 9999-9999', 'removeMaskOnSubmit': true" />
         @error('phone')
@@ -254,7 +254,7 @@
     </div>
     <div class="col-5 col-sm-5 col-md-2 col-lg-2">
         <label for="inputMobile1" class="form-label">Celular</label>
-        <input name="mobile" id="mobile" type="tel" id="inputMobile1" class="form-control" placeholder="Celular"
+        <input name="mobile" id="inputMobile1" type="tel" class="form-control" placeholder="Celular"
             value="{{ isset($employee) ? $employee->mobile : old('mobile') }}" maxlength="16"
             data-inputmask="'mask': '(99) 9 9999-9999', 'removeMaskOnSubmit': true" />
         @error('mobile')
@@ -263,7 +263,7 @@
     </div>
     <div class="col-12 col-sm-12 col-md-7 col-lg-7">
         <label for="inputEmail1" class="form-label">Email*</label>
-        <input name="email" type="email" class="form-control" placeholder="Email" id="inputEmail1"
+        <input name="email" id="inputEmail1" type="email" class="form-control" placeholder="Email"
             value="{{ isset($employee) ? $employee->email : old('email') }}" required />
         @error('email')
             <div class="text-danger">> {{ $message }}</div>
