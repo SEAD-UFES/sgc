@@ -37,7 +37,7 @@
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb border-top border-bottom bg-light">
             <li class="breadcrumb-item">Colaboradores</li>
-            <li class="breadcrumb-item">Importar Aprovados</li>
+            <li class="breadcrumb-item">Importar planilha de Aprovados</li>
             <li class="breadcrumb-item active" aria-current="page">Revisão de Importação</li>
         </ol>
     </nav>
@@ -85,7 +85,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <form action={{ route('approveds.store.step2') }} method="POST">
+                    <form action={{ route('approveds.storeMany.step2') }} method="POST">
                         @csrf
                         <div class="table-responsive">
                             <table class="table table-striped table-hover">

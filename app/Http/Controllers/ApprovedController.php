@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\ModelFilterHelper;
 use App\Helpers\SgcLogHelper;
 use App\Http\Requests\ImportApprovedsFileRequest;
+use App\Http\Requests\StoreApprovedRequest;
 use App\Http\Requests\StoreApprovedsRequest;
 use App\Models\Approved;
 use App\Models\ApprovedState;
@@ -23,6 +24,16 @@ use Illuminate\Support\Facades\Gate;
 
 class ApprovedController extends Controller
 {
+    /**
+     * @var ApprovedService $service
+     */
+    private $service;
+
+    /**
+     * @var ApprovedsSourceService $fileService
+     */
+    private $fileService;
+
     public function __construct(ApprovedService $approvedService, ApprovedsSourceService $fileService)
     {
         $this->service = $approvedService;
@@ -34,7 +45,7 @@ class ApprovedController extends Controller
      *
      * @param Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index(Request $request)
     {
@@ -58,9 +69,9 @@ class ApprovedController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
-    public function createStep1(Request $request) // import spreadsheet file view
+    public function create(Request $request)
     {
         //check access permission
         if (! Gate::allows('approved-store')) {
@@ -68,17 +79,61 @@ class ApprovedController extends Controller
             abort(403);
         }
 
-        return view('approved.create');
+        $courses = Course::orderBy('name')->get();
+        $roles = Role::orderBy('name')->get();
+        $poles = Pole::orderBy('name')->get();
+
+        return view('approved.create', compact('courses', 'roles', 'poles'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param StoreApprovedRequest $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function storeStep1(ImportApprovedsFileRequest $request)
+    public function store(StoreApprovedRequest $request)
+    {
+        //check access permission
+        if (! Gate::allows('approved-store')) {
+            SgcLogHelper::logBadAttemptOnUri($request, 403);
+            abort(403);
+        }
+
+        try {
+            $this->service->create($request->validated());
+        } catch (\Exception $e) {
+            return redirect()->route('approveds.index')->withErrors(['noStore' => 'Não foi possível salvar o Aprovado: ' . $e->getMessage()]);
+        }
+
+        return redirect()->route('approveds.index')->with('success', 'Aprovado criado com sucesso.');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function createManyStep1(Request $request) // import spreadsheet file view
+    {
+        //check access permission
+        if (! Gate::allows('approved-store')) {
+            SgcLogHelper::logBadAttemptOnUri($request, 403);
+            abort(403);
+        }
+
+        return view('approved.createMany');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  ImportApprovedsFileRequest  $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeManyStep1(ImportApprovedsFileRequest $request)
     {
         //check access permission
         if (! Gate::allows('approved-store')) {
@@ -94,15 +149,15 @@ class ApprovedController extends Controller
             return back()->withErrors($e->getMessage());
         }
 
-        return redirect()->route('approveds.create.step2')->with('success', 'Arquivo importado com sucesso.');
+        return redirect()->route('approveds.createMany.step2')->with('success', 'Arquivo importado com sucesso.');
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
-    public function createStep2(Request $request) // import spreadsheet file view
+    public function createManyStep2(Request $request) // import spreadsheet file view
     {
         //check access permission
         if (! Gate::allows('approved-store')) {
@@ -122,11 +177,11 @@ class ApprovedController extends Controller
     /**
      * Undocumented function
      *
-     * @param Request $request
+     * @param StoreApprovedsRequest $request
      *
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function storeStep2(StoreApprovedsRequest $request)
+    public function storeManyStep2(StoreApprovedsRequest $request)
     {
         //check access permission
         if (! Gate::allows('approved-store')) {
@@ -152,9 +207,9 @@ class ApprovedController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Approved $approved)
+    /* public function show(Approved $approved)
     {
-    }
+    } */
 
     /**
      * Show the form for editing the specified resource.
@@ -163,9 +218,9 @@ class ApprovedController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit(Approved $approved)
+    /* public function edit(Approved $approved)
     {
-    }
+    } */
 
     /**
      * Update the specified resource in storage.
@@ -173,7 +228,7 @@ class ApprovedController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Approved  $approved
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Approved $approved)
     {
@@ -197,7 +252,7 @@ class ApprovedController extends Controller
      *
      * @param  \App\Models\Approved  $approved
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Approved $approved, Request $request)
     {
@@ -222,7 +277,7 @@ class ApprovedController extends Controller
      * @param Request $request
      * @param Approved $approved
      *
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function designate(Request $request, Approved $approved)
     {

@@ -86,11 +86,13 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/approveds/{approved}/designate', [ApprovedController::class, 'designate'])->name('approveds.designate');
 
+    Route::get('/approveds/create-many/step-1', [ApprovedController::class, 'createManyStep1'])->name('approveds.createMany.step1');
+    Route::post('/approveds/create-many/step-1', [ApprovedController::class, 'storeManyStep1'])->name('approveds.storeMany.step1');
+    Route::get('/approveds/create-many/step-2', [ApprovedController::class, 'createManyStep2'])->name('approveds.createMany.step2');
+    Route::post('/approveds/create-many/step-2', [ApprovedController::class, 'storeManyStep2'])->name('approveds.storeMany.step2');
     Route::get('/approveds', [ApprovedController::class, 'index'])->name('approveds.index');
-    Route::get('/approveds/create/step-1', [ApprovedController::class, 'createStep1'])->name('approveds.create.step1');
-    Route::post('/approveds/create/step-1', [ApprovedController::class, 'storeStep1'])->name('approveds.store.step1');
-    Route::get('/approveds/create/step-2', [ApprovedController::class, 'createStep2'])->name('approveds.create.step2');
-    Route::post('/approveds/create/step-2', [ApprovedController::class, 'storeStep2'])->name('approveds.store.step2');
+    Route::get('/approveds/create', [ApprovedController::class, 'create'])->name('approveds.create');
+    Route::post('/approveds', [ApprovedController::class, 'store'])->name('approveds.store');
     Route::patch('/approveds/{approved}', [ApprovedController::class, 'update'])->name('approveds.update');
     Route::delete('/approveds/{approved}', [ApprovedController::class, 'destroy'])->name('approveds.destroy');
     //Route::resource('approveds', ApprovedController::class);

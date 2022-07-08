@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\Approved;
 use App\Models\ApprovedState;
 use App\Models\Course;
+use App\Models\Pole;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\UserType;
 use App\Models\UserTypeAssignment;
@@ -317,6 +319,162 @@ class ApprovedTest extends TestCase
     }
 
 
+    // ================= See Create Form Tests =================
+
+
+    /**
+     * Guest Shouldnt access create approved page
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function guestShouldntAccessCreateApprovedPage()
+    {
+        $this->get(route('approveds.create'))
+            ->assertRedirect(route('auth.login'));
+    }
+
+    /**
+     * Authenticated user without permission Shouldnt Access create approved page
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function authenticatedUserWithoutPermissionShouldntAccessCreateApprovedPage()
+    {
+        $this->actingAs(self::$userAlien)
+            ->withSession(['loggedInUser.currentUta' => null]);
+
+        $this->get(route('approveds.create'))
+            ->assertStatus(403);
+    }
+
+    /**
+     * Admin user Should access create approved page
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function administratorShouldAccessCreateApprovedPage()
+    {
+        $this->actingAs(self::$userAdm);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+
+        $this->get(route('approveds.create'))
+            ->assertSee(['Cadastrar Aprovado', 'Telefone'])
+            ->assertStatus(200);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function directorShouldAccessCreateApprovedPage()
+    {
+        $this->actingAs(self::$userDir);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+
+        $this->get(route('approveds.create'))
+            ->assertSee(['Cadastrar Aprovado', 'Telefone'])
+            ->assertStatus(200);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function assistantShouldntAccessCreateApprovedPage()
+    {
+        $this->actingAs(self::$userAss);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+
+        $this->get(route('approveds.create'))
+            ->assertStatus(403);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function secretaryShouldAccessCreateApprovedPage()
+    {
+        $this->actingAs(self::$userSec);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+
+        $this->get(route('approveds.create'))
+            ->assertSee(['Cadastrar Aprovado', 'Telefone'])
+            ->assertStatus(200);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function ldiShouldntAccessCreateApprovedPage()
+    {
+        $this->actingAs(self::$userLdi);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+
+        $this->get(route('approveds.create'))
+            ->assertStatus(403);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function coordinatorShouldntAccessCreateApprovedPage()
+    {
+        $this->actingAs(self::$userCoord);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+
+        $this->get(route('approveds.create'))
+            ->assertStatus(403);
+    }
+
+
     // ================= See Create Step 1 Form Tests =================
 
     /**
@@ -328,7 +486,7 @@ class ApprovedTest extends TestCase
      */
     public function guestShouldntAccessStepOneCreateApprovedsPage()
     {
-        $this->get(route('approveds.create.step1'))
+        $this->get(route('approveds.createMany.step1'))
             ->assertRedirect(route('auth.login'));
     }
 
@@ -344,7 +502,7 @@ class ApprovedTest extends TestCase
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentUta' => null]);
 
-        $this->get(route('approveds.create.step1'))
+        $this->get(route('approveds.createMany.step1'))
             ->assertStatus(403);
     }
 
@@ -364,7 +522,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
 
-        $this->get(route('approveds.create.step1'))
+        $this->get(route('approveds.createMany.step1'))
             ->assertSee(['Importar Aprovados', 'Enviar arquivo'])
             ->assertStatus(200);
     }
@@ -385,7 +543,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
 
-        $this->get(route('approveds.create.step1'))
+        $this->get(route('approveds.createMany.step1'))
             ->assertSee(['Importar Aprovados', 'Enviar arquivo'])
             ->assertStatus(200);
     }
@@ -406,7 +564,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
 
-        $this->get(route('approveds.create.step1'))
+        $this->get(route('approveds.createMany.step1'))
             ->assertStatus(403);
     }
 
@@ -426,7 +584,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
 
-        $this->get(route('approveds.create.step1'))
+        $this->get(route('approveds.createMany.step1'))
             ->assertSee(['Importar Aprovados', 'Enviar arquivo'])
             ->assertStatus(200);
     }
@@ -447,7 +605,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
 
-        $this->get(route('approveds.create.step1'))
+        $this->get(route('approveds.createMany.step1'))
             ->assertStatus(403);
     }
 
@@ -467,7 +625,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
 
-        $this->get(route('approveds.create.step1'))
+        $this->get(route('approveds.createMany.step1'))
             ->assertStatus(403);
     }
 
@@ -512,7 +670,7 @@ class ApprovedTest extends TestCase
      */
     public function guestShouldntAccessStepTwoCreateApprovedsPage()
     {
-        $this->get(route('approveds.create.step2'))
+        $this->get(route('approveds.createMany.step2'))
             ->assertRedirect(route('auth.login'));
     }
 
@@ -528,7 +686,7 @@ class ApprovedTest extends TestCase
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentUta' => null, 'importedApproveds' => $this->createTestImportedApproveds()]);
 
-        $this->get(route('approveds.create.step2'))
+        $this->get(route('approveds.createMany.step2'))
             ->assertStatus(403);
     }
 
@@ -548,7 +706,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta(), 'importedApproveds' => $this->createTestImportedApproveds()]);
 
-        $this->get(route('approveds.create.step2'))
+        $this->get(route('approveds.createMany.step2'))
             ->assertSee(['Revisão de Importação', 'Importar', 'Carl Doe', 'Doug Doe'])
             ->assertStatus(200);
     }
@@ -569,7 +727,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta(), 'importedApproveds' => $this->createTestImportedApproveds()]);
 
-        $this->get(route('approveds.create.step2'))
+        $this->get(route('approveds.createMany.step2'))
             ->assertSee(['Revisão de Importação', 'Importar', 'Carl Doe', 'Doug Doe'])
             ->assertStatus(200);
     }
@@ -590,7 +748,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta(), 'importedApproveds' => $this->createTestImportedApproveds()]);
 
-        $this->get(route('approveds.create.step2'))
+        $this->get(route('approveds.createMany.step2'))
             ->assertStatus(403);
     }
 
@@ -610,7 +768,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta(), 'importedApproveds' => $this->createTestImportedApproveds()]);
 
-        $this->get(route('approveds.create.step2'))
+        $this->get(route('approveds.createMany.step2'))
             ->assertSee(['Revisão de Importação', 'Importar', 'Carl Doe', 'Doug Doe'])
             ->assertStatus(200);
     }
@@ -631,7 +789,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta(), 'importedApproveds' => $this->createTestImportedApproveds()]);
 
-        $this->get(route('approveds.create.step2'))
+        $this->get(route('approveds.createMany.step2'))
             ->assertStatus(403);
     }
 
@@ -651,12 +809,228 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta(), 'importedApproveds' => $this->createTestImportedApproveds()]);
 
-        $this->get(route('approveds.create.step2'))
+        $this->get(route('approveds.createMany.step2'))
             ->assertStatus(403);
     }
 
 
     // ================= Create Approved Tests =================
+
+    /**
+     * @return array<string, string>
+     */
+    private function getTestAttributes(): array
+    {
+        //setting up scenario
+        ApprovedState::factory()->create(
+            [
+                'name' => 'Não contatado',
+                'description' => 'Bar',
+            ]
+        );
+
+        $attributes = [];
+
+        $attributes['name'] = 'Dilan Doe';
+        $attributes['email'] = 'dilan@othertest.com';
+        $attributes['area_code'] = '03';
+        $attributes['phone'] = '01234567';
+        $attributes['mobile'] = '012345678';
+        $attributes['announcement'] = '003';
+
+        $attributes['role_id'] = Role::factory()->createOne(
+            [
+                'name' => 'Super Role',
+                'description' => 'Super Role',
+            ]
+        )->getAttribute('id');
+
+        $attributes['course_id'] = Course::factory()->createOne(
+            [
+                'name' => 'Course Omicron',
+                'description' => 'Course Omicron',
+            ]
+        )->getAttribute('id');
+
+        $attributes['pole_id'] = Pole::factory()->createOne(
+            [
+                'name' => 'Pole Teta',
+                'description' => 'Pole Teta',
+            ]
+        )->getAttribute('id');
+
+        return $attributes;
+    }
+
+    /**
+     * Guest Shouldnt create approved
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function guestShouldntCreateApproved()
+    {
+        $approvedArr = $this->getTestAttributes();
+
+        $this->post(route('approveds.store'), $approvedArr)
+            ->assertRedirect(route('auth.login'));
+    }
+
+    /**
+     * Authenticated user without permission Shouldnt create approved
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function authenticatedUserWithoutPermissionShouldntCreateApproved()
+    {
+        $approvedArr = $this->getTestAttributes();
+
+        $this->actingAs(self::$userAlien)
+            ->withSession(['loggedInUser.currentUta' => null])
+            ->followingRedirects()->post(route('approveds.store'), $approvedArr)
+            ->assertStatus(403);
+    }
+
+    /**
+     * Admin user Should create approveds
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function administratorShouldCreateApproved()
+    {
+        $this->actingAs(self::$userAdm);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+
+        $approvedArr = $this->getTestAttributes();
+
+        $this->followingRedirects()->post(route('approveds.store'), $approvedArr)
+            ->assertSee('Dilan Doe')
+            ->assertStatus(200);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function directorShouldCreateApproved()
+    {
+        $this->actingAs(self::$userDir);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+
+        $approvedArr = $this->getTestAttributes();
+
+        $this->followingRedirects()->post(route('approveds.store'), $approvedArr)
+            ->assertSee('Dilan Doe')
+            ->assertStatus(200);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function assistantShouldntCreateApproved()
+    {
+        $this->actingAs(self::$userAss);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+
+        $approvedArr = $this->getTestAttributes();
+
+        $this->followingRedirects()->post(route('approveds.store'), $approvedArr)
+            ->assertStatus(403);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function secretaryShouldCreateApproved()
+    {
+        $this->actingAs(self::$userSec);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+
+        $approvedArr = $this->getTestAttributes();
+
+        $this->followingRedirects()->post(route('approveds.store'), $approvedArr)
+            ->assertSee('Dilan Doe')
+            ->assertStatus(200);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function coordinatorShouldntCreateApproved()
+    {
+        $this->actingAs(self::$userCoord);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+
+        $approvedArr = $this->getTestAttributes();
+
+        $this->followingRedirects()->post(route('approveds.store'), $approvedArr)
+            ->assertStatus(403);
+    }
+
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function ldiShouldntCreateApproved()
+    {
+        $this->actingAs(self::$userLdi);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+
+        $approvedArr = $this->getTestAttributes();
+
+        $this->followingRedirects()->post(route('approveds.store'), $approvedArr)
+            ->assertStatus(403);
+    }
+
+
+    // ================= Create many Approveds Tests =================
 
     /**
      * @return array<string, array<string, string>>
@@ -697,11 +1071,11 @@ class ApprovedTest extends TestCase
      *
      * @test
      */
-    public function guestShouldntCreateApproved()
+    public function guestShouldntCreateManyApproveds()
     {
         $approvedArr = $this->createTestImportedApprovedsArray();
 
-        $this->post(route('approveds.store.step2'), $approvedArr)
+        $this->post(route('approveds.storeMany.step2'), $approvedArr)
             ->assertRedirect(route('auth.login'));
     }
 
@@ -712,13 +1086,13 @@ class ApprovedTest extends TestCase
      *
      * @test
      */
-    public function authenticatedUserWithoutPermissionShouldntCreateApproved()
+    public function authenticatedUserWithoutPermissionShouldntCreateManyApproveds()
     {
         $approvedArr = $this->createTestImportedApprovedsArray();
 
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentUta' => null])
-            ->followingRedirects()->post(route('approveds.store.step2'), $approvedArr)
+            ->followingRedirects()->post(route('approveds.storeMany.step2'), $approvedArr)
             ->assertStatus(403);
     }
 
@@ -729,7 +1103,7 @@ class ApprovedTest extends TestCase
      *
      * @test
      */
-    public function administratorShouldCreateApproved()
+    public function administratorShouldCreateManyApproveds()
     {
         $this->actingAs(self::$userAdm);
 
@@ -740,7 +1114,7 @@ class ApprovedTest extends TestCase
 
         $approvedArr = $this->createTestImportedApprovedsArray();
 
-        $this->followingRedirects()->post(route('approveds.store.step2'), $approvedArr)
+        $this->followingRedirects()->post(route('approveds.storeMany.step2'), $approvedArr)
             ->assertSee($this->expectedApprovedInfo())
             ->assertStatus(200);
     }
@@ -752,7 +1126,7 @@ class ApprovedTest extends TestCase
      *
      * @test
      */
-    public function directorShouldCreateApproved()
+    public function directorShouldCreateManyApproveds()
     {
         $this->actingAs(self::$userDir);
 
@@ -763,7 +1137,7 @@ class ApprovedTest extends TestCase
 
         $approvedArr = $this->createTestImportedApprovedsArray();
 
-        $this->followingRedirects()->post(route('approveds.store.step2'), $approvedArr)
+        $this->followingRedirects()->post(route('approveds.storeMany.step2'), $approvedArr)
             ->assertSee($this->expectedApprovedInfo())
             ->assertStatus(200);
     }
@@ -775,7 +1149,7 @@ class ApprovedTest extends TestCase
      *
      * @test
      */
-    public function assistantShouldntCreateApproved()
+    public function assistantShouldntCreateManyApproveds()
     {
         $this->actingAs(self::$userAss);
 
@@ -786,7 +1160,7 @@ class ApprovedTest extends TestCase
 
         $approvedArr = $this->createTestImportedApprovedsArray();
 
-        $this->followingRedirects()->post(route('approveds.store.step2'), $approvedArr)
+        $this->followingRedirects()->post(route('approveds.storeMany.step2'), $approvedArr)
             ->assertStatus(403);
     }
 
@@ -797,7 +1171,7 @@ class ApprovedTest extends TestCase
      *
      * @test
      */
-    public function secretaryShouldCreateApproved()
+    public function secretaryShouldCreateManyApproveds()
     {
         $this->actingAs(self::$userSec);
 
@@ -808,7 +1182,7 @@ class ApprovedTest extends TestCase
 
         $approvedArr = $this->createTestImportedApprovedsArray();
 
-        $this->followingRedirects()->post(route('approveds.store.step2'), $approvedArr)
+        $this->followingRedirects()->post(route('approveds.storeMany.step2'), $approvedArr)
             ->assertSee($this->expectedApprovedInfo())
             ->assertStatus(200);
     }
@@ -820,7 +1194,7 @@ class ApprovedTest extends TestCase
      *
      * @test
      */
-    public function coordinatorShouldntCreateApproved()
+    public function coordinatorShouldntCreateManyApproveds()
     {
         $this->actingAs(self::$userCoord);
 
@@ -831,7 +1205,7 @@ class ApprovedTest extends TestCase
 
         $approvedArr = $this->createTestImportedApprovedsArray();
 
-        $this->followingRedirects()->post(route('approveds.store.step2'), $approvedArr)
+        $this->followingRedirects()->post(route('approveds.storeMany.step2'), $approvedArr)
             ->assertStatus(403);
     }
 
@@ -842,7 +1216,7 @@ class ApprovedTest extends TestCase
      *
      * @test
      */
-    public function ldiShouldntCreateApproved()
+    public function ldiShouldntCreateManyApproveds()
     {
         $this->actingAs(self::$userLdi);
 
@@ -853,7 +1227,7 @@ class ApprovedTest extends TestCase
 
         $approvedArr = $this->createTestImportedApprovedsArray();
 
-        $this->followingRedirects()->post(route('approveds.store.step2'), $approvedArr)
+        $this->followingRedirects()->post(route('approveds.storeMany.step2'), $approvedArr)
             ->assertStatus(403);
     }
 

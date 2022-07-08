@@ -4,6 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\Approved;
 use App\Models\ApprovedState;
+use App\Models\Course;
+use App\Models\Pole;
+use App\Models\Role;
 use App\Services\ApprovedService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -12,6 +15,11 @@ use Tests\TestCase;
 class ApprovedServiceTest extends TestCase
 {
     use RefreshDatabase;
+
+    /**
+     * @var ApprovedService $service
+     */
+    private $service;
 
     //setting up scenario for all tests
     public function setUp(): void
@@ -45,6 +53,8 @@ class ApprovedServiceTest extends TestCase
 
     /**
      * @test
+     *
+     * @return void
      */
     public function approvedsShouldBeListed()
     {
@@ -62,10 +72,15 @@ class ApprovedServiceTest extends TestCase
 
     /**
      * @test
+     *
+     * @return void
      */
     public function approvedShouldBeRetrieved()
     {
         //setting up scenario
+        /**
+         * @var Approved $approved
+         */
         $approved = Approved::find(1);
 
         Event::fakeFor(function () use ($approved) {
@@ -81,15 +96,20 @@ class ApprovedServiceTest extends TestCase
 
     /**
      * @test
+     *
+     * @return void
      */
     public function approvedShouldBeDeleted()
     {
         //setting up scenario
+        /**
+         * @var Approved $approved
+         */
         $approved = Approved::find(1);
 
         Event::fakeFor(function () use ($approved) {
             //execution
-            $approved = $this->service->delete($approved);
+            $this->service->delete($approved);
 
             //verifications
             Event::assertDispatched('eloquent.deleted: ' . Approved::class);
@@ -100,17 +120,28 @@ class ApprovedServiceTest extends TestCase
 
     /**
      * @test
+     *
+     * @return void
      */
     public function approvedStateShouldChange()
     {
         //setting up scenario
-        $state_id = ApprovedState::factory()->create(
+        $state_id = ApprovedState::factory()->createOne(
             [
                 'name' => 'Foo',
                 'description' => 'Bar',
             ]
-        )->id;
+        )->getAttribute('id');
+
+        /**
+         * @var array<string, string> $attributes
+         */
+        $attributes = [];
         $attributes['states'] = $state_id;
+
+        /**
+         * @var Approved $approved
+         */
         $approved = Approved::find(1);
 
         Event::fakeFor(function () use ($approved, $attributes) {
@@ -126,16 +157,77 @@ class ApprovedServiceTest extends TestCase
 
     /**
      * @test
+     *
+     * @return void
      */
-    public function shouldPersistApprovedsList()
+    public function approvedShouldBeCreated()
     {
         //setting up scenario
-        $state_id = ApprovedState::factory()->create(
+        ApprovedState::factory()->create(
             [
                 'name' => 'Não contatado',
                 'description' => 'Bar',
             ]
-        )->id;
+        );
+
+        /**
+         * @var array<string, string> $attributes
+         */
+        $attributes = [];
+
+        $attributes['name'] = 'Dilan Doe';
+        $attributes['email'] = 'dilan@othertest.com';
+        $attributes['area_code'] = '03';
+        $attributes['phone'] = '01234567';
+        $attributes['mobile'] = '012345678';
+        $attributes['announcement'] = '003';
+
+        $attributes['role_id'] = Role::factory()->createOne(
+            [
+                'name' => 'Super Role',
+                'description' => 'Super Role',
+            ]
+        )->getAttribute('id');
+
+        $attributes['course_id'] = Course::factory()->createOne(
+            [
+                'name' => 'Course Omicron',
+                'description' => 'Course Omicron',
+            ]
+        )->getAttribute('id');
+
+        $attributes['pole_id'] = Pole::factory()->createOne(
+            [
+                'name' => 'Pole Teta',
+                'description' => 'Pole Teta',
+            ]
+        )->getAttribute('id');
+
+        Event::fakeFor(function () use ($attributes) {
+            //execution
+            $this->service->create($attributes);
+
+            //verifications
+            Event::assertDispatched('eloquent.created: ' . Approved::class);
+            $this->assertEquals('Dilan Doe', Approved::find(3)?->name);
+            $this->assertCount(3, Approved::all());
+        });
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function shouldPersistApprovedsList()
+    {
+        //setting up scenario
+        ApprovedState::factory()->createOne(
+            [
+                'name' => 'Não contatado',
+                'description' => 'Bar',
+            ]
+        );
 
         $approveds = [];
 
@@ -149,13 +241,14 @@ class ApprovedServiceTest extends TestCase
         $approveds[1]['email'] = 'mary@test4.com';
         $approveds[1]['announcement'] = '004';
 
+        $attributes = [];
         $attributes['approveds'] = $approveds;
 
         //execution
         $this->service->batchStore($attributes);
 
         //verifications
-        $this->assertEquals('Bob Doe', Approved::find(3)->name);
-        $this->assertEquals('mary@test4.com', Approved::find(4)->email);
+        $this->assertEquals('Bob Doe', Approved::find(3)?->name);
+        $this->assertEquals('mary@test4.com', Approved::find(4)?->email);
     }
 }
