@@ -157,7 +157,6 @@ RUN apk add --no-cache mysql-client
 
 # Add cron job to run Laravel Scheduler every minute
 RUN echo "* * * * * cd /www && php artisan schedule:run >> /dev/null 2>&1" >> /etc/crontabs/root
-RUN /usr/sbin/crond
 
 # RTAs
 
