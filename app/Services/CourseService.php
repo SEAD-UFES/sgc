@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Helpers\TextHelper;
 use App\Models\Course;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Arr;
 
 class CourseService
 {
@@ -34,6 +36,10 @@ class CourseService
      */
     public function create(array $attributes): Course
     {
+        $attributes = Arr::map($attributes, function ($value, $key) {
+            return TextHelper::titleCase($value);
+        });
+
         return Course::create($attributes);
     }
 
@@ -53,6 +59,10 @@ class CourseService
 
     public function update(array $attributes, Course $course): Course
     {
+        $attributes = Arr::map($attributes, function ($value, $key) {
+            return TextHelper::titleCase($value);
+        });
+
         $course->update($attributes);
 
         return $course;

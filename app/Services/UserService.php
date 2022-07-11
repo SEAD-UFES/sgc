@@ -36,6 +36,8 @@ class UserService
      */
     public function create(array $attributes): User
     {
+        $attributes['email'] = mb_strtolower($attributes['email']);
+
         $attributes['password'] = Hash::make($attributes['password']);
         $attributes['active'] = isset($attributes['active']);
 
@@ -70,6 +72,8 @@ class UserService
      */
     public function update(array $attributes, User $user): User
     {
+        $attributes['email'] = mb_strtolower($attributes['email']);
+
         if (isset($attributes['password']) and $attributes['password'] !== '') {
             $attributes['password'] = Hash::make($attributes['password']);
         } else {

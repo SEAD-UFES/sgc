@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\TextHelper;
 use App\Models\Approved;
 use App\Models\ApprovedState;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -37,6 +38,10 @@ class ApprovedService
      */
     public function create(array $attributes): ?Approved
     {
+        $attributes = Arr::map($attributes, function ($value, $key) {
+            return $key !== 'email' ? TextHelper::titleCase($value) : mb_strtolower($value);
+        });
+
         $approved = null;
         $attributes['approved_state_id'] = ApprovedState::where('name', 'Não contatado')->first()?->getAttribute('id');
 
@@ -101,10 +106,7 @@ class ApprovedService
         DB::transaction(function () use ($attributes) {
             foreach ($attributes['approveds'] as $approved) {
                 if (Arr::exists($approved, 'check')) {
-                    $approved['approved_state_id'] = ApprovedState::where('name', 'Não contatado')->first()?->getAttribute('id');
-
-                    $selectedApproved = new Approved($approved);
-                    $selectedApproved->save();
+                    $this->create($approved);
                 }
             }
         });

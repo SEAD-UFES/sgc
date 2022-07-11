@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Helpers\TextHelper;
 use App\Models\Role;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Arr;
 
 class RoleService
 {
@@ -34,6 +36,10 @@ class RoleService
      */
     public function create(array $attributes): Role
     {
+        $attributes = Arr::map($attributes, function ($value, $key) {
+            return TextHelper::titleCase($value);
+        });
+
         return Role::create($attributes);
     }
 
@@ -61,6 +67,10 @@ class RoleService
      */
     public function update(array $attributes, Role $role): Role
     {
+        $attributes = Arr::map($attributes, function ($value, $key) {
+            return TextHelper::titleCase($value);
+        });
+
         $role->update($attributes);
 
         return $role;

@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Helpers\TextHelper;
 use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class EmployeeService
@@ -36,6 +38,10 @@ class EmployeeService
      */
     public function create(array $attributes): ?Employee
     {
+        $attributes = Arr::map($attributes, function ($value, $key) {
+            return $key !== 'email' ? TextHelper::titleCase($value) : mb_strtolower($value);
+        });
+
         $employee = null;
         DB::transaction(function () use ($attributes, &$employee) {
             $employee = Employee::create($attributes);
@@ -69,6 +75,10 @@ class EmployeeService
      */
     public function update(array $attributes, Employee $employee): ?Employee
     {
+        $attributes = Arr::map($attributes, function ($value, $key) {
+            return $key !== 'email' ? TextHelper::titleCase($value) : mb_strtolower($value);
+        });
+
         DB::transaction(function () use ($attributes, $employee) {
             $employee->update($attributes);
             $this->userAttach($employee);

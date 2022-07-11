@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Helpers\TextHelper;
 use App\Models\Pole;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Arr;
 
 class PoleService
 {
@@ -34,6 +36,10 @@ class PoleService
      */
     public function create(array $attributes): Pole
     {
+        $attributes = Arr::map($attributes, function ($value, $key) {
+            return TextHelper::titleCase($value);
+        });
+
         return Pole::create($attributes);
     }
 
@@ -61,6 +67,10 @@ class PoleService
      */
     public function update(array $attributes, Pole $pole): Pole
     {
+        $attributes = Arr::map($attributes, function ($value, $key) {
+            return TextHelper::titleCase($value);
+        });
+
         $pole->update($attributes);
 
         return $pole;

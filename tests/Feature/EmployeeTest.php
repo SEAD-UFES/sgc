@@ -146,7 +146,6 @@ class EmployeeTest extends TestCase
         );
     }
 
-
     // ================= See Employees list Tests =================
 
     /**
@@ -304,7 +303,6 @@ class EmployeeTest extends TestCase
             ->assertStatus(200);
     }
 
-
     // ================= See Employee details Tests =================
 
     /**
@@ -460,7 +458,6 @@ class EmployeeTest extends TestCase
             ->assertStatus(403);
     }
 
-
     // ================= See Create Form Tests =================
 
     /**
@@ -615,7 +612,6 @@ class EmployeeTest extends TestCase
         $this->get(route('employees.create'))
             ->assertStatus(403);
     }
-
 
     // ================= Create Employee Tests =================
 
@@ -794,7 +790,6 @@ class EmployeeTest extends TestCase
             ->assertStatus(403);
     }
 
-
     // ================= See Edit Form Tests =================
 
     /**
@@ -950,7 +945,6 @@ class EmployeeTest extends TestCase
             ->assertStatus(403);
     }
 
-
     // ================= Update Employee Tests =================
 
     /**
@@ -968,7 +962,6 @@ class EmployeeTest extends TestCase
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
-        $originalEmployeeArr['address_complement'] = $this->updatedEmployeeData()['address_complement'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
 
         $this->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
@@ -993,7 +986,6 @@ class EmployeeTest extends TestCase
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
-        $originalEmployeeArr['address_complement'] = $this->updatedEmployeeData()['address_complement'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
 
         $this->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
@@ -1022,7 +1014,6 @@ class EmployeeTest extends TestCase
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
-        $originalEmployeeArr['address_complement'] = $this->updatedEmployeeData()['address_complement'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
 
         $this->followingRedirects()->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
@@ -1052,7 +1043,6 @@ class EmployeeTest extends TestCase
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
-        $originalEmployeeArr['address_complement'] = $this->updatedEmployeeData()['address_complement'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
 
         $this->followingRedirects()->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
@@ -1082,7 +1072,6 @@ class EmployeeTest extends TestCase
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
-        $originalEmployeeArr['address_complement'] = $this->updatedEmployeeData()['address_complement'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
 
         $this->followingRedirects()->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
@@ -1112,7 +1101,6 @@ class EmployeeTest extends TestCase
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
-        $originalEmployeeArr['address_complement'] = $this->updatedEmployeeData()['address_complement'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
 
         $this->followingRedirects()->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
@@ -1142,7 +1130,6 @@ class EmployeeTest extends TestCase
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
-        $originalEmployeeArr['address_complement'] = $this->updatedEmployeeData()['address_complement'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
 
         $this->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
@@ -1171,13 +1158,11 @@ class EmployeeTest extends TestCase
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
-        $originalEmployeeArr['address_complement'] = $this->updatedEmployeeData()['address_complement'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
 
         $this->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
             ->assertStatus(403);
     }
-
 
     // ================= Delete Employee Tests =================
 
@@ -1385,7 +1370,7 @@ class EmployeeTest extends TestCase
         $cpf = $generator->cpf($formatted = false);
 
         /** @var Employee $employee */
-        $employee = Employee::factory()->makeOne(
+        return Employee::factory()->makeOne(
             [
                 'name' => 'Carl Doe',
                 'cpf' => $cpf,
@@ -1403,7 +1388,7 @@ class EmployeeTest extends TestCase
                 'father_name' => '',
                 'mother_name' => '',
                 'address_street' => '',
-                'address_complement' => (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']),
+                'address_complement' => '',
                 'address_number' => '',
                 'address_district' => '',
                 'address_postal_code' => '',
@@ -1415,7 +1400,6 @@ class EmployeeTest extends TestCase
                 'email' => (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']) . '@test-case.com',
             ]
         );
-        return $employee;
     }
 
     /** @return array<string>  */
@@ -1429,8 +1413,7 @@ class EmployeeTest extends TestCase
     {
         return [
             'name' => 'John Doe Updated',
-            'address_complement' => (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']),
-            'email' => (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']) . '@test-case.com',
+            'email' => mb_strtolower(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']) . '@test-case.com',
         ];
     }
 

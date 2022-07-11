@@ -76,7 +76,7 @@ class CourseServiceTest extends TestCase
         $attributes = [];
 
         $attributes['name'] = 'Course Gama';
-        $attributes['description'] = '3rd course';
+        $attributes['description'] = '3rd Course';
         $attributes['course_type_id'] = 2;
         $attributes['begin'] = now();
         $attributes['end'] = now();
@@ -88,7 +88,7 @@ class CourseServiceTest extends TestCase
             //verifications
             Event::assertDispatched('eloquent.created: ' . Course::class);
             $this->assertEquals('Course Gama', Course::find(3)->name);
-            $this->assertEquals('3rd course', Course::find(3)->description);
+            $this->assertEquals('3rd Course', Course::find(3)->description);
             $this->assertCount(3, Course::all());
         });
     }
@@ -105,7 +105,7 @@ class CourseServiceTest extends TestCase
         $attributes = [];
 
         $attributes['name'] = 'Course Delta';
-        $attributes['description'] = 'New 1st course';
+        $attributes['description'] = 'New 1st Course';
 
         Event::fakeFor(function () use ($course, $attributes) {
             //execution
@@ -114,7 +114,7 @@ class CourseServiceTest extends TestCase
             //verifications
             Event::assertDispatched('eloquent.updated: ' . Course::class);
             $this->assertEquals('Course Delta', Course::find(1)->name);
-            $this->assertEquals('New 1st course', Course::find(1)->description);
+            $this->assertEquals('New 1st Course', Course::find(1)->description);
             $this->assertCount(2, Course::all());
         });
     }
