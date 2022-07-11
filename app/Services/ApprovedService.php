@@ -42,6 +42,10 @@ class ApprovedService
             return $key !== 'email' ? TextHelper::titleCase($value) : mb_strtolower($value);
         });
 
+        $attributes = Arr::map($attributes, function ($value, $key) {
+            return $value === '' ? null : $value;
+        });
+
         $approved = null;
         $attributes['approved_state_id'] = ApprovedState::where('name', 'Não contatado')->first()?->getAttribute('id');
 

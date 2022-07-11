@@ -39,7 +39,11 @@ class EmployeeService
     public function create(array $attributes): ?Employee
     {
         $attributes = Arr::map($attributes, function ($value, $key) {
-            return $key !== 'email' ? TextHelper::titleCase($value) : mb_strtolower($value);
+            return $key === 'email' ? mb_strtolower($value) : ($key === 'id_issue_agency' ? mb_strtoupper($value) : TextHelper::titleCase($value));
+        });
+
+        $attributes = Arr::map($attributes, function ($value, $key) {
+            return $value === '' ? null : $value;
         });
 
         $employee = null;
@@ -76,8 +80,14 @@ class EmployeeService
     public function update(array $attributes, Employee $employee): ?Employee
     {
         $attributes = Arr::map($attributes, function ($value, $key) {
-            return $key !== 'email' ? TextHelper::titleCase($value) : mb_strtolower($value);
+            return $key === 'email' ? mb_strtolower($value) : ($key === 'id_issue_agency' ? mb_strtoupper($value) : TextHelper::titleCase($value));
         });
+
+        $attributes = Arr::map($attributes, function ($value, $key) {
+            return $value === '' ? null : $value;
+        });
+
+
 
         DB::transaction(function () use ($attributes, $employee) {
             $employee->update($attributes);

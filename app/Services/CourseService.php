@@ -40,6 +40,10 @@ class CourseService
             return TextHelper::titleCase($value);
         });
 
+        $attributes = Arr::map($attributes, function ($value, $key) {
+            return $value === '' ? null : $value;
+        });
+
         return Course::create($attributes);
     }
 
@@ -61,6 +65,10 @@ class CourseService
     {
         $attributes = Arr::map($attributes, function ($value, $key) {
             return TextHelper::titleCase($value);
+        });
+
+        $attributes = Arr::map($attributes, function ($value, $key) {
+            return $value === '' ? null : $value;
         });
 
         $course->update($attributes);

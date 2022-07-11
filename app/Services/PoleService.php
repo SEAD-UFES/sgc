@@ -40,6 +40,10 @@ class PoleService
             return TextHelper::titleCase($value);
         });
 
+        $attributes = Arr::map($attributes, function ($value, $key) {
+            return $value === '' ? null : $value;
+        });
+
         return Pole::create($attributes);
     }
 
@@ -69,6 +73,10 @@ class PoleService
     {
         $attributes = Arr::map($attributes, function ($value, $key) {
             return TextHelper::titleCase($value);
+        });
+
+        $attributes = Arr::map($attributes, function ($value, $key) {
+            return $value === '' ? null : $value;
         });
 
         $pole->update($attributes);

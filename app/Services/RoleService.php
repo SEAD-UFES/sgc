@@ -40,6 +40,10 @@ class RoleService
             return TextHelper::titleCase($value);
         });
 
+        $attributes = Arr::map($attributes, function ($value, $key) {
+            return $value === '' ? null : $value;
+        });
+
         return Role::create($attributes);
     }
 
@@ -69,6 +73,10 @@ class RoleService
     {
         $attributes = Arr::map($attributes, function ($value, $key) {
             return TextHelper::titleCase($value);
+        });
+
+        $attributes = Arr::map($attributes, function ($value, $key) {
+            return $value === '' ? null : $value;
         });
 
         $role->update($attributes);
