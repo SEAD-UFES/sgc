@@ -24,12 +24,12 @@
                                 ['label' => 'Usuário', 'value' => 'userEmailContains', 'selected' => true], 
                                 ['label' => 'Papel', 'value' => 'usertypeNameContains'],
                                 ['label' => 'Curso', 'value' => 'courseNameContains'], 
-                                [ 'label'=>'Início (=)', 'value'=>'beginExactly'],
-                                [ 'label'=>'Início (>=)' , 'value'=>'beginBigOrEqu'],
-                                [ 'label'=>'Início (<=)', 'value'=>'beginLowOrEqu'],
-                                [ 'label'=>'Fim (=)', 'value'=>'endExactly'],
-                                [ 'label'=>'Fim (>=)' , 'value'=>'endBigOrEqu'],
-                                [ 'label'=>'Fim (<=)', 'value'=>'endLowOrEqu'],
+                                ['label' => 'Início (=)', 'value'=>'beginExactly'],
+                                ['label' => 'Início (>=)' , 'value'=>'beginBigOrEqu'],
+                                ['label' => 'Início (<=)', 'value'=>'beginLowOrEqu'],
+                                ['label' => 'Fim (=)', 'value'=>'endExactly'],
+                                ['label' => 'Fim (>=)' , 'value'=>'endBigOrEqu'],
+                                ['label' => 'Fim (<=)', 'value'=>'endLowOrEqu'],
                             ],
                         ]
                     )@endcomponent
@@ -49,7 +49,7 @@
                                         <td>{{ $userTypeAssignment->user->email }}</td>
                                         <td>{{ $userTypeAssignment->userType->name }} {{ $userTypeAssignment->course ? "(".$userTypeAssignment->course->name.")": '' }}</td>
                                         <td>{{ $userTypeAssignment->begin }}</td>
-                                        <td>{{ $userTypeAssignment->end ?? "..." }}</td>
+                                        <td>{{ $userTypeAssignment->end ?? "-" }}</td>
                                         <td class="text-center"><div class="d-inline-flex">
                                             @can('userTypeAssignment-update')
                                                 <a href="{{ route('userTypeAssignments.edit', $userTypeAssignment) }}" data-bs-toggle="tooltip" title="Editar usuário" class="btn btn-primary btn-sm">
