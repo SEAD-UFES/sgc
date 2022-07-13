@@ -6,6 +6,7 @@ use App\ModelFilters\UserTypeAssignmentFilter;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Kyslik\ColumnSortable\Sortable;
 
 class UserTypeAssignment extends Model
@@ -14,6 +15,10 @@ class UserTypeAssignment extends Model
     use Sortable;
     use UserTypeAssignmentFilter, Filterable;
 
+    /**
+     *
+     * @var array<string>
+     */
     public $sortable = [
         'id',
         'user.email',
@@ -23,6 +28,11 @@ class UserTypeAssignment extends Model
         'created_at',
         'updated_at',
     ];
+
+    /**
+     *
+     * @var array<string>
+     */
     public static $accepted_filters = [
         'userEmailContains',
         'usertypeNameContains',
@@ -39,7 +49,7 @@ class UserTypeAssignment extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'user_id',
@@ -49,34 +59,57 @@ class UserTypeAssignment extends Model
         'end',
     ];
 
+    /**
+     *
+     * @var array<string>
+     */
     protected $observables = [
         'listed',
         'fetched',
     ];
 
+    /**
+     *
+     * @var array<string>
+     */
     private static $whiteListFilter = ['*'];
 
+    /**
+     * @return BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function userType()
     {
         return $this->belongsTo(UserType::class);
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function course()
     {
         return $this->belongsTo(Course::class);
     }
 
-    public function logListed()
+    /**
+     * @return void
+     */
+    public function logListed(): void
     {
         $this->fireModelEvent('listed', false);
     }
 
-    public function logFetched()
+    /**
+     * @return void
+     */
+    public function logFetched(): void
     {
         $this->fireModelEvent('fetched', false);
     }

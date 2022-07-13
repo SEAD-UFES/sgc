@@ -11,11 +11,15 @@ use App\Models\User;
 use App\Models\UserType;
 use App\Models\UserTypeAssignment;
 use App\Services\UserTypeAssignmentService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\View\View;
 
 class UserTypeAssignmentController extends Controller
 {
+    private UserTypeAssignmentService $service;
+
     public function __construct(UserTypeAssignmentService $service)
     {
         $this->service = $service;
@@ -24,9 +28,9 @@ class UserTypeAssignmentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-list')) {
@@ -45,9 +49,9 @@ class UserTypeAssignmentController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function create(Request $request)
+    public function create(Request $request): View
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-store')) {
@@ -65,11 +69,11 @@ class UserTypeAssignmentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreUserTypeAssignmentRequest  $request
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function store(StoreUserTypeAssignmentRequest $request)
+    public function store(StoreUserTypeAssignmentRequest $request): RedirectResponse
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-store')) {
@@ -89,11 +93,11 @@ class UserTypeAssignmentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\UserTypeAssignment  $userTypeAssignment
+     * @param  UserTypeAssignment  $userTypeAssignment
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function show(UserTypeAssignment $userTypeAssignment, Request $request)
+    public function show(UserTypeAssignment $userTypeAssignment, Request $request): View
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-show')) {
@@ -101,17 +105,19 @@ class UserTypeAssignmentController extends Controller
             abort(403);
         }
 
-        $this->service->read($userTypeAssignment);
+        $userTypeAssignment = $this->service->read($userTypeAssignment);
+
+        return view('userTypeAssignment.show', compact('userTypeAssignment'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\UserTypeAssignment  $userTypeAssignment
+     * @param  UserTypeAssignment  $userTypeAssignment
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function edit(UserTypeAssignment $userTypeAssignment, Request $request)
+    public function edit(UserTypeAssignment $userTypeAssignment, Request $request): View
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-update')) {
@@ -129,12 +135,12 @@ class UserTypeAssignmentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\UserTypeAssignment  $userTypeAssignment
+     * @param  UpdateUserTypeAssignmentRequest  $request
+     * @param  UserTypeAssignment  $userTypeAssignment
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function update(UpdateUserTypeAssignmentRequest $request, UserTypeAssignment $userTypeAssignment)
+    public function update(UpdateUserTypeAssignmentRequest $request, UserTypeAssignment $userTypeAssignment): RedirectResponse
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-update')) {
@@ -154,11 +160,11 @@ class UserTypeAssignmentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\UserTypeAssignment  $userTypeAssignment
+     * @param  UserTypeAssignment  $userTypeAssignment
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function destroy(UserTypeAssignment $userTypeAssignment, Request $request)
+    public function destroy(UserTypeAssignment $userTypeAssignment, Request $request): RedirectResponse
     {
         //check access permission
         if (! Gate::allows('userTypeAssignment-destroy')) {

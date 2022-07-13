@@ -16,7 +16,7 @@ class UserTypeAssignmentService
     {
         (new UserTypeAssignment())->logListed();
 
-        $query = new UserTypeAssignment();
+        $query = UserTypeAssignment::with(['user:id,email', 'userType:id,name', 'course:id,name']);
         $query = $query->AcceptRequest(UserTypeAssignment::$accepted_filters)->filter();
         $query = $query->sortable(['updated_at' => 'desc']);
         $userTypeAssignments = $query->paginate(10);
@@ -28,7 +28,7 @@ class UserTypeAssignmentService
     /**
      * Undocumented function
      *
-     * @param array $attributes
+     * @param array<string> $attributes
      *
      * @return UserTypeAssignment
      */
@@ -40,13 +40,15 @@ class UserTypeAssignmentService
     /**
      * Undocumented function
      *
-     * @param UserTypeAssignment $user
+     * @param UserTypeAssignment $userTypeAssignment
      *
-     * @return UserTypeAssignment
+     * @return UserTypeAssignment|null
      */
-    public function read(UserTypeAssignment $userTypeAssignment): UserTypeAssignment
+    public function read(UserTypeAssignment $userTypeAssignment): UserTypeAssignment|null
     {
-        $userTypeAssignment->logFetched($userTypeAssignment);
+        $userTypeAssignment->logFetched();
+
+        $userTypeAssignment = UserTypeAssignment::with(['user:id,email', 'userType:id,name', 'course:id,name'])->find($userTypeAssignment->id);
 
         return $userTypeAssignment;
     }
@@ -54,7 +56,7 @@ class UserTypeAssignmentService
     /**
      * Undocumented function
      *
-     * @param array $attributes
+     * @param array<string> $attributes
      * @param UserTypeAssignment $userTypeAssignment
      *
      * @return UserTypeAssignment
