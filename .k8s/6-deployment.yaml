@@ -17,6 +17,12 @@ spec:
         hostPath:
           path: /home/sgc/sgc_env/.env
           type: FileOrCreate
+      - name: sessions-dir
+        persistentVolumeClaim:
+          claimName: sgc-sessions-pvc
+      - name: logs-dir
+        persistentVolumeClaim:
+          claimName: sgc-logs-pvc
       initContainers:
         - name: gen-env
           image: ldiufes/sgc:latest
@@ -26,10 +32,10 @@ spec:
           args:
             - /bin/ash
             - -c
-            - php81 genEnv.php && cat BUILD >> .env
+            - php genEnv.php && cat BUILD >> .env
           volumeMounts:
-            - mountPath: /www/.env
-              name: env-file
+            - name: env-file
+              mountPath: /www/.env
       containers:
         - name: sgc
           envFrom:
@@ -39,5 +45,9 @@ spec:
           ports:
             - containerPort: 8080
           volumeMounts:
-            - mountPath: /www/.env
-              name: env-file
+            - name: env-file
+              mountPath: /www/.env
+            - name: sessions-dir
+              mountPath: /www/storage/framework/sessions
+            - name: logs-dir
+              mountPath: /www/storage/logs
