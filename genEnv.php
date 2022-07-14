@@ -16,7 +16,6 @@ $envFileText = '';
 $laravelEnvKeys = array(
     'APP_ADMIN_EMAIL',
     'APP_DEBUG',
-    'APP_ADMIN_EMAIL',
     'APP_ENV',
     'APP_KEY',
     'APP_NAME',
