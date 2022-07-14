@@ -10,8 +10,6 @@ $sysEnvs = getenv();
  */
 $envFileText = '';
 
-ksort($sysEnvs);
-
 /**
  * @var array<int, string> $laravelEnvKeys
  */
