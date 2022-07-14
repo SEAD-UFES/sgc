@@ -59,6 +59,8 @@ foreach ($laravelEnvKeys as $laravelEnvKey) {
     }
 }
 
+$envFileText .= file_get_contents('BUILD') . "\n";
+
 /**
  * @var int $bytesWritten
  */
