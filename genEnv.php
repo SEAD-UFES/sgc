@@ -65,6 +65,6 @@ foreach ($laravelEnvKeys as $laravelEnvKey) {
 /**
  * @var int $bytesWritten
  */
-$bytesWritten = file_put_contents('.env', $envFileText);
+$bytesWritten = file_put_contents('/www/.env', $envFileText);
 
 echo $bytesWritten . " bytes written to .env\n";
