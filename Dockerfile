@@ -183,5 +183,7 @@ RUN chown www:www /www/storage/logs/laravel.log
 RUN rm -f /etc/nginx/http.d/default.conf
 RUN echo "APP_BUILD=$(date +%Y%m%d_%H%M)" > BUILD
 
+RUN chmod 777 /www/entrypoint.sh
+
 EXPOSE 8080
 ENTRYPOINT ["/www/entrypoint.sh"]
