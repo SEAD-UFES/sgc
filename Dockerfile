@@ -184,6 +184,7 @@ RUN rm -f /etc/nginx/http.d/default.conf
 RUN echo "APP_BUILD=$(date +%Y%m%d_%H%M)" > BUILD
 
 RUN chmod 555 /www/entrypoint.sh
+RUN chmod 555 /www/disableHttpsRequirement.sh
 RUN chmod 555 /www/enableFakeData.sh
 
 EXPOSE 8080
