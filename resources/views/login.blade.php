@@ -39,7 +39,7 @@
                             <br /><br />
                             <code>
                                 Usuário de teste: admin@ufes.br<br />
-                                Senha: senha123
+                                Senha: changeme
                             </code>
                         @endif
                     </div>

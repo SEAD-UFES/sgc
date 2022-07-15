@@ -13,7 +13,7 @@ class ProdAdminSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'email' => 'admin@sead.ufes.br',
+            'email' => 'admin@ufes.br',
             'password' => Hash::make('changeme'),
             'active' => true,
             'employee_id' => null,
