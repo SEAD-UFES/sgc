@@ -1,0 +1,58 @@
+name: Integration
+
+on:
+  push:
+    branches: [$default-branch]
+  pull_request:
+    branches: [$default-branch]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  phpcs:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "🏗️ Setup PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.x"
+      - name: "☁️ Checkout repository"
+        uses: actions/checkout@v3
+      - name: "🌳 Copy .env"
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: "📦 Install Dependencies"
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: "🗝️ Generate key"
+        run: php artisan key:generate
+      - name: "✔️ Directory Permissions"
+        run: chmod -R 777 storage bootstrap/cache
+      - name: "🔍 Execute lint via PHP_CodeSniffer"
+        run: vendor/bin/phpcs
+
+  phpunit:
+  
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "🏗️ Setup PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.x"
+      - name: "☁️ Checkout repository"
+        uses: actions/checkout@v3
+      - name: "🌳 Copy .env"
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: "📦 Install Dependencies"
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: "🗝️ Generate key"
+        run: php artisan key:generate
+      - name: "✔️ Directory Permissions"
+        run: chmod -R 777 storage bootstrap/cache
+      - name: "🔍 Execute tests (Unit and Feature tests) via PHPUnit"
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"
+        run: vendor/bin/phpunit
