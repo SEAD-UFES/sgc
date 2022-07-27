@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Gender extends Model
 {
@@ -12,28 +13,40 @@ class Gender extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $observables = [
         'listed',
         'fetched',
     ];
 
-    public function employee()
+    /**
+     * @return HasMany<Employee>
+     */
+    public function employee(): HasMany
     {
         return $this->hasMany(Employee::class);
     }
 
-    public function logListed()
+    /**
+     * @return void
+     */
+    public function logListed(): void
     {
         $this->fireModelEvent('listed', false);
     }
 
-    public function logFetched()
+    /**
+     * @return void
+     */
+    public function logFetched(): void
     {
         $this->fireModelEvent('fetched', false);
     }

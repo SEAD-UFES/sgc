@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class GrantType extends Model
 {
@@ -12,29 +13,41 @@ class GrantType extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
         'description',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $observables = [
         'listed',
         'fetched',
     ];
 
-    public function roles()
+    /**
+     * @return HasMany<Role>
+     */
+    public function roles(): HasMany
     {
         return $this->hasMany(Role::class);
     }
 
-    public function logListed()
+    /**
+     * @return void
+     */
+    public function logListed(): void
     {
         $this->fireModelEvent('listed', false);
     }
 
-    public function logFetched()
+    /**
+     * @return void
+     */
+    public function logFetched(): void
     {
         $this->fireModelEvent('fetched', false);
     }

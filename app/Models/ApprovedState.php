@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ApprovedState extends Model
 {
@@ -12,24 +13,33 @@ class ApprovedState extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
         'description',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $observables = [
         'listed',
         'fetched',
     ];
 
-    public function approveds()
+    /**
+     * @return HasMany<Approved>
+     */
+    public function approveds(): HasMany
     {
         return $this->hasMany(Approved::class);
     }
 
-    public function hasNext()
+    /**
+     * @return bool
+     */
+    public function hasNext(): bool
     {
         if ($this->name === 'Desistente' or $this->name === 'Aceitante') {
             return false;
@@ -38,26 +48,35 @@ class ApprovedState extends Model
         return true;
     }
 
-    public function getNext()
+    /**
+     * @return ApprovedState|null
+     */
+    public function getNext(): ApprovedState|null
     {
         if ($this->hasNext()) {
             switch ($this->name) {
                 case 'Não contatado':
-                    return ApprovedState::where('name', 'Contatado')->get();
-                break;
+                    return ApprovedState::where('name', 'Contatado')->first();
                 case 'Contatado':
-                    return ApprovedState::where('name', 'Aceitante')->orWhere('name', 'Desistente')->get();
-                break;
+                    return ApprovedState::where('name', 'Aceitante')->orWhere('name', 'Desistente')->first();
             }
         }
+
+        return null;
     }
 
-    public function logListed()
+    /**
+     * @return void
+     */
+    public function logListed(): void
     {
         $this->fireModelEvent('listed', false);
     }
 
-    public function logFetched()
+    /**
+     * @return void
+     */
+    public function logFetched(): void
     {
         $this->fireModelEvent('fetched', false);
     }

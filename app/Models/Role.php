@@ -7,6 +7,8 @@ use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Kyslik\ColumnSortable\Sortable;
 
 class Role extends Model
@@ -15,7 +17,14 @@ class Role extends Model
     use Sortable;
     use RoleFilter, Filterable;
 
+    /**
+     * @var array<int, string>
+     */
     public $sortable = ['id', 'name', 'description', 'grant_value', 'created_at', 'updated_at'];
+
+    /**
+     * @var array<int, string>
+     */
     public static $accepted_filters = [
         'nameContains',
         'descriptionContains',
@@ -28,7 +37,7 @@ class Role extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
@@ -37,11 +46,17 @@ class Role extends Model
         'grant_type_id',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $observables = [
         'listed',
         'fetched',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     private static $whiteListFilter = ['*'];
 
     /* public function bonds()
@@ -49,31 +64,49 @@ class Role extends Model
         return $this->hasMany(User::class);
     } */
 
-    public function grantType()
+    /**
+     * @return BelongsTo<GrantType, Role>
+     */
+    public function grantType(): BelongsTo
     {
         return $this->belongsTo(GrantType::class);
     }
 
-    public function bonds()
+    /**
+     * @return HasMany<Bond>
+     */
+    public function bonds(): HasMany
     {
         return $this->hasMany(Bond::class);
     }
 
-    public function approveds()
+    /**
+     * @return HasMany<Approved>
+     */
+    public function approveds(): HasMany
     {
         return $this->hasMany(Approved::class);
     }
 
-    public function logListed()
+    /**
+     * @return void
+     */
+    public function logListed(): void
     {
         $this->fireModelEvent('listed', false);
     }
 
-    public function logFetched()
+    /**
+     * @return void
+     */
+    public function logFetched(): void
     {
         $this->fireModelEvent('fetched', false);
     }
 
+    /**
+     * @return Attribute<float, float>
+     */
     protected function grantValueReal(): Attribute
     {
         return Attribute::make(

@@ -6,6 +6,9 @@ use App\ModelFilters\CourseFilter;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Kyslik\ColumnSortable\Sortable;
 
 class Course extends Model
@@ -14,6 +17,9 @@ class Course extends Model
     use Sortable;
     use CourseFilter, Filterable;
 
+    /**
+     * @var array<int, string>
+     */
     public $sortable = [
         'id',
         'name',
@@ -23,6 +29,10 @@ class Course extends Model
         'created_at',
         'updated_at',
     ];
+
+    /**
+     * @var array<int, string>
+     */
     public static $accepted_filters = [
         'nameContains',
         'descriptionContains',
@@ -35,6 +45,9 @@ class Course extends Model
         'endLowOrEqu',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'description',
@@ -43,19 +56,31 @@ class Course extends Model
         'end',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $observables = [
         'listed',
         'fetched',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     private static $whiteListFilter = ['*'];
 
-    public function courseType()
+    /**
+     * @return BelongsTo<CourseType, Course>
+     */
+    public function courseType(): BelongsTo
     {
         return $this->belongsTo(CourseType::class);
     }
 
-    public function employees()
+    /**
+     * @return BelongsToMany<Employee>
+     */
+    public function employees(): BelongsTomAny
     {
         return $this
             ->belongsToMany(Employee::class, 'bonds')
@@ -64,17 +89,26 @@ class Course extends Model
             ->withTimestamps();
     }
 
-    public function approveds()
+    /**
+     * @return HasMany<Approved>
+     */
+    public function approveds(): HasMany
     {
         return $this->hasMany(Approved::class);
     }
 
-    public function logListed()
+    /**
+     * @return void
+     */
+    public function logListed(): void
     {
         $this->fireModelEvent('listed', false);
     }
 
-    public function logFetched()
+    /**
+     * @return void
+     */
+    public function logFetched(): void
     {
         $this->fireModelEvent('fetched', false);
     }

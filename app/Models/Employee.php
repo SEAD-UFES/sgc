@@ -6,6 +6,10 @@ use App\ModelFilters\EmployeeFilter;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Kyslik\ColumnSortable\Sortable;
 
 class Employee extends Model
@@ -14,6 +18,9 @@ class Employee extends Model
     use Sortable;
     use EmployeeFilter, Filterable;
 
+    /**
+     * @var array<int, string>
+     */
     public $sortable = [
         'id',
         'cpf',
@@ -24,6 +31,10 @@ class Employee extends Model
         'created_at',
         'updated_at',
     ];
+
+    /**
+     * @var array<int, string>
+     */
     public static $accepted_filters = [
         'cpfContains',
         'nameContains',
@@ -32,6 +43,9 @@ class Employee extends Model
         'userEmailContains',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'cpf',
@@ -61,74 +75,119 @@ class Employee extends Model
         'email',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $observables = [
         'listed',
         'fetched',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     private static $whiteListFilter = ['*'];
 
-    public function gender()
+    /**
+     * @return BelongsTo<Gender, Employee>
+     */
+    public function gender(): BelongsTo
     {
         return $this->belongsTo(Gender::class);
     }
 
-    public function birthState()
+    /**
+     * @return BelongsTo<State, Employee>
+     */
+    public function birthState(): BelongsTo
     {
         return $this->belongsTo(State::class);
     }
 
-    public function documentType()
+    /**
+     * @return BelongsTo<DocumentType, Employee>
+     */
+    public function documentType(): BelongsTo
     {
         return $this->belongsTo(DocumentType::class);
     }
 
-    public function maritalStatus()
+    /**
+     * @return BelongsTo<MaritalStatus, Employee>
+     */
+    public function maritalStatus(): BelongsTo
     {
         return $this->belongsTo(MaritalStatus::class);
     }
 
-    public function addressState()
+    /**
+     * @return BelongsTo<State, Employee>
+     */
+    public function addressState(): BelongsTo
     {
         return $this->belongsTo(State::class);
     }
 
-    public function users()
+    /**
+     * @return HasMany<User>
+     */
+    public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }
 
-    public function user()
+    /**
+     * @return HasOne<User>
+     */
+    public function user(): HasOne
     {
         return $this->hasOne(User::class);
     }
 
-    public function courses()
+    /**
+     * @return BelongsToMany<Course>
+     */
+    public function courses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class, 'bonds')->withPivot('id', 'course_id', 'employee_id', 'role_id', 'pole_id', /* 'classroom_id',*/ 'begin', 'end', 'terminated_at', 'volunteer', 'impediment', 'impediment_description', 'uaba_checked_at')->using(Bond::class)->as('bond')->withTimestamps();
     }
 
-    public function employeeDocuments()
+    /**
+     * @return HasMany<EmployeeDocument>
+     */
+    public function employeeDocuments(): HasMany
     {
         return $this->hasMany(EmployeeDocument::class);
     }
 
-    public function bonds()
+    /**
+     * @return HasMany<Bond>
+     */
+    public function bonds(): HasMany
     {
         return $this->hasMany(Bond::class);
     }
 
-    public function hasDocuments()
+    /**
+     * @return bool
+     */
+    public function hasDocuments(): bool
     {
         return ! is_null($this->employeeDocuments->first());
     }
 
-    public function hasBond()
+    /**
+     * @return bool
+     */
+    public function hasBond(): bool
     {
         return $this->courses->count() > 0;
     }
 
-    public function isCourseCoordinator()
+    /**
+     * @return bool
+     */
+    public function isCourseCoordinator(): bool
     {
         $isCoord = false;
 
@@ -140,12 +199,18 @@ class Employee extends Model
         return $isCoord;
     }
 
-    public function logListed()
+    /**
+     * @return void
+     */
+    public function logListed(): void
     {
         $this->fireModelEvent('listed', false);
     }
 
-    public function logFetched()
+    /**
+     * @return void
+     */
+    public function logFetched(): void
     {
         $this->fireModelEvent('fetched', false);
     }

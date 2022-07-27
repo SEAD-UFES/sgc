@@ -6,6 +6,7 @@ use App\ModelFilters\CourseTypeFilter;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Kyslik\ColumnSortable\Sortable;
 
 class CourseType extends Model
@@ -14,6 +15,9 @@ class CourseType extends Model
     use Sortable;
     use CourseTypeFilter, Filterable;
 
+    /**
+     * @var array<int, string>
+     */
     public $sortable = [
         'id',
         'name',
@@ -21,6 +25,10 @@ class CourseType extends Model
         'created_at',
         'updated_at',
     ];
+
+    /**
+     * @var array<int, string>
+     */
     public static $accepted_filters = [
         'nameContains',
         'descriptionContains',
@@ -29,31 +37,46 @@ class CourseType extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
         'description',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $observables = [
         'listed',
         'fetched',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     private static $whiteListFilter = ['*'];
 
-    public function courses()
+    /**
+     * @return HasMany<Course>
+     */
+    public function courses(): HasMany
     {
         return $this->hasMany(Course::class);
     }
 
-    public function logListed()
+    /**
+     * @return void
+     */
+    public function logListed(): void
     {
         $this->fireModelEvent('listed', false);
     }
 
-    public function logFetched()
+    /**
+     * @return void
+     */
+    public function logFetched(): void
     {
         $this->fireModelEvent('fetched', false);
     }

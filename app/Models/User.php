@@ -2,29 +2,39 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\ModelFilters\UserFilter;
 use Carbon\Carbon;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-// use Laravel\Sanctum\HasApiTokens;
 use InvalidArgumentException;
 use Kyslik\ColumnSortable\Sortable;
+// use Laravel\Sanctum\HasApiTokens;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 class User extends Authenticatable
 {
-    use /* HasApiTokens, */HasFactory, Notifiable;
+    use /* HasApiTokens, */ HasFactory, Notifiable;
     use Sortable;
     use UserFilter, Filterable;
 
+    /**
+     * @var array<int, string>
+     */
     public $sortable = ['id', 'email', 'active', 'created_at', 'updated_at'];
+
+    /**
+     * @var array<int, string>
+     */
     public static $accepted_filters = [
         'emailContains',
         // 'usertypeNameContains',
@@ -45,6 +55,9 @@ class User extends Authenticatable
         'active',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $observables = [
         'listed',
         'fetched',
@@ -69,25 +82,40 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     private static $whiteListFilter = ['*'];
 
-    public function userType()
+    /**
+     * @return BelongsTo<UserType, User>
+     */
+    public function userType(): BelongsTo
     {
         return $this->belongsTo(UserType::class);
     }
 
-    public function employee()
+    /**
+     * @return BelongsTo<Employee, User>
+     */
+    public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
     }
 
-    public function userTypeAssignments($options = [])
+    /**
+     * @return HasMany<UserTypeAssignment>
+     */
+    public function userTypeAssignments(): HasMany
     {
         return $this->hasMany(UserTypeAssignment::class);
     }
 
+    /**
+     * @return HasMany<UserTypeAssignment>
+     */
     //dynamic > static :)
-    public function getActiveUtas()
+    public function getActiveUtas(): HasMany
     {
         return $this->userTypeAssignments()
             ->with('userType', 'course')
@@ -109,7 +137,13 @@ class User extends Authenticatable
             ->orderBy('user_types.name', 'asc');
     }
 
-    public function scopeWhereActiveUserType($query, $id)
+    /**
+     * @param Builder<User> $query
+     * @param string $id
+     *
+     * @return Builder<User>
+     */
+    public function scopeWhereActiveUserType($query, $id): Builder
     {
         return $query
             ->join('user_type_assignments AS user_type_assignments_A', 'users.id', '=', 'user_type_assignments_A.user_id')
@@ -130,7 +164,13 @@ class User extends Authenticatable
             ->select('users.*');
     }
 
-    public function scopeWhereUtaCourseId($query, $id)
+    /**
+     * @param Builder<User> $query
+     * @param string $id
+     *
+     * @return Builder<User>
+     */
+    public function scopeWhereUtaCourseId($query, $id): Builder
     {
         return $query
             ->join('user_type_assignments AS user_type_assignments_B', 'users.id', '=', 'user_type_assignments_B.user_id')
@@ -138,12 +178,18 @@ class User extends Authenticatable
             ->select('users.*');
     }
 
-    public function logListed()
+    /**
+     * @return void
+     */
+    public function logListed(): void
     {
         $this->fireModelEvent('listed', false);
     }
 
-    public function logFetched()
+    /**
+     * @return void
+     */
+    public function logFetched(): void
     {
         $this->fireModelEvent('fetched', false);
     }
@@ -157,7 +203,8 @@ class User extends Authenticatable
      */
     public function hasUtas(): bool
     {
-        return $this->getActiveUtas()->get()->count() > 0;
+        $activeUtas = $this->getActiveUtas()->get();
+        return $activeUtas->count() > 0;
     }
 
     /**
@@ -167,7 +214,7 @@ class User extends Authenticatable
      */
     public function getFirstUta(): ?UserTypeAssignment
     {
-        return $this->getActiveUtas()?->first();
+        return $this->getActiveUtas()->first();
     }
 
     /**
@@ -190,7 +237,7 @@ class User extends Authenticatable
                 ->firstOrFail();
 
             session(['loggedInUser.currentUta' => $user_type_assignment]);
-            //session(['loggedInUser.currentUtaId' => $user_type_assignment?->id]);
+        //session(['loggedInUser.currentUtaId' => $user_type_assignment?->id]);
         } else {
             session(['loggedInUser.currentUta' => null]);
             //session(['loggedInUser.currentUtaId' => null]);
@@ -213,13 +260,14 @@ class User extends Authenticatable
 
         return $user_type_assignment; */
 
+        /** @var UserTypeAssignment $user_type_assignment */
         return session('loggedInUser.currentUta');
     }
 
     /**
      * Get the user's name.
      *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, string>
      */
     protected function name(): Attribute
     {
@@ -231,7 +279,7 @@ class User extends Authenticatable
     /**
      * Get the user's gender article.
      *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, string>
      */
     protected function genderArticle(): Attribute
     {

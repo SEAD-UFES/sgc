@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Kyslik\ColumnSortable\Sortable;
 
 class BondDocument extends Model
@@ -11,8 +14,14 @@ class BondDocument extends Model
     use HasFactory;
     use Sortable;
 
+    /**
+     * @const string
+     */
     public const REFERENT_ID = 'bond_id';
 
+    /**
+     * @var array<int, string>
+     */
     public static $sortable = [
         'id',
         'original_name',
@@ -25,6 +34,9 @@ class BondDocument extends Model
         'pole_name',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     public static $accepted_filters = [
         'originalnameContains',
         'documentTypeNameContains',
@@ -35,29 +47,50 @@ class BondDocument extends Model
         'bondCourseNameContains',
     ];
 
+    /**
+     * @var string
+     */
     protected $table = 'bond_documents';
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'bond_id',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $observables = [
         'listed',
         'fetched',
     ];
 
-    public function document()
+    /**
+     * @return MorphOne<Document>
+     */
+    public function document(): MorphOne
     {
         return $this->morphOne(Document::class, 'documentable');
     }
 
-    public function bond()
+    /**
+     * @return BelongsTo<Bond, BondDocument>
+     */
+    public function bond(): BelongsTo
     {
         return $this->belongsTo(Bond::class, 'bond_id');
     }
 
+    /**
+     * @param Builder<BondDocument> $query
+     * @param string $direction
+     *
+     * @return Builder<BondDocument>
+     */
     //metodo de ordenação para (bond->employee->name) no sortable
-    public function bondEmployeeNameSortable($query, $direction)
+    public function bondEmployeeNameSortable($query, $direction): Builder
     {
         return $query
             ->join('bonds', 'bond_documents.bond_id', '=', 'bonds.id')
@@ -66,6 +99,12 @@ class BondDocument extends Model
             ->select('bond_documents.*');
     }
 
+    /**
+     * @param Builder<BondDocument> $query
+     * @param string $direction
+     *
+     * @return Builder<BondDocument>
+     */
     //metodo de ordenação para (bond->role->name) no sortable
     public function bondRoleNameSortable($query, $direction)
     {
@@ -76,6 +115,12 @@ class BondDocument extends Model
             ->select('bond_documents.*');
     }
 
+    /**
+     * @param Builder<BondDocument> $query
+     * @param string $direction
+     *
+     * @return Builder<BondDocument>
+     */
     //metodo de ordenação para (bond->course->name) no sortable
     public function bondCourseNameSortable($query, $direction)
     {
@@ -86,6 +131,12 @@ class BondDocument extends Model
             ->select('bond_documents.*');
     }
 
+    /**
+     * @param Builder<BondDocument> $query
+     * @param string $direction
+     *
+     * @return Builder<BondDocument>
+     */
     //metodo de ordenação para (bond->pole->name) no sortable
     public function bondPoleNameSortable($query, $direction)
     {
@@ -96,19 +147,28 @@ class BondDocument extends Model
             ->select('bond_documents.*');
     }
 
-    public function logListed()
+    /**
+     * @return void
+     */
+    public function logListed(): void
     {
         $this->fireModelEvent('listed', false);
     }
 
-    public function logFetched()
+    /**
+     * @return void
+     */
+    public function logFetched(): void
     {
         $this->fireModelEvent('fetched', false);
     }
 
-    public function queryDocuments()
+    /**
+     * @return Builder<Document>
+     */
+    public function queryDocuments(): Builder
     {
-        $this->query = Document::select(
+        return $this->query = Document::select(
             [
                 'documents.id',
                 'documents.original_name',
@@ -136,15 +196,16 @@ class BondDocument extends Model
             ->join('roles', 'roles.id', '=', 'bonds.role_id')
             ->join('poles', 'poles.id', '=', 'bonds.pole_id')
             ->join('employees', 'employees.id', '=', 'bonds.employee_id');
-
-        return $this->query;
     }
 
-    public function queryRights()
+    /**
+     * @return Builder<Document>
+     */
+    public function queryRights(): Builder
     {
         $documentType = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
 
-        $this->query = $this->queryDocuments()
+        return $this->query = $this->queryDocuments()
             ->select(
                 [
                     'documents.id',
@@ -168,15 +229,15 @@ class BondDocument extends Model
                     'bonds.impediment',
                 ]
             )
-            ->where('documents.document_type_id', $documentType->id)
+            ->where('documents.document_type_id', $documentType?->id)
             ->whereNotNull('uaba_checked_at')
             ->where('impediment', false);
-
-        return $this->query;
     }
 
-    /** @return string  */
-    public static function referentId()
+    /**
+     * @return string
+     */
+    public static function referentId(): string
     {
         return self::REFERENT_ID;
     }

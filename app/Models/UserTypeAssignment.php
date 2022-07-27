@@ -16,8 +16,7 @@ class UserTypeAssignment extends Model
     use UserTypeAssignmentFilter, Filterable;
 
     /**
-     *
-     * @var array<string>
+     * @var array<int, string>
      */
     public $sortable = [
         'id',
@@ -30,8 +29,7 @@ class UserTypeAssignment extends Model
     ];
 
     /**
-     *
-     * @var array<string>
+     * @var array<int, string>
      */
     public static $accepted_filters = [
         'userEmailContains',
@@ -49,7 +47,7 @@ class UserTypeAssignment extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<string>
+     * @var array<int, string>
      */
     protected $fillable = [
         'user_id',
@@ -60,8 +58,7 @@ class UserTypeAssignment extends Model
     ];
 
     /**
-     *
-     * @var array<string>
+     * @var array<int, string>
      */
     protected $observables = [
         'listed',
@@ -69,31 +66,30 @@ class UserTypeAssignment extends Model
     ];
 
     /**
-     *
-     * @var array<string>
+     * @var array<int, string>
      */
     private static $whiteListFilter = ['*'];
 
     /**
-     * @return BelongsTo
+     * @return BelongsTo<User, UserTypeAssignment>
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
-     * @return BelongsTo
+     * @return BelongsTo<UserType, UserTypeAssignment>
      */
-    public function userType()
+    public function userType(): BelongsTo
     {
         return $this->belongsTo(UserType::class);
     }
 
     /**
-     * @return BelongsTo
+     * @return BelongsTo<Course, UserTypeAssignment>
      */
-    public function course()
+    public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
     }
