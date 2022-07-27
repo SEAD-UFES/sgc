@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Gate;
 
 class EmployeeController extends Controller
 {
+    private EmployeeService $service;
+
     public function __construct(EmployeeService $employeeService)
     {
         $this->service = $employeeService;

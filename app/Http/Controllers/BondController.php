@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Gate;
 
 class BondController extends Controller
 {
+    private BondService $service;
+
     public function __construct(BondService $bondService)
     {
         $this->service = $bondService;

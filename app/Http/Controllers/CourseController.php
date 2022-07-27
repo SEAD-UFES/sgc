@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Gate;
 
 class CourseController extends Controller
 {
+    private CourseService $service;
+
     public function __construct(CourseService $courseService)
     {
         $this->service = $courseService;

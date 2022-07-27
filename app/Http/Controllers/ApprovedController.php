@@ -24,15 +24,9 @@ use Illuminate\Support\Facades\Gate;
 
 class ApprovedController extends Controller
 {
-    /**
-     * @var ApprovedService $service
-     */
-    private $service;
+    private ApprovedService $service;
 
-    /**
-     * @var ApprovedsSourceService $fileService
-     */
-    private $fileService;
+    private ApprovedsSourceService $fileService;
 
     public function __construct(ApprovedService $approvedService, ApprovedsSourceService $fileService)
     {

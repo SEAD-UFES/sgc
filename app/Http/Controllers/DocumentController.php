@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\Response;
 
 class DocumentController extends Controller
 {
-    /** @var DocumentService $service */
-    public $service;
+    protected DocumentService $service;
 
     public function __construct(DocumentService $documentService)
     {

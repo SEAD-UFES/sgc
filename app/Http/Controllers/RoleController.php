@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Gate;
 
 class RoleController extends Controller
 {
+    private RoleService $service;
+
     public function __construct(RoleService $roleService)
     {
         $this->service = $roleService;

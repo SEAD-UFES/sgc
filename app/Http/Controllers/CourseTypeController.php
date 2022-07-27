@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 
 class CourseTypeController extends Controller
 {
+    private CourseTypeService $service;
+
     public function __construct(CourseTypeService $courseTypeService)
     {
         $this->service = $courseTypeService;

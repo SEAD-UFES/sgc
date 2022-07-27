@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 class UserTypeController extends Controller
 {
+    private UserTypeService $service;
+
     public function __construct(UserTypeService $userTypeService)
     {
         $this->service = $userTypeService;

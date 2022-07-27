@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
+    private UserService $service;
+
     public function __construct(UserService $userService)
     {
         $this->service = $userService;

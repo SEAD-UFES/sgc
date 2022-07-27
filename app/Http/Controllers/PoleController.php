@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Gate;
 
 class PoleController extends Controller
 {
+    private PoleService $service;
+
     public function __construct(PoleService $poleService)
     {
         $this->service = $poleService;
