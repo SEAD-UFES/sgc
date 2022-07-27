@@ -26,7 +26,7 @@ class NewRightsNotification extends Notification /* implements ShouldQueue */ //
         $this->bond = Bond::with(['course', 'employee', 'role', 'bondDocuments'])->find($bond->id);
 
         $type = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
-        $this->document = Document::where('document_type_id', $type->id)->whereHasMorph('documentable', 'App\Models\BondDocument', function ($query) {
+        $this->document = Document::where('document_type_id', $type->id)->whereHasMorph('documentable', \App\Models\BondDocument::class, function ($query) {
             $query->where('bond_id', $this->bond->id);
         })->first();
     }

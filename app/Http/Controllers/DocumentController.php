@@ -32,8 +32,8 @@ class DocumentController extends Controller
         $file = $this->service->getDocument($id);
 
         //check access permission
-        if (($file->class === 'App\Models\EmployeeDocument' && ! Gate::allows('employeeDocument-download')) ||
-        ($file->class === 'App\Models\BondDocument' && ! $file->isRights && ! Gate::allows('bondDocument-download')) ||
+        if (($file->class === \App\Models\EmployeeDocument::class && ! Gate::allows('employeeDocument-download')) ||
+        ($file->class === \App\Models\BondDocument::class && ! $file->isRights && ! Gate::allows('bondDocument-download')) ||
         ($file->isRights && ! Gate::allows('bondDocument-rights'))
         ) {
             SgcLogHelper::logBadAttemptOnUri($request, 403);

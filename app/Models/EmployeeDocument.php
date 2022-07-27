@@ -113,7 +113,7 @@ class EmployeeDocument extends Model
                 'employees.cpf AS employee_cpf',
             ]
         )
-            ->whereHasMorph('documentable', 'App\Models\EmployeeDocument')
+            ->whereHasMorph('documentable', \App\Models\EmployeeDocument::class)
             ->join('document_types', 'document_types.id', '=', 'documents.document_type_id')
             ->join('employee_documents', 'employee_documents.id', '=', 'documentable_id')
             ->join('employees', 'employees.id', '=', 'employee_documents.employee_id');

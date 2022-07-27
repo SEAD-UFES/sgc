@@ -66,7 +66,7 @@ class BondService
                 $newDocument->original_name = $employeeDocument->document->original_name;
                 $newDocument->file_data = $employeeDocument->document->file_data;
                 $newDocument->document_type_id = $employeeDocument->document->documentType->id;
-                $newDocument->documentable_type = 'App\Models\BondDocument';
+                $newDocument->documentable_type = \App\Models\BondDocument::class;
                 $newDocument->documentable_id = $bondDocument->id;
                 $newDocument->save();
             }
@@ -144,7 +144,7 @@ class BondService
 
         $termo_document_type_id = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first()->id;
         $termo_document_count = Document::where('document_type_id', $termo_document_type_id)
-            ->whereHasMorph('documentable', 'App\Models\BondDocument', static function ($query) use ($bond) {
+            ->whereHasMorph('documentable', \App\Models\BondDocument::class, static function ($query) use ($bond) {
                 $query->where('bond_id', $bond->id);
             })->get()->count();
 

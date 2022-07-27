@@ -188,7 +188,7 @@ class BondDocument extends Model
                 'poles.name AS pole_name',
             ]
         )
-            ->whereHasMorph('documentable', 'App\Models\BondDocument')
+            ->whereHasMorph('documentable', \App\Models\BondDocument::class)
             ->join('document_types', 'document_types.id', '=', 'documents.document_type_id')
             ->join('bond_documents', 'bond_documents.id', '=', 'documentable_id')
             ->join('bonds', 'bonds.id', '=', 'bond_documents.bond_id')
