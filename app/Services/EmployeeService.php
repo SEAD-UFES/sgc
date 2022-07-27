@@ -38,11 +38,11 @@ class EmployeeService
      */
     public function create(array $attributes): ?Employee
     {
-        $attributes = Arr::map($attributes, function ($value, $key) {
+        $attributes = Arr::map($attributes, static function ($value, $key) {
             return $key === 'email' ? mb_strtolower($value) : ($key === 'id_issue_agency' ? mb_strtoupper($value) : TextHelper::titleCase($value));
         });
 
-        $attributes = Arr::map($attributes, function ($value, $key) {
+        $attributes = Arr::map($attributes, static function ($value, $key) {
             return $value === '' ? null : $value;
         });
 
@@ -79,11 +79,11 @@ class EmployeeService
      */
     public function update(array $attributes, Employee $employee): ?Employee
     {
-        $attributes = Arr::map($attributes, function ($value, $key) {
+        $attributes = Arr::map($attributes, static function ($value, $key) {
             return $key === 'email' ? mb_strtolower($value) : ($key === 'id_issue_agency' ? mb_strtoupper($value) : TextHelper::titleCase($value));
         });
 
-        $attributes = Arr::map($attributes, function ($value, $key) {
+        $attributes = Arr::map($attributes, static function ($value, $key) {
             return $value === '' ? null : $value;
         });
 
@@ -109,16 +109,14 @@ class EmployeeService
     {
         $employeeUser = $employee->user;
 
-        DB::transaction(function () use ($employee, $employeeUser) {
+        DB::transaction(static function () use ($employee, $employeeUser) {
             if (! is_null($employeeUser)) {
                 $employeeUser->employee_id = null;
                 $employeeUser->save();
             }
-
             foreach ($employee->courses as $course) {
                 $course->bond->bondDocuments()->delete();
             }
-
             $employee->courses()->detach();
             $employee->employeeDocuments()->delete();
             $employee->delete();

@@ -54,11 +54,9 @@ class BondService
 
         $bond = null;
 
-        DB::transaction(function () use ($attributes, &$bond) {
+        DB::transaction(static function () use ($attributes, &$bond) {
             $bond = Bond::create($attributes);
-
             $employeeDocuments = EmployeeDocument::where('employee_id', $bond->employee_id)->get();
-
             foreach ($employeeDocuments as $employeeDocument) {
                 $bondDocument = new BondDocument();
                 $bondDocument->bond_id = $bond->id;
@@ -72,7 +70,6 @@ class BondService
                 $newDocument->documentable_id = $bondDocument->id;
                 $newDocument->save();
             }
-
             //Notify grantor assistants
             $ass_UT = UserType::firstWhere('acronym', 'ass');
             $coordOrAssistants = User::where('active', true)->whereActiveUserType($ass_UT->id)->get();
@@ -122,11 +119,10 @@ class BondService
      */
     public function delete(Bond $bond)
     {
-        DB::transaction(function () use ($bond) {
+        DB::transaction(static function () use ($bond) {
             foreach ($bond->bondDocuments as $document) {
                 $document->delete();
             }
-
             $bond->delete();
         });
     }
@@ -148,7 +144,7 @@ class BondService
 
         $termo_document_type_id = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first()->id;
         $termo_document_count = Document::where('document_type_id', $termo_document_type_id)
-            ->whereHasMorph('documentable', 'App\Models\BondDocument', function ($query) use ($bond) {
+            ->whereHasMorph('documentable', 'App\Models\BondDocument', static function ($query) use ($bond) {
                 $query->where('bond_id', $bond->id);
             })->get()->count();
 

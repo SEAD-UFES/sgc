@@ -125,7 +125,7 @@ class BondController extends Controller
 
         $this->service->read($bond);
 
-        $documents = Document::whereHasMorph('documentable', BondDocument::class, function ($query) use ($bond) {
+        $documents = Document::whereHasMorph('documentable', BondDocument::class, static function ($query) use ($bond) {
             $query->where('bond_id', $bond->id);
         })->with('documentable')->orderBy('updated_at', 'desc')->get();
 

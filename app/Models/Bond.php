@@ -139,7 +139,7 @@ class Bond extends Pivot
     {
         return $query
             ->where(
-                function ($query) {
+                static function ($query) {
                     $query
                         ->where([
                             ['bonds.begin', '<=', Carbon::today()->toDateString()],

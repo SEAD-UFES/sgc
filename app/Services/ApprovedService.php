@@ -38,18 +38,18 @@ class ApprovedService
      */
     public function create(array $attributes): ?Approved
     {
-        $attributes = Arr::map($attributes, function ($value, $key) {
+        $attributes = Arr::map($attributes, static function ($value, $key) {
             return $key !== 'email' ? TextHelper::titleCase($value) : mb_strtolower($value);
         });
 
-        $attributes = Arr::map($attributes, function ($value, $key) {
+        $attributes = Arr::map($attributes, static function ($value, $key) {
             return $value === '' ? null : $value;
         });
 
         $approved = null;
         $attributes['approved_state_id'] = ApprovedState::where('name', 'Não contatado')->first()?->getAttribute('id');
 
-        DB::transaction(function () use ($attributes, &$approved) {
+        DB::transaction(static function () use ($attributes, &$approved) {
             $approved = Approved::create($attributes);
         });
 

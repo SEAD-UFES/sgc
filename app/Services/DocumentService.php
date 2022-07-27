@@ -344,7 +344,7 @@ class DocumentService
         return Document::whereHasMorph(
             'documentable',
             $this->documentClass,
-            function (Builder $query) use ($document, $referentId) {
+            static function (Builder $query) use ($document, $referentId) {
                 $query->where($referentId, $document[$referentId]);
             }
         )->where('document_type_id', $document['document_type_id'])->get();
@@ -353,17 +353,17 @@ class DocumentService
     private function deleteOldDocuments(Collection $oldDocuments): void
     {
         /* If there are old documents, get the documentables */
-        $oldDocumentables = $oldDocuments->map(function ($oldDocument) {
+        $oldDocumentables = $oldDocuments->map(static function ($oldDocument) {
             return $oldDocument->documentable;
         });
 
         /* If there are old documentables, delete them */
-        $oldDocumentables->each(function ($oldDocumentable) {
+        $oldDocumentables->each(static function ($oldDocumentable) {
             $oldDocumentable->delete();
         });
 
         /* If there are old documents, delete them */
-        $oldDocuments->each(function ($oldDocument) {
+        $oldDocuments->each(static function ($oldDocument) {
             $oldDocument->delete();
         });
     }

@@ -8,52 +8,47 @@ class UserTypeAssignmentGates
 {
     public static function define()
     {
-        Gate::define('userTypeAssignment-list', function ($user) {
+        Gate::define('userTypeAssignment-list', static function ($user) {
             //admins can do it.
             if (Gate::forUser($user)->allows('isAdm-global')) {
                 return true;
             }
-
             //no permission
             return false;
         });
 
-        Gate::define('userTypeAssignment-show', function ($user) {
+        Gate::define('userTypeAssignment-show', static function ($user) {
             //admins can do it.
             if (Gate::forUser($user)->allows('isAdm-global')) {
                 return true;
             }
-
             //no permission
             return false;
         });
 
-        Gate::define('userTypeAssignment-store', function ($user) {
+        Gate::define('userTypeAssignment-store', static function ($user) {
             //admins can do it.
             if (Gate::forUser($user)->allows('isAdm-global')) {
                 return true;
             }
-
             //no permission
             return false;
         });
 
-        Gate::define('userTypeAssignment-update', function ($user) {
+        Gate::define('userTypeAssignment-update', static function ($user) {
             //admins can do it.
             if (Gate::forUser($user)->allows('isAdm-global')) {
                 return true;
             }
-
             //no permission
             return false;
         });
 
-        Gate::define('userTypeAssignment-destroy', function ($user) {
+        Gate::define('userTypeAssignment-destroy', static function ($user) {
             //admins can do it.
             if (Gate::forUser($user)->allows('isAdm-global')) {
                 return true;
             }
-
             //no permission
             return false;
         });

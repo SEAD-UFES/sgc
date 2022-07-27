@@ -20,10 +20,10 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command('backup:clean')->daily()->at('01:00');
         $schedule->command('backup:run')->daily()->at('01:30')
-            ->onFailure(function () {
+            ->onFailure(static function () {
                 Log::error('Backup failed');
             })
-            ->onSuccess(function () {
+            ->onSuccess(static function () {
                 Log::info('Backup successful');
             });
     }

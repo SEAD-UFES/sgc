@@ -8,47 +8,42 @@ class BondDocumentGates
 {
     public static function define()
     {
-        Gate::define('bondDocument-rights', function ($user) {
+        Gate::define('bondDocument-rights', static function ($user) {
             //who can do it (global).
             if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global', 'isLdi-global'])) {
                 return true;
             }
-
             //coords of any course
             if (Gate::forUser($user)->any(['isCoord'])) {
                 return true;
             }
-
             //no permission
             return false;
         });
 
-        Gate::define('bondDocument-list', function ($user) {
+        Gate::define('bondDocument-list', static function ($user) {
             //who can do it (global).
             if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global'])) {
                 return true;
             }
-
             //no permission
             return false;
         });
 
-        Gate::define('bondDocument-store', function ($user) {
+        Gate::define('bondDocument-store', static function ($user) {
             //who can do it (global).
             if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global'])) {
                 return true;
             }
-
             //no permission
             return false;
         });
 
-        Gate::define('bondDocument-download', function ($user) {
+        Gate::define('bondDocument-download', static function ($user) {
             //who can do it (global).
             if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global'])) {
                 return true;
             }
-
             //no permission
             return false;
         });

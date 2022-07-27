@@ -36,11 +36,11 @@ class PoleService
      */
     public function create(array $attributes): Pole
     {
-        $attributes = Arr::map($attributes, function ($value, $key) {
+        $attributes = Arr::map($attributes, static function ($value, $key) {
             return TextHelper::titleCase($value);
         });
 
-        $attributes = Arr::map($attributes, function ($value, $key) {
+        $attributes = Arr::map($attributes, static function ($value, $key) {
             return $value === '' ? null : $value;
         });
 
@@ -71,11 +71,11 @@ class PoleService
      */
     public function update(array $attributes, Pole $pole): Pole
     {
-        $attributes = Arr::map($attributes, function ($value, $key) {
+        $attributes = Arr::map($attributes, static function ($value, $key) {
             return TextHelper::titleCase($value);
         });
 
-        $attributes = Arr::map($attributes, function ($value, $key) {
+        $attributes = Arr::map($attributes, static function ($value, $key) {
             return $value === '' ? null : $value;
         });
 

@@ -92,7 +92,7 @@ class Document extends Model
      */
     public static function employeeDocumentsByEmployeeId($employeeId): Builder
     {
-        return Document::whereHasMorph('documentable', 'App\Models\EmployeeDocument', function ($query) use ($employeeId) {
+        return Document::whereHasMorph('documentable', 'App\Models\EmployeeDocument', static function ($query) use ($employeeId) {
             $query->where('employee_documents.employee_id', $employeeId);
         });
     }
@@ -104,7 +104,7 @@ class Document extends Model
      */
     public static function bondDocumentsByBondId($bondId): Builder
     {
-        return Document::whereHasMorph('documentable', 'App\Models\BondDocument', function ($query) use ($bondId) {
+        return Document::whereHasMorph('documentable', 'App\Models\BondDocument', static function ($query) use ($bondId) {
             $query->where('bond_documents.bond_id', $bondId);
         });
     }
@@ -119,7 +119,7 @@ class Document extends Model
         $documentType = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
 
         return Document::where('documents.document_type_id', $documentType?->id)
-            ->whereHasMorph('documentable', 'App\Models\BondDocument', function ($query) use ($bondId) {
+            ->whereHasMorph('documentable', 'App\Models\BondDocument', static function ($query) use ($bondId) {
                 $query->where('bond_documents.bond_id', $bondId);
             });
     }
@@ -132,8 +132,8 @@ class Document extends Model
         $documentType = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
 
         return Document::where('documents.document_type_id', $documentType?->id)
-            ->whereHasMorph('documentable', 'App\Models\BondDocument', function ($query) {
-                $query->whereHas('bond', function ($bondQuery) {
+            ->whereHasMorph('documentable', 'App\Models\BondDocument', static function ($query) {
+                $query->whereHas('bond', static function ($bondQuery) {
                     $bondQuery->whereNotNull('uaba_checked_at')->where('impediment', false);
                 });
             })->with('documentable.bond');

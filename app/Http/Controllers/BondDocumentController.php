@@ -123,7 +123,7 @@ class BondDocumentController extends DocumentController
         $id = $request->bond_id ?? null;
         $bonds = ! is_null($id)
             ? Bond::where('id', $id)->get()
-            : Bond::with(['employee' => function ($q) {
+            : Bond::with(['employee' => static function ($q) {
                 return $q->orderBy('name');
             },
             ])->get();

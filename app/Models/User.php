@@ -122,7 +122,7 @@ class User extends Authenticatable
             ->join('user_types', 'user_type_assignments.user_type_id', '=', 'user_types.id')
             ->select('user_type_assignments.*')
             ->where(
-                function ($query) {
+                static function ($query) {
                     $query
                         ->where([
                             ['begin', '<=', Carbon::today()->toDateString()],
@@ -149,7 +149,7 @@ class User extends Authenticatable
             ->join('user_type_assignments AS user_type_assignments_A', 'users.id', '=', 'user_type_assignments_A.user_id')
             ->where('user_type_assignments_A.user_type_id', $id)
             ->where(
-                function ($query) {
+                static function ($query) {
                     $query
                         ->where([
                             ['user_type_assignments_A.begin', '<=', Carbon::today()->toDateString()],

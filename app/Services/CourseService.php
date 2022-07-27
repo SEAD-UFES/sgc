@@ -36,11 +36,11 @@ class CourseService
      */
     public function create(array $attributes): Course
     {
-        $attributes = Arr::map($attributes, function ($value, $key) {
+        $attributes = Arr::map($attributes, static function ($value, $key) {
             return TextHelper::titleCase($value);
         });
 
-        $attributes = Arr::map($attributes, function ($value, $key) {
+        $attributes = Arr::map($attributes, static function ($value, $key) {
             return $value === '' ? null : $value;
         });
 
@@ -63,11 +63,11 @@ class CourseService
 
     public function update(array $attributes, Course $course): Course
     {
-        $attributes = Arr::map($attributes, function ($value, $key) {
+        $attributes = Arr::map($attributes, static function ($value, $key) {
             return TextHelper::titleCase($value);
         });
 
-        $attributes = Arr::map($attributes, function ($value, $key) {
+        $attributes = Arr::map($attributes, static function ($value, $key) {
             return $value === '' ? null : $value;
         });
 
