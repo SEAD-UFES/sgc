@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Gate;
 class UserGates
 {
     /**
-     *
      * @return void
      */
     public static function define(): void

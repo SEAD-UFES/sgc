@@ -98,7 +98,7 @@ class DocumentService
 
             // 'employee_id' or 'bond_id'
             $referentId = $this->documentClass::referentId();
-            
+
             /** @var EmployeeDocument|BondDocument $documentable */
             $documentable = $this->documentClass::create([
                 $referentId => $attributes[$referentId],

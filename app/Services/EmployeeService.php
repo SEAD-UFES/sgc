@@ -87,8 +87,6 @@ class EmployeeService
             return $value === '' ? null : $value;
         });
 
-
-
         DB::transaction(function () use ($attributes, $employee) {
             $employee->update($attributes);
             $this->userAttach($employee);
