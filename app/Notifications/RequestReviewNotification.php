@@ -11,9 +11,20 @@ class RequestReviewNotification extends Notification /* implements ShouldQueue *
 {
     use Queueable;
 
+    /**
+     * @var Bond
+     */
     protected $bond;
 
+    /**
+     * @var string
+     */
     protected $userName;
+
+    /**
+     * @var string
+     */
+    protected string $requesterName;
 
     /**
      * Create a new notification instance.
