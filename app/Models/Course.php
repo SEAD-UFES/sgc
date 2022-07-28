@@ -81,7 +81,7 @@ class Course extends Model
     /**
      * @return BelongsToMany<Employee>
      */
-    public function employees(): BelongsTomAny
+    public function employees(): BelongsToMany
     {
         return $this
             ->belongsToMany(Employee::class, 'bonds')
