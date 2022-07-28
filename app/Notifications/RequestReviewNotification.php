@@ -12,6 +12,7 @@ class RequestReviewNotification extends Notification /* implements ShouldQueue *
     use Queueable;
 
     protected $bond;
+
     protected $userName;
 
     /**

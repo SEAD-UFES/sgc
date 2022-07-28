@@ -23,6 +23,7 @@ class PhoneHelper
                 'type' => 'mobile',
             ];
         }
+
         if ((Str::length($phone) === 9) && in_array(substr($phone, 0, 1), $mobileN8)) {
             return [
                 'number' => $phone,
@@ -30,6 +31,7 @@ class PhoneHelper
                 'type' => 'mobile',
             ];
         }
+
         if ((Str::length($phone) === 10) && in_array(substr($phone, 2, 1), $landlineN8)) {
             return [
                 'number' => substr($phone, 2),
@@ -37,6 +39,7 @@ class PhoneHelper
                 'type' => 'landline',
             ];
         }
+
         if ((Str::length($phone) === 8) && in_array(substr($phone, 0, 1), $landlineN8)) {
             return [
                 'number' => $phone,
@@ -44,6 +47,7 @@ class PhoneHelper
                 'type' => 'landline',
             ];
         }
+
         return [
             'number' => $phone,
             'areaCode' => '',

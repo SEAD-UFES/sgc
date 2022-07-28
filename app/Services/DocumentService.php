@@ -178,6 +178,7 @@ class DocumentService
 
             return $documents;
         }
+
         throw new Exception('$attributes[files] not set.', 1);
     }
 

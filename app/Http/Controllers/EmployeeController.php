@@ -96,6 +96,7 @@ class EmployeeController extends Controller
         if ($request->importDocuments === 'true') {
             return redirect()->route('employeesDocuments.createMany', $employee->id)->with('success', 'Colaborador criado com sucesso.');
         }
+
         return redirect()->route('employees.index')->with('success', 'Colaborador criado com sucesso.');
     }
 

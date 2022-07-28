@@ -70,6 +70,7 @@ class BondService
                 $newDocument->documentable_id = $bondDocument->id;
                 $newDocument->save();
             }
+
             //Notify grantor assistants
             $ass_UT = UserType::firstWhere('acronym', 'ass');
             $coordOrAssistants = User::where('active', true)->whereActiveUserType($ass_UT->id)->get();
@@ -123,6 +124,7 @@ class BondService
             foreach ($bond->bondDocuments as $document) {
                 $document->delete();
             }
+
             $bond->delete();
         });
     }

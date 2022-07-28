@@ -13,6 +13,7 @@ class BondGates
             if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global'])) {
                 return true;
             }
+
             //coord on any course
             return Gate::forUser($user)->any(['isCoord']);
         });
@@ -27,6 +28,7 @@ class BondGates
             if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global'])) {
                 return true;
             }
+
             //coord on any course
             return Gate::forUser($user)->any(['isCoord']);
         });
@@ -36,6 +38,7 @@ class BondGates
             if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global'])) {
                 return true;
             }
+
             //coord on this course then ok.
             return Gate::forUser($user)->any(['isCoord-course_id'], $course_id);
         });
@@ -45,6 +48,7 @@ class BondGates
             if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global'])) {
                 return true;
             }
+
             //coord on this course then ok.
             return Gate::forUser($user)->any(['isCoord-course_id'], $bond->course_id);
         });

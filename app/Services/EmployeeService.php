@@ -114,9 +114,11 @@ class EmployeeService
                 $employeeUser->employee_id = null;
                 $employeeUser->save();
             }
+
             foreach ($employee->courses as $course) {
                 $course->bond->bondDocuments()->delete();
             }
+
             $employee->courses()->detach();
             $employee->employeeDocuments()->delete();
             $employee->delete();

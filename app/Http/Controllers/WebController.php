@@ -14,6 +14,7 @@ class WebController extends Controller
         if (Auth::check()) {
             return redirect()->route('home');
         }
+
         return redirect()->route('auth.form');
     }
 
@@ -33,6 +34,7 @@ class WebController extends Controller
             SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
+
         return view('sysInfo');
     }
 }

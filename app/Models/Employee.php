@@ -197,6 +197,7 @@ class Employee extends Model
                 $isCoord = $isCoord || (substr($bonded_course->bond->role->name, 0, 20) === 'Coordenador de curso');
             }
         }
+
         return $isCoord;
     }
 

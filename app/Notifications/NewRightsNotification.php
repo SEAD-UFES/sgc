@@ -14,6 +14,7 @@ class NewRightsNotification extends Notification /* implements ShouldQueue */ //
     use Queueable;
 
     protected $bond;
+
     protected $document;
 
     /**

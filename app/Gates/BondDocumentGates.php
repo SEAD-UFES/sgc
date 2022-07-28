@@ -13,6 +13,7 @@ class BondDocumentGates
             if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global', 'isLdi-global'])) {
                 return true;
             }
+
             //coords of any course
             return Gate::forUser($user)->any(['isCoord']);
         });

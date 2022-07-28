@@ -15,6 +15,7 @@ class NetworkHelper
                 }
             }
         }
+
         return 'CLI Mode?';
     }
 }

@@ -15,6 +15,7 @@ class ModelFilterHelper
                 $filters[$accepted_filter] = $request->get($accepted_filter);
             }
         }
+
         return $filters;
     }
 
@@ -25,6 +26,7 @@ class ModelFilterHelper
         } elseif (is_array($value)) {
             $values = $value;
         }
+
         return $values;
     }
 
@@ -42,6 +44,7 @@ class ModelFilterHelper
                 $values[$key] = $dt->format('Y-m-d');
             }
         }
+
         return $values;
     }
 
@@ -50,6 +53,7 @@ class ModelFilterHelper
         foreach ($values as $value) {
             $query_builder = $query_builder->where($column, $operation, $value);
         }
+
         return $query_builder;
     }
 
@@ -58,6 +62,7 @@ class ModelFilterHelper
         foreach ($values as $value) {
             $query_builder = $query_builder->where($column, 'like', '%' . $value . '%');
         }
+
         return $query_builder;
     }
 
@@ -68,6 +73,7 @@ class ModelFilterHelper
                 $query->where($column, 'like', '%' . $value . '%');
             });
         }
+
         return $query_builder;
     }
 
@@ -81,6 +87,7 @@ class ModelFilterHelper
                     });
                 });
         }
+
         return $query_builder;
     }
 
@@ -91,6 +98,7 @@ class ModelFilterHelper
                 $query->where($column, $operation, $value);
             });
         }
+
         return $query_builder;
     }
 }
