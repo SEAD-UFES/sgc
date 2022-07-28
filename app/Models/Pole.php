@@ -13,7 +13,8 @@ class Pole extends Model
 {
     use HasFactory;
     use Sortable;
-    use PoleFilter, Filterable;
+    use PoleFilter;
+    use Filterable;
 
     /**
      * @var array<int, string>

@@ -15,7 +15,8 @@ class Document extends Model
 {
     use HasFactory;
     use Sortable;
-    use DocumentFilter, Filterable;
+    use DocumentFilter;
+    use Filterable;
 
     /**
      * @var array<int, string>

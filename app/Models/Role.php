@@ -15,7 +15,8 @@ class Role extends Model
 {
     use HasFactory;
     use Sortable;
-    use RoleFilter, Filterable;
+    use RoleFilter;
+    use Filterable;
 
     /**
      * @var array<int, string>

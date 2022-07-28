@@ -15,7 +15,8 @@ class Course extends Model
 {
     use HasFactory;
     use Sortable;
-    use CourseFilter, Filterable;
+    use CourseFilter;
+    use Filterable;
 
     /**
      * @var array<int, string>

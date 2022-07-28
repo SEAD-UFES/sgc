@@ -16,7 +16,8 @@ class Employee extends Model
 {
     use HasFactory;
     use Sortable;
-    use EmployeeFilter, Filterable;
+    use EmployeeFilter;
+    use Filterable;
 
     /**
      * @var array<int, string>

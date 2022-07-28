@@ -13,7 +13,8 @@ class Approved extends Model
 {
     use HasFactory;
     use Sortable;
-    use ApprovedFilter, Filterable;
+    use ApprovedFilter;
+    use Filterable;
 
     /**
      * @var array<int, string>

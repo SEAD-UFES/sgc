@@ -13,7 +13,8 @@ class UserTypeAssignment extends Model
 {
     use HasFactory;
     use Sortable;
-    use UserTypeAssignmentFilter, Filterable;
+    use UserTypeAssignmentFilter;
+    use Filterable;
 
     /**
      * @var array<int, string>

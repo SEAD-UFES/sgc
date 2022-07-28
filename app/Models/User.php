@@ -23,9 +23,12 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class User extends Authenticatable
 {
-    use /* HasApiTokens, */ HasFactory, Notifiable;
+    //use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
     use Sortable;
-    use UserFilter, Filterable;
+    use UserFilter;
+    use Filterable;
 
     /**
      * @var array<int, string>

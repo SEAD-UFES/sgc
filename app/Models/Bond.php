@@ -16,7 +16,8 @@ class Bond extends Pivot
 {
     use HasFactory;
     use Sortable;
-    use BondFilter, Filterable;
+    use BondFilter;
+    use Filterable;
 
     /**
      * @var true
