@@ -75,7 +75,7 @@ class UserService
     {
         $attributes['email'] = mb_strtolower($attributes['email']);
 
-        if (isset($attributes['password']) and $attributes['password'] !== '') {
+        if (isset($attributes['password']) && $attributes['password'] !== '') {
             $attributes['password'] = Hash::make($attributes['password']);
         } else {
             unset($attributes['password']);
