@@ -21,6 +21,7 @@ class RoleService
         $roles_query = new Role();
         $roles_query = $roles_query->AcceptRequest(Role::$accepted_filters)->filter();
         $roles_query = $roles_query->sortable(['name' => 'asc']);
+
         $roles = $roles_query->paginate(10);
         $roles->withQueryString();
 

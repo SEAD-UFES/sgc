@@ -23,6 +23,7 @@ class ApprovedService
         $query = Approved::with(['approvedState', 'course', 'pole', 'role']);
         $query = $query->AcceptRequest(Approved::$accepted_filters)->filter();
         $query = $query->sortable(['updated_at' => 'desc']);
+
         $approveds = $query->paginate(10);
         $approveds->withQueryString();
 

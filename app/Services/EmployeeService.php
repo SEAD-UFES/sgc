@@ -23,6 +23,7 @@ class EmployeeService
         $query = Employee::with(['gender', 'birthState', 'documentType', 'maritalStatus', 'addressState', 'user']);
         $query = $query->AcceptRequest(Employee::$accepted_filters)->filter();
         $query = $query->sortable(['updated_at' => 'desc']);
+
         $employees = $query->paginate(10);
         $employees->withQueryString();
 

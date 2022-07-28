@@ -21,6 +21,7 @@ class PoleService
         $poles_query = new Pole();
         $poles_query = $poles_query->AcceptRequest(Pole::$accepted_filters)->filter();
         $poles_query = $poles_query->sortable(['name' => 'asc']);
+
         $poles = $poles_query->paginate(10);
         $poles->withQueryString();
 

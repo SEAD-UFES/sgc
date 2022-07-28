@@ -21,6 +21,7 @@ class UserService
         $query = User::with(['userType', 'employee']);
         $query = $query->AcceptRequest(User::$accepted_filters)->filter();
         $query = $query->sortable(['updated_at' => 'desc']);
+
         $users = $query->paginate(10);
         $users->withQueryString();
 

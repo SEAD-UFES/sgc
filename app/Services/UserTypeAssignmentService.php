@@ -19,6 +19,7 @@ class UserTypeAssignmentService
         $query = UserTypeAssignment::with(['user:id,email', 'userType:id,name', 'course:id,name']);
         $query = $query->AcceptRequest(UserTypeAssignment::$accepted_filters)->filter();
         $query = $query->sortable(['updated_at' => 'desc']);
+
         $userTypeAssignments = $query->paginate(10);
         $userTypeAssignments->withQueryString();
 

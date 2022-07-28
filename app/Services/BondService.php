@@ -31,6 +31,7 @@ class BondService
         $query = Bond::with(['employee', 'course', 'role', 'pole']);
         $query = $query->AcceptRequest(Bond::$accepted_filters)->filter();
         $query = $query->sortable(['updated_at' => 'desc']);
+
         $bonds = $query->paginate(10);
         $bonds->withQueryString();
 
