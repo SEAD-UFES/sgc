@@ -48,9 +48,7 @@ class UserTypeAssignmentService
     {
         $userTypeAssignment->logFetched();
 
-        $userTypeAssignment = UserTypeAssignment::with(['user:id,email', 'userType:id,name', 'course:id,name'])->find($userTypeAssignment->id);
-
-        return $userTypeAssignment;
+        return UserTypeAssignment::with(['user:id,email', 'userType:id,name', 'course:id,name'])->find($userTypeAssignment->id);
     }
 
     /**
