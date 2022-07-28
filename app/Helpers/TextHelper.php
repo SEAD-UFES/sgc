@@ -14,8 +14,8 @@ class TextHelper
         /*
         * Exceptions in lower case are words you don't want converted
         * Exceptions all in upper case are any words you don't want converted to title case
-        *   but should be converted to upper case, e.g.:
-        *   king henry viii or king henry Viii should be King Henry VIII
+        * but should be converted to upper case, e.g.:
+        * ing henry viii or king henry Viii should be King Henry VIII
         */
         $string = mb_convert_case($string, MB_CASE_TITLE, 'UTF-8');
 
@@ -31,13 +31,15 @@ class TextHelper
                     $word = mb_strtolower($word, 'UTF-8');
                 } elseif (! in_array($word, $exceptions)) {
                     // convert to uppercase (non-utf8 only)
-
                     $word = ucfirst($word);
                 }
+
                 $newwords[] = $word;
             }
+
             $string = join($delimiter, $newwords);
         }
+
         return $string;
     }
 

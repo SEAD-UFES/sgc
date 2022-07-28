@@ -28,6 +28,7 @@ class DocumentObserver
     {
         SgcLogHelper::writeLog(target: 'Document', action: __FUNCTION__, model_json: json_encode($document->getOriginal(), JSON_UNESCAPED_UNICODE));
     }
+
     /**
      * Handle the Document "updated" event.
      *

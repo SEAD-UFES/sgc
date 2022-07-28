@@ -65,6 +65,7 @@ class ApprovedsImport implements ToCollection, WithHeadingRow, WithColumnLimit, 
                     $tempPhone = $phone;
                 }
             }
+
             /**
              * @var Approved $approved
              */
