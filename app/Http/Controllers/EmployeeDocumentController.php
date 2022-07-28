@@ -105,9 +105,9 @@ class EmployeeDocumentController extends DocumentController
         }
 
         $id = $request->id ?? null;
-        $employees = ! is_null($id)
-            ? Employee::where('id', $id)->get()
-            : Employee::orderBy('name')->get();
+        $employees = is_null($id)
+            ? Employee::orderBy('name')->get()
+            : Employee::where('id', $id)->get();
 
         return view('employee.document.create-many-1', compact('employees', 'id'));
     }
