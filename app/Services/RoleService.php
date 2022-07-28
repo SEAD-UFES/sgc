@@ -56,7 +56,7 @@ class RoleService
      */
     public function read(Role $role): Role
     {
-        $role->logFetched($role);
+        $role->logFetched();
 
         return $role;
     }

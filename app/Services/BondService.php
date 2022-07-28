@@ -88,7 +88,7 @@ class BondService
      */
     public function read(Bond $bond): Bond
     {
-        $bond->logFetched($bond);
+        $bond->logFetched();
 
         return $bond;
     }

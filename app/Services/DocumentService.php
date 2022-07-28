@@ -121,7 +121,7 @@ class DocumentService
      */
     public function read(Document $document): Document
     {
-        $document->logFetched($document);
+        $document->logFetched();
 
         return $document;
     }
