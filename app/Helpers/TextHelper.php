@@ -34,10 +34,10 @@ class TextHelper
 
                     $word = ucfirst($word);
                 }
-                array_push($newwords, $word);
+                $newwords[] = $word;
             }
             $string = join($delimiter, $newwords);
-        } //foreach
+        }
         return $string;
     }
 
