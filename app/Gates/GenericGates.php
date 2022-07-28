@@ -80,11 +80,8 @@ class GenericGates
             $is_coord = $currentUTA->userType->acronym === 'coord';
             // Issue #36: For some reason, sometimes $course_id isn't integer, but string... Fixed with typed parameter.
             $course_id_match = $currentUTA->course_id === $course_id;
-            if ($is_coord && $course_id_match) {
-                return true;
-            }
-            //if no permission
-            return false;
+
+            return $is_coord && $course_id_match;
         });
     }
     private static function checkGenericRoleUta(string $acronym): bool
@@ -99,12 +96,8 @@ class GenericGates
 
         //if currentUTA (UserTypeAssignment) is $acronym, ok
         $acronymMatch = $currentUTA->userType->acronym === $acronym;
-        if ($acronymMatch) {
-            return true;
-        }
 
-        //if no permission
-        return false;
+        return $acronymMatch;
     }
 
     private static function checkGlobalRoleUta(string $acronym): bool
@@ -118,11 +111,7 @@ class GenericGates
         //if currentUTA (UserTypeAssignment) is $acronym, ok
         $acronymMatch = $currentUTA->userType->acronym === $acronym;
         $course_id_null = $currentUTA->course_id === null;
-        if ($acronymMatch && $course_id_null) {
-            return true;
-        }
 
-        //if no permission
-        return false;
+        return $acronymMatch && $course_id_null;
     }
 }

@@ -14,47 +14,27 @@ class CourseGates
                 return true;
             }
             //coord on any course or global
-            if (Gate::forUser($user)->any(['isCoord'])) {
-                return true;
-            }
-            //no permission
-            return false;
+            return Gate::forUser($user)->any(['isCoord']);
         });
 
         Gate::define('course-show', static function ($user) {
             //who can do it.
-            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global', 'isCoord-global'])) {
-                return true;
-            }
-            //no permission
-            return false;
+            return Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global', 'isCoord-global']);
         });
 
         Gate::define('course-store', static function ($user) {
             //who can do it.
-            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global', 'isCoord-global'])) {
-                return true;
-            }
-            //no permission
-            return false;
+            return Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global', 'isCoord-global']);
         });
 
         Gate::define('course-update', static function ($user) {
             //who can do it.
-            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global', 'isCoord-global'])) {
-                return true;
-            }
-            //no permission
-            return false;
+            return Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global', 'isCoord-global']);
         });
 
         Gate::define('course-destroy', static function ($user) {
             //who can do it.
-            if (Gate::forUser($user)->any(['isAdm-global'])) {
-                return true;
-            }
-            //no permission
-            return false;
+            return Gate::forUser($user)->any(['isAdm-global']);
         });
     }
 }

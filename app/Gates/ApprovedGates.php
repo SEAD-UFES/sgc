@@ -14,47 +14,27 @@ class ApprovedGates
                 return true;
             }
             //coord on any course or global
-            if (Gate::forUser($user)->any(['isCoord'])) {
-                return true;
-            }
-            //no permission
-            return false;
+            return Gate::forUser($user)->any(['isCoord']);
         });
 
         Gate::define('approved-store', static function ($user) {
             //who can do it (global).
-            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isSec-global'])) {
-                return true;
-            }
-            //no permission
-            return false;
+            return Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isSec-global']);
         });
 
         Gate::define('approved-update-state', static function ($user) {
             //who can do it (global).
-            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isSec-global'])) {
-                return true;
-            }
-            //no permission
-            return false;
+            return Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isSec-global']);
         });
 
         Gate::define('approved-destroy', static function ($user) {
             //who can do it (global).
-            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isSec-global'])) {
-                return true;
-            }
-            //no permission
-            return false;
+            return Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isSec-global']);
         });
 
         Gate::define('approved-designate', static function ($user) {
             //who can do it (global).
-            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isSec-global'])) {
-                return true;
-            }
-            //no permission
-            return false;
+            return Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isSec-global']);
         });
     }
 }

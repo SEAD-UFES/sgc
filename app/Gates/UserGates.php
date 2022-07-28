@@ -10,47 +10,27 @@ class UserGates
     {
         Gate::define('user-list', static function ($user) {
             //admins can do it.
-            if (Gate::forUser($user)->allows('isAdm-global')) {
-                return true;
-            }
-            //no permission
-            return false;
+            return Gate::forUser($user)->allows('isAdm-global');
         });
 
         Gate::define('user-show', static function ($user) {
             //admins can do it.
-            if (Gate::forUser($user)->allows('isAdm-global')) {
-                return true;
-            }
-            //no permission
-            return false;
+            return Gate::forUser($user)->allows('isAdm-global');
         });
 
         Gate::define('user-store', static function ($user) {
             //admins can do it.
-            if (Gate::forUser($user)->allows('isAdm-global')) {
-                return true;
-            }
-            //no permission
-            return false;
+            return Gate::forUser($user)->allows('isAdm-global');
         });
 
         Gate::define('user-update', static function ($user) {
             //admins can do it.
-            if (Gate::forUser($user)->allows('isAdm-global')) {
-                return true;
-            }
-            //no permission
-            return false;
+            return Gate::forUser($user)->allows('isAdm-global');
         });
 
         Gate::define('user-destroy', static function ($user) {
             //admins can do it.
-            if (Gate::forUser($user)->allows('isAdm-global')) {
-                return true;
-            }
-            //no permission
-            return false;
+            return Gate::forUser($user)->allows('isAdm-global');
         });
     }
 }
