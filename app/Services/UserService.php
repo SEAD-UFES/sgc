@@ -113,7 +113,7 @@ class UserService
     {
         $existentEmployee = $this->getEmployeeByEmail($user->email);
 
-        if ($existentEmployee) {
+        if ($existentEmployee !== null) {
             $user->employee_id = $existentEmployee->id;
             $user->save();
         }

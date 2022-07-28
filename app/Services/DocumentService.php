@@ -237,7 +237,7 @@ class DocumentService
     public function getFileDataFromPath(string $filePath): string
     {
         //if filePath
-        if ($filePath) {
+        if ($filePath !== '' && $filePath !== '0') {
             $fileContent = file_get_contents(base_path('storage/app/' . $filePath), true);
             return base64_encode($fileContent);
         }
