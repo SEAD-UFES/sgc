@@ -6,7 +6,11 @@ use Illuminate\Support\Facades\Gate;
 
 class BondGates
 {
-    public static function define()
+    /**
+     *
+     * @return void
+     */
+    public static function define(): void
     {
         Gate::define('bond-list', static function ($user) {
             //who can do it (global).

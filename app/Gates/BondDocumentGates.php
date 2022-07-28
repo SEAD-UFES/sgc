@@ -6,7 +6,11 @@ use Illuminate\Support\Facades\Gate;
 
 class BondDocumentGates
 {
-    public static function define()
+    /**
+     *
+     * @return void
+     */
+    public static function define(): void
     {
         Gate::define('bondDocument-rights', static function ($user) {
             //who can do it (global).

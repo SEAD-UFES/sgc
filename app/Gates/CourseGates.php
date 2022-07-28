@@ -6,7 +6,11 @@ use Illuminate\Support\Facades\Gate;
 
 class CourseGates
 {
-    public static function define()
+    /**
+     *
+     * @return void
+     */
+    public static function define(): void
     {
         Gate::define('course-list', static function ($user) {
             //who can do it.

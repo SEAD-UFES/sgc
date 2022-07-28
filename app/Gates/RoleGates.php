@@ -6,7 +6,11 @@ use Illuminate\Support\Facades\Gate;
 
 class RoleGates
 {
-    public static function define()
+    /**
+     *
+     * @return void
+     */
+    public static function define(): void
     {
         Gate::define('role-list', static function ($user) {
             //who can do it.

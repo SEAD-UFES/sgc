@@ -6,7 +6,11 @@ use Illuminate\Support\Facades\Gate;
 
 class UserGates
 {
-    public static function define()
+    /**
+     *
+     * @return void
+     */
+    public static function define(): void
     {
         Gate::define('user-list', static function ($user) {
             //admins can do it.

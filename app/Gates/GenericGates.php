@@ -7,7 +7,11 @@ use Illuminate\Support\Facades\Gate;
 
 class GenericGates
 {
-    public static function define()
+    /**
+     *
+     * @return void
+     */
+    public static function define(): void
     {
         /* define a system admin user role */
         Gate::define('isAdm', static function ($user) {
@@ -95,9 +99,7 @@ class GenericGates
         }
 
         //if currentUTA (UserTypeAssignment) is $acronym, ok
-        $acronymMatch = $currentUTA->userType->acronym === $acronym;
-
-        return $acronymMatch;
+        return $currentUTA->userType->acronym === $acronym;
     }
 
     private static function checkGlobalRoleUta(string $acronym): bool

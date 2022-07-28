@@ -6,7 +6,11 @@ use Illuminate\Support\Facades\Gate;
 
 class UserTypeAssignmentGates
 {
-    public static function define()
+    /**
+     *
+     * @return void
+     */
+    public static function define():void
     {
         Gate::define('userTypeAssignment-list', static function ($user) {
             //admins can do it.
