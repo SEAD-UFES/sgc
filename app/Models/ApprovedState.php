@@ -41,7 +41,7 @@ class ApprovedState extends Model
      */
     public function hasNext(): bool
     {
-        return ! ($this->name === 'Desistente' || $this->name === 'Aceitante');
+        return $this->name !== 'Desistente' && $this->name !== 'Aceitante';
     }
 
     /**
