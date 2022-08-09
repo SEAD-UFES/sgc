@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\KnowledgeAreas;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreBondRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class StoreBondRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -19,9 +21,9 @@ class StoreBondRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, string|array<int, mixed>>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
 
@@ -32,10 +34,16 @@ class StoreBondRequest extends FormRequest
             'begin' => 'nullable|date',
             'end' => 'nullable|date',
             'volunteer' => 'sometimes',
+            'knowledge_area' => ['nullable', 'required_with:course_name,institution_name', new Enum(KnowledgeAreas::class)], //Rule::in(KnowledgeAreas::getValuesInAlphabeticalOrder())],
+            'course_name' => 'nullable|string|required_with:knowledge_area,institution_name',
+            'institution_name' => 'nullable|string|required_with:knowledge_area,course_name',
         ];
     }
 
-    public function messages()
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
     {
         return [
             'employee_id.required' => 'O Colaborador é obrigatório',

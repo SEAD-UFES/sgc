@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Employee;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateEmployeeRequest extends FormRequest
@@ -11,7 +12,7 @@ class UpdateEmployeeRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -19,11 +20,19 @@ class UpdateEmployeeRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function rules()
+    public function rules(): array
     {
-        $id = $this->route('employee')->id;
+        /**
+         * @var Employee $employee
+         */
+        $employee = $this->route()?->parameter('employee');
+
+        /**
+         * @var int $id
+         */
+        $id = $employee->id;
 
         return [
             'name' => 'required|string',
@@ -52,10 +61,16 @@ class UpdateEmployeeRequest extends FormRequest
             'phone' => 'nullable|numeric',
             'mobile' => 'nullable|numeric',
             'email' => 'required|email|unique:employees,email,' . $id . ',id',
+            'bank_name' => 'nullable|string|required_with:agency_number,account_number',
+            'agency_number' => 'nullable|string|required_with:bank_name,account_number',
+            'account_number' => 'nullable|string|required_with:bank_name,agency_number',
         ];
     }
 
-    public function messages()
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
     {
         return [
             'name.required' => 'O nome é obrigatório',
