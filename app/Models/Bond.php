@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Kyslik\ColumnSortable\Sortable;
 
@@ -129,6 +130,14 @@ class Bond extends Pivot
     public function bondDocuments(): HasMany
     {
         return $this->hasMany(BondDocument::class, 'bond_id');
+    }
+
+    /**
+     * @return HasOne<Qualification>
+     */
+    public function qualification(): HasOne
+    {
+        return $this->hasOne(Qualification::class, 'bond_id');
     }
 
     /**

@@ -170,6 +170,14 @@ class Employee extends Model
     }
 
     /**
+     * @return HasOne<BankAccount>
+     */
+    public function bankAccount(): HasOne
+    {
+        return $this->hasOne(BankAccount::class);
+    }
+
+    /**
      * @return bool
      */
     public function hasDocuments(): bool
