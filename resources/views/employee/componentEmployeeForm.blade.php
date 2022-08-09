@@ -270,3 +270,29 @@
         @enderror
     </div>
 </div>
+<div class="row g-3 mb-3">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+        <label for="inputBank1" class="form-label">Banco</label>
+        <input name="bank_name" id="inputBank1" type="text" class="form-control" placeholder="Banco"
+            value="{{ isset($employee) && isset($employee->bankAccount) ? $employee->bankAccount->bank_name : old('bank_name') }}" maxlength="100" />
+        @error('bank_name')
+            <div class="text-danger">> {{ $message }}</div>
+        @enderror
+    </div>
+    <div class="col-6 col-sm-6 col-md-3 col-lg-3">
+        <label for="inputAgency1" class="form-label">Agência</label>
+        <input name="agency_number" id="inputAgency1" type="text" class="form-control" placeholder="Agência"
+            value="{{ isset($employee) && isset($employee->bankAccount) ? $employee->bankAccount->agency_number : old('agency_number') }}" maxlength="100" />
+        @error('agency_number')
+            <div class="text-danger">> {{ $message }}</div>
+        @enderror
+    </div>
+    <div class="col-6 col-sm-6 col-md-3 col-lg-3">
+        <label for="inputAccount1" class="form-label">Conta Corrente</label>
+        <input name="account_number" id="inputAccount1" type="text" class="form-control" placeholder="Conta Corrente"
+            value="{{ isset($employee) && isset($employee->bankAccount) ? $employee->bankAccount->account_number : old('account_number') }}" maxlength="100" />
+        @error('account_number')
+            <div class="text-danger">> {{ $message }}</div>
+        @enderror
+    </div>
+</div>

@@ -183,6 +183,39 @@
                     </div>
 
                     <div class="card mb-3">
+                        <div class="card-header" data-bs-toggle="collapse" href="#employeeBankAccountDataContent" role="button" aria-expanded="true" aria-controls="employeeBankAccountDataContent">
+                            <h4 class='mb-0'>Informações Bancárias</h4>
+                        </div>
+                        <div class="collapse show" id="employeeBankAccountDataContent" >
+                            <div class="card-body">
+                                <div class="mb-2 row">
+                                    <div class="col-sm-4 col-lg-3"><strong>Banco:</strong></div>
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->bankAccount->bank_name ?? '-' }}
+                                    </div>
+                                </div>
+                                <div class="mb-2 row">
+                                    <div class="col-sm-4 col-lg-3"><strong>Agência:</strong></div>
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->bankAccount->agency_number ?? '-' }}
+                                    </div>
+                                </div>
+                                <div class="mb-2 row">
+                                    <div class="col-sm-4 col-lg-3"><strong>Conta Corrente:</strong></div>
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->bankAccount->account_number ?? '-' }}
+                                    </div>
+                                </div>
+
+                                <div class="">
+                                    @can('employee-update', $employee)
+                                        <a href="{{ route('employees.edit', $employee->id) }}" data-bs-toggle="tooltip" title="Editar colaborador" class="btn btn-primary btn-sm">
+                                            <i class="bi-pencil-fill"></i> Editar Informações Bancárias
+                                        </a>&nbsp;
+                                    @endcan
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3">
                         <div class="card-header" data-bs-toggle="collapse" href="#employeeDocumentListContent" role="button" aria-expanded="true" aria-controls="employeeDocumentListContent">
                             <h4 class='mb-0'>Documentos do colaborador</h4>
                         </div>

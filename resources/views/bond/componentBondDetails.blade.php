@@ -51,3 +51,34 @@
         </div>
     </div>
 </div>
+
+<div class="card mb-3">
+    <div class="card-header" data-bs-toggle="collapse" href="#bondQualificationDataContent" role="button" aria-expanded="true" aria-controls="bondQualificationDataContent">
+        <h4 class='mb-0'>Qualificação</h4>
+    </div>
+
+    <div class="collapse show" id="bondQualificationDataContent" >
+        <div class="card-body">
+            <div class="mb-2 row">
+                <div class="col-sm-4 col-lg-3"><strong>Área do último Curso Superior:</strong></div>
+                <div class="col-sm-8 col-lg-9">{{ $bond->qualification->knowledge_area->value ?? '-' }}</div>
+            </div>
+            <div class="mb-2 row">
+                <div class="col-sm-4 col-lg-3"><strong>Último curso de titulação:</strong></div>
+                <div class="col-sm-8 col-lg-9">{{ $bond->qualification->course_name ?? '-' }}</div>
+            </div>
+            <div class="mb-2 row">
+                <div class="col-sm-4 col-lg-3"><strong>Nome da Instituição de Titulação:</strong></div>
+                <div class="col-sm-8 col-lg-9">{{ $bond->qualification->institution_name ?? '-' }}</div>
+            </div>
+
+            <div class="">
+                @can('bond-update', $bond)
+                    <a href="{{ route('bonds.edit', $bond->id) }}" data-bs-toggle="tooltip" title="Editar vínculo" class="btn btn-primary btn-sm">
+                        <i class="bi-pencil-fill"></i> Editar Qualificação
+                    </a>&nbsp;
+                @endcan
+            </div>
+        </div>
+    </div>
+</div>

@@ -74,3 +74,36 @@
         </div>
     </div>
 </div>
+<div class="row g-3 mb-3">
+    <div class="col-6 col-sm-6 col-md-4 col-lg-3">
+        <label for="selectKnowledgeArea1" class="form-label">Área do último Curso Superior</label>
+        <select name="knowledge_area" id="selectKnowledgeArea1" class="form-select">
+            <option value="">Selecione a Área</option>
+            @foreach ($knowledgeAreas as $knowledgeArea)
+                <option value="{{ $knowledgeArea }}"
+                    {{ isset($bond) && isset($bond->qualification) ? ($bond->qualification->knowledge_area?->value == $knowledgeArea ? 'selected' : '') : (old('knowledge_area') == $knowledgeArea ? 'selected' : '') }}>
+                    {{ $knowledgeArea }}</option>
+            @endforeach
+        </select>
+        @error('knowledge_area')
+            <div class="text-danger">> {{ $message }}</div>
+        @enderror
+    </div>
+    <div class="col-6 col-sm-6 col-md-4 col-lg-4">
+        <label for="inputCourse1" class="form-label">Último curso de titulação</label>
+        <input name="course_name" id="inputCourse1" type="text" class="form-control" placeholder="Curso"
+            value="{{ isset($bond) && isset($bond->qualification) ? $bond->qualification->course_name : old('course_name') }}" maxlength="100" />
+        @error('course_name')
+            <div class="text-danger">> {{ $message }}</div>
+        @enderror
+    </div>
+    <div class="col-12 col-sm-12 col-md-4 col-lg-5">
+        <label for="inputInstitution1" class="form-label">Nome da Instituição de Titulação</label>
+        <input name="institution_name" id="inputInstitution1" type="text" class="form-control" placeholder="Instituição"
+            value="{{ isset($bond) && isset($bond->qualification) ? $bond->qualification->institution_name : old('institution_name') }}" maxlength="100" />
+        @error('institution_name')
+            <div class="text-danger">> {{ $message }}</div>
+        @enderror
+    </div>
+</div>
+    
