@@ -33,7 +33,7 @@ class EmployeeService
     /**
      * Undocumented function
      *
-     * @param array $attributes
+     * @param array<string, string> $attributes
      *
      * @return Employee
      */
@@ -42,7 +42,6 @@ class EmployeeService
         $attributes = Arr::map($attributes, static function ($value, $key) {
             return $key === 'email' ? mb_strtolower($value) : ($key === 'id_issue_agency' ? mb_strtoupper($value) : TextHelper::titleCase($value));
         });
-
         $attributes = Arr::map($attributes, static function ($value, $key) {
             return $value === '' ? null : $value;
         });
@@ -51,6 +50,12 @@ class EmployeeService
         DB::transaction(function () use ($attributes, &$employee) {
             $employee = Employee::create($attributes);
             $this->userAttach($employee);
+
+            $employee->bankAccount()->create([
+                'bank_name' => TextHelper::titleCase($attributes['bank_name']),
+                'agency_number' => $attributes['agency_number'],
+                'account_number' => $attributes['account_number'],
+            ]);
         });
 
         return $employee;
@@ -73,7 +78,7 @@ class EmployeeService
     /**
      * Undocumented function
      *
-     * @param array $attributes
+     * @param array<string, string> $attributes
      * @param Employee $employee
      *
      * @return Employee
@@ -91,6 +96,13 @@ class EmployeeService
         DB::transaction(function () use ($attributes, $employee) {
             $employee->update($attributes);
             $this->userAttach($employee);
+
+            $employee->bankAccount()->updateOrCreate([], [
+                'bank_name' => TextHelper::titleCase($attributes['bank_name']),
+                'agency_number' => $attributes['agency_number'],
+                'account_number' => $attributes['account_number'],
+            ]);
+
             return $employee;
         });
 
@@ -113,6 +125,8 @@ class EmployeeService
                 $employeeUser->employee_id = null;
                 $employeeUser->save();
             }
+
+            $employee->bankAccount()->delete();
 
             foreach ($employee->courses as $course) {
                 $course->bond->bondDocuments()->delete();

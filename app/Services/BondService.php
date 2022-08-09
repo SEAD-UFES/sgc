@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\TextHelper;
 use App\Models\Bond;
 use App\Models\BondDocument;
 use App\Models\Document;
@@ -41,7 +42,7 @@ class BondService
     /**
      * Undocumented function
      *
-     * @param array $attributes
+     * @param array<string, string> $attributes
      *
      * @return Bond
      */
@@ -57,6 +58,13 @@ class BondService
 
         DB::transaction(static function () use ($attributes, &$bond) {
             $bond = Bond::create($attributes);
+
+            $bond->qualification()->create([
+                'knowledge_area' => $attributes['knowledge_area'],
+                'course_name' => TextHelper::titleCase($attributes['course_name']),
+                'institution_name' => TextHelper::titleCase($attributes['institution_name']),
+            ]);
+
             $employeeDocuments = EmployeeDocument::where('employee_id', $bond->employee_id)->get();
             foreach ($employeeDocuments as $employeeDocument) {
                 $bondDocument = new BondDocument();
@@ -64,9 +72,9 @@ class BondService
                 $bondDocument->save();
 
                 $newDocument = new Document();
-                $newDocument->original_name = $employeeDocument->document->original_name;
-                $newDocument->file_data = $employeeDocument->document->file_data;
-                $newDocument->document_type_id = $employeeDocument->document->documentType->id;
+                $newDocument->original_name = $employeeDocument->document?->original_name;
+                $newDocument->file_data = $employeeDocument->document?->file_data;
+                $newDocument->document_type_id = $employeeDocument->document?->documentType?->id;
                 $newDocument->documentable_type = \App\Models\BondDocument::class;
                 $newDocument->documentable_id = $bondDocument->id;
                 $newDocument->save();
@@ -74,7 +82,7 @@ class BondService
 
             //Notify grantor assistants
             $ass_UT = UserType::firstWhere('acronym', 'ass');
-            $coordOrAssistants = User::where('active', true)->whereActiveUserType($ass_UT->id)->get();
+            $coordOrAssistants = User::where('active', true)->whereActiveUserType($ass_UT?->id)->get();
             Notification::send($coordOrAssistants, new NewBondNotification($bond));
         });
 
@@ -98,7 +106,7 @@ class BondService
     /**
      * Undocumented function
      *
-     * @param array $attributes
+     * @param array<string, string> $attributes
      * @param Bond $bond
      *
      * @return Bond
@@ -108,6 +116,12 @@ class BondService
         $attributes['volunteer'] = isset($attributes['volunteer']);
 
         $bond->update($attributes);
+
+        $bond->qualification()->updateOrCreate([], [
+            'knowledge_area' => $attributes['knowledge_area'],
+            'course_name' => TextHelper::titleCase($attributes['course_name']),
+            'institution_name' => TextHelper::titleCase($attributes['institution_name']),
+        ]);
 
         return $bond;
     }
@@ -126,6 +140,8 @@ class BondService
                 $document->delete();
             }
 
+            $bond->qualification()->delete();
+
             $bond->delete();
         });
     }
@@ -133,7 +149,7 @@ class BondService
     /**
      * Undocumented function
      *
-     * @param array $attributes
+     * @param array<string, string> $attributes
      * @param Bond $bond
      *
      * @return Bond
@@ -145,11 +161,11 @@ class BondService
         //$bond->impediment_description = $attributes['impediment_description'];
         $attributes['uaba_checked_at'] = now();
 
-        $termo_document_type_id = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first()->id;
+        $termo_document_type_id = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first()?->id;
         $termo_document_count = Document::where('document_type_id', $termo_document_type_id)
             ->whereHasMorph('documentable', \App\Models\BondDocument::class, static function ($query) use ($bond) {
                 $query->where('bond_id', $bond->id);
-            })->get()->count();
+            })->count();
 
         if ($termo_document_count <= 0) {
             $attributes['impediment'] = true;
@@ -159,18 +175,18 @@ class BondService
 
         if ($bond->impediment === true) {
             $sec_UT = UserType::firstWhere('acronym', 'sec');
-            $sec_users = User::where('active', true)->whereActiveUserType($sec_UT->id)->get();
+            $sec_users = User::where('active', true)->whereActiveUserType($sec_UT?->id)->get();
 
             $coord_UT = UserType::firstWhere('acronym', 'coord');
-            $course_id = $bond->course->id;
-            $coord_users = User::where('active', true)->whereActiveUserType($coord_UT->id)->whereUtaCourseId($course_id)->get();
+            $course_id = $bond->course?->id;
+            $coord_users = User::where('active', true)->whereActiveUserType($coord_UT?->id)->whereUtaCourseId($course_id)->get();
 
             $users = $sec_users->merge($coord_users);
 
             Notification::send($users, new BondImpededNotification($bond));
         } else {
             $ldi_UT = UserType::firstWhere('acronym', 'ldi');
-            $ldi_users = User::where('active', true)->whereActiveUserType($ldi_UT->id)->get();
+            $ldi_users = User::where('active', true)->whereActiveUserType($ldi_UT?->id)->get();
 
             Notification::send($ldi_users, new NewRightsNotification($bond));
         }
@@ -181,7 +197,7 @@ class BondService
     /**
      * Undocumented function
      *
-     * @param array $attributes
+     * @param array<string, string> $attributes
      * @param Bond $bond
      *
      * @return Bond
@@ -189,14 +205,14 @@ class BondService
     public function requestReview(array $attributes, Bond $bond): Bond
     {
         $sec_UT = UserType::firstWhere('acronym', 'sec');
-        $sec_users = User::where('active', true)->whereActiveUserType($sec_UT->id)->get();
+        $sec_users = User::where('active', true)->whereActiveUserType($sec_UT?->id)->get();
 
         $coord_UT = UserType::firstWhere('acronym', 'coord');
-        $course_id = $bond->course->id;
-        $coord_users = User::where('active', true)->whereActiveUserType($coord_UT->id)->whereUtaCourseId($course_id)->get();
+        $course_id = $bond->course?->id;
+        $coord_users = User::where('active', true)->whereActiveUserType($coord_UT?->id)->whereUtaCourseId($course_id)->get();
 
         $ass_UT = UserType::firstWhere('acronym', 'ass');
-        $ass_users = User::where('active', true)->whereActiveUserType($ass_UT->id)->get();
+        $ass_users = User::where('active', true)->whereActiveUserType($ass_UT?->id)->get();
 
         $users = $sec_users->merge($coord_users)->merge($ass_users);
 
