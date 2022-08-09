@@ -142,7 +142,7 @@ class User extends Authenticatable
 
     /**
      * @param Builder<User> $query
-     * @param string $id
+     * @param int|null $id
      *
      * @return Builder<User>
      */
@@ -169,7 +169,7 @@ class User extends Authenticatable
 
     /**
      * @param Builder<User> $query
-     * @param string $id
+     * @param int|null $id
      *
      * @return Builder<User>
      */

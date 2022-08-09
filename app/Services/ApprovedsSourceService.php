@@ -16,7 +16,7 @@ class ApprovedsSourceService
      *
      * @param UploadedFile $file
      *
-     * @return Collection<Approved>
+     * @return Collection<int, Approved>
      */
     public function importApprovedsFromFile(UploadedFile $file): Collection
     {
@@ -26,7 +26,7 @@ class ApprovedsSourceService
         $filePath = $this->getFilePath($file);
 
         /**
-         * @var Collection<Approved> $approveds
+         * @var Collection<int, Approved> $approveds
          */
         $approveds = $this->getApprovedsFromFile($filePath);
 
@@ -40,9 +40,9 @@ class ApprovedsSourceService
      *
      * @param UploadedFile $file
      *
-     * @return string
+     * @return string|false
      */
-    protected function getFilePath(UploadedFile $file): string
+    protected function getFilePath(UploadedFile $file): string|false
     {
         /**
          * @var string $fileName
@@ -57,12 +57,12 @@ class ApprovedsSourceService
      *
      * @param string $filePath
      *
-     * @return Collection<Approved>
+     * @return Collection<int, Approved>
      */
     protected function getApprovedsFromFile(string $filePath): Collection
     {
         /**
-         * @var Collection<Approved> $approveds
+         * @var Collection<int, Approved> $approveds
          */
         $approveds = collect();
         Excel::import(new ApprovedsImport($approveds), $filePath);

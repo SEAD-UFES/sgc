@@ -11,7 +11,7 @@ class UpdateBondRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -19,15 +19,18 @@ class UpdateBondRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, string|array<int, mixed>>
      */
-    public function rules()
+    public function rules(): array
     {
         $sbr = new StoreBondRequest();
         return $sbr->rules();
     }
 
-    public function messages()
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
     {
         $sbr = new StoreBondRequest();
         return $sbr->messages();
