@@ -8,12 +8,19 @@ use App\Models\Employee;
 use App\Models\User;
 use App\Services\EmployeeService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 class EmployeeServiceTest extends TestCase
 {
     use RefreshDatabase;
+    use WithFaker;
+
+    /**
+     * @var EmployeeService
+     */
+    private EmployeeService $service;
 
     //setting up scenario for all tests
     public function setUp(): void
@@ -42,7 +49,7 @@ class EmployeeServiceTest extends TestCase
     /**
      * @test
      */
-    public function employeesShouldBeListed()
+    public function employeesShouldBeListed(): void
     {
         Event::fakeFor(function () {
             //execution
@@ -59,7 +66,7 @@ class EmployeeServiceTest extends TestCase
     /**
      * @test
      */
-    public function employeeShouldBeRetrieved()
+    public function employeeShouldBeRetrieved(): void
     {
         //setting up scenario
         $employee = Employee::find(1);
@@ -78,7 +85,7 @@ class EmployeeServiceTest extends TestCase
     /**
      * @test
      */
-    public function employeeShouldBeCreated()
+    public function employeeShouldBeCreated(): void
     {
         //setting up scenario
         $attributes = [];
@@ -86,6 +93,7 @@ class EmployeeServiceTest extends TestCase
         $attributes['name'] = 'Mary Doe';
         $attributes['cpf'] = '33333333333';
         $attributes['email'] = 'marydoe@test3.com';
+        $attributes = array_merge($attributes, $this->getBankAccountAttributes());
 
         Event::fakeFor(function () use ($attributes) {
             //execution
@@ -93,7 +101,7 @@ class EmployeeServiceTest extends TestCase
 
             //verifications
             Event::assertDispatched('eloquent.created: ' . Employee::class);
-            $this->assertEquals('Mary Doe', Employee::find(3)->name);
+            $this->assertEquals('Mary Doe', Employee::find(3)?->name);
             $this->assertCount(3, Employee::all());
         });
     }
@@ -101,7 +109,7 @@ class EmployeeServiceTest extends TestCase
     /**
      * @test
      */
-    public function employeeShouldBeCreatedWithUser()
+    public function employeeShouldBeCreatedWithUser(): void
     {
         //setting up scenario
         $attributes = [];
@@ -109,6 +117,7 @@ class EmployeeServiceTest extends TestCase
         $attributes['name'] = 'Mary Doe';
         $attributes['cpf'] = '33333333333';
         $attributes['email'] = 'marydoe@test3.com';
+        $attributes = array_merge($attributes, $this->getBankAccountAttributes());
 
         User::factory()->create(['email' => 'marydoe@test3.com', 'employee_id' => null]);
 
@@ -118,8 +127,8 @@ class EmployeeServiceTest extends TestCase
 
             //verifications
             Event::assertDispatched('eloquent.created: ' . Employee::class);
-            $this->assertEquals('Mary Doe', Employee::find(3)->name);
-            $this->assertEquals('marydoe@test3.com', Employee::find(3)->user->email);
+            $this->assertEquals('Mary Doe', Employee::find(3)?->name);
+            $this->assertEquals('marydoe@test3.com', Employee::find(3)?->user?->email);
             $this->assertCount(3, Employee::all());
         });
     }
@@ -127,7 +136,7 @@ class EmployeeServiceTest extends TestCase
     /**
      * @test
      */
-    public function employeeShouldBeUpdated()
+    public function employeeShouldBeUpdated(): void
     {
         //setting up scenario
 
@@ -138,6 +147,7 @@ class EmployeeServiceTest extends TestCase
         $attributes['name'] = 'Bob Doe';
         $attributes['cpf'] = '44444444444';
         $attributes['email'] = 'bobdoe@test4.com';
+        $attributes = array_merge($attributes, $this->getBankAccountAttributes());
 
         Event::fakeFor(function () use ($employee, $attributes) {
             //execution
@@ -145,8 +155,8 @@ class EmployeeServiceTest extends TestCase
 
             //verifications
             Event::assertDispatched('eloquent.updated: ' . Employee::class);
-            $this->assertEquals('Bob Doe', Employee::find(1)->name);
-            $this->assertEquals('bobdoe@test4.com', Employee::find(1)->email);
+            $this->assertEquals('Bob Doe', Employee::find(1)?->name);
+            $this->assertEquals('bobdoe@test4.com', Employee::find(1)?->email);
             $this->assertCount(2, Employee::all());
         });
     }
@@ -154,7 +164,7 @@ class EmployeeServiceTest extends TestCase
     /**
      * @test
      */
-    public function employeeShouldBeDeleted()
+    public function employeeShouldBeDeleted(): void
     {
         //setting up scenario
         $employee = Employee::find(1);
@@ -173,13 +183,13 @@ class EmployeeServiceTest extends TestCase
     /**
      * @test
      */
-    public function employeeWithUserShouldBeDeleted()
+    public function employeeWithUserShouldBeDeleted(): void
     {
         //setting up scenario
         $employee = Employee::find(1);
 
-        $user = User::factory()->create(['email' => 'marydoe@test3.com', 'employee_id' => null]);
-        $user->employee_id = $employee->id;
+        $user = User::factory()->createOne(['email' => 'marydoe@test3.com', 'employee_id' => null]);
+        $user->employee_id = $employee?->id;
         $user->save();
 
         $user = User::find(1);
@@ -191,7 +201,7 @@ class EmployeeServiceTest extends TestCase
             //verifications
             Event::assertDispatched('eloquent.deleted: ' . Employee::class);
             $this->assertEquals('Jane Doe', $this->service->list()->first()->name);
-            $this->assertNull(User::find(1)->employee_id);
+            $this->assertNull(User::find(1)?->employee_id);
             $this->assertCount(1, Employee::all());
         });
     }
@@ -199,16 +209,19 @@ class EmployeeServiceTest extends TestCase
     /**
      * @test
      */
-    public function employeeWithBondDocumentsShouldBeDeleted()
+    public function employeeWithBondDocumentsShouldBeDeleted(): void
     {
         //setting up scenario
         $employee = Employee::find(1);
 
-        $bond = Bond::factory()->create([
-            'employee_id' => $employee->id,
+        /**
+         * @var Bond $bond
+         */
+        $bond = Bond::factory()->createOne([
+            'employee_id' => $employee?->id,
         ]);
 
-        BondDocument::factory()->create([
+        BondDocument::factory()->createOne([
             'bond_id' => $bond->id,
         ]);
 
@@ -221,5 +234,20 @@ class EmployeeServiceTest extends TestCase
             $this->assertEquals('Jane Doe', $this->service->list()->first()->name);
             $this->assertCount(1, Employee::all());
         });
+    }
+    
+
+    /**
+     * @return array<string, string>
+     */
+    private function getBankAccountAttributes(): array
+    {
+        $generator = $this->faker->unique();
+
+        return [
+            'bank_name' => 'Test Bank',
+            'agency_number' => (string) $generator->numberBetween(1000, 9999),
+            'account_number' => (string) $generator->numberBetween(1000, 9999),
+        ];
     }
 }

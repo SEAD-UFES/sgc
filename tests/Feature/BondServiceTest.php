@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\KnowledgeAreas;
 use App\Models\Bond;
 use App\Models\BondDocument;
 use App\Models\Course;
@@ -11,12 +12,19 @@ use App\Models\EmployeeDocument;
 use App\Models\UserType;
 use App\Services\BondService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 class BondServiceTest extends TestCase
 {
     use RefreshDatabase;
+    use WithFaker;
+
+    /**
+     * @var BondService
+     */
+    private BondService $service;
 
     //setting up scenario for all tests
     public function setUp(): void
@@ -61,16 +69,22 @@ class BondServiceTest extends TestCase
     /**
      * @test
      */
-    public function bondsShouldBeListed()
+    public function bondsShouldBeListed(): void
     {
         Event::fakeFor(function () {
             //execution
             $bonds = $this->service->list();
 
+            $employeesNames = [];
+            $employeesCourses = [];
+
+            /**
+             * @var Bond $bond
+             */
             foreach ($bonds as $bond) {
                 $this->assertInstanceOf(Bond::class, $bond);
-                $employeesNames[] = $bond->employee->name;
-                $employeesCourses[] = $bond->course->name;
+                $employeesNames[] = $bond->employee?->name;
+                $employeesCourses[] = $bond->course?->name;
             }
 
             //verifications
@@ -86,7 +100,7 @@ class BondServiceTest extends TestCase
     /**
      * @test
      */
-    public function bondShouldBeRetrieved()
+    public function bondShouldBeRetrieved(): void
     {
         //setting up scenario
         $bond = Bond::find(1);
@@ -97,7 +111,7 @@ class BondServiceTest extends TestCase
 
             //verifications
             Event::assertDispatched('eloquent.fetched: ' . Bond::class);
-            $this->assertEquals('Course Alpha', $bond->course->name);
+            $this->assertEquals('Course Alpha', $bond->course?->name);
             $this->assertCount(2, Bond::all());
         });
     }
@@ -105,7 +119,7 @@ class BondServiceTest extends TestCase
     /**
      * @test
      */
-    public function bondShouldBeCreated()
+    public function bondShouldBeCreated(): void
     {
         //setting up scenario
         $attributes = [];
@@ -114,6 +128,7 @@ class BondServiceTest extends TestCase
         $attributes['role_id'] = 2;
         $attributes['course_id'] = 2;
         $attributes['pole_id'] = 1;
+        $attributes = array_merge($attributes, $this->getQualificationAttributes());
 
         //Should be mocked?
         UserType::create(['name' => 'Assistant', 'acronym' => 'ass', 'description' => '']);
@@ -125,15 +140,15 @@ class BondServiceTest extends TestCase
             //verifications
             Event::assertDispatched('eloquent.created: ' . Bond::class);
             $this->assertCount(3, Bond::all());
-            $this->assertEquals('John Doe', Bond::find(3)->employee->name);
-            $this->assertEquals('Course Beta', Bond::find(3)->course->name);
+            $this->assertEquals('John Doe', Bond::find(3)?->employee?->name);
+            $this->assertEquals('Course Beta', Bond::find(3)?->course?->name);
         });
     }
 
     /**
      * @test
      */
-    public function bondShouldBeCreatedWithEmployeeDocument()
+    public function bondShouldBeCreatedWithEmployeeDocument(): void
     {
         //setting up scenario
         $attributes = [];
@@ -142,13 +157,14 @@ class BondServiceTest extends TestCase
         $attributes['role_id'] = 2;
         $attributes['course_id'] = 2;
         $attributes['pole_id'] = 1;
+        $attributes = array_merge($attributes, $this->getQualificationAttributes());
 
         //Should be mocked?
         UserType::create(['name' => 'Assistant', 'acronym' => 'ass', 'description' => '']);
 
         Document::factory()->create([
             'original_name' => 'EmployeeDummyFile.pdf',
-            'documentable_id' => EmployeeDocument::factory()->create(['employee_id' => $attributes['employee_id']])->id,
+            'documentable_id' => EmployeeDocument::factory()->createOne(['employee_id' => $attributes['employee_id']])->id,
             'documentable_type' => 'App\Models\EmployeeDocument',
         ]);
 
@@ -158,9 +174,9 @@ class BondServiceTest extends TestCase
 
             //verifications
             Event::assertDispatched('eloquent.created: ' . Bond::class);
-            $this->assertEquals('John Doe', Bond::find(3)->employee->name);
-            $this->assertEquals('Course Beta', Bond::find(3)->course->name);
-            $this->assertEquals('EmployeeDummyFile.pdf', Bond::find(3)->employee->EmployeeDocuments()->first()->document->original_name);
+            $this->assertEquals('John Doe', Bond::find(3)?->employee?->name);
+            $this->assertEquals('Course Beta', Bond::find(3)?->course?->name);
+            $this->assertEquals('EmployeeDummyFile.pdf', Bond::find(3)?->employee?->EmployeeDocuments()->first()?->document?->original_name);
             $this->assertCount(3, Bond::all());
         });
     }
@@ -168,7 +184,7 @@ class BondServiceTest extends TestCase
     /**
      * @test
      */
-    public function bondShouldBeUpdated()
+    public function bondShouldBeUpdated(): void
     {
         //setting up scenario
 
@@ -178,6 +194,7 @@ class BondServiceTest extends TestCase
 
         $attributes['employee_id'] = 2;
         $attributes['course_id'] = 2;
+        $attributes = array_merge($attributes, $this->getQualificationAttributes());
 
         Event::fakeFor(function () use ($attributes, $bond) {
             //execution
@@ -185,8 +202,8 @@ class BondServiceTest extends TestCase
 
             //verifications
             Event::assertDispatched('eloquent.updated: ' . Bond::class);
-            $this->assertEquals('Jane Doe', Bond::find(1)->employee->name);
-            $this->assertEquals('Course Beta', Bond::find(1)->course->name);
+            $this->assertEquals('Jane Doe', Bond::find(1)?->employee?->name);
+            $this->assertEquals('Course Beta', Bond::find(1)?->course?->name);
             $this->assertCount(2, Bond::all());
         });
     }
@@ -194,7 +211,7 @@ class BondServiceTest extends TestCase
     /**
      * @test
      */
-    public function bondShouldBeDeleted()
+    public function bondShouldBeDeleted(): void
     {
         //setting up scenario
         $bond = Bond::find(1);
@@ -213,14 +230,14 @@ class BondServiceTest extends TestCase
     /**
      * @test
      */
-    public function bondWithDocumentShouldBeDeleted()
+    public function bondWithDocumentShouldBeDeleted(): void
     {
         //setting up scenario
         $bond = Bond::find(1);
 
         Document::factory()->create([
             'original_name' => 'BondDummyFile.pdf',
-            'documentable_id' => BondDocument::factory()->create(['bond_id' => $bond->id])->id,
+            'documentable_id' => BondDocument::factory()->createOne(['bond_id' => $bond?->id])->id,
             'documentable_type' => 'App\Models\BondDocument',
         ]);
 
@@ -233,5 +250,17 @@ class BondServiceTest extends TestCase
             $this->assertEquals('Jane Doe', $this->service->list()->first()->employee->name);
             $this->assertCount(1, Bond::all());
         });
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function getQualificationAttributes(): array
+    {
+        return [
+            'knowledge_area' => strval($this->faker->randomElement(KnowledgeAreas::getValuesInAlphabeticalOrder())),
+            'course_name' => 'Test Course',
+            'institution_name' => 'Test Institution',
+        ];
     }
 }

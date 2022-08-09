@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\BankAccount;
 use App\Models\Course;
 use App\Models\Employee;
 use App\Models\User;
@@ -133,17 +134,27 @@ class EmployeeTest extends TestCase
             'course_id' => null,
         ]);
 
-        Employee::factory()->createOne(
-            [
-                'name' => 'John Doe',
-            ]
-        );
+        BankAccount::factory()->createOne([
+            'bank_name' => 'Banco do Brasil',
+            'agency_number' => '123',
+            'account_number' => '12345678',
+            'employee_id' => Employee::factory()->createOne(
+                [
+                    'name' => 'John Doe',
+                ]
+            ),
+        ]);
 
-        Employee::factory()->createOne(
-            [
-                'name' => 'Jane Doe',
-            ]
-        );
+        BankAccount::factory()->createOne([
+            'bank_name' => 'Banco do Brasil',
+            'agency_number' => '123',
+            'account_number' => '12345678',
+            'employee_id' => Employee::factory()->createOne(
+                [
+                    'name' => 'Jane Doe',
+                ]
+            ),
+        ]);
     }
 
     // ================= See Employees list Tests =================
@@ -626,6 +637,7 @@ class EmployeeTest extends TestCase
     {
         $employeeArr = $this->createTestEmployee()->toArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
+        $employeeArr = array_merge($employeeArr, $this->createTestBankAccountArr());
 
         $this->post(route('employees.store'), $employeeArr)
             ->assertRedirect(route('auth.login'));
@@ -642,6 +654,7 @@ class EmployeeTest extends TestCase
     {
         $employeeArr = $this->createTestEmployee()->toArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
+        $employeeArr = array_merge($employeeArr, $this->createTestBankAccountArr());
 
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentUta' => null])
@@ -660,6 +673,7 @@ class EmployeeTest extends TestCase
     {
         $employeeArr = $this->createTestEmployee()->toArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
+        $employeeArr = array_merge($employeeArr, $this->createTestBankAccountArr());
 
         $this->actingAs(self::$userAdm);
 
@@ -690,6 +704,7 @@ class EmployeeTest extends TestCase
 
         $employeeArr = $this->createTestEmployee()->toArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
+        $employeeArr = array_merge($employeeArr, $this->createTestBankAccountArr());
 
         $this->followingRedirects()->post(route('employees.store'), $employeeArr)
             ->assertSee($this->expectedEmployeeInfo())
@@ -714,6 +729,7 @@ class EmployeeTest extends TestCase
 
         $employeeArr = $this->createTestEmployee()->toArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
+        $employeeArr = array_merge($employeeArr, $this->createTestBankAccountArr());
 
         $this->followingRedirects()->post(route('employees.store'), $employeeArr)
             ->assertSee($this->expectedEmployeeInfo())
@@ -738,6 +754,7 @@ class EmployeeTest extends TestCase
 
         $employeeArr = $this->createTestEmployee()->toArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
+        $employeeArr = array_merge($employeeArr, $this->createTestBankAccountArr());
 
         $this->followingRedirects()->post(route('employees.store'), $employeeArr)
             ->assertSee($this->expectedEmployeeInfo())
@@ -762,6 +779,7 @@ class EmployeeTest extends TestCase
 
         $employeeArr = $this->createTestEmployee()->toArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
+        $employeeArr = array_merge($employeeArr, $this->createTestBankAccountArr());
 
         $this->followingRedirects()->post(route('employees.store'), $employeeArr)
             ->assertStatus(403);
@@ -785,6 +803,7 @@ class EmployeeTest extends TestCase
 
         $employeeArr = $this->createTestEmployee()->toArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
+        $employeeArr = array_merge($employeeArr, $this->createTestBankAccountArr());
 
         $this->followingRedirects()->post(route('employees.store'), $employeeArr)
             ->assertStatus(403);
@@ -958,11 +977,15 @@ class EmployeeTest extends TestCase
     {
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
+        $originalBankAccount = BankAccount::where('employee_id', $originalEmployee->id)->first();
         $originalEmployeeArr = $originalEmployee->toArray();
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
+        $originalEmployeeArr['bank_name'] = $originalBankAccount?->bank_name;
+        $originalEmployeeArr['agency_number'] = $originalBankAccount?->agency_number;
+        $originalEmployeeArr['account_number'] = $originalBankAccount?->account_number;
 
         $this->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
             ->assertRedirect(route('auth.login'));
@@ -982,11 +1005,15 @@ class EmployeeTest extends TestCase
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
+        $originalBankAccount = BankAccount::where('employee_id', $originalEmployee->id)->first();
         $originalEmployeeArr = $originalEmployee->toArray();
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
+        $originalEmployeeArr['bank_name'] = $originalBankAccount?->bank_name;
+        $originalEmployeeArr['agency_number'] = $originalBankAccount?->agency_number;
+        $originalEmployeeArr['account_number'] = $originalBankAccount?->account_number;
 
         $this->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
             ->assertStatus(403);
@@ -1010,11 +1037,15 @@ class EmployeeTest extends TestCase
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
+        $originalBankAccount = BankAccount::where('employee_id', $originalEmployee->id)->first();
         $originalEmployeeArr = $originalEmployee->toArray();
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
+        $originalEmployeeArr['bank_name'] = $originalBankAccount?->bank_name;
+        $originalEmployeeArr['agency_number'] = $originalBankAccount?->agency_number;
+        $originalEmployeeArr['account_number'] = $originalBankAccount?->account_number;
 
         $this->followingRedirects()->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
             ->assertSee($this->updatedEmployeeData())
@@ -1039,11 +1070,15 @@ class EmployeeTest extends TestCase
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
+        $originalBankAccount = BankAccount::where('employee_id', $originalEmployee->id)->first();
         $originalEmployeeArr = $originalEmployee->toArray();
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
+        $originalEmployeeArr['bank_name'] = $originalBankAccount?->bank_name;
+        $originalEmployeeArr['agency_number'] = $originalBankAccount?->agency_number;
+        $originalEmployeeArr['account_number'] = $originalBankAccount?->account_number;
 
         $this->followingRedirects()->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
             ->assertSee($this->updatedEmployeeData())
@@ -1068,11 +1103,15 @@ class EmployeeTest extends TestCase
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
+        $originalBankAccount = BankAccount::where('employee_id', $originalEmployee->id)->first();
         $originalEmployeeArr = $originalEmployee->toArray();
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
+        $originalEmployeeArr['bank_name'] = $originalBankAccount?->bank_name;
+        $originalEmployeeArr['agency_number'] = $originalBankAccount?->agency_number;
+        $originalEmployeeArr['account_number'] = $originalBankAccount?->account_number;
 
         $this->followingRedirects()->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
             ->assertSee($this->updatedEmployeeData())
@@ -1097,11 +1136,15 @@ class EmployeeTest extends TestCase
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
+        $originalBankAccount = BankAccount::where('employee_id', $originalEmployee->id)->first();
         $originalEmployeeArr = $originalEmployee->toArray();
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
+        $originalEmployeeArr['bank_name'] = $originalBankAccount?->bank_name;
+        $originalEmployeeArr['agency_number'] = $originalBankAccount?->agency_number;
+        $originalEmployeeArr['account_number'] = $originalBankAccount?->account_number;
 
         $this->followingRedirects()->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
             ->assertSee($this->updatedEmployeeData())
@@ -1126,11 +1169,15 @@ class EmployeeTest extends TestCase
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
+        $originalBankAccount = BankAccount::where('employee_id', $originalEmployee->id)->first();
         $originalEmployeeArr = $originalEmployee->toArray();
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
+        $originalEmployeeArr['bank_name'] = $originalBankAccount?->bank_name;
+        $originalEmployeeArr['agency_number'] = $originalBankAccount?->agency_number;
+        $originalEmployeeArr['account_number'] = $originalBankAccount?->account_number;
 
         $this->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
             ->assertStatus(403);
@@ -1154,11 +1201,15 @@ class EmployeeTest extends TestCase
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
+        $originalBankAccount = BankAccount::where('employee_id', $originalEmployee->id)->first();
         $originalEmployeeArr = $originalEmployee->toArray();
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
+        $originalEmployeeArr['bank_name'] = $originalBankAccount?->bank_name;
+        $originalEmployeeArr['agency_number'] = $originalBankAccount?->agency_number;
+        $originalEmployeeArr['account_number'] = $originalBankAccount?->account_number;
 
         $this->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
             ->assertStatus(403);
@@ -1369,7 +1420,6 @@ class EmployeeTest extends TestCase
         /** @phpstan-ignore-next-line */
         $cpf = $generator->cpf($formatted = false);
 
-        /** @var Employee $employee */
         return Employee::factory()->makeOne(
             [
                 'name' => 'Carl Doe',
@@ -1400,6 +1450,20 @@ class EmployeeTest extends TestCase
                 'email' => (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']) . '@test-case.com',
             ]
         );
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function createTestBankAccountArr(): array
+    {
+        $generator = $this->faker->unique();
+
+        return [
+            'bank_name' => 'Test Bank',
+            'agency_number' => (string) $generator->numberBetween(1000, 9999),
+            'account_number' => (string) $generator->numberBetween(1000, 9999),
+        ];
     }
 
     /** @return array<string>  */
