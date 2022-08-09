@@ -79,6 +79,14 @@ class Course extends Model
     }
 
     /**
+     * @return HasMany<Bond>
+     */
+    public function bonds(): HasMany
+    {
+        return $this->hasMany(Bond::class);
+    }
+
+    /**
      * @return BelongsToMany<Employee>
      */
     public function employees(): BelongsToMany

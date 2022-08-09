@@ -11,7 +11,7 @@ class UpdateCurrentPassworRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -19,25 +19,22 @@ class UpdateCurrentPassworRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function rules()
+    public function rules(): array
     {
-        //$id = $this->route('user')->id;
-
         return [
-            //'email' => 'required|email', //|unique:users,email,' . $id . ',id',
             'password' => 'required',
             'confirmPassword' => 'required|same:password',
         ];
     }
 
-    public function messages()
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
     {
         return [
-            //'email.required' => 'O E-mail é obrigatório',
-            //'email.email' => 'O endereço de E-mail deve ser válido',
-            //'email.unique' => 'O endereço não pode ser igual a outro já cadastrado',
             'password.required' => 'A Nova Senha é obrigatória',
             'confirmPassword.required' => 'A Confirmação da Nova Senha é obrigatória',
             'confirmPassword.same' => 'A Confirmação da Nova Senha deve ser igual a Nova Senha',

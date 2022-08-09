@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateUserRequest extends FormRequest
@@ -11,7 +12,7 @@ class UpdateUserRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -19,11 +20,19 @@ class UpdateUserRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function rules()
+    public function rules(): array
     {
-        $id = $this->route('user')->id;
+        /**
+         * @var User $user
+         */
+        $user = $this->route()?->parameter('user');
+
+        /**
+         * @var int $id
+         */
+        $id = $user->id;
 
         return [
             'email' => 'required|email|unique:users,email,' . $id . ',id',
@@ -32,7 +41,10 @@ class UpdateUserRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
     {
         return [
             'email.required' => 'O E-mail é obrigatório',
