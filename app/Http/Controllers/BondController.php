@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\KnowledgeAreas;
 use App\Helpers\ModelFilterHelper;
 use App\Helpers\SgcLogHelper;
 use App\Http\Requests\ReviewBondRequest;
@@ -16,8 +17,10 @@ use App\Models\Pole;
 use App\Models\Role;
 use App\Services\BondService;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\View\View;
 
 class BondController extends Controller
 {
@@ -31,9 +34,9 @@ class BondController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         //check access permission
         if (! Gate::allows('bond-list')) {
@@ -52,9 +55,9 @@ class BondController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function create(Request $request)
+    public function create(Request $request): View
     {
         //check access permission
         if (! Gate::allows('bond-create')) {
@@ -65,6 +68,7 @@ class BondController extends Controller
         $employees = Employee::orderBy('name')->get();
         $roles = Role::orderBy('name')->get();
         $poles = Pole::orderBy('name')->get();
+        $knowledgeAreas = KnowledgeAreas::getValuesInAlphabeticalOrder();
 
         //get only allowed courses
         /* $courses = Course::orderBy('name')->get();
@@ -76,17 +80,17 @@ class BondController extends Controller
 
         $courses = $this->getAllowedCourses();
 
-        return view('bond.create', compact('employees', 'roles', 'courses', 'poles'));
+        return view('bond.create', compact('employees', 'roles', 'courses', 'poles', 'knowledgeAreas'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreBondRequest  $request
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function store(StoreBondRequest $request)
+    public function store(StoreBondRequest $request): RedirectResponse
     {
         //check access permission
         if (! Gate::allows('bond-create')) {
@@ -113,9 +117,9 @@ class BondController extends Controller
      *
      * @param  \App\Models\Bond  $bond
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function show(Bond $bond, Request $request)
+    public function show(Bond $bond, Request $request): View
     {
         //check access permission
         if (! Gate::allows('bond-show')) {
@@ -137,9 +141,9 @@ class BondController extends Controller
      *
      * @param  \App\Models\Bond  $bond
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function edit(Bond $bond, Request $request)
+    public function edit(Bond $bond, Request $request): View
     {
         //check access permission
         if (! Gate::allows('bond-update', $bond)) {
@@ -160,19 +164,20 @@ class BondController extends Controller
         $employees = Employee::orderBy('name')->get();
         $roles = Role::orderBy('name')->get();
         $poles = Pole::orderBy('name')->get();
+        $knowledgeAreas = KnowledgeAreas::getValuesInAlphabeticalOrder();
 
-        return view('bond.edit', compact('employees', 'roles', 'courses', 'poles', 'bond'));
+        return view('bond.edit', compact('employees', 'roles', 'courses', 'poles', 'bond', 'knowledgeAreas'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  UpdateBondRequest  $request
      * @param  \App\Models\Bond  $bond
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function update(UpdateBondRequest $request, Bond $bond)
+    public function update(UpdateBondRequest $request, Bond $bond): RedirectResponse
     {
         //check access permission
         if (! Gate::allows('bond-update', $bond)) {
@@ -199,9 +204,9 @@ class BondController extends Controller
      *
      * @param  \App\Models\Bond  $bond
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function destroy(Bond $bond, Request $request)
+    public function destroy(Bond $bond, Request $request): RedirectResponse
     {
         //check access permission
         if (! Gate::allows('bond-destroy')) {
@@ -221,12 +226,12 @@ class BondController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  ReviewBondRequest  $request
      * @param  \App\Models\Bond  $bond
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function review(ReviewBondRequest $request, Bond $bond)
+    public function review(ReviewBondRequest $request, Bond $bond): RedirectResponse
     {
         //check access permission
         if (! Gate::allows('bond-review')) {
@@ -249,9 +254,9 @@ class BondController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Bond  $bond
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function requestReview(Request $request, Bond $bond)
+    public function requestReview(Request $request, Bond $bond): RedirectResponse
     {
         //check access permission
         if (! Gate::allows('bond-requestReview')) {
@@ -264,7 +269,7 @@ class BondController extends Controller
         return redirect()->route('bonds.show', $bond->id)->with('success', 'Revisão de vínculo solicitada.');
     }
 
-    /** @return Collection  */
+    /** @return Collection<int, Course>  */
     private function getAllowedCourses(): Collection
     {
         $courses = Course::orderBy('name')->get();
