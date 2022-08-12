@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "brick/math",
-            "version": "0.10.1",
+            "version": "0.10.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brick/math.git",
-                "reference": "de846578401f4e58f911b3afeb62ced56365ed87"
+                "reference": "459f2781e1a08d52ee56b0b1444086e038561e3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brick/math/zipball/de846578401f4e58f911b3afeb62ced56365ed87",
-                "reference": "de846578401f4e58f911b3afeb62ced56365ed87",
+                "url": "https://api.github.com/repos/brick/math/zipball/459f2781e1a08d52ee56b0b1444086e038561e3f",
+                "reference": "459f2781e1a08d52ee56b0b1444086e038561e3f",
                 "shasum": ""
             },
             "require": {
@@ -52,7 +52,7 @@
             ],
             "support": {
                 "issues": "https://github.com/brick/math/issues",
-                "source": "https://github.com/brick/math/tree/0.10.1"
+                "source": "https://github.com/brick/math/tree/0.10.2"
             },
             "funding": [
                 {
@@ -60,7 +60,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-08-01T22:54:31+00:00"
+            "time": "2022-08-10T22:54:19+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -2261,16 +2261,16 @@
         },
         {
             "name": "mehdi-fathi/eloquent-filter",
-            "version": "2.6.0",
+            "version": "2.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mehdi-fathi/eloquent-filter.git",
-                "reference": "6a8542f731887ac5762213413783b2b1727915d7"
+                "reference": "5a8f56aa6491009c6e67bc61f2738437a2ea28c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mehdi-fathi/eloquent-filter/zipball/6a8542f731887ac5762213413783b2b1727915d7",
-                "reference": "6a8542f731887ac5762213413783b2b1727915d7",
+                "url": "https://api.github.com/repos/mehdi-fathi/eloquent-filter/zipball/5a8f56aa6491009c6e67bc61f2738437a2ea28c4",
+                "reference": "5a8f56aa6491009c6e67bc61f2738437a2ea28c4",
                 "shasum": ""
             },
             "require": {
@@ -2288,6 +2288,16 @@
                 "phpunit/phpunit": "6.*|7.0.*|7.5|8.3|8.5|9.3|^9.5"
             },
             "type": "lib",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "eloquentFilter\\ServiceProvider"
+                    ],
+                    "aliases": {
+                        "EloquentFilter": "eloquentFilter\\Facade\\EloquentFilter"
+                    }
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "eloquentFilter\\": "src"
@@ -2304,7 +2314,7 @@
                     "role": "Developer"
                 }
             ],
-            "description": "The Eloquent Filter is a package for filter data of models by the query string. Easy to use and fully dynamic.",
+            "description": "Eloquent Filter adds custom filters automatically to your Eloquent Models in Laravel.It's easy to use and fully dynamic, just with sending the Query Strings to it.",
             "homepage": "https://github.com/mehdi-fathi/eloquent-filter",
             "keywords": [
                 "dynamic-filters",
@@ -2322,7 +2332,7 @@
             ],
             "support": {
                 "issues": "https://github.com/mehdi-fathi/eloquent-filter/issues",
-                "source": "https://github.com/mehdi-fathi/eloquent-filter/tree/2.6.0"
+                "source": "https://github.com/mehdi-fathi/eloquent-filter/tree/2.6.5"
             },
             "funding": [
                 {
@@ -2330,7 +2340,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2022-04-17T19:27:00+00:00"
+            "time": "2022-08-11T04:57:52+00:00"
         },
         {
             "name": "monolog/monolog",
