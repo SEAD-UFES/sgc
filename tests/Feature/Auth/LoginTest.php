@@ -90,6 +90,6 @@ class LoginTest extends TestCase
         $this->post(route('auth.login'), [
             'email' => $user->email,
             'password' => Hash::make('wrong-password'),
-        ])->assertStatus(302);
+        ])->assertStatus(401);
     }
 }

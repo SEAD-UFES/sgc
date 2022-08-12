@@ -31,7 +31,6 @@ class UserController extends Controller
     {
         //check access permission
         if (! Gate::allows('user-list')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -52,7 +51,6 @@ class UserController extends Controller
     {
         //check access permission
         if (! Gate::allows('user-store')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -72,7 +70,6 @@ class UserController extends Controller
     {
         //check access permission
         if (! Gate::allows('user-store')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -96,7 +93,6 @@ class UserController extends Controller
     {
         //check access permission
         if (! Gate::allows('user-show')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -116,7 +112,6 @@ class UserController extends Controller
     {
         //check access permission
         if (! Gate::allows('user-update')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -135,7 +130,6 @@ class UserController extends Controller
     {
         //check access permission
         if (! Gate::allows('user-update')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -159,7 +153,6 @@ class UserController extends Controller
     {
         //check access permission
         if (! Gate::allows('user-destroy')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 

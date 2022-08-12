@@ -31,7 +31,6 @@ class RoleController extends Controller
         //check access permission
         if (! Gate::allows('role-list')) {
             //SgcLogHelper::badAttemptLog($request, 403);
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -52,7 +51,6 @@ class RoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('role-store')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -72,7 +70,6 @@ class RoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('role-store')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -96,7 +93,6 @@ class RoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('role-show')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -116,7 +112,6 @@ class RoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('role-update')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -137,7 +132,6 @@ class RoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('role-update')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -161,7 +155,6 @@ class RoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('role-destroy')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 

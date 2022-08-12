@@ -15,7 +15,7 @@
                 <div class="col-xl-10 col-xxl-8">
                     <h4>Proibido [Código 403]</h4>
                     <p>O papel atual do usuário não tem permissão para acessar este recurso (ou página).</p>
-                    <p>Verifique se o endereço e o papel atual estão corretos e tente novamente.</p>
+                    <p>Verifique se o endereço digitado e o papel atual estão corretos e tente novamente.</p>
                     <p>Ou clique <a href="{{ route('root') }}"><strong>aqui</strong></a> para ir para o início.</p>
                 </div>
             </div>

@@ -80,6 +80,6 @@ class DocumentObserver
 
     public function fetched(Document $document)
     {
-        SgcLogHelper::writeLog(target: class_basename($document->documentable_type), action: __FUNCTION__, model_json: $document->toJson(JSON_UNESCAPED_UNICODE));
+        SgcLogHelper::writeLog(target: class_basename($document->documentable_type), action: __FUNCTION__, model_json: $document->makeHidden('file_data')->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

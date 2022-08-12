@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ModelFilterHelper;
-use App\Helpers\SgcLogHelper;
 use App\Http\Requests\StoreBondDocumentRequest;
 use App\Http\Requests\StoreBondMultipleDocumentsRequest;
 use App\Models\Bond;
@@ -36,7 +35,6 @@ class BondDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('bondDocument-list')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -55,7 +53,6 @@ class BondDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('bondDocument-rights')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -74,7 +71,6 @@ class BondDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('bondDocument-store')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -95,7 +91,6 @@ class BondDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('bondDocument-store')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -116,7 +111,6 @@ class BondDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('bondDocument-store')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -135,7 +129,6 @@ class BondDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('bondDocument-store')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -154,7 +147,6 @@ class BondDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('bondDocument-store')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -167,7 +159,6 @@ class BondDocumentController extends DocumentController
     {
         //check access permission
         if (! Gate::allows('bondDocument-download')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 

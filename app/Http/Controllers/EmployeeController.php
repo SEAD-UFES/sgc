@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ModelFilterHelper;
-use App\Helpers\SgcLogHelper;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\DocumentType;
@@ -36,7 +35,6 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (! Gate::allows('employee-list')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -57,7 +55,6 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (! Gate::allows('employee-store')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -83,7 +80,6 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (! Gate::allows('employee-store')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -111,7 +107,6 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (! Gate::allows('employee-show')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -134,7 +129,6 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (! Gate::allows('employee-update')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -161,7 +155,6 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (! Gate::allows('employee-update')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -185,7 +178,6 @@ class EmployeeController extends Controller
     {
         //check access permission
         if (! Gate::allows('employee-destroy')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 

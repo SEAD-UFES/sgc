@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\SgcLogHelper;
 use App\Services\DocumentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -25,7 +24,6 @@ class DocumentController extends Controller
     public function showDocument($id, Request $request)
     {
         if (! (Gate::allows('employeeDocument-download') || Gate::allows('bondDocument-download') || Gate::allows('bondDocument-rights'))) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -36,7 +34,6 @@ class DocumentController extends Controller
         ($file->class === \App\Models\BondDocument::class && ! $file->isRights && ! Gate::allows('bondDocument-download')) ||
         ($file->isRights && ! Gate::allows('bondDocument-rights'))
         ) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 

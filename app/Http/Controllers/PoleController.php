@@ -29,7 +29,6 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-list')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -50,7 +49,6 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-store')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -68,7 +66,6 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-store')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -92,7 +89,6 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-show')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -112,7 +108,6 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-update')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -131,7 +126,6 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-update')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -155,7 +149,6 @@ class PoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('pole-destroy')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 

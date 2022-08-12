@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\SgcLogHelper;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class WebController extends Controller
 {
-    public function rootFork()
+    /**
+     * Control what happens when attempting to access "/"
+     *
+     * @return RedirectResponse
+     */
+    public function rootFork(): RedirectResponse
     {
         if (Auth::check()) {
             return redirect()->route('home');
@@ -18,20 +24,28 @@ class WebController extends Controller
         return redirect()->route('auth.form');
     }
 
-    public function home()
+    /**
+     * Control what happens when attempting to access "/home"
+     *
+     * @return View
+     */
+    public function home(): View
     {
         return view('home');
     }
 
-    public function fallback()
-    {
-        return $this->rootFork();
-    }
+    // *** Don't use the fallback route. Let the user know that the page doesn't exist and log the error.
+    // public function fallback()
+    // {
+    //     return $this->rootFork();
+    // }
 
-    public function showSysInfo(Request $request)
+    /**
+     * @return View
+     */
+    public function showSysInfo(Request $request): View
     {
         if (! Gate::allows('isAdm-global')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 

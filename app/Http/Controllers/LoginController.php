@@ -4,12 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Helpers\SgcLogHelper;
 use App\Http\Requests\LoginRequest;
+use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class LoginController extends Controller
 {
-    public function getLoginForm()
+    /**
+     * @return RedirectResponse|View
+     */
+    public function getLoginForm(): RedirectResponse|View
     {
         if (Auth::check()) {
             return redirect()->route('home');
@@ -18,6 +25,13 @@ class LoginController extends Controller
         return view('login');
     }
 
+    /**
+     * @param LoginRequest $request
+     *
+     * @return RedirectResponse
+     *
+     * @throws UnauthorizedHttpException
+     */
     public function authenticate(LoginRequest $request)
     {
         $request->validated();
@@ -27,17 +41,25 @@ class LoginController extends Controller
 
             SgcLogHelper::writeLog();
 
-            $firstUtaId = auth()->user()->getFirstUta()?->id;
-            auth()->user()->setCurrentUta($firstUtaId);
+            /**
+             * @var User  $authUser
+             */
+            $authUser = auth()->user();
 
-            return redirect()->intended('home');
+            $firstUtaId = $authUser->getFirstUta()?->id;
+            $authUser->setCurrentUta($firstUtaId);
+
+            return redirect()->route('home');
         }
 
-        SgcLogHelper::writeLog(target: 'System', action: 'tried login', executor: $request);
-
-        return back()->withErrors(['noAuth' => 'Não foi possível autenticar o usuário']);
+        throw new UnauthorizedHttpException('Unauthorized');
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
     public function logout(Request $request)
     {
         SgcLogHelper::writeLog();
@@ -46,6 +68,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('root');
+        return redirect()->route('auth.form');
     }
 }

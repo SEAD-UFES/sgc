@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Enums\KnowledgeAreas;
 use App\Helpers\ModelFilterHelper;
-use App\Helpers\SgcLogHelper;
 use App\Http\Requests\ReviewBondRequest;
 use App\Http\Requests\StoreBondRequest;
 use App\Http\Requests\UpdateBondRequest;
@@ -40,7 +39,6 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-list')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -61,7 +59,6 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-create')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -94,7 +91,6 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-create')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -123,7 +119,6 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-show')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -147,7 +142,6 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-update', $bond)) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -181,7 +175,6 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-update', $bond)) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -210,7 +203,6 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-destroy')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -235,7 +227,6 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-review')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -260,7 +251,6 @@ class BondController extends Controller
     {
         //check access permission
         if (! Gate::allows('bond-requestReview')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 

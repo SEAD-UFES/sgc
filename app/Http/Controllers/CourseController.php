@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ModelFilterHelper;
-use App\Helpers\SgcLogHelper;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
 use App\Models\Course;
@@ -32,7 +31,6 @@ class CourseController extends Controller
     {
         //check access permission
         if (! Gate::allows('course-list')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -53,7 +51,6 @@ class CourseController extends Controller
     {
         //check access permission
         if (! Gate::allows('course-store')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -73,7 +70,6 @@ class CourseController extends Controller
     {
         //check access permission
         if (! Gate::allows('course-store')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -93,7 +89,6 @@ class CourseController extends Controller
     {
         //check access permission
         if (! Gate::allows('course-show')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -113,7 +108,6 @@ class CourseController extends Controller
     {
         //check access permission
         if (! Gate::allows('course-update')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -134,7 +128,6 @@ class CourseController extends Controller
     {
         //check access permission
         if (! Gate::allows('course-update')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 
@@ -158,7 +151,6 @@ class CourseController extends Controller
     {
         //check access permission
         if (! Gate::allows('course-destroy')) {
-            SgcLogHelper::logBadAttemptOnUri($request, 403);
             abort(403);
         }
 

@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [WebController::class, 'rootFork'])->name('root');
+// *** Don't use the fallback route. Let the user know that the page doesn't exist and log the error.
 //Route::fallback([WebController::class, 'fallback']);
 
 Route::get('/login', [LoginController::class, 'getLoginForm'])->name('auth.form');

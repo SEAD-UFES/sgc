@@ -77,8 +77,12 @@ class SgcLogHelper
         $method = $request->getMethod();
         $executor = Auth::user();
         $executorId = $executor?->id ?? 'NoID';
-        $executorEmail = isset($executor->email) ? ':' . $executor->email : ":\t";
-        $executorRole = $executor->getCurrentUta()->userType->name ?? 'NULL UTA';
+        if ($httpErrorCode === 401) {
+            $executorEmail = ':' . ($request->email ?? 'NoEmail') . "\t";
+        } else {
+            $executorEmail = isset($executor->email) ? ':' . $executor->email : ":\t";
+        }
+        $executorRole = $executor?->getCurrentUta()->userType->name ?? 'NULL UTA';
 
         $logText = "\t" . NetworkHelper::getClientIpAddress() . "\t|\t${executorId}${executorEmail} [${executorRole}]\t|\tattempted " . $method . " on '" . $uri . "' with result " . $httpErrorCode;
 
