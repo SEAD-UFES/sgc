@@ -35,4 +35,24 @@ class TextHelperTest extends TestCase
         $this->assertEquals(TextHelper::removeAccents('áéíóúÁÉÍÓÚ'), 'aeiouAEIOU');
         $this->assertEquals(TextHelper::removeAccents('àãÀÃçÇ'), 'aaAAcC');
     }
+
+    /**
+     * A basic unit test example.
+     *
+     * @return void
+     */
+    public function testShouldRemoveNonDigits(): void
+    {
+        $landline = '(0d27) j223s4 5678';
+        $mobile = '(028) 96s234 5j67d8';
+
+        $expectedLandline = '02722345678';
+        $expectedMobile = '028962345678';
+
+        $fixedLandline = TextHelper::removeNonDigits($landline);
+        $fixedMobile = TextHelper::removeNonDigits($mobile);
+
+        $this->assertEquals($expectedLandline, $fixedLandline);
+        $this->assertEquals($expectedMobile, $fixedMobile);
+    }
 }
