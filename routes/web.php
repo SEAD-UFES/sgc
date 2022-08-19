@@ -74,6 +74,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('bondreview/{bond}', [BondController::class, 'review'])->name('bonds.review');
     Route::get('bondrequestreview/{bond}', [BondController::class, 'requestReview'])->name('bonds.requestReview');
+    Route::get('bonds/{bond}/send-email', [BondController::class, 'sendEmail'])->name('bonds.sendEmail');
 
     Route::get('users/current/password', [UserController::class, 'currentPasswordEdit'])->name('users.currentPasswordEdit');
     Route::patch('users/current/password', [UserController::class, 'currentPasswordUpdate'])->name('users.currentPasswordUpdate');

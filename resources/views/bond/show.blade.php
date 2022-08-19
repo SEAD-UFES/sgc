@@ -164,6 +164,19 @@
                             </div>
                         </div>
                     </div>
+                    <div class="card mb-4">
+                        <div class="card-header" data-bs-toggle="collapse" href="#bondInstitutionLogin" role="button"
+                            aria-expanded="true" aria-controls="bondInstitutionLogin">
+                            <h4 class='mb-0'>Login Institucional</h4>
+                        </div>
+                        <div class="collapse show" id="bondInstitutionLogin">
+                            <div class="card-body">
+                                <a href="{{ route('bonds.sendEmail', $bond) }}" class="btn btn-primary btn-sm mt-1">
+                                    Enviar comunicado sobre a criação do Login de Acesso
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                     <a href="{{ route('bonds.index') }}" class="btn btn-secondary">Lista de Vínculos</a>
                 </div>
             </div>
