@@ -31,20 +31,20 @@ class Phone
     {
         $phone = self::removeAreaCodeZero($phone);
 
-        //$landlineN8 = ['2', '3', '4', '5'];
-        //$mobileN8 = ['9', '8', '7', '6'];
+        //landline N8 => '2', '3', '4', '5'
+        //mobile N8 => '9', '8', '7', '6'
 
-        $landlineRe = '/^([1-9]{1}[1-9]{1})?([2-5]{1}\d{7})$/';
-        $mobileRe = '/^([1-9]{1}[1-9]{1})?(9{1}[6-9]{1}\d{7})$/';
+        $landlineRe = '/^([1-9]{1}[1-9]{1})?([2-5]\d{7})$/';
+        $mobileRe = '/^([1-9]{1}[1-9]{1})?(9[6-9]\d{7})$/';
 
         preg_match($landlineRe, $phone, $landlineMatch);
         preg_match($mobileRe, $phone, $mobileMatch);
 
-        if (count($landlineMatch) > 0) {
+        if (! empty($landlineMatch)) {
             $this->number = $landlineMatch[2];
             $this->areaCode = $landlineMatch[1];
             $this->type = 'landline';
-        } elseif (count($mobileMatch) > 0) {
+        } elseif (! empty($mobileMatch)) {
             $this->number = $mobileMatch[2];
             $this->areaCode = $mobileMatch[1];
             $this->type = 'mobile';
