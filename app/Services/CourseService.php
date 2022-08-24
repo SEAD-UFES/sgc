@@ -31,7 +31,7 @@ class CourseService
     /**
      * Undocumented function
      *
-     * @param array $attributes
+     * @param array<string, string> $attributes
      *
      * @return Course
      */
@@ -39,6 +39,10 @@ class CourseService
     {
         $attributes = Arr::map($attributes, static function ($value, $key) {
             return TextHelper::titleCase($value);
+        });
+
+        $attributes = Arr::map($attributes, static function ($value, $key) {
+            return $key === 'lms_url' ? mb_strtolower($value) : $value;
         });
 
         $attributes = Arr::map($attributes, static function ($value, $key) {
@@ -62,10 +66,20 @@ class CourseService
         return $course;
     }
 
+    /**
+     * @param array<string, string> $attributes
+     * @param Course $course
+     *
+     * @return Course
+     */
     public function update(array $attributes, Course $course): Course
     {
         $attributes = Arr::map($attributes, static function ($value, $key) {
             return TextHelper::titleCase($value);
+        });
+
+        $attributes = Arr::map($attributes, static function ($value, $key) {
+            return $key === 'lms_url' ? mb_strtolower($value) : $value;
         });
 
         $attributes = Arr::map($attributes, static function ($value, $key) {
@@ -77,7 +91,12 @@ class CourseService
         return $course;
     }
 
-    public function delete(Course $course)
+    /**
+     * @param Course $course
+     *
+     * @return void
+     */
+    public function delete(Course $course): void
     {
         $course->delete();
     }

@@ -53,6 +53,7 @@ class Course extends Model
         'name',
         'description',
         'course_type_id',
+        'lms_url',
         'begin',
         'end',
     ];

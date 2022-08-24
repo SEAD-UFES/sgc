@@ -20,6 +20,7 @@ class CreateCoursesTable extends Migration
             $table->foreignId('course_type_id')->constrained('course_types');
             $table->date('begin')->nullable();
             $table->date('end')->nullable();
+            $table->string('lms_url')->nullable();
             $table->timestamps();
         });
     }

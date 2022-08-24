@@ -43,4 +43,12 @@
         <input type="date" name="end" id="inputEnd1" class="form-control"
             value="{{ isset($course) ? $course->end : old('end') }}">
     </div>
+    <div class="col-12">
+        <label for="inputLmsUrl1" class="form-label">Endereço do AVA:</label>
+        <input name="lms_url" type="text" id="inputLmsUrl1" class="form-control" placeholder="Endereço do AVA"
+            value="{{ isset($course) ? $course->lms_url : old('lms_url') }}" />
+        @error('lms_url')
+            <div class="text-danger">> {{ $message }}</div>
+        @enderror
+    </div>
 </div>
