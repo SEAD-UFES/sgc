@@ -1,27 +1,28 @@
-{{$article = $employeeGender->name === 'Masculino' ? 'o' : 'a'}}
+{{ $article = $employeeGender->name === 'Masculino' ? 'o' : 'a' }}
+@component('mail::message')
+    Prezada Equipe DEDI,
 
-Prezada Equipe DEDI\Moodle 
+    A pedido da Coordenação do Curso de {{ $courseName }}, venho solicitar a liberação de acesso d{{ $article }}
+    colaborador{{ $article }} abaixo mencionad{{ $article }} às salas das disciplinas deste referido curso.
 
-A pedido da Coordenação do Curso de {{$courseName}}, venho solicitar a liberação de acesso d{{$article}} colaborador{{$article}} abaixo mencionad{{$article}} às salas das disciplinas deste referido curso.
+    Nome: {{ $employeeName }}
 
-Nome: {{$employeeName}}
+    Função: {{ $employeeRoleName }}
 
-Função: {{$employeeRoleName}}
+    Polo: {{ $poleName }}
 
-Polo: {{$poleName}}
+    Login de acesso: {{ $employeeInstitutionLogin }}
 
-Login de acesso: {{$employeeInstitutionLogin}}
+    E-mail Pessoal: {{ $employeePersonalEmail }}
 
-E-mail Pessoal: {{$employeePersonalEmail}}
+    E-mail Institucional: {{ $employeeInstitutionEmail }}
 
-E-mail Institucional: {{$employeeInstitutionEmail}}
-
-Telefone: {{$employeePhone}}
-Celular: {{$employeeMobile}}
+    Telefone: {{ $employeePhone }}
+    Celular: {{ $employeeMobile }}
 
 
-Atenciosamente,
+    Atenciosamente,
 
-{{$senderName ?? 'Secretaria Sead'}}
-Secretaria Acadêmica - Sead/Ufes
-
+    {{ $senderName ?? 'Secretaria Sead' }}
+    Secretaria Acadêmica - Sead/Ufes
+@endcomponent
