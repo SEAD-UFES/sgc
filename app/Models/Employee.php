@@ -178,6 +178,14 @@ class Employee extends Model
     }
 
     /**
+     * @return HasOne<InstitutionalDetail>
+     */
+    public function institutionalDetail(): HasOne
+    {
+        return $this->hasOne(InstitutionalDetail::class);
+    }
+
+    /**
      * @return bool
      */
     public function hasDocuments(): bool
@@ -190,7 +198,7 @@ class Employee extends Model
      */
     public function hasBond(): bool
     {
-        return $this->courses->count() > 0;
+        return $this->bonds->count() > 0;
     }
 
     /**
@@ -198,15 +206,41 @@ class Employee extends Model
      */
     public function isCourseCoordinator(): bool
     {
-        $isCoord = false;
-
         if ($this->hasBond()) {
-            foreach ($this->courses as $bonded_course) {
-                $isCoord = $isCoord || (substr($bonded_course->bond->role->name, 0, 20) === 'Coordenador de curso');
+            foreach ($this->bonds as $bond) {
+                /**
+                 * @var Role $role
+                 */
+                $role = $bond->role;
+                if (str_starts_with($role->name, 'Coordenador de curso')) {
+                    return true;
+                }
             }
         }
 
-        return $isCoord;
+        return false;
+    }
+
+    /**
+     * @param Course $course
+     *
+     * @return bool
+     */
+    public function isCoordinatorOfCourse(Course $course): bool
+    {
+        if ($this->hasBond()) {
+            foreach ($this->bonds as $bond) {
+                /**
+                 * @var Role $role
+                 */
+                $role = $bond->role;
+                if (str_starts_with($role->name, 'Coordenador de curso') && $bond->course_id === $course->id) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -7,7 +7,6 @@ use App\Helpers\ModelFilterHelper;
 use App\Http\Requests\ReviewBondRequest;
 use App\Http\Requests\StoreBondRequest;
 use App\Http\Requests\UpdateBondRequest;
-use App\Mail\InstitutionEmployeeLoginCreated;
 use App\Models\Bond;
 use App\Models\BondDocument;
 use App\Models\Course;
@@ -15,13 +14,11 @@ use App\Models\Document;
 use App\Models\Employee;
 use App\Models\Pole;
 use App\Models\Role;
-use App\Models\UserTypeAssignment;
 use App\Services\BondService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class BondController extends Controller
@@ -273,17 +270,5 @@ class BondController extends Controller
         }
 
         return $courses;
-    }
-
-    public function sendEmail(Bond $bond, Request $request): RedirectResponse
-    {
-        /**
-         * @var UserTypeAssignment $loggedInUta
-         */
-        $loggedInUta = session('loggedInUser.currentUta');
-
-        $loggedInEmployee = $loggedInUta->user?->employee;
-        Mail::to('marco.cardoso@ufes.br')->send(new InstitutionEmployeeLoginCreated($loggedInEmployee, $bond));
-        return redirect()->route('bonds.show', $bond->id)->with('success', 'E-mail enviado com sucesso.');
     }
 }

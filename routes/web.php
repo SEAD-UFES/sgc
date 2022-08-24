@@ -8,6 +8,7 @@ use App\Http\Controllers\CourseTypeController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeDocumentController;
+use App\Http\Controllers\InstitutionalDetailController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PoleController;
@@ -49,6 +50,11 @@ Route::middleware('auth')->group(function () {
     Route::post('employees/documents/create-many/step-3', [EmployeeDocumentController::class, 'employeesDocumentsStoreMany2'])->name('employeesDocuments.storeMany2');
     //mass download
     Route::get('employees/{employee}/documents-export/', [EmployeeDocumentController::class, 'employeesDocumentsExport'])->name('employeesDocuments.export');
+    
+    Route::post('employees/{employee}/institutional-details', [InstitutionalDetailController::class, 'store'])->name('employees.institutionalDetails.store');
+    Route::get('employees/{employee}/institutional-details/edit', [InstitutionalDetailController::class, 'edit'])->name('employees.institutionalDetails.edit');
+    Route::patch('employees/{employee}/institutional-details', [InstitutionalDetailController::class, 'update'])->name('employees.institutionalDetails.update');
+    Route::delete('employees/{employee}/institutional-details', [InstitutionalDetailController::class, 'destroy'])->name('employees.institutionalDetails.destroy');
 
     Route::resource('employees', EmployeeController::class);
 
@@ -60,6 +66,8 @@ Route::middleware('auth')->group(function () {
     Route::get('bonds/documents/create-many/step-1', [BondDocumentController::class, 'bondsDocumentsCreateMany'])->name('bondsDocuments.createMany');
     Route::post('bonds/documents/create-many/step-2', [BondDocumentController::class, 'bondsDocumentsStoreMany1'])->name('bondsDocuments.storeMany1');
     Route::post('bonds/documents/create-many/step-3', [BondDocumentController::class, 'bondsDocumentsStoreMany2'])->name('bondsDocuments.storeMany2');
+
+    Route::get('bonds/{bond}/institutional-details/send-email', [InstitutionalDetailController::class, 'sendNewEmployeeEmails'])->name('bonds.sendInstitutionalDetailEmail');
 
     /* Route::resource('documents', DocumentController::class); */
 
@@ -74,10 +82,14 @@ Route::middleware('auth')->group(function () {
 
     Route::post('bondreview/{bond}', [BondController::class, 'review'])->name('bonds.review');
     Route::get('bondrequestreview/{bond}', [BondController::class, 'requestReview'])->name('bonds.requestReview');
-    Route::get('bonds/{bond}/send-email', [BondController::class, 'sendEmail'])->name('bonds.sendEmail');
 
     Route::get('users/current/password', [UserController::class, 'currentPasswordEdit'])->name('users.currentPasswordEdit');
     Route::patch('users/current/password', [UserController::class, 'currentPasswordUpdate'])->name('users.currentPasswordUpdate');
+
+    Route::get('users/{user}/employee-link/edit', [UserController::class, 'editEmployeeLink'])->name('users.editEmployeeLink');
+    Route::patch('users/{user}/employee-link', [UserController::class, 'updateEmployeeLink'])->name('users.updateEmployeeLink');
+    Route::delete('users/{user}/employee-link', [UserController::class, 'destroyEmployeeLink'])->name('users.destroyEmployeeLink');
+
     Route::resource('users', UserController::class);
 
     Route::resource('roles', RoleController::class);

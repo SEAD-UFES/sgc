@@ -3,18 +3,21 @@
 namespace App\Mail;
 
 use App\Models\Bond;
+use App\Models\Course;
 use App\Models\Employee;
 use App\Models\Gender;
+use App\Models\InstitutionalDetail;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class InstitutionEmployeeLoginCreated extends Mailable
+class InstitutionEmployeeLoginCreatedNotice extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     private ?Employee $sender;
+
     private Bond $receiverBond;
 
     /**
@@ -56,15 +59,14 @@ class InstitutionEmployeeLoginCreated extends Mailable
         $receiverName = $receiver->name;
 
         /**
-         * @var string $receiverEmail
+         * @var InstitutionalDetail $institutionalDetail
          */
-        $receiverEmail = $receiver->email;
+        $institutionalDetail = $receiver->institutionalDetail;
 
         /**
          * @var string $receiverInstitutionLogin
          */
-        //$receiverInstitutionLogin = $receiver->institution_login;
-        $receiverInstitutionLogin = 'LOGIN UNICO';
+        $receiverInstitutionLogin = $institutionalDetail->login;
 
         /**
          * @var string $receiverRoleName
@@ -72,26 +74,28 @@ class InstitutionEmployeeLoginCreated extends Mailable
         $receiverRoleName = $this->receiverBond->role?->name;
 
         /**
-         * @var string $receiverRoleEmailDomain
+         * @var string $receiverInstitutionEmail
          */
-        //$receiverRoleEmailDomain = $this->receiverBond->role?->emailDomain;
-        $receiverRoleEmailDomain = '@unico.com.br';
+        $receiverInstitutionEmail = $institutionalDetail->email;
+
+        /**
+         * @var Course $receiverCourse
+         */
+        $receiverCourse = $this->receiverBond->course;
 
         /**
          * @var string $lmsUrl
          */
-        //$lmsUrl = $this->receiverBond->course->lms_url;
-        $lmsUrl = 'https://lms.com.br';
+        $lmsUrl = $receiverCourse->lms_url;
 
-        return $this->view('emails.employeeRegistration.institution-employee-login-created')
+        return $this->subject('Informação Sobre Criação de Login de Acesso')->from('secretaria.sead@ufes.br', 'Sead - Secretaria Acadêmica')->replyTo('secretaria.sead@ufes.br')->markdown('emails.employeeRegistration.institution-employee-login-created-notice')
             ->with([
                 'senderName' => $senderName,
                 'receiverGender' => $receiverGender,
                 'receiverName' => $receiverName,
-                'receiverEmail' => $receiverEmail,
                 'receiverInstitutionLogin' => $receiverInstitutionLogin,
                 'receiverRoleName' => $receiverRoleName,
-                'receiverRoleEmailDomain' => $receiverRoleEmailDomain,
+                'receiverInstitutionEmail' => $receiverInstitutionEmail,
                 'lmsUrl' => $lmsUrl,
             ]);
     }

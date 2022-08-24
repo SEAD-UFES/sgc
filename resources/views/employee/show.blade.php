@@ -359,6 +359,31 @@
                             </div>
                         </div>
                     </div>
+                    <div class="card mb-4">
+                        <div class="card-header" data-bs-toggle="collapse" href="#institutionDetails" role="button"
+                            aria-expanded="true" aria-controls="institutionDetails">
+                            <h4 class='mb-0'>Detalhes Institucionais</h4>
+                        </div>
+                        <div class="collapse show" id="institutionDetails">
+                            <div class="card-body">
+                                <div class="mb-2 row">
+                                    <div class="col-sm-4 col-lg-3"><strong>Login Institucional:</strong></div>
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->institutionalDetail->login ?? '-' }}</div>
+                                </div>
+                                <div class="mb-2 row">
+                                    <div class="col-sm-4 col-lg-3"><strong>Email Institucional:</strong></div>
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->institutionalDetail->email ?? '-' }}</div>
+                                </div>
+                                <div class="">
+                                    @can('employee-update', $employee)
+                                        <a href="{{ route('employees.institutionalDetails.edit', $employee->id) }}" data-bs-toggle="tooltip" title="Editar Detalhes Institucionais" class="btn btn-primary btn-sm">
+                                            <i class="bi-pencil-fill"></i> Editar Detalhes Institucionais
+                                        </a>&nbsp;
+                                    @endcan
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="card mb-3">
                         <div class="card-header" data-bs-toggle="collapse" href="#userListContent" role="button" aria-expanded="true" aria-controls="userListContent">
