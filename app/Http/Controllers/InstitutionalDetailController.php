@@ -155,7 +155,7 @@ class InstitutionalDetailController extends Controller
         $loggedInUser = $loggedInUta->user;
 
         /**
-         * @var Employee $loggedInEmployee
+         * @var Employee|null $loggedInEmployee
          */
         $loggedInEmployee = $loggedInUser->employee;
 

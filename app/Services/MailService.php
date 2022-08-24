@@ -15,12 +15,12 @@ class MailService
     private string $tutoringCoordinationEmail = 'tutoria.sead@ufes.br';
 
     /**
-     * @param Employee $sender
+     * @param Employee|null $sender
      * @param Bond $receiverBond
      *
      * @return void
      */
-    public function sendInstitutionEmployeeLoginCreatedEmail(Employee $sender, Bond $receiverBond): void
+    public function sendInstitutionEmployeeLoginCreatedEmail(?Employee $sender, Bond $receiverBond): void
     {
         /**
          * @var Employee $receiver
@@ -32,24 +32,24 @@ class MailService
     }
 
     /**
-     * @param Employee $sender
+     * @param Employee|null $sender
      * @param Bond $newEmployeeBond
      *
      * @return void
      */
-    public function sendLmsAccessPermissionRequestEmail(Employee $sender, Bond $newEmployeeBond): void
+    public function sendLmsAccessPermissionRequestEmail(?Employee $sender, Bond $newEmployeeBond): void
     {
         $receiverEmailAddress = 'marco.cardoso@ufes.br'; //$this->educationalDesignTeam;
         Mail::to($receiverEmailAddress)->send(new LmsAccessPermissionRequest($sender, $newEmployeeBond));
     }
 
     /**
-     * @param Employee $sender
+     * @param Employee|null $sender
      * @param Bond $newEmployeeBond
      *
      * @return void
      */
-    public function sendNewTutorEmploymentNoticeEmail(Employee $sender, Bond $newEmployeeBond): void
+    public function sendNewTutorEmploymentNoticeEmail(?Employee $sender, Bond $newEmployeeBond): void
     {
         $receiverEmailAddress = 'marco.cardoso@ufes.br'; //$this->tutoringCoordinationEmail;
         Mail::to($receiverEmailAddress)->send(new NewTutorEmploymentNotice($sender, $newEmployeeBond));
