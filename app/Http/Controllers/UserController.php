@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ModelFilterHelper;
-use App\Helpers\SgcLogHelper;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateCurrentPassworRequest;
+use App\Http\Requests\UpdateUserEmployeeLinkRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Employee;
 use App\Models\User;
 use App\Models\UserType;
 use App\Services\UserService;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -25,9 +28,11 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return View
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         //check access permission
         if (! Gate::allows('user-list')) {
@@ -45,9 +50,11 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return View
      */
-    public function create(Request $request)
+    public function create(Request $request): View
     {
         //check access permission
         if (! Gate::allows('user-store')) {
@@ -62,11 +69,11 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreUserRequest  $request
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserRequest $request): RedirectResponse
     {
         //check access permission
         if (! Gate::allows('user-store')) {
@@ -85,11 +92,11 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  User  $user
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function show(User $user, Request $request)
+    public function show(User $user, Request $request): View
     {
         //check access permission
         if (! Gate::allows('user-show')) {
@@ -104,11 +111,12 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param User $user
+     * @param Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function edit(User $user, Request $request)
+    public function edit(User $user, Request $request): View
     {
         //check access permission
         if (! Gate::allows('user-update')) {
@@ -121,12 +129,12 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
+     * @param  UpdateUserRequest  $request
+     * @param  User  $user
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, User $user): RedirectResponse
     {
         //check access permission
         if (! Gate::allows('user-update')) {
@@ -145,11 +153,12 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
+     * @param User  $user
+     * @param Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function destroy(User $user, Request $request)
+    public function destroy(User $user, Request $request): RedirectResponse
     {
         //check access permission
         if (! Gate::allows('user-destroy')) {
@@ -165,18 +174,33 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'Usuário excluído com sucesso.');
     }
 
-    public function setCurrentUTA(Request $request)
+    /**
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function setCurrentUTA(Request $request): RedirectResponse
     {
-        auth()->user()->setCurrentUta($request->activeUTAs);
+        /**
+         * @var User $currentUser
+         */
+        $currentUser = auth()->user();
+
+        /**
+         * @var int $newActiveUtaId
+         */
+        $newActiveUtaId = $request->activeUTAs;
+
+        $currentUser->setCurrentUta($newActiveUtaId);
         return redirect()->back();
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function currentPasswordEdit()
+    public function currentPasswordEdit(): View
     {
         $user = auth()->user();
         return view('user.currentPasswordEdit', compact('user'));
@@ -187,20 +211,82 @@ class UserController extends Controller
      *
      * @param UpdateCurrentPassworRequest $request
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function currentPasswordUpdate(UpdateCurrentPassworRequest $request)
+    public function currentPasswordUpdate(UpdateCurrentPassworRequest $request): RedirectResponse
     {
         $user = auth()->user();
-        $request = $request->validated();
-        $request['active'] = true;
+
+        /**
+         * @var array<string, string> $requestArr
+         */
+        $requestArr = $request->validated();
+        $requestArr['active'] = true;
 
         try {
-            $user = $this->service->update($request, $user);
+            $user = $this->service->update($requestArr, $user);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
         }
 
         return redirect()->route('home')->with('success', 'Usuário atualizado com sucesso.');
+    }
+
+    /**
+     * @param UpdateUserEmployeeLinkRequest $request
+     * @param User $user
+     *
+     * @return RedirectResponse
+     */
+    public function updateEmployeeLink(UpdateUserEmployeeLinkRequest $request, User $user): RedirectResponse
+    {
+        if (! Gate::allows('user-update')) {
+            abort(403);
+        }
+
+        try {
+            $this->service->linkEmployee($request->validated(), $user);
+        } catch (\Exception $e) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
+        }
+
+        return redirect()->route('users.index')->with('success', 'Usuário atualizado com sucesso.');
+    }
+
+    /**
+     * @param Request $request
+     * @param User $user
+     *
+     * @return RedirectResponse
+     */
+    public function destroyEmployeeLink(Request $request, User $user): RedirectResponse
+    {
+        if (! Gate::allows('user-update')) {
+            abort(403);
+        }
+
+        try {
+            $this->service->unlinkEmployee($user);
+        } catch (\Exception $e) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
+        }
+
+        return redirect()->route('users.index')->with('success', 'Usuário atualizado com sucesso.');
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return View
+     */
+    public function editEmployeeLink(User $user): View
+    {
+        if (! Gate::allows('user-update')) {
+            abort(403);
+        }
+
+        $employees = Employee::orderBy('name')->get();
+
+        return view('user.editEmployeeLink', compact('user', 'employees'));
     }
 }

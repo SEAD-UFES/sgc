@@ -263,8 +263,30 @@ class User extends Authenticatable
 
         return $user_type_assignment; */
 
-        /** @var UserTypeAssignment $user_type_assignment */
-        return session('loggedInUser.currentUta');
+        /**
+         * @var UserTypeAssignment $userTypeAssignment
+         */
+        $userTypeAssignment = session('loggedInUser.currentUta');
+       
+        return $userTypeAssignment;
+    }
+
+    /**
+     * @param Employee $employee
+     *
+     * @return void
+     */
+    public function linkEmployee(Employee $employee): void
+    {
+        $this->employee()->associate($employee);
+    }
+
+    /**
+     * @return void
+     */
+    public function unlinkEmployee(): void
+    {
+        $this->employee()->dissociate();
     }
 
     /**

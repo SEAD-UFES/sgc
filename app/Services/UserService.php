@@ -31,7 +31,7 @@ class UserService
     /**
      * Undocumented function
      *
-     * @param array $attributes
+     * @param array<string, string> $attributes
      *
      * @return User
      */
@@ -66,7 +66,7 @@ class UserService
     /**
      * Undocumented function
      *
-     * @param array $attributes
+     * @param array<string, string> $attributes
      * @param User $user
      *
      * @return User
@@ -100,6 +100,34 @@ class UserService
     public function delete(User $user)
     {
         $user->delete();
+    }
+
+    /**
+     * @param array<string, string> $attributes
+     * @param User $user
+     *
+     * @return void
+     */
+    public function linkEmployee(array $attributes, User $user): void
+    {
+        /**
+         * @var Employee $employee
+         */
+        $employee = Employee::find($attributes['employee_id']);
+
+        $user->linkEmployee($employee);
+        $user->save();
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return void
+     */
+    public function unlinkEmployee(User $user): void
+    {
+        $user->unlinkEmployee();
+        $user->save();
     }
 
     /**
