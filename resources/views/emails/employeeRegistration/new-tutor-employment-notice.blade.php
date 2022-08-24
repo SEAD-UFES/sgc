@@ -1,5 +1,5 @@
 @php
-$article = $receiverGender->name === 'Masculino' ? 'o' : 'a';
+$article = $employeeGender->name === 'Masculino' ? 'o' : 'a';
 @endphp
 @component('mail::message')
     Prezada Equipe da Coordenação de Tutoria,

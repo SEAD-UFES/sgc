@@ -24,7 +24,7 @@ $article = $receiverGender->name === 'Masculino' ? 'o' : 'a';
     De posse do login único e senha, você terá acesso à Plataforma Moodle dos Cursos EAD, através do seguinte endereço:
 
     @component('mail::button', ['url' => $lmsUrl])
-        {!! $lmsUrl !!}
+        {{ url($lmsUrl) }}
     @endcomponent
 
     Para uso do seu E-mail Institucional: {{ $receiverInstitutionEmail }}, basta acessar a página: https://mail.ufes.br.
