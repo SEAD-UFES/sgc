@@ -1,16 +1,19 @@
-{{ $article = $employeeGender->name === 'Masculino' ? 'o' : 'a' }}
+@php
+$article = $receiverGender->name === 'Masculino' ? 'o' : 'a';
+@endphp
 @component('mail::message')
     Prezada Equipe DEDI,
 
-    A pedido da Coordenação do Curso de {{ $courseName }}, venho solicitar a liberação de acesso d{{ $article }}
-    colaborador{{ $article }} abaixo mencionad{{ $article }} às salas das disciplinas deste referido curso.
+    A pedido da Coordenação do Curso de {{ $courseName }}, venho solicitar a liberação de acesso d{{ $article }} colaborador{{ $article }} abaixo mencionad{{ $article }} às salas das disciplinas deste referido curso.
 
     Nome: {{ $employeeName }}
 
     Função: {{ $employeeRoleName }}
 
-    Polo: {{ $poleName }}
+    @if ($poleName !== 'SEAD')
+        Polo: {{ $poleName }}
 
+    @endif
     Login de acesso: {{ $employeeInstitutionLogin }}
 
     E-mail Pessoal: {{ $employeePersonalEmail }}
