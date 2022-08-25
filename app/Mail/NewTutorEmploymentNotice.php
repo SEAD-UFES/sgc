@@ -44,6 +44,16 @@ class NewTutorEmploymentNotice extends Mailable
         $senderName = $this->sender?->name;
 
         /**
+         * @var InstitutionalDetail $senderInstitutionalDetail
+         */
+        $senderInstitutionalDetail = $this->sender?->institutionalDetail;
+
+        /**
+         * @var string $senderInstitutionalEmail
+         */
+        $senderInstitutionalEmail = is_null($senderInstitutionalDetail) ? 'secretaria.sead@ufes.br' : $senderInstitutionalDetail->email;
+
+        /**
          * @var Employee $employee
          */
         $employee = $this->employeeBond->employee;
@@ -116,6 +126,7 @@ class NewTutorEmploymentNotice extends Mailable
         return $this->subject('Vinculação de Novo Tutor')->from('secretaria.sead@ufes.br', 'Sead - Secretaria Acadêmica')->replyTo('secretaria.sead@ufes.br')->markdown('emails.employeeRegistration.new-tutor-employment-notice')
             ->with([
                 'senderName' => $senderName,
+                'senderInstitutionalEmail' => $senderInstitutionalEmail,
                 'courseName' => $courseName,
                 'employeeRoleName' => $employeeRoleName,
                 'employeeGender' => $employeeGender,

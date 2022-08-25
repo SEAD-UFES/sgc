@@ -44,6 +44,16 @@ class InstitutionEmployeeLoginCreatedNotice extends Mailable
         $senderName = $this->sender?->name;
 
         /**
+         * @var InstitutionalDetail $senderInstitutionalDetail
+         */
+        $senderInstitutionalDetail = $this->sender?->institutionalDetail;
+
+        /**
+         * @var string $senderInstitutionalEmail
+         */
+        $senderInstitutionalEmail = is_null($senderInstitutionalDetail) ? 'secretaria.sead@ufes.br' : $senderInstitutionalDetail->email;
+
+        /**
          * @var Employee $receiver
          */
         $receiver = $this->receiverBond->employee;
@@ -91,6 +101,7 @@ class InstitutionEmployeeLoginCreatedNotice extends Mailable
         return $this->subject('Informação Sobre Criação de Login de Acesso')->from('secretaria.sead@ufes.br', 'Sead - Secretaria Acadêmica')->replyTo('secretaria.sead@ufes.br')->markdown('emails.employeeRegistration.institution-employee-login-created-notice')
             ->with([
                 'senderName' => $senderName,
+                'senderInstitutionalEmail' => $senderInstitutionalEmail,
                 'receiverGender' => $receiverGender,
                 'receiverName' => $receiverName,
                 'receiverInstitutionLogin' => $receiverInstitutionLogin,

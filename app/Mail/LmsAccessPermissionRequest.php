@@ -44,6 +44,16 @@ class LmsAccessPermissionRequest extends Mailable
         $senderName = $this->sender?->name;
 
         /**
+         * @var InstitutionalDetail $senderInstitutionalDetail
+         */
+        $senderInstitutionalDetail = $this->sender?->institutionalDetail;
+
+        /**
+         * @var string $senderInstitutionalEmail
+         */
+        $senderInstitutionalEmail = is_null($senderInstitutionalDetail) ? 'secretaria.sead@ufes.br' : $senderInstitutionalDetail->email;
+
+        /**
          * @var Employee $employee
          */
         $employee = $this->employeeBond->employee;
@@ -116,6 +126,7 @@ class LmsAccessPermissionRequest extends Mailable
         return $this->subject('Solicitação de Liberação de Acesso à Plataforma Moodle')->from('secretaria.sead@ufes.br', 'Sead - Secretaria Acadêmica')->replyTo('secretaria.sead@ufes.br')->markdown('emails.employeeRegistration.lms-access-permission-request')
             ->with([
                 'senderName' => $senderName,
+                'senderInstitutionalEmail' => $senderInstitutionalEmail,
                 'courseName' => $courseName,
                 'employeeRoleName' => $employeeRoleName,
                 'employeeGender' => $employeeGender,

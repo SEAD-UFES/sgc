@@ -2,30 +2,21 @@
 $article = $employeeGender->name === 'Masculino' ? 'o' : 'a';
 @endphp
 @component('mail::message')
-Prezada Equipe DEDI,
-
-A pedido da Coordenação do Curso de {{ $courseName }}, venho solicitar a liberação de acesso d{{ $article }} colaborador{{ $employeeGender->name === 'Masculino' ? '' : 'a' }} abaixo mencionad{{ $article }} às salas das disciplinas deste referido curso.
-
-Nome: {{ $employeeName }}
-
-Função: {{ $employeeRoleName }}
-
+Prezada Equipe DEDI,<br /><br />
+A pedido da Coordenação do <b>Curso de {{ $courseName }}</b>, venho solicitar a liberação de acesso d{{ $article }} colaborador{{ $employeeGender->name === 'Masculino' ? '' : 'a' }} abaixo mencionad{{ $article }} às salas das disciplinas deste referido curso.<br /><br />
+Nome: {{ $employeeName }}<br />
+Função: {{ $employeeRoleName }}<br />
 @if ($poleName !== 'SEAD')
-Polo: {{ $poleName }}
-
+Polo: {{ $poleName }}<br />
 @endif
-Login de acesso: {{ $employeeInstitutionLogin }}
-
-E-mail Pessoal: {{ $employeePersonalEmail }}
-
-E-mail Institucional: {{ $employeeInstitutionEmail }}
-
-Telefone: {{ $employeePhone }}<br />
-Celular: {{ $employeeMobile }}
-
-
-Atenciosamente,
-
+<br />
+Login de acesso: {{ $employeeInstitutionLogin }}<br /><br />
+E-mail Pessoal: {{ $employeePersonalEmail }}<br />
+E-mail Institucional: {{ $employeeInstitutionEmail }}<br /><br />
+Telefone: {{ isset($employeePhone) ? preg_replace('~(\d{2})[^\d]{0,7}(\d{4})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $employeePhone) : '-' }}<br />
+Celular: {{ isset($employeeMobile) ? preg_replace('~(\d{2})[^\d]{0,7}(\d{5})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $employeeMobile) : '-' }}<br /><br /><br />
+Atenciosamente,<br /><br />
 {{ $senderName ?? 'Secretaria Sead' }}<br />
+E-mail: {{ $senderInstitutionalEmail ?? 'secretaria.sead@ufes.br'}}<br />
 Secretaria Acadêmica - Sead/Ufes
 @endcomponent
