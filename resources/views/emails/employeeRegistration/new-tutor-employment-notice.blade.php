@@ -20,7 +20,7 @@ E-mail Pessoal: {{ $employeePersonalEmail }}
 
 E-mail Institucional: {{ $employeeInstitutionEmail }}
 
-Telefone: {{ $employeePhone }}
+Telefone: {{ $employeePhone }}<br />
 Celular: {{ $employeeMobile }}
 
 
