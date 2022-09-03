@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ModelFilterHelper;
-use App\Helpers\SgcLogHelper;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\GrantType;
@@ -30,7 +29,6 @@ class RoleController extends Controller
     {
         //check access permission
         if (! Gate::allows('role-list')) {
-            //SgcLogHelper::badAttemptLog($request, 403);
             abort(403);
         }
 

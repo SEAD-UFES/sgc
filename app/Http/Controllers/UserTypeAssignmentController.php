@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ModelFilterHelper;
-use App\Helpers\SgcLogHelper;
 use App\Http\Requests\StoreUserTypeAssignmentRequest;
 use App\Http\Requests\UpdateUserTypeAssignmentRequest;
 use App\Models\Course;

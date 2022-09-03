@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ModelFilterHelper;
-use App\Helpers\SgcLogHelper;
 use App\Http\Requests\StorePoleRequest;
 use App\Http\Requests\UpdatePoleRequest;
 use App\Models\Pole;

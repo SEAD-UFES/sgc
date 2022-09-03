@@ -8,24 +8,23 @@ use App\Http\Requests\StoreBondMultipleDocumentsRequest;
 use App\Models\Bond;
 use App\Models\BondDocument;
 use App\Models\DocumentType;
-use App\Services\DocumentService;
+use App\Services\BondDocumentService;
+use App\Services\DocumentServiceInterface;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use InvalidArgumentException;
 
-class BondDocumentController extends DocumentController
+class BondDocumentController extends Controller
 {
+    protected DocumentServiceInterface $service;
+
     /**
-     * @param DocumentService $documentService
-     *
-     * @return void
      */
-    public function __construct(DocumentService $documentService)
+    public function __construct()
     {
-        parent::__construct($documentService);
-        $this->service->documentClass = BondDocument::class;
+        $this->service = new BondDocumentService();
     }
 
     /**
@@ -38,8 +37,18 @@ class BondDocumentController extends DocumentController
             abort(403);
         }
 
-        $filters = ModelFilterHelper::buildFilters($request, $this->service->documentClass::$accepted_filters);
-        $documents = $this->service->list(sort: $request->query('sort'), direction: $request->query('direction'));
+        /**
+         * @var string $sort
+         */
+        $sort = $request->query('sort') ?? '';
+
+        /**
+         * @var string $direction
+         */
+        $direction = $request->query('direction') ?? '';
+
+        $filters = ModelFilterHelper::buildFilters($request, $this->service->getDocumentClass()::$accepted_filters);
+        $documents = $this->service->list(sort: $sort, direction: $direction);
 
         return view('bond.document.index', compact('documents', 'filters'));
     }
@@ -56,8 +65,18 @@ class BondDocumentController extends DocumentController
             abort(403);
         }
 
-        $filters = ModelFilterHelper::buildFilters($request, $this->service->documentClass::$accepted_filters);
-        $documents = $this->service->listRights(sort: $request->query('sort'), direction: $request->query('direction'));
+        /**
+         * @var string $sort
+         */
+        $sort = $request->query('sort') ?? '';
+
+        /**
+         * @var string $direction
+         */
+        $direction = $request->query('direction') ?? '';
+
+        $filters = ModelFilterHelper::buildFilters($request, BondDocument::$accepted_filters);
+        $documents = $this->service->listRights(sort: $sort, direction: $direction);
 
         return view('reports.rightsIndex', compact('documents', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
     }

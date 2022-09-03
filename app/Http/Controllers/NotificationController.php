@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\SgcLogHelper;
+use App\Events\NotificationDismissed;
+use Illuminate\Http\Response;
 use Illuminate\Notifications\DatabaseNotification;
 
 class NotificationController extends Controller
@@ -10,19 +11,19 @@ class NotificationController extends Controller
     /**
      * Mark notification as read.
      *
-     * @param  \lluminate\Notifications\DatabaseNotification  $notification
+     * @param  DatabaseNotification  $notification
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function dismiss(DatabaseNotification $notification)
+    public function dismiss(DatabaseNotification $notification): Response
     {
-        SgcLogHelper::writeLog($notification, 'dismiss');
-
         try {
             $notification->markAsRead();
         } catch (\Exception $e) {
             return back()->withErrors(['noDismiss' => 'Não foi possível dispensar a notificação: ' . $e->getMessage()]);
         }
+
+        NotificationDismissed::dispatch($notification);
 
         return redirect()->route('home')->with('success', 'Notificação dispensada.');
     }

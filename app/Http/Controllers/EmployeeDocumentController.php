@@ -7,8 +7,9 @@ use App\Http\Requests\StoreEmployeeDocumentRequest;
 use App\Http\Requests\StoreEmployeeMultipleDocumentsRequest;
 use App\Models\DocumentType;
 use App\Models\Employee;
-use App\Models\EmployeeDocument;
 use App\Services\DocumentService;
+use App\Services\DocumentServiceInterface;
+use App\Services\EmployeeDocumentService;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -18,17 +19,15 @@ use InvalidArgumentException;
 /**
  * @property DocumentService $service
  */
-class EmployeeDocumentController extends DocumentController
+class EmployeeDocumentController extends Controller
 {
+    protected DocumentServiceInterface $service;
+
     /**
-     * @param DocumentService $documentService
-     *
-     * @return void
      */
-    public function __construct(DocumentService $documentService)
+    public function __construct()
     {
-        parent::__construct($documentService);
-        $this->service->documentClass = EmployeeDocument::class;
+        $this->service = new EmployeeDocumentService();
     }
 
     /**
@@ -41,7 +40,7 @@ class EmployeeDocumentController extends DocumentController
             abort(403);
         }
 
-        $filters = ModelFilterHelper::buildFilters($request, $this->service->documentClass::$accepted_filters);
+        $filters = ModelFilterHelper::buildFilters($request, $this->service->getDocumentClass()::$accepted_filters);
         $documents = $this->service->list(sort: $request->query('sort'), direction: $request->query('direction'));
 
         return view('employee.document.index', compact('documents', 'filters'));

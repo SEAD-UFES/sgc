@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\EmployeeDesignated;
 use App\Helpers\ModelFilterHelper;
 use App\Http\Requests\ImportApprovedsFileRequest;
 use App\Http\Requests\StoreApprovedRequest;
@@ -293,6 +294,8 @@ class ApprovedController extends Controller
         );
 
         $fromApproved = true;
+
+        EmployeeDesignated::dispatch($employee);
 
         return view('approved.designate', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee', 'fromApproved'));
     }

@@ -20,6 +20,7 @@ use Illuminate\View\View;
 class InstitutionalDetailController extends Controller
 {
     private InstitutionalDetailService $service;
+
     private MailService $mailService;
 
     public function __construct(InstitutionalDetailService $institutionalDetailService, MailService $mailService)
@@ -65,8 +66,6 @@ class InstitutionalDetailController extends Controller
         if (! Gate::allows('employee-store')) {
             abort(403);
         }
-
-        //dd($request);
 
         try {
             $this->service->create($request->validated(), $employee);
