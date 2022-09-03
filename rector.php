@@ -15,6 +15,7 @@ use Rector\CodingStyle\Rector\ClassConst\VarConstantCommentRector;
 use Rector\CodingStyle\Rector\ClassMethod\NewlineBeforeNewAssignSetRector;
 use Rector\CodingStyle\Rector\Closure\StaticClosureRector;
 use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
+use Rector\CodingStyle\Rector\Switch_\BinarySwitchToIfElseRector;
 use Rector\CodingStyle\Rector\Use_\SeparateMultiUseImportsRector;
 use Rector\Config\RectorConfig;
 use Rector\Core\ValueObject\PhpVersion;
@@ -25,15 +26,16 @@ use Rector\Set\ValueObject\SetList;
 return static function (RectorConfig $rectorConfig): void {
     // here we can define, what sets of rules will be applied
     // tip: use "SetList" class to autocomplete sets
-    $rectorConfig->sets([
-        SetList::CODE_QUALITY,
-        SetList::CODING_STYLE,
-    ]);
+
+    $rectorConfig->sets([SetList::CODE_QUALITY,SetList::CODING_STYLE,]); // run all sets
 
     $rectorConfig->phpVersion(PhpVersion::PHP_81);
 
-    // register single rule
-    /* $rectorConfig->rule(NewlineAfterStatementRector::class); */
+    //register single rule
+    //$rectorConfig->rule(NewlineAfterStatementRector::class);
+    //$rectorConfig->rule(SeparateMultiUseImportsRector::class);
+    //$rectorConfig->rule(NewlineAfterStatementRector::class);
+    //$rectorConfig->rule(BinarySwitchToIfElseRector::class);
 
     $rectorConfig->skip([
         // skip this class
