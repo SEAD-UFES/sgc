@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Kyslik\ColumnSortable\Sortable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Course extends Model
 {
@@ -17,6 +19,7 @@ class Course extends Model
     use Sortable;
     use CourseFilter;
     use Filterable;
+    use LogsActivity;
 
     /**
      * @var array<int, string>
@@ -61,14 +64,6 @@ class Course extends Model
     /**
      * @var array<int, string>
      */
-    protected $observables = [
-        'listed',
-        'fetched',
-    ];
-
-    /**
-     * @var array<int, string>
-     */
     private static $whiteListFilter = ['*'];
 
     /**
@@ -107,19 +102,12 @@ class Course extends Model
         return $this->hasMany(Approved::class);
     }
 
-    /**
-     * @return void
-     */
-    public function logListed(): void
+    public function getActivitylogOptions(): LogOptions
     {
-        $this->fireModelEvent('listed', false);
-    }
-
-    /**
-     * @return void
-     */
-    public function logFetched(): void
-    {
-        $this->fireModelEvent('fetched', false);
+        return LogOptions::defaults()
+            ->logOnly(['*'])
+            ->logExcept(['updated_at'])
+            ->dontLogIfAttributesChangedOnly(['updated_at'])
+            ->logOnlyDirty();
     }
 }

@@ -8,11 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Kyslik\ColumnSortable\Sortable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
+/**
+ * @property Builder $query
+ */
 class BondDocument extends Model
 {
     use HasFactory;
     use Sortable;
+    use LogsActivity;
 
     /**
      * @const string
@@ -57,14 +63,6 @@ class BondDocument extends Model
      */
     protected $fillable = [
         'bond_id',
-    ];
-
-    /**
-     * @var array<int, string>
-     */
-    protected $observables = [
-        'listed',
-        'fetched',
     ];
 
     /**
@@ -148,22 +146,6 @@ class BondDocument extends Model
     }
 
     /**
-     * @return void
-     */
-    public function logListed(): void
-    {
-        $this->fireModelEvent('listed', false);
-    }
-
-    /**
-     * @return void
-     */
-    public function logFetched(): void
-    {
-        $this->fireModelEvent('fetched', false);
-    }
-
-    /**
      * @return Builder<Document>
      */
     public function queryDocuments(): Builder
@@ -240,5 +222,29 @@ class BondDocument extends Model
     public static function referentId(): string
     {
         return self::REFERENT_ID;
+    }
+
+    public function employee(): Employee
+    {
+        /**
+         * @var Bond $bond
+         */
+        $bond = $this->bond;
+
+        /**
+         * @var Employee $employee
+         */
+        $employee = $bond->employee;
+
+        return $employee;
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['*'])
+            ->logExcept(['updated_at'])
+            ->dontLogIfAttributesChangedOnly(['updated_at'])
+            ->logOnlyDirty();
     }
 }

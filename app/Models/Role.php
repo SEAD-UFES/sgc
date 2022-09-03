@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Kyslik\ColumnSortable\Sortable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Role extends Model
 {
@@ -17,6 +19,7 @@ class Role extends Model
     use Sortable;
     use RoleFilter;
     use Filterable;
+    use LogsActivity;
 
     /**
      * @var array<int, string>
@@ -45,14 +48,6 @@ class Role extends Model
         'description',
         'grant_value',
         'grant_type_id',
-    ];
-
-    /**
-     * @var array<int, string>
-     */
-    protected $observables = [
-        'listed',
-        'fetched',
     ];
 
     /**
@@ -89,20 +84,13 @@ class Role extends Model
         return $this->hasMany(Approved::class);
     }
 
-    /**
-     * @return void
-     */
-    public function logListed(): void
+    public function getActivitylogOptions(): LogOptions
     {
-        $this->fireModelEvent('listed', false);
-    }
-
-    /**
-     * @return void
-     */
-    public function logFetched(): void
-    {
-        $this->fireModelEvent('fetched', false);
+        return LogOptions::defaults()
+            ->logOnly(['*'])
+            ->logExcept(['updated_at'])
+            ->dontLogIfAttributesChangedOnly(['updated_at'])
+            ->logOnlyDirty();
     }
 
     /**

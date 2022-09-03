@@ -5,10 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Gender extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -20,14 +23,6 @@ class Gender extends Model
     ];
 
     /**
-     * @var array<int, string>
-     */
-    protected $observables = [
-        'listed',
-        'fetched',
-    ];
-
-    /**
      * @return HasMany<Employee>
      */
     public function employee(): HasMany
@@ -35,19 +30,12 @@ class Gender extends Model
         return $this->hasMany(Employee::class);
     }
 
-    /**
-     * @return void
-     */
-    public function logListed(): void
+    public function getActivitylogOptions(): LogOptions
     {
-        $this->fireModelEvent('listed', false);
-    }
-
-    /**
-     * @return void
-     */
-    public function logFetched(): void
-    {
-        $this->fireModelEvent('fetched', false);
+        return LogOptions::defaults()
+            ->logOnly(['*'])
+            ->logExcept(['updated_at'])
+            ->dontLogIfAttributesChangedOnly(['updated_at'])
+            ->logOnlyDirty();
     }
 }

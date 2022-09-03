@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Kyslik\ColumnSortable\Sortable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Employee extends Model
 {
@@ -18,6 +20,7 @@ class Employee extends Model
     use Sortable;
     use EmployeeFilter;
     use Filterable;
+    use LogsActivity;
 
     /**
      * @var array<int, string>
@@ -74,14 +77,6 @@ class Employee extends Model
         'phone',
         'mobile',
         'email',
-    ];
-
-    /**
-     * @var array<int, string>
-     */
-    protected $observables = [
-        'listed',
-        'fetched',
     ];
 
     /**
@@ -243,19 +238,12 @@ class Employee extends Model
         return false;
     }
 
-    /**
-     * @return void
-     */
-    public function logListed(): void
+    public function getActivitylogOptions(): LogOptions
     {
-        $this->fireModelEvent('listed', false);
-    }
-
-    /**
-     * @return void
-     */
-    public function logFetched(): void
-    {
-        $this->fireModelEvent('fetched', false);
+        return LogOptions::defaults()
+            ->logOnly(['*'])
+            ->logExcept(['updated_at'])
+            ->dontLogIfAttributesChangedOnly(['updated_at'])
+            ->logOnlyDirty();
     }
 }

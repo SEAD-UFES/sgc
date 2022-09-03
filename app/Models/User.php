@@ -20,6 +20,9 @@ use Kyslik\ColumnSortable\Sortable;
 // use Laravel\Sanctum\HasApiTokens;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\CausesActivity;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class User extends Authenticatable
 {
@@ -29,6 +32,8 @@ class User extends Authenticatable
     use Sortable;
     use UserFilter;
     use Filterable;
+    use CausesActivity;
+    use LogsActivity;
 
     /**
      * @var array<int, string>
@@ -56,14 +61,6 @@ class User extends Authenticatable
         'email',
         'password',
         'active',
-    ];
-
-    /**
-     * @var array<int, string>
-     */
-    protected $observables = [
-        'listed',
-        'fetched',
     ];
 
     /**
@@ -181,22 +178,6 @@ class User extends Authenticatable
             ->select('users.*');
     }
 
-    /**
-     * @return void
-     */
-    public function logListed(): void
-    {
-        $this->fireModelEvent('listed', false);
-    }
-
-    /**
-     * @return void
-     */
-    public function logFetched(): void
-    {
-        $this->fireModelEvent('fetched', false);
-    }
-
     //permission system
 
     /**
@@ -267,7 +248,7 @@ class User extends Authenticatable
          * @var UserTypeAssignment $userTypeAssignment
          */
         $userTypeAssignment = session('loggedInUser.currentUta');
-       
+
         return $userTypeAssignment;
     }
 
@@ -287,6 +268,15 @@ class User extends Authenticatable
     public function unlinkEmployee(): void
     {
         $this->employee()->dissociate();
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['*'])
+            ->logExcept(['updated_at'])
+            ->dontLogIfAttributesChangedOnly(['updated_at'])
+            ->logOnlyDirty();
     }
 
     /**

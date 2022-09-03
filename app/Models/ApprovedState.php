@@ -5,10 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class ApprovedState extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -18,14 +21,6 @@ class ApprovedState extends Model
     protected $fillable = [
         'name',
         'description',
-    ];
-
-    /**
-     * @var array<int, string>
-     */
-    protected $observables = [
-        'listed',
-        'fetched',
     ];
 
     /**
@@ -50,30 +45,23 @@ class ApprovedState extends Model
     public function getNext(): ApprovedState|null
     {
         if ($this->hasNext()) {
-            switch ($this->name) {
-                case 'Não contatado':
-                    return ApprovedState::where('name', 'Contatado')->first();
-                case 'Contatado':
-                    return ApprovedState::where('name', 'Aceitante')->orWhere('name', 'Desistente')->first();
+            if ($this->name === 'Não contatado') {
+                return ApprovedState::where('name', 'Contatado')->first();
+            }
+            if ($this->name === 'Contatado') {
+                return ApprovedState::where('name', 'Aceitante')->orWhere('name', 'Desistente')->first();
             }
         }
 
         return null;
     }
 
-    /**
-     * @return void
-     */
-    public function logListed(): void
+    public function getActivitylogOptions(): LogOptions
     {
-        $this->fireModelEvent('listed', false);
-    }
-
-    /**
-     * @return void
-     */
-    public function logFetched(): void
-    {
-        $this->fireModelEvent('fetched', false);
+        return LogOptions::defaults()
+            ->logOnly(['*'])
+            ->logExcept(['updated_at'])
+            ->dontLogIfAttributesChangedOnly(['updated_at'])
+            ->logOnlyDirty();
     }
 }

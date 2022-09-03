@@ -8,11 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Kyslik\ColumnSortable\Sortable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
+/**
+ * @property Builder $query
+ */
 class EmployeeDocument extends Model
 {
     use HasFactory;
     use Sortable;
+    use LogsActivity;
 
     /**
      * @const string
@@ -55,14 +61,6 @@ class EmployeeDocument extends Model
     ];
 
     /**
-     * @var array<int, string>
-     */
-    protected $observables = [
-        'listed',
-        'fetched',
-    ];
-
-    /**
      * @return MorphOne<Document>
      */
     public function document(): MorphOne
@@ -76,22 +74,6 @@ class EmployeeDocument extends Model
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function logListed(): void
-    {
-        $this->fireModelEvent('listed', false);
-    }
-
-    /**
-     * @return void
-     */
-    public function logFetched(): void
-    {
-        $this->fireModelEvent('fetched', false);
     }
 
     /**
@@ -122,8 +104,17 @@ class EmployeeDocument extends Model
     /**
      * @return string
      */
-    public static function referentId()
+    public static function referentId(): string
     {
         return self::REFERENT_ID;
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['*'])
+            ->logExcept(['updated_at'])
+            ->dontLogIfAttributesChangedOnly(['updated_at'])
+            ->logOnlyDirty();
     }
 }

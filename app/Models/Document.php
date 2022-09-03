@@ -10,13 +10,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Kyslik\ColumnSortable\Sortable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
+/**
+ * App\Models\Document
+ *
+ * @property string $file_data
+ */
 class Document extends Model
 {
     use HasFactory;
     use Sortable;
     use DocumentFilter;
     use Filterable;
+    use LogsActivity;
 
     /**
      * @var array<int, string>
@@ -44,14 +52,6 @@ class Document extends Model
     /**
      * @var array<int, string>
      */
-    protected $observables = [
-        'listed',
-        'fetched',
-    ];
-
-    /**
-     * @var array<int, string>
-     */
     private static $whiteListFilter = ['*'];
 
     /**
@@ -59,7 +59,16 @@ class Document extends Model
      */
     public function employeeModel()
     {
-        return $this->documentable()->first()->employee()->first();
+        /**
+         * @var EmployeeDocument|BondDocument $documentable
+         */
+        $documentable = $this->documentable()->first();
+        /**
+         * @var Employee $employee
+         */
+        $employee = $documentable->employee()->first();
+
+        return $employee;
     }
 
     /**
@@ -115,7 +124,7 @@ class Document extends Model
      *
      * @return Builder<Document>
      */
-    public static function rightsDocumentsByBondId($bondId)
+    public static function rightsDocumentsByBondId($bondId): Builder
     {
         $documentType = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
 
@@ -128,7 +137,7 @@ class Document extends Model
     /**
      * @return Builder<Document>
      */
-    public static function rightsWithBond()
+    public static function rightsWithBond(): Builder
     {
         $documentType = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
 
@@ -143,26 +152,19 @@ class Document extends Model
     /**
      * @return bool
      */
-    public function isRights()
+    public function isRights(): bool
     {
         $rightsTypeId = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first()?->id;
 
         return $this->document_type_id === $rightsTypeId;
     }
 
-    /**
-     * @return void
-     */
-    public function logListed()
+    public function getActivitylogOptions(): LogOptions
     {
-        $this->fireModelEvent('listed', false);
-    }
-
-    /**
-     * @return void
-     */
-    public function logFetched()
-    {
-        $this->fireModelEvent('fetched', false);
+        return LogOptions::defaults()
+            ->logOnly(['*'])
+            ->logExcept(['updated_at'])
+            ->dontLogIfAttributesChangedOnly(['updated_at'])
+            ->logOnlyDirty();
     }
 }
