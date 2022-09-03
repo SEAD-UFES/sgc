@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Events\ModelListed;
+use App\Events\ModelRead;
 use App\Helpers\TextHelper;
 use App\Models\Approved;
 use App\Models\ApprovedState;
@@ -18,7 +20,7 @@ class ApprovedService
      */
     public function list(): LengthAwarePaginator
     {
-        (new Approved())->logListed();
+        ModelListed::dispatch(Approved::class);
 
         $query = Approved::with(['approvedState', 'course', 'pole', 'role']);
         $query = $query->AcceptRequest(Approved::$accepted_filters)->filter();
@@ -66,7 +68,7 @@ class ApprovedService
      */
     public function read(Approved $approved): Approved
     {
-        $approved->logFetched();
+        ModelRead::dispatch($approved);
 
         return $approved;
     }
@@ -108,8 +110,13 @@ class ApprovedService
      */
     public function batchStore(array $attributes): void
     {
-        DB::transaction(function () use ($attributes) {
-            foreach ($attributes['approveds'] as $approved) {
+        /**
+         * @var array<int, array<string, string>> $approveds
+         */
+        $approveds = $attributes['approveds'];
+
+        DB::transaction(function () use ($approveds) {
+            foreach ($approveds as $approved) {
                 if (Arr::exists($approved, 'check')) {
                     $this->create($approved);
                 }

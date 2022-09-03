@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Events\ModelListed;
+use App\Events\ModelRead;
 use App\Models\UserTypeAssignment;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -14,7 +16,7 @@ class UserTypeAssignmentService
      */
     public function list(): LengthAwarePaginator
     {
-        (new UserTypeAssignment())->logListed();
+        ModelListed::dispatch(UserTypeAssignment::class);
 
         $query = UserTypeAssignment::with(['user:id,email', 'userType:id,name', 'course:id,name']);
         $query = $query->AcceptRequest(UserTypeAssignment::$accepted_filters)->filter();
@@ -47,7 +49,7 @@ class UserTypeAssignmentService
      */
     public function read(UserTypeAssignment $userTypeAssignment): UserTypeAssignment|null
     {
-        $userTypeAssignment->logFetched();
+        ModelRead::dispatch($userTypeAssignment);
 
         return UserTypeAssignment::with(['user:id,email', 'userType:id,name', 'course:id,name'])->find($userTypeAssignment->id);
     }

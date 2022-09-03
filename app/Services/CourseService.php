@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Events\ModelListed;
+use App\Events\ModelRead;
 use App\Helpers\TextHelper;
 use App\Models\Course;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -16,7 +18,7 @@ class CourseService
      */
     public function list(): LengthAwarePaginator
     {
-        (new Course())->logListed();
+        ModelListed::dispatch(Course::class);
 
         $query = new Course();
         $query = $query->AcceptRequest(Course::$accepted_filters)->filter();
@@ -61,7 +63,7 @@ class CourseService
      */
     public function read(Course $course): Course
     {
-        $course->logFetched();
+        ModelRead::dispatch($course);
 
         return $course;
     }

@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Events\ModelListed;
+use App\Events\ModelRead;
 use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -16,7 +18,7 @@ class UserService
      */
     public function list(): LengthAwarePaginator
     {
-        (new User())->logListed();
+        ModelListed::dispatch(User::class);
 
         $query = User::with(['userType', 'employee']);
         $query = $query->AcceptRequest(User::$accepted_filters)->filter();
@@ -58,7 +60,7 @@ class UserService
      */
     public function read(User $user): User
     {
-        $user->logFetched();
+        ModelRead::dispatch($user);
 
         return $user;
     }

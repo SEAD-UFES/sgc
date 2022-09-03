@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Events\ModelListed;
+use App\Events\ModelRead;
 use App\Helpers\TextHelper;
 use App\Models\Pole;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -16,7 +18,7 @@ class PoleService
      */
     public function list(): LengthAwarePaginator
     {
-        (new Pole())->logListed();
+        ModelListed::dispatch(Pole::class);
 
         $poles_query = new Pole();
         $poles_query = $poles_query->AcceptRequest(Pole::$accepted_filters)->filter();
@@ -31,7 +33,7 @@ class PoleService
     /**
      * Undocumented function
      *
-     * @param array $attributes
+     * @param array<string, string> $attributes
      *
      * @return Pole
      */
@@ -57,7 +59,7 @@ class PoleService
      */
     public function read(Pole $pole): Pole
     {
-        $pole->logFetched();
+        ModelRead::dispatch($pole);
 
         return $pole;
     }
@@ -65,7 +67,7 @@ class PoleService
     /**
      * Undocumented function
      *
-     * @param array $attributes
+     * @param array<string, string> $attributes
      * @param Pole $pole
      *
      * @return Pole

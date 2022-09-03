@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
+use App\Events\FileImported;
 use App\Imports\ApprovedsImport;
 use App\Models\Approved;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -31,6 +32,8 @@ class ApprovedsSourceService
         $approveds = $this->getApprovedsFromFile($filePath);
 
         Storage::delete($filePath);
+
+        FileImported::dispatch($filePath);
 
         return $approveds;
     }
@@ -64,7 +67,7 @@ class ApprovedsSourceService
         /**
          * @var Collection<int, Approved> $approveds
          */
-        $approveds = collect();
+        $approveds = new Collection();
         Excel::import(new ApprovedsImport($approveds), $filePath);
 
         return $approveds;

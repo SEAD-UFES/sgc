@@ -2,9 +2,14 @@
 
 namespace App\Services;
 
+use App\Events\ModelListed;
+use App\Events\ModelRead;
 use App\Helpers\TextHelper;
+use App\Models\Bond;
+use App\Models\Course;
 use App\Models\Employee;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +23,7 @@ class EmployeeService
      */
     public function list(): LengthAwarePaginator
     {
-        (new Employee())->logListed();
+        ModelListed::dispatch(Employee::class);
 
         $query = Employee::with(['gender', 'birthState', 'documentType', 'maritalStatus', 'addressState', 'user']);
         $query = $query->AcceptRequest(Employee::$accepted_filters)->filter();
@@ -70,7 +75,7 @@ class EmployeeService
      */
     public function read(Employee $employee): Employee
     {
-        $employee->logFetched();
+        ModelRead::dispatch($employee);
 
         return $employee;
     }
@@ -116,7 +121,7 @@ class EmployeeService
      *
      * @return void
      */
-    public function delete(Employee $employee)
+    public function delete(Employee $employee): void
     {
         $employeeUser = $employee->user;
 
@@ -128,8 +133,20 @@ class EmployeeService
 
             $employee->bankAccount()->delete();
 
-            foreach ($employee->courses as $course) {
-                $course->bond->bondDocuments()->delete();
+            /**
+             * @var Collection<int, Course> $employeeCourses
+             */
+            $employeeCourses = $employee->courses;
+
+            foreach ($employeeCourses as $employeeCourse) {
+                /**
+                 * @var Collection<int, Bond> $employeeCourseBonds
+                 */
+                $employeeCourseBonds = $employeeCourse->bonds;
+
+                foreach ($employeeCourseBonds as $employeeCourseBond) {
+                    $employeeCourseBond->bondDocuments()->delete();
+                }
             }
 
             $employee->courses()->detach();

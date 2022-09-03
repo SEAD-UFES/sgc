@@ -2,49 +2,34 @@
 
 namespace App\Services;
 
-use App\Helpers\SgcLogHelper;
-use App\Models\Bond;
+use App\Events\ModelListed;
+use App\Events\ModelRead;
 use App\Models\BondDocument;
 use App\Models\Document;
-use App\Models\Employee;
 use App\Models\EmployeeDocument;
 use Exception;
+use finfo;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class DocumentService
+class DocumentService implements DocumentServiceInterface
 {
-    public string $documentClass;
+    protected ?string $referentId;
 
-    /**
-     * Undocumented function
-     *
-     * @param string|null $sort
-     * @param string|null $direction
-     *
-     * @return LengthAwarePaginator
-     */
-    public function list(?string $sort = null, ?string $direction = null): LengthAwarePaginator
+    protected ?string $documentClass;
+
+    protected ?string $referentClass;
+
+    public function __construct(?string $documentClass, ?string $referentClass)
     {
-        (new Document())->logListed();
-
-        $query = (new $this->documentClass())->queryDocuments();
-        $query = $query->AcceptRequest($this->documentClass::$accepted_filters)->filter();
-
-        if (in_array($sort, $this->documentClass::$sortable) && in_array($direction, ['asc', 'desc'])) {
-            $query = $query->orderBy($sort, $direction);
-        } else {
-            $query = $query->orderBy('documents.updated_at', 'desc');
-        }
-
-        $documents = $query->paginate(10);
-        $documents->withQueryString();
-
-        return $documents;
+        $this->documentClass = $documentClass;
+        $this->referentClass = $referentClass;
+        $this->referentId = is_null($this->documentClass) ? null : $this->documentClass::referentId();
     }
 
     /**
@@ -55,17 +40,36 @@ class DocumentService
      *
      * @return LengthAwarePaginator
      */
-    public function listRights(?string $sort = null, ?string $direction = null): LengthAwarePaginator
+    public function list(?string $sort = 'documents.id', ?string $direction = 'desc'): LengthAwarePaginator
     {
-        (new Document())->logListed();
+        $sort = $sort ?? 'documents.id';
+        $direction = $direction ?? 'desc';
 
-        $query = (new $this->documentClass())->queryRights();
-        $query = $query->AcceptRequest($this->documentClass::$accepted_filters)->filter();
-        if (in_array($sort, $this->documentClass::$sortable) && in_array($direction, ['asc', 'desc'])) {
-            $query = $query->orderBy($sort, $direction);
-        } else {
-            $query = $query->orderBy('documents.updated_at', 'desc');
+        /**
+         * @var array<int, string> $sortable
+         */
+        $sortable = $this->documentClass::$sortable;
+
+        /**
+         * @var array<int, string> $directions
+         */
+        $directions = ['asc', 'desc'];
+
+        if (! in_array($sort, $sortable) || ! in_array($direction, $directions)) {
+            $sort = 'documents.id';
+            $direction = 'desc';
         }
+
+        ModelListed::dispatch($this->documentClass);
+
+        /**
+         * @var BondDocument|EmployeeDocument $documentInstance
+         */
+        $documentInstance = new $this->documentClass();
+
+        $query = $documentInstance->queryDocuments();
+        $query = $query->AcceptRequest($this->documentClass::$accepted_filters)->filter();
+        $query = $query->orderBy($sort, $direction);
 
         $documents = $query->paginate(10);
         $documents->withQueryString();
@@ -76,15 +80,20 @@ class DocumentService
     /**
      * Undocumented function
      *
-     * @param array $attributes
+     * @param array<string, string|UploadedFile> $attributes
      *
      * @return void
      */
-    public function create(array $attributes)
+    public function create(array $attributes): void
     {
-        $attributes['original_name'] = isset($attributes['file']) ? $attributes['file']->getClientOriginalName() : null;
+        /**
+         * @var UploadedFile $uploadedFile
+         */
+        $uploadedFile = $attributes['file'];
 
-        $attributes['file_data'] = isset($attributes['file']) ? $this->getFileData($attributes['file']) : null;
+        $attributes['original_name'] = $uploadedFile->getClientOriginalName();
+
+        $attributes['file_data'] = $this->getFileData($uploadedFile);
 
         $attributes['documentable_type'] = $this->documentClass;
 
@@ -121,7 +130,7 @@ class DocumentService
      */
     public function read(Document $document): Document
     {
-        $document->logFetched();
+        ModelRead::dispatch($document);
 
         return $document;
     }
@@ -135,67 +144,87 @@ class DocumentService
      */
     public function getFileData(UploadedFile $file): string
     {
-        //if file
-        if (isset($file)) {
-            $fileName = time() . '.' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('temp', $fileName, 'local');
-            $fileContent = file_get_contents(base_path('storage/app/' . $filePath), true);
-            $fileContentBase64 = base64_encode($fileContent);
-            Storage::delete($filePath);
+        $fileName = time() . '.' . $file->getClientOriginalName();
+        /**
+         * @var string $filePath
+         */
+        $filePath = $file->storeAs('temp', $fileName, 'local');
 
-            return $fileContentBase64;
-        }
+        $fileContentBase64 = $this->getFileDataFromPath($filePath);
 
-        //if no file
-        return null;
+        Storage::delete($filePath);
+
+        return $fileContentBase64;
     }
 
     /**
      * Undocumented function
      *
-     * @param array $attributes
+     * @param array<string, string|array<int, UploadedFile>> $attributes
      *
-     * @return Collection
+     * @return SupportCollection<int, array<string, string>>
      */
-    public function createManyDocumentsStep1(array $attributes): Collection
+    public function createManyDocumentsStep1(array $attributes): SupportCollection
     {
-        if (isset($attributes['files'])) {
-            $files = $attributes['files'];
+        /**
+         * @var array<int, UploadedFile> $uploadedFiles
+         */
+        $uploadedFiles = $attributes['files'];
 
-            $document = [];
-            $documents = collect();
+        /**
+         * @var array<string, string> $document
+         */
+        $document = [];
 
-            foreach ($files as $file) {
-                $tmpFileName = time() . '.' . $file->getClientOriginalName();
-                $tmpFilePath = $file->storeAs('temp', $tmpFileName, 'local');
+        /**
+         * @var SupportCollection<int, array<string, string>> $documents
+         */
+        $documents = new SupportCollection();
 
-                $document[$this->documentClass::REFERENT_ID] = $attributes[$this->documentClass::REFERENT_ID];
-                $document['original_name'] = $file->getClientOriginalName();
-                $document['filePath'] = $tmpFilePath;
+        foreach ($uploadedFiles as $file) {
+            $tmpFileName = time() . '.' . $file->getClientOriginalName();
+            /**
+             * @var string $tmpFilePath
+             */
+            $tmpFilePath = $file->storeAs('temp', $tmpFileName, 'local');
 
-                $documents->push($document);
-            }
+            /**
+             * @var string $referentIdColumnName
+             */
+            $referentIdColumnName = $this->documentClass::referentId();
 
-            return $documents;
+            /**
+             * @var array<string, string> $document
+             */
+            $document[$referentIdColumnName] = $attributes[$referentIdColumnName];
+            $document['original_name'] = $file->getClientOriginalName();
+            $document['filePath'] = $tmpFilePath;
+
+            $documents->push($document);
         }
 
-        throw new Exception('$attributes[files] not set.', 1);
+        return $documents;
     }
 
     /**
      * Undocumented function
      *
-     * @param array $attributes
+     * @param array<string, string> $attributes
      *
      * @return void
      */
-    public function createManyDocumentsStep2(array $attributes)
+    public function createManyDocumentsStep2(array $attributes): void
     {
         $documentsCount = $attributes['fileSetCount'];
 
-        DB::transaction(function () use ($attributes, $documentsCount) {
+        /**
+         * @var string $referentIdColumnName
+         */
+        $referentIdColumnName = $this->documentClass::referentId();
+
+        DB::transaction(function () use ($attributes, $documentsCount, $referentIdColumnName) {
             $document = [];
-            $document[$this->documentClass::REFERENT_ID] = $attributes[$this->documentClass::REFERENT_ID];
+            $document[$referentIdColumnName] = $attributes[$referentIdColumnName];
             $document['documentable_type'] = $this->documentClass;
 
             for ($i = 0; $i < $documentsCount; $i++) {
@@ -212,12 +241,8 @@ class DocumentService
                 $this->deleteOldDocuments($oldDocuments);
 
                 $document['documentable_id'] = $this->documentClass::create([
-                    $this->documentClass::REFERENT_ID => $attributes[$this->documentClass::REFERENT_ID],
+                    $referentIdColumnName => $attributes[$referentIdColumnName],
                 ])->id;
-                /*
-                $document['documentable_id'] = $this->documentClass::create(['employee_id' => $attributes['employee_id']])->id;
-                $document['documentable_id'] = EmployeeDocument::create(['employee_id' => $attributes['employee_id']])->id;
-                */
 
                 Document::create($document);
 
@@ -232,18 +257,30 @@ class DocumentService
      *
      * @param string $filePath
      *
+     * @throws Exception
+     *
      * @return string
      */
     public function getFileDataFromPath(string $filePath): string
     {
         //if filePath
         if ($filePath !== '' && $filePath !== '0') {
+            /**
+             * @var string $fileContent
+             */
             $fileContent = file_get_contents(base_path('storage/app/' . $filePath), true);
-            return base64_encode($fileContent);
+            if ($fileContent !== false) {
+                /**
+                 * @var string $fileContentBase64
+                 */
+                $fileContentBase64 = base64_encode($fileContent);
+
+                return $fileContentBase64;
+            }
         }
 
         //if no file
-        return null;
+        throw new Exception('No file to get data from');
     }
 
     /**
@@ -251,80 +288,80 @@ class DocumentService
      *
      * @param int $id
      *
-     * @return Collection
+     * @return SupportCollection<string, string>
      */
-    public function getDocument(int $id): Collection
+    public function getDocument(int $id): SupportCollection
     {
+        /**
+         * @var Document $document
+         */
         $document = Document::find($id);
 
-        $document->logFetched($document);
+        ModelRead::dispatch($document);
 
+        /**
+         * @var string $documentName
+         */
         $documentName = $document->original_name;
+
+        /**
+         * @var string $fileData
+         */
         $fileData = base64_decode($document->file_data);
 
-        $FileInfoResource = finfo_open();
-        $mimeType = finfo_buffer($FileInfoResource, $fileData, FILEINFO_MIME_TYPE);
+        /**
+         * @var finfo $fileInfoResource
+         */
+        $fileInfoResource = finfo_open();
 
-        $file = collect();
-        $file->name = $documentName;
-        $file->mime = $mimeType;
-        $file->data = $fileData;
-        $file->class = $document->documentable_type;
-        $file->isRights = $document->isRights();
+        /**
+         * @var string $mimeType
+         */
+        $mimeType = finfo_buffer($fileInfoResource, $fileData, FILEINFO_MIME_TYPE);
+
+        /**
+         * @var SupportCollection<string, string> $file
+         */
+        $file = new SupportCollection();
+        $file->put('name', $documentName);
+        $file->put('mime', $mimeType);
+        $file->put('data', $fileData);
+        $file->put('class', $document->documentable_type);
+        $file->put('isRights', (string) $document->isRights());
 
         return $file;
     }
 
     /**
-     * Undocumented function
-     *
-     * @param Employee $employee
+     * Get the value of documentClass
      *
      * @return string
      */
-    public function exportEmployeeDocuments(Employee $employee): string
+    public function getDocumentClass(): string
     {
-        SgcLogHelper::writeLog(target: $employee, action: 'exportEmployeeDocuments');
-
-        $documentables = $employee->employeeDocuments; // <= Particular line
-        $zipFileName = date('Y-m-d') . '_' . $employee->name . '.zip'; // <= Particular line
-
-        return $this->exportDocuments($documentables, $zipFileName);
+        return $this->documentClass;
     }
 
     /**
-     * Undocumented function
-     *
-     * @param Bond $bond
-     *
-     * @return string
-     */
-    public function exportBondDocuments(Bond $bond): string
-    {
-        SgcLogHelper::writeLog(target: $bond, action: 'exportBondDocuments');
-
-        $documentables = $bond->bondDocuments; // <= Particular line
-        $zipFileName = date('Y-m-d') . '_' . $bond->employee->name . '_' . $bond->id . '.zip'; // <= Particular line
-
-        return $this->exportDocuments($documentables, $zipFileName);
-    }
-
-    /**
-     * @param Collection $documentables
+     * @param EloquentCollection<int, EmployeeDocument|BondDocument> $documentables
      * @param string $zipFileName
      *
      * @return string
      *
      * @throws Exception
      */
-    public function exportDocuments(Collection $documentables, string $zipFileName): string
+    protected function exportGenericDocuments(EloquentCollection $documentables, string $zipFileName): string
     {
         $zip = new \ZipArchive();
 
         if ($zip->open($zipFileName, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
             foreach ($documentables as $documentable) {
-                $documentName = $documentable->document->original_name;
-                $documentData = base64_decode($documentable->document->file_data);
+                /**
+                 * @var Document $baseDocument
+                 */
+                $baseDocument = $documentable->document;
+                $documentName = $baseDocument->original_name;
+                $documentData = base64_decode($baseDocument->file_data);
                 $zip->addFromString($documentName, $documentData);
             }
 
@@ -336,22 +373,39 @@ class DocumentService
         throw new Exception('failed: $zip->open()', 1);
     }
 
-    private function getOldDocuments($document): Collection
+    /**
+     * Undocumented function
+     *
+     * @param array<string, string> $document
+     *
+     * @return EloquentCollection<int, Document>
+     */
+    private function getOldDocuments($document): EloquentCollection
     {
         $referentId = $this->documentClass::referentId();
 
         /* Quering for the documents with specific documentable type (EmployeeDocument or BondDocument) and document type
         where documentables referent (employee or bond) match the data from the form. */
-        return Document::whereHasMorph(
+        /**
+         * @var EloquentCollection<int, Document> $oldDocuments
+         */
+        $oldDocuments = Document::whereHasMorph(
             'documentable',
             $this->documentClass,
             static function (Builder $query) use ($document, $referentId) {
                 $query->where($referentId, $document[$referentId]);
             }
         )->where('document_type_id', $document['document_type_id'])->get();
+
+        return $oldDocuments;
     }
 
-    private function deleteOldDocuments(Collection $oldDocuments): void
+    /**
+     * @param EloquentCollection<int, Document> $oldDocuments
+     *
+     * @return void
+     */
+    private function deleteOldDocuments(EloquentCollection $oldDocuments): void
     {
         /* If there are old documents, get the documentables */
         $oldDocumentables = $oldDocuments->map(static function ($oldDocument) {

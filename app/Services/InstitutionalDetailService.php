@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\ModelRead;
 use App\Models\Employee;
 use App\Models\InstitutionalDetail;
 use Illuminate\Support\Arr;
@@ -39,7 +40,7 @@ class InstitutionalDetailService
      */
     public function read(InstitutionalDetail $institutionalDetail): InstitutionalDetail
     {
-        $institutionalDetail->logFetched();
+        ModelRead::dispatch($institutionalDetail);
 
         return $institutionalDetail;
     }

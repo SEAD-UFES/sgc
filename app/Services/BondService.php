@@ -2,21 +2,21 @@
 
 namespace App\Services;
 
+use App\Events\BondCreated;
+use App\Events\BondImpeded;
+use App\Events\BondLiberated;
+use App\Events\BondReviewRequested;
+use App\Events\ModelListed;
+use App\Events\ModelRead;
+use App\Events\RightsDocumentArchived;
 use App\Helpers\TextHelper;
 use App\Models\Bond;
 use App\Models\BondDocument;
 use App\Models\Document;
 use App\Models\DocumentType;
 use App\Models\EmployeeDocument;
-use App\Models\User;
-use App\Models\UserType;
-use App\Notifications\BondImpededNotification;
-use App\Notifications\NewBondNotification;
-use App\Notifications\NewRightsNotification;
-use App\Notifications\RequestReviewNotification;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Notification;
 
 class BondService
 {
@@ -27,7 +27,7 @@ class BondService
      */
     public function list(): LengthAwarePaginator
     {
-        (new Bond())->logListed();
+        ModelListed::dispatch(Bond::class);
 
         $query = Bond::with(['employee', 'course', 'role', 'pole']);
         $query = $query->AcceptRequest(Bond::$accepted_filters)->filter();
@@ -71,19 +71,26 @@ class BondService
                 $bondDocument->bond_id = $bond->id;
                 $bondDocument->save();
 
+                /**
+                 * @var Document $employeeBaseDocument
+                 */
+                $employeeBaseDocument = $employeeDocument->document;
+
+                /**
+                 * @var DocumentType $employeeBaseDocumentType
+                 */
+                $employeeBaseDocumentType = $employeeBaseDocument->documentType;
+
                 $newDocument = new Document();
-                $newDocument->original_name = $employeeDocument->document?->original_name;
-                $newDocument->file_data = $employeeDocument->document?->file_data;
-                $newDocument->document_type_id = $employeeDocument->document?->documentType?->id;
-                $newDocument->documentable_type = \App\Models\BondDocument::class;
+                $newDocument->original_name = $employeeBaseDocument->original_name;
+                $newDocument->file_data = $employeeBaseDocument->file_data;
+                $newDocument->document_type_id = $employeeBaseDocumentType->id;
+                $newDocument->documentable_type = BondDocument::class;
                 $newDocument->documentable_id = $bondDocument->id;
                 $newDocument->save();
             }
 
-            //Notify grantor assistants
-            $ass_UT = UserType::firstWhere('acronym', 'ass');
-            $coordOrAssistants = User::where('active', true)->whereActiveUserType($ass_UT?->id)->get();
-            Notification::send($coordOrAssistants, new NewBondNotification($bond));
+            BondCreated::dispatch($bond);
         });
 
         return $bond;
@@ -98,7 +105,7 @@ class BondService
      */
     public function read(Bond $bond): Bond
     {
-        $bond->logFetched();
+        ModelRead::dispatch($bond);
 
         return $bond;
     }
@@ -156,39 +163,28 @@ class BondService
      */
     public function review(array $attributes, Bond $bond): Bond
     {
-        //get impediment; check if bond have 'termo'; if not, impediment = true.
+        //get impediment; check if bond have 'rights'; if not, impediment = true.
         $attributes['impediment'] = $attributes['impediment'] === '1';
         //$bond->impediment_description = $attributes['impediment_description'];
         $attributes['uaba_checked_at'] = now();
 
-        $termo_document_type_id = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first()?->id;
-        $termo_document_count = Document::where('document_type_id', $termo_document_type_id)
-            ->whereHasMorph('documentable', \App\Models\BondDocument::class, static function ($query) use ($bond) {
+        $rights_document_type_id = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first()?->id;
+        $rights_document_count = Document::where('document_type_id', $rights_document_type_id)
+            ->whereHasMorph('documentable', BondDocument::class, static function ($query) use ($bond) {
                 $query->where('bond_id', $bond->id);
             })->count();
 
-        if ($termo_document_count <= 0) {
+        if ($rights_document_count <= 0) {
             $attributes['impediment'] = true;
         }
 
         $bond->update($attributes);
 
         if ($bond->impediment === true) {
-            $sec_UT = UserType::firstWhere('acronym', 'sec');
-            $sec_users = User::where('active', true)->whereActiveUserType($sec_UT?->id)->get();
-
-            $coord_UT = UserType::firstWhere('acronym', 'coord');
-            $course_id = $bond->course?->id;
-            $coord_users = User::where('active', true)->whereActiveUserType($coord_UT?->id)->whereUtaCourseId($course_id)->get();
-
-            $users = $sec_users->merge($coord_users);
-
-            Notification::send($users, new BondImpededNotification($bond));
+            BondImpeded::dispatch($bond);
         } else {
-            $ldi_UT = UserType::firstWhere('acronym', 'ldi');
-            $ldi_users = User::where('active', true)->whereActiveUserType($ldi_UT?->id)->get();
-
-            Notification::send($ldi_users, new NewRightsNotification($bond));
+            BondLiberated::dispatch($bond);
+            RightsDocumentArchived::dispatch($bond);
         }
 
         return $bond;
@@ -204,19 +200,7 @@ class BondService
      */
     public function requestReview(array $attributes, Bond $bond): Bond
     {
-        $sec_UT = UserType::firstWhere('acronym', 'sec');
-        $sec_users = User::where('active', true)->whereActiveUserType($sec_UT?->id)->get();
-
-        $coord_UT = UserType::firstWhere('acronym', 'coord');
-        $course_id = $bond->course?->id;
-        $coord_users = User::where('active', true)->whereActiveUserType($coord_UT?->id)->whereUtaCourseId($course_id)->get();
-
-        $ass_UT = UserType::firstWhere('acronym', 'ass');
-        $ass_users = User::where('active', true)->whereActiveUserType($ass_UT?->id)->get();
-
-        $users = $sec_users->merge($coord_users)->merge($ass_users);
-
-        Notification::send($users, new RequestReviewNotification($bond));
+        BondReviewRequested::dispatch($bond);
 
         return $bond;
     }

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 class MailService
 {
     private string $educationalDesignTeam = 'dedi.sead@ufes.br';
+
     private string $tutoringCoordinationEmail = 'tutoria.sead@ufes.br';
 
     /**

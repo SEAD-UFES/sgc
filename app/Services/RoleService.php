@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Events\ModelListed;
+use App\Events\ModelRead;
 use App\Helpers\TextHelper;
 use App\Models\Role;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -16,7 +18,7 @@ class RoleService
      */
     public function list(): LengthAwarePaginator
     {
-        (new Role())->logListed();
+        ModelListed::dispatch(Role::class);
 
         $roles_query = new Role();
         $roles_query = $roles_query->AcceptRequest(Role::$accepted_filters)->filter();
@@ -31,7 +33,7 @@ class RoleService
     /**
      * Undocumented function
      *
-     * @param array $attributes
+     * @param array<string, string> $attributes
      *
      * @return Role
      */
@@ -57,7 +59,7 @@ class RoleService
      */
     public function read(Role $role): Role
     {
-        $role->logFetched();
+        ModelRead::dispatch($role);
 
         return $role;
     }
@@ -65,7 +67,7 @@ class RoleService
     /**
      * Undocumented function
      *
-     * @param array $attributes
+     * @param array<string, string> $attributes
      * @param Role $role
      *
      * @return Role
