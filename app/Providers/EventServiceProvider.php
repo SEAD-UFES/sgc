@@ -62,13 +62,6 @@ class EventServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected $subscribe = [];
-
-    /**
-     * Register any events for your application.
-     *
-     * @return void
-     */
     public function boot()
     {
         Approved::observe(ApprovedObserver::class);
@@ -99,6 +92,6 @@ class EventServiceProvider extends ServiceProvider
      */
     public function shouldDiscoverEvents()
     {
-        return false;
+        return true;
     }
 }
