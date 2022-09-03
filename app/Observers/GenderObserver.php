@@ -2,11 +2,17 @@
 
 namespace App\Observers;
 
-use App\Helpers\SgcLogHelper;
+use App\Helpers\ModelActivityHelper;
+use App\Logging\LoggerInterface;
 use App\Models\Gender;
+use Spatie\Activitylog\Models\Activity;
 
 class GenderObserver
 {
+    public function __construct(private LoggerInterface $logger, private ModelActivityHelper $modelActivityHelper)
+    {
+    }
+
     /**
      * Handle the Gender "created" event.
      *
@@ -15,7 +21,10 @@ class GenderObserver
      */
     public function created(Gender $gender)
     {
-        SgcLogHelper::writeLog(target: 'Gender', action: __FUNCTION__, model_json: $gender->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('created', $gender);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
@@ -26,7 +35,7 @@ class GenderObserver
      */
     public function updating(Gender $gender)
     {
-        SgcLogHelper::writeLog(target: 'Gender', action: __FUNCTION__, model_json: json_encode($gender->getOriginal(), JSON_UNESCAPED_UNICODE));
+        $this->logger->logModelEvent('updating', $gender);
     }
     
     /**
@@ -37,7 +46,10 @@ class GenderObserver
      */
     public function updated(Gender $gender)
     {
-        SgcLogHelper::writeLog(target: 'Gender', action: __FUNCTION__, model_json: $gender->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('updated', $gender);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
@@ -48,7 +60,10 @@ class GenderObserver
      */
     public function deleted(Gender $gender)
     {
-        SgcLogHelper::writeLog(target: 'Gender', action: __FUNCTION__, model_json: $gender->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('deleted', $gender);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
@@ -59,7 +74,6 @@ class GenderObserver
      */
     public function restored(Gender $gender)
     {
-        //
     }
 
     /**
@@ -70,16 +84,5 @@ class GenderObserver
      */
     public function forceDeleted(Gender $gender)
     {
-        //
-    }
-
-    public function listed()
-    {
-        SgcLogHelper::writeLog(target: 'Gender', action: __FUNCTION__);
-    }
-
-    public function fetched(Gender $gender)
-    {
-        SgcLogHelper::writeLog(target: 'Gender', action: __FUNCTION__, model_json: $gender->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

@@ -2,84 +2,87 @@
 
 namespace App\Observers;
 
-use App\Helpers\SgcLogHelper;
+use App\Helpers\ModelActivityHelper;
+use App\Logging\LoggerInterface;
 use App\Models\GrantType;
+use Spatie\Activitylog\Models\Activity;
 
 class GrantTypeObserver
 {
+    public function __construct(private LoggerInterface $logger, private ModelActivityHelper $modelActivityHelper)
+    {
+    }
+
     /**
      * Handle the GrantType "created" event.
      *
-     * @param  \App\Models\GrantType  $grantType
+     * @param  GrantType  $grantType
      * @return void
      */
     public function created(GrantType $grantType)
     {
-        SgcLogHelper::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: $grantType->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('created', $grantType);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
      * Handle the GrantType "updated" event.
      *
-     * @param  \App\Models\GrantType  $grantType
+     * @param  GrantType  $grantType
      * @return void
      */
     public function updating(GrantType $grantType)
     {
-        SgcLogHelper::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: json_encode($grantType->getOriginal(), JSON_UNESCAPED_UNICODE));
+        $this->logger->logModelEvent('updating', $grantType);
     }
 
     /**
      * Handle the GrantType "updated" event.
      *
-     * @param  \App\Models\GrantType  $grantType
+     * @param  GrantType  $grantType
      * @return void
      */
     public function updated(GrantType $grantType)
     {
-        SgcLogHelper::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: $grantType->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('updated', $grantType);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
      * Handle the GrantType "deleted" event.
      *
-     * @param  \App\Models\GrantType  $grantType
+     * @param  GrantType  $grantType
      * @return void
      */
     public function deleted(GrantType $grantType)
     {
-        SgcLogHelper::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: $grantType->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('deleted', $grantType);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
      * Handle the GrantType "restored" event.
      *
-     * @param  \App\Models\GrantType  $grantType
+     * @param  GrantType  $grantType
      * @return void
      */
     public function restored(GrantType $grantType)
     {
-        //
     }
 
     /**
      * Handle the GrantType "force deleted" event.
      *
-     * @param  \App\Models\GrantType  $grantType
+     * @param  GrantType  $grantType
      * @return void
      */
     public function forceDeleted(GrantType $grantType)
     {
-        //
-    }
-
-    public function listed()
-    {
-        SgcLogHelper::writeLog(target: 'GrantType', action: __FUNCTION__);
-    }
-
-    public function fetched(GrantType $grantType)
-    {
-        SgcLogHelper::writeLog(target: 'GrantType', action: __FUNCTION__, model_json: $grantType->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

@@ -2,84 +2,87 @@
 
 namespace App\Observers;
 
-use App\Helpers\SgcLogHelper;
+use App\Helpers\ModelActivityHelper;
+use App\Logging\LoggerInterface;
 use App\Models\Bond;
+use Spatie\Activitylog\Models\Activity;
 
 class BondObserver
 {
+    public function __construct(private LoggerInterface $logger, private ModelActivityHelper $modelActivityHelper)
+    {
+    }
+
     /**
      * Handle the Bond "created" event.
      *
-     * @param  \App\Models\Bond  $bond
+     * @param  Bond  $bond
      * @return void
      */
     public function created(Bond $bond)
     {
-        SgcLogHelper::writeLog(target: 'Bond', action: __FUNCTION__, model_json: $bond->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('created', $bond);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
      * Handle the Bond "updated" event.
      *
-     * @param  \App\Models\Bond  $bond
+     * @param  Bond  $bond
      * @return void
      */
     public function updating(Bond $bond)
     {
-        SgcLogHelper::writeLog(target: 'Bond', action: __FUNCTION__, model_json: json_encode($bond->getOriginal(), JSON_UNESCAPED_UNICODE));
+        $this->logger->logModelEvent('updating', $bond);
     }
 
     /**
      * Handle the Bond "updated" event.
      *
-     * @param  \App\Models\Bond  $bond
+     * @param  Bond  $bond
      * @return void
      */
     public function updated(Bond $bond)
     {
-        SgcLogHelper::writeLog(target: 'Bond', action: __FUNCTION__, model_json: $bond->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('updated', $bond);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
      * Handle the Bond "deleted" event.
      *
-     * @param  \App\Models\Bond  $bond
+     * @param  Bond  $bond
      * @return void
      */
     public function deleted(Bond $bond)
     {
-        SgcLogHelper::writeLog(target: 'Bond', action: __FUNCTION__, model_json: $bond->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('deleted', $bond);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
      * Handle the Bond "restored" event.
      *
-     * @param  \App\Models\Bond  $bond
+     * @param  Bond  $bond
      * @return void
      */
     public function restored(Bond $bond)
     {
-        //
     }
 
     /**
      * Handle the Bond "force deleted" event.
      *
-     * @param  \App\Models\Bond  $bond
+     * @param  Bond  $bond
      * @return void
      */
     public function forceDeleted(Bond $bond)
     {
-        //
-    }
-
-    public function listed()
-    {
-        SgcLogHelper::writeLog(target: 'Bond', action: __FUNCTION__);
-    }
-
-    public function fetched(Bond $bond)
-    {
-        SgcLogHelper::writeLog(target: 'Bond', action: __FUNCTION__, model_json: $bond->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

@@ -2,11 +2,17 @@
 
 namespace App\Observers;
 
-use App\Helpers\SgcLogHelper;
+use App\Helpers\ModelActivityHelper;
+use App\Logging\LoggerInterface;
 use App\Models\EmployeeDocument;
+use Spatie\Activitylog\Models\Activity;
 
 class EmployeeDocumentObserver
 {
+    public function __construct(private LoggerInterface $logger, private ModelActivityHelper $modelActivityHelper)
+    {
+    }
+
     /**
      * Handle the EmployeeDocument "created" event.
      *
@@ -15,7 +21,10 @@ class EmployeeDocumentObserver
      */
     public function created(EmployeeDocument $employeeDocument)
     {
-        SgcLogHelper::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: $employeeDocument->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('created', $employeeDocument);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
@@ -26,7 +35,7 @@ class EmployeeDocumentObserver
      */
     public function updating(EmployeeDocument $employeeDocument)
     {
-        SgcLogHelper::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: json_encode($employeeDocument->getOriginal(), JSON_UNESCAPED_UNICODE));
+        $this->logger->logModelEvent('updating', $employeeDocument);
     }
 
     /**
@@ -37,7 +46,10 @@ class EmployeeDocumentObserver
      */
     public function updated(EmployeeDocument $employeeDocument)
     {
-        SgcLogHelper::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: $employeeDocument->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('updated', $employeeDocument);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
@@ -48,7 +60,10 @@ class EmployeeDocumentObserver
      */
     public function deleted(EmployeeDocument $employeeDocument)
     {
-        SgcLogHelper::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: $employeeDocument->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('deleted', $employeeDocument);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
@@ -59,7 +74,6 @@ class EmployeeDocumentObserver
      */
     public function restored(EmployeeDocument $employeeDocument)
     {
-        //
     }
 
     /**
@@ -70,16 +84,5 @@ class EmployeeDocumentObserver
      */
     public function forceDeleted(EmployeeDocument $employeeDocument)
     {
-        //
-    }
-
-    public function listed()
-    {
-        SgcLogHelper::writeLog(target: 'EmployeeDocument', action: __FUNCTION__);
-    }
-
-    public function fetched(EmployeeDocument $employeeDocument)
-    {
-        SgcLogHelper::writeLog(target: 'EmployeeDocument', action: __FUNCTION__, model_json: $employeeDocument->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

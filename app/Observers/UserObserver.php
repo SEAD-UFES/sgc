@@ -2,11 +2,17 @@
 
 namespace App\Observers;
 
-use App\Helpers\SgcLogHelper;
+use App\Helpers\ModelActivityHelper;
+use App\Logging\LoggerInterface;
 use App\Models\User;
+use Spatie\Activitylog\Models\Activity;
 
 class UserObserver
 {
+    public function __construct(private LoggerInterface $logger, private ModelActivityHelper $modelActivityHelper)
+    {
+    }
+
     /**
      * Handle the User "created" event.
      *
@@ -15,7 +21,10 @@ class UserObserver
      */
     public function created(User $user)
     {
-        SgcLogHelper::writeLog(target: 'User', action: __FUNCTION__, model_json: $user->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('created', $user);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
@@ -26,7 +35,7 @@ class UserObserver
      */
     public function updating(User $user)
     {
-        SgcLogHelper::writeLog(target: 'User', action: __FUNCTION__, model_json: json_encode($user->getOriginal(), JSON_UNESCAPED_UNICODE));
+        $this->logger->logModelEvent('updating', $user);
     }
 
     /**
@@ -37,7 +46,10 @@ class UserObserver
      */
     public function updated(User $user)
     {
-        SgcLogHelper::writeLog(target: 'User', action: __FUNCTION__, model_json: $user->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('updated', $user);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
@@ -48,7 +60,10 @@ class UserObserver
      */
     public function deleted(User $user)
     {
-        SgcLogHelper::writeLog(target: 'User', action: __FUNCTION__, model_json: $user->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('deleted', $user);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
@@ -59,7 +74,6 @@ class UserObserver
      */
     public function restored(User $user)
     {
-        //
     }
 
     /**
@@ -70,16 +84,5 @@ class UserObserver
      */
     public function forceDeleted(User $user)
     {
-        //
-    }
-
-    public function listed()
-    {
-        SgcLogHelper::writeLog(target: 'User', action: __FUNCTION__);
-    }
-
-    public function fetched(User $user)
-    {
-        SgcLogHelper::writeLog(target: 'User', action: __FUNCTION__, model_json: $user->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

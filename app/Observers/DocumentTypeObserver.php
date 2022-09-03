@@ -2,84 +2,87 @@
 
 namespace App\Observers;
 
-use App\Helpers\SgcLogHelper;
+use App\Helpers\ModelActivityHelper;
+use App\Logging\LoggerInterface;
 use App\Models\DocumentType;
+use Spatie\Activitylog\Models\Activity;
 
 class DocumentTypeObserver
 {
+    public function __construct(private LoggerInterface $logger, private ModelActivityHelper $modelActivityHelper)
+    {
+    }
+
     /**
      * Handle the DocumentType "created" event.
      *
-     * @param  \App\Models\DocumentType  $documentType
+     * @param  DocumentType  $documentType
      * @return void
      */
     public function created(DocumentType $documentType)
     {
-        SgcLogHelper::writeLog(target: 'DocumentType', action: __FUNCTION__, model_json: $documentType->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('created', $documentType);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
      * Handle the DocumentType "updated" event.
      *
-     * @param  \App\Models\DocumentType  $documentType
+     * @param  DocumentType  $documentType
      * @return void
      */
     public function updating(DocumentType $documentType)
     {
-        SgcLogHelper::writeLog(target: 'DocumentType', action: __FUNCTION__, model_json: json_encode($documentType->getOriginal(), JSON_UNESCAPED_UNICODE));
+        $this->logger->logModelEvent('updating', $documentType);
     }
 
     /**
      * Handle the DocumentType "updated" event.
      *
-     * @param  \App\Models\DocumentType  $documentType
+     * @param  DocumentType  $documentType
      * @return void
      */
     public function updated(DocumentType $documentType)
     {
-        SgcLogHelper::writeLog(target: 'DocumentType', action: __FUNCTION__, model_json: $documentType->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('updated', $documentType);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
      * Handle the DocumentType "deleted" event.
      *
-     * @param  \App\Models\DocumentType  $documentType
+     * @param  DocumentType  $documentType
      * @return void
      */
     public function deleted(DocumentType $documentType)
     {
-        SgcLogHelper::writeLog(target: 'DocumentType', action: __FUNCTION__, model_json: $documentType->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('deleted', $documentType);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
      * Handle the DocumentType "restored" event.
      *
-     * @param  \App\Models\DocumentType  $documentType
+     * @param  DocumentType  $documentType
      * @return void
      */
     public function restored(DocumentType $documentType)
     {
-        //
     }
 
     /**
      * Handle the DocumentType "force deleted" event.
      *
-     * @param  \App\Models\DocumentType  $documentType
+     * @param  DocumentType  $documentType
      * @return void
      */
     public function forceDeleted(DocumentType $documentType)
     {
-        //
-    }
-
-    public function listed()
-    {
-        SgcLogHelper::writeLog(target: 'DocumentType', action: __FUNCTION__);
-    }
-
-    public function fetched(DocumentType $documentType)
-    {
-        SgcLogHelper::writeLog(target: 'DocumentType', action: __FUNCTION__, model_json: $documentType->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

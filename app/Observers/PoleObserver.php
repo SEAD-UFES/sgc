@@ -2,11 +2,17 @@
 
 namespace App\Observers;
 
-use App\Helpers\SgcLogHelper;
+use App\Helpers\ModelActivityHelper;
+use App\Logging\LoggerInterface;
 use App\Models\Pole;
+use Spatie\Activitylog\Models\Activity;
 
 class PoleObserver
 {
+    public function __construct(private LoggerInterface $logger, private ModelActivityHelper $modelActivityHelper)
+    {
+    }
+
     /**
      * Handle the Pole "created" event.
      *
@@ -15,7 +21,10 @@ class PoleObserver
      */
     public function created(Pole $pole)
     {
-        SgcLogHelper::writeLog(target: 'Pole', action: __FUNCTION__, model_json: $pole->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('created', $pole);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
@@ -26,7 +35,7 @@ class PoleObserver
      */
     public function updating(Pole $pole)
     {
-        SgcLogHelper::writeLog(target: 'Pole', action: __FUNCTION__, model_json: json_encode($pole->getOriginal(), JSON_UNESCAPED_UNICODE));
+        $this->logger->logModelEvent('updating', $pole);
     }
 
     /**
@@ -37,7 +46,10 @@ class PoleObserver
      */
     public function updated(Pole $pole)
     {
-        SgcLogHelper::writeLog(target: 'Pole', action: __FUNCTION__, model_json: $pole->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('updated', $pole);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
@@ -48,7 +60,10 @@ class PoleObserver
      */
     public function deleted(Pole $pole)
     {
-        SgcLogHelper::writeLog(target: 'Pole', action: __FUNCTION__, model_json: $pole->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('deleted', $pole);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
@@ -59,7 +74,6 @@ class PoleObserver
      */
     public function restored(Pole $pole)
     {
-        //
     }
 
     /**
@@ -70,16 +84,5 @@ class PoleObserver
      */
     public function forceDeleted(Pole $pole)
     {
-        //
-    }
-
-    public function listed()
-    {
-        SgcLogHelper::writeLog(target: 'Pole', action: __FUNCTION__);
-    }
-
-    public function fetched(Pole $pole)
-    {
-        SgcLogHelper::writeLog(target: 'Pole', action: __FUNCTION__, model_json: $pole->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

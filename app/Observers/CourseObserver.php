@@ -2,84 +2,87 @@
 
 namespace App\Observers;
 
-use App\Helpers\SgcLogHelper;
+use App\Helpers\ModelActivityHelper;
+use App\Logging\LoggerInterface;
 use App\Models\Course;
+use Spatie\Activitylog\Models\Activity;
 
 class CourseObserver
 {
+    public function __construct(private LoggerInterface $logger, private ModelActivityHelper $modelActivityHelper)
+    {
+    }
+
     /**
      * Handle the Course "created" event.
      *
-     * @param  \App\Models\Course  $course
+     * @param  Course  $course
      * @return void
      */
     public function created(Course $course)
     {
-        SgcLogHelper::writeLog(target: 'Course', action: __FUNCTION__, model_json: $course->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('created', $course);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
      * Handle the Course "updated" event.
      *
-     * @param  \App\Models\Course  $course
+     * @param  Course  $course
      * @return void
      */
     public function updating(Course $course)
     {
-        SgcLogHelper::writeLog(target: 'Course', action: __FUNCTION__, model_json: json_encode($course->getOriginal(), JSON_UNESCAPED_UNICODE));
+        $this->logger->logModelEvent('updating', $course);
     }
 
     /**
      * Handle the Course "updated" event.
      *
-     * @param  \App\Models\Course  $course
+     * @param  Course  $course
      * @return void
      */
     public function updated(Course $course)
     {
-        SgcLogHelper::writeLog(target: 'Course', action: __FUNCTION__, model_json: $course->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('updated', $course);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
      * Handle the Course "deleted" event.
      *
-     * @param  \App\Models\Course  $course
+     * @param  Course  $course
      * @return void
      */
     public function deleted(Course $course)
     {
-        SgcLogHelper::writeLog(target: 'Course', action: __FUNCTION__, model_json: $course->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('deleted', $course);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
      * Handle the Course "restored" event.
      *
-     * @param  \App\Models\Course  $course
+     * @param  Course  $course
      * @return void
      */
     public function restored(Course $course)
     {
-        //
     }
 
     /**
      * Handle the Course "force deleted" event.
      *
-     * @param  \App\Models\Course  $course
+     * @param  Course  $course
      * @return void
      */
     public function forceDeleted(Course $course)
     {
-        //
-    }
-
-    public function listed()
-    {
-        SgcLogHelper::writeLog(target: 'Course', action: __FUNCTION__);
-    }
-
-    public function fetched(Course $course)
-    {
-        SgcLogHelper::writeLog(target: 'Course', action: __FUNCTION__, model_json: $course->toJson(JSON_UNESCAPED_UNICODE));
     }
 }

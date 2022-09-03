@@ -2,13 +2,17 @@
 
 namespace App\Observers;
 
+use App\Helpers\ModelActivityHelper;
+use App\Logging\LoggerInterface;
 use App\Models\UserType;
-use App\Helpers\SgcLogHelper;
-use Illuminate\Support\Facades\Log;
-use PhpOffice\PhpSpreadsheet\Calculation\Statistical\AggregateBase;
+use Spatie\Activitylog\Models\Activity;
 
 class UserTypeObserver
 {
+    public function __construct(private LoggerInterface $logger, private ModelActivityHelper $modelActivityHelper)
+    {
+    }
+
     /**
      * Handle the UserType "created" event.
      *
@@ -17,7 +21,10 @@ class UserTypeObserver
      */
     public function created(UserType $userType)
     {
-        SgcLogHelper::writeLog(target: 'UserType', action: __FUNCTION__, model_json: $userType->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('created', $userType);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
@@ -28,7 +35,7 @@ class UserTypeObserver
      */
     public function updating(UserType $userType)
     {
-        SgcLogHelper::writeLog(target: 'UserType', action: __FUNCTION__, model_json: json_encode($userType->getOriginal(), JSON_UNESCAPED_UNICODE));
+        $this->logger->logModelEvent('updating', $userType);
     }
 
     /**
@@ -39,7 +46,10 @@ class UserTypeObserver
      */
     public function updated(UserType $userType)
     {
-        SgcLogHelper::writeLog(target: 'UserType', action: __FUNCTION__, model_json: $userType->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('updated', $userType);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
@@ -50,7 +60,10 @@ class UserTypeObserver
      */
     public function deleted(UserType $userType)
     {
-        SgcLogHelper::writeLog(target: 'UserType', action: __FUNCTION__, model_json: $userType->toJson(JSON_UNESCAPED_UNICODE));
+        /** @var Activity $activity */
+        $activity = $this->modelActivityHelper->getModelEventActivity('deleted', $userType);
+
+        $this->logger->logModelEvent($activity);
     }
 
     /**
@@ -61,7 +74,6 @@ class UserTypeObserver
      */
     public function restored(UserType $userType)
     {
-        //
     }
 
     /**
@@ -72,16 +84,5 @@ class UserTypeObserver
      */
     public function forceDeleted(UserType $userType)
     {
-        //
-    }
-
-    public function listed()
-    {
-        SgcLogHelper::writeLog(target: 'UserType', action: __FUNCTION__);
-    }
-
-    public function fetched(UserType $userType)
-    {
-        SgcLogHelper::writeLog(target: 'UserType', action: __FUNCTION__, model_json: $userType->toJson(JSON_UNESCAPED_UNICODE));
     }
 }
