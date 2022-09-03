@@ -4,13 +4,20 @@ namespace App\Helpers;
 
 class TextHelper
 {
-    /*
+    /**
      * returns text correctly cased
+     *
+     * @param ?string $string
+     * @param array<int, string> $delimiters
+     * @param array<int, string> $exceptions
      *
      * @return string
      */
-    public static function titleCase($string, $delimiters = [' '/* , "-", ".", "'", "O'", "Mc" */], $exceptions = ['da', 'de', 'do', 'das', 'dos', /* "út", "u", "s", "és", "utca", "tér", "krt", "körút", "sétány", */ 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX', 'XXI', 'XXII', 'XXIII', 'XXIV', 'XXV', 'XXVI', 'XXVII', 'XXVIII', 'XXIX', 'XXX', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th'])
-    {
+    public static function titleCase(
+        ?string $string = '',
+        array $delimiters = [' '/* , "-", ".", "'", "O'", "Mc" */],
+        array $exceptions = ['da', 'de', 'do', 'das', 'dos', /* "út", "u", "s", "és", "utca", "tér", "krt", "körút", "sétány", */ 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX', 'XXI', 'XXII', 'XXIII', 'XXIV', 'XXV', 'XXVI', 'XXVII', 'XXVIII', 'XXIX', 'XXX', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th']
+    ): string {
         /*
         * Exceptions in lower case are words you don't want converted
         * Exceptions all in upper case are any words you don't want converted to title case
@@ -46,9 +53,11 @@ class TextHelper
     /*
      * replaces characters with plain latin versions
      *
+     * @param string $str
+     *
      * @return string
      */
-    public static function removeAccents($str)
+    public static function removeAccents(string $str): string
     {
         return transliterator_transliterate('NFKC; [:Nonspacing Mark:] Remove; NFKC; Any-Latin; Latin-ASCII', $str);
     }

@@ -15,6 +15,6 @@ class NetworkHelper
             }
         }
 
-        return 'CLI Mode?';
+        return 'No IP. CLI?';
     }
 }
