@@ -2,25 +2,25 @@
 
 namespace App\Notifications;
 
-use App\Helpers\SgcLogHelper;
 use App\Models\Bond;
+use App\Models\Course;
+use App\Models\Employee;
+use App\Models\Role;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
-class BondImpededNotification extends Notification /* implements ShouldQueue */ //Queueing disabled while in development
+class BondImpeded extends Notification implements ShouldQueue
 {
     use Queueable;
-
-    protected $bond;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($bond)
+    public function __construct(protected Bond $bond)
     {
-        $this->bond = Bond::with(['course', 'employee', 'role'])->find($bond->id);
     }
 
     /**
@@ -28,9 +28,9 @@ class BondImpededNotification extends Notification /* implements ShouldQueue */ 
      *
      * @param  mixed  $notifiable
      *
-     * @return array
+     * @return array<int, string>
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['database'/* , 'mail' */];
     }
@@ -55,18 +55,31 @@ class BondImpededNotification extends Notification /* implements ShouldQueue */ 
      *
      * @param  mixed  $notifiable
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
-        SgcLogHelper::writeLog(target: 'BondImpededNotification', model_json: $this->bond->toJson(JSON_UNESCAPED_UNICODE));
+        /**
+         * @var Course $course
+         */
+        $course = $this->bond->course;
+
+        /**
+         * @var Employee $employee
+         */
+        $employee = $this->bond->employee;
+
+        /**
+         * @var Role $role
+         */
+        $role = $this->bond->role;
 
         return [
-            'bond_id' => $this->bond->id,
-            'course_name' => $this->bond->course->name,
-            'employee_name' => $this->bond->employee->name,
-            'role_name' => $this->bond->role->name,
-            'description' => $this->bond->impediment_description,
+            'bond_id' => (string) $this->bond->id,
+            'course_name' => $course->name,
+            'employee_name' => $employee->name,
+            'role_name' => $role->name,
+            'description' => (string) $this->bond->impediment_description,
         ];
     }
 }
