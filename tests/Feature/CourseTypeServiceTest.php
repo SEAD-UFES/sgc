@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Events\ModelListed;
 use App\Models\CourseType;
 use App\Services\CourseTypeService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -44,6 +45,7 @@ class CourseTypeServiceTest extends TestCase
             $courseTypes = $this->service->list();
 
             //verifications
+            Event::assertDispatched(ModelListed::class);
             $this->assertEquals('Type Alpha', $courseTypes->first()->name);
             $this->assertCount(2, $courseTypes);
         });

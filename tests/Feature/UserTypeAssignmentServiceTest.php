@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Events\ModelListed;
+use App\Events\ModelRead;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\UserType;
@@ -53,7 +55,7 @@ class UserTypeAssignmentServiceTest extends TestCase
             $userTypeAssignments = $this->service->list();
 
             //verifications
-            Event::assertDispatched('eloquent.listed: ' . UserTypeAssignment::class);
+            Event::assertDispatched(ModelListed::class);
             $this->assertEquals('johndoe@test.com', UserTypeAssignment::find(1)->user->email);
             $this->assertCount(2, $userTypeAssignments);
         });
@@ -72,7 +74,7 @@ class UserTypeAssignmentServiceTest extends TestCase
             $userTypeAssignment = $this->service->read($userTypeAssignment);
 
             //verifications
-            Event::assertDispatched('eloquent.fetched: ' . UserTypeAssignment::class);
+            Event::assertDispatched(ModelRead::class);
             $this->assertEquals('johndoe@test.com', $userTypeAssignment->user->email);
             $this->assertCount(2, UserTypeAssignment::all());
         });

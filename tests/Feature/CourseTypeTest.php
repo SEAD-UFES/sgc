@@ -97,7 +97,7 @@ class CourseTypeTest extends TestCase
     public function guestShouldntListCourseTypes()
     {
         $this->get('/coursetypes')
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**

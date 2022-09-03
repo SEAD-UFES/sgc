@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Events\ModelListed;
+use App\Events\ModelRead;
 use App\Models\Approved;
 use App\Models\ApprovedState;
 use App\Models\Course;
@@ -63,7 +65,7 @@ class ApprovedServiceTest extends TestCase
             $approveds = $this->service->list();
 
             //verifications
-            Event::assertDispatched('eloquent.listed: ' . Approved::class);
+            Event::assertDispatched(ModelListed::class);
             $this->assertContains('John Doe', $approveds->pluck('name')->toArray());
             $this->assertContains('Jane Doe', $approveds->pluck('name')->toArray());
             $this->assertCount(2, $approveds);
@@ -88,7 +90,7 @@ class ApprovedServiceTest extends TestCase
             $approved = $this->service->read($approved);
 
             //verifications
-            Event::assertDispatched('eloquent.fetched: ' . Approved::class);
+            Event::assertDispatched(ModelRead::class);
             $this->assertEquals('John Doe', $approved->name);
             $this->assertCount(2, Approved::all());
         });

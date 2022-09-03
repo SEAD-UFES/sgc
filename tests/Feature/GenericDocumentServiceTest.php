@@ -2,8 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Events\ModelRead;
 use App\Models\BondDocument;
 use App\Models\Document;
+use App\Models\Employee;
 use App\Models\EmployeeDocument;
 use App\Services\DocumentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -13,6 +15,15 @@ use Tests\TestCase;
 class GenericDocumentServiceTest extends TestCase
 {
     use RefreshDatabase;
+
+    private DocumentService $service;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->service = new DocumentService(EmployeeDocument::class, Employee::class);
+    }
 
     //setting up scenario for all tests
     public function setUp(): void
@@ -35,7 +46,7 @@ class GenericDocumentServiceTest extends TestCase
             ]
         );
 
-        $this->service = new DocumentService();
+        //
     }
 
     /**
@@ -51,7 +62,7 @@ class GenericDocumentServiceTest extends TestCase
             $document = $this->service->read($document);
 
             //verifications
-            Event::assertDispatched('eloquent.fetched: ' . Document::class);
+            Event::assertDispatched(ModelRead::class);
             $this->assertEquals('Document Employee Alpha.pdf', $document->original_name);
             $this->assertCount(2, Document::all());
         });
@@ -67,9 +78,9 @@ class GenericDocumentServiceTest extends TestCase
             $document = $this->service->getDocument(1);
 
             //verifications
-            Event::assertDispatched('eloquent.fetched: ' . Document::class);
-            $this->assertEquals('Document Employee Alpha.pdf', $document->name);
-            $this->assertEquals(EmployeeDocument::class, $document->class);
+            Event::assertDispatched(ModelRead::class);
+            $this->assertEquals('Document Employee Alpha.pdf', $document->get('name'));
+            $this->assertEquals(EmployeeDocument::class, $document->get('class'));
         });
     }
 }

@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Enums\KnowledgeAreas;
+use App\Events\ModelListed;
+use App\Events\ModelRead;
 use App\Models\Bond;
 use App\Models\BondDocument;
 use App\Models\Course;
@@ -88,7 +90,7 @@ class BondServiceTest extends TestCase
             }
 
             //verifications
-            Event::assertDispatched('eloquent.listed: ' . Bond::class);
+            Event::assertDispatched(ModelListed::class);
             $this->assertCount(2, $bonds);
             $this->assertContains('John Doe', $employeesNames);
             $this->assertContains('Jane Doe', $employeesNames);
@@ -110,7 +112,7 @@ class BondServiceTest extends TestCase
             $bond = $this->service->read($bond);
 
             //verifications
-            Event::assertDispatched('eloquent.fetched: ' . Bond::class);
+            Event::assertDispatched(ModelRead::class);
             $this->assertEquals('Course Alpha', $bond->course?->name);
             $this->assertCount(2, Bond::all());
         });

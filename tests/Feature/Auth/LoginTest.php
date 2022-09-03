@@ -51,7 +51,7 @@ class LoginTest extends TestCase
     public function guestShouldntSeeHome()
     {
         $this->get(route('home'))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Events\ModelListed;
+use App\Events\ModelRead;
 use App\Models\Course;
 use App\Services\CourseService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -42,7 +44,7 @@ class CourseServiceTest extends TestCase
             $courses = $this->service->list();
 
             //verifications
-            Event::assertDispatched('eloquent.listed: ' . Course::class);
+            Event::assertDispatched(ModelListed::class);
             $this->assertEquals('Course Alpha', $courses->first()->name);
             $this->assertCount(2, $courses);
         });
@@ -61,7 +63,7 @@ class CourseServiceTest extends TestCase
             $course = $this->service->read($course);
 
             //verifications
-            Event::assertDispatched('eloquent.fetched: ' . Course::class);
+            Event::assertDispatched(ModelRead::class);
             $this->assertEquals('Course Alpha', $course->name);
             $this->assertCount(2, Course::all());
         });

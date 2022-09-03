@@ -8,6 +8,7 @@ use App\Models\Employee;
 use App\Models\User;
 use App\Models\UserType;
 use App\Models\UserTypeAssignment;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Arr;
@@ -18,7 +19,8 @@ use Tests\TestCase;
  */
 class EmployeeTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseMigrations;
+    //use RefreshDatabase;
     use WithFaker;
 
     private static User $userAdm;
@@ -155,6 +157,7 @@ class EmployeeTest extends TestCase
                 ]
             ),
         ]);
+        //$this->createApplication();
     }
 
     // ================= See Employees list Tests =================
@@ -169,7 +172,7 @@ class EmployeeTest extends TestCase
     public function guestShouldntListEmployees()
     {
         $this->get(route('employees.index'))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -326,7 +329,7 @@ class EmployeeTest extends TestCase
     public function guestShouldntAccessEmployeesDetailsPage()
     {
         $this->get(route('employees.show', 1))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -481,7 +484,7 @@ class EmployeeTest extends TestCase
     public function guestShouldntAccessCreateEmployeesPage()
     {
         $this->get(route('employees.create'))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -640,7 +643,7 @@ class EmployeeTest extends TestCase
         $employeeArr = array_merge($employeeArr, $this->createTestBankAccountArr());
 
         $this->post(route('employees.store'), $employeeArr)
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -821,7 +824,7 @@ class EmployeeTest extends TestCase
     public function guestShouldntAccessEditEmployeesPage()
     {
         $this->get(route('employees.edit', 1))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -988,7 +991,7 @@ class EmployeeTest extends TestCase
         $originalEmployeeArr['account_number'] = $originalBankAccount?->account_number;
 
         $this->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -1047,7 +1050,7 @@ class EmployeeTest extends TestCase
         $originalEmployeeArr['agency_number'] = $originalBankAccount?->agency_number;
         $originalEmployeeArr['account_number'] = $originalBankAccount?->account_number;
 
-        $this->followingRedirects()->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
+        $this->withoutExceptionHandling()->followingRedirects()->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
             ->assertSee($this->updatedEmployeeData())
             ->assertStatus(200);
     }
@@ -1229,7 +1232,7 @@ class EmployeeTest extends TestCase
         $employeeBefore = Employee::find(1);
 
         $this->delete(route('employees.destroy', 1))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
 
         $employeeAfter = Employee::find(1);
         $this->assertEquals($employeeBefore, $employeeAfter);

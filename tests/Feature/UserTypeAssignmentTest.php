@@ -103,7 +103,7 @@ class UserTypeAssignmentTest extends TestCase
     public function guestShouldntListUserTypeAssignments()
     {
         $this->get('/userTypeAssignments')
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**

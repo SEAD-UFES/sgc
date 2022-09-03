@@ -175,7 +175,7 @@ class ApprovedTest extends TestCase
     public function guestShouldntListApproveds()
     {
         $this->get(route('approveds.index'))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -332,7 +332,7 @@ class ApprovedTest extends TestCase
     public function guestShouldntAccessCreateApprovedPage()
     {
         $this->get(route('approveds.create'))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -487,7 +487,7 @@ class ApprovedTest extends TestCase
     public function guestShouldntAccessStepOneCreateApprovedsPage()
     {
         $this->get(route('approveds.createMany.step1'))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -671,7 +671,7 @@ class ApprovedTest extends TestCase
     public function guestShouldntAccessStepTwoCreateApprovedsPage()
     {
         $this->get(route('approveds.createMany.step2'))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -874,7 +874,7 @@ class ApprovedTest extends TestCase
         $approvedArr = $this->getTestAttributes();
 
         $this->post(route('approveds.store'), $approvedArr)
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -1076,7 +1076,7 @@ class ApprovedTest extends TestCase
         $approvedArr = $this->createTestImportedApprovedsArray();
 
         $this->post(route('approveds.storeMany.step2'), $approvedArr)
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -1262,7 +1262,7 @@ class ApprovedTest extends TestCase
         $originalApprovedArr['states'] = $this->updatedApprovedData()['states'];
 
         $this->patch(route('approveds.update', $originalApproved->id), $originalApprovedArr)
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -1468,7 +1468,7 @@ class ApprovedTest extends TestCase
         $approvedBefore = Approved::find(1);
 
         $this->delete(route('approveds.destroy', 1))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
 
         $approvedAfter = Approved::find(1);
         $this->assertEquals($approvedBefore, $approvedAfter);

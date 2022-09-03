@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Events\ModelListed;
 use App\Models\Bond;
 use App\Models\BondDocument;
 use App\Models\Document;
 use App\Models\DocumentType;
+use App\Services\BondDocumentService;
 use App\Services\DocumentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -18,56 +20,68 @@ class BondDocumentServiceTest extends TestCase
 {
     use RefreshDatabase;
 
+    private BondDocumentService $service;
+
+    /** @return void  */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->service = new BondDocumentService();
+    }
+
+
     //setting up scenario for all tests
     public function setUp(): void
     {
         parent::setUp();
 
-        Document::factory()->create(
+        Document::factory()->createOne(
             [
                 'original_name' => 'Document Alpha.pdf',
-                'documentable_id' => BondDocument::factory()->create([
-                    'bond_id' => Bond::factory()->create()->id,
-                ])->id,
+                'documentable_id' => BondDocument::factory()
+                    ->createOne([
+                        'bond_id' => Bond::factory()->createOne()->id,
+                    ])->id,
                 'documentable_type' => BondDocument::class,
-                'document_type_id' => DocumentType::factory()->create(
-                    [
-                        'name' => 'Type One',
-                    ]
-                )->id,
+                'document_type_id' => DocumentType::factory()
+                    ->createOne(
+                        [
+                            'name' => 'Type One',
+                        ]
+                    )->id,
             ]
         );
 
-        Document::factory()->create(
+        Document::factory()->createOne(
             [
                 'original_name' => 'Document Beta.pdf',
-                'documentable_id' => BondDocument::factory()->create([
-                    'bond_id' => Bond::factory()->create()->id,
-                ])->id,
+                'documentable_id' => BondDocument::factory()
+                    ->createOne([
+                        'bond_id' => Bond::factory()->createOne()->id,
+                    ])->id,
                 'documentable_type' => BondDocument::class,
-                'document_type_id' => DocumentType::factory()->create(
-                    [
-                        'name' => 'Type Two',
-                    ]
-                )->id,
+                'document_type_id' => DocumentType::factory()
+                    ->createOne(
+                        [
+                            'name' => 'Type Two',
+                        ]
+                    )->id,
             ]
         );
-
-        $this->service = new DocumentService();
-        $this->service->documentClass = BondDocument::class;
     }
 
     /**
      * @test
      */
-    public function documentsShouldBeListed()
+    public function documentsShouldBeListed(): void
     {
         Event::fakeFor(function () {
             //execution
             $documents = $this->service->list();
 
             //verifications
-            Event::assertDispatched('eloquent.listed: ' . Document::class);
+            Event::assertDispatched(ModelListed::class);
             $this->assertCount(2, $documents);
             $this->assertContains('Document Alpha.pdf', $documents->pluck('original_name')->toArray());
             $this->assertContains('Document Beta.pdf', $documents->pluck('original_name')->toArray());
@@ -77,25 +91,28 @@ class BondDocumentServiceTest extends TestCase
     /**
      * @test
      */
-    public function rightsShouldBeListed()
+    public function rightsShouldBeListed(): void
     {
-        Document::factory()->create(
+        Document::factory()->createOne(
             [
                 'original_name' => 'Document Rights.pdf',
-                'documentable_id' => BondDocument::factory()->create([
-                    'bond_id' => Bond::factory()->create(
+                'documentable_id' => BondDocument::factory()
+                    ->createOne([
+                        'bond_id' => Bond::factory()
+                            ->createOne(
+                                [
+                                    'uaba_checked_at' => now(),
+                                    'impediment' => false,
+                                ]
+                            )->id,
+                    ])->id,
+                'documentable_type' => BondDocument::class,
+                'document_type_id' => DocumentType::factory()
+                    ->createOne(
                         [
-                            'uaba_checked_at' => now(),
-                            'impediment' => false,
+                            'name' => 'Ficha de Inscrição - Termos e Licença',
                         ]
                     )->id,
-                ])->id,
-                'documentable_type' => BondDocument::class,
-                'document_type_id' => DocumentType::factory()->create(
-                    [
-                        'name' => 'Ficha de Inscrição - Termos e Licença',
-                    ]
-                )->id,
             ]
         );
 
@@ -104,46 +121,30 @@ class BondDocumentServiceTest extends TestCase
             $documents = $this->service->listRights();
 
             //verifications
-            Event::assertDispatched('eloquent.listed: ' . Document::class);
+            Event::assertDispatched(ModelListed::class);
             $this->assertCount(1, $documents);
-            $this->assertEquals('Document Rights.pdf', $documents->first()->original_name);
+            $this->assertContains('Document Rights.pdf', Document::whereHasMorph('documentable', BondDocument::class)->pluck('original_name')->toArray());
         });
     }
 
     /**
      * @test
      */
-    public function documentShouldBeCreated()
+    public function documentShouldBeCreated(): void
     {
         //setting up scenario
-
-        //overwriting 'getFileData' method and asserting parameter
-        $service = $this->partialMock(DocumentService::class, function (MockInterface $service) {
-            $fileBase64 = 'JVBERi0xLjIgCjkgMCBvYmoKPDwKPj4Kc3RyZWFtCkJULyA5IFRmKF'
-                . 'Rlc3QpJyBFVAplbmRzdHJlYW0KZW5kb2JqCjQgMCBvYmoKPDwKL1R5cGUgL1Bh'
-                . 'Z2UKL1BhcmVudCA1IDAgUgovQ29udGVudHMgOSAwIFIKPj4KZW5kb2JqCjUgMC'
-                . 'BvYmoKPDwKL0tpZHMgWzQgMCBSIF0KL0NvdW50IDEKL1R5cGUgL1BhZ2VzCi9N'
-                . 'ZWRpYUJveCBbIDAgMCA5OSA5IF0KPj4KZW5kb2JqCjMgMCBvYmoKPDwKL1BhZ2'
-                . 'VzIDUgMCBSCi9UeXBlIC9DYXRhbG9nCj4+CmVuZG9iagp0cmFpbGVyCjw8Ci9S'
-                . 'b290IDMgMCBSCj4+CiUlRU9G';
-
-            $service->shouldReceive('getFileData')->once()->andReturn($fileBase64);
-        });
-        $service->documentClass = BondDocument::class;
-
-        Storage::fake('local');
         $attributes['file'] = UploadedFile::fake()->create('Document Gama.pdf', 20, 'application/pdf');
 
-        $attributes['document_type_id'] = 1;
-        $attributes['bond_id'] = 1;
+        $attributes['document_type_id'] = (string) 1;
+        $attributes['bond_id'] = (string) 1;
 
-        Event::fakeFor(function () use ($service, $attributes) {
+        Event::fakeFor(function () use ($attributes) {
             //execution
-            $service->create($attributes);
+            $this->service->create($attributes);
 
             //verifications
             Event::assertDispatched('eloquent.created: ' . Document::class);
-            $this->assertEquals('Document Gama.pdf', Document::whereHasMorph('documentable', BondDocument::class)->skip(2)->first()->original_name);
+            $this->assertContains('Document Gama.pdf', Document::whereHasMorph('documentable', BondDocument::class)->pluck('original_name')->toArray());
             $this->assertCount(3, Document::whereHasMorph('documentable', BondDocument::class)->get());
             $this->assertCount(3, BondDocument::all());
         });

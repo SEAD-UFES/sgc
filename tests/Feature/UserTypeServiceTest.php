@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Events\ModelListed;
 use App\Models\UserType;
 use App\Services\UserTypeService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -45,6 +46,7 @@ class UserTypeServiceTest extends TestCase
             $userTypes = $this->service->list();
 
             //verifications
+            Event::assertDispatched(ModelListed::class);
             $this->assertEquals('Type Alpha', $userTypes->first()->name);
             $this->assertCount(2, $userTypes);
         });

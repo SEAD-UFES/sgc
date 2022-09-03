@@ -96,7 +96,7 @@ class UserTest extends TestCase
     public function guestShouldntListUsers()
     {
         $this->get('/users')
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -208,7 +208,7 @@ class UserTest extends TestCase
     public function guestShouldntAccessCreateUsersPage()
     {
         $this->get('/users/create')
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -323,7 +323,7 @@ class UserTest extends TestCase
         $user = $this->createTestUserAsArray();
 
         $this->post('/users', $user)
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**

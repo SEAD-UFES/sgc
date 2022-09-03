@@ -95,7 +95,7 @@ class RoleTest extends TestCase
     public function guestShouldntListRoles()
     {
         $this->get('/roles')
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**

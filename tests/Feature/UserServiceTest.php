@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Events\ModelListed;
+use App\Events\ModelRead;
 use App\Models\Employee;
 use App\Models\User;
 use App\Services\UserService;
@@ -47,7 +49,7 @@ class UserServiceTest extends TestCase
             $users = $this->service->list();
 
             //verifications
-            Event::assertDispatched('eloquent.listed: ' . User::class);
+            Event::assertDispatched(ModelListed::class);
             $this->assertContains('johndoe@test1.com', $users->pluck('email')->toArray());
             $this->assertContains('janedoe@test2.com', $users->pluck('email')->toArray());
             $this->assertCount(2, $users);
@@ -67,7 +69,7 @@ class UserServiceTest extends TestCase
             $user = $this->service->read($user);
 
             //verifications
-            Event::assertDispatched('eloquent.fetched: ' . User::class);
+            Event::assertDispatched(ModelRead::class);
             $this->assertEquals('johndoe@test1.com', $user->email);
             $this->assertCount(2, User::all());
         });

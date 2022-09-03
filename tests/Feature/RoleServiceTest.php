@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Events\ModelListed;
+use App\Events\ModelRead;
 use App\Models\Role;
 use App\Services\RoleService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -42,6 +44,7 @@ class RoleServiceTest extends TestCase
             $roles = $this->service->list();
 
             //verifications
+            Event::assertDispatched(ModelListed::class);
             $this->assertEquals('Role Alpha', $roles->first()->name);
             $this->assertCount(2, $roles);
         });
@@ -60,7 +63,7 @@ class RoleServiceTest extends TestCase
             $role = $this->service->read($role);
 
             //verifications
-            Event::assertDispatched('eloquent.fetched: ' . Role::class);
+            Event::assertDispatched(ModelRead::class);
             $this->assertEquals('Role Alpha', $role->name);
             $this->assertCount(2, Role::all());
         });

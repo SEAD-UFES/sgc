@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Events\ModelListed;
+use App\Events\ModelRead;
 use App\Models\Bond;
 use App\Models\BondDocument;
 use App\Models\Employee;
@@ -56,7 +58,7 @@ class EmployeeServiceTest extends TestCase
             $employees = $this->service->list();
 
             //verifications
-            Event::assertDispatched('eloquent.listed: ' . Employee::class);
+            Event::assertDispatched(ModelListed::class);
             $this->assertContains('John Doe', $employees->pluck('name')->toArray());
             $this->assertContains('Jane Doe', $employees->pluck('name')->toArray());
             $this->assertCount(2, $employees);
@@ -76,7 +78,7 @@ class EmployeeServiceTest extends TestCase
             $employee = $this->service->read($employee);
 
             //verifications
-            Event::assertDispatched('eloquent.fetched: ' . Employee::class);
+            Event::assertDispatched(ModelRead::class);
             $this->assertEquals('John Doe', $employee->name);
             $this->assertCount(2, Employee::all());
         });

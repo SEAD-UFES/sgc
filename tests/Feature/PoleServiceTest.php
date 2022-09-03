@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Events\ModelListed;
+use App\Events\ModelRead;
 use App\Models\Pole;
 use App\Services\PoleService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -42,7 +44,7 @@ class PoleServiceTest extends TestCase
             $poles = $this->service->list();
 
             //verifications
-            Event::assertDispatched('eloquent.listed: ' . Pole::class);
+            Event::assertDispatched(ModelListed::class);
             $this->assertEquals('Pole Alpha', $this->service->list()->first()->name);
             $this->assertCount(2, $poles);
         });
@@ -61,7 +63,7 @@ class PoleServiceTest extends TestCase
             $pole = $this->service->read($pole);
 
             //verifications
-            Event::assertDispatched('eloquent.fetched: ' . Pole::class);
+            Event::assertDispatched(ModelRead::class);
             $this->assertEquals('Pole Alpha', $pole->name);
             $this->assertCount(2, Pole::all());
         });

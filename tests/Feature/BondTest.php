@@ -145,7 +145,7 @@ class BondTest extends TestCase
     public function guestShouldntListBonds()
     {
         $this->get('/bonds')
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -262,7 +262,7 @@ class BondTest extends TestCase
     public function guestShouldntAccessCreateBondsPage()
     {
         $this->get('/bonds/create')
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -382,7 +382,7 @@ class BondTest extends TestCase
         Arr::forget($bondArr, ['id', 'impediment', 'impediment_description', 'uaba_checked_at', 'created_at', 'updated_at']);
 
         $this->post('/bonds', $bondArr)
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**

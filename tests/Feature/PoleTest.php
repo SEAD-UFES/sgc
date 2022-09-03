@@ -95,7 +95,7 @@ class PoleTest extends TestCase
     public function guestShouldntListPoles()
     {
         $this->get(route('poles.index'))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -209,7 +209,7 @@ class PoleTest extends TestCase
     public function guestShouldntCreatePole()
     {
         $this->post(route('poles.store'), $this->poleData)
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -222,7 +222,7 @@ class PoleTest extends TestCase
         $pole = $this->getTestPole();
 
         $this->put(route('poles.update', $pole->id), $this->poleData)
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -235,7 +235,7 @@ class PoleTest extends TestCase
         $pole = $this->getTestPole();
 
         $this->get(route('poles.destroy', $pole->id))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -246,7 +246,7 @@ class PoleTest extends TestCase
     public function guestShouldntAccessCreatePolePage()
     {
         $this->get(route('poles.create'))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -259,7 +259,7 @@ class PoleTest extends TestCase
         $pole = $this->getTestPole();
 
         $this->get(route('poles.edit', $pole->id))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**

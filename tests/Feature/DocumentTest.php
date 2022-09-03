@@ -164,7 +164,7 @@ class DocumentTest extends TestCase
     public function guestShouldntListEmployeesDocuments()
     {
         $this->get(route('employeesDocuments.index'))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -317,7 +317,7 @@ class DocumentTest extends TestCase
     public function guestShouldntListBondsDocuments()
     {
         $this->get(route('bondsDocuments.index'))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -487,7 +487,7 @@ class DocumentTest extends TestCase
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
         $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -665,7 +665,7 @@ class DocumentTest extends TestCase
         /** @var Document $document */
         $document = $this->getBondDocument();
         $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -841,7 +841,7 @@ class DocumentTest extends TestCase
     public function guestShouldntAccessCreateEmployeeDocumentPage()
     {
         $this->get(route('employeesDocuments.create'))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -1003,7 +1003,7 @@ class DocumentTest extends TestCase
     public function guestShouldntAccessCreateBondDocumentPage()
     {
         $this->get(route('bondsDocuments.create'))
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -1194,7 +1194,7 @@ class DocumentTest extends TestCase
         $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
 
         $this->post(route('employeesDocuments.store'), $employeeDocumentArr)
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
@@ -1365,7 +1365,7 @@ class DocumentTest extends TestCase
         $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
 
         $this->post(route('bondsDocuments.store'), $bondDocumentArr)
-            ->assertRedirect(route('auth.login'));
+            ->assertStatus(401);
     }
 
     /**
