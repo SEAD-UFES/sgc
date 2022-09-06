@@ -6,7 +6,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
-        "friendsofphp/php-cs-fixer": "v3.9.5",
         "guzzlehttp/guzzle": "^7.2",
         "kyslik/column-sortable": "^6.4",
         "laravel/framework": "^9.11",
@@ -27,7 +26,7 @@
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
         "nunomaduro/larastan": "^2.1",
-        "nunomaduro/phpinsights": "^2.4",
+        "nunomaduro/phpinsights": "^2.5",
         "phpmetrics/phpmetrics": "^2.8",
         "phpunit/php-code-coverage": "^9.2",
         "phpunit/phpunit": "^9.5.10",
