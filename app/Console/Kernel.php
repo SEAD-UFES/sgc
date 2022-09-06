@@ -25,6 +25,13 @@ class Kernel extends ConsoleKernel
             ->onSuccess(static function () {
                 Log::info('Backup successful');
             });
+        $schedule->command('sgc:send-institutional-login-confirmation-required-event')->daily()->at('06:00')
+            ->onFailure(static function () {
+                Log::error('Institutional Login event dispatch failed');
+            })
+            ->onSuccess(static function () {
+                Log::info('Institutional Login event dispatch successful');
+            });
     }
 
     /**

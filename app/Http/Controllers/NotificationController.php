@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\NotificationDismissed;
-use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\DatabaseNotification;
 
 class NotificationController extends Controller
@@ -13,9 +13,9 @@ class NotificationController extends Controller
      *
      * @param  DatabaseNotification  $notification
      *
-     * @return Response
+     * @return RedirectResponse
      */
-    public function dismiss(DatabaseNotification $notification): Response
+    public function dismiss(DatabaseNotification $notification): RedirectResponse
     {
         try {
             $notification->markAsRead();

@@ -7,6 +7,9 @@ use App\Mail\LmsAccessPermissionRequest;
 use App\Mail\NewTutorEmploymentNotice;
 use App\Models\Bond;
 use App\Models\Employee;
+use App\Models\Role;
+use App\Models\User;
+use App\Models\UserTypeAssignment;
 use Illuminate\Support\Facades\Mail;
 
 class MailService
@@ -28,7 +31,7 @@ class MailService
          */
         $receiver = $receiverBond->employee;
 
-        $receiverEmailAddress = 'marco.cardoso@ufes.br'; //$receiver->email;
+        $receiverEmailAddress = ['marco.cardoso@ufes.br', 'sonia.clarindo@ufes.br']; //$receiver->email;
         Mail::to($receiverEmailAddress)->send(new InstitutionEmployeeLoginCreatedNotice($sender, $receiverBond));
     }
 
@@ -40,7 +43,7 @@ class MailService
      */
     public function sendLmsAccessPermissionRequestEmail(?Employee $sender, Bond $newEmployeeBond): void
     {
-        $receiverEmailAddress = 'marco.cardoso@ufes.br'; //$this->educationalDesignTeam;
+        $receiverEmailAddress = ['marco.cardoso@ufes.br', 'sonia.clarindo@ufes.br']; //$this->educationalDesignTeam;
         Mail::to($receiverEmailAddress)->send(new LmsAccessPermissionRequest($sender, $newEmployeeBond));
     }
 
@@ -52,7 +55,40 @@ class MailService
      */
     public function sendNewTutorEmploymentNoticeEmail(?Employee $sender, Bond $newEmployeeBond): void
     {
-        $receiverEmailAddress = 'marco.cardoso@ufes.br'; //$this->tutoringCoordinationEmail;
+        $receiverEmailAddress = ['marco.cardoso@ufes.br', 'sonia.clarindo@ufes.br']; //$this->tutoringCoordinationEmail;
         Mail::to($receiverEmailAddress)->send(new NewTutorEmploymentNotice($sender, $newEmployeeBond));
+    }
+
+    /**
+     * @param Bond $bond
+     *
+     * @return void
+     */
+    public function sendNewEmployeeEmails(Bond $bond): void
+    {
+        /**
+         * @var UserTypeAssignment $loggedInUta
+         */
+        $loggedInUta = session('loggedInUser.currentUta');
+
+        /**
+         * @var User $loggedInUser
+         */
+        $loggedInUser = $loggedInUta->user;
+
+        /**
+         * @var Employee|null $loggedInEmployee
+         */
+        $loggedInEmployee = $loggedInUser->employee;
+
+        /**
+         * @var Role $employeeRole
+         */
+        $employeeRole = $bond->role;
+        $this->sendInstitutionEmployeeLoginCreatedEmail($loggedInEmployee, $bond);
+        $this->sendLmsAccessPermissionRequestEmail($loggedInEmployee, $bond);
+        if (str_starts_with($employeeRole->name, 'Tutor')) {
+            $this->sendNewTutorEmploymentNoticeEmail($loggedInEmployee, $bond);
+        }
     }
 }

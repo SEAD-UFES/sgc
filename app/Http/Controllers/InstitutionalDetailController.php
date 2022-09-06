@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\InstitutionalLoginConfirmed;
 use App\Http\Requests\StoreInstitutionalDetailRequest;
 use App\Http\Requests\UpdateInstitutionalDetailRequest;
 use App\Models\Bond;
 use App\Models\Employee;
 use App\Models\InstitutionalDetail;
-use App\Models\Role;
-use App\Models\User;
-use App\Models\UserTypeAssignment;
 use App\Services\InstitutionalDetailService;
-use App\Services\MailService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -19,14 +16,8 @@ use Illuminate\View\View;
 
 class InstitutionalDetailController extends Controller
 {
-    private InstitutionalDetailService $service;
-
-    private MailService $mailService;
-
-    public function __construct(InstitutionalDetailService $institutionalDetailService, MailService $mailService)
+    public function __construct(private InstitutionalDetailService $service)
     {
-        $this->service = $institutionalDetailService;
-        $this->mailService = $mailService;
     }
 
     /**
@@ -127,7 +118,7 @@ class InstitutionalDetailController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\InstitutionalDetail  $institutionalDetail
+     * @param  InstitutionalDetail  $institutionalDetail
      *
      * @return void
      */
@@ -143,36 +134,8 @@ class InstitutionalDetailController extends Controller
      */
     public function sendNewEmployeeEmails(Bond $bond, Request $request): RedirectResponse
     {
-        /**
-         * @var UserTypeAssignment $loggedInUta
-         */
-        $loggedInUta = session('loggedInUser.currentUta');
+        InstitutionalLoginConfirmed::dispatch($bond);
 
-        /**
-         * @var User $loggedInUser
-         */
-        $loggedInUser = $loggedInUta->user;
-
-        /**
-         * @var Employee|null $loggedInEmployee
-         */
-        $loggedInEmployee = $loggedInUser->employee;
-
-        /**
-         * @var Role $employeeRole
-         */
-        $employeeRole = $bond->role;
-
-        try {
-            $this->mailService->sendInstitutionEmployeeLoginCreatedEmail($loggedInEmployee, $bond);
-            $this->mailService->sendLmsAccessPermissionRequestEmail($loggedInEmployee, $bond);
-            if (str_starts_with($employeeRole->name, 'Tutor')) {
-                $this->mailService->sendNewTutorEmploymentNoticeEmail($loggedInEmployee, $bond);
-            }
-        } catch (\Exception $e) {
-            return back()->withErrors(['noSend' => 'Não foi possível enviar os emails: ' . $e->getMessage()]);
-        }
-
-        return redirect()->route('bonds.show', $bond->id)->with('success', 'E-mails enviados com sucesso.');
+        return redirect()->route('bonds.show', $bond->id)->with('success', 'E-mails enviados para a fila de envio.');
     }
 }

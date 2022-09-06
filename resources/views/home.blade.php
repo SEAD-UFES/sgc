@@ -77,6 +77,13 @@
                                                 Solicitante: {{ $notification->data['requester_name'] }}
                                             </td>
                                         @break
+                                        @case('App\Notifications\InstitutionalLoginConfirmationRequired')
+                                            <td><strong>= Confirmação de criação de login institucional requerida =</strong><br />
+                                                {{ $notification->data['message'] }}<br />
+                                                Colaborador: <a href="{{ route('employees.show', $notification->data['employeeId']) }}">{{ $notification->data['employeeName'] }}</a><br />
+                                                Para confirmar a criação do login, acesse a página: <a href="https://senha.ufes.br/sincronia/troubleshooting" target="_blank">https://senha.ufes.br/sincronia/troubleshooting</a>
+                                            </td>
+                                        @break
 
                                         @default
                                             <td>:(</td>

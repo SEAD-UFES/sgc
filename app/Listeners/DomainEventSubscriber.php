@@ -7,19 +7,24 @@ use App\Events\BondImpeded;
 use App\Events\BondLiberated;
 use App\Events\BondReviewRequested;
 use App\Events\EmployeeDesignated;
+use App\Events\InstitutionalLoginConfirmationRequired as InstitutionalLoginConfirmationRequiredEvent;
+use App\Events\InstitutionalLoginConfirmed;
 use App\Events\RightsDocumentArchived;
 use App\Logging\LoggerInterface;
+use App\Models\Employee;
 use App\Models\User;
 use App\Models\UserType;
 use App\Notifications\BondCreated as BondCreatedNotification;
 use App\Notifications\BondImpeded as BondImpededNotification;
 use App\Notifications\BondReviewRequested as BondReviewRequestedNotification;
+use App\Notifications\InstitutionalLoginConfirmationRequired as InstitutionalLoginConfirmationRequiredNotification;
 use App\Notifications\RightsDocumentArchived as RightsDocumentArchivedNotification;
+use App\Services\MailService;
 use Illuminate\Support\Facades\Notification;
 
 class DomainEventSubscriber
 {
-    public function __construct(private LoggerInterface $logger)
+    public function __construct(private LoggerInterface $logger, private MailService $mailService)
     {
     }
 
@@ -148,6 +153,49 @@ class DomainEventSubscriber
     }
 
     /**
+     * Handle institutional login confirmed events.
+     *
+     * @param  InstitutionalLoginConfirmed  $event
+     *
+     * @return void
+     */
+    public function handleInstitutionalLoginConfirmed(InstitutionalLoginConfirmed $event)
+    {
+        $this->logger->logDomainEvent(
+            'institutional_login_confirmed',
+            $event->bond
+        );
+
+        $this->mailService->sendNewEmployeeEmails($event->bond);
+    }
+
+    /**
+     * Handle institutional login confirmation required events.
+     *
+     * @param  InstitutionalLoginConfirmationRequiredEvent  $event
+     *
+     * @return void
+     */
+    public function handleInstitutionalLoginConfirmationRequired(InstitutionalLoginConfirmationRequiredEvent $event): void
+    {
+        /**
+         * @var User $user
+         */
+        $user = $event->user;
+        /**
+         * @var Employee $employee
+         */
+        $employee = $event->employee;
+
+        $this->logger->logDomainEvent(
+            'institutional_login_confirmation_required',
+            $employee
+        );
+
+        Notification::send($user, new InstitutionalLoginConfirmationRequiredNotification($employee));
+    }
+
+    /**
      * Register the listeners for the subscriber.
      *
      * @param  \Illuminate\Events\Dispatcher  $events
@@ -163,6 +211,8 @@ class DomainEventSubscriber
             BondImpeded::class => 'handleBondImpeded',
             BondReviewRequested::class => 'handleBondReviewRequested',
             RightsDocumentArchived::class => 'handleRightsDocumentArchived',
+            InstitutionalLoginConfirmed::class => 'handleInstitutionalLoginConfirmed',
+            InstitutionalLoginConfirmationRequiredEvent::class => 'handleInstitutionalLoginConfirmationRequired',
         ];
     }
 }
