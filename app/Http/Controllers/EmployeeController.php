@@ -3,41 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ModelFilterHelper;
+use App\Http\Requests\CreateEmployeeRequest;
+use App\Http\Requests\DestroyEmployeeRequest;
+use App\Http\Requests\EditEmployeeRequest;
+use App\Http\Requests\IndexEmployeeRequest;
+use App\Http\Requests\ShowEmployeeRequest;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
-use App\Models\DocumentType;
 use App\Models\Employee;
 use App\Models\EmployeeDocument;
-use App\Models\Gender;
-use App\Models\MaritalStatus;
-use App\Models\State;
 use App\Services\EmployeeService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class EmployeeController extends Controller
 {
-    private EmployeeService $service;
-
-    public function __construct(EmployeeService $employeeService)
+    public function __construct(private EmployeeService $service)
     {
-        $this->service = $employeeService;
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param IndexEmployeeRequest $request
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function index(Request $request)
+    public function index(IndexEmployeeRequest $request): View
     {
-        //check access permission
-        if (! Gate::allows('employee-list')) {
-            abort(403);
-        }
-
         //filters
         $filters = ModelFilterHelper::buildFilters($request, Employee::$accepted_filters);
 
@@ -49,24 +42,15 @@ class EmployeeController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param CreateEmployeeRequest $request
+     *
+     * @return View
      */
-    public function create(Request $request)
+    public function create(CreateEmployeeRequest $request): View
     {
-        //check access permission
-        if (! Gate::allows('employee-store')) {
-            abort(403);
-        }
-
-        $genders = Gender::orderBy('name')->get();
-        $birthStates = State::orderBy('name')->get();
-        $documentTypes = DocumentType::orderBy('name')->get();
-        $maritalStatuses = MaritalStatus::orderBy('name')->get();
-        $addressStates = State::orderBy('name')->get();
-
         $fromApproved = false;
 
-        return view('employee.create', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'fromApproved'));
+        return view('employee.create', compact('fromApproved'));
     }
 
     /**
@@ -74,15 +58,10 @@ class EmployeeController extends Controller
      *
      * @param StoreEmployeeRequest $request
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function store(StoreEmployeeRequest $request)
+    public function store(StoreEmployeeRequest $request): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('employee-store')) {
-            abort(403);
-        }
-
         try {
             $employee = $this->service->create($request->validated());
         } catch (\Exception $e) {
@@ -99,17 +78,13 @@ class EmployeeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Employee  $employee
+     * @param ShowEmployeeRequest $request
+     * @param  Employee  $employee
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function show(Employee $employee, Request $request)
+    public function show(ShowEmployeeRequest $request, Employee $employee): View
     {
-        //check access permission
-        if (! Gate::allows('employee-show')) {
-            abort(403);
-        }
-
         $this->service->read($employee);
 
         $employeeDocuments = EmployeeDocument::where('employee_id', $employee->id)->with('document')->orderBy('updated_at', 'desc')->get();
@@ -121,26 +96,16 @@ class EmployeeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Employee  $employee
+     * @param EditEmployeeRequest $request
+     * @param  Employee  $employee
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function edit(Employee $employee, Request $request)
+    public function edit(EditEmployeeRequest $request, Employee $employee): View
     {
-        //check access permission
-        if (! Gate::allows('employee-update')) {
-            abort(403);
-        }
-
-        $genders = Gender::orderBy('name')->get();
-        $birthStates = State::orderBy('name')->get();
-        $documentTypes = DocumentType::orderBy('name')->get();
-        $maritalStatuses = MaritalStatus::orderBy('name')->get();
-        $addressStates = State::orderBy('name')->get();
-
         $fromApproved = false;
 
-        return view('employee.edit', compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee', 'fromApproved'));
+        return view('employee.edit', compact('employee', 'fromApproved'));
     }
 
     /**
@@ -149,15 +114,10 @@ class EmployeeController extends Controller
      * @param UpdateEmployeeRequest $request
      * @param Employee $employee
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function update(UpdateEmployeeRequest $request, Employee $employee)
+    public function update(UpdateEmployeeRequest $request, Employee $employee): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('employee-update')) {
-            abort(403);
-        }
-
         try {
             $this->service->update($request->validated(), $employee);
         } catch (\Exception $e) {
@@ -170,17 +130,13 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Employee  $employee
+     * @param DestroyEmployeeRequest $request
+     * @param  Employee  $employee
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function destroy(Employee $employee, Request $request)
+    public function destroy(DestroyEmployeeRequest $request, Employee $employee): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('employee-destroy')) {
-            abort(403);
-        }
-
         try {
             $this->service->delete($employee);
         } catch (\Exception $e) {
