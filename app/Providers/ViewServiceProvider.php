@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use App\Http\View\Composers\EmployeeCreateComposer;
+use App\Http\View\Composers\ApprovedFormComposer;
+use App\Http\View\Composers\EmployeeFormComposer;
 use App\Http\View\Creators\EmployeeCreateCreator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -27,7 +28,12 @@ class ViewServiceProvider extends ServiceProvider
     {
         View::composer(
             ['employee.create', 'employee.edit'],
-            EmployeeCreateComposer::class
+            EmployeeFormComposer::class
+        );
+
+        View::composer(
+            ['approved.create', 'approved.review'],
+            ApprovedFormComposer::class
         );
     }
 }

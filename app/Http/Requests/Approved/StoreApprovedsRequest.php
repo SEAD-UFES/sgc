@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Approved;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class StoreApprovedsRequest extends FormRequest
 {
@@ -11,9 +12,9 @@ class StoreApprovedsRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return true;
+        return Gate::allows('approved-store');
     }
 
     /**
@@ -21,7 +22,7 @@ class StoreApprovedsRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'approveds.*.check' => 'sometimes',
@@ -29,7 +30,7 @@ class StoreApprovedsRequest extends FormRequest
             'approveds.*.email' => 'required|email|max:255',
             //'approveds.*.area_code' => 'required|string|max:2',   //Relaxed form
             //'approveds.*.phone' => 'required|string|max:10',      //Relaxed form
-            'approveds.*.mobile' => 'required|string|max:11',
+            //'approveds.*.mobile' => 'required|string|max:11',     //Relaxed form
             'approveds.*.announcement' => 'required|string|max:8',
             'approveds.*.course_id' => 'required|exists:courses,id',
             'approveds.*.role_id' => 'required|exists:roles,id',
@@ -37,7 +38,10 @@ class StoreApprovedsRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
     {
         return [
             'approveds.*.name.required' => 'O nome é obrigatório',

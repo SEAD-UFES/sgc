@@ -8,7 +8,7 @@ use App\Models\MaritalStatus;
 use App\Models\State;
 use Illuminate\View\View;
 
-class EmployeeCreateComposer
+class EmployeeFormComposer
 {
     /**
      * Bind data to the view.

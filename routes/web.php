@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\ApprovedBatchController;
 use App\Http\Controllers\ApprovedController;
 use App\Http\Controllers\BondController;
 use App\Http\Controllers\BondDocumentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseTypeController;
+use App\Http\Controllers\DesignateApproved;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeDocumentController;
@@ -98,12 +100,13 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/coursetypes', [CourseTypeController::class, 'index'])->name('coursetypes.index');
 
-    Route::get('/approveds/{approved}/designate', [ApprovedController::class, 'designate'])->name('approveds.designate');
+    Route::get('/approveds/{approved}/designate', DesignateApproved::class)->name('approveds.designate');
 
-    Route::get('/approveds/create-many/step-1', [ApprovedController::class, 'createManyStep1'])->name('approveds.createMany.step1');
-    Route::post('/approveds/create-many/step-1', [ApprovedController::class, 'storeManyStep1'])->name('approveds.storeMany.step1');
-    Route::get('/approveds/create-many/step-2', [ApprovedController::class, 'createManyStep2'])->name('approveds.createMany.step2');
-    Route::post('/approveds/create-many/step-2', [ApprovedController::class, 'storeManyStep2'])->name('approveds.storeMany.step2');
+    Route::get('/approveds/create-many/step-1', [ApprovedBatchController::class, 'createManyStep1'])->name('approveds.createMany.step1');
+    Route::post('/approveds/create-many/step-1', [ApprovedBatchController::class, 'storeManyStep1'])->name('approveds.storeMany.step1');
+    Route::get('/approveds/create-many/step-2', [ApprovedBatchController::class, 'createManyStep2'])->name('approveds.createMany.step2');
+    Route::post('/approveds/create-many/step-2', [ApprovedBatchController::class, 'storeManyStep2'])->name('approveds.storeMany.step2');
+    
     Route::get('/approveds', [ApprovedController::class, 'index'])->name('approveds.index');
     Route::get('/approveds/create', [ApprovedController::class, 'create'])->name('approveds.create');
     Route::post('/approveds', [ApprovedController::class, 'store'])->name('approveds.store');
