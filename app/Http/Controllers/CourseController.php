@@ -3,37 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ModelFilterHelper;
-use App\Http\Requests\StoreCourseRequest;
-use App\Http\Requests\UpdateCourseRequest;
+use App\Http\Requests\Course\CreateCourseRequest;
+use App\Http\Requests\Course\DestroyCourseRequest;
+use App\Http\Requests\Course\EditCourseRequest;
+use App\Http\Requests\Course\IndexCourseRequest;
+use App\Http\Requests\Course\ShowCourseRequest;
+use App\Http\Requests\Course\StoreCourseRequest;
+use App\Http\Requests\Course\UpdateCourseRequest;
 use App\Models\Course;
-use App\Models\CourseType;
 use App\Services\CourseService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class CourseController extends Controller
 {
-    private CourseService $service;
-
-    public function __construct(CourseService $courseService)
+    public function __construct(private CourseService $service)
     {
-        $this->service = $courseService;
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param IndexCourseRequest $request
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function index(Request $request)
+    public function index(IndexCourseRequest $request): View
     {
-        //check access permission
-        if (! Gate::allows('course-list')) {
-            abort(403);
-        }
-
         //filters
         $filters = ModelFilterHelper::buildFilters($request, Course::$accepted_filters);
 
@@ -45,18 +41,13 @@ class CourseController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param CreateCourseRequest $request
+     *
+     * @return View
      */
-    public function create(Request $request)
+    public function create(CreateCourseRequest $request): View
     {
-        //check access permission
-        if (! Gate::allows('course-store')) {
-            abort(403);
-        }
-
-        $courseTypes = CourseType::orderBy('name')->get();
-
-        return view('course.create', compact('courseTypes'));
+        return view('course.create');
     }
 
     /**
@@ -64,15 +55,10 @@ class CourseController extends Controller
      *
      * @param StoreCourseRequest $request
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function store(StoreCourseRequest $request)
+    public function store(StoreCourseRequest $request): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('course-store')) {
-            abort(403);
-        }
-
         $this->service->create($request->validated());
 
         return redirect()->route('courses.index')->with('success', 'Curso criado com sucesso.');
@@ -83,37 +69,29 @@ class CourseController extends Controller
      *
      * @param Course $course
      *
-     * @return \Illuminate\Http\Response
+     * @param ShowCourseRequest $request
+     *
+     * @return View
      */
-    public function show(Course $course, Request $request)
+    /* public function show(ShowCourseRequest $request, Course $course): View
     {
-        //check access permission
-        if (! Gate::allows('course-show')) {
-            abort(403);
-        }
-
         $this->service->read($course);
 
         return view('course.show', compact('course'));
-    }
+    } */
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param Course $course
      *
-     * @return \Illuminate\Http\Response
+     * @param EditCourseRequest $request
+     *
+     * @return View
      */
-    public function edit(Course $course, Request $request)
+    public function edit(EditCourseRequest $request, Course $course): View
     {
-        //check access permission
-        if (! Gate::allows('course-update')) {
-            abort(403);
-        }
-
-        $courseTypes = CourseType::orderBy('name')->get();
-
-        return view('course.edit', compact('course', 'courseTypes'));
+        return view('course.edit', compact('course'/* , 'courseTypes' */));
     }
 
     /**
@@ -122,15 +100,10 @@ class CourseController extends Controller
      * @param UpdateCourseRequest $request
      * @param Course $course
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function update(UpdateCourseRequest $request, Course $course)
+    public function update(UpdateCourseRequest $request, Course $course): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('course-update')) {
-            abort(403);
-        }
-
         try {
             $this->service->update($request->validated(), $course);
         } catch (\Exception $e) {
@@ -145,15 +118,12 @@ class CourseController extends Controller
      *
      * @param Course $course
      *
-     * @return \Illuminate\Http\Response
+     * @param DestroyCourseRequest $request
+     *
+     * @return RedirectResponse
      */
-    public function destroy(Course $course, Request $request)
+    public function destroy(DestroyCourseRequest $request, Course $course): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('course-destroy')) {
-            abort(403);
-        }
-
         try {
             $this->service->delete($course);
         } catch (\Exception $e) {
