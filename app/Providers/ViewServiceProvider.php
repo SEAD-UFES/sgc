@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Http\View\Composers\ApprovedFormComposer;
+use App\Http\View\Composers\BondFormComposer;
 use App\Http\View\Composers\EmployeeFormComposer;
 use App\Http\View\Creators\EmployeeCreateCreator;
 use Illuminate\Support\Facades\View;
@@ -34,6 +35,11 @@ class ViewServiceProvider extends ServiceProvider
         View::composer(
             ['approved.create', 'approved.review'],
             ApprovedFormComposer::class
+        );
+
+        View::composer(
+            ['bond.create', 'bond.edit'],
+            BondFormComposer::class
         );
     }
 }

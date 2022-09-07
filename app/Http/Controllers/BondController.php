@@ -2,46 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\KnowledgeAreas;
 use App\Helpers\ModelFilterHelper;
-use App\Http\Requests\ReviewBondRequest;
-use App\Http\Requests\StoreBondRequest;
-use App\Http\Requests\UpdateBondRequest;
+use App\Http\Requests\Bond\CreateBondRequest;
+use App\Http\Requests\Bond\DestroyBondRequest;
+use App\Http\Requests\Bond\EditBondRequest;
+use App\Http\Requests\Bond\IndexBondRequest;
+use App\Http\Requests\Bond\ShowBondRequest;
+use App\Http\Requests\Bond\StoreBondRequest;
+use App\Http\Requests\Bond\UpdateBondRequest;
 use App\Models\Bond;
 use App\Models\BondDocument;
-use App\Models\Course;
 use App\Models\Document;
-use App\Models\Employee;
-use App\Models\Pole;
-use App\Models\Role;
 use App\Services\BondService;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class BondController extends Controller
 {
-    private BondService $service;
-
-    public function __construct(BondService $bondService)
+    public function __construct(private BondService $service)
     {
-        $this->service = $bondService;
     }
 
     /**
      * Display a listing of the resource.
      *
+     * @param IndexBondRequest $request
+     *
      * @return View
      */
-    public function index(Request $request): View
+    public function index(IndexBondRequest $request): View
     {
-        //check access permission
-        if (! Gate::allows('bond-list')) {
-            abort(403);
-        }
-
         //filters
         $filters = ModelFilterHelper::buildFilters($request, Bond::$accepted_filters);
 
@@ -53,31 +44,13 @@ class BondController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param CreateBondRequest $request
+     *
      * @return View
      */
-    public function create(Request $request): View
+    public function create(CreateBondRequest $request): View
     {
-        //check access permission
-        if (! Gate::allows('bond-create')) {
-            abort(403);
-        }
-
-        $employees = Employee::orderBy('name')->get();
-        $roles = Role::orderBy('name')->get();
-        $poles = Pole::orderBy('name')->get();
-        $knowledgeAreas = KnowledgeAreas::getValuesInAlphabeticalOrder();
-
-        //get only allowed courses
-        /* $courses = Course::orderBy('name')->get();
-        foreach ($courses as $key => $course) {
-            if (!Gate::allows('bond-store-course_id', $course->id)) {
-                $courses->forget($key);
-            }
-        } */
-
-        $courses = $this->getAllowedCourses();
-
-        return view('bond.create', compact('employees', 'roles', 'courses', 'poles', 'knowledgeAreas'));
+        return view('bond.create');
     }
 
     /**
@@ -89,11 +62,6 @@ class BondController extends Controller
      */
     public function store(StoreBondRequest $request): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('bond-create')) {
-            abort(403);
-        }
-
         //user can only store bonds with allowed course_ids
         if (! Gate::allows('bond-store-course_id', $request->course_id)) {
             return redirect()->route('bonds.index')->withErrors('O usuário não pode escolher esse curso.');
@@ -111,17 +79,14 @@ class BondController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Bond  $bond
+     * @param  Bond  $bond
+     *
+     * @param ShowBondRequest $request
      *
      * @return View
      */
-    public function show(Bond $bond, Request $request): View
+    public function show(ShowBondRequest $request, Bond $bond): View
     {
-        //check access permission
-        if (! Gate::allows('bond-show')) {
-            abort(403);
-        }
-
         $this->service->read($bond);
 
         $documents = Document::whereHasMorph('documentable', BondDocument::class, static function ($query) use ($bond) {
@@ -134,50 +99,27 @@ class BondController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Bond  $bond
+     * @param  Bond  $bond
+     *
+     * @param EditBondRequest $request
      *
      * @return View
      */
-    public function edit(Bond $bond, Request $request): View
+    public function edit(EditBondRequest $request, Bond $bond): View
     {
-        //check access permission
-        if (! Gate::allows('bond-update', $bond)) {
-            abort(403);
-        }
-
-        //get only allowed courses
-        /* $courses = Course::orderBy('name')->get();
-        foreach ($courses as $key => $course) {
-            if (!Gate::allows('bond-store-course_id', $course->id)) {
-                $courses->forget($key);
-            }
-        } */
-
-        $courses = $this->getAllowedCourses();
-
-        $employees = Employee::orderBy('name')->get();
-        $roles = Role::orderBy('name')->get();
-        $poles = Pole::orderBy('name')->get();
-        $knowledgeAreas = KnowledgeAreas::getValuesInAlphabeticalOrder();
-
-        return view('bond.edit', compact('employees', 'roles', 'courses', 'poles', 'bond', 'knowledgeAreas'));
+        return view('bond.edit');
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  UpdateBondRequest  $request
-     * @param  \App\Models\Bond  $bond
+     * @param  Bond  $bond
      *
      * @return RedirectResponse
      */
     public function update(UpdateBondRequest $request, Bond $bond): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('bond-update', $bond)) {
-            abort(403);
-        }
-
         //user can only update bonds to allowed course_ids
         if (! Gate::allows('bond-store-course_id', $request->course_id)) {
             return back()->withErrors('courses', 'O usuário não pode escolher este curso.');
@@ -195,17 +137,14 @@ class BondController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Bond  $bond
+     * @param  Bond  $bond
+     *
+     * @param DestroyBondRequest $request
      *
      * @return RedirectResponse
      */
-    public function destroy(Bond $bond, Request $request): RedirectResponse
+    public function destroy(DestroyBondRequest $request, Bond $bond): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('bond-destroy')) {
-            abort(403);
-        }
-
         try {
             $this->service->delete($bond);
         } catch (\Exception $e) {
@@ -213,62 +152,5 @@ class BondController extends Controller
         }
 
         return redirect()->route('bonds.index')->with('success', 'Vínculo excluído com sucesso.');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  ReviewBondRequest  $request
-     * @param  \App\Models\Bond  $bond
-     *
-     * @return RedirectResponse
-     */
-    public function review(ReviewBondRequest $request, Bond $bond): RedirectResponse
-    {
-        //check access permission
-        if (! Gate::allows('bond-review')) {
-            abort(403);
-        }
-
-        try {
-            $this->service->review($request->validated(), $bond);
-        } catch (\Exception $e) {
-            return redirect()->route('bonds.show', $bond)->withErrors(['noStore' => 'Não foi possível salvar o vínculo: ' . $e->getMessage()]);
-        }
-
-        return redirect()->route('bonds.show', $bond)->with('success', 'Vínculo atualizado com sucesso.');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Bond  $bond
-     *
-     * @return RedirectResponse
-     */
-    public function requestReview(Request $request, Bond $bond): RedirectResponse
-    {
-        //check access permission
-        if (! Gate::allows('bond-requestReview')) {
-            abort(403);
-        }
-
-        $bond = $this->service->requestReview($request->all(), $bond);
-
-        return redirect()->route('bonds.show', $bond->id)->with('success', 'Revisão de vínculo solicitada.');
-    }
-
-    /** @return Collection<int, Course>  */
-    private function getAllowedCourses(): Collection
-    {
-        $courses = Course::orderBy('name')->get();
-        foreach ($courses as $key => $course) {
-            if (! Gate::allows('bond-store-course_id', $course->id)) {
-                $courses->forget($key);
-            }
-        }
-
-        return $courses;
     }
 }

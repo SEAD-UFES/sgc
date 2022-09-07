@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Bond;
 
 use App\Enums\KnowledgeAreas;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Enum;
 
 class StoreBondRequest extends FormRequest
@@ -15,7 +16,7 @@ class StoreBondRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Gate::allows('bond-create');
     }
 
     /**

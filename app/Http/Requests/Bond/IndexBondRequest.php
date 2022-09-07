@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Bond;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
-class ReviewBondRequest extends FormRequest
+class IndexBondRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,25 +14,18 @@ class ReviewBondRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Gate::allows('bond-list');
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function rules()
     {
         return [
-            'impediment' => 'sometimes',
-            'impediment_description' => 'sometimes',
-        ];
-    }
 
-    public function messages()
-    {
-        return [
         ];
     }
 }

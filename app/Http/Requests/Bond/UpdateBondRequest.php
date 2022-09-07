@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Bond;
 
+use App\Models\Bond;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class UpdateBondRequest extends FormRequest
 {
@@ -11,9 +13,9 @@ class UpdateBondRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize(): bool
+    public function authorize(Bond $bond): bool
     {
-        return true;
+        return Gate::allows('bond-update', $bond);
     }
 
     /**

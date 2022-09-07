@@ -14,6 +14,8 @@ use App\Http\Controllers\InstitutionalDetailController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PoleController;
+use App\Http\Controllers\RequestBondReview;
+use App\Http\Controllers\ReviewBond;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserTypeAssignmentController;
@@ -82,8 +84,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('bonds', BondController::class);
 
-    Route::post('bondreview/{bond}', [BondController::class, 'review'])->name('bonds.review');
-    Route::get('bondrequestreview/{bond}', [BondController::class, 'requestReview'])->name('bonds.requestReview');
+    Route::post('bondreview/{bond}', ReviewBond::class)->name('bonds.review');
+    Route::get('bondreviewrequest/{bond}', RequestBondReview::class)->name('bonds.requestReview');
 
     Route::get('users/current/password', [UserController::class, 'currentPasswordEdit'])->name('users.currentPasswordEdit');
     Route::patch('users/current/password', [UserController::class, 'currentPasswordUpdate'])->name('users.currentPasswordUpdate');
