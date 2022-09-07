@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ModelFilterHelper;
-use App\Http\Requests\CreateEmployeeRequest;
-use App\Http\Requests\DestroyEmployeeRequest;
-use App\Http\Requests\EditEmployeeRequest;
-use App\Http\Requests\IndexEmployeeRequest;
-use App\Http\Requests\ShowEmployeeRequest;
-use App\Http\Requests\StoreEmployeeRequest;
-use App\Http\Requests\UpdateEmployeeRequest;
+use App\Http\Requests\Employee\CreateEmployeeRequest;
+use App\Http\Requests\Employee\DestroyEmployeeRequest;
+use App\Http\Requests\Employee\EditEmployeeRequest;
+use App\Http\Requests\Employee\IndexEmployeeRequest;
+use App\Http\Requests\Employee\ShowEmployeeRequest;
+use App\Http\Requests\Employee\StoreEmployeeRequest;
+use App\Http\Requests\Employee\UpdateEmployeeRequest;
 use App\Models\Employee;
 use App\Models\EmployeeDocument;
 use App\Services\EmployeeService;
@@ -63,13 +63,16 @@ class EmployeeController extends Controller
     public function store(StoreEmployeeRequest $request): RedirectResponse
     {
         try {
+            /**
+             * @var Employee $employee
+             */
             $employee = $this->service->create($request->validated());
+
+            if ($request->importDocuments === 'true') {
+                return redirect()->route('employeesDocuments.createMany', $employee->id)->with('success', 'Colaborador criado com sucesso.');
+            }
         } catch (\Exception $e) {
             return redirect()->route('employees.index')->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $e->getMessage()]);
-        }
-
-        if ($request->importDocuments === 'true') {
-            return redirect()->route('employeesDocuments.createMany', $employee->id)->with('success', 'Colaborador criado com sucesso.');
         }
 
         return redirect()->route('employees.index')->with('success', 'Colaborador criado com sucesso.');
