@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\UpdateCurrentPasswordRequest;
+use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 
@@ -21,13 +22,17 @@ class UpdateCurrentPassword extends Controller
      */
     public function __invoke(UpdateCurrentPasswordRequest $request): RedirectResponse
     {
+        /**
+         * @var User $user
+         */
         $user = auth()->user();
 
         /**
          * @var array<string, string> $requestArr
          */
         $requestArr = $request->validated();
-        $requestArr['active'] = true;
+        $requestArr['active'] = 'on';
+        $requestArr['email'] = $user->email;
 
         try {
             $user = $this->service->update($requestArr, $user);
