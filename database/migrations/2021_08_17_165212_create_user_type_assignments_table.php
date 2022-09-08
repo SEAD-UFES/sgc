@@ -21,6 +21,7 @@ class CreateUserTypeAssignmentsTable extends Migration
             $table->foreignId('course_id')->nullable()->constrained('courses');
             $table->date('begin')->default(Carbon::now());
             $table->date('end')->nullable();
+            $table->unique(['user_id', 'user_type_id', 'course_id']);
             $table->timestamps();
         });
     }

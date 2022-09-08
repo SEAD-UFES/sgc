@@ -37,6 +37,8 @@ class UserTypeAssignmentService
      */
     public function create(array $attributes): UserTypeAssignment
     {
+        // * NULL Course breaks the SQL Unique Constraint ['user_id', 'user_type_id', 'course_id']
+        // TODO: Implement Composite Foreign Keys manually, handling NULL Course
         return UserTypeAssignment::create($attributes);
     }
 
