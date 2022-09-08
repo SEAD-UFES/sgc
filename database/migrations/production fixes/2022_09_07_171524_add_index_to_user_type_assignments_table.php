@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('user_type_assignment', function (Blueprint $table) {
+        Schema::table('user_type_assignments', function (Blueprint $table) {
             $table->unique(['user_id', 'user_type_id', 'course_id']);
         });
     }
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('user_type_assignment', function (Blueprint $table) {
+        Schema::table('user_type_assignments', function (Blueprint $table) {
             $table->dropUnique(['user_id', 'user_type_id', 'course_id']);
         });
     }
