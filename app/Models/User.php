@@ -98,6 +98,14 @@ class User extends Authenticatable
      */
     public function userTypeAssignments(): HasMany
     {
+        return $this->responsibilities();
+    }
+
+    /**
+     * @return HasMany<UserTypeAssignment>
+     */
+    public function responsibilities(): HasMany
+    {
         return $this->hasMany(UserTypeAssignment::class);
     }
 
@@ -116,7 +124,7 @@ class User extends Authenticatable
      */
     public function getResponsibilities(): HasMany
     {
-        return $this->userTypeAssignments()
+        return $this->responsibilities()
             ->with('userType', 'course')
             ->join('user_types', 'user_type_assignments.user_type_id', '=', 'user_types.id')
             ->select('user_type_assignments.*')
@@ -194,7 +202,7 @@ class User extends Authenticatable
             ->whereKey($responsibilityId)
             ->first();
 
-        session(['loggedInUser.currentUta' => $responsibility]);
+        session(['loggedInUser.currentResponsibility' => $responsibility]);
     }
 
     /**
@@ -221,7 +229,7 @@ class User extends Authenticatable
         /**
          * @var ?UserTypeAssignment $sessionResponsibility
          */
-        $sessionResponsibility = session('loggedInUser.currentUta');
+        $sessionResponsibility = session('loggedInUser.currentResponsibility');
 
         /**
          * @var UserTypeAssignment $responsibility

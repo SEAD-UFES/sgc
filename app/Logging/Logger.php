@@ -118,7 +118,7 @@ class Logger implements LoggerInterface
     {
         $executorId = '-';
         $executorLabel = 'UnknownUser';
-        $executorUserTypeName = 'UnknownCurrentUTA';
+        $executorUserTypeName = 'UnknownCurrentResponsibility';
 
         $httpErrorCode = $exception->getStatusCode();
         $uri = $request->getRequestUri();
@@ -137,7 +137,7 @@ class Logger implements LoggerInterface
         $executorLabel = (($userEmail ?? request()->email) ?? request()->ip()) ?? '';
         $executorId = $user?->id ?? '-';
 
-        $executorUserTypeName = $user?->getCurrentResponsibility()->userType->name ?? 'NullCurrentUTA';
+        $executorUserTypeName = $user?->getCurrentResponsibility()->userType->name ?? 'NullCurrentResponsibility';
 
         $logText = "\tHTTP_ERROR\t| " . NetworkHelper::getClientIpAddress() . "\t| User:${executorId}:${executorLabel} [${executorUserTypeName}]\t| attempted " . $method . " on '" . $uri . "' with result " . $httpErrorCode;
 
@@ -156,7 +156,7 @@ class Logger implements LoggerInterface
         $executor = null;
         $executorId = '-';
         $executorLabel = 'UnknownUser';
-        $executorUserTypeName = 'UnknownCurrentUTA';
+        $executorUserTypeName = 'UnknownCurrentResponsibility';
         $activityLabel = 'UnknownActivity';
         $modelClassLabel = 'UnknownModel';
         $modelId = 'UnknownModelID';
@@ -169,7 +169,7 @@ class Logger implements LoggerInterface
             $executorLabel = $executor->email;
             /** @var UserTypeAssignment|null $executorCurrentUta */
             $executorCurrentUta = $executor->getCurrentResponsibility();
-            $executorUserTypeName = $executorCurrentUta?->userType->name ?? 'NullCurrentUTA';
+            $executorUserTypeName = $executorCurrentUta?->userType->name ?? 'NullCurrentResponsibility';
         } else {
             $executorLabel = request()->ip() . ' (Seed?)';
         }
@@ -181,7 +181,7 @@ class Logger implements LoggerInterface
             $executorLabel = $executor->email;
             /** @var UserTypeAssignment|null $executorCurrentUta */
             $executorCurrentUta = $executor->getCurrentResponsibility();
-            $executorUserTypeName = $executorCurrentUta?->userType->name ?? 'NullCurrentUTA';
+            $executorUserTypeName = $executorCurrentUta?->userType->name ?? 'NullCurrentResponsibility';
         }
 
         if (is_string($activity)) {
@@ -222,7 +222,7 @@ class Logger implements LoggerInterface
     {
         $executorId = '-';
         $executorLabel = 'UnknownUser';
-        $executorUserTypeName = 'UnknownCurrentUTA';
+        $executorUserTypeName = 'UnknownCurrentResponsibility';
         $modelClassLabel = 'UnknownModel';
         $modelId = 'UnknownModelID';
         $modelAttributes = '{?}';
@@ -241,7 +241,7 @@ class Logger implements LoggerInterface
         $executorLabel = (($userEmail ?? request()->email) ?? request()->ip()) ?? '';
         $executorId = $user?->id ?? '-';
 
-        $executorUserTypeName = $user?->getCurrentResponsibility()->userType->name ?? 'NullCurrentUTA';
+        $executorUserTypeName = $user?->getCurrentResponsibility()->userType->name ?? 'NullCurrentResponsibility';
 
         if (isset($model) && is_a($model, Model::class)) {
             $modelClassLabel = class_basename($model);
@@ -258,7 +258,7 @@ class Logger implements LoggerInterface
     {
         $executorId = '-';
         $executorLabel = 'UnknownUser';
-        $executorUserTypeName = 'UnknownCurrentUTA';
+        $executorUserTypeName = 'UnknownCurrentResponsibility';
         $modelClassLabel = 'UnknownModel';
         $modelId = 'UnknownModelID';
         $modelAttributes = '{?}';
@@ -277,7 +277,7 @@ class Logger implements LoggerInterface
         $executorLabel = (($userEmail ?? request()->email) ?? request()->ip()) ?? '';
         $executorId = $user?->id ?? '-';
 
-        $executorUserTypeName = $user?->getCurrentResponsibility()->userType->name ?? 'NullCurrentUTA';
+        $executorUserTypeName = $user?->getCurrentResponsibility()->userType->name ?? 'NullCurrentResponsibility';
 
         if (isset($model) && ! is_string($model) && is_a($model, Model::class)) {
             $modelClassLabel = class_basename($model);
@@ -309,7 +309,7 @@ class Logger implements LoggerInterface
         $_executor = $executor ?? Auth::user();
         $executorId = $_executor->id ?? 'NoID';
         $executorEmail = isset($_executor->email) ? ':' . $_executor->email : ":\t";
-        $executorRole = $_executor instanceof User ? (is_null($_executor->getCurrentResponsibility()) ? 'Null Current UTA' : $_executor->getCurrentResponsibility()->userType->name) : 'NoRole';
+        $executorRole = $_executor instanceof User ? (is_null($_executor->getCurrentResponsibility()) ? 'Null Current Responsibility' : $_executor->getCurrentResponsibility()->userType->name) : 'NoRole';
 
         return "${executorId}${executorEmail} [${executorRole}]";
     }

@@ -100,8 +100,8 @@
                                 @can('isAdm-global')
                                     <li><hr class="dropdown-divider"></li>
                                     <li><h6 class="dropdown-header">Atribuições de papel</h6></li>
-                                    <li><a class="dropdown-item" href="{{ route('userTypeAssignments.index') }}">Listar Atribuições de Papel</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('userTypeAssignments.create') }}">Cadastrar Atrib. de Papel</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('responsibilities.index') }}">Listar Atribuições de Papel</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('responsibilities.create') }}">Cadastrar Atrib. de Papel</a></li>
                                 @endcan
                                 @can('isAdm-global')
                                     <li><hr class="dropdown-divider"></li>
@@ -115,13 +115,13 @@
                 </ul>
                 
                 @if (auth()->user()->hasActiveResponsibilities())
-                    <form class="d-flex" action={{ route('currentUTA.change') }} method="POST">
+                    <form class="d-flex" action={{ route('currentResponsibility.change') }} method="POST">
                         @csrf
-                        <select class="form-select form-select-sm" aria-label="uta" name="activeUTAs" data-bs-toggle="tooltip" data-bs-placement="left" title="Mudar papel atual" onchange="submit();">
-                            @foreach (auth()->user()->getActiveResponsibilities()->get() as $uta)
-                                <option value="{{ $uta->id }}"
-                                    {{ auth()->user()->getCurrentResponsibility() && $uta->id === auth()->user()->getCurrentResponsibility()->id ? 'selected' : '' }}>
-                                    {{ $uta->userType->name }}{{ $uta->course ? ' - ' . $uta->course->name : '' }}
+                        <select class="form-select form-select-sm" aria-label="responsibility" name="activeResponsibilitys" data-bs-toggle="tooltip" data-bs-placement="left" title="Mudar papel atual" onchange="submit();">
+                            @foreach (auth()->user()->getActiveResponsibilities()->get() as $responsibility)
+                                <option value="{{ $responsibility->id }}"
+                                    {{ auth()->user()->getCurrentResponsibility() && $responsibility->id === auth()->user()->getCurrentResponsibility()->id ? 'selected' : '' }}>
+                                    {{ $responsibility->userType->name }}{{ $responsibility->course ? ' - ' . $responsibility->course->name : '' }}
                                 </option>
                             @endforeach
                         </select>

@@ -44,24 +44,24 @@
                                 <th class="text-center">Ações</th>
                             </thead>
                             <tbody>
-                                @foreach ($userTypeAssignments as $userTypeAssignment)
+                                @foreach ($responsibilities as $responsibility)
                                     <tr>
-                                        <td>{{ $userTypeAssignment->user->email }}</td>
-                                        <td>{{ $userTypeAssignment->userType->name }} {{ $userTypeAssignment->course ? "(".$userTypeAssignment->course->name.")": '' }}</td>
-                                        <td>{{ $userTypeAssignment->begin }}</td>
-                                        <td>{{ $userTypeAssignment->end ?? "-" }}</td>
+                                        <td>{{ $responsibility->user->email }}</td>
+                                        <td>{{ $responsibility->userType->name }} {{ $responsibility->course ? "(".$responsibility->course->name.")": '' }}</td>
+                                        <td>{{ $responsibility->begin }}</td>
+                                        <td>{{ $responsibility->end ?? "-" }}</td>
                                         <td class="text-center"><div class="d-inline-flex">
-                                            @can('userTypeAssignment-update')
-                                                <a href="{{ route('userTypeAssignments.edit', $userTypeAssignment) }}" data-bs-toggle="tooltip" title="Editar usuário" class="btn btn-primary btn-sm">
+                                            @can('responsibility-update')
+                                                <a href="{{ route('responsibilities.edit', $responsibility) }}" data-bs-toggle="tooltip" title="Editar usuário" class="btn btn-primary btn-sm">
                                                     <i class="bi-pencil-fill"></i>
                                                 </a>&nbsp;          
                                             @endcan
-                                            @can('userTypeAssignment-destroy')
-                                                <form name="{{ 'formDelete' . $userTypeAssignment->id }}" action="{{ route('userTypeAssignments.destroy', $userTypeAssignment) }}" method="POST">
+                                            @can('responsibility-destroy')
+                                                <form name="{{ 'formDelete' . $responsibility->id }}" action="{{ route('responsibilities.destroy', $responsibility) }}" method="POST">
                                                     @method('DELETE')
                                                     @csrf
                                                     <button type="button" data-bs-toggle="tooltip" title="Excluir usuário" 
-                                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse usuário?\')) document.forms[\'formDelete' . $userTypeAssignment->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
+                                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse usuário?\')) document.forms[\'formDelete' . $responsibility->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
                                                         <i class="bi-trash-fill"></i>
                                                     </button>
                                                 </form>
@@ -73,15 +73,15 @@
                         </table>
                     </div>
                     <br />
-                    {!! $userTypeAssignments->links() !!}
+                    {!! $responsibilities->links() !!}
 
-                    @if(sizeof($userTypeAssignments) <= 0)
+                    @if(sizeof($responsibilities) <= 0)
                         <p>Sem resultados para exibir.</p>
                         <br />
                     @endif
                     <a href="{{ route('home') }}" class="btn btn-secondary">Voltar para o Início</a>
                     @can('isAdm-global')
-                        <a href="{{ route('userTypeAssignments.create') }}" class="btn btn-warning">Cadastrar nova Atrib. de Papel</a>
+                        <a href="{{ route('responsibilities.create') }}" class="btn btn-warning">Cadastrar nova Atrib. de Papel</a>
                     @endcan
                     <br />
                 </div>

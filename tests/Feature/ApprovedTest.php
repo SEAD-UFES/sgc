@@ -188,7 +188,7 @@ class ApprovedTest extends TestCase
     public function authenticatedUserWithoutPermissionShouldntListApproveds()
     {
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null]);
+            ->withSession(['loggedInUser.currentResponsibility' => null]);
 
         $this->get(route('approveds.index'))
             ->assertStatus(403);
@@ -208,7 +208,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('approveds.index'))
             ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])
@@ -229,7 +229,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('approveds.index'))
             ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])
@@ -250,7 +250,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('approveds.index'))
             ->assertStatus(403);
@@ -270,7 +270,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('approveds.index'))
             ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])
@@ -291,7 +291,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('approveds.index'))
             ->assertStatus(403);
@@ -311,7 +311,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('approveds.index'))
             ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])
@@ -345,7 +345,7 @@ class ApprovedTest extends TestCase
     public function authenticatedUserWithoutPermissionShouldntAccessCreateApprovedPage()
     {
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null]);
+            ->withSession(['loggedInUser.currentResponsibility' => null]);
 
         $this->get(route('approveds.create'))
             ->assertStatus(403);
@@ -365,7 +365,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('approveds.create'))
             ->assertSee(['Cadastrar Aprovado', 'Telefone'])
@@ -386,7 +386,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('approveds.create'))
             ->assertSee(['Cadastrar Aprovado', 'Telefone'])
@@ -407,7 +407,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('approveds.create'))
             ->assertStatus(403);
@@ -427,7 +427,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('approveds.create'))
             ->assertSee(['Cadastrar Aprovado', 'Telefone'])
@@ -448,7 +448,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('approveds.create'))
             ->assertStatus(403);
@@ -468,7 +468,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('approveds.create'))
             ->assertStatus(403);
@@ -500,7 +500,7 @@ class ApprovedTest extends TestCase
     public function authenticatedUserWithoutPermissionShouldntAccessStepOneCreateApprovedsPage()
     {
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null]);
+            ->withSession(['loggedInUser.currentResponsibility' => null]);
 
         $this->get(route('approveds.createMany.step1'))
             ->assertStatus(403);
@@ -520,7 +520,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('approveds.createMany.step1'))
             ->assertSee(['Importar Aprovados', 'Enviar arquivo'])
@@ -541,7 +541,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('approveds.createMany.step1'))
             ->assertSee(['Importar Aprovados', 'Enviar arquivo'])
@@ -562,7 +562,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('approveds.createMany.step1'))
             ->assertStatus(403);
@@ -582,7 +582,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('approveds.createMany.step1'))
             ->assertSee(['Importar Aprovados', 'Enviar arquivo'])
@@ -603,7 +603,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('approveds.createMany.step1'))
             ->assertStatus(403);
@@ -623,7 +623,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('approveds.createMany.step1'))
             ->assertStatus(403);
@@ -684,7 +684,7 @@ class ApprovedTest extends TestCase
     public function authenticatedUserWithoutPermissionShouldntAccessStepTwoCreateApprovedsPage()
     {
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null, 'importedApproveds' => $this->createTestImportedApproveds()]);
+            ->withSession(['loggedInUser.currentResponsibility' => null, 'importedApproveds' => $this->createTestImportedApproveds()]);
 
         $this->get(route('approveds.createMany.step2'))
             ->assertStatus(403);
@@ -704,7 +704,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility(), 'importedApproveds' => $this->createTestImportedApproveds()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility(), 'importedApproveds' => $this->createTestImportedApproveds()]);
 
         $this->get(route('approveds.createMany.step2'))
             ->assertSee(['Revisão de Importação', 'Importar', 'Carl Doe', 'Doug Doe'])
@@ -725,7 +725,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility(), 'importedApproveds' => $this->createTestImportedApproveds()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility(), 'importedApproveds' => $this->createTestImportedApproveds()]);
 
         $this->get(route('approveds.createMany.step2'))
             ->assertSee(['Revisão de Importação', 'Importar', 'Carl Doe', 'Doug Doe'])
@@ -746,7 +746,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility(), 'importedApproveds' => $this->createTestImportedApproveds()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility(), 'importedApproveds' => $this->createTestImportedApproveds()]);
 
         $this->get(route('approveds.createMany.step2'))
             ->assertStatus(403);
@@ -766,7 +766,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility(), 'importedApproveds' => $this->createTestImportedApproveds()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility(), 'importedApproveds' => $this->createTestImportedApproveds()]);
 
         $this->get(route('approveds.createMany.step2'))
             ->assertSee(['Revisão de Importação', 'Importar', 'Carl Doe', 'Doug Doe'])
@@ -787,7 +787,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility(), 'importedApproveds' => $this->createTestImportedApproveds()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility(), 'importedApproveds' => $this->createTestImportedApproveds()]);
 
         $this->get(route('approveds.createMany.step2'))
             ->assertStatus(403);
@@ -807,7 +807,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility(), 'importedApproveds' => $this->createTestImportedApproveds()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility(), 'importedApproveds' => $this->createTestImportedApproveds()]);
 
         $this->get(route('approveds.createMany.step2'))
             ->assertStatus(403);
@@ -889,7 +889,7 @@ class ApprovedTest extends TestCase
         $approvedArr = $this->getTestAttributes();
 
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null])
+            ->withSession(['loggedInUser.currentResponsibility' => null])
             ->followingRedirects()->post(route('approveds.store'), $approvedArr)
             ->assertStatus(403);
     }
@@ -908,7 +908,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $approvedArr = $this->getTestAttributes();
 
@@ -931,7 +931,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $approvedArr = $this->getTestAttributes();
 
@@ -954,7 +954,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $approvedArr = $this->getTestAttributes();
 
@@ -976,7 +976,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $approvedArr = $this->getTestAttributes();
 
@@ -999,7 +999,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $approvedArr = $this->getTestAttributes();
 
@@ -1021,7 +1021,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $approvedArr = $this->getTestAttributes();
 
@@ -1091,7 +1091,7 @@ class ApprovedTest extends TestCase
         $approvedArr = $this->createTestImportedApprovedsArray();
 
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null])
+            ->withSession(['loggedInUser.currentResponsibility' => null])
             ->followingRedirects()->post(route('approveds.storeMany.step2'), $approvedArr)
             ->assertStatus(403);
     }
@@ -1110,7 +1110,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $approvedArr = $this->createTestImportedApprovedsArray();
 
@@ -1133,7 +1133,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $approvedArr = $this->createTestImportedApprovedsArray();
 
@@ -1156,7 +1156,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $approvedArr = $this->createTestImportedApprovedsArray();
 
@@ -1178,7 +1178,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $approvedArr = $this->createTestImportedApprovedsArray();
 
@@ -1201,7 +1201,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $approvedArr = $this->createTestImportedApprovedsArray();
 
@@ -1223,7 +1223,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $approvedArr = $this->createTestImportedApprovedsArray();
 
@@ -1275,7 +1275,7 @@ class ApprovedTest extends TestCase
     public function authenticatedUserWithoutPermissionShouldntUpdateApproved()
     {
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null]);
+            ->withSession(['loggedInUser.currentResponsibility' => null]);
 
         /** @var Approved $originalApproved */
         $originalApproved = Approved::where('name', 'John Doe')->first();
@@ -1302,7 +1302,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Approved $originalApproved */
         $originalApproved = Approved::where('name', 'John Doe')->first();
@@ -1330,7 +1330,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Approved $originalApproved */
         $originalApproved = Approved::where('name', 'John Doe')->first();
@@ -1358,7 +1358,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Approved $originalApproved */
         $originalApproved = Approved::where('name', 'John Doe')->first();
@@ -1385,7 +1385,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Approved $originalApproved */
         $originalApproved = Approved::where('name', 'John Doe')->first();
@@ -1413,7 +1413,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Approved $originalApproved */
         $originalApproved = Approved::where('name', 'John Doe')->first();
@@ -1440,7 +1440,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Approved $originalApproved */
         $originalApproved = Approved::where('name', 'John Doe')->first();
@@ -1484,7 +1484,7 @@ class ApprovedTest extends TestCase
     public function authenticatedUserWithoutPermissionShouldntDeleteApproveds()
     {
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null]);
+            ->withSession(['loggedInUser.currentResponsibility' => null]);
 
         $approvedBefore = Approved::find(1);
 
@@ -1509,7 +1509,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $approvedBefore = Approved::find(1);
 
@@ -1536,7 +1536,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $approvedBefore = Approved::find(1);
 
@@ -1563,7 +1563,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $approvedBefore = Approved::find(1);
 
@@ -1588,7 +1588,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $approvedBefore = Approved::find(1);
 
@@ -1615,7 +1615,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $approvedBefore = Approved::find(1);
 
@@ -1640,7 +1640,7 @@ class ApprovedTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $approvedBefore = Approved::find(1);
 

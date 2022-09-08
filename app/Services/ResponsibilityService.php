@@ -7,7 +7,7 @@ use App\Events\ModelRead;
 use App\Models\UserTypeAssignment;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class UserTypeAssignmentService
+class ResponsibilityService
 {
     /**
      * Undocumented function
@@ -22,10 +22,10 @@ class UserTypeAssignmentService
         $query = $query->AcceptRequest(UserTypeAssignment::$accepted_filters)->filter();
         $query = $query->sortable(['updated_at' => 'desc']);
 
-        $userTypeAssignments = $query->paginate(10);
-        $userTypeAssignments->withQueryString();
+        $responsibilities = $query->paginate(10);
+        $responsibilities->withQueryString();
 
-        return $userTypeAssignments;
+        return $responsibilities;
     }
 
     /**
@@ -45,41 +45,41 @@ class UserTypeAssignmentService
     /**
      * Undocumented function
      *
-     * @param UserTypeAssignment $userTypeAssignment
+     * @param UserTypeAssignment $responsibility
      *
      * @return UserTypeAssignment|null
      */
-    public function read(UserTypeAssignment $userTypeAssignment): UserTypeAssignment|null
+    public function read(UserTypeAssignment $responsibility): UserTypeAssignment|null
     {
-        ModelRead::dispatch($userTypeAssignment);
+        ModelRead::dispatch($responsibility);
 
-        return UserTypeAssignment::with(['user:id,email', 'userType:id,name', 'course:id,name'])->find($userTypeAssignment->id);
+        return UserTypeAssignment::with(['user:id,email', 'userType:id,name', 'course:id,name'])->find($responsibility->id);
     }
 
     /**
      * Undocumented function
      *
      * @param array<string> $attributes
-     * @param UserTypeAssignment $userTypeAssignment
+     * @param UserTypeAssignment $responsibility
      *
      * @return UserTypeAssignment
      */
-    public function update(array $attributes, UserTypeAssignment $userTypeAssignment): UserTypeAssignment
+    public function update(array $attributes, UserTypeAssignment $responsibility): UserTypeAssignment
     {
-        $userTypeAssignment->update($attributes);
+        $responsibility->update($attributes);
 
-        return $userTypeAssignment;
+        return $responsibility;
     }
 
     /**
      * Undocumented function
      *
-     * @param UserTypeAssignment $userTypeAssignment
+     * @param UserTypeAssignment $responsibility
      *
      * @return void
      */
-    public function delete(UserTypeAssignment $userTypeAssignment)
+    public function delete(UserTypeAssignment $responsibility)
     {
-        $userTypeAssignment->delete();
+        $responsibility->delete();
     }
 }

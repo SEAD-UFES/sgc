@@ -14,10 +14,10 @@
             <div class="row justify-content-center">
                 <div class="col-xl-10 col-xxl-8">
                     @include('_components.alerts')
-                    <form action={{ route('userTypeAssignments.store') }} method="POST">
-                        @component('userTypeAssignment.componentUTAForm', compact('users', 'userTypes', 'courses'))@endcomponent
+                    <form action={{ route('responsibilities.store') }} method="POST">
+                        @component('responsibility.componentResponsibilityForm', compact('users', 'userTypes', 'courses'))@endcomponent
                         <button type="submit" class="btn btn-primary">Cadastrar</button>
-                        <a href="{{ route('userTypeAssignments.index') }}" class="btn btn-secondary">Cancelar</a>
+                        <a href="{{ route('responsibilities.index') }}" class="btn btn-secondary">Cancelar</a>
                         @error('noStore')
                             <div class="error">> {{ $message }}</div>
                         @enderror

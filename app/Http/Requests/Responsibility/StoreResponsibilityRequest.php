@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Responsibility;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUserTypeAssignmentRequest extends FormRequest
+class StoreResponsibilityRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -19,9 +19,9 @@ class StoreUserTypeAssignmentRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'user_id' => 'required|exists:users,id',
@@ -32,7 +32,10 @@ class StoreUserTypeAssignmentRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
     {
         return [
             'user_id.required' => 'O campo usuário é requerido.',

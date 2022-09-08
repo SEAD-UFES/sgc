@@ -5,7 +5,7 @@
         <option value="">Selecione o usuário</option>
         @foreach ($users as $user)
             <option value="{{ $user->id }}"
-                {{ isset($userTypeAssignment) ? ($userTypeAssignment->user_id == $user->id ? 'selected' : '') : (old('user_id') == $user->id ? 'selected' : '') }}>
+                {{ isset($responsibility) ? ($responsibility->user_id == $user->id ? 'selected' : '') : (old('user_id') == $user->id ? 'selected' : '') }}>
                 {{ $user->email }}</option>
         @endforeach
     </select>
@@ -19,7 +19,7 @@
         <option value="">Selecione o papel</option>
         @foreach ($userTypes as $userType)
             <option value="{{ $userType->id }}"
-                {{ isset($userTypeAssignment) ? ($userTypeAssignment->user_type_id == $userType->id ? 'selected' : '') : (old('user_type_id') == $userType->id ? 'selected' : '') }}>
+                {{ isset($responsibility) ? ($responsibility->user_type_id == $userType->id ? 'selected' : '') : (old('user_type_id') == $userType->id ? 'selected' : '') }}>
                 {{ $userType->name }}</option>
         @endforeach
     </select>
@@ -33,7 +33,7 @@
         <option value="">Sem curso específico</option>
         @foreach ($courses as $course)
             <option value="{{ $course->id }}"
-                {{ isset($userTypeAssignment) ? ($userTypeAssignment->course_id == $course->id ? 'selected' : '') : (old('course_id') == $course->id ? 'selected' : '') }}>
+                {{ isset($responsibility) ? ($responsibility->course_id == $course->id ? 'selected' : '') : (old('course_id') == $course->id ? 'selected' : '') }}>
                 {{ $course->name }}</option>
         @endforeach
     </select>
@@ -44,7 +44,7 @@
 <div class="mb-3">
     <label for="inputBegin1" class="form-label">Início*</label>
     <input type="date" name="begin"
-        value="{{ isset($userTypeAssignment) ? $userTypeAssignment->begin : old('begin') ?? date('Y-m-d') }}"
+        value="{{ isset($responsibility) ? $responsibility->begin : old('begin') ?? date('Y-m-d') }}"
         id="inputBegin1" class="form-control">
     @error('begin')
         <div class="text-danger">> {{ $message }}</div>
@@ -52,7 +52,7 @@
 </div>
 <div class="mb-3">
     <label for="inputEnd1" class="form-label">Fim (Opcional)</label>
-    <input type="date" name="end" value="{{ isset($userTypeAssignment) ? $userTypeAssignment->end : old('end') }}"
+    <input type="date" name="end" value="{{ isset($responsibility) ? $responsibility->end : old('end') }}"
         id="inputEnd1" class="form-control">
     @error('end')
         <div class="text-danger">> {{ $message }}</div>

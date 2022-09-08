@@ -81,7 +81,7 @@ class AuthController extends Controller
         /**
          * @var int $newResponsibilityId
          */
-        $newResponsibilityId = $request->activeUTAs;
+        $newResponsibilityId = $request->activeResponsibilitys;
 
         $currentUser->setCurrentResponsibility($newResponsibilityId);
         return redirect()->back();

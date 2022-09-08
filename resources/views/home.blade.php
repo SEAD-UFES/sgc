@@ -7,7 +7,7 @@
     <ol class="breadcrumb border-top border-bottom bg-light">
         <li class="breadcrumb-item active" aria-current="page">
             Home&nbsp;
-            @if (session('loggedInUser.currentUta')?->id != null)
+            @if (session('loggedInUser.currentResponsibility')?->id != null)
                 [{{ auth()->user()->getCurrentResponsibility()->user->email }} -
                 {{ auth()->user()->getCurrentResponsibility()->userType->name }}
                 {{ auth()->user()->getCurrentResponsibility()->course_id ? " - " . auth()->user()->getCurrentResponsibility()->course->name : "" }}]

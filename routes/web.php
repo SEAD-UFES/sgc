@@ -19,14 +19,9 @@ use App\Http\Controllers\RequestBondReview;
 use App\Http\Controllers\ReviewBond;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UpdateCurrentPassword;
-use App\Http\Controllers\User2Controller;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserTypeAssignmentController;
+use App\Http\Controllers\ResponsibilityController;
 use App\Http\Controllers\WebController;
-use App\Models\Employee;
-use App\Models\User;
-use App\Models\UserType;
-use App\Models\UserTypeAssignment;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -123,8 +118,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/notification/{notification}/dismiss', [NotificationController::class, 'dismiss'])->name('notifications.dismiss');
 
-    Route::resource('userTypeAssignments', UserTypeAssignmentController::class);
-    Route::post('/session/switch-responsibility', [AuthController::class, 'switchCurrentResponsibility'])->name('currentUTA.change');
+    Route::resource('responsibilities', ResponsibilityController::class);
+    Route::post('/session/switch-responsibility', [AuthController::class, 'switchCurrentResponsibility'])->name('currentResponsibility.change');
 
     Route::get('system/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('logs')->middleware('can:isAdm-global');
 

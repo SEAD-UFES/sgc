@@ -112,19 +112,19 @@
                     </div>
 
                     <div class="card mb-3">
-                        <div class="card-header" data-bs-toggle="collapse" href="#utaListContent" role="button"
-                            aria-expanded="true" aria-controls="utaListContent">
+                        <div class="card-header" data-bs-toggle="collapse" href="#responsibilityListContent" role="button"
+                            aria-expanded="true" aria-controls="responsibilityListContent">
                             <h4 class='mb-0'>Papéis associados</h4>
                         </div>
-                        <div class="collapse show" id="utaListContent">
+                        <div class="collapse show" id="responsibilityListContent">
                             <div class="card-body">
                                 @php
-                                    $userTypeAssignments = $user
-                                        ->userTypeAssignments()
+                                    $responsibilities = $user
+                                        ->responsibilities()
                                         ->orderBy('begin', 'ASC')
                                         ->get();
                                 @endphp
-                                @if ($userTypeAssignments->count() > 0)
+                                @if ($responsibilities->count() > 0)
                                     <div class="table-responsive">
                                         <table class="table table-hover">
                                             <thead>
@@ -134,35 +134,35 @@
                                                 <th class="text-center">Ações</th>
                                             </thead>
                                             <tbody>
-                                                @foreach ($userTypeAssignments as $uta)
+                                                @foreach ($responsibilities as $responsibility)
                                                     <tr>
                                                         <td>
-                                                            {{ $uta->begin ? \Carbon\Carbon::parse($uta->begin)->isoFormat('DD/MM/Y') : '-' }}
+                                                            {{ $responsibility->begin ? \Carbon\Carbon::parse($responsibility->begin)->isoFormat('DD/MM/Y') : '-' }}
                                                         </td>
                                                         <td>
-                                                            {{ $uta->end ? \Carbon\Carbon::parse($uta->end)->isoFormat('DD/MM/Y') : '-' }}
+                                                            {{ $responsibility->end ? \Carbon\Carbon::parse($responsibility->end)->isoFormat('DD/MM/Y') : '-' }}
                                                         </td>
                                                         <td>
-                                                            {{ $uta->userType->name }}
+                                                            {{ $responsibility->userType->name }}
                                                         </td>
                                                         <td class="text-center">
                                                             <div class="d-inline-flex">
-                                                                @can('userTypeAssignment-update')
-                                                                    <a href="{{ route('userTypeAssignments.edit', $uta) }}"
+                                                                @can('responsibility-update')
+                                                                    <a href="{{ route('responsibilities.edit', $responsibility) }}"
                                                                         data-bs-toggle="tooltip" title="Editar usuário"
                                                                         class="btn btn-primary btn-sm">
                                                                         <i class="bi-pencil-fill"></i>
                                                                     </a>&nbsp;
                                                                 @endcan
-                                                                @can('userTypeAssignment-destroy')
-                                                                    <form name="{{ 'formDelete' . $uta->id }}"
-                                                                        action="{{ route('userTypeAssignments.destroy', $uta) }}"
+                                                                @can('responsibility-destroy')
+                                                                    <form name="{{ 'formDelete' . $responsibility->id }}"
+                                                                        action="{{ route('responsibilities.destroy', $responsibility) }}"
                                                                         method="POST">
                                                                         @method('DELETE')
                                                                         @csrf
                                                                         <button type="button" data-bs-toggle="tooltip"
                                                                             title="Excluir usuário"
-                                                                            onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse usuário?\')) document.forms[\'formDelete' . $uta->id . '\'].submit();' }}"
+                                                                            onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse usuário?\')) document.forms[\'formDelete' . $responsibility->id . '\'].submit();' }}"
                                                                             class="btn btn-danger btn-sm">
                                                                             <i class="bi-trash-fill"></i>
                                                                         </button>
@@ -180,7 +180,7 @@
 
                                 <div class="">
                                     <a class="btn btn-primary btn-sm mt-1"
-                                        href="{{ route('userTypeAssignments.index', ['user_id' => $user->id]) }}"
+                                        href="{{ route('responsibilities.index', ['user_id' => $user->id]) }}"
                                         target="_blank">
                                         Listagem avançada...
                                     </a>

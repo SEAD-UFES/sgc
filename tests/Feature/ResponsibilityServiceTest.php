@@ -8,12 +8,12 @@ use App\Models\Course;
 use App\Models\User;
 use App\Models\UserType;
 use App\Models\UserTypeAssignment;
-use App\Services\UserTypeAssignmentService;
+use App\Services\ResponsibilityService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-class UserTypeAssignmentServiceTest extends TestCase
+class ResponsibilityServiceTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -42,40 +42,40 @@ class UserTypeAssignmentServiceTest extends TestCase
             ]
         );
 
-        $this->service = new UserTypeAssignmentService();
+        $this->service = new ResponsibilityService();
     }
 
     /**
      * @test
      */
-    public function userTypeAssignmentsShouldBeListed()
+    public function responsibilitiesShouldBeListed()
     {
         Event::fakeFor(function () {
             //execution
-            $userTypeAssignments = $this->service->list();
+            $responsibilities = $this->service->list();
 
             //verifications
             Event::assertDispatched(ModelListed::class);
             $this->assertEquals('johndoe@test.com', UserTypeAssignment::find(1)->user->email);
-            $this->assertCount(2, $userTypeAssignments);
+            $this->assertCount(2, $responsibilities);
         });
     }
 
     /**
      * @test
      */
-    public function userTypeAssignmentShouldBeRetrieved()
+    public function responsibilityShouldBeRetrieved()
     {
         //setting up scenario
-        $userTypeAssignment = UserTypeAssignment::find(1);
+        $responsibility = UserTypeAssignment::find(1);
 
-        Event::fakeFor(function () use ($userTypeAssignment) {
+        Event::fakeFor(function () use ($responsibility) {
             //execution
-            $userTypeAssignment = $this->service->read($userTypeAssignment);
+            $responsibility = $this->service->read($responsibility);
 
             //verifications
             Event::assertDispatched(ModelRead::class);
-            $this->assertEquals('johndoe@test.com', $userTypeAssignment->user->email);
+            $this->assertEquals('johndoe@test.com', $responsibility->user->email);
             $this->assertCount(2, UserTypeAssignment::all());
         });
     }
@@ -83,7 +83,7 @@ class UserTypeAssignmentServiceTest extends TestCase
     /**
      * @test
      */
-    public function userTypeAssignmentShouldBeCreated()
+    public function responsibilityShouldBeCreated()
     {
         //setting up scenario
         $attributes = [];
@@ -96,7 +96,7 @@ class UserTypeAssignmentServiceTest extends TestCase
 
         Event::fakeFor(function () use ($attributes) {
             //execution
-            $userTypeAssignment = $this->service->create($attributes);
+            $responsibility = $this->service->create($attributes);
 
             //verifications
             Event::assertDispatched('eloquent.created: ' . UserTypeAssignment::class);
@@ -109,11 +109,11 @@ class UserTypeAssignmentServiceTest extends TestCase
     /**
      * @test
      */
-    public function userTypeAssignmentShouldBeUpdated()
+    public function responsibilityShouldBeUpdated()
     {
         //setting up scenario
 
-        $userTypeAssignment = UserTypeAssignment::find(1);
+        $responsibility = UserTypeAssignment::find(1);
 
         $newUser = User::factory()->create(['email' => 'bobdoe@test3.com']);
         $newUserType = UserType::factory()->create(['name' => 'Type three']);
@@ -127,9 +127,9 @@ class UserTypeAssignmentServiceTest extends TestCase
         $attributes['begin'] = now();
         $attributes['end'] = now();
 
-        Event::fakeFor(function () use ($attributes, $userTypeAssignment) {
+        Event::fakeFor(function () use ($attributes, $responsibility) {
             //execution
-            $this->service->update($attributes, $userTypeAssignment);
+            $this->service->update($attributes, $responsibility);
 
             //verifications
             Event::assertDispatched('eloquent.updated: ' . UserTypeAssignment::class);
@@ -142,14 +142,14 @@ class UserTypeAssignmentServiceTest extends TestCase
     /**
      * @test
      */
-    public function userTypeAssignmentShouldBeDeleted()
+    public function responsibilityShouldBeDeleted()
     {
         //setting up scenario
-        $userTypeAssignment = UserTypeAssignment::find(1);
+        $responsibility = UserTypeAssignment::find(1);
 
-        Event::fakeFor(function () use ($userTypeAssignment) {
+        Event::fakeFor(function () use ($responsibility) {
             //execution
-            $this->service->delete($userTypeAssignment);
+            $this->service->delete($responsibility);
 
             //verifications
             Event::assertDispatched('eloquent.deleted: ' . UserTypeAssignment::class);

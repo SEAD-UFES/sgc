@@ -108,7 +108,7 @@ class CourseTest extends TestCase
     public function administratorShouldListCourses()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])
@@ -125,7 +125,7 @@ class CourseTest extends TestCase
     public function directorShouldListCourses()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])
@@ -142,7 +142,7 @@ class CourseTest extends TestCase
     public function assistantShouldListCourses()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])
@@ -159,7 +159,7 @@ class CourseTest extends TestCase
     public function secretaryShouldListCourses()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])
@@ -176,7 +176,7 @@ class CourseTest extends TestCase
     public function ldiShouldntListCourses()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/courses')
             ->assertStatus(403);
@@ -192,7 +192,7 @@ class CourseTest extends TestCase
     public function coordinatorShouldListCourses()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])

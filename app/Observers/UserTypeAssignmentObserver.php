@@ -16,13 +16,13 @@ class UserTypeAssignmentObserver
     /**
      * Handle the UserTypeAssignment "created" event.
      *
-     * @param  UserTypeAssignment  $userTypeAssignment
+     * @param  UserTypeAssignment  $responsibility
      * @return void
      */
-    public function created(UserTypeAssignment $userTypeAssignment)
+    public function created(UserTypeAssignment $responsibility)
     {
         /** @var Activity $activity */
-        $activity = $this->modelActivityHelper->getModelEventActivity('created', $userTypeAssignment);
+        $activity = $this->modelActivityHelper->getModelEventActivity('created', $responsibility);
 
         $this->logger->logModelEvent($activity);
     }
@@ -30,24 +30,24 @@ class UserTypeAssignmentObserver
     /**
      * Handle the UserTypeAssignment "updated" event.
      *
-     * @param  UserTypeAssignment  $userTypeAssignment
+     * @param  UserTypeAssignment  $responsibility
      * @return void
      */
-    public function updating(UserTypeAssignment $userTypeAssignment)
+    public function updating(UserTypeAssignment $responsibility)
     {
-        $this->logger->logModelEvent('updating', $userTypeAssignment);
+        $this->logger->logModelEvent('updating', $responsibility);
     }
 
     /**
      * Handle the UserTypeAssignment "updated" event.
      *
-     * @param  UserTypeAssignment  $userTypeAssignment
+     * @param  UserTypeAssignment  $responsibility
      * @return void
      */
-    public function updated(UserTypeAssignment $userTypeAssignment)
+    public function updated(UserTypeAssignment $responsibility)
     {
         /** @var Activity $activity */
-        $activity = $this->modelActivityHelper->getModelEventActivity('updated', $userTypeAssignment);
+        $activity = $this->modelActivityHelper->getModelEventActivity('updated', $responsibility);
 
         $this->logger->logModelEvent($activity);
     }
@@ -55,13 +55,13 @@ class UserTypeAssignmentObserver
     /**
      * Handle the UserTypeAssignment "deleted" event.
      *
-     * @param  UserTypeAssignment  $userTypeAssignment
+     * @param  UserTypeAssignment  $responsibility
      * @return void
      */
-    public function deleted(UserTypeAssignment $userTypeAssignment)
+    public function deleted(UserTypeAssignment $responsibility)
     {
         /** @var Activity $activity */
-        $activity = $this->modelActivityHelper->getModelEventActivity('deleted', $userTypeAssignment);
+        $activity = $this->modelActivityHelper->getModelEventActivity('deleted', $responsibility);
 
         $this->logger->logModelEvent($activity);
     }
@@ -69,20 +69,20 @@ class UserTypeAssignmentObserver
     /**
      * Handle the UserTypeAssignment "restored" event.
      *
-     * @param  UserTypeAssignment  $userTypeAssignment
+     * @param  UserTypeAssignment  $responsibility
      * @return void
      */
-    public function restored(UserTypeAssignment $userTypeAssignment)
+    public function restored(UserTypeAssignment $responsibility)
     {
     }
 
     /**
      * Handle the UserTypeAssignment "force deleted" event.
      *
-     * @param  UserTypeAssignment  $userTypeAssignment
+     * @param  UserTypeAssignment  $responsibility
      * @return void
      */
-    public function forceDeleted(UserTypeAssignment $userTypeAssignment)
+    public function forceDeleted(UserTypeAssignment $responsibility)
     {
     }
 }

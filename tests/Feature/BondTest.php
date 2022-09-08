@@ -158,7 +158,7 @@ class BondTest extends TestCase
     public function administratorShouldListBonds()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/bonds')
             ->assertSee(['John Doe', 'Jane Doe', 'Course Alpha', 'Course Beta'])
@@ -175,7 +175,7 @@ class BondTest extends TestCase
     public function directorShouldListBonds()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/bonds')
             ->assertSee(['John Doe', 'Jane Doe', 'Course Alpha', 'Course Beta'])
@@ -192,7 +192,7 @@ class BondTest extends TestCase
     public function assistantShouldListBonds()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/bonds')
             ->assertSee(['John Doe', 'Jane Doe', 'Course Alpha', 'Course Beta'])
@@ -209,7 +209,7 @@ class BondTest extends TestCase
     public function secretaryShouldListBonds()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/bonds')
             ->assertSee(['John Doe', 'Jane Doe', 'Course Alpha', 'Course Beta'])
@@ -226,7 +226,7 @@ class BondTest extends TestCase
     public function ldiShouldntListBonds()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/bonds')
             ->assertStatus(403);
@@ -242,7 +242,7 @@ class BondTest extends TestCase
     public function coordinatorShouldListBonds()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/bonds')
             ->assertSee(['John Doe', 'Jane Doe', 'Course Alpha', 'Course Beta'])
@@ -275,7 +275,7 @@ class BondTest extends TestCase
     public function administratorShouldAccessCreateBondsPage()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/bonds/create')
             ->assertSee(['Cadastrar Vínculo', 'Colaborador*', 'Função*', 'Curso*', 'Polo*', 'Voluntário', 'Cadastrar'])
@@ -292,7 +292,7 @@ class BondTest extends TestCase
     public function directorShouldAccessCreateBondsPage()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/bonds/create')
             ->assertSee(['Cadastrar Vínculo', 'Colaborador*', 'Função*', 'Curso*', 'Polo*', 'Voluntário', 'Cadastrar'])
@@ -309,7 +309,7 @@ class BondTest extends TestCase
     public function assistantShouldAccessCreateBondsPage()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/bonds/create')
             ->assertSee(['Cadastrar Vínculo', 'Colaborador*', 'Função*', 'Curso*', 'Polo*', 'Voluntário', 'Cadastrar'])
@@ -326,7 +326,7 @@ class BondTest extends TestCase
     public function secretaryShouldAccessCreateBondsPage()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/bonds/create')
             ->assertSee(['Cadastrar Vínculo', 'Colaborador*', 'Função*', 'Curso*', 'Polo*', 'Voluntário', 'Cadastrar'])
@@ -343,7 +343,7 @@ class BondTest extends TestCase
     public function ldiShouldntAccessCreateBondsPage()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/bonds/create')
             ->assertStatus(403);
@@ -359,7 +359,7 @@ class BondTest extends TestCase
     public function coordinatorShouldAccessCreateBondsPage()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/bonds/create')
             ->assertSee(['Cadastrar Vínculo', 'Colaborador*', 'Função*', 'Curso*', 'Polo*', 'Voluntário', 'Cadastrar'])
@@ -395,7 +395,7 @@ class BondTest extends TestCase
     public function administratorShouldCreateBond()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $bondArr = $this->createTestBond()->toArray();
         Arr::forget($bondArr, ['id', 'impediment', 'impediment_description', 'uaba_checked_at', 'created_at', 'updated_at']);
@@ -415,7 +415,7 @@ class BondTest extends TestCase
     public function directorShouldCreateBond()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $bondArr = $this->createTestBond()->toArray();
         Arr::forget($bondArr, ['id', 'impediment', 'impediment_description', 'uaba_checked_at', 'created_at', 'updated_at']);
@@ -435,7 +435,7 @@ class BondTest extends TestCase
     public function assistantShouldCreateBond()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $bondArr = $this->createTestBond()->toArray();
         Arr::forget($bondArr, ['id', 'impediment', 'impediment_description', 'uaba_checked_at', 'created_at', 'updated_at']);
@@ -455,7 +455,7 @@ class BondTest extends TestCase
     public function secretaryShouldCreateBond()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $bondArr = $this->createTestBond()->toArray();
         Arr::forget($bondArr, ['id', 'impediment', 'impediment_description', 'uaba_checked_at', 'created_at', 'updated_at']);
@@ -475,7 +475,7 @@ class BondTest extends TestCase
     public function ldiShouldntCreateBond()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $bondArr = $this->createTestBond()->toArray();
         Arr::forget($bondArr, ['id', 'impediment', 'impediment_description', 'uaba_checked_at', 'created_at', 'updated_at']);
@@ -494,7 +494,7 @@ class BondTest extends TestCase
     public function coordinatorOfSameCourseShouldCreateBond()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $coordinatorCourse = auth()->user()->getCurrentResponsibility()->course;
 
@@ -516,7 +516,7 @@ class BondTest extends TestCase
     public function coordinatorOfAnotherCourseShouldntCreateBond()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
         $bondArr = $this->createTestBond()->toArray();
         Arr::forget($bondArr, ['id', 'impediment', 'impediment_description', 'uaba_checked_at', 'created_at', 'updated_at']);

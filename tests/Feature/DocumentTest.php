@@ -177,7 +177,7 @@ class DocumentTest extends TestCase
     public function authenticatedUserWithoutPermissionShouldntListEmployeesDocuments()
     {
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null]);
+            ->withSession(['loggedInUser.currentResponsibility' => null]);
 
         $this->get(route('employeesDocuments.index'))
             ->assertStatus(403);
@@ -197,7 +197,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employeesDocuments.index'))
             ->assertSee('Document Employee Alpha.pdf')
@@ -218,7 +218,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employeesDocuments.index'))
             ->assertSee('Document Employee Alpha.pdf')
@@ -239,7 +239,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employeesDocuments.index'))
             ->assertSee('Document Employee Alpha.pdf')
@@ -260,7 +260,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employeesDocuments.index'))
             ->assertSee('Document Employee Alpha.pdf')
@@ -281,7 +281,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employeesDocuments.index'))
             ->assertStatus(403);
@@ -301,7 +301,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employeesDocuments.index'))
             ->assertStatus(403);
@@ -330,7 +330,7 @@ class DocumentTest extends TestCase
     public function authenticatedUserWithoutPermissionShouldntListBondsDocuments()
     {
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null]);
+            ->withSession(['loggedInUser.currentResponsibility' => null]);
 
         $this->get(route('bondsDocuments.index'))
             ->assertStatus(403);
@@ -350,7 +350,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('bondsDocuments.index'))
             ->assertSee('Document Bond Beta.pdf')
@@ -371,7 +371,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('bondsDocuments.index'))
             ->assertSee('Document Bond Beta.pdf')
@@ -392,7 +392,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('bondsDocuments.index'))
             ->assertSee('Document Bond Beta.pdf')
@@ -413,7 +413,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('bondsDocuments.index'))
             ->assertSee('Document Bond Beta.pdf')
@@ -434,7 +434,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('bondsDocuments.index'))
             ->assertStatus(403);
@@ -454,7 +454,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('bondsDocuments.index'))
             ->assertStatus(403);
@@ -500,7 +500,7 @@ class DocumentTest extends TestCase
     public function authenticatedUserWithoutPermissionShouldntAccessEmployeeDocument()
     {
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null]);
+            ->withSession(['loggedInUser.currentResponsibility' => null]);
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
@@ -522,7 +522,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
@@ -545,7 +545,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
@@ -568,7 +568,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
@@ -591,7 +591,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
@@ -614,7 +614,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
@@ -636,7 +636,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
@@ -678,7 +678,7 @@ class DocumentTest extends TestCase
     public function authenticatedUserWithoutPermissionShouldntAccessBondDocument()
     {
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null]);
+            ->withSession(['loggedInUser.currentResponsibility' => null]);
 
         /** @var Document $document */
         $document = $this->getBondDocument();
@@ -700,7 +700,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Document $document */
         $document = $this->getBondDocument();
@@ -723,7 +723,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Document $document */
         $document = $this->getBondDocument();
@@ -746,7 +746,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Document $document */
         $document = $this->getBondDocument();
@@ -769,7 +769,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Document $document */
         $document = $this->getBondDocument();
@@ -792,7 +792,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Document $document */
         $document = $this->getBondDocument();
@@ -814,7 +814,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Document $document */
         $document = $this->getBondDocument();
@@ -854,7 +854,7 @@ class DocumentTest extends TestCase
     public function authenticatedUserWithoutPermissionShouldntAccessCreateEmployeeDocumentPage()
     {
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null]);
+            ->withSession(['loggedInUser.currentResponsibility' => null]);
 
         $this->get(route('employeesDocuments.create'))
             ->assertStatus(403);
@@ -874,7 +874,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employeesDocuments.create'))
             ->assertSee($this->expectedCreateEmployeeDocumentPageContent())
@@ -895,7 +895,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employeesDocuments.create'))
             ->assertSee($this->expectedCreateEmployeeDocumentPageContent())
@@ -916,7 +916,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employeesDocuments.create'))
             ->assertSee($this->expectedCreateEmployeeDocumentPageContent())
@@ -937,7 +937,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employeesDocuments.create'))
             ->assertSee($this->expectedCreateEmployeeDocumentPageContent())
@@ -958,7 +958,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employeesDocuments.create'))
             ->assertStatus(403);
@@ -978,7 +978,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employeesDocuments.create'))
             ->assertStatus(403);
@@ -1016,7 +1016,7 @@ class DocumentTest extends TestCase
     public function authenticatedUserWithoutPermissionShouldntAccessCreateBondDocumentPage()
     {
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null]);
+            ->withSession(['loggedInUser.currentResponsibility' => null]);
 
         $this->get(route('bondsDocuments.create'))
             ->assertStatus(403);
@@ -1036,7 +1036,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('bondsDocuments.create'))
             ->assertSee($this->expectedCreateBondDocumentPageContent())
@@ -1057,7 +1057,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('bondsDocuments.create'))
             ->assertSee($this->expectedCreateBondDocumentPageContent())
@@ -1078,7 +1078,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('bondsDocuments.create'))
             ->assertSee($this->expectedCreateBondDocumentPageContent())
@@ -1099,7 +1099,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('bondsDocuments.create'))
             ->assertSee($this->expectedCreateBondDocumentPageContent())
@@ -1120,7 +1120,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('bondsDocuments.create'))
             ->assertStatus(403);
@@ -1140,7 +1140,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('bondsDocuments.create'))
             ->assertStatus(403);
@@ -1209,7 +1209,7 @@ class DocumentTest extends TestCase
         $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
 
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null])
+            ->withSession(['loggedInUser.currentResponsibility' => null])
             ->followingRedirects()->post(route('employeesDocuments.store'), $employeeDocumentArr)
             ->assertStatus(403);
     }
@@ -1228,7 +1228,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
 
@@ -1251,7 +1251,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
 
@@ -1274,7 +1274,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
 
@@ -1297,7 +1297,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
 
@@ -1320,7 +1320,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
 
@@ -1342,7 +1342,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
 
@@ -1380,7 +1380,7 @@ class DocumentTest extends TestCase
         $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
 
         $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentUta' => null])
+            ->withSession(['loggedInUser.currentResponsibility' => null])
             ->followingRedirects()->post(route('bondsDocuments.store'), $bondDocumentArr)
             ->assertStatus(403);
     }
@@ -1399,7 +1399,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
 
@@ -1422,7 +1422,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
 
@@ -1445,7 +1445,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
 
@@ -1468,7 +1468,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
 
@@ -1491,7 +1491,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
 
@@ -1513,7 +1513,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
 
@@ -1543,7 +1543,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employeesDocuments.index'))
             ->assertSee([$originalName, $originalDocTypeName])
@@ -1578,7 +1578,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('bondsDocuments.index'))
             ->assertSee([$originalName, $originalDocTypeName])

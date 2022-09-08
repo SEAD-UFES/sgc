@@ -69,7 +69,7 @@ class MailService
         /**
          * @var UserTypeAssignment $loggedInUta
          */
-        $loggedInUta = session('loggedInUser.currentUta');
+        $loggedInUta = session('loggedInUser.currentResponsibility');
 
         /**
          * @var User $loggedInUser

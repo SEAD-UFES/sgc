@@ -80,19 +80,19 @@ class GenericGates
              */
             $currentUser = auth()->user();
             //need to have session UserTypeAssignment active.
-            $currentUTA = $currentUser->getCurrentResponsibility();
-            if (! $currentUTA instanceof \App\Models\UserTypeAssignment) {
+            $currentResponsibility = $currentUser->getCurrentResponsibility();
+            if (! $currentResponsibility instanceof \App\Models\UserTypeAssignment) {
                 return false;
             }
 
             /**
              * @var UserType $currentUserType
              */
-            $currentUserType = $currentUTA->userType;
-            //if currentUTA (UserTypeAssignment) is coord, ok
+            $currentUserType = $currentResponsibility->userType;
+            //if currentResponsibility (UserTypeAssignment) is coord, ok
             $is_coord = $currentUserType->acronym === 'coord';
             // Issue #36: For some reason, sometimes $course_id isn't integer, but string... Fixed with typed parameter.
-            $course_id_match = $currentUTA->course_id === $course_id;
+            $course_id_match = $currentResponsibility->course_id === $course_id;
 
             return $is_coord && $course_id_match;
         });
@@ -107,17 +107,17 @@ class GenericGates
         $currentUser = auth()->user();
 
         //need to have session UserTypeAssignment active.
-        $currentUTA = $currentUser->getCurrentResponsibility();
-        if (! $currentUTA instanceof \App\Models\UserTypeAssignment) {
+        $currentResponsibility = $currentUser->getCurrentResponsibility();
+        if (! $currentResponsibility instanceof \App\Models\UserTypeAssignment) {
             return false;
         }
 
         /**
          * @var UserType $currentUserType
          */
-        $currentUserType = $currentUTA->userType;
+        $currentUserType = $currentResponsibility->userType;
 
-        //if currentUTA (UserTypeAssignment) is $acronym, ok
+        //if currentResponsibility (UserTypeAssignment) is $acronym, ok
         return $currentUserType->acronym === $acronym;
     }
 
@@ -128,18 +128,18 @@ class GenericGates
          */
         $currentUser = auth()->user();
         //need to have session UserTypeAssignment active.
-        $currentUTA = $currentUser->getCurrentResponsibility();
-        if (! $currentUTA instanceof \App\Models\UserTypeAssignment) {
+        $currentResponsibility = $currentUser->getCurrentResponsibility();
+        if (! $currentResponsibility instanceof \App\Models\UserTypeAssignment) {
             return false;
         }
 
         /**
          * @var UserType $currentUserType
          */
-        $currentUserType = $currentUTA->userType;
-        //if currentUTA (UserTypeAssignment) is $acronym, ok
+        $currentUserType = $currentResponsibility->userType;
+        //if currentResponsibility (UserTypeAssignment) is $acronym, ok
         $acronymMatch = $currentUserType->acronym === $acronym;
-        $course_id_null = $currentUTA->course_id === null;
+        $course_id_null = $currentResponsibility->course_id === null;
 
         return $acronymMatch && $course_id_null;
     }

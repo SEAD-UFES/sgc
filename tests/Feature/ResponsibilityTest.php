@@ -9,7 +9,7 @@ use App\Models\UserTypeAssignment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class UserTypeAssignmentTest extends TestCase
+class ResponsibilityTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -102,7 +102,7 @@ class UserTypeAssignmentTest extends TestCase
      */
     public function guestShouldntListUserTypeAssignments()
     {
-        $this->get('/userTypeAssignments')
+        $this->get('/responsibilities')
             ->assertStatus(401);
     }
 
@@ -116,9 +116,9 @@ class UserTypeAssignmentTest extends TestCase
     public function administratorShouldListUserTypeAssignments()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
-        $this->get('/userTypeAssignments')
+        $this->get('/responsibilities')
             ->assertSee(['johndoe@test.com', 'janedoe@test2.com', 'Type one (Course Alpha)', 'Type two (Course Beta)'])
             ->assertStatus(200);
     }
@@ -133,9 +133,9 @@ class UserTypeAssignmentTest extends TestCase
     public function directorShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
-        $this->get('/userTypeAssignments')
+        $this->get('/responsibilities')
             ->assertStatus(403);
     }
 
@@ -149,9 +149,9 @@ class UserTypeAssignmentTest extends TestCase
     public function assistantShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
-        $this->get('/userTypeAssignments')
+        $this->get('/responsibilities')
             ->assertStatus(403);
     }
 
@@ -165,9 +165,9 @@ class UserTypeAssignmentTest extends TestCase
     public function secretaryShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
-        $this->get('/userTypeAssignments')
+        $this->get('/responsibilities')
             ->assertStatus(403);
     }
 
@@ -181,9 +181,9 @@ class UserTypeAssignmentTest extends TestCase
     public function ldiShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
-        $this->get('/userTypeAssignments')
+        $this->get('/responsibilities')
             ->assertStatus(403);
     }
 
@@ -197,9 +197,9 @@ class UserTypeAssignmentTest extends TestCase
     public function coordinatorShouldntListUserTypeAssignments()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
+            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
 
-        $this->get('/userTypeAssignments')
+        $this->get('/responsibilities')
             ->assertStatus(403);
     }
 }

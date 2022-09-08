@@ -12,7 +12,7 @@ use App\Gates\GenericGates;
 use App\Gates\PoleGates;
 use App\Gates\RoleGates;
 use App\Gates\UserGates;
-use App\Gates\UserTypeAssignmentGates;
+use App\Gates\ResponsibilityGates;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -39,7 +39,7 @@ class AuthServiceProvider extends ServiceProvider
         GenericGates::define();
 
         //model gates needs GenericGates;
-        UserTypeAssignmentGates::define();
+        ResponsibilityGates::define();
         UserGates::define();
         PoleGates::define();
         CourseGates::define();
