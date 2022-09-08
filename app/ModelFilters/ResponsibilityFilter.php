@@ -5,7 +5,7 @@ namespace App\ModelFilters;
 use App\Helpers\ModelFilterHelper;
 use Illuminate\Database\Eloquent\Builder;
 
-trait UserTypeAssignmentFilter
+trait ResponsibilityFilter
 {
     public function userEmailContains(Builder $builder, $value)
     {

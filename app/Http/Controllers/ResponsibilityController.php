@@ -8,7 +8,7 @@ use App\Http\Requests\Responsibility\UpdateResponsibilityRequest;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\UserType;
-use App\Models\UserTypeAssignment;
+use App\Models\Responsibility;
 use App\Services\ResponsibilityService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -37,7 +37,7 @@ class ResponsibilityController extends Controller
         }
 
         //filters
-        $filters = ModelFilterHelper::buildFilters($request, UserTypeAssignment::$accepted_filters);
+        $filters = ModelFilterHelper::buildFilters($request, Responsibility::$accepted_filters);
 
         $responsibilities = $this->service->list();
 
@@ -89,11 +89,11 @@ class ResponsibilityController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  UserTypeAssignment  $responsibility
+     * @param  Responsibility  $responsibility
      *
      * @return View
      */
-    public function show(UserTypeAssignment $responsibility, Request $request): View
+    public function show(Responsibility $responsibility, Request $request): View
     {
         //check access permission
         if (! Gate::allows('responsibility-show')) {
@@ -108,11 +108,11 @@ class ResponsibilityController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  UserTypeAssignment  $responsibility
+     * @param  Responsibility  $responsibility
      *
      * @return View
      */
-    public function edit(UserTypeAssignment $responsibility, Request $request): View
+    public function edit(Responsibility $responsibility, Request $request): View
     {
         //check access permission
         if (! Gate::allows('responsibility-update')) {
@@ -130,11 +130,11 @@ class ResponsibilityController extends Controller
      * Update the specified resource in storage.
      *
      * @param  UpdateResponsibilityRequest  $request
-     * @param  UserTypeAssignment  $responsibility
+     * @param  Responsibility  $responsibility
      *
      * @return RedirectResponse
      */
-    public function update(UpdateResponsibilityRequest $request, UserTypeAssignment $responsibility): RedirectResponse
+    public function update(UpdateResponsibilityRequest $request, Responsibility $responsibility): RedirectResponse
     {
         //check access permission
         if (! Gate::allows('responsibility-update')) {
@@ -153,11 +153,11 @@ class ResponsibilityController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  UserTypeAssignment  $responsibility
+     * @param  Responsibility  $responsibility
      *
      * @return RedirectResponse
      */
-    public function destroy(UserTypeAssignment $responsibility, Request $request): RedirectResponse
+    public function destroy(Responsibility $responsibility, Request $request): RedirectResponse
     {
         //check access permission
         if (! Gate::allows('responsibility-destroy')) {

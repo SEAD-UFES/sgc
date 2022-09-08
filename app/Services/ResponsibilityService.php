@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Events\ModelListed;
 use App\Events\ModelRead;
-use App\Models\UserTypeAssignment;
+use App\Models\Responsibility;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ResponsibilityService
@@ -16,10 +16,10 @@ class ResponsibilityService
      */
     public function list(): LengthAwarePaginator
     {
-        ModelListed::dispatch(UserTypeAssignment::class);
+        ModelListed::dispatch(Responsibility::class);
 
-        $query = UserTypeAssignment::with(['user:id,email', 'userType:id,name', 'course:id,name']);
-        $query = $query->AcceptRequest(UserTypeAssignment::$accepted_filters)->filter();
+        $query = Responsibility::with(['user:id,email', 'userType:id,name', 'course:id,name']);
+        $query = $query->AcceptRequest(Responsibility::$accepted_filters)->filter();
         $query = $query->sortable(['updated_at' => 'desc']);
 
         $responsibilities = $query->paginate(10);
@@ -33,38 +33,38 @@ class ResponsibilityService
      *
      * @param array<string> $attributes
      *
-     * @return UserTypeAssignment
+     * @return Responsibility
      */
-    public function create(array $attributes): UserTypeAssignment
+    public function create(array $attributes): Responsibility
     {
         // * NULL Course breaks the SQL Unique Constraint ['user_id', 'user_type_id', 'course_id']
         // TODO: Implement Composite Foreign Keys manually, handling NULL Course
-        return UserTypeAssignment::create($attributes);
+        return Responsibility::create($attributes);
     }
 
     /**
      * Undocumented function
      *
-     * @param UserTypeAssignment $responsibility
+     * @param Responsibility $responsibility
      *
-     * @return UserTypeAssignment|null
+     * @return Responsibility|null
      */
-    public function read(UserTypeAssignment $responsibility): UserTypeAssignment|null
+    public function read(Responsibility $responsibility): Responsibility|null
     {
         ModelRead::dispatch($responsibility);
 
-        return UserTypeAssignment::with(['user:id,email', 'userType:id,name', 'course:id,name'])->find($responsibility->id);
+        return Responsibility::with(['user:id,email', 'userType:id,name', 'course:id,name'])->find($responsibility->id);
     }
 
     /**
      * Undocumented function
      *
      * @param array<string> $attributes
-     * @param UserTypeAssignment $responsibility
+     * @param Responsibility $responsibility
      *
-     * @return UserTypeAssignment
+     * @return Responsibility
      */
-    public function update(array $attributes, UserTypeAssignment $responsibility): UserTypeAssignment
+    public function update(array $attributes, Responsibility $responsibility): Responsibility
     {
         $responsibility->update($attributes);
 
@@ -74,11 +74,11 @@ class ResponsibilityService
     /**
      * Undocumented function
      *
-     * @param UserTypeAssignment $responsibility
+     * @param Responsibility $responsibility
      *
      * @return void
      */
-    public function delete(UserTypeAssignment $responsibility)
+    public function delete(Responsibility $responsibility)
     {
         $responsibility->delete();
     }

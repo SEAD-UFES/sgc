@@ -20,7 +20,7 @@ use App\Models\Role;
 use App\Models\State;
 use App\Models\User;
 use App\Models\UserType;
-use App\Models\UserTypeAssignment;
+use App\Models\Responsibility;
 use App\Observers\ApprovedObserver;
 use App\Observers\ApprovedStateObserver;
 use App\Observers\BondDocumentObserver;
@@ -38,7 +38,7 @@ use App\Observers\PoleObserver;
 use App\Observers\RoleObserver;
 use App\Observers\StateObserver;
 use App\Observers\UserObserver;
-use App\Observers\UserTypeAssignmentObserver;
+use App\Observers\ResponsibilityObserver;
 use App\Observers\UserTypeObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -82,7 +82,7 @@ class EventServiceProvider extends ServiceProvider
         State::observe(StateObserver::class);
         User::observe(UserObserver::class);
         UserType::observe(UserTypeObserver::class);
-        UserTypeAssignment::observe(UserTypeAssignmentObserver::class);
+        Responsibility::observe(ResponsibilityObserver::class);
     }
 
     /**

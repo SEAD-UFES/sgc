@@ -9,7 +9,7 @@ use App\Models\DocumentType;
 use App\Models\EmployeeDocument;
 use App\Models\User;
 use App\Models\UserType;
-use App\Models\UserTypeAssignment;
+use App\Models\Responsibility;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
@@ -38,7 +38,7 @@ class DocumentTest extends TestCase
 
         /** @var UserType $userTypeAdm */
         $userTypeAdm = UserType::factory()->admin()->createOne();
-        UserTypeAssignment::factory()->createOne([
+        Responsibility::factory()->createOne([
             'user_id' => self::$userAdm->id,
             'user_type_id' => $userTypeAdm->id,
             'course_id' => null,
@@ -52,7 +52,7 @@ class DocumentTest extends TestCase
 
         /** @var UserType $userTypeDir */
         $userTypeDir = UserType::factory()->director()->createOne();
-        UserTypeAssignment::factory()->createOne([
+        Responsibility::factory()->createOne([
             'user_id' => self::$userDir->id,
             'user_type_id' => $userTypeDir->id,
             'course_id' => null,
@@ -66,7 +66,7 @@ class DocumentTest extends TestCase
 
         /** @var UserType $userTypeAss */
         $userTypeAss = UserType::factory()->assistant()->createOne();
-        UserTypeAssignment::factory()->createOne([
+        Responsibility::factory()->createOne([
             'user_id' => self::$userAss->id,
             'user_type_id' => $userTypeAss->id,
             'course_id' => null,
@@ -80,7 +80,7 @@ class DocumentTest extends TestCase
 
         /** @var UserType $userTypeSec */
         $userTypeSec = UserType::factory()->secretary()->createOne();
-        UserTypeAssignment::factory()->createOne([
+        Responsibility::factory()->createOne([
             'user_id' => self::$userSec->id,
             'user_type_id' => $userTypeSec->id,
             'course_id' => null,
@@ -97,7 +97,7 @@ class DocumentTest extends TestCase
 
         /** @var Course $courseCoord */
         $courseCoord = Course::factory()->createOne();
-        UserTypeAssignment::factory()->createOne([
+        Responsibility::factory()->createOne([
             'user_id' => self::$userCoord->id,
             'user_type_id' => $userTypeCoord->id,
             'course_id' => $courseCoord->id,
@@ -111,7 +111,7 @@ class DocumentTest extends TestCase
 
         /** @var UserType $userTypeLdi */
         $userTypeLdi = UserType::factory()->ldi()->createOne();
-        UserTypeAssignment::factory()->createOne([
+        Responsibility::factory()->createOne([
             'user_id' => self::$userLdi->id,
             'user_type_id' => $userTypeLdi->id,
             'course_id' => null,
@@ -125,7 +125,7 @@ class DocumentTest extends TestCase
 
         /** @var UserType $userTypeAlien */
         $userTypeAlien = UserType::factory()->alien()->createOne();
-        UserTypeAssignment::factory()->createOne([
+        Responsibility::factory()->createOne([
             'user_id' => self::$userAlien->id,
             'user_type_id' => $userTypeAlien->id,
             'course_id' => null,

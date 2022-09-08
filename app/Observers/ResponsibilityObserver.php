@@ -4,22 +4,22 @@ namespace App\Observers;
 
 use App\Helpers\ModelActivityHelper;
 use App\Logging\LoggerInterface;
-use App\Models\UserTypeAssignment;
+use App\Models\Responsibility;
 use Spatie\Activitylog\Models\Activity;
 
-class UserTypeAssignmentObserver
+class ResponsibilityObserver
 {
     public function __construct(private LoggerInterface $logger, private ModelActivityHelper $modelActivityHelper)
     {
     }
 
     /**
-     * Handle the UserTypeAssignment "created" event.
+     * Handle the Responsibility "created" event.
      *
-     * @param  UserTypeAssignment  $responsibility
+     * @param  Responsibility  $responsibility
      * @return void
      */
-    public function created(UserTypeAssignment $responsibility)
+    public function created(Responsibility $responsibility)
     {
         /** @var Activity $activity */
         $activity = $this->modelActivityHelper->getModelEventActivity('created', $responsibility);
@@ -28,23 +28,23 @@ class UserTypeAssignmentObserver
     }
 
     /**
-     * Handle the UserTypeAssignment "updated" event.
+     * Handle the Responsibility "updated" event.
      *
-     * @param  UserTypeAssignment  $responsibility
+     * @param  Responsibility  $responsibility
      * @return void
      */
-    public function updating(UserTypeAssignment $responsibility)
+    public function updating(Responsibility $responsibility)
     {
         $this->logger->logModelEvent('updating', $responsibility);
     }
 
     /**
-     * Handle the UserTypeAssignment "updated" event.
+     * Handle the Responsibility "updated" event.
      *
-     * @param  UserTypeAssignment  $responsibility
+     * @param  Responsibility  $responsibility
      * @return void
      */
-    public function updated(UserTypeAssignment $responsibility)
+    public function updated(Responsibility $responsibility)
     {
         /** @var Activity $activity */
         $activity = $this->modelActivityHelper->getModelEventActivity('updated', $responsibility);
@@ -53,12 +53,12 @@ class UserTypeAssignmentObserver
     }
 
     /**
-     * Handle the UserTypeAssignment "deleted" event.
+     * Handle the Responsibility "deleted" event.
      *
-     * @param  UserTypeAssignment  $responsibility
+     * @param  Responsibility  $responsibility
      * @return void
      */
-    public function deleted(UserTypeAssignment $responsibility)
+    public function deleted(Responsibility $responsibility)
     {
         /** @var Activity $activity */
         $activity = $this->modelActivityHelper->getModelEventActivity('deleted', $responsibility);
@@ -67,22 +67,22 @@ class UserTypeAssignmentObserver
     }
 
     /**
-     * Handle the UserTypeAssignment "restored" event.
+     * Handle the Responsibility "restored" event.
      *
-     * @param  UserTypeAssignment  $responsibility
+     * @param  Responsibility  $responsibility
      * @return void
      */
-    public function restored(UserTypeAssignment $responsibility)
+    public function restored(Responsibility $responsibility)
     {
     }
 
     /**
-     * Handle the UserTypeAssignment "force deleted" event.
+     * Handle the Responsibility "force deleted" event.
      *
-     * @param  UserTypeAssignment  $responsibility
+     * @param  Responsibility  $responsibility
      * @return void
      */
-    public function forceDeleted(UserTypeAssignment $responsibility)
+    public function forceDeleted(Responsibility $responsibility)
     {
     }
 }

@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\UserType;
-use App\Models\UserTypeAssignment;
+use App\Models\Responsibility;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -26,7 +26,7 @@ class ResponsibilityTest extends TestCase
 
         self::$userAdm = User::factory()->create();
         $userTypeAdm = UserType::factory()->admin()->create();
-        UserTypeAssignment::factory()->create([
+        Responsibility::factory()->create([
             'user_id' => self::$userAdm->id,
             'user_type_id' => $userTypeAdm->id,
             'course_id' => null,
@@ -34,7 +34,7 @@ class ResponsibilityTest extends TestCase
 
         self::$userDir = User::factory()->create();
         $userTypeDir = UserType::factory()->director()->create();
-        UserTypeAssignment::factory()->create([
+        Responsibility::factory()->create([
             'user_id' => self::$userDir->id,
             'user_type_id' => $userTypeDir->id,
             'course_id' => null,
@@ -42,7 +42,7 @@ class ResponsibilityTest extends TestCase
 
         self::$userAss = User::factory()->create();
         $userTypeAss = UserType::factory()->assistant()->create();
-        UserTypeAssignment::factory()->create([
+        Responsibility::factory()->create([
             'user_id' => self::$userAss->id,
             'user_type_id' => $userTypeAss->id,
             'course_id' => null,
@@ -50,7 +50,7 @@ class ResponsibilityTest extends TestCase
 
         self::$userSec = User::factory()->create();
         $userTypeSec = UserType::factory()->secretary()->create();
-        UserTypeAssignment::factory()->create([
+        Responsibility::factory()->create([
             'user_id' => self::$userSec->id,
             'user_type_id' => $userTypeSec->id,
             'course_id' => null,
@@ -58,7 +58,7 @@ class ResponsibilityTest extends TestCase
 
         self::$userCoord = User::factory()->create();
         $userTypeCoord = UserType::factory()->coordinator()->create();
-        UserTypeAssignment::factory()->create([
+        Responsibility::factory()->create([
             'user_id' => self::$userCoord->id,
             'user_type_id' => $userTypeCoord->id,
             'course_id' => null,
@@ -66,13 +66,13 @@ class ResponsibilityTest extends TestCase
 
         self::$userLdi = User::factory()->create();
         $userTypeLdi = UserType::factory()->ldi()->create();
-        UserTypeAssignment::factory()->create([
+        Responsibility::factory()->create([
             'user_id' => self::$userLdi->id,
             'user_type_id' => $userTypeLdi->id,
             'course_id' => null,
         ]);
 
-        UserTypeAssignment::factory()->create(
+        Responsibility::factory()->create(
             [
                 'user_id' => User::factory()->create(['email' => 'johndoe@test.com']),
                 'user_type_id' => UserType::factory()->create(['name' => 'Type one']),
@@ -82,7 +82,7 @@ class ResponsibilityTest extends TestCase
             ]
         );
 
-        UserTypeAssignment::factory()->create(
+        Responsibility::factory()->create(
             [
                 'user_id' => User::factory()->create(['email' => 'janedoe@test2.com']),
                 'user_type_id' => UserType::factory()->create(['name' => 'Type two']),
@@ -100,7 +100,7 @@ class ResponsibilityTest extends TestCase
      *
      * @test
      */
-    public function guestShouldntListUserTypeAssignments()
+    public function guestShouldntListResponsibilities()
     {
         $this->get('/responsibilities')
             ->assertStatus(401);
@@ -113,7 +113,7 @@ class ResponsibilityTest extends TestCase
      *
      * @test
      */
-    public function administratorShouldListUserTypeAssignments()
+    public function administratorShouldListResponsibilities()
     {
         $this->actingAs(self::$userAdm)
             ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
@@ -130,7 +130,7 @@ class ResponsibilityTest extends TestCase
      *
      * @test
      */
-    public function directorShouldntListUserTypeAssignments()
+    public function directorShouldntListResponsibilities()
     {
         $this->actingAs(self::$userDir)
             ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
@@ -146,7 +146,7 @@ class ResponsibilityTest extends TestCase
      *
      * @test
      */
-    public function assistantShouldntListUserTypeAssignments()
+    public function assistantShouldntListResponsibilities()
     {
         $this->actingAs(self::$userAss)
             ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
@@ -162,7 +162,7 @@ class ResponsibilityTest extends TestCase
      *
      * @test
      */
-    public function secretaryShouldntListUserTypeAssignments()
+    public function secretaryShouldntListResponsibilities()
     {
         $this->actingAs(self::$userSec)
             ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
@@ -178,7 +178,7 @@ class ResponsibilityTest extends TestCase
      *
      * @test
      */
-    public function ldiShouldntListUserTypeAssignments()
+    public function ldiShouldntListResponsibilities()
     {
         $this->actingAs(self::$userLdi)
             ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
@@ -194,7 +194,7 @@ class ResponsibilityTest extends TestCase
      *
      * @test
      */
-    public function coordinatorShouldntListUserTypeAssignments()
+    public function coordinatorShouldntListResponsibilities()
     {
         $this->actingAs(self::$userCoord)
             ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);

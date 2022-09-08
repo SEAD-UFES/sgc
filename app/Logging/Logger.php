@@ -5,7 +5,7 @@ namespace App\Logging;
 use App\Helpers\NetworkHelper;
 use App\Models\Document;
 use App\Models\User;
-use App\Models\UserTypeAssignment;
+use App\Models\Responsibility;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -167,7 +167,7 @@ class Logger implements LoggerInterface
             $executor = Auth::user();
             $executorId = $executor->id;
             $executorLabel = $executor->email;
-            /** @var UserTypeAssignment|null $executorCurrentUta */
+            /** @var Responsibility|null $executorCurrentUta */
             $executorCurrentUta = $executor->getCurrentResponsibility();
             $executorUserTypeName = $executorCurrentUta?->userType->name ?? 'NullCurrentResponsibility';
         } else {
@@ -179,7 +179,7 @@ class Logger implements LoggerInterface
             $executor = $activity->causer;
             $executorId = $executor->id;
             $executorLabel = $executor->email;
-            /** @var UserTypeAssignment|null $executorCurrentUta */
+            /** @var Responsibility|null $executorCurrentUta */
             $executorCurrentUta = $executor->getCurrentResponsibility();
             $executorUserTypeName = $executorCurrentUta?->userType->name ?? 'NullCurrentResponsibility';
         }

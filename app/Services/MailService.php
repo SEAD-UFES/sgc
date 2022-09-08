@@ -9,7 +9,7 @@ use App\Models\Bond;
 use App\Models\Employee;
 use App\Models\Role;
 use App\Models\User;
-use App\Models\UserTypeAssignment;
+use App\Models\Responsibility;
 use Illuminate\Support\Facades\Mail;
 
 class MailService
@@ -67,7 +67,7 @@ class MailService
     public function sendNewEmployeeEmails(Bond $bond): void
     {
         /**
-         * @var UserTypeAssignment $loggedInUta
+         * @var Responsibility $loggedInUta
          */
         $loggedInUta = session('loggedInUser.currentResponsibility');
 

@@ -6,10 +6,10 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class UserTypeAssignmentSeeder extends Seeder
+class ResponsibilitySeeder extends Seeder
 {
 
-    protected $tableName = 'user_type_assignments';
+    protected $tableName = 'responsibilities';
 
     /**
      * Run the database seeds.

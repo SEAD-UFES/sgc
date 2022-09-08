@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
             //BondDocumentSeeder::class,
             //DocumentSeeder::class,
             //DummyEmployeeSeeder::class,
-            //UserTypeAssignmentSeeder::class
+            //ResponsibilitySeeder::class
         ]);
 
         if (App::Environment() != 'production') {
@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
                 BondDocumentSeeder::class,
                 DocumentSeeder::class,
                 DummyEmployeeSeeder::class,
-                UserTypeAssignmentSeeder::class
+                ResponsibilitySeeder::class
             ]);
         }
 

@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Models\UserType;
-use App\Models\UserTypeAssignment;
+use App\Models\Responsibility;
 use Illuminate\Database\Eloquent\InvalidCastException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
@@ -27,7 +27,7 @@ class UserTest extends TestCase
 
         self::$userAdm = User::factory()->create();
         $userTypeAdm = UserType::factory()->admin()->create();
-        UserTypeAssignment::factory()->create([
+        Responsibility::factory()->create([
             'user_id' => self::$userAdm->id,
             'user_type_id' => $userTypeAdm->id,
             'course_id' => null,
@@ -35,7 +35,7 @@ class UserTest extends TestCase
 
         self::$userDir = User::factory()->create();
         $userTypeDir = UserType::factory()->director()->create();
-        UserTypeAssignment::factory()->create([
+        Responsibility::factory()->create([
             'user_id' => self::$userDir->id,
             'user_type_id' => $userTypeDir->id,
             'course_id' => null,
@@ -43,7 +43,7 @@ class UserTest extends TestCase
 
         self::$userAss = User::factory()->create();
         $userTypeAss = UserType::factory()->assistant()->create();
-        UserTypeAssignment::factory()->create([
+        Responsibility::factory()->create([
             'user_id' => self::$userAss->id,
             'user_type_id' => $userTypeAss->id,
             'course_id' => null,
@@ -51,7 +51,7 @@ class UserTest extends TestCase
 
         self::$userSec = User::factory()->create();
         $userTypeSec = UserType::factory()->secretary()->create();
-        UserTypeAssignment::factory()->create([
+        Responsibility::factory()->create([
             'user_id' => self::$userSec->id,
             'user_type_id' => $userTypeSec->id,
             'course_id' => null,
@@ -59,7 +59,7 @@ class UserTest extends TestCase
 
         self::$userCoord = User::factory()->create();
         $userTypeCoord = UserType::factory()->coordinator()->create();
-        UserTypeAssignment::factory()->create([
+        Responsibility::factory()->create([
             'user_id' => self::$userCoord->id,
             'user_type_id' => $userTypeCoord->id,
             'course_id' => null,
@@ -67,7 +67,7 @@ class UserTest extends TestCase
 
         self::$userLdi = User::factory()->create();
         $userTypeLdi = UserType::factory()->ldi()->create();
-        UserTypeAssignment::factory()->create([
+        Responsibility::factory()->create([
             'user_id' => self::$userLdi->id,
             'user_type_id' => $userTypeLdi->id,
             'course_id' => null,

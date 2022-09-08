@@ -2,20 +2,20 @@
 
 namespace Database\Factories;
 
-use App\Models\UserTypeAssignment;
+use App\Models\Responsibility;
 use App\Models\User;
 use App\Models\UserType;
 use App\Models\Course;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class UserTypeAssignmentFactory extends Factory
+class ResponsibilityFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = UserTypeAssignment::class;
+    protected $model = Responsibility::class;
 
     /**
      * Define the model's default state.

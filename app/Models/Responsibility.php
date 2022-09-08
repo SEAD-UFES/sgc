@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\ModelFilters\UserTypeAssignmentFilter;
+use App\ModelFilters\ResponsibilityFilter;
 use Carbon\Carbon;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,11 +13,11 @@ use Kyslik\ColumnSortable\Sortable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class UserTypeAssignment extends Model
+class Responsibility extends Model
 {
     use HasFactory;
     use Sortable;
-    use UserTypeAssignmentFilter;
+    use ResponsibilityFilter;
     use Filterable;
     use LogsActivity;
 
@@ -69,7 +69,7 @@ class UserTypeAssignment extends Model
     private static $whiteListFilter = ['*'];
 
     /**
-     * @return BelongsTo<User, UserTypeAssignment>
+     * @return BelongsTo<User, Responsibility>
      */
     public function user(): BelongsTo
     {
@@ -77,7 +77,7 @@ class UserTypeAssignment extends Model
     }
 
     /**
-     * @return BelongsTo<UserType, UserTypeAssignment>
+     * @return BelongsTo<UserType, Responsibility>
      */
     public function userType(): BelongsTo
     {
@@ -85,7 +85,7 @@ class UserTypeAssignment extends Model
     }
 
     /**
-     * @return BelongsTo<Course, UserTypeAssignment>
+     * @return BelongsTo<Course, Responsibility>
      */
     public function course(): BelongsTo
     {
@@ -93,9 +93,9 @@ class UserTypeAssignment extends Model
     }
 
     /**
-     * @param Builder<UserTypeAssignment> $query
+     * @param Builder<Responsibility> $query
      *
-     * @return Builder<UserTypeAssignment>
+     * @return Builder<Responsibility>
      */
     public function scopeActive(Builder $query): Builder
     {

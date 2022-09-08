@@ -94,7 +94,7 @@ class User extends Authenticatable
     }
 
     /**
-     * @return HasMany<UserTypeAssignment>
+     * @return HasMany<Responsibility>
      */
     public function userTypeAssignments(): HasMany
     {
@@ -102,11 +102,11 @@ class User extends Authenticatable
     }
 
     /**
-     * @return HasMany<UserTypeAssignment>
+     * @return HasMany<Responsibility>
      */
     public function responsibilities(): HasMany
     {
-        return $this->hasMany(UserTypeAssignment::class);
+        return $this->hasMany(Responsibility::class);
     }
 
     /**
@@ -120,19 +120,19 @@ class User extends Authenticatable
     }
 
     /**
-     * @return HasMany<UserTypeAssignment>
+     * @return HasMany<Responsibility>
      */
     public function getResponsibilities(): HasMany
     {
         return $this->responsibilities()
             ->with('userType', 'course')
-            ->join('user_types', 'user_type_assignments.user_type_id', '=', 'user_types.id')
-            ->select('user_type_assignments.*')
+            ->join('user_types', 'responsibilities.user_type_id', '=', 'user_types.id')
+            ->select('responsibilities.*')
             ->orderBy('user_types.name', 'asc');
     }
 
     /**
-     * @return HasMany<UserTypeAssignment>
+     * @return HasMany<Responsibility>
      */
     public function getActiveResponsibilities(): HasMany
     {
@@ -148,13 +148,13 @@ class User extends Authenticatable
     public function scopeOfActiveType(Builder $query, int $userTypeId): Builder
     {
         return $query
-            ->join('user_type_assignments AS user_type_assignments_A', 'users.id', '=', 'user_type_assignments_A.user_id')
+            ->join('responsibilities AS responsibilities_A', 'users.id', '=', 'responsibilities_A.user_id')
             ->addSelect('users.*')
-            ->where('user_type_assignments_A.user_type_id', $userTypeId)
-            ->where('user_type_assignments_A.begin', '<=', Carbon::today()->toDateString())
+            ->where('responsibilities_A.user_type_id', $userTypeId)
+            ->where('responsibilities_A.begin', '<=', Carbon::today()->toDateString())
             ->where(static function ($q) {
-                $q->where('user_type_assignments_A.end', '>=', Carbon::today()->toDateString())
-                    ->orWhereNull('user_type_assignments_A.end');
+                $q->where('responsibilities_A.end', '>=', Carbon::today()->toDateString())
+                    ->orWhereNull('responsibilities_A.end');
             });
     }
 
@@ -167,9 +167,9 @@ class User extends Authenticatable
     public function scopeOfCourse($query, $courseId): Builder
     {
         return $query
-            ->join('user_type_assignments AS user_type_assignments_B', 'users.id', '=', 'user_type_assignments_B.user_id')
+            ->join('responsibilities AS responsibilities_B', 'users.id', '=', 'responsibilities_B.user_id')
             ->select('users.*')
-            ->where('user_type_assignments_B.course_id', $courseId);
+            ->where('responsibilities_B.course_id', $courseId);
     }
 
     //permission system
@@ -183,9 +183,9 @@ class User extends Authenticatable
     }
 
     /**
-     * @return UserTypeAssignment|null
+     * @return Responsibility|null
      */
-    public function getFirstActiveResponsibility(): ?UserTypeAssignment
+    public function getFirstActiveResponsibility(): ?Responsibility
     {
         return $this->getActiveResponsibilities()->limit(1)->first();
     }
@@ -206,9 +206,9 @@ class User extends Authenticatable
     }
 
     /**
-     * @return UserTypeAssignment|null
+     * @return Responsibility|null
      */
-    public function getCurrentResponsibility(): ?UserTypeAssignment
+    public function getCurrentResponsibility(): ?Responsibility
     {
         /**
          * @var int $currentUserId
@@ -216,7 +216,7 @@ class User extends Authenticatable
         $currentUserId = $this->id;
 
         /**
-         * @var Collection<int, UserTypeAssignment> $storedResponsibilities
+         * @var Collection<int, Responsibility> $storedResponsibilities
          */
         $storedResponsibilities = Cache::remember(
             'responsibilities.' . $currentUserId,
@@ -227,12 +227,12 @@ class User extends Authenticatable
         );
 
         /**
-         * @var ?UserTypeAssignment $sessionResponsibility
+         * @var ?Responsibility $sessionResponsibility
          */
         $sessionResponsibility = session('loggedInUser.currentResponsibility');
 
         /**
-         * @var UserTypeAssignment $responsibility
+         * @var Responsibility $responsibility
          */
         $responsibility = $storedResponsibilities->where('id', $sessionResponsibility?->id)->first();
 

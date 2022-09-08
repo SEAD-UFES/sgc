@@ -19,7 +19,7 @@ class ProdAdminSeeder extends Seeder
             'employee_id' => null,
         ]);
         
-        DB::table('user_type_assignments')->insert([
+        DB::table('responsibilities')->insert([
             'user_id' => 1,
             'user_type_id' => 1,
             'course_id' => null,
