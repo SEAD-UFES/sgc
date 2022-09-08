@@ -6,7 +6,7 @@ use App\Http\View\Composers\ApprovedFormComposer;
 use App\Http\View\Composers\BondFormComposer;
 use App\Http\View\Composers\CourseFormComposer;
 use App\Http\View\Composers\EmployeeFormComposer;
-use App\Http\View\Creators\EmployeeCreateCreator;
+use App\Http\View\Composers\UserFormComposer;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -46,6 +46,11 @@ class ViewServiceProvider extends ServiceProvider
         View::composer(
             ['course.create', 'course.edit'],
             CourseFormComposer::class
+        );
+
+        View::composer(
+            ['user.create', 'user.edit'],
+            UserFormComposer::class
         );
     }
 }

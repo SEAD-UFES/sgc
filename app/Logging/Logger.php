@@ -137,7 +137,7 @@ class Logger implements LoggerInterface
         $executorLabel = (($userEmail ?? request()->email) ?? request()->ip()) ?? '';
         $executorId = $user?->id ?? '-';
 
-        $executorUserTypeName = $user?->getCurrentUta()->userType->name ?? 'NullCurrentUTA';
+        $executorUserTypeName = $user?->getCurrentResponsibility()->userType->name ?? 'NullCurrentUTA';
 
         $logText = "\tHTTP_ERROR\t| " . NetworkHelper::getClientIpAddress() . "\t| User:${executorId}:${executorLabel} [${executorUserTypeName}]\t| attempted " . $method . " on '" . $uri . "' with result " . $httpErrorCode;
 
@@ -168,7 +168,7 @@ class Logger implements LoggerInterface
             $executorId = $executor->id;
             $executorLabel = $executor->email;
             /** @var UserTypeAssignment|null $executorCurrentUta */
-            $executorCurrentUta = $executor->getCurrentUta();
+            $executorCurrentUta = $executor->getCurrentResponsibility();
             $executorUserTypeName = $executorCurrentUta?->userType->name ?? 'NullCurrentUTA';
         } else {
             $executorLabel = request()->ip() . ' (Seed?)';
@@ -180,7 +180,7 @@ class Logger implements LoggerInterface
             $executorId = $executor->id;
             $executorLabel = $executor->email;
             /** @var UserTypeAssignment|null $executorCurrentUta */
-            $executorCurrentUta = $executor->getCurrentUta();
+            $executorCurrentUta = $executor->getCurrentResponsibility();
             $executorUserTypeName = $executorCurrentUta?->userType->name ?? 'NullCurrentUTA';
         }
 
@@ -241,7 +241,7 @@ class Logger implements LoggerInterface
         $executorLabel = (($userEmail ?? request()->email) ?? request()->ip()) ?? '';
         $executorId = $user?->id ?? '-';
 
-        $executorUserTypeName = $user?->getCurrentUta()->userType->name ?? 'NullCurrentUTA';
+        $executorUserTypeName = $user?->getCurrentResponsibility()->userType->name ?? 'NullCurrentUTA';
 
         if (isset($model) && is_a($model, Model::class)) {
             $modelClassLabel = class_basename($model);
@@ -277,7 +277,7 @@ class Logger implements LoggerInterface
         $executorLabel = (($userEmail ?? request()->email) ?? request()->ip()) ?? '';
         $executorId = $user?->id ?? '-';
 
-        $executorUserTypeName = $user?->getCurrentUta()->userType->name ?? 'NullCurrentUTA';
+        $executorUserTypeName = $user?->getCurrentResponsibility()->userType->name ?? 'NullCurrentUTA';
 
         if (isset($model) && ! is_string($model) && is_a($model, Model::class)) {
             $modelClassLabel = class_basename($model);
@@ -309,7 +309,7 @@ class Logger implements LoggerInterface
         $_executor = $executor ?? Auth::user();
         $executorId = $_executor->id ?? 'NoID';
         $executorEmail = isset($_executor->email) ? ':' . $_executor->email : ":\t";
-        $executorRole = $_executor instanceof User ? (is_null($_executor->getCurrentUta()) ? 'Null Current UTA' : $_executor->getCurrentUta()->userType->name) : 'NoRole';
+        $executorRole = $_executor instanceof User ? (is_null($_executor->getCurrentResponsibility()) ? 'Null Current UTA' : $_executor->getCurrentResponsibility()->userType->name) : 'NoRole';
 
         return "${executorId}${executorEmail} [${executorRole}]";
     }

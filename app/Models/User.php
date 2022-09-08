@@ -6,20 +6,17 @@ use App\ModelFilters\UserFilter;
 use Carbon\Carbon;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use InvalidArgumentException;
+use Illuminate\Support\Facades\Cache;
 use Kyslik\ColumnSortable\Sortable;
 // use Laravel\Sanctum\HasApiTokens;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\CausesActivity;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -61,6 +58,7 @@ class User extends Authenticatable
         'email',
         'password',
         'active',
+        'employee_id',
     ];
 
     /**
@@ -88,14 +86,6 @@ class User extends Authenticatable
     private static $whiteListFilter = ['*'];
 
     /**
-     * @return BelongsTo<UserType, User>
-     */
-    public function userType(): BelongsTo
-    {
-        return $this->belongsTo(UserType::class);
-    }
-
-    /**
      * @return BelongsTo<Employee, User>
      */
     public function employee(): BelongsTo
@@ -112,154 +102,133 @@ class User extends Authenticatable
     }
 
     /**
+     * @param Builder<User> $query
+     *
+     * @return Builder<User>
+     */
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('active', true);
+    }
+
+    /**
      * @return HasMany<UserTypeAssignment>
      */
-    //dynamic > static :)
-    public function getActiveUtas(): HasMany
+    public function getResponsibilities(): HasMany
     {
         return $this->userTypeAssignments()
             ->with('userType', 'course')
             ->join('user_types', 'user_type_assignments.user_type_id', '=', 'user_types.id')
             ->select('user_type_assignments.*')
-            ->where(
-                static function ($query) {
-                    $query
-                        ->where([
-                            ['begin', '<=', Carbon::today()->toDateString()],
-                            ['end', '>=', Carbon::today()->toDateString()],
-                        ])
-                        ->orWhere([
-                            ['begin', '<=', Carbon::today()->toDateString()],
-                            ['end', '=', null],
-                        ]);
-                }
-            )
             ->orderBy('user_types.name', 'asc');
     }
 
     /**
-     * @param Builder<User> $query
-     * @param int|null $id
-     *
-     * @return Builder<User>
+     * @return HasMany<UserTypeAssignment>
      */
-    public function scopeWhereActiveUserType($query, $id): Builder
+    public function getActiveResponsibilities(): HasMany
     {
-        return $query
-            ->join('user_type_assignments AS user_type_assignments_A', 'users.id', '=', 'user_type_assignments_A.user_id')
-            ->where('user_type_assignments_A.user_type_id', $id)
-            ->where(
-                static function ($query) {
-                    $query
-                        ->where([
-                            ['user_type_assignments_A.begin', '<=', Carbon::today()->toDateString()],
-                            ['user_type_assignments_A.end', '>=', Carbon::today()->toDateString()],
-                        ])
-                        ->orWhere([
-                            ['user_type_assignments_A.begin', '<=', Carbon::today()->toDateString()],
-                            ['user_type_assignments_A.end', '=', null],
-                        ]);
-                }
-            )
-            ->select('users.*');
+        return $this->getResponsibilities()->active();
     }
 
     /**
      * @param Builder<User> $query
-     * @param int|null $id
+     * @param int $userTypeId
+     *
+     * @return  Builder<User>
+     */
+    public function scopeOfActiveType(Builder $query, int $userTypeId): Builder
+    {
+        return $query
+            ->join('user_type_assignments AS user_type_assignments_A', 'users.id', '=', 'user_type_assignments_A.user_id')
+            ->addSelect('users.*')
+            ->where('user_type_assignments_A.user_type_id', $userTypeId)
+            ->where('user_type_assignments_A.begin', '<=', Carbon::today()->toDateString())
+            ->where(static function ($q) {
+                $q->where('user_type_assignments_A.end', '>=', Carbon::today()->toDateString())
+                    ->orWhereNull('user_type_assignments_A.end');
+            });
+    }
+
+    /**
+     * @param Builder<User> $query
+     * @param int $courseId
      *
      * @return Builder<User>
      */
-    public function scopeWhereUtaCourseId($query, $id): Builder
+    public function scopeOfCourse($query, $courseId): Builder
     {
         return $query
             ->join('user_type_assignments AS user_type_assignments_B', 'users.id', '=', 'user_type_assignments_B.user_id')
-            ->where('user_type_assignments_B.course_id', $id)
-            ->select('users.*');
+            ->select('users.*')
+            ->where('user_type_assignments_B.course_id', $courseId);
     }
 
     //permission system
 
     /**
      * @return bool
-     *
-     * @throws InvalidArgumentException
      */
-    public function hasUtas(): bool
+    public function hasActiveResponsibilities(): bool
     {
-        $activeUtas = $this->getActiveUtas()->get();
-        return $activeUtas->count() > 0;
+        return $this->getActiveResponsibilities()->count() > 0;
     }
 
     /**
      * @return UserTypeAssignment|null
-     *
-     * @throws InvalidArgumentException
      */
-    public function getFirstUta(): ?UserTypeAssignment
+    public function getFirstActiveResponsibility(): ?UserTypeAssignment
     {
-        return $this->getActiveUtas()->first();
+        return $this->getActiveResponsibilities()->limit(1)->first();
     }
 
     /**
-     * @param int|null $user_type_assignment_id
+     * @param ?int $responsibilityId
      *
      * @return void
-     *
-     * @throws InvalidArgumentException
-     * @throws ModelNotFoundException
-     * @throws BindingResolutionException
-     * @throws NotFoundExceptionInterface
-     * @throws ContainerExceptionInterface
      */
-    public function setCurrentUta(?int $user_type_assignment_id): void
+    public function setCurrentResponsibility(?int $responsibilityId): void
     {
-        if ($user_type_assignment_id) {
-            $user_type_assignment = $this
-                ->getActiveUtas()
-                ->where('user_type_assignments.id', $user_type_assignment_id)
-                ->firstOrFail();
-
-            session(['loggedInUser.currentUta' => $user_type_assignment]);
-        //session(['loggedInUser.currentUtaId' => $user_type_assignment?->id]);
-        } else {
-            session(['loggedInUser.currentUta' => null]);
-            //session(['loggedInUser.currentUtaId' => null]);
-        }
-    }
-
-    /**
-     * @return UserTypeAssignment|null
-     *
-     * @throws BindingResolutionException
-     * @throws NotFoundExceptionInterface
-     * @throws ContainerExceptionInterface
-     */
-    public function getCurrentUta(): ?UserTypeAssignment
-    {
-        /* $user_type_assignment = $this
-            ->getActiveUtas()
-            ->where('user_type_assignments.id', session('loggedInUser.currentUtaId'))
+        $responsibility = $this
+            ->getActiveResponsibilities()
+            ->whereKey($responsibilityId)
             ->first();
 
-        return $user_type_assignment; */
-
-        /**
-         * @var UserTypeAssignment $userTypeAssignment
-         */
-        $userTypeAssignment = session('loggedInUser.currentUta');
-
-        return $userTypeAssignment;
+        session(['loggedInUser.currentUta' => $responsibility]);
     }
 
     /**
-     * @param Employee $employee
-     *
-     * @return void
+     * @return UserTypeAssignment|null
      */
-    public function linkEmployee(Employee $employee): void
+    public function getCurrentResponsibility(): ?UserTypeAssignment
     {
-        $this->employee()->associate($employee);
+        /**
+         * @var int $currentUserId
+         */
+        $currentUserId = $this->id;
+
+        /**
+         * @var Collection<int, UserTypeAssignment> $storedResponsibilities
+         */
+        $storedResponsibilities = Cache::remember(
+            'responsibilities.' . $currentUserId,
+            30,
+            function () {
+                return $this->getActiveResponsibilities()->get();
+            }
+        );
+
+        /**
+         * @var ?UserTypeAssignment $sessionResponsibility
+         */
+        $sessionResponsibility = session('loggedInUser.currentUta');
+
+        /**
+         * @var UserTypeAssignment $responsibility
+         */
+        $responsibility = $storedResponsibilities->where('id', $sessionResponsibility?->id)->first();
+
+        return $responsibility;
     }
 
     /**

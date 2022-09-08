@@ -276,7 +276,7 @@
                         <div class="collapse show" id="bondListContent" >
                             <div class="card-body">
                                 @php
-                                    $activeBonds = $employee->bonds()->inActivePeriod()->orderBy('begin', 'ASC')->get();
+                                    $activeBonds = $employee->bonds()->active()->orderBy('begin', 'ASC')->get();
                                 @endphp
                                 @if($activeBonds->count() > 0)
                                     <div class="table-responsive">

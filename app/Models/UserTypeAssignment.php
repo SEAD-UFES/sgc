@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\ModelFilters\UserTypeAssignmentFilter;
+use Carbon\Carbon;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -88,6 +90,20 @@ class UserTypeAssignment extends Model
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
+    }
+
+    /**
+     * @param Builder<UserTypeAssignment> $query
+     *
+     * @return Builder<UserTypeAssignment>
+     */
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('begin', '<=', Carbon::today()->toDateString())
+            ->where(static function ($query) {
+                $query->where('end', '>=', Carbon::today()->toDateString())
+                    ->orWhereNull('end');
+            });
     }
 
     public function getActivitylogOptions(): LogOptions

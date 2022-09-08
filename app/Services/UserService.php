@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Events\ModelListed;
 use App\Events\ModelRead;
-use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
@@ -20,7 +19,7 @@ class UserService
     {
         ModelListed::dispatch(User::class);
 
-        $query = User::with(['userType', 'employee']);
+        $query = User::with(['employee']);
         $query = $query->AcceptRequest(User::$accepted_filters)->filter();
         $query = $query->sortable(['updated_at' => 'desc']);
 
@@ -44,11 +43,7 @@ class UserService
         $attributes['password'] = Hash::make($attributes['password']);
         $attributes['active'] = isset($attributes['active']);
 
-        $user = User::create($attributes);
-
-        $this->employeeAttach($user);
-
-        return $user;
+        return User::create($attributes);
     }
 
     /**
@@ -87,8 +82,6 @@ class UserService
 
         $user->update($attributes);
 
-        $this->employeeAttach($user);
-
         return $user;
     }
 
@@ -105,23 +98,6 @@ class UserService
     }
 
     /**
-     * @param array<string, string> $attributes
-     * @param User $user
-     *
-     * @return void
-     */
-    public function linkEmployee(array $attributes, User $user): void
-    {
-        /**
-         * @var Employee $employee
-         */
-        $employee = Employee::find($attributes['employee_id']);
-
-        $user->linkEmployee($employee);
-        $user->save();
-    }
-
-    /**
      * @param User $user
      *
      * @return void
@@ -130,34 +106,5 @@ class UserService
     {
         $user->unlinkEmployee();
         $user->save();
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param User $user
-     *
-     * @return void
-     */
-    private function employeeAttach(User $user)
-    {
-        $existentEmployee = $this->getEmployeeByEmail($user->email);
-
-        if ($existentEmployee !== null) {
-            $user->employee_id = $existentEmployee->id;
-            $user->save();
-        }
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $email
-     *
-     * @return Employee
-     */
-    private function getEmployeeByEmail(string $email): ?Employee
-    {
-        return Employee::where('email', $email)->first();
     }
 }

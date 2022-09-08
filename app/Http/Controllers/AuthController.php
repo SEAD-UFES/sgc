@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LoginRequest;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
-class LoginController extends Controller
+class AuthController extends Controller
 {
     /**
      * @return RedirectResponse|View
@@ -43,8 +43,8 @@ class LoginController extends Controller
              */
             $authUser = auth()->user();
 
-            $firstUtaId = $authUser->getFirstUta()?->id;
-            $authUser->setCurrentUta($firstUtaId);
+            $firstUtaId = $authUser->getFirstActiveResponsibility()?->id;
+            $authUser->setCurrentResponsibility($firstUtaId);
 
             return redirect()->route('home');
         }
@@ -64,5 +64,37 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('auth.form');
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function switchCurrentResponsibility(Request $request): RedirectResponse
+    {
+        /**
+         * @var User $currentUser
+         */
+        $currentUser = auth()->user();
+
+        /**
+         * @var int $newResponsibilityId
+         */
+        $newResponsibilityId = $request->activeUTAs;
+
+        $currentUser->setCurrentResponsibility($newResponsibilityId);
+        return redirect()->back();
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @return View
+     */
+    public function currentPasswordEdit(): View
+    {
+        $user = auth()->user();
+        return view('user.currentPasswordEdit', compact('user'));
     }
 }

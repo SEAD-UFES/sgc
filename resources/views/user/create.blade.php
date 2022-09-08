@@ -15,7 +15,7 @@
                 <div class="col-xl-10 col-xxl-8">
                     @include('_components.alerts')
                     <form action={{ route('users.store') }} method="POST">
-                        @component('user.componentUserForm', compact('userTypes'))@endcomponent
+                        @component('user.componentUserForm', compact(['employees']))@endcomponent
                         <br />
                         <button type="submit" class="btn btn-primary">Cadastrar</button>
                         <a href="{{ route('users.index') }}" class="btn btn-secondary">Cancelar</a>

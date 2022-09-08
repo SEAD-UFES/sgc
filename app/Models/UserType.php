@@ -35,6 +35,20 @@ class UserType extends Model
         return $this->hasMany(User::class);
     }
 
+    /**
+     * @param string $acronym
+     *
+     * @return int
+     */
+    public static function getIdByAcronym(string $acronym): int
+    {
+        /**
+         * @var UserType
+         */
+        $userType = UserType::select('id')->where('acronym', 'sec')->take(1)->first();
+        return $userType->id;
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

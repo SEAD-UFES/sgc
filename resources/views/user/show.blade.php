@@ -79,7 +79,7 @@
                                             </a>&nbsp;
                                         @endcan
                                         @can('user-update')
-                                            <a href="{{ route('users.editEmployeeLink', $user) }}" data-bs-toggle="tooltip"
+                                            <a href="{{ route('users.edit', $user) }}" data-bs-toggle="tooltip"
                                                 title="Editar associação" class="btn btn-primary btn-sm">
                                                 <i class="bi-pencil-fill"></i> Editar Associação
                                             </a>&nbsp;
@@ -90,7 +90,7 @@
                                                 @method('DELETE')
                                                 @csrf
                                                 <button type="button" data-bs-toggle="tooltip" title="Desassociar colaborador"
-                                                    onclick="{{ 'if(confirm(\'Tem certeza que deseja desassociar esse usuário desse colaborador?\')) document.forms[\'formUnlink' . $user->id . '\'].submit();' }}"
+                                                    onclick="{{ 'if(confirm(\'Tem certeza que deseja desassociar esse colaborador desse usuário?\')) document.forms[\'formUnlink' . $user->id . '\'].submit();' }}"
                                                     class="btn btn-danger btn-sm">
                                                     <i class="bi-trash-fill"></i> Desassociar colaborador
                                                 </button>
@@ -101,7 +101,7 @@
                                     <p class="mb-0">O usuário não possui colaborador associado.</p>
                                     @can('user-update')
                                         <br />
-                                        <a href="{{ route('users.editEmployeeLink', $user) }}" data-bs-toggle="tooltip"
+                                        <a href="{{ route('users.edit', $user->id) }}" data-bs-toggle="tooltip"
                                             title="Editar associação" class="btn btn-primary btn-sm">
                                             <i class="bi-pencil-fill"></i> Editar Associação
                                         </a>&nbsp;

@@ -11,6 +11,7 @@ use App\Events\InstitutionalLoginConfirmationRequired as InstitutionalLoginConfi
 use App\Events\InstitutionalLoginConfirmed;
 use App\Events\RightsDocumentArchived;
 use App\Logging\LoggerInterface;
+use App\Models\Course;
 use App\Models\Employee;
 use App\Models\User;
 use App\Models\UserType;
@@ -24,8 +25,20 @@ use Illuminate\Support\Facades\Notification;
 
 class DomainEventSubscriber
 {
+    private int $secUtId;
+
+    private int $coordUtId;
+
+    private int $assUtId;
+
+    private int $ldiUtId;
+
     public function __construct(private LoggerInterface $logger, private MailService $mailService)
     {
+        $this->secUtId = UserType::getIdByAcronym('sec');
+        $this->coordUtId = UserType::getIdByAcronym('coord');
+        $this->assUtId = UserType::getIdByAcronym('ass');
+        $this->ldiUtId = UserType::getIdByAcronym('ldi');
     }
 
     /**
@@ -67,17 +80,18 @@ class DomainEventSubscriber
      */
     public function handleBondReviewRequested(BondReviewRequested $event)
     {
-        $sec_UT = UserType::firstWhere('acronym', 'sec');
-        $sec_users = User::where('active', true)->whereActiveUserType($sec_UT?->id)->get();
+        $secUsers = User::active()->ofActiveType($this->secUtId)->get();
 
-        $coord_UT = UserType::firstWhere('acronym', 'coord');
-        $course_id = $event->bond->course?->id;
-        $coord_users = User::where('active', true)->whereActiveUserType($coord_UT?->id)->whereUtaCourseId($course_id)->get();
+        /**
+         * @var Course $course
+         */
+        $course = $event->bond->course;
+        $courseId = $course->id;
+        $coordUsers = User::active()->ofActiveType($this->coordUtId)->ofCourse($courseId)->get();
 
-        $ass_UT = UserType::firstWhere('acronym', 'ass');
-        $ass_users = User::where('active', true)->whereActiveUserType($ass_UT?->id)->get();
+        $assUsers = User::active()->ofActiveType($this->assUtId)->get();
 
-        $users = $sec_users->merge($coord_users)->merge($ass_users);
+        $users = $secUsers->merge($coordUsers)->merge($assUsers);
 
         Notification::send($users, new BondReviewRequestedNotification($event->bond));
         $this->logger->logDomainEvent(
@@ -95,14 +109,16 @@ class DomainEventSubscriber
      */
     public function handleBondImpeded(BondImpeded $event)
     {
-        $sec_UT = UserType::firstWhere('acronym', 'sec');
-        $sec_users = User::where('active', true)->whereActiveUserType($sec_UT?->id)->get();
+        $secUsers = User::active()->ofActiveType($this->secUtId)->get();
 
-        $coord_UT = UserType::firstWhere('acronym', 'coord');
-        $course_id = $event->bond->course?->id;
-        $coord_users = User::where('active', true)->whereActiveUserType($coord_UT?->id)->whereUtaCourseId($course_id)->get();
+        /**
+         * @var Course $course
+         */
+        $course = $event->bond->course;
+        $courseId = $course->id;
+        $coordUsers = User::active()->ofActiveType($this->coordUtId)->ofCourse($courseId)->get();
 
-        $users = $sec_users->merge($coord_users);
+        $users = $secUsers->merge($coordUsers);
 
         Notification::send($users, new BondImpededNotification($event->bond));
         $this->logger->logDomainEvent(
@@ -121,8 +137,7 @@ class DomainEventSubscriber
     public function handleBondCreated(BondCreated $event)
     {
         //Notify grantor assistants
-        $ass_UT = UserType::firstWhere('acronym', 'ass');
-        $coordOrAssistants = User::where('active', true)->whereActiveUserType($ass_UT?->id)->get();
+        $coordOrAssistants = User::active()->ofActiveType($this->assUtId)->get();
 
         Notification::send($coordOrAssistants, new BondCreatedNotification($event->bond));
 
@@ -141,10 +156,9 @@ class DomainEventSubscriber
      */
     public function handleRightsDocumentArchived(RightsDocumentArchived $event)
     {
-        $ldi_UT = UserType::firstWhere('acronym', 'ldi');
-        $ldi_users = User::where('active', true)->whereActiveUserType($ldi_UT?->id)->get();
+        $ldiUsers = User::active()->ofActiveType($this->ldiUtId)->get();
 
-        Notification::send($ldi_users, new RightsDocumentArchivedNotification($event->bond));
+        Notification::send($ldiUsers, new RightsDocumentArchivedNotification($event->bond));
 
         $this->logger->logDomainEvent(
             'rights_document_archived',

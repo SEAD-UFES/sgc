@@ -7,19 +7,26 @@ use App\Http\Controllers\BondDocumentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseTypeController;
 use App\Http\Controllers\DesignateApproved;
+use App\Http\Controllers\DestroyUserEmployeeLink;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeDocumentController;
 use App\Http\Controllers\InstitutionalDetailController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PoleController;
 use App\Http\Controllers\RequestBondReview;
 use App\Http\Controllers\ReviewBond;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UpdateCurrentPassword;
+use App\Http\Controllers\User2Controller;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserTypeAssignmentController;
 use App\Http\Controllers\WebController;
+use App\Models\Employee;
+use App\Models\User;
+use App\Models\UserType;
+use App\Models\UserTypeAssignment;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,9 +44,9 @@ Route::get('/', [WebController::class, 'rootFork'])->name('root');
 // *** Don't use the fallback route. Let the user know that the page doesn't exist and log the error.
 //Route::fallback([WebController::class, 'fallback']);
 
-Route::get('/login', [LoginController::class, 'getLoginForm'])->name('auth.form');
-Route::post('/login', [LoginController::class, 'authenticate'])->name('auth.login');
-Route::get('/logout', [LoginController::class, 'logout'])->name('auth.logout');
+Route::get('/login', [AuthController::class, 'getLoginForm'])->name('auth.form');
+Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.login');
+Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 Route::middleware('auth')->group(function () {
     Route::get('/home', [WebController::class, 'home'])->name('home');
@@ -87,12 +94,10 @@ Route::middleware('auth')->group(function () {
     Route::post('bondreview/{bond}', ReviewBond::class)->name('bonds.review');
     Route::get('bondreviewrequest/{bond}', RequestBondReview::class)->name('bonds.requestReview');
 
-    Route::get('users/current/password', [UserController::class, 'currentPasswordEdit'])->name('users.currentPasswordEdit');
-    Route::patch('users/current/password', [UserController::class, 'currentPasswordUpdate'])->name('users.currentPasswordUpdate');
+    Route::get('users/current-password', [AuthController::class, 'currentPasswordEdit'])->name('users.currentPasswordEdit');
+    Route::patch('users/current-password', UpdateCurrentPassword::class)->name('users.currentPasswordUpdate');
 
-    Route::get('users/{user}/employee-link/edit', [UserController::class, 'editEmployeeLink'])->name('users.editEmployeeLink');
-    Route::patch('users/{user}/employee-link', [UserController::class, 'updateEmployeeLink'])->name('users.updateEmployeeLink');
-    Route::delete('users/{user}/employee-link', [UserController::class, 'destroyEmployeeLink'])->name('users.destroyEmployeeLink');
+    Route::delete('users/{user}/destroy-employee-link', DestroyUserEmployeeLink::class)->name('users.destroyEmployeeLink');
 
     Route::resource('users', UserController::class);
 
@@ -119,7 +124,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/notification/{notification}/dismiss', [NotificationController::class, 'dismiss'])->name('notifications.dismiss');
 
     Route::resource('userTypeAssignments', UserTypeAssignmentController::class);
-    Route::post('/session/changeCurrentUTA', [UserController::class, 'setCurrentUTA'])->name('currentUTA.change');
+    Route::post('/session/switch-responsibility', [AuthController::class, 'switchCurrentResponsibility'])->name('currentUTA.change');
 
     Route::get('system/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('logs')->middleware('can:isAdm-global');
 

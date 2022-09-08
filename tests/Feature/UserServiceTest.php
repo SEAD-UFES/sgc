@@ -156,27 +156,32 @@ class UserServiceTest extends TestCase
     /**
      * @test
      */
-    public function userShouldHaveEmployeeAtached()
+    public function userShouldHaveEmployeeAttached()
     {
         //setting up scenario
-
-        Employee::factory()->create(['email' => 'marydoe@test4.com', 'name' => 'Mary Doe']);
-
-        $user = User::find(1);
+        /**
+         * @var User $user
+         */
+        $user = User::factory()->createOne(['email' => 'marydoe@test4.com', 'employee_id' => null]);
+        /**
+         * @var Employee $employee
+         */
+        $employee = Employee::factory()->createOne(['email' => 'marydoe@test4.com', 'name' => 'Mary Doe']);
 
         $attributes = [];
 
-        $attributes['email'] = 'marydoe@test4.com';
+        $attributes['email'] = 'userShouldHaveEmployeeAtached@test4.com';
+        $attributes['employee_id'] = Employee::orderBy('id', 'desc')->first()->id;
 
-        Event::fakeFor(function () use ($user, $attributes) {
+        Event::fakeFor(function () use ($attributes, $user) {
             //execution
             $this->service->update($attributes, $user);
 
             //verifications
             Event::assertDispatched('eloquent.updating: ' . User::class);
-            $this->assertEquals('marydoe@test4.com', User::find(1)->email);
-            $this->assertEquals('Mary Doe', User::find(1)->employee->name);
-            $this->assertCount(2, User::all());
+            $this->assertContains('Mary Doe', Employee::pluck('name')->toArray());
+            $this->assertEquals($attributes['employee_id'], $user->employee_id);
+            $this->assertCount(3, User::all());
         });
     }
 

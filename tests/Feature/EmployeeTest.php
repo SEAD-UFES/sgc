@@ -205,7 +205,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.index'))
             ->assertSee('Listar Colaboradores')
@@ -227,7 +227,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.index'))
             ->assertSee(['John Doe', 'Jane Doe'])
@@ -248,7 +248,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.index'))
             ->assertSee(['John Doe', 'Jane Doe'])
@@ -269,7 +269,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.index'))
             ->assertSee(['John Doe', 'Jane Doe'])
@@ -290,7 +290,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.index'))
             ->assertStatus(403);
@@ -310,7 +310,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.index'))
             ->assertSee(['John Doe', 'Jane Doe'])
@@ -362,7 +362,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.show', 1))
             ->assertSee(['Listar Colaboradores', 'Nome:', 'CPF:', 'Profissão:', 'Contato e endereço'])
@@ -383,7 +383,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.show', 1))
             ->assertSee(['Listar Colaboradores', 'Nome:', 'CPF:', 'Profissão:', 'Contato e endereço'])
@@ -404,7 +404,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.show', 1))
             ->assertSee(['Listar Colaboradores', 'Nome:', 'CPF:', 'Profissão:', 'Contato e endereço'])
@@ -425,7 +425,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.show', 1))
             ->assertSee(['Listar Colaboradores', 'Nome:', 'CPF:', 'Profissão:', 'Contato e endereço'])
@@ -446,7 +446,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.show', 1))
             ->assertStatus(403);
@@ -466,7 +466,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.show', 1))
             ->assertStatus(403);
@@ -517,7 +517,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.create'))
             ->assertSee(['Cadastrar Colaborador', 'Nome*', 'CPF*', 'Profissão', 'Cadastrar'])
@@ -538,7 +538,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.create'))
             ->assertSee(['Cadastrar Colaborador', 'Nome*', 'CPF*', 'Profissão', 'Cadastrar'])
@@ -559,7 +559,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.create'))
             ->assertSee(['Cadastrar Colaborador', 'Nome*', 'CPF*', 'Profissão', 'Cadastrar'])
@@ -580,7 +580,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.create'))
             ->assertSee(['Cadastrar Colaborador', 'Nome*', 'CPF*', 'Profissão', 'Cadastrar'])
@@ -601,7 +601,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.create'))
             ->assertStatus(403);
@@ -621,7 +621,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.create'))
             ->assertStatus(403);
@@ -683,7 +683,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()])
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()])
             ->followingRedirects()->post(route('employees.store'), $employeeArr)
             ->assertSee($this->expectedEmployeeInfo())
             ->assertStatus(200);
@@ -703,7 +703,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $employeeArr = $this->createTestEmployee()->toArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
@@ -728,7 +728,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $employeeArr = $this->createTestEmployee()->toArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
@@ -753,7 +753,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $employeeArr = $this->createTestEmployee()->toArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
@@ -778,7 +778,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $employeeArr = $this->createTestEmployee()->toArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
@@ -802,7 +802,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $employeeArr = $this->createTestEmployee()->toArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
@@ -857,7 +857,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.edit', 1))
             ->assertSee(['Editar', 'Nome*', 'CPF*', 'Profissão', 'Atualizar'])
@@ -878,7 +878,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.edit', 1))
             ->assertSee(['Editar', 'Nome*', 'CPF*', 'Profissão', 'Atualizar'])
@@ -899,7 +899,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.edit', 1))
             ->assertSee(['Editar', 'Nome*', 'CPF*', 'Profissão', 'Atualizar'])
@@ -920,7 +920,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.edit', 1))
             ->assertSee(['Editar', 'Nome*', 'CPF*', 'Profissão', 'Atualizar'])
@@ -941,7 +941,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.edit', 1))
             ->assertStatus(403);
@@ -961,7 +961,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.edit', 1))
             ->assertStatus(403);
@@ -1036,7 +1036,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
@@ -1069,7 +1069,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
@@ -1102,7 +1102,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
@@ -1135,7 +1135,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
@@ -1168,7 +1168,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
@@ -1200,7 +1200,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
@@ -1273,7 +1273,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $employeeBefore = Employee::find(1);
 
@@ -1300,7 +1300,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $employeeBefore = Employee::find(1);
 
@@ -1325,7 +1325,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $employeeBefore = Employee::find(1);
 
@@ -1350,7 +1350,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $employeeBefore = Employee::find(1);
 
@@ -1375,7 +1375,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $employeeBefore = Employee::find(1);
 
@@ -1400,7 +1400,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstUta()]);
+        $this->withSession(['loggedInUser.currentUta' => $authUser->getFirstActiveResponsibility()]);
 
         $employeeBefore = Employee::find(1);
 

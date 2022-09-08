@@ -140,22 +140,26 @@ class Bond extends Pivot
      *
      * @return Builder<Bond>
      */
-    public function scopeInActivePeriod($query): Builder
+    public function scopeActive($query): Builder
     {
-        return $query
+        return $query->where('bonds.begin', '<=', Carbon::today()->toDateString())
             ->where(
                 static function ($query) {
-                    $query
-                        ->where([
-                            ['bonds.begin', '<=', Carbon::today()->toDateString()],
-                            ['bonds.end', '>=', Carbon::today()->toDateString()],
-                        ])
-                        ->orWhere([
-                            ['bonds.begin', '<=', Carbon::today()->toDateString()],
-                            ['bonds.end', '=', null],
-                        ]);
+                    $query->where('bonds.end', '>=', Carbon::today()->toDateString())
+                        ->orWhereNull('bonds.end');
                 }
             );
+    }
+
+    /**
+     * @param Builder<Bond> $query
+     * @param bool $status
+     *
+     * @return Builder<Bond>
+     */
+    public function scopeImpededStatus(Builder $query, bool $status): Builder
+    {
+        return $query->where('bonds.impediment', $status);
     }
 
     public function getActivitylogOptions(): LogOptions

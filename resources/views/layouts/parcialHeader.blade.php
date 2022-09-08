@@ -114,13 +114,13 @@
                     @endcannot
                 </ul>
                 
-                @if (auth()->user()->hasUtas())
+                @if (auth()->user()->hasActiveResponsibilities())
                     <form class="d-flex" action={{ route('currentUTA.change') }} method="POST">
                         @csrf
                         <select class="form-select form-select-sm" aria-label="uta" name="activeUTAs" data-bs-toggle="tooltip" data-bs-placement="left" title="Mudar papel atual" onchange="submit();">
-                            @foreach (auth()->user()->getActiveUtas as $uta)
+                            @foreach (auth()->user()->getActiveResponsibilities()->get() as $uta)
                                 <option value="{{ $uta->id }}"
-                                    {{ auth()->user()->getCurrentUta() && $uta->id === auth()->user()->getCurrentUta()->id ? 'selected' : '' }}>
+                                    {{ auth()->user()->getCurrentResponsibility() && $uta->id === auth()->user()->getCurrentResponsibility()->id ? 'selected' : '' }}>
                                     {{ $uta->userType->name }}{{ $uta->course ? ' - ' . $uta->course->name : '' }}
                                 </option>
                             @endforeach

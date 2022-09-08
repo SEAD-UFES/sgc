@@ -110,7 +110,7 @@ class CourseTypeTest extends TestCase
     public function administratorShouldListCourseTypes()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/coursetypes')
             ->assertSee(['Type Alpha', 'Type Beta', '1st type', '2nd type'])
@@ -127,7 +127,7 @@ class CourseTypeTest extends TestCase
     public function directorShouldListCourseTypes()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/coursetypes')
             ->assertSee(['Type Alpha', 'Type Beta', '1st type', '2nd type'])
@@ -144,7 +144,7 @@ class CourseTypeTest extends TestCase
     public function assistantShouldListCourseTypes()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/coursetypes')
             ->assertSee(['Type Alpha', 'Type Beta', '1st type', '2nd type'])
@@ -161,7 +161,7 @@ class CourseTypeTest extends TestCase
     public function secretaryShouldListCourseTypes()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/coursetypes')
             ->assertSee(['Type Alpha', 'Type Beta', '1st type', '2nd type'])
@@ -178,7 +178,7 @@ class CourseTypeTest extends TestCase
     public function ldiShouldListCourseTypes()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/coursetypes')
             ->assertSee(['Type Alpha', 'Type Beta', '1st type', '2nd type'])
@@ -195,7 +195,7 @@ class CourseTypeTest extends TestCase
     public function coordinatorShouldListCourseTypes()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/coursetypes')
             ->assertSee(['Type Alpha', 'Type Beta', '1st type', '2nd type'])

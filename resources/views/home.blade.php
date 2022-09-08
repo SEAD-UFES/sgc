@@ -8,9 +8,9 @@
         <li class="breadcrumb-item active" aria-current="page">
             Home&nbsp;
             @if (session('loggedInUser.currentUta')?->id != null)
-                [{{ auth()->user()->getCurrentUta()->user->email }} -
-                {{ auth()->user()->getCurrentUta()->userType->name }}
-                {{ auth()->user()->getCurrentUta()->course_id ? " - " . auth()->user()->getCurrentUta()->course->name : "" }}]
+                [{{ auth()->user()->getCurrentResponsibility()->user->email }} -
+                {{ auth()->user()->getCurrentResponsibility()->userType->name }}
+                {{ auth()->user()->getCurrentResponsibility()->course_id ? " - " . auth()->user()->getCurrentResponsibility()->course->name : "" }}]
             @endif
         </li>
     </ol>

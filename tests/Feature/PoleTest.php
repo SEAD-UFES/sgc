@@ -108,7 +108,7 @@ class PoleTest extends TestCase
     public function administratorShouldListPoles()
     {
         $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/poles')
             ->assertSee(['Pole Alpha', 'Pole Beta'])
@@ -125,7 +125,7 @@ class PoleTest extends TestCase
     public function directorShouldListPoles()
     {
         $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/poles')
             ->assertSee(['Pole Alpha', 'Pole Beta'])
@@ -142,7 +142,7 @@ class PoleTest extends TestCase
     public function assistantShouldListPoles()
     {
         $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/poles')
             ->assertSee(['Pole Alpha', 'Pole Beta'])
@@ -159,7 +159,7 @@ class PoleTest extends TestCase
     public function secretaryShouldListPoles()
     {
         $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/poles')
             ->assertSee(['Pole Alpha', 'Pole Beta'])
@@ -176,7 +176,7 @@ class PoleTest extends TestCase
     public function ldiShouldntListPoles()
     {
         $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/poles')
             ->assertStatus(403);
@@ -192,7 +192,7 @@ class PoleTest extends TestCase
     public function coordinatorShouldListPoles()
     {
         $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstUta()]);
+            ->withSession(['loggedInUser.currentUta' => auth()->user()->getFirstActiveResponsibility()]);
 
         $this->get('/poles')
             ->assertSee(['Pole Alpha', 'Pole Beta'])

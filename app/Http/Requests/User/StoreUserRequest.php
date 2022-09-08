@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
-class UpdateUserRequest extends FormRequest
+class StoreUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Gate::allows('user-store');
     }
 
     /**
@@ -24,19 +24,9 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        /**
-         * @var User $user
-         */
-        $user = $this->route()?->parameter('user');
-
-        /**
-         * @var int $id
-         */
-        $id = $user->id;
-
         return [
-            'email' => 'required|email|unique:users,email,' . $id . ',id',
-            'password' => 'sometimes',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required',
             'active' => 'sometimes',
         ];
     }
@@ -50,6 +40,7 @@ class UpdateUserRequest extends FormRequest
             'email.required' => 'O E-mail é obrigatório',
             'email.email' => 'O endereço de E-mail deve ser válido',
             'email.unique' => 'O endereço não pode ser igual a outro já cadastrado',
+            'password.required' => 'A Senha é obrigatória',
         ];
     }
 }

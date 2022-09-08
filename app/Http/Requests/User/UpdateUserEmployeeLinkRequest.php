@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class UpdateUserEmployeeLinkRequest extends FormRequest
 {
@@ -11,9 +12,9 @@ class UpdateUserEmployeeLinkRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return true;
+        return Gate::allows('user-update');
     }
 
     /**
@@ -21,7 +22,7 @@ class UpdateUserEmployeeLinkRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'employee_id' => 'required|exists:employees,id',

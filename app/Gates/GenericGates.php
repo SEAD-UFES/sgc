@@ -80,7 +80,7 @@ class GenericGates
              */
             $currentUser = auth()->user();
             //need to have session UserTypeAssignment active.
-            $currentUTA = $currentUser->getCurrentUta();
+            $currentUTA = $currentUser->getCurrentResponsibility();
             if (! $currentUTA instanceof \App\Models\UserTypeAssignment) {
                 return false;
             }
@@ -107,7 +107,7 @@ class GenericGates
         $currentUser = auth()->user();
 
         //need to have session UserTypeAssignment active.
-        $currentUTA = $currentUser->getCurrentUta();
+        $currentUTA = $currentUser->getCurrentResponsibility();
         if (! $currentUTA instanceof \App\Models\UserTypeAssignment) {
             return false;
         }
@@ -128,7 +128,7 @@ class GenericGates
          */
         $currentUser = auth()->user();
         //need to have session UserTypeAssignment active.
-        $currentUTA = $currentUser->getCurrentUta();
+        $currentUTA = $currentUser->getCurrentResponsibility();
         if (! $currentUTA instanceof \App\Models\UserTypeAssignment) {
             return false;
         }
