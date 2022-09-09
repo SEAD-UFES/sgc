@@ -3,34 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ModelFilterHelper;
-use App\Http\Requests\StorePoleRequest;
-use App\Http\Requests\UpdatePoleRequest;
+use App\Http\Requests\Pole\CreatePoleRequest;
+use App\Http\Requests\Pole\DestroyPoleRequest;
+use App\Http\Requests\Pole\EditPoleRequest;
+use App\Http\Requests\Pole\IndexPoleRequest;
+use App\Http\Requests\Pole\ShowPoleRequest;
+use App\Http\Requests\Pole\StorePoleRequest;
+use App\Http\Requests\Pole\UpdatePoleRequest;
 use App\Models\Pole;
 use App\Services\PoleService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class PoleController extends Controller
 {
-    private PoleService $service;
-
-    public function __construct(PoleService $poleService)
+    public function __construct(private PoleService $service)
     {
-        $this->service = $poleService;
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param IndexPoleRequest $request
+     *
+     * @return View
      */
-    public function index(Request $request)
+    public function index(IndexPoleRequest $request): View
     {
-        //check access permission
-        if (! Gate::allows('pole-list')) {
-            abort(403);
-        }
-
         //filters
         $filters = ModelFilterHelper::buildFilters($request, Pole::$accepted_filters);
 
@@ -42,32 +41,24 @@ class PoleController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param CreatePoleRequest $request
+     *
+     * @return View
      */
-    public function create(Request $request)
+    public function create(CreatePoleRequest $request): View
     {
-        //check access permission
-        if (! Gate::allows('pole-store')) {
-            abort(403);
-        }
-
         return view('pole.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StorePoleRequest  $request
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function store(StorePoleRequest $request)
+    public function store(StorePoleRequest $request): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('pole-store')) {
-            abort(403);
-        }
-
         try {
             $this->service->create($request->validated());
         } catch (\Exception $e) {
@@ -80,17 +71,13 @@ class PoleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Pole  $pole
+     * @param  ShowPoleRequest  $request
+     * @param  Pole  $pole
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function show(Pole $pole, Request $request)
+    public function show(ShowPoleRequest $request, Pole $pole): View
     {
-        //check access permission
-        if (! Gate::allows('pole-show')) {
-            abort(403);
-        }
-
         $this->service->read($pole);
 
         return view('pole.show', compact('pole'));
@@ -99,35 +86,26 @@ class PoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Pole  $pole
+     * @param  EditPoleRequest  $request
+     * @param  Pole  $pole
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function edit(Pole $pole, Request $request)
+    public function edit(EditPoleRequest $request, Pole $pole): View
     {
-        //check access permission
-        if (! Gate::allows('pole-update')) {
-            abort(403);
-        }
-
         return view('pole.edit', compact('pole'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Pole  $pole
+     * @param  UpdatePoleRequest  $request
+     * @param  Pole  $pole
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function update(UpdatePoleRequest $request, Pole $pole)
+    public function update(UpdatePoleRequest $request, Pole $pole): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('pole-update')) {
-            abort(403);
-        }
-
         try {
             $pole = $this->service->update($request->validated(), $pole);
         } catch (\Exception $e) {
@@ -140,17 +118,13 @@ class PoleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Pole  $pole
+     * @param  DestroyPoleRequest  $request
+     * @param  Pole  $pole
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function destroy(Pole $pole, Request $request)
+    public function destroy(DestroyPoleRequest $request, Pole $pole): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('pole-destroy')) {
-            abort(403);
-        }
-
         try {
             $this->service->delete($pole);
         } catch (\Exception $e) {

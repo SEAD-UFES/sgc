@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Pole;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
-class UpdatePoleRequest extends FormRequest
+class DestroyPoleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,23 +14,18 @@ class UpdatePoleRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Gate::allows('pole-destroy');
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function rules()
     {
-        $spr = new StorePoleRequest();
-        return $spr->rules();
-    }
+        return [
 
-    public function messages()
-    {
-        $spr = new StorePoleRequest();
-        return $spr->messages();
+        ];
     }
 }
