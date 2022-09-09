@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Role;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
-class UpdateRoleRequest extends FormRequest
+class ShowRoleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,23 +14,18 @@ class UpdateRoleRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Gate::allows('role-show');
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function rules()
     {
-        $srr = new StoreRoleRequest();
-        return $srr->rules();
-    }
+        return [
 
-    public function messages()
-    {
-        $srr = new StoreRoleRequest();
-        return $srr->messages();
+        ];
     }
 }

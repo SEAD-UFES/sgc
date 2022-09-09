@@ -3,35 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ModelFilterHelper;
-use App\Http\Requests\StoreRoleRequest;
-use App\Http\Requests\UpdateRoleRequest;
-use App\Models\GrantType;
+use App\Http\Requests\Role\CreateRoleRequest;
+use App\Http\Requests\Role\DestroyRoleRequest;
+use App\Http\Requests\Role\EditRoleRequest;
+use App\Http\Requests\Role\IndexRoleRequest;
+use App\Http\Requests\Role\ShowRoleRequest;
+use App\Http\Requests\Role\StoreRoleRequest;
+use App\Http\Requests\Role\UpdateRoleRequest;
 use App\Models\Role;
 use App\Services\RoleService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class RoleController extends Controller
 {
-    private RoleService $service;
-
-    public function __construct(RoleService $roleService)
+    public function __construct(private RoleService $service)
     {
-        $this->service = $roleService;
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param IndexRoleRequest $request
+     *
+     * @return View
      */
-    public function index(Request $request)
+    public function index(IndexRoleRequest $request): View
     {
-        //check access permission
-        if (! Gate::allows('role-list')) {
-            abort(403);
-        }
-
         //filters
         $filters = ModelFilterHelper::buildFilters($request, Role::$accepted_filters);
 
@@ -43,34 +41,24 @@ class RoleController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param CreateRoleRequest $request
+     *
+     * @return View
      */
-    public function create(Request $request)
+    public function create(CreateRoleRequest $request): View
     {
-        //check access permission
-        if (! Gate::allows('role-store')) {
-            abort(403);
-        }
-
-        $grantTypes = GrantType::orderBy('name')->get();
-
-        return view('role.create', compact('grantTypes'));
+        return view('role.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreRoleRequest  $request
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function store(StoreRoleRequest $request)
+    public function store(StoreRoleRequest $request): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('role-store')) {
-            abort(403);
-        }
-
         try {
             $this->service->create($request->validated());
         } catch (\Exception $e) {
@@ -83,17 +71,13 @@ class RoleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Role  $role
+     * @param ShowRoleRequest $request
+     * @param  Role  $role
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function show(Role $role, Request $request)
+    public function show(ShowRoleRequest $request, Role $role): View
     {
-        //check access permission
-        if (! Gate::allows('role-show')) {
-            abort(403);
-        }
-
         $this->service->read($role);
 
         return view('role.show', compact('role'));
@@ -102,37 +86,26 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Role  $role
+     * @param EditRoleRequest $request
+     * @param  Role  $role
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function edit(Role $role, Request $request)
+    public function edit(EditRoleRequest $request, Role $role): View
     {
-        //check access permission
-        if (! Gate::allows('role-update')) {
-            abort(403);
-        }
-
-        $grantTypes = GrantType::orderBy('name')->get();
-
-        return view('role.edit', compact('role', 'grantTypes'));
+        return view('role.edit', compact('role'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Role  $role
+     * @param  UpdateRoleRequest  $request
+     * @param  Role  $role
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function update(UpdateRoleRequest $request, Role $role)
+    public function update(UpdateRoleRequest $request, Role $role): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('role-update')) {
-            abort(403);
-        }
-
         try {
             $this->service->update($request->validated(), $role);
         } catch (\Exception $e) {
@@ -145,17 +118,13 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Role  $role
+     * @param  DestroyRoleRequest $request
+     * @param  Role  $role
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function destroy(Role $role, Request $request)
+    public function destroy(DestroyRoleRequest $request, Role $role): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('role-destroy')) {
-            abort(403);
-        }
-
         try {
             $this->service->delete($role);
         } catch (\Exception $e) {
