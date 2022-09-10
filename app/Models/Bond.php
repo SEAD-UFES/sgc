@@ -79,6 +79,7 @@ class Bond extends Pivot
 
     /**
      * @var array<int, string>
+     *
      * @phpstan-ignore-next-line
      */
     private static $whiteListFilter = ['*'];
@@ -129,7 +130,7 @@ class Bond extends Pivot
     }
 
     /**
-     * @return HasMany<App\Models\BondDocument>
+     * @return HasMany<BondDocument>
      */
     public function rightsDocuments(): HasMany
     {

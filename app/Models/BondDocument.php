@@ -83,9 +83,9 @@ class BondDocument extends Model
     }
 
     /**
-     * @return Collection<int, BondDocument>
+     * @return Builder<BondDocument>
      */
-    public static function rightsDocuments(): Collection
+    public static function rightsDocuments(): Builder
     {
         return self::join('documents', 'documents.documentable_id', '=', 'bond_documents.id')
             ->join('document_types', 'document_types.id', '=', 'documents.document_type_id')
