@@ -2,12 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Enums\Genders;
 use App\Models\Employee;
-use App\Models\Gender;
 use App\Models\State;
 use App\Models\DocumentType;
 use App\Models\MaritalStatus;
-use App\Helpers\TextHelper;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -31,7 +30,7 @@ class EmployeeFactory extends Factory
         
         return [
 
-            'gender_id' => Gender::factory(),
+            'gender' => strval($this->faker->randomElement(Genders::getValuesInAlphabeticalOrder())),
             'birth_state_id' => State::factory(),
             'address_state_id' => State::factory(),
             'document_type_id' => DocumentType::factory(),
@@ -76,10 +75,10 @@ class EmployeeFactory extends Factory
     {
         return $this->state(function (array $attributes) {
 
-            $genderId = Gender::all()->random()->id;
-            $genderName = [1 => 'female', 2 => 'male'];
-            $spouseGenderId = $genderId == 1 ? 2 : 1;
-            $firstName = $this->faker->firstName($genderName[$genderId]);
+            $gender = strval($this->faker->randomElement(Genders::getValuesInAlphabeticalOrder()));
+            $genderName = ['Feminino' => 'female', 'Masculino' => 'male'];
+            $spouseGender = $gender == 'Feminino' ? 'Masculino' : 'Feminino';
+            $firstName = $this->faker->firstName($genderName[$gender]);
             $lastName = $this->faker->lastName();
             $maritalStatusId = MaritalStatus::all()->random()->id;
 
@@ -94,11 +93,11 @@ class EmployeeFactory extends Factory
                 ->lower();
 
             $spouseName =  in_array($maritalStatusId, [2, 3, 6])
-                ? $this->faker->firstName($genderName[$spouseGenderId]) . ' ' . $lastName
+                ? $this->faker->firstName($genderName[$spouseGender]) . ' ' . $lastName
                 : null;
 
             return [
-                'gender_id' => $genderId,
+                'gender' => $gender,
                 'birth_state_id' => State::all()->random(),
                 'address_state_id' => State::all()->random(),
                 'document_type_id' => random_int(1, 3),

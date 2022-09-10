@@ -25,7 +25,7 @@ class EmployeeService
     {
         ModelListed::dispatch(Employee::class);
 
-        $query = Employee::with(['gender', 'birthState', 'documentType', 'maritalStatus', 'addressState', 'user']);
+        $query = Employee::with(['birthState', 'documentType', 'maritalStatus', 'addressState', 'user']);
         $query = $query->AcceptRequest(Employee::$accepted_filters)->filter();
         $query = $query->sortable(['updated_at' => 'desc']);
 

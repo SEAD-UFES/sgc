@@ -5,7 +5,6 @@ namespace App\Mail;
 use App\Models\Bond;
 use App\Models\Course;
 use App\Models\Employee;
-use App\Models\Gender;
 use App\Models\InstitutionalDetail;
 use App\Models\Pole;
 use Illuminate\Bus\Queueable;
@@ -59,9 +58,9 @@ class LmsAccessPermissionRequest extends Mailable
         $employee = $this->employeeBond->employee;
 
         /**
-         * @var Gender $employeeGender
+         * @var string $employeeGender
          */
-        $employeeGender = $employee->gender;
+        $employeeGender = $employee->gender->value;
 
         /**
          * @var string $employeeName

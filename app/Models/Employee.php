@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Genders;
 use App\ModelFilters\EmployeeFilter;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Builder;
@@ -55,7 +56,7 @@ class Employee extends Model
         'name',
         'cpf',
         'job',
-        'gender_id',
+        'gender',
         'birthday',
         'birth_state_id',
         'birth_city',
@@ -86,13 +87,9 @@ class Employee extends Model
      */
     private static $whiteListFilter = ['*'];
 
-    /**
-     * @return BelongsTo<Gender, Employee>
-     */
-    public function gender(): BelongsTo
-    {
-        return $this->belongsTo(Gender::class);
-    }
+    protected $casts = [
+        'gender' => Genders::class,
+    ];
 
     /**
      * @return BelongsTo<State, Employee>

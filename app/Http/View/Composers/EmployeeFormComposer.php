@@ -2,8 +2,8 @@
 
 namespace App\Http\View\Composers;
 
+use App\Enums\Genders;
 use App\Models\DocumentType;
-use App\Models\Gender;
 use App\Models\MaritalStatus;
 use App\Models\State;
 use Illuminate\View\View;
@@ -20,7 +20,7 @@ class EmployeeFormComposer
     public function compose(View $view): void
     {
         $view->with([
-            'genders' => Gender::orderBy('name')->get(),
+            'genders' => Genders::getValuesInAlphabeticalOrder(),
             'birthStates' => State::orderBy('name')->get(),
             'documentTypes' => DocumentType::orderBy('name')->get(),
             'maritalStatuses' => MaritalStatus::orderBy('name')->get(),

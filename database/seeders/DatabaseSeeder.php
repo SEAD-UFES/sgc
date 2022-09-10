@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
             GrantTypeSeeder::class,
             UserTypeSeeder::class,
             RoleSeeder::class,
-            GenderSeeder::class,
             StateSeeder::class,
             DocumentTypeSeeder::class,
             MaritalStatusSeeder::class,

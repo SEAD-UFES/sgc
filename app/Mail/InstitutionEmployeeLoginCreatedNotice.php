@@ -5,7 +5,6 @@ namespace App\Mail;
 use App\Models\Bond;
 use App\Models\Course;
 use App\Models\Employee;
-use App\Models\Gender;
 use App\Models\InstitutionalDetail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -59,9 +58,9 @@ class InstitutionEmployeeLoginCreatedNotice extends Mailable
         $receiver = $this->receiverBond->employee;
 
         /**
-         * @var Gender $receiverGender
+         * @var string $receiverGender
          */
-        $receiverGender = $receiver->gender;
+        $receiverGender = $receiver->gender->value;
 
         /**
          * @var string $receiverName

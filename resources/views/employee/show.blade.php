@@ -39,7 +39,7 @@
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Gênero:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->gender->name ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->gender->value ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">

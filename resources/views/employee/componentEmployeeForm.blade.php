@@ -40,15 +40,15 @@
     </div>
     <div class="col-6 col-sm-4 col-md-3 col-lg-2">
         <label for="selectGender1" class="form-label">Gênero</label>
-        <select name="gender_id" id="selectGender1" class="form-select">
+        <select name="gender" id="selectGender1" class="form-select">
             <option value="">Gênero</option>
             @foreach ($genders as $gender)
-                <option value="{{ $gender->id }}"
-                    {{ (isset($employee) and !$fromApproved) ? ($employee->gender_id == $gender->id ? 'selected' : '') : (old('gender_id') == $gender->id ? 'selected' : '') }}>
-                    {{ $gender->name }}</option>
+                <option value="{{ $gender }}"
+                    {{ (isset($employee) and !$fromApproved) ? ($employee->gender->value == $gender ? 'selected' : '') : (old('gender') == $gender ? 'selected' : '') }}>
+                    {{ $gender }}</option>
             @endforeach
         </select>
-        @error('gender_id')
+        @error('gender')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>

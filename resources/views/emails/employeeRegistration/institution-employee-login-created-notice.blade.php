@@ -1,5 +1,5 @@
 @php
-$article = $receiverGender->name === 'Masculino' ? 'o' : 'a';
+$article = $receiverGender === 'Masculino' ? 'o' : 'a';
 @endphp
 @component('mail::message')
 Prezad{{ $article }} {{ $receiverName }},

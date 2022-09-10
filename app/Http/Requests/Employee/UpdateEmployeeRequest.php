@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests\Employee;
 
+use App\Enums\Genders;
 use App\Models\Employee;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rules\Enum;
 
 class UpdateEmployeeRequest extends FormRequest
 {
@@ -21,7 +23,7 @@ class UpdateEmployeeRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, string>
+     * @return array<string, string|array<int, mixed>>
      */
     public function rules(): array
     {
@@ -39,7 +41,7 @@ class UpdateEmployeeRequest extends FormRequest
             'name' => 'required|string',
             'cpf' => 'required|unique:employees,cpf,' . $id . ',id|digits:11',
             'job' => 'nullable|string',
-            'gender_id' => 'nullable|exists:genders,id',
+            'gender' => ['nullable', new Enum(Genders::class)],
             'birthday' => 'nullable|date',
             'birth_state_id' => 'nullable|exists:states,id',
             'birth_city' => 'nullable|string',
@@ -80,7 +82,7 @@ class UpdateEmployeeRequest extends FormRequest
             'cpf.unique' => 'O CPF não pode repetir um previamente já cadastrado por outra pessoa',
             'cpf.digits' => 'O CPF deve ser um número de 11 dígitos',
             'job.string' => 'O campo deve ser texto',
-            'gender_id.exists' => 'O campo deve ser preenchido com uma das opções fornecidas',
+            'gender.Illuminate\Validation\Rules\Enum' => 'O campo deve ser preenchido com uma das opções fornecidas',
             'birthday.date' => 'Nascimento deve ser uma data',
             'birth_state_id.exists' => 'O campo deve ser preenchido com uma das opções fornecidas',
             'birth_city.string' => 'O campo deve ser texto',

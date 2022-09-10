@@ -277,7 +277,7 @@ class User extends Authenticatable
     protected function genderArticle(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => $this->employee ? ($this->employee->gender ? ($this->employee->gender->name === 'Masculino' ? 'o' : 'a') : 'o(a)') : 'o(a)',
+            get: fn ($value) => $this->employee ? ($this->employee->gender->value ? ($this->employee->gender->value === 'Masculino' ? 'o' : 'a') : 'o(a)') : 'o(a)',
         );
     }
 }

@@ -1428,7 +1428,7 @@ class EmployeeTest extends TestCase
                 'name' => 'Carl Doe',
                 'cpf' => $cpf,
                 'job' => 'carldoejob',
-                'gender_id' => null,
+                'gender' => null,
                 'birthday' => '',
                 'birth_state_id' => null,
                 'birth_city' => '',

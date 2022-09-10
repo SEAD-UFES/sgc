@@ -60,7 +60,6 @@ class DummyEmployeeSeeder extends Seeder
                 $employee = Employee::factory()
                     ->assumePopulatedDatabase()
                     ->create([
-                        //'gender_id' => Gender::all()->random(),
                         'job' => 'Tutor Presencial',
                     ]);
 

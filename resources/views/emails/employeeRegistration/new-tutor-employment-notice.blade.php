@@ -1,10 +1,10 @@
 @php
-$article = $employeeGender->name === 'Masculino' ? 'o' : 'a';
+$article = $employeeGender === 'Masculino' ? 'o' : 'a';
 @endphp
 @component('mail::message')
 Prezada Equipe da Coordenação de Tutoria,
 
-Sirvo-me do momento para comunicar o cadastramento d{{ $article }} tutor{{ $employeeGender->name === 'Masculino' ? '' : 'a' }} abaixo mencionad{{ $article }} junto ao **Curso de {{ $courseName }}**.
+Sirvo-me do momento para comunicar o cadastramento d{{ $article }} tutor{{ $employeeGender === 'Masculino' ? '' : 'a' }} abaixo mencionad{{ $article }} junto ao **Curso de {{ $courseName }}**.
 
 Nome: {{ $employeeName }}  
 Função: {{ $employeeRoleName }}

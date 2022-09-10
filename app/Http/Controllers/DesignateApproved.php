@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Genders;
 use App\Events\EmployeeDesignated;
 use App\Http\Requests\Approved\DesignateApprovedRequest;
 use App\Models\Approved;
 use App\Models\DocumentType;
 use App\Models\Employee;
-use App\Models\Gender;
 use App\Models\MaritalStatus;
 use App\Models\State;
 use App\Services\ApprovedService;
@@ -35,7 +35,7 @@ class DesignateApproved extends Controller
             return redirect()->route('approveds.index')->withErrors(['employeeAlreadyExists' => 'Já existe Colaborador no sistema com o mesmo email do Aprovado.']);
         }
 
-        $genders = Gender::orderBy('name')->get();
+        $genders = Genders::getValuesInAlphabeticalOrder();
         $birthStates = State::orderBy('name')->get();
         $documentTypes = DocumentType::orderBy('name')->get();
         $maritalStatuses = MaritalStatus::orderBy('name')->get();
