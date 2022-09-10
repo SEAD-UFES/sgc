@@ -486,7 +486,7 @@ class DocumentTest extends TestCase
     {
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
-        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('employeesDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertStatus(401);
     }
 
@@ -504,7 +504,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
-        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('employeesDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertStatus(403);
     }
 
@@ -526,7 +526,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
-        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('employeesDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -549,7 +549,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
-        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('employeesDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -572,7 +572,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
-        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('employeesDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -595,7 +595,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
-        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('employeesDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -618,7 +618,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
-        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('employeesDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertStatus(403);
     }
 
@@ -640,7 +640,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
-        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('employeesDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertStatus(403);
     }
 
@@ -664,7 +664,7 @@ class DocumentTest extends TestCase
     {
         /** @var Document $document */
         $document = $this->getBondDocument();
-        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('bondsDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertStatus(401);
     }
 
@@ -682,7 +682,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getBondDocument();
-        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('bondsDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertStatus(403);
     }
 
@@ -704,7 +704,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getBondDocument();
-        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('bondsDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -727,7 +727,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getBondDocument();
-        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('bondsDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -750,7 +750,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getBondDocument();
-        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('bondsDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -773,7 +773,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getBondDocument();
-        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('bondsDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -796,7 +796,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getBondDocument();
-        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('bondsDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertStatus(403);
     }
 
@@ -818,7 +818,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getBondDocument();
-        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('bondsDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertStatus(403);
     }
 

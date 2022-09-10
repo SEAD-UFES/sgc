@@ -60,7 +60,7 @@
                                             </td>
                                         @break
                                         @case('App\Notifications\RightsDocumentArchived')
-                                            <td><strong>= Novo <a href="{{ route('documents.show', ['id' => $notification->data['document_id'], 'type' => 'BondDocument', 'htmlTitle' => $notification->data['document_name']]) }}"
+                                            <td><strong>= Novo <a href="{{ route('bonds.rights.show', ['id' => $notification->data['document_id'], 'type' => 'BondDocument', 'htmlTitle' => $notification->data['document_name']]) }}"
                                                         target="_blank">Documento de Termos e Licença</a> =</strong><br />
                                                 Colaborador: {{ $notification->data['employee_name'] }}<br />
                                                 Função: {{ $notification->data['role_name'] }} |

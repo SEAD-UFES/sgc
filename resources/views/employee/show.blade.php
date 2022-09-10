@@ -240,7 +240,7 @@
                                                         </td>
                                                         <td>{{ $employeeDocument->document->documentType->name }}</td>
                                                         <td>
-                                                            <a href="{{ route('documents.show', ['id' => $employeeDocument->document->id, 'type' => 'EmployeeDocument', 'htmlTitle' => $employeeDocument->document->original_name]) }}"
+                                                            <a href="{{ route('employeesDocuments.show', ['id' => $employeeDocument->document->id, 'type' => 'EmployeeDocument', 'htmlTitle' => $employeeDocument->document->original_name]) }}"
                                                                 target="_blank">{{ $employeeDocument->document->original_name }}</a>
                                                         </td>
                                                     </tr>

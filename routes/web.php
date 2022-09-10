@@ -8,11 +8,12 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseTypeController;
 use App\Http\Controllers\DesignateApproved;
 use App\Http\Controllers\DestroyUserEmployeeLink;
-use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeDocumentController;
 use App\Http\Controllers\InstitutionalDetailController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BondDocumentBatchController;
+use App\Http\Controllers\EmployeeDocumentBatchController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PoleController;
 use App\Http\Controllers\RequestBondReview;
@@ -21,6 +22,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UpdateCurrentPassword;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ResponsibilityController;
+use App\Http\Controllers\RightsDocumentController;
 use App\Http\Controllers\SendNewEmployeeEmails;
 use App\Http\Controllers\WebController;
 use Illuminate\Support\Facades\Route;
@@ -47,53 +49,55 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 Route::middleware('auth')->group(function () {
     Route::get('/home', [WebController::class, 'home'])->name('home');
 
-    Route::get('employees/documents', [EmployeeDocumentController::class, 'employeesDocumentsIndex'])->name('employeesDocuments.index');
+    Route::get('/employees/documents', [EmployeeDocumentController::class, 'index'])->name('employeesDocuments.index');
     //single employee doc create
-    Route::get('employees/documents/create', [EmployeeDocumentController::class, 'employeesDocumentsCreate'])->name('employeesDocuments.create');
-    Route::post('employees/documents', [EmployeeDocumentController::class, 'employeesDocumentsStore'])->name('employeesDocuments.store');
+    Route::get('/employees/documents/create', [EmployeeDocumentController::class, 'create'])->name('employeesDocuments.create');
+    Route::post('/employees/documents', [EmployeeDocumentController::class, 'store'])->name('employeesDocuments.store');
     //many employee doc create
-    Route::get('employees/documents/create-many/step-1/{id?}', [EmployeeDocumentController::class, 'employeesDocumentsCreateMany'])->name('employeesDocuments.createMany');
-    Route::post('employees/documents/create-many/step-2', [EmployeeDocumentController::class, 'employeesDocumentsStoreMany1'])->name('employeesDocuments.storeMany1');
-    Route::post('employees/documents/create-many/step-3', [EmployeeDocumentController::class, 'employeesDocumentsStoreMany2'])->name('employeesDocuments.storeMany2');
+    Route::get('/employees/documents/create-many/step-1/{id?}', [EmployeeDocumentBatchController::class, 'create'])->name('employeesDocuments.createMany');
+    Route::post('/employees/documents/create-many/step-2', [EmployeeDocumentBatchController::class, 'store'])->name('employeesDocuments.storeMany1');
+    Route::post('/employees/documents/create-many/step-3', [EmployeeDocumentBatchController::class, 'store2'])->name('employeesDocuments.storeMany2');
     //mass download
-    Route::get('employees/{employee}/documents-export/', [EmployeeDocumentController::class, 'employeesDocumentsExport'])->name('employeesDocuments.export');
+    Route::get('/employees/{employee}/documents-export/', [EmployeeDocumentController::class, 'export'])->name('employeesDocuments.export');
     
-    Route::post('employees/{employee}/institutional-details', [InstitutionalDetailController::class, 'store'])->name('employees.institutionalDetails.store');
-    Route::get('employees/{employee}/institutional-details/edit', [InstitutionalDetailController::class, 'edit'])->name('employees.institutionalDetails.edit');
-    Route::patch('employees/{employee}/institutional-details', [InstitutionalDetailController::class, 'update'])->name('employees.institutionalDetails.update');
-    Route::delete('employees/{employee}/institutional-details', [InstitutionalDetailController::class, 'destroy'])->name('employees.institutionalDetails.destroy');
+    Route::post('/employees/{employee}/institutional-details', [InstitutionalDetailController::class, 'store'])->name('employees.institutionalDetails.store');
+    Route::get('/employees/{employee}/institutional-details/edit', [InstitutionalDetailController::class, 'edit'])->name('employees.institutionalDetails.edit');
+    Route::patch('/employees/{employee}/institutional-details', [InstitutionalDetailController::class, 'update'])->name('employees.institutionalDetails.update');
+    Route::delete('/employees/{employee}/institutional-details', [InstitutionalDetailController::class, 'destroy'])->name('employees.institutionalDetails.destroy');
 
     Route::resource('employees', EmployeeController::class);
 
-    Route::get('bonds/documents', [BondDocumentController::class, 'bondsDocumentsIndex'])->name('bondsDocuments.index');
+    Route::get('/bonds/documents', [BondDocumentController::class, 'index'])->name('bondsDocuments.index');
     //single bond doc create
-    Route::get('bonds/documents/create', [BondDocumentController::class, 'bondsDocumentsCreate'])->name('bondsDocuments.create');
-    Route::post('bonds/documents', [BondDocumentController::class, 'bondsDocumentsStore'])->name('bondsDocuments.store');
+    Route::get('/bonds/documents/create', [BondDocumentController::class, 'create'])->name('bondsDocuments.create');
+    Route::post('/bonds/documents', [BondDocumentController::class, 'store'])->name('bondsDocuments.store');
     // many bond doc create
-    Route::get('bonds/documents/create-many/step-1', [BondDocumentController::class, 'bondsDocumentsCreateMany'])->name('bondsDocuments.createMany');
-    Route::post('bonds/documents/create-many/step-2', [BondDocumentController::class, 'bondsDocumentsStoreMany1'])->name('bondsDocuments.storeMany1');
-    Route::post('bonds/documents/create-many/step-3', [BondDocumentController::class, 'bondsDocumentsStoreMany2'])->name('bondsDocuments.storeMany2');
+    Route::get('/bonds/documents/create-many/step-1', [BondDocumentBatchController::class, 'create'])->name('bondsDocuments.createMany');
+    Route::post('/bonds/documents/create-many/step-2', [BondDocumentBatchController::class, 'store'])->name('bondsDocuments.storeMany1');
+    Route::post('/bonds/documents/create-many/step-3', [BondDocumentBatchController::class, 'store2'])->name('bondsDocuments.storeMany2');
 
-    Route::get('bonds/{bond}/institutional-details/send-email', SendNewEmployeeEmails::class)->name('bonds.sendInstitutionalDetailEmail');
+    Route::get('/bonds/{bond}/institutional-details/send-email', SendNewEmployeeEmails::class)->name('bonds.sendInstitutionalDetailEmail');
 
     /* Route::resource('documents', DocumentController::class); */
 
-    Route::get('/documents/{id}/{htmlTitle}', [DocumentController::class, 'showDocument'])->name('documents.show');
-
+    Route::get('/employees/documents/{id}/{htmlTitle}', [EmployeeDocumentController::class, 'show'])->name('employeesDocuments.show');
+    Route::get('/bonds/documents/{id}/{htmlTitle}', [BondDocumentController::class, 'show'])->name('bondsDocuments.show');
+    
+    Route::get('/reports/rights', [RightsDocumentController::class, 'index'])->name('bonds.rights.index');
+    Route::get('/bonds/rights/{id}/{htmlTitle}', [RightsDocumentController::class, 'show'])->name('bonds.rights.show');
     //mass download
-    Route::get('bonds/{bond}/documents-export', [BondDocumentController::class, 'bondsDocumentsExport'])->name('bondsDocuments.export');
+    Route::get('/bonds/{bond}/documents-export', [BondDocumentController::class, 'export'])->name('bondsDocuments.export');
 
-    Route::get('reports/rights', [BondDocumentController::class, 'rightsIndex'])->name('bonds.rights.index');
 
     Route::resource('bonds', BondController::class);
 
-    Route::post('bondreview/{bond}', ReviewBond::class)->name('bonds.review');
-    Route::get('bondreviewrequest/{bond}', RequestBondReview::class)->name('bonds.requestReview');
+    Route::post('/bondreview/{bond}', ReviewBond::class)->name('bonds.review');
+    Route::get('/bondreviewrequest/{bond}', RequestBondReview::class)->name('bonds.requestReview');
 
-    Route::get('users/current-password', [AuthController::class, 'currentPasswordEdit'])->name('users.currentPasswordEdit');
-    Route::patch('users/current-password', UpdateCurrentPassword::class)->name('users.currentPasswordUpdate');
+    Route::get('/users/current-password', [AuthController::class, 'currentPasswordEdit'])->name('users.currentPasswordEdit');
+    Route::patch('/users/current-password', UpdateCurrentPassword::class)->name('users.currentPasswordUpdate');
 
-    Route::delete('users/{user}/destroy-employee-link', DestroyUserEmployeeLink::class)->name('users.destroyEmployeeLink');
+    Route::delete('/users/{user}/destroy-employee-link', DestroyUserEmployeeLink::class)->name('users.destroyEmployeeLink');
 
     Route::resource('users', UserController::class);
 
@@ -122,7 +126,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('responsibilities', ResponsibilityController::class);
     Route::post('/session/switch-responsibility', [AuthController::class, 'switchCurrentResponsibility'])->name('currentResponsibility.change');
 
-    Route::get('system/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('logs')->middleware('can:isAdm-global');
+    Route::get('/system/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('logs')->middleware('can:isAdm-global');
 
-    Route::get('system/info', [WebController::class, 'showSysInfo'])->name('sysinfo');
+    Route::get('/system/info', [WebController::class, 'showSysInfo'])->name('sysinfo');
 });

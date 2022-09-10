@@ -1,36 +1,40 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\BondDocument;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
-class StoreEmployeeDocumentRequest extends FormRequest
+class StoreBondDocumentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return true;
+        return Gate::allows('bondDocument-store');
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'file' => 'required|mimes:pdf,jpeg,png,jpg|max:2048',
             'document_type_id' => 'required|exists:document_types,id',
-            'employee_id' => 'required|exists:employees,id',
+            'bond_id' => 'required|exists:bonds,id',
         ];
     }
 
-    public function messages()
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
     {
         return [
             'file.required' => 'O arquivo é obrigatório',
@@ -38,8 +42,8 @@ class StoreEmployeeDocumentRequest extends FormRequest
             'file.max' => 'O tamanho do arquivo deve ser de no máximo 2 MB',
             'document_type_id.required' => 'O Tipo é obrigatório',
             'document_type_id.exists' => 'O Tipo deve estar entre os fornecidos',
-            'employee_id.required' => 'O Colaborador é obrigatório',
-            'employee_id.exists' => 'O Colaborador deve estar entre os fornecidos',
+            'bond_id.required' => 'O Vínculo é obrigatório',
+            'bond_id.exists' => 'O Vínculo deve estar entre os fornecidos',
         ];
     }
 }

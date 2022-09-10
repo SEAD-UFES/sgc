@@ -3,44 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ModelFilterHelper;
-use App\Http\Requests\StoreEmployeeDocumentRequest;
-use App\Http\Requests\StoreEmployeeMultipleDocumentsRequest;
-use App\Models\DocumentType;
-use App\Models\Employee;
-use App\Services\DocumentService;
-use App\Services\DocumentServiceInterface;
+use App\Http\Requests\EmployeeDocument\CreateEmployeeDocumentRequest;
+use App\Http\Requests\EmployeeDocument\IndexEmployeeDocumentRequest;
+use App\Http\Requests\EmployeeDocument\ShowEmployeeDocumentRequest;
+use App\Http\Requests\EmployeeDocument\StoreEmployeeDocumentRequest;
+use App\Models\EmployeeDocument;
 use App\Services\EmployeeDocumentService;
-use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Gate;
-use InvalidArgumentException;
+use Illuminate\Support\Facades\Response as FacadesResponse;
+use Illuminate\View\View;
 
-/**
- * @property DocumentService $service
- */
 class EmployeeDocumentController extends Controller
 {
-    protected DocumentServiceInterface $service;
-
-    /**
-     */
-    public function __construct()
+    public function __construct(private EmployeeDocumentService $service)
     {
-        $this->service = new EmployeeDocumentService();
     }
 
     /**
-     * @return \Illuminate\Http\Response
+     * @param IndexEmployeeDocumentRequest $request
+     *
+     * @return View
      */
-    public function employeesDocumentsIndex(Request $request)
+    public function index(IndexEmployeeDocumentRequest $request): View
     {
-        //check access permission
-        if (! Gate::allows('employeeDocument-list')) {
-            abort(403);
-        }
-
-        $filters = ModelFilterHelper::buildFilters($request, $this->service->getDocumentClass()::$accepted_filters);
+        $filters = ModelFilterHelper::buildFilters($request, EmployeeDocument::$accepted_filters);
         $documents = $this->service->list(sort: $request->query('sort'), direction: $request->query('direction'));
 
         return view('employee.document.index', compact('documents', 'filters'));
@@ -49,106 +36,56 @@ class EmployeeDocumentController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param CreateEmployeeDocumentRequest $request
+     *
+     * @return View
      */
-    public function employeesDocumentsCreate(Request $request)
+    public function create(CreateEmployeeDocumentRequest $request): View
     {
-        //check access permission
-        if (! Gate::allows('employeeDocument-store')) {
-            abort(403);
-        }
-
-        $documentTypes = DocumentType::orderBy('name')->get();
-        $employees = Employee::all();
-
-        return view('employee.document.create', compact('documentTypes', 'employees'));
+        return view('employee.document.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param StoreEmployeeDocumentRequest $request
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function employeesDocumentsStore(StoreEmployeeDocumentRequest $request)
+    public function store(StoreEmployeeDocumentRequest $request): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('employeeDocument-store')) {
-            abort(403);
-        }
-
         $this->service->create($request->validated());
 
         return redirect()->route('employeesDocuments.index')->with('success', 'Arquivo importado com sucesso.');
     }
 
     /**
-     * @param Request $request
+     * Display the specified resource.
+     *
+     * @param ShowEmployeeDocumentRequest $request
+     * @param  int $id
      *
      * @return Response
-     *
-     * @throws BindingResolutionException
-     * @throws InvalidArgumentException
      */
-    public function employeesDocumentsCreateMany(Request $request)
+    public function show(ShowEmployeeDocumentRequest $request, int $id): Response
     {
-        //check access permission
-        if (! Gate::allows('employeeDocument-store')) {
-            abort(403);
-        }
+        $file = $this->service->getDocument($id);
 
-        $id = $request->id ?? null;
-        $employees = is_null($id)
-            ? Employee::orderBy('name')->get()
-            : Employee::where('id', $id)->get();
+        /**
+         * @var string $data
+         */
+        $data = $file->get('data');
 
-        return view('employee.document.create-many-1', compact('employees', 'id'));
-    }
+        /**
+         * @var string $fileName
+         */
+        $fileName = $file->get('name');
 
-    public function employeesDocumentsStoreMany1(StoreEmployeeMultipleDocumentsRequest $request)
-    {
-        //check access permission
-        if (! Gate::allows('employeeDocument-store')) {
-            abort(403);
-        }
+        /**
+         * @var string $mime
+         */
+        $mime = $file->get('mime');
 
-        $documentTypes = DocumentType::orderBy('name')->get();
-
-        try {
-            $employeeDocuments = $this->service->createManyDocumentsStep1($request->validated());
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors('Erro ao tentar obter arquivos: ' . $e->getMessage());
-        }
-
-        return view('employee.document.create-many-2', compact('employeeDocuments', 'documentTypes'));
-    }
-
-    public function employeesDocumentsStoreMany2(Request $request)
-    {
-        //check access permission
-        if (! Gate::allows('employeeDocument-store')) {
-            abort(403);
-        }
-
-        $this->service->createManyDocumentsStep2($request->all());
-
-        return redirect()->route('employeesDocuments.index')->with('success', 'Arquivos importados com sucesso.');
-    }
-
-    public function employeesDocumentsExport(Employee $employee, Request $request)
-    {
-        //check access permission
-        if (! Gate::allows('employeeDocument-download')) {
-            abort(403);
-        }
-
-        try {
-            $zipFileName = $this->service->exportEmployeeDocuments($employee);
-        } catch (\Exception $e) {
-            return redirect()->route('employees.show', $employee)->withErrors('Erro ao gerar o arquivo compactado: ' . $e->getMessage());
-        }
-
-        return response()->download($zipFileName)->deleteFileAfterSend(true);
+        return FacadesResponse::make($data, 200, ['filename=' => $fileName])->header('Content-Type', $mime);
     }
 }

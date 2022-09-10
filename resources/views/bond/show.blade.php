@@ -44,7 +44,7 @@
                                                         </td>
                                                         <td>{{ $document->documentType->name }}</td>
                                                         <td>
-                                                            <a href="{{ route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]) }}"
+                                                            <a href="{{ route('bondsDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]) }}"
                                                                 target="_blank">{{ $document->original_name }}</a>
                                                         </td>
                                                     </tr>

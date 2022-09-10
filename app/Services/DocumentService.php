@@ -98,7 +98,6 @@ class DocumentService implements DocumentServiceInterface
         $attributes['documentable_type'] = $this->documentClass;
 
         DB::transaction(function () use ($attributes) {
-
             // Get old versions of this document type
             $oldDocuments = $this->getOldDocuments($attributes);
 

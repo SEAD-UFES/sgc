@@ -1,27 +1,28 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\EmployeeDocument\batch;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
-class StoreEmployeeMultipleDocumentsRequest extends FormRequest
+class StoreEmployeeDocumentBatchRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return true;
+        return Gate::allows('employeeDocument-store');
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'files' => 'required',
@@ -30,7 +31,10 @@ class StoreEmployeeMultipleDocumentsRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
     {
         return [
             'files.required' => 'O arquivo é obrigatório',

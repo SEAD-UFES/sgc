@@ -3,68 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ModelFilterHelper;
-use App\Http\Requests\StoreBondDocumentRequest;
-use App\Http\Requests\StoreBondMultipleDocumentsRequest;
-use App\Models\Bond;
+use App\Http\Requests\BondDocument\CreateBondDocumentRequest;
+use App\Http\Requests\BondDocument\IndexBondDocumentRequest;
+use App\Http\Requests\BondDocument\ShowBondDocumentRequest;
+use App\Http\Requests\BondDocument\StoreBondDocumentRequest;
 use App\Models\BondDocument;
-use App\Models\DocumentType;
 use App\Services\BondDocumentService;
-use App\Services\DocumentServiceInterface;
-use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Gate;
-use InvalidArgumentException;
+use Illuminate\Support\Facades\Response as FacadesResponse;
+use Illuminate\View\View;
 
 class BondDocumentController extends Controller
 {
-    protected DocumentServiceInterface $service;
-
-    /**
-     */
-    public function __construct()
+    public function __construct(private BondDocumentService $service)
     {
-        $this->service = new BondDocumentService();
     }
 
     /**
-     * @return \Illuminate\Http\Response
-     */
-    public function bondsDocumentsIndex(Request $request)
-    {
-        //check access permission
-        if (! Gate::allows('bondDocument-list')) {
-            abort(403);
-        }
-
-        /**
-         * @var string $sort
-         */
-        $sort = $request->query('sort') ?? '';
-
-        /**
-         * @var string $direction
-         */
-        $direction = $request->query('direction') ?? '';
-
-        $filters = ModelFilterHelper::buildFilters($request, $this->service->getDocumentClass()::$accepted_filters);
-        $documents = $this->service->list(sort: $sort, direction: $direction);
-
-        return view('bond.document.index', compact('documents', 'filters'));
-    }
-
-    /**
-     * Display a listing of the resource.
+     * @param IndexBondDocumentRequest $request
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function rightsIndex(Request $request)
+    public function index(IndexBondDocumentRequest $request): View
     {
-        //check access permission
-        if (! Gate::allows('bondDocument-rights')) {
-            abort(403);
-        }
-
         /**
          * @var string $sort
          */
@@ -76,117 +38,64 @@ class BondDocumentController extends Controller
         $direction = $request->query('direction') ?? '';
 
         $filters = ModelFilterHelper::buildFilters($request, BondDocument::$accepted_filters);
-        $documents = $this->service->listRights(sort: $sort, direction: $direction);
+        $documents = $this->service->list(sort: $sort, direction: $direction);
 
-        return view('reports.rightsIndex', compact('documents', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('bond.document.index', compact('documents', 'filters'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param CreateBondDocumentRequest $request
+     *
+     * @return View
      */
-    public function bondsDocumentsCreate(Request $request)
+    public function create(CreateBondDocumentRequest $request): View
     {
-        //check access permission
-        if (! Gate::allows('bondDocument-store')) {
-            abort(403);
-        }
-
-        $documentTypes = DocumentType::orderBy('name')->get();
-        $bonds = Bond::all();
-
-        return view('bond.document.create', compact('documentTypes', 'bonds'));
+        return view('bond.document.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param StoreBondDocumentRequest $request
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function bondsDocumentsStore(StoreBondDocumentRequest $request)
+    public function store(StoreBondDocumentRequest $request): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('bondDocument-store')) {
-            abort(403);
-        }
-
         $this->service->create($request->validated());
 
         return redirect()->route('bondsDocuments.index')->with('success', 'Arquivo importado com sucesso.');
     }
 
     /**
-     * @param Request $request
+     * Display the specified resource.
+     *
+     * @param ShowBondDocumentRequest $request
+     * @param  int $id
      *
      * @return Response
-     *
-     * @throws BindingResolutionException
-     * @throws InvalidArgumentException
      */
-    public function bondsDocumentsCreateMany(Request $request)
+    public function show(ShowBondDocumentRequest $request, int $id): Response
     {
-        //check access permission
-        if (! Gate::allows('bondDocument-store')) {
-            abort(403);
-        }
+        $file = $this->service->getDocument($id);
 
-        $id = $request->bond_id ?? null;
-        $bonds = is_null($id)
-            ? Bond::with(['employee' => static function ($q) {
-                return $q->orderBy('name');
-            },
-            ])->get()
-            : Bond::where('id', $id)->get();
+        /**
+         * @var string $data
+         */
+        $data = $file->get('data');
 
-        return view('bond.document.create-many-1', compact('bonds', 'id'));
-    }
+        /**
+         * @var string $fileName
+         */
+        $fileName = $file->get('name');
 
-    public function bondsDocumentsStoreMany1(StoreBondMultipleDocumentsRequest $request)
-    {
-        //check access permission
-        if (! Gate::allows('bondDocument-store')) {
-            abort(403);
-        }
+        /**
+         * @var string $mime
+         */
+        $mime = $file->get('mime');
 
-        $documentTypes = DocumentType::orderBy('name')->get();
-
-        try {
-            $bondDocuments = $this->service->createManyDocumentsStep1($request->validated());
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors('Erro ao tentar obter arquivos: ' . $e->getMessage());
-        }
-
-        return view('bond.document.create-many-2', compact('bondDocuments', 'documentTypes'));
-    }
-
-    public function bondsDocumentsStoreMany2(Request $request)
-    {
-        //check access permission
-        if (! Gate::allows('bondDocument-store')) {
-            abort(403);
-        }
-
-        $this->service->createManyDocumentsStep2($request->all());
-
-        return redirect()->route('bondsDocuments.index')->with('success', 'Arquivos importados com sucesso.');
-    }
-
-    public function bondsDocumentsExport(Bond $bond, Request $request)
-    {
-        //check access permission
-        if (! Gate::allows('bondDocument-download')) {
-            abort(403);
-        }
-
-        try {
-            $zipFileName = $this->service->exportBondDocuments($bond);
-        } catch (\Exception $e) {
-            return redirect()->route('bonds.show', $bond)->withErrors('Erro ao gerar o arquivo compactado: ' . $e->getMessage());
-        }
-
-        return response()->download($zipFileName)->deleteFileAfterSend(true);
+        return FacadesResponse::make($data, 200, ['filename=' => $fileName])->header('Content-Type', $mime);
     }
 }
