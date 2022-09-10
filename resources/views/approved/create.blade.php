@@ -24,7 +24,6 @@
                     @include('_components.alerts')
                     <form action={{ route('approveds.store') }} name="formCreate" method="POST">
                         @component('approved.componentApprovedForm', compact('courses', 'roles', 'poles'))@endcomponent
-                        <input type="hidden" name="importDocuments" id="importDocuments" value="false" />
                         <br />
                         <button type="submit" class="btn btn-primary">Cadastrar</button>
                         <a href="{{ route('approveds.index') }}" class="btn btn-secondary">Cancelar</a>
