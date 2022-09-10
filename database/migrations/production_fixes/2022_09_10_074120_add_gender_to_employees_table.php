@@ -14,8 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('employees', function (Blueprint $table) {
-            $table->string('gender')->nullable();
+            $table->string('gender', 10)->nullable()->after('job');
             $table->dropForeign(['gender_id']);
+            $table->dropColumn(['gender_id']);
         });
     }
 

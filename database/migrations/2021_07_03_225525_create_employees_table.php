@@ -18,7 +18,7 @@ class CreateEmployeesTable extends Migration
             $table->string('cpf', 11)->unique();
             $table->string('name', 50);
             $table->string('job', 50)->nullable();                                                 //Relaxed (nullable)
-            $table->string('gender')->nullable();
+            $table->string('gender', 10)->nullable();
             $table->date('birthday')->nullable();                                                  //Relaxed (nullable)
             $table->foreignId('birth_state_id')->nullable()->constrained('states');                //Relaxed (nullable)
             $table->string('birth_city', 50)->nullable();                                          //Relaxed (nullable)
