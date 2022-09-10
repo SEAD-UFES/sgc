@@ -58,10 +58,10 @@ class ResponsibilityController extends Controller
         try {
             $this->service->create($request->validated());
         } catch (\Exception $e) {
-            return redirect()->route('responsibility.index')->withErrors(['noStore' => 'Não foi possível salvar a Atribuição de Papel: ' . $e->getMessage()]);
+            return redirect()->route('responsibilities.index')->withErrors(['noStore' => 'Não foi possível salvar a Atribuição de Papel: ' . $e->getMessage()]);
         }
 
-        return redirect()->route('responsibility.index')->with('success', 'Atribuição de Papel criada com sucesso.');
+        return redirect()->route('responsibilities.index')->with('success', 'Atribuição de Papel criada com sucesso.');
     }
 
     /**
@@ -108,7 +108,7 @@ class ResponsibilityController extends Controller
             return back()->withErrors(['noStore' => 'Não foi possível salvar a Atribuição de Papel: ' . $e->getMessage()]);
         }
 
-        return redirect()->route('responsibility.index')->with('success', 'Atribuição de Papel atualizada com sucesso.');
+        return redirect()->route('responsibilities.index')->with('success', 'Atribuição de Papel atualizada com sucesso.');
     }
 
     /**
@@ -127,6 +127,6 @@ class ResponsibilityController extends Controller
             return back()->withErrors(['noDestroy' => 'Não foi possível excluir a atribuição de papel: ' . $e->getMessage()]);
         }
 
-        return redirect()->route('responsibility.index')->with('success', 'Atribuição de papel excluído com sucesso.');
+        return redirect()->route('responsibilities.index')->with('success', 'Atribuição de papel excluído com sucesso.');
     }
 }
