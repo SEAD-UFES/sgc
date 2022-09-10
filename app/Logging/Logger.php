@@ -4,8 +4,8 @@ namespace App\Logging;
 
 use App\Helpers\NetworkHelper;
 use App\Models\Document;
-use App\Models\User;
 use App\Models\Responsibility;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;

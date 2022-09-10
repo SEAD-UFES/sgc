@@ -170,7 +170,7 @@ class BondService
 
         $bondHaveRights = $bond->hasRightsDocuments();
 
-        if (!$bondHaveRights) {
+        if (! $bondHaveRights) {
             $impediment = true;
             $impediment_description = "{$impediment_description}\n[SGC: O Sistema não encontrou documento de Termos e Licença.]";
         }

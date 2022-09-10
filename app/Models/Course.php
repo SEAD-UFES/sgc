@@ -63,6 +63,7 @@ class Course extends Model
 
     /**
      * @var array<int, string>
+     *
      * @phpstan-ignore-next-line
      */
     private static $whiteListFilter = ['*'];

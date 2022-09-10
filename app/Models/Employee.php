@@ -82,16 +82,17 @@ class Employee extends Model
         'email',
     ];
 
-    /**
-     * @var array<int, string>
-     * @phpstan-ignore-next-line
-     */
-    private static $whiteListFilter = ['*'];
-
     protected $casts = [
         'gender' => Genders::class,
         'marital_status' => MaritalStatuses::class,
     ];
+
+    /**
+     * @var array<int, string>
+     *
+     * @phpstan-ignore-next-line
+     */
+    private static $whiteListFilter = ['*'];
 
     /**
      * @return BelongsTo<State, Employee>
