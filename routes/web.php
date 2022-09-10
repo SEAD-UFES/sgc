@@ -21,6 +21,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UpdateCurrentPassword;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ResponsibilityController;
+use App\Http\Controllers\SendNewEmployeeEmails;
 use App\Http\Controllers\WebController;
 use Illuminate\Support\Facades\Route;
 
@@ -73,7 +74,7 @@ Route::middleware('auth')->group(function () {
     Route::post('bonds/documents/create-many/step-2', [BondDocumentController::class, 'bondsDocumentsStoreMany1'])->name('bondsDocuments.storeMany1');
     Route::post('bonds/documents/create-many/step-3', [BondDocumentController::class, 'bondsDocumentsStoreMany2'])->name('bondsDocuments.storeMany2');
 
-    Route::get('bonds/{bond}/institutional-details/send-email', [InstitutionalDetailController::class, 'sendNewEmployeeEmails'])->name('bonds.sendInstitutionalDetailEmail');
+    Route::get('bonds/{bond}/institutional-details/send-email', SendNewEmployeeEmails::class)->name('bonds.sendInstitutionalDetailEmail');
 
     /* Route::resource('documents', DocumentController::class); */
 

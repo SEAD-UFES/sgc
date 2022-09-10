@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\InstitutionalDetail;
 
-use App\Models\Employee;
-use App\Models\InstitutionalDetail;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
-class UpdateInstitutionalDetailRequest extends FormRequest
+class StoreInstitutionalDetailRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,7 +14,7 @@ class UpdateInstitutionalDetailRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Gate::allows('employee-store');
     }
 
     /**
@@ -25,24 +24,9 @@ class UpdateInstitutionalDetailRequest extends FormRequest
      */
     public function rules(): array
     {
-        /**
-         * @var Employee $employee
-         */
-        $employee = $this->route('employee');
-
-        /**
-         * @var InstitutionalDetail $institutionalDetail
-         */
-        $institutionalDetail = $employee->institutionalDetail;
-
-        /**
-         * @var int $detailId
-         */
-        $detailId = $institutionalDetail->id;
-
         return [
-            'login' => 'nullable|string|unique:institutional_details,login,' . $detailId . ',id',
-            'email' => 'nullable|email|unique:institutional_details,email,' . $detailId . ',id',
+            'login' => 'nullable|string|unique:institutional_details,login',
+            'email' => 'nullable|email|unique:institutional_details,email',
         ];
     }
 

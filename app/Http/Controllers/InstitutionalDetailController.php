@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\InstitutionalLoginConfirmed;
-use App\Http\Requests\StoreInstitutionalDetailRequest;
-use App\Http\Requests\UpdateInstitutionalDetailRequest;
-use App\Models\Bond;
+use App\Http\Requests\InstitutionalDetail\CreateInstitutionalDetailRequest;
+use App\Http\Requests\InstitutionalDetail\EditInstitutionalDetailRequest;
+use App\Http\Requests\InstitutionalDetail\StoreInstitutionalDetailRequest;
+use App\Http\Requests\InstitutionalDetail\UpdateInstitutionalDetailRequest;
 use App\Models\Employee;
 use App\Models\InstitutionalDetail;
 use App\Services\InstitutionalDetailService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class InstitutionalDetailController extends Controller
@@ -32,15 +30,12 @@ class InstitutionalDetailController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param CreateInstitutionalDetailRequest $request
+     *
      * @return View
      */
-    public function create(Request $request): View
+    public function create(CreateInstitutionalDetailRequest $request): View
     {
-        //check access permission
-        if (! Gate::allows('employee-store')) {
-            abort(403);
-        }
-
         return view('institutionalDetail.create');
     }
 
@@ -48,16 +43,12 @@ class InstitutionalDetailController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  StoreInstitutionalDetailRequest  $request
+     * @param Employee  $employee
      *
      * @return RedirectResponse
      */
     public function store(StoreInstitutionalDetailRequest $request, Employee $employee): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('employee-store')) {
-            abort(403);
-        }
-
         try {
             $this->service->create($request->validated(), $employee);
         } catch (\Exception $e) {
@@ -70,17 +61,13 @@ class InstitutionalDetailController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
+     * @param EditInstitutionalDetailRequest $request
      * @param  Employee $employee
      *
      * @return View
      */
-    public function edit(Request $request, Employee $employee): View
+    public function edit(EditInstitutionalDetailRequest $request, Employee $employee): View
     {
-        //check access permission
-        if (! Gate::allows('employee-update')) {
-            abort(403);
-        }
-
         $institutionalDetail = $employee->institutionalDetail;
 
         return view('institutionalDetail.edit', compact('institutionalDetail', 'employee'));
@@ -96,11 +83,6 @@ class InstitutionalDetailController extends Controller
      */
     public function update(UpdateInstitutionalDetailRequest $request, Employee $employee): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('employee-update')) {
-            abort(403);
-        }
-
         /**
          * @var InstitutionalDetail $institutionalDetail
          */
@@ -124,18 +106,5 @@ class InstitutionalDetailController extends Controller
      */
     public function destroy(InstitutionalDetail $institutionalDetail): void
     {
-    }
-
-    /**
-     * @param Request $request
-     * @param Bond $bond
-     *
-     * @return RedirectResponse
-     */
-    public function sendNewEmployeeEmails(Bond $bond, Request $request): RedirectResponse
-    {
-        InstitutionalLoginConfirmed::dispatch($bond);
-
-        return redirect()->route('bonds.show', $bond->id)->with('success', 'E-mails enviados para a fila de envio.');
     }
 }
