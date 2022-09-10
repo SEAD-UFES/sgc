@@ -57,6 +57,7 @@ class StoreBondRequest extends FormRequest
             'pole_id.exists' => 'O polo deve ser preenchido com uma das opções fornecidas',
             'begin.date' => 'Início deve ser uma data',
             'end.date' => 'Início deve ser uma data',
+            'knowledge_area.Illuminate\Validation\Rules\Enum' => 'O campo deve ser preenchido com uma das opções fornecidas',
         ];
     }
 }
