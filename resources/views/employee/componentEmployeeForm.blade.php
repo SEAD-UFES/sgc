@@ -129,7 +129,7 @@
             <option value="">Estado Civil</option>
             @foreach ($maritalStatuses as $maritalStatus)
                 <option value="{{ $maritalStatus }}"
-                    {{ (isset($employee) and !$fromApproved) ? ($employee->marital_status->value == $maritalStatus ? 'selected' : '') : (old('marital_status') == $maritalStatus ? 'selected' : '') }}>
+                    {{ (isset($employee) and !$fromApproved) ? ($employee->marital_status?->value == $maritalStatus ? 'selected' : '') : (old('marital_status') == $maritalStatus ? 'selected' : '') }}>
                     {{ $maritalStatus }}
                 </option>
             @endforeach
