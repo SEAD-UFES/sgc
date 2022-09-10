@@ -79,6 +79,7 @@ class Bond extends Pivot
 
     /**
      * @var array<int, string>
+     * @phpstan-ignore-next-line
      */
     private static $whiteListFilter = ['*'];
 

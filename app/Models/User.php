@@ -82,6 +82,7 @@ class User extends Authenticatable
 
     /**
      * @var array<int, string>
+     * @phpstan-ignore-next-line
      */
     private static $whiteListFilter = ['*'];
 
