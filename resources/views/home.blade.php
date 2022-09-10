@@ -39,7 +39,7 @@
                             @endif
                             @foreach (auth()->user()->unreadNotifications as $notification)
                                 <tr>
-                                    <td class="align-middle">{{ \Carbon\Carbon::parse($notification->created_at)->isoFormat('DD/MM/Y hh:mm') }}
+                                    <td class="align-middle">{{ \Carbon\Carbon::parse($notification->created_at)->isoFormat('DD/MM/Y HH:mm') }}
                                     </td>
                                     @switch($notification->type)
                                         @case('App\Notifications\BondCreated')

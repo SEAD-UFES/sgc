@@ -22,7 +22,7 @@
             </div>
             <div class="mb-2 row">
                 <div class="col-sm-4 col-lg-3"><strong>Criado em:</strong></div>
-                <div class="col-sm-8 col-lg-9">{{ ($bond->created_at != null) ? \Carbon\Carbon::parse($bond->created_at)->isoFormat('DD/MM/Y hh:mm') : '-' }}</div>
+                <div class="col-sm-8 col-lg-9">{{ ($bond->created_at != null) ? \Carbon\Carbon::parse($bond->created_at)->isoFormat('DD/MM/Y HH:mm') : '-' }}</div>
             </div>
             <div class="mb-2 row">
                 <div class="col-sm-4 col-lg-3"><strong>Início:</strong></div>
@@ -38,7 +38,7 @@
             </div>
             <div class="mb-2 row">
                 <div class="col-sm-4 col-lg-3"><strong>Encerrado em:</strong></div>
-                <div class="col-sm-8 col-lg-9">{{ ($bond->terminated_at != null) ? \Carbon\Carbon::parse($bond->terminated_at)->isoFormat('DD/MM/Y hh:mm') : '-' }}</div>
+                <div class="col-sm-8 col-lg-9">{{ ($bond->terminated_at != null) ? \Carbon\Carbon::parse($bond->terminated_at)->isoFormat('DD/MM/Y HH:mm') : '-' }}</div>
             </div>
 
             <div class="">

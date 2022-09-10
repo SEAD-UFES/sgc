@@ -234,7 +234,7 @@
                                                     <tr>
                                                         <td>
                                                             {{$employeeDocument->document->updated_at 
-                                                                ? \Carbon\Carbon::parse($employeeDocument->document->updated_at)->isoFormat('DD/MM/Y hh:mm') 
+                                                                ? \Carbon\Carbon::parse($employeeDocument->document->updated_at)->isoFormat('DD/MM/Y HH:mm') 
                                                                 : '-'
                                                             }}
                                                         </td>

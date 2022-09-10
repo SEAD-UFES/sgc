@@ -40,7 +40,7 @@
                                                 @foreach ($documents as $document)
                                                     <tr>
                                                         <td>
-                                                            {{ $document->updated_at ? \Carbon\Carbon::parse($document->updated_at)->isoFormat('DD/MM/Y hh:mm') : '-' }}
+                                                            {{ $document->updated_at ? \Carbon\Carbon::parse($document->updated_at)->isoFormat('DD/MM/Y HH:mm') : '-' }}
                                                         </td>
                                                         <td>{{ $document->documentType->name }}</td>
                                                         <td>
@@ -82,7 +82,7 @@
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Última revisão:</strong></div>
                                     <div class="col-sm-8 col-lg-9">
-                                        {{ $bond->uaba_checked_at != null ? \Carbon\Carbon::parse($bond->uaba_checked_at)->isoFormat('DD/MM/Y hh:mm') : '-' }}
+                                        {{ $bond->uaba_checked_at != null ? \Carbon\Carbon::parse($bond->uaba_checked_at)->isoFormat('DD/MM/YYYY HH:mm:ss') : '-' }}
                                     </div>
                                 </div>
 
