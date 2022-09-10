@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ModelFilterHelper;
 use App\Http\Requests\Bond\CreateBondRequest;
 use App\Http\Requests\Bond\DestroyBondRequest;
 use App\Http\Requests\Bond\EditBondRequest;
@@ -33,12 +32,9 @@ class BondController extends Controller
      */
     public function index(IndexBondRequest $request): View
     {
-        //filters
-        $filters = ModelFilterHelper::buildFilters($request, Bond::$accepted_filters);
-
         $bonds = $this->service->list();
 
-        return view('bond.index', compact('bonds', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('bond.index', compact('bonds'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**

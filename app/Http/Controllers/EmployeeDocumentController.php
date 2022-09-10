@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ModelFilterHelper;
 use App\Http\Requests\EmployeeDocument\CreateEmployeeDocumentRequest;
 use App\Http\Requests\EmployeeDocument\IndexEmployeeDocumentRequest;
 use App\Http\Requests\EmployeeDocument\ShowEmployeeDocumentRequest;
 use App\Http\Requests\EmployeeDocument\StoreEmployeeDocumentRequest;
-use App\Models\EmployeeDocument;
 use App\Services\EmployeeDocumentService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
@@ -27,10 +25,9 @@ class EmployeeDocumentController extends Controller
      */
     public function index(IndexEmployeeDocumentRequest $request): View
     {
-        $filters = ModelFilterHelper::buildFilters($request, EmployeeDocument::$accepted_filters);
         $documents = $this->service->list(sort: $request->query('sort'), direction: $request->query('direction'));
 
-        return view('employee.document.index', compact('documents', 'filters'));
+        return view('employee.document.index', compact('documents'));
     }
 
     /**

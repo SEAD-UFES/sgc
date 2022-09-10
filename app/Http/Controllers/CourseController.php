@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ModelFilterHelper;
 use App\Http\Requests\Course\CreateCourseRequest;
 use App\Http\Requests\Course\DestroyCourseRequest;
 use App\Http\Requests\Course\EditCourseRequest;
 use App\Http\Requests\Course\IndexCourseRequest;
-use App\Http\Requests\Course\ShowCourseRequest;
 use App\Http\Requests\Course\StoreCourseRequest;
 use App\Http\Requests\Course\UpdateCourseRequest;
 use App\Models\Course;
@@ -30,12 +28,9 @@ class CourseController extends Controller
      */
     public function index(IndexCourseRequest $request): View
     {
-        //filters
-        $filters = ModelFilterHelper::buildFilters($request, Course::$accepted_filters);
-
         $courses = $this->service->list();
 
-        return view('course.index', compact('courses', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('course.index', compact('courses'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -63,22 +58,6 @@ class CourseController extends Controller
 
         return redirect()->route('courses.index')->with('success', 'Curso criado com sucesso.');
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Course $course
-     *
-     * @param ShowCourseRequest $request
-     *
-     * @return View
-     */
-    /* public function show(ShowCourseRequest $request, Course $course): View
-    {
-        $this->service->read($course);
-
-        return view('course.show', compact('course'));
-    } */
 
     /**
      * Show the form for editing the specified resource.

@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ModelFilterHelper;
 use App\Http\Requests\BondDocument\CreateBondDocumentRequest;
 use App\Http\Requests\BondDocument\IndexBondDocumentRequest;
 use App\Http\Requests\BondDocument\ShowBondDocumentRequest;
 use App\Http\Requests\BondDocument\StoreBondDocumentRequest;
-use App\Models\BondDocument;
 use App\Services\BondDocumentService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
@@ -37,10 +35,9 @@ class BondDocumentController extends Controller
          */
         $direction = $request->query('direction') ?? '';
 
-        $filters = ModelFilterHelper::buildFilters($request, BondDocument::$accepted_filters);
         $documents = $this->service->list(sort: $sort, direction: $direction);
 
-        return view('bond.document.index', compact('documents', 'filters'));
+        return view('bond.document.index', compact('documents'));
     }
 
     /**

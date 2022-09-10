@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ModelFilterHelper;
 use App\Http\Requests\Pole\CreatePoleRequest;
 use App\Http\Requests\Pole\DestroyPoleRequest;
 use App\Http\Requests\Pole\EditPoleRequest;
@@ -30,12 +29,9 @@ class PoleController extends Controller
      */
     public function index(IndexPoleRequest $request): View
     {
-        //filters
-        $filters = ModelFilterHelper::buildFilters($request, Pole::$accepted_filters);
-
         $poles = $this->service->list();
 
-        return view('pole.index', compact('poles', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('pole.index', compact('poles'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**

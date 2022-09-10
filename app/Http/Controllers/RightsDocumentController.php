@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ModelFilterHelper;
 use App\Http\Requests\RightsDocument\IndexRightsDocumentRequest;
 use App\Http\Requests\RightsDocument\ShowRightsDocumentRequest;
-use App\Models\BondDocument;
 use App\Services\BondDocumentService;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Response as FacadesResponse;
@@ -34,10 +32,9 @@ class RightsDocumentController extends Controller
          */
         $direction = $request->query('direction') ?? '';
 
-        $filters = ModelFilterHelper::buildFilters($request, BondDocument::$accepted_filters);
         $documents = $this->service->listRights(sort: $sort, direction: $direction);
 
-        return view('reports.rightsIndex', compact('documents', 'filters'));
+        return view('reports.rightsIndex', compact('documents'));
     }
 
     /**

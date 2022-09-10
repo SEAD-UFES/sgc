@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ModelFilterHelper;
 use App\Http\Requests\Approved\CreateApprovedRequest;
 use App\Http\Requests\Approved\DestroyApprovedRequest;
 use App\Http\Requests\Approved\IndexApprovedRequest;
 use App\Http\Requests\Approved\StoreApprovedRequest;
 use App\Http\Requests\Approved\UpdateApprovedStateRequest;
 use App\Models\Approved;
-use App\Models\ApprovedState;
 use App\Services\ApprovedService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -29,15 +27,9 @@ class ApprovedController extends Controller
      */
     public function index(IndexApprovedRequest $request): View
     {
-        //filters
-        $filters = ModelFilterHelper::buildFilters($request, Approved::$accepted_filters);
-
-        //get approved states
-        $approvedStates = ApprovedState::all();
-
         $approveds = $this->service->list();
 
-        return view('approved.index', compact('approveds', 'approvedStates', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('approved.index', compact('approveds'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -69,28 +61,6 @@ class ApprovedController extends Controller
 
         return redirect()->route('approveds.index')->with('success', 'Aprovado criado com sucesso.');
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  Approved  $approved
-     *
-     * @return Response
-     */
-    /* public function show(Approved $approved)
-    {
-    } */
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  Approved  $approved
-     *
-     * @return Response
-     */
-    /* public function edit(Approved $approved)
-    {
-    } */
 
     /**
      * Update the specified resource in storage.

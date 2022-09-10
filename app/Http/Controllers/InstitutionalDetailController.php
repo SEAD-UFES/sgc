@@ -19,15 +19,6 @@ class InstitutionalDetailController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return void
-     */
-    public function index(): void
-    {
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @param CreateInstitutionalDetailRequest $request
@@ -95,16 +86,5 @@ class InstitutionalDetailController extends Controller
         }
 
         return redirect()->route('employees.show', $employee->id)->with('success', 'Detalhes Institucionais atualizados com sucesso.');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  InstitutionalDetail  $institutionalDetail
-     *
-     * @return void
-     */
-    public function destroy(InstitutionalDetail $institutionalDetail): void
-    {
     }
 }

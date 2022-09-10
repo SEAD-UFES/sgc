@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ModelFilterHelper;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\DestroyUserRequest;
 use App\Http\Requests\User\EditUserRequest;
@@ -30,12 +29,9 @@ class UserController extends Controller
      */
     public function index(IndexUserRequest $request): View
     {
-        //filters
-        $filters = ModelFilterHelper::buildFilters($request, User::$accepted_filters);
-
         $users = $this->service->list();
 
-        return view('user.index', compact('users', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('user.index', compact('users'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**

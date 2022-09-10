@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ModelFilterHelper;
 use App\Http\Requests\Employee\CreateEmployeeRequest;
 use App\Http\Requests\Employee\DestroyEmployeeRequest;
 use App\Http\Requests\Employee\EditEmployeeRequest;
@@ -31,12 +30,9 @@ class EmployeeController extends Controller
      */
     public function index(IndexEmployeeRequest $request): View
     {
-        //filters
-        $filters = ModelFilterHelper::buildFilters($request, Employee::$accepted_filters);
-
         $employees = $this->service->list();
 
-        return view('employee.index', compact('employees', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('employee.index', compact('employees'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**

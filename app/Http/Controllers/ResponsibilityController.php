@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ModelFilterHelper;
 use App\Http\Requests\Responsibility\CreateResponsibilityRequest;
 use App\Http\Requests\Responsibility\DestroyResponsibilityRequest;
 use App\Http\Requests\Responsibility\EditResponsibilityRequest;
@@ -30,12 +29,9 @@ class ResponsibilityController extends Controller
      */
     public function index(IndexResponsibilityRequest $request): View
     {
-        //filters
-        $filters = ModelFilterHelper::buildFilters($request, Responsibility::$accepted_filters);
-
         $responsibilities = $this->service->list();
 
-        return view('responsibility.index', compact('responsibilities', 'filters'));
+        return view('responsibility.index', compact('responsibilities'));
     }
 
     /**
