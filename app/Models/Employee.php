@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Genders;
+use App\Enums\MaritalStatuses;
 use App\ModelFilters\EmployeeFilter;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Builder;
@@ -64,7 +65,7 @@ class Employee extends Model
         'document_type_id',
         'id_issue_date',
         'id_issue_agency',
-        'marital_status_id',
+        'marital_status',
         'spouse_name',
         'father_name',
         'mother_name',
@@ -89,6 +90,7 @@ class Employee extends Model
 
     protected $casts = [
         'gender' => Genders::class,
+        'marital_status' => MaritalStatuses::class,
     ];
 
     /**
@@ -105,14 +107,6 @@ class Employee extends Model
     public function documentType(): BelongsTo
     {
         return $this->belongsTo(DocumentType::class);
-    }
-
-    /**
-     * @return BelongsTo<MaritalStatus, Employee>
-     */
-    public function maritalStatus(): BelongsTo
-    {
-        return $this->belongsTo(MaritalStatus::class);
     }
 
     /**

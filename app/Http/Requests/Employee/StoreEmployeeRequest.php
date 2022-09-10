@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Employee;
 
 use App\Enums\Genders;
+use App\Enums\MaritalStatuses;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Enum;
@@ -38,7 +39,7 @@ class StoreEmployeeRequest extends FormRequest
             'document_type_id' => 'nullable|exists:document_types,id',
             'id_issue_date' => 'nullable|date',
             'id_issue_agency' => 'nullable|string',
-            'marital_status_id' => 'nullable|exists:marital_statuses,id',
+            'marital_status' => ['nullable', new Enum(MaritalStatuses::class)],
             'spouse_name' => 'nullable|string',
             'father_name' => 'nullable|string',
             'mother_name' => 'nullable|string',
@@ -79,7 +80,7 @@ class StoreEmployeeRequest extends FormRequest
             'document_type_id.exists' => 'O campo deve ser preenchido com uma das opções fornecidas',
             'id_issue_date.date' => 'Expedição deve ser uma data',
             'id_issue_agency.string' => 'O campo deve ser texto',
-            'marital_status_id.exists' => 'O campo deve ser preenchido com uma das opções fornecidas',
+            'marital_status.Illuminate\Validation\Rules\Enum' => 'O campo deve ser preenchido com uma das opções fornecidas',
             'spouse_name.string' => 'O campo deve ser texto',
             'father_name.string' => 'O campo deve ser texto',
             'mother_name.string' => 'O campo deve ser texto',

@@ -125,16 +125,16 @@
 <div class="row g-3 mb-3">
     <div class="col-4 col-sm-4 col-md-3 col-lg-2">
         <label for="selectMarital1" class="form-label">Estado Civil</label>
-        <select name="marital_status_id" id="selectMarital1" class="form-select">
+        <select name="marital_status" id="selectMarital1" class="form-select">
             <option value="">Estado Civil</option>
             @foreach ($maritalStatuses as $maritalStatus)
-                <option value="{{ $maritalStatus->id }}"
-                    {{ (isset($employee) and !$fromApproved) ? ($employee->marital_status_id == $maritalStatus->id ? 'selected' : '') : (old('marital_status_id') == $maritalStatus->id ? 'selected' : '') }}>
-                    {{ $maritalStatus->name }}
+                <option value="{{ $maritalStatus }}"
+                    {{ (isset($employee) and !$fromApproved) ? ($employee->marital_status->value == $maritalStatus ? 'selected' : '') : (old('marital_status') == $maritalStatus ? 'selected' : '') }}>
+                    {{ $maritalStatus }}
                 </option>
             @endforeach
         </select>
-        @error('marital_status_id')
+        @error('marital_status')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>

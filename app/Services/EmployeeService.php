@@ -25,7 +25,7 @@ class EmployeeService
     {
         ModelListed::dispatch(Employee::class);
 
-        $query = Employee::with(['birthState', 'documentType', 'maritalStatus', 'addressState', 'user']);
+        $query = Employee::with(['birthState', 'documentType', 'addressState', 'user']);
         $query = $query->AcceptRequest(Employee::$accepted_filters)->filter();
         $query = $query->sortable(['updated_at' => 'desc']);
 
@@ -45,8 +45,18 @@ class EmployeeService
     public function create(array $attributes): ?Employee
     {
         $attributes = Arr::map($attributes, static function ($value, $key) {
-            return $key === 'email' ? mb_strtolower($value) : ($key === 'id_issue_agency' ? mb_strtoupper($value) : TextHelper::titleCase($value));
+            switch ($key) {
+                case 'email':
+                    return mb_strtolower($value);
+                case 'id_issue_agency':
+                    return mb_strtoupper($value);
+                case 'marital_status':
+                    return $value;
+                default:
+                    return TextHelper::titleCase($value);
+            }
         });
+
         $attributes = Arr::map($attributes, static function ($value, $key) {
             return $value === '' ? null : $value;
         });
@@ -91,7 +101,16 @@ class EmployeeService
     public function update(array $attributes, Employee $employee): ?Employee
     {
         $attributes = Arr::map($attributes, static function ($value, $key) {
-            return $key === 'email' ? mb_strtolower($value) : ($key === 'id_issue_agency' ? mb_strtoupper($value) : TextHelper::titleCase($value));
+            switch ($key) {
+                case 'email':
+                    return mb_strtolower($value);
+                case 'id_issue_agency':
+                    return mb_strtoupper($value);
+                case 'marital_status':
+                    return $value;
+                default:
+                    return TextHelper::titleCase($value);
+            }
         });
 
         $attributes = Arr::map($attributes, static function ($value, $key) {

@@ -1436,7 +1436,7 @@ class EmployeeTest extends TestCase
                 'document_type_id' => null,
                 'id_issue_date' => '',
                 'id_issue_agency' => '',
-                'marital_status_id' => null,
+                'marital_status' => null,
                 'spouse_name' => '',
                 'father_name' => '',
                 'mother_name' => '',

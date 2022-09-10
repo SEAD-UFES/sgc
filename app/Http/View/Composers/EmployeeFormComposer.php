@@ -3,8 +3,8 @@
 namespace App\Http\View\Composers;
 
 use App\Enums\Genders;
+use App\Enums\MaritalStatuses;
 use App\Models\DocumentType;
-use App\Models\MaritalStatus;
 use App\Models\State;
 use Illuminate\View\View;
 
@@ -23,7 +23,7 @@ class EmployeeFormComposer
             'genders' => Genders::getValuesInAlphabeticalOrder(),
             'birthStates' => State::orderBy('name')->get(),
             'documentTypes' => DocumentType::orderBy('name')->get(),
-            'maritalStatuses' => MaritalStatus::orderBy('name')->get(),
+            'maritalStatuses' => MaritalStatuses::getValuesInAlphabeticalOrder(),
             'addressStates' => State::orderBy('name')->get(),
         ]);
     }

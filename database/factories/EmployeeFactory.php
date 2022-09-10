@@ -3,10 +3,10 @@
 namespace Database\Factories;
 
 use App\Enums\Genders;
+use App\Enums\MaritalStatuses;
 use App\Models\Employee;
 use App\Models\State;
 use App\Models\DocumentType;
-use App\Models\MaritalStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -34,7 +34,7 @@ class EmployeeFactory extends Factory
             'birth_state_id' => State::factory(),
             'address_state_id' => State::factory(),
             'document_type_id' => DocumentType::factory(),
-            'marital_status_id' => MaritalStatus::factory(),
+            'marital_status' => strval($this->faker->randomElement(MaritalStatuses::getValuesInAlphabeticalOrder())),
 
             'cpf' => $this->faker->unique()->cpf($formatted = false),
             'name' => $this->faker->name(),
@@ -80,7 +80,7 @@ class EmployeeFactory extends Factory
             $spouseGender = $gender == 'Feminino' ? 'Masculino' : 'Feminino';
             $firstName = $this->faker->firstName($genderName[$gender]);
             $lastName = $this->faker->lastName();
-            $maritalStatusId = MaritalStatus::all()->random()->id;
+            $maritalStatus = strval($this->faker->randomElement(MaritalStatuses::getValuesInAlphabeticalOrder()));
 
             $email = Str::of(
                 $firstName . '.' .
@@ -92,7 +92,7 @@ class EmployeeFactory extends Factory
                 ->replace(' ', '')
                 ->lower();
 
-            $spouseName =  in_array($maritalStatusId, [2, 3, 6])
+            $spouseName =  in_array($maritalStatus, ['Casado(a)', 'Separado(a)', 'União Estável'])
                 ? $this->faker->firstName($genderName[$spouseGender]) . ' ' . $lastName
                 : null;
 
@@ -101,7 +101,7 @@ class EmployeeFactory extends Factory
                 'birth_state_id' => State::all()->random(),
                 'address_state_id' => State::all()->random(),
                 'document_type_id' => random_int(1, 3),
-                'marital_status_id' => $maritalStatusId,
+                'marital_status' => $maritalStatus,
 
                 'name' => $firstName . ' ' . $lastName,
 

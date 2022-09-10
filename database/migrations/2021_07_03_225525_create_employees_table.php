@@ -25,8 +25,8 @@ class CreateEmployeesTable extends Migration
             $table->string('id_number', 15)->nullable();                                           //Relaxed (nullable)
             $table->foreignId('document_type_id')->nullable()->constrained('document_types');      //Relaxed (nullable)
             $table->date('id_issue_date')->nullable();                                             //Relaxed (nullable)
-            $table->string('id_issue_agency', 10)->nullable();                                     //Relaxed (nullable)
-            $table->foreignId('marital_status_id')->nullable()->constrained('marital_statuses');   //Relaxed (nullable)
+            $table->string('id_issue_agency', 10)->nullable();        
+            $table->string('marital_status', 20)->nullable();
             $table->string('spouse_name', 50)->nullable();
             $table->string('father_name', 50)->nullable();
             $table->string('mother_name', 50)->nullable();                                         //Relaxed (nullable)

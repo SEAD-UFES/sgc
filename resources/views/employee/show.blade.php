@@ -79,7 +79,7 @@
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Estado Civil:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->maritalStatus->name ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->marital_status?->value ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
