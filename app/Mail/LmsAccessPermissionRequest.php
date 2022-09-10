@@ -60,7 +60,7 @@ class LmsAccessPermissionRequest extends Mailable
         /**
          * @var string $employeeGender
          */
-        $employeeGender = $employee->gender->value;
+        $employeeGender = $employee->gender?->value;
 
         /**
          * @var string $employeeName

@@ -44,7 +44,7 @@
             <option value="">Gênero</option>
             @foreach ($genders as $gender)
                 <option value="{{ $gender }}"
-                    {{ (isset($employee) and !$fromApproved) ? ($employee->gender->value == $gender ? 'selected' : '') : (old('gender') == $gender ? 'selected' : '') }}>
+                    {{ (isset($employee) and !$fromApproved) ? ($employee->gender?->value == $gender ? 'selected' : '') : (old('gender') == $gender ? 'selected' : '') }}>
                     {{ $gender }}</option>
             @endforeach
         </select>
