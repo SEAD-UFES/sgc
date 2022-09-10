@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Responsibility;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class DestroyResponsibilityRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class DestroyResponsibilityRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return Gate::allows('responsibility-destroy');
     }
 
     /**
@@ -24,7 +25,7 @@ class DestroyResponsibilityRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+
         ];
     }
 }

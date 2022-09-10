@@ -3,39 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ModelFilterHelper;
+use App\Http\Requests\Responsibility\CreateResponsibilityRequest;
+use App\Http\Requests\Responsibility\DestroyResponsibilityRequest;
+use App\Http\Requests\Responsibility\EditResponsibilityRequest;
+use App\Http\Requests\Responsibility\IndexResponsibilityRequest;
+use App\Http\Requests\Responsibility\ShowResponsibilityRequest;
 use App\Http\Requests\Responsibility\StoreResponsibilityRequest;
 use App\Http\Requests\Responsibility\UpdateResponsibilityRequest;
-use App\Models\Course;
-use App\Models\User;
-use App\Models\UserType;
 use App\Models\Responsibility;
 use App\Services\ResponsibilityService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class ResponsibilityController extends Controller
 {
-    private ResponsibilityService $service;
-
-    public function __construct(ResponsibilityService $service)
+    public function __construct(private ResponsibilityService $service)
     {
-        $this->service = $service;
     }
 
     /**
      * Display a listing of the resource.
      *
+     * @param IndexResponsibilityRequest $request
+     *
      * @return View
      */
-    public function index(Request $request): View
+    public function index(IndexResponsibilityRequest $request): View
     {
-        //check access permission
-        if (! Gate::allows('responsibility-list')) {
-            abort(403);
-        }
-
         //filters
         $filters = ModelFilterHelper::buildFilters($request, Responsibility::$accepted_filters);
 
@@ -47,20 +41,13 @@ class ResponsibilityController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param CreateResponsibilityRequest $request
+     *
      * @return View
      */
-    public function create(Request $request): View
+    public function create(CreateResponsibilityRequest $request): View
     {
-        //check access permission
-        if (! Gate::allows('responsibility-store')) {
-            abort(403);
-        }
-
-        $users = User::orderBy('email')->get();
-        $userTypes = UserType::orderBy('name')->get();
-        $courses = Course::orderBy('name')->get();
-
-        return view('responsibility.create', compact('users', 'userTypes', 'courses'));
+        return view('responsibility.create');
     }
 
     /**
@@ -72,11 +59,6 @@ class ResponsibilityController extends Controller
      */
     public function store(StoreResponsibilityRequest $request): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('responsibility-store')) {
-            abort(403);
-        }
-
         try {
             $this->service->create($request->validated());
         } catch (\Exception $e) {
@@ -89,17 +71,13 @@ class ResponsibilityController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param  ShowResponsibilityRequest $request
      * @param  Responsibility  $responsibility
      *
      * @return View
      */
-    public function show(Responsibility $responsibility, Request $request): View
+    public function show(ShowResponsibilityRequest $request, Responsibility $responsibility): View
     {
-        //check access permission
-        if (! Gate::allows('responsibility-show')) {
-            abort(403);
-        }
-
         $responsibility = $this->service->read($responsibility);
 
         return view('responsibility.show', compact('responsibility'));
@@ -108,22 +86,14 @@ class ResponsibilityController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
+     * @param  EditResponsibilityRequest $request
      * @param  Responsibility  $responsibility
      *
      * @return View
      */
-    public function edit(Responsibility $responsibility, Request $request): View
+    public function edit(EditResponsibilityRequest $request, Responsibility $responsibility): View
     {
-        //check access permission
-        if (! Gate::allows('responsibility-update')) {
-            abort(403);
-        }
-
-        $users = User::orderBy('email')->get();
-        $userTypes = UserType::orderBy('name')->get();
-        $courses = Course::orderBy('name')->get();
-
-        return view('responsibility.edit', compact('users', 'userTypes', 'courses', 'responsibility'));
+        return view('responsibility.edit', compact('responsibility'));
     }
 
     /**
@@ -136,11 +106,6 @@ class ResponsibilityController extends Controller
      */
     public function update(UpdateResponsibilityRequest $request, Responsibility $responsibility): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('responsibility-update')) {
-            abort(403);
-        }
-
         try {
             $responsibility = $this->service->update($request->validated(), $responsibility);
         } catch (\Exception $e) {
@@ -153,17 +118,13 @@ class ResponsibilityController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param  DestroyResponsibilityRequest  $request
      * @param  Responsibility  $responsibility
      *
      * @return RedirectResponse
      */
-    public function destroy(Responsibility $responsibility, Request $request): RedirectResponse
+    public function destroy(DestroyResponsibilityRequest $request, Responsibility $responsibility): RedirectResponse
     {
-        //check access permission
-        if (! Gate::allows('responsibility-destroy')) {
-            abort(403);
-        }
-
         try {
             $this->service->delete($responsibility);
         } catch (\Exception $e) {

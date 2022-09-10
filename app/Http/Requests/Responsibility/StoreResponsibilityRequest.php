@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Responsibility;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class StoreResponsibilityRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class StoreResponsibilityRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Gate::allows('responsibility-store');
     }
 
     /**

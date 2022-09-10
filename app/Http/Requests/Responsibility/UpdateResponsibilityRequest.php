@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Responsibility;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class UpdateResponsibilityRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class UpdateResponsibilityRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Gate::allows('responsibility-update');
     }
 
     /**
@@ -26,7 +27,6 @@ class UpdateResponsibilityRequest extends FormRequest
         $storeResponsibilityRequest = new StoreResponsibilityRequest();
         return $storeResponsibilityRequest->rules();
     }
-
 
     /**
      * Get the error messages for the defined validation rules.
