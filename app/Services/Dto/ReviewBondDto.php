@@ -6,7 +6,7 @@ use Spatie\DataTransferObject\DataTransferObject;
 
 class ReviewBondDto extends DataTransferObject
 {
-    public string $impediment;
+    public bool $impediment;
 
-    public string $impediment_description;
+    public string $impedimentDescription;
 }

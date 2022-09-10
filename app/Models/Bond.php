@@ -129,6 +129,26 @@ class Bond extends Pivot
     }
 
     /**
+     * @return HasMany<App\Models\BondDocument>
+     */
+    public function rightsDocuments(): HasMany
+    {
+        return $this->bondDocuments()
+            ->join('documents', 'documents.documentable_id', '=', 'bond_documents.id')
+            ->join('document_types', 'document_types.id', '=', 'documents.document_type_id')
+            ->where('documentable_type', BondDocument::class)
+            ->where('document_types.name', 'like', '%Termos e Licença%');
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasRightsDocuments(): bool
+    {
+        return $this->rightsDocuments()->count() > 0;
+    }
+
+    /**
      * @return HasOne<Qualification>
      */
     public function qualification(): HasOne

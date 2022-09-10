@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -79,6 +80,17 @@ class BondDocument extends Model
     public function bond(): BelongsTo
     {
         return $this->belongsTo(Bond::class, 'bond_id');
+    }
+
+    /**
+     * @return Collection<int, BondDocument>
+     */
+    public static function rightsDocuments(): Collection
+    {
+        return self::join('documents', 'documents.documentable_id', '=', 'bond_documents.id')
+            ->join('document_types', 'document_types.id', '=', 'documents.document_type_id')
+            ->where('documentable_type', BondDocument::class)
+            ->where('document_types.name', 'like', '%Termos e Licença%');
     }
 
     /**

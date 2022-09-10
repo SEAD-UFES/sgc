@@ -24,11 +24,11 @@ class ReviewBondController extends Controller
     public function __invoke(ReviewBondRequest $request, Bond $bond): RedirectResponse
     {
         try {
-            $this->service->review($request->validated(), $bond);
+            $this->service->review($request->toDto(), $bond);
         } catch (\Exception $e) {
-            return redirect()->route('bonds.show', $bond)->withErrors(['noStore' => 'Não foi possível salvar o vínculo: ' . $e->getMessage()]);
+            return redirect()->route('bonds.show', $bond)->withErrors(['noStore' => 'Não foi possível revisar o vínculo: ' . $e->getMessage()]);
         }
 
-        return redirect()->route('bonds.show', $bond)->with('success', 'Vínculo atualizado com sucesso.');
+        return redirect()->route('bonds.show', $bond)->with('success', 'Vínculo revisado com sucesso.');
     }
 }

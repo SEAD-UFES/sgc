@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Bond;
 
+use App\Services\Dto\ReviewBondDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -37,5 +38,13 @@ class ReviewBondRequest extends FormRequest
     {
         return [
         ];
+    }
+
+    public function toDto(): ReviewBondDto
+    {
+        return new ReviewBondDto(
+            impediment: $this->validated('impediment') === '1',
+            impedimentDescription: $this->validated('impediment_description') ?? '',
+        );
     }
 }

@@ -15,6 +15,7 @@ use App\Models\BondDocument;
 use App\Models\Document;
 use App\Models\DocumentType;
 use App\Models\EmployeeDocument;
+use App\Services\Dto\ReviewBondDto;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
@@ -156,29 +157,29 @@ class BondService
     /**
      * Undocumented function
      *
-     * @param array<string, string> $attributes
+     * @param ReviewBondDto $reviewBondDto
      * @param Bond $bond
      *
      * @return Bond
      */
-    public function review(array $attributes, Bond $bond): Bond
+    public function review(ReviewBondDto $reviewBondDto, Bond $bond): Bond
     {
         //get impediment; check if bond have 'rights'; if not, impediment = true.
-        $attributes['impediment'] = $attributes['impediment'] === '1';
-        //$bond->impediment_description = $attributes['impediment_description'];
-        $attributes['uaba_checked_at'] = now();
+        $impediment = $reviewBondDto->impediment;
+        $impediment_description = $reviewBondDto->impedimentDescription;
 
-        $rights_document_type_id = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first()?->id;
-        $rights_document_count = Document::where('document_type_id', $rights_document_type_id)
-            ->whereHasMorph('documentable', BondDocument::class, static function ($query) use ($bond) {
-                $query->where('bond_id', $bond->id);
-            })->count();
+        $bondHaveRights = $bond->hasRightsDocuments();
 
-        if ($rights_document_count <= 0) {
-            $attributes['impediment'] = true;
+        if (!$bondHaveRights) {
+            $impediment = true;
+            $impediment_description = "{$impediment_description}\n[SGC: O Sistema não encontrou documento de Termos e Licença.]";
         }
 
-        $bond->update($attributes);
+        $bond->update([
+            'impediment' => $impediment,
+            'impediment_description' => $impediment_description,
+            'uaba_checked_at' => now(),
+        ]);
 
         if ($bond->impediment === true) {
             BondImpeded::dispatch($bond);
