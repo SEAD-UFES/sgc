@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\ModelFilters\EmployeeFilter;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -81,6 +82,7 @@ class Employee extends Model
 
     /**
      * @var array<int, string>
+     * @phpstan-ignore-next-line
      */
     private static $whiteListFilter = ['*'];
 
@@ -197,45 +199,34 @@ class Employee extends Model
     }
 
     /**
-     * @return bool
+     * @param Builder<Employee> $query
+     * @param int $courseId
+     *
+     * @return Builder<Employee>
      */
-    public function isCourseCoordinator(): bool
+    public function scopeByCourse(Builder $query, ?int $courseId = null): Builder
     {
-        if ($this->hasBond()) {
-            foreach ($this->bonds as $bond) {
-                /**
-                 * @var Role $role
-                 */
-                $role = $bond->role;
-                if (str_starts_with($role->name, 'Coordenador de curso')) {
-                    return true;
-                }
-            }
+        if ($courseId === null) {
+            return $query->join('bonds as bonds_A', 'bonds_A.employee_id', '=', 'employees.id')
+                ->join('courses as courses_A', 'courses_A.id', '=', 'bonds_A.course_id')
+                ->addSelect('courses_A.name as course_name');
         }
 
-        return false;
+        return $query->join('bonds as bonds_A', 'bonds_A.employee_id', '=', 'employees.id')
+            ->join('courses as courses_A', 'courses_A.id', '=', 'bonds_A.course_id')
+            ->where('bonds_A.course_id', $courseId)
+            ->addSelect('courses_A.name as course_name');
     }
 
     /**
-     * @param Course $course
+     * @param Builder<Employee> $query
      *
-     * @return bool
+     * @return Builder<Employee>
      */
-    public function isCoordinatorOfCourse(Course $course): bool
+    public function scopeCoordinator(Builder $query): Builder
     {
-        if ($this->hasBond()) {
-            foreach ($this->bonds as $bond) {
-                /**
-                 * @var Role $role
-                 */
-                $role = $bond->role;
-                if (str_starts_with($role->name, 'Coordenador de curso') && $bond->course_id === $course->id) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return $query->where('employees.job', 'like', 'Coord%')
+            ->addSelect('employees.job as job');
     }
 
     public function getActivitylogOptions(): LogOptions
