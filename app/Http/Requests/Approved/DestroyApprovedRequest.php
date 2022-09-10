@@ -25,7 +25,7 @@ class DestroyApprovedRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+
         ];
     }
 }

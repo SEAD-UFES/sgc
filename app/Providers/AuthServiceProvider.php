@@ -10,9 +10,9 @@ use App\Gates\EmployeeDocumentGates;
 use App\Gates\EmployeeGates;
 use App\Gates\GenericGates;
 use App\Gates\PoleGates;
+use App\Gates\ResponsibilityGates;
 use App\Gates\RoleGates;
 use App\Gates\UserGates;
-use App\Gates\ResponsibilityGates;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider

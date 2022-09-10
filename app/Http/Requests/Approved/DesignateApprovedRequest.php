@@ -25,7 +25,7 @@ class DesignateApprovedRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+
         ];
     }
 }

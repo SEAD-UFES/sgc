@@ -7,9 +7,9 @@ use App\Mail\LmsAccessPermissionRequest;
 use App\Mail\NewTutorEmploymentNotice;
 use App\Models\Bond;
 use App\Models\Employee;
+use App\Models\Responsibility;
 use App\Models\Role;
 use App\Models\User;
-use App\Models\Responsibility;
 use Illuminate\Support\Facades\Mail;
 
 class MailService

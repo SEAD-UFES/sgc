@@ -25,7 +25,7 @@ class UpdateApprovedStateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+
         ];
     }
 }
