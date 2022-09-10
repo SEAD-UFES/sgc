@@ -6,8 +6,8 @@ use App\Http\Controllers\BondController;
 use App\Http\Controllers\BondDocumentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseTypeController;
-use App\Http\Controllers\DesignateApproved;
-use App\Http\Controllers\DestroyUserEmployeeLink;
+use App\Http\Controllers\DesignateApprovedController;
+use App\Http\Controllers\DestroyUserEmployeeLinkController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeDocumentController;
 use App\Http\Controllers\InstitutionalDetailController;
@@ -16,14 +16,14 @@ use App\Http\Controllers\BondDocumentBatchController;
 use App\Http\Controllers\EmployeeDocumentBatchController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PoleController;
-use App\Http\Controllers\RequestBondReview;
-use App\Http\Controllers\ReviewBond;
+use App\Http\Controllers\RequestBondReviewController;
+use App\Http\Controllers\ReviewBondController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UpdateCurrentPassword;
+use App\Http\Controllers\UpdateCurrentPasswordController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ResponsibilityController;
 use App\Http\Controllers\RightsDocumentController;
-use App\Http\Controllers\SendNewEmployeeEmails;
+use App\Http\Controllers\SendNewEmployeeEmailsController;
 use App\Http\Controllers\WebController;
 use Illuminate\Support\Facades\Route;
 
@@ -76,7 +76,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/bonds/documents/create-many/step-2', [BondDocumentBatchController::class, 'store'])->name('bondsDocuments.storeMany1');
     Route::post('/bonds/documents/create-many/step-3', [BondDocumentBatchController::class, 'store2'])->name('bondsDocuments.storeMany2');
 
-    Route::get('/bonds/{bond}/institutional-details/send-email', SendNewEmployeeEmails::class)->name('bonds.sendInstitutionalDetailEmail');
+    Route::get('/bonds/{bond}/institutional-details/send-email', SendNewEmployeeEmailsController::class)->name('bonds.sendInstitutionalDetailEmail');
 
     /* Route::resource('documents', DocumentController::class); */
 
@@ -91,13 +91,13 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('bonds', BondController::class);
 
-    Route::post('/bondreview/{bond}', ReviewBond::class)->name('bonds.review');
-    Route::get('/bondreviewrequest/{bond}', RequestBondReview::class)->name('bonds.requestReview');
+    Route::post('/bondreview/{bond}', ReviewBondController::class)->name('bonds.review');
+    Route::get('/bondreviewrequest/{bond}', RequestBondReviewController::class)->name('bonds.requestReview');
 
     Route::get('/users/current-password', [AuthController::class, 'currentPasswordEdit'])->name('users.currentPasswordEdit');
-    Route::patch('/users/current-password', UpdateCurrentPassword::class)->name('users.currentPasswordUpdate');
+    Route::patch('/users/current-password', UpdateCurrentPasswordController::class)->name('users.currentPasswordUpdate');
 
-    Route::delete('/users/{user}/destroy-employee-link', DestroyUserEmployeeLink::class)->name('users.destroyEmployeeLink');
+    Route::delete('/users/{user}/destroy-employee-link', DestroyUserEmployeeLinkController::class)->name('users.destroyEmployeeLink');
 
     Route::resource('users', UserController::class);
 
@@ -107,7 +107,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/coursetypes', [CourseTypeController::class, 'index'])->name('coursetypes.index');
 
-    Route::get('/approveds/{approved}/designate', DesignateApproved::class)->name('approveds.designate');
+    Route::get('/approveds/{approved}/designate', DesignateApprovedController::class)->name('approveds.designate');
 
     Route::get('/approveds/create-many/step-1', [ApprovedBatchController::class, 'createManyStep1'])->name('approveds.createMany.step1');
     Route::post('/approveds/create-many/step-1', [ApprovedBatchController::class, 'storeManyStep1'])->name('approveds.storeMany.step1');

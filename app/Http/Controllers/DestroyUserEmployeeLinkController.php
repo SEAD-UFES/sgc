@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 
-class DestroyUserEmployeeLink extends Controller
+class DestroyUserEmployeeLinkController extends Controller
 {
     public function __construct(private UserService $service)
     {

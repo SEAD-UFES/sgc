@@ -7,7 +7,7 @@ use App\Models\Bond;
 use App\Services\BondService;
 use Illuminate\Http\RedirectResponse;
 
-class RequestBondReview extends Controller
+class RequestBondReviewController extends Controller
 {
     public function __construct(private BondService $service)
     {

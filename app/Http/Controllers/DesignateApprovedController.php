@@ -14,7 +14,7 @@ use App\Services\ApprovedService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
-class DesignateApproved extends Controller
+class DesignateApprovedController extends Controller
 {
     public function __construct(private ApprovedService $service)
     {

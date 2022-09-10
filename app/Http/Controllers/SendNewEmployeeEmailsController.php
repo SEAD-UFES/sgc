@@ -7,7 +7,7 @@ use App\Models\Bond;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-class SendNewEmployeeEmails extends Controller
+class SendNewEmployeeEmailsController extends Controller
 {
     /**
      * Handle the incoming request.
