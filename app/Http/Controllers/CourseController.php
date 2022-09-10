@@ -91,7 +91,7 @@ class CourseController extends Controller
      */
     public function edit(EditCourseRequest $request, Course $course): View
     {
-        return view('course.edit', compact('course'/* , 'courseTypes' */));
+        return view('course.edit', compact('course'));
     }
 
     /**

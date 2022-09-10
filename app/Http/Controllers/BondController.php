@@ -107,7 +107,7 @@ class BondController extends Controller
      */
     public function edit(EditBondRequest $request, Bond $bond): View
     {
-        return view('bond.edit');
+        return view('bond.edit', compact('bond'));
     }
 
     /**
