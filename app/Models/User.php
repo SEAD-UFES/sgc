@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Genders;
 use App\ModelFilters\UserFilter;
 use Carbon\Carbon;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
@@ -277,8 +278,31 @@ class User extends Authenticatable
      */
     protected function genderArticle(): Attribute
     {
+        /**
+         * @var ?Employee $employee
+         */
+        $employee = $this->employee;
+
+        if (is_null($employee)) {
+            return new Attribute(
+                get: fn ($value) => 'o(a)',
+            );
+        }
+
+
+        /**
+         * @var ?Genders $gender
+         */
+        $gender = $this->employee?->gender;
+
+        if (is_null($gender)) {
+            return new Attribute(
+                get: fn ($value) => 'o(a)',
+            );
+        }
+
         return new Attribute(
-            get: fn ($value) => $this->employee ? ($this->employee->gender?->value ? ($this->employee->gender?->value === 'Masculino' ? 'o' : 'a') : 'o(a)') : 'o(a)',
+            get: fn ($value) => $this->employee?->gender?->value === 'Masculino' ? 'o' : 'a',
         );
     }
 }
