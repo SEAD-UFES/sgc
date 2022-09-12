@@ -96,7 +96,7 @@ class ViewServiceProvider extends ServiceProvider
         );
 
         View::composer(
-            ['employee.create', 'employee.edit'],
+            ['employee.create', 'employee.edit', 'approved.designate'],
             EmployeeFormComposer::class
         );
 
