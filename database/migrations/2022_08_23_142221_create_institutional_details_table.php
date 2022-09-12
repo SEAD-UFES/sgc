@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('login')->nullable()->unique();
             $table->string('email')->nullable()->unique();
-            $table->foreignId('employee_id')->constrained('employees');
+            $table->foreignId('employee_id')->unique()->constrained('employees');
             $table->timestamps();
         });
     }
