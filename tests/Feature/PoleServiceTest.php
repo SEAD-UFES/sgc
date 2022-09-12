@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Pole;
+use App\Services\Dto\StorePoleDto;
+use App\Services\Dto\UpdatePoleDto;
 use App\Services\PoleService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -80,9 +82,11 @@ class PoleServiceTest extends TestCase
         $attributes['name'] = 'Pole Gama';
         $attributes['description'] = '3rd Pole';
 
-        Event::fakeFor(function () use ($attributes) {
+        $dto = new StorePoleDto($attributes);
+
+        Event::fakeFor(function () use ($dto) {
             //execution
-            $this->service->create($attributes);
+            $this->service->create($dto);
 
             //verifications
             Event::assertDispatched('eloquent.created: ' . Pole::class);
@@ -105,9 +109,11 @@ class PoleServiceTest extends TestCase
         $attributes['name'] = 'Pole Delta';
         $attributes['description'] = 'New 1st Pole';
 
-        Event::fakeFor(function () use ($attributes, $pole) {
+        $dto = new UpdatePoleDto($attributes);
+
+        Event::fakeFor(function () use ($dto, $pole) {
             //execution
-            $this->service->update($attributes, $pole);
+            $this->service->update($dto, $pole);
 
             //verifications
             Event::assertDispatched('eloquent.updated: ' . Pole::class);

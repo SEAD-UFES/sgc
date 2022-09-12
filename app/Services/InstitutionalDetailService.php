@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Events\ModelRead;
 use App\Models\Employee;
 use App\Models\InstitutionalDetail;
+use App\Services\Dto\StoreInstitutionalDetailDto;
+use App\Services\Dto\UpdateInstitutionalDetailDto;
 use Illuminate\Support\Arr;
 
 class InstitutionalDetailService
@@ -12,23 +14,18 @@ class InstitutionalDetailService
     /**
      * Undocumented function
      *
-     * @param array<string, string> $attributes
+     * @param StoreInstitutionalDetailDto $storeInstitutionalDetailDto
+     * @param Employee $employee
      *
      * @return InstitutionalDetail
      */
-    public function create(array $attributes, Employee $employee): InstitutionalDetail
+    public function create(StoreInstitutionalDetailDto $storeInstitutionalDetailDto, Employee $employee): InstitutionalDetail
     {
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return mb_strtolower($value);
-        });
-
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return $value === '' ? null : $value;
-        });
-
-        $attributes = Arr::add($attributes, 'employee_id', $employee->id);
-
-        return InstitutionalDetail::create($attributes);
+        return InstitutionalDetail::create([
+            'login' => mb_strtolower($storeInstitutionalDetailDto->login),
+            'email' => mb_strtolower($storeInstitutionalDetailDto->email),
+            'employee_id' => $employee->id,
+        ]);
     }
 
     /**
@@ -48,26 +45,30 @@ class InstitutionalDetailService
     /**
      * Undocumented function
      *
-     * @param array<string, string> $attributes
-     * @param InstitutionalDetail $institutionalDetail
+     * @param UpdateInstitutionalDetailDto $updateInstitutionalDetailDto
+     * @param Employee $employee
      *
      * @return InstitutionalDetail
      */
-    public function update(array $attributes, InstitutionalDetail $institutionalDetail, Employee $employee): InstitutionalDetail
+    public function update(UpdateInstitutionalDetailDto $updateInstitutionalDetailDto, Employee $employee): InstitutionalDetail
     {
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return mb_strtolower($value);
-        });
+        $detail = $employee->institutionalDetail;
 
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return $value === '' ? null : $value;
-        });
+        if ($detail === null) {
+            return $this->create(
+                new StoreInstitutionalDetailDto(
+                    Arr::only($updateInstitutionalDetailDto->toArray(), ['login', 'email'])
+                ),
+                $employee
+            );
+        }
 
-        $attributes = Arr::add($attributes, 'employee_id', $employee->id);
+        $detail->update([
+            'login' => mb_strtolower($updateInstitutionalDetailDto->login),
+            'email' => mb_strtolower($updateInstitutionalDetailDto->email),
+        ]);
 
-        $institutionalDetail->update($attributes);
-
-        return $institutionalDetail;
+        return $detail;
     }
 
     /**

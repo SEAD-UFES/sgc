@@ -5,7 +5,7 @@ namespace App\Http\Requests\Approved;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
-class StoreApprovedsRequest extends FormRequest
+class StoreApprovedBatchRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,9 +28,9 @@ class StoreApprovedsRequest extends FormRequest
             'approveds.*.check' => 'sometimes',
             'approveds.*.name' => 'required|string|max:255',
             'approveds.*.email' => 'required|email|max:255',
-            //'approveds.*.area_code' => 'required|string|max:2',   //Relaxed form
-            //'approveds.*.phone' => 'required|string|max:10',      //Relaxed form
-            //'approveds.*.mobile' => 'required|string|max:11',     //Relaxed form
+            'approveds.*.area_code' => 'string|max:2',   //Relaxed form
+            'approveds.*.phone' => 'string|max:10',      //Relaxed form
+            'approveds.*.mobile' => 'required|string|max:11',
             'approveds.*.announcement' => 'required|string|max:8',
             'approveds.*.course_id' => 'required|exists:courses,id',
             'approveds.*.role_id' => 'required|exists:roles,id',
@@ -61,8 +61,8 @@ class StoreApprovedsRequest extends FormRequest
             'approveds.*.course_id.exists' => 'O curso deve estar entre os fornecidos',
             'approveds.*.role_id.required' => 'A função é obrigatório',
             'approveds.*.role_id.exists' => 'A função deve estar entre as fornecidas',
-            'approveds.*.pole_id.required' => 'O pólo é obrigatório',
-            'approveds.*.pole_id.exists' => 'O pólo deve estar entre os fornecidos',
+            'approveds.*.pole_id.required' => 'O Polo é obrigatório',
+            'approveds.*.pole_id.exists' => 'O Polo deve estar entre os fornecidos',
         ];
     }
 }

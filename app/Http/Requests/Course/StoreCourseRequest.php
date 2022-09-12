@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Course;
 
+use App\Services\Dto\StoreCourseDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -51,5 +52,17 @@ class StoreCourseRequest extends FormRequest
             'end.date' => 'Início deve ser uma data',
             'lms_url.url' => 'O Endereço do AVA deve ser uma URL válida',
         ];
+    }
+
+    public function toDto(): StoreCourseDto
+    {
+        return new StoreCourseDto(
+            name: $this->validated('name') ?? '',
+            description: $this->validated('description') ?? '',
+            courseTypeId: $this->validated('course_type_id') ?? '',
+            begin: $this->validated('begin'),
+            end: $this->validated('end'),
+            lmsUrl: $this->validated('lms_url') ?? '',
+        );
     }
 }

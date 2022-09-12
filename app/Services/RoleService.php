@@ -6,8 +6,9 @@ use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Helpers\TextHelper;
 use App\Models\Role;
+use App\Services\Dto\StoreRoleDto;
+use App\Services\Dto\UpdateRoleDto;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Arr;
 
 class RoleService
 {
@@ -33,21 +34,18 @@ class RoleService
     /**
      * Undocumented function
      *
-     * @param array<string, string> $attributes
+     * @param StoreRoleDto $storeRoleDto
      *
      * @return Role
      */
-    public function create(array $attributes): Role
+    public function create(StoreRoleDto $storeRoleDto): Role
     {
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return TextHelper::titleCase($value);
-        });
-
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return $value === '' ? null : $value;
-        });
-
-        return Role::create($attributes);
+        return Role::create([
+            'name' => TextHelper::titleCase($storeRoleDto->name),
+            'description' => TextHelper::titleCase($storeRoleDto->description),
+            'grant_value' => $storeRoleDto->grantValue,
+            'grant_type_id' => $storeRoleDto->grantTypeId,
+        ]);
     }
 
     /**
@@ -67,22 +65,19 @@ class RoleService
     /**
      * Undocumented function
      *
-     * @param array<string, string> $attributes
+     * @param UpdateRoleDto $updateRoleDto
      * @param Role $role
      *
      * @return Role
      */
-    public function update(array $attributes, Role $role): Role
+    public function update(UpdateRoleDto $updateRoleDto, Role $role): Role
     {
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return TextHelper::titleCase($value);
-        });
-
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return $value === '' ? null : $value;
-        });
-
-        $role->update($attributes);
+        $role->update([
+            'name' => TextHelper::titleCase($updateRoleDto->name),
+            'description' => TextHelper::titleCase($updateRoleDto->description),
+            'grant_value' => $updateRoleDto->grantValue,
+            'grant_type_id' => $updateRoleDto->grantTypeId,
+        ]);
 
         return $role;
     }

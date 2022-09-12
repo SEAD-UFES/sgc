@@ -51,7 +51,7 @@ class EmployeeDocumentController extends Controller
      */
     public function store(StoreEmployeeDocumentRequest $request): RedirectResponse
     {
-        $this->service->create($request->validated());
+        $this->service->create($request->toDto());
 
         return redirect()->route('employeesDocuments.index')->with('success', 'Arquivo importado com sucesso.');
     }

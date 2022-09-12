@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Responsibility;
+use App\Services\Dto\StoreResponsibilityDto;
+use App\Services\Dto\UpdateResponsibilityDto;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ResponsibilityService
@@ -31,15 +33,30 @@ class ResponsibilityService
     /**
      * Undocumented function
      *
-     * @param array<string> $attributes
+     * @param StoreResponsibilityDto $storeResponsibilityDto
      *
      * @return Responsibility
      */
-    public function create(array $attributes): Responsibility
+    public function create(StoreResponsibilityDto $storeResponsibilityDto): Responsibility
     {
-        // * NULL Course breaks the SQL Unique Constraint ['user_id', 'user_type_id', 'course_id']
-        // TODO: Implement Composite Foreign Keys manually, handling NULL Course
-        return Responsibility::create($attributes);
+        // * NULL Course breaks the SQL DB Unique Constraint ['user_id', 'user_type_id', 'course_id']
+        // * Implements Composite Foreign Keys manually, handling NULL Course
+        if ($storeResponsibilityDto->courseId === null && Responsibility::where('user_id', $storeResponsibilityDto->userId)
+            ->where('user_type_id', $storeResponsibilityDto->userTypeId)
+            ->where(static function ($q) {
+                $q->where('course_id', '')
+                    ->orWhereNull('course_id');
+            })->exists()) {
+            abort(409, 'O usuário já tem essa combinação cadastrada');
+        }
+
+        return Responsibility::create([
+            'user_id' => $storeResponsibilityDto->userId,
+            'user_type_id' => $storeResponsibilityDto->userTypeId,
+            'course_id' => $storeResponsibilityDto->courseId,
+            'begin' => $storeResponsibilityDto->begin,
+            'end' => $storeResponsibilityDto->end,
+        ]);
     }
 
     /**
@@ -59,14 +76,29 @@ class ResponsibilityService
     /**
      * Undocumented function
      *
-     * @param array<string> $attributes
+     * @param UpdateResponsibilityDto $updateResponsibilityDto
      * @param Responsibility $responsibility
      *
      * @return Responsibility
      */
-    public function update(array $attributes, Responsibility $responsibility): Responsibility
+    public function update(UpdateResponsibilityDto $updateResponsibilityDto, Responsibility $responsibility): Responsibility
     {
-        $responsibility->update($attributes);
+        if ($updateResponsibilityDto->courseId === null && Responsibility::where('user_id', $updateResponsibilityDto->userId)
+            ->where('user_type_id', $updateResponsibilityDto->userTypeId)
+            ->where(static function ($q) {
+                $q->where('course_id', '')
+                    ->orWhereNull('course_id');
+            })->exists()) {
+            abort(409, 'O usuário já tem essa combinação cadastrada');
+        }
+
+        $responsibility->update([
+            'user_id' => $updateResponsibilityDto->userId,
+            'user_type_id' => $updateResponsibilityDto->userTypeId,
+            'course_id' => $updateResponsibilityDto->courseId,
+            'begin' => $updateResponsibilityDto->begin,
+            'end' => $updateResponsibilityDto->end,
+        ]);
 
         return $responsibility;
     }

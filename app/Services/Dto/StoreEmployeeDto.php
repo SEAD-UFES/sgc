@@ -12,45 +12,45 @@ class StoreEmployeeDto extends DataTransferObject
 
     public string $job;
 
-    public string $gender;
+    public ?string $gender;
 
     public string $birthday;
 
-    public string $birth_state_id;
+    public ?string $birthStateId;
 
-    public string $birth_city;
+    public string $birthCity;
 
-    public string $document_type_id;
+    public ?string $documentTypeId;
 
-    public string $id_number;
+    public string $idNumber;
 
-    public string $id_issue_date;
+    public string $idIssueDate;
 
-    public string $id_issue_agency;
+    public string $idIssueAgency;
 
-    public string $marital_status;
+    public ?string $maritalStatus;
 
-    public string $spouse_name;
+    public string $spouseName;
 
-    public string $father_name;
+    public string $fatherName;
 
-    public string $mother_name;
+    public string $motherName;
 
-    public string $address_street;
+    public string $addressStreet;
 
-    public string $address_complement;
+    public string $addressComplement;
 
-    public string $address_number;
+    public string $addressNumber;
 
-    public string $address_district;
+    public string $addressDistrict;
 
-    public string $address_postal_code;
+    public string $addressPostalCode;
 
-    public string $address_state_id;
+    public ?string $addressStateId;
 
-    public string $address_city;
+    public string $addressCity;
 
-    public string $area_code;
+    public string $areaCode;
 
     public string $phone;
 
@@ -58,11 +58,9 @@ class StoreEmployeeDto extends DataTransferObject
 
     public string $email;
 
-    public string $bank_name;
+    public string $bankName;
 
-    public string $agency_number;
+    public string $agencyNumber;
 
-    public string $account_number;
-
-    //public string $importDocuments;
+    public string $accountNumber;
 }

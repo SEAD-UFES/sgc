@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Role;
 
+use App\Services\Dto\StoreRoleDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -45,5 +46,15 @@ class StoreRoleRequest extends FormRequest
             'grant_type_id.required' => 'O Tipo de Bolsa é obrigatório',
             'grant_type_id.exists' => 'O Tipo de Bolsa deve estar entre os fornecidos',
         ];
+    }
+
+    public function toDto(): StoreRoleDto
+    {
+        return new StoreRoleDto(
+            name: $this->validated('name') ?? '',
+            description: $this->validated('description') ?? '',
+            grantValue: $this->validated('grant_value') ?? '',
+            grantTypeId: $this->validated('grant_type_id') ?? '',
+        );
     }
 }

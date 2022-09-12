@@ -9,6 +9,7 @@ use App\Models\Document;
 use App\Models\DocumentType;
 use App\Services\BondDocumentService;
 use App\Services\DocumentService;
+use App\Services\Dto\StoreBondDocumentDto;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Event;
@@ -135,12 +136,14 @@ class BondDocumentServiceTest extends TestCase
         //setting up scenario
         $attributes['file'] = UploadedFile::fake()->create('Document Gama.pdf', 20, 'application/pdf');
 
-        $attributes['document_type_id'] = (string) 1;
-        $attributes['bond_id'] = (string) 1;
+        $attributes['documentTypeId'] = (string) 1;
+        $attributes['bondId'] = (string) 1;
 
-        Event::fakeFor(function () use ($attributes) {
+        $dto = new StoreBondDocumentDto($attributes);
+
+        Event::fakeFor(function () use ($dto) {
             //execution
-            $this->service->create($attributes);
+            $this->service->create($dto);
 
             //verifications
             Event::assertDispatched('eloquent.created: ' . Document::class);

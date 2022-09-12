@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Course;
 
+use App\Services\Dto\UpdateCourseDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -37,5 +38,17 @@ class UpdateCourseRequest extends FormRequest
     {
         $scr = new StoreCourseRequest();
         return $scr->messages();
+    }
+
+    public function toDto(): UpdateCourseDto
+    {
+        return new UpdateCourseDto(
+            name: $this->validated('name') ?? '',
+            description: $this->validated('description') ?? '',
+            courseTypeId: $this->validated('course_type_id') ?? '',
+            begin: $this->validated('begin'),
+            end: $this->validated('end'),
+            lmsUrl: $this->validated('lms_url') ?? '',
+        );
     }
 }

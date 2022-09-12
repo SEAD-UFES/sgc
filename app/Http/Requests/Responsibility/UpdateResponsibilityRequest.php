@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Responsibility;
 
+use App\Services\Dto\UpdateResponsibilityDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -37,5 +38,16 @@ class UpdateResponsibilityRequest extends FormRequest
     {
         $storeResponsibilityRequest = new StoreResponsibilityRequest();
         return $storeResponsibilityRequest->messages();
+    }
+
+    public function toDto(): UpdateResponsibilityDto
+    {
+        return new UpdateResponsibilityDto(
+            userId: $this->validated('user_id') ?? '',
+            userTypeId: $this->validated('user_type_id') ?? '',
+            courseId: $this->validated('course_id'),
+            begin: $this->validated('begin'),
+            end: $this->validated('end'),
+        );
     }
 }

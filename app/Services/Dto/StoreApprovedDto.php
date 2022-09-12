@@ -10,7 +10,7 @@ class StoreApprovedDto extends DataTransferObject
 
     public string $email;
 
-    public string $area_code;
+    public string $areaCode;
 
     public string $phone;
 
@@ -18,9 +18,9 @@ class StoreApprovedDto extends DataTransferObject
 
     public string $announcement;
 
-    public string $role_id;
+    public string $roleId;
 
-    public string $course_id;
+    public string $courseId;
 
-    public string $pole_id;
+    public string $poleId;
 }

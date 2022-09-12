@@ -10,7 +10,7 @@ class UpdateUserDto extends DataTransferObject
 
     public string $password;
 
-    public string $active;
+    public bool $active;
 
-    public string $employee_id;
+    public ?string $employeeId;
 }

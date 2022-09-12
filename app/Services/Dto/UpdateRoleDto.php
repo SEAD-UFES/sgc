@@ -10,7 +10,7 @@ class UpdateRoleDto extends DataTransferObject
 
     public string $description;
 
-    public string $grant_value;
+    public string $grantValue;
 
-    public string $grant_type_id;
+    public string $grantTypeId;
 }

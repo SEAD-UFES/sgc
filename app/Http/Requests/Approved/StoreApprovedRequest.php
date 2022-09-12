@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Approved;
 
+use App\Services\Dto\StoreApprovedDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -27,8 +28,8 @@ class StoreApprovedRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            //'area_code' => 'required|string|max:2',   //Relaxed form
-            //'phone' => 'required|string|max:10',      //Relaxed form
+            'area_code' => 'string|max:2',   //Relaxed form
+            'phone' => 'string|max:10',      //Relaxed form
             'mobile' => 'required|string|max:11',
             'announcement' => 'required|string|max:8',
             'role_id' => 'required|exists:roles,id',
@@ -60,8 +61,23 @@ class StoreApprovedRequest extends FormRequest
             'role_id.exists' => 'A função deve estar entre as fornecidas',
             'course_id.required' => 'O curso é obrigatório',
             'course_id.exists' => 'O curso deve estar entre os fornecidos',
-            'pole_id.required' => 'O pólo é obrigatório',
-            'pole_id.exists' => 'O pólo deve estar entre os fornecidos',
+            'pole_id.required' => 'O Polo é obrigatório',
+            'pole_id.exists' => 'O Polo deve estar entre os fornecidos',
         ];
+    }
+
+    public function toDto(): StoreApprovedDto
+    {
+        return new StoreApprovedDto(
+            name: $this->validated('name') ?? '',
+            email: $this->validated('email') ?? '',
+            areaCode: $this->validated('area_code') ?? '',
+            phone: $this->validated('phone') ?? '',
+            mobile: $this->validated('mobile') ?? '',
+            announcement: $this->validated('announcement') ?? '',
+            roleId: $this->validated('role_id') ?? '',
+            courseId: $this->validated('course_id') ?? '',
+            poleId: $this->validated('pole_id') ?? '',
+        );
     }
 }

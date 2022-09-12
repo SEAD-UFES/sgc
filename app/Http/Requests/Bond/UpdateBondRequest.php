@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Bond;
 
 use App\Models\Bond;
+use App\Services\Dto\UpdateBondDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -36,5 +37,21 @@ class UpdateBondRequest extends FormRequest
     {
         $sbr = new StoreBondRequest();
         return $sbr->messages();
+    }
+
+    public function toDto(): UpdateBondDto
+    {
+        return new UpdateBondDto(
+            employeeId: $this->validated('employee_id') ?? '',
+            roleId: $this->validated('role_id') ?? '',
+            courseId: $this->validated('course_id') ?? '',
+            poleId: $this->validated('pole_id') ?? '',
+            begin: $this->validated('begin'),
+            end: $this->validated('end'),
+            volunteer: ($this->validated('volunteer') ?? '') === 'on',
+            knowledgeArea: $this->validated('knowledge_area'),
+            courseName: $this->validated('course_name') ?? '',
+            institutionName: $this->validated('institution_name') ?? '',
+        );
     }
 }

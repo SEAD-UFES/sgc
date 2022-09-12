@@ -56,7 +56,7 @@ class ResponsibilityController extends Controller
     public function store(StoreResponsibilityRequest $request): RedirectResponse
     {
         try {
-            $this->service->create($request->validated());
+            $this->service->create($request->toDto());
         } catch (\Exception $e) {
             return redirect()->route('responsibilities.index')->withErrors(['noStore' => 'Não foi possível salvar a Atribuição de Papel: ' . $e->getMessage()]);
         }
@@ -103,7 +103,7 @@ class ResponsibilityController extends Controller
     public function update(UpdateResponsibilityRequest $request, Responsibility $responsibility): RedirectResponse
     {
         try {
-            $responsibility = $this->service->update($request->validated(), $responsibility);
+            $responsibility = $this->service->update($request->toDto(), $responsibility);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar a Atribuição de Papel: ' . $e->getMessage()]);
         }

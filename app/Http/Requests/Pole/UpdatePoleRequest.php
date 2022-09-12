@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Pole;
 
+use App\Services\Dto\UpdatePoleDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -37,5 +38,13 @@ class UpdatePoleRequest extends FormRequest
     {
         $spr = new StorePoleRequest();
         return $spr->messages();
+    }
+
+    public function toDto(): UpdatePoleDto
+    {
+        return new UpdatePoleDto(
+            name: $this->validated('name') ?? '',
+            description: $this->validated('description') ?? '',
+        );
     }
 }

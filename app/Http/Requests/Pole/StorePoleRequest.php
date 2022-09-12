@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Pole;
 
+use App\Services\Dto\StorePoleDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -40,5 +41,13 @@ class StorePoleRequest extends FormRequest
             'name.max' => 'O Nome deve conter no máximo 50 caracteres',
             'description.max' => 'A Descrição deve conter no máximo 50 caracteres',
         ];
+    }
+
+    public function toDto(): StorePoleDto
+    {
+        return new StorePoleDto(
+            name: $this->validated('name') ?? '',
+            description: $this->validated('description') ?? '',
+        );
     }
 }

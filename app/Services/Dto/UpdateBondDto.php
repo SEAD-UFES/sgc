@@ -6,21 +6,23 @@ use Spatie\DataTransferObject\DataTransferObject;
 
 class UpdateBondDto extends DataTransferObject
 {
-    public string $employee_id;
+    public string $employeeId;
 
-    public string $role_id;
+    public string $roleId;
 
-    public string $course_id;
+    public string $courseId;
 
-    public string $pole_id;
+    public string $poleId;
 
-    public string $begin;
+    public ?string $begin;
 
-    public string $end;
+    public ?string $end;
 
-    public string $knowledge_area;
+    public bool $volunteer;
 
-    public string $course_name;
+    public ?string $knowledgeArea;
 
-    public string $institution_name;
+    public string $courseName;
+
+    public string $institutionName;
 }

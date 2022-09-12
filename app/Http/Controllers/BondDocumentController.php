@@ -61,7 +61,7 @@ class BondDocumentController extends Controller
      */
     public function store(StoreBondDocumentRequest $request): RedirectResponse
     {
-        $this->service->create($request->validated());
+        $this->service->create($request->toDto());
 
         return redirect()->route('bondsDocuments.index')->with('success', 'Arquivo importado com sucesso.');
     }

@@ -6,7 +6,7 @@ use Spatie\DataTransferObject\DataTransferObject;
 
 class UpdateCurrentPasswordDto extends DataTransferObject
 {
-    public string $password;
+    public ?string $password;
 
-    public string $confirmPassword;
+    public ?string $confirmPassword;
 }

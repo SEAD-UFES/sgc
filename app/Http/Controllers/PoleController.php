@@ -56,7 +56,7 @@ class PoleController extends Controller
     public function store(StorePoleRequest $request): RedirectResponse
     {
         try {
-            $this->service->create($request->validated());
+            $this->service->create($request->toDto());
         } catch (\Exception $e) {
             return redirect()->route('poles.index')->withErrors(['noStore' => 'Não foi possível salvar o Polo: ' . $e->getMessage()]);
         }
@@ -103,7 +103,7 @@ class PoleController extends Controller
     public function update(UpdatePoleRequest $request, Pole $pole): RedirectResponse
     {
         try {
-            $pole = $this->service->update($request->validated(), $pole);
+            $pole = $this->service->update($request->toDto(), $pole);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o Polo: ' . $e->getMessage()]);
         }

@@ -6,6 +6,8 @@ use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Course;
 use App\Services\CourseService;
+use App\Services\Dto\StoreCourseDto;
+use App\Services\Dto\UpdateCourseDto;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
@@ -79,13 +81,16 @@ class CourseServiceTest extends TestCase
 
         $attributes['name'] = 'Course Gama';
         $attributes['description'] = '3rd Course';
-        $attributes['course_type_id'] = 2;
+        $attributes['courseTypeId'] = 2;
         $attributes['begin'] = now();
         $attributes['end'] = now();
+        $attributes['lmsUrl'] = 'https://lms.com';
+
+        $dto = new StoreCourseDto($attributes);
 
         //execution
-        Event::fakeFor(function () use ($attributes) {
-            $this->service->create($attributes);
+        Event::fakeFor(function () use ($dto) {
+            $this->service->create($dto);
 
             //verifications
             Event::assertDispatched('eloquent.created: ' . Course::class);
@@ -108,10 +113,16 @@ class CourseServiceTest extends TestCase
 
         $attributes['name'] = 'Course Delta';
         $attributes['description'] = 'New 1st Course';
+        $attributes['courseTypeId'] = 2;
+        $attributes['begin'] = now();
+        $attributes['end'] = now();
+        $attributes['lmsUrl'] = 'https://lms.com';
 
-        Event::fakeFor(function () use ($course, $attributes) {
+        $dto = new UpdateCourseDto($attributes);
+
+        Event::fakeFor(function () use ($course, $dto) {
             //execution
-            $this->service->update($attributes, $course);
+            $this->service->update($dto, $course);
 
             //verifications
             Event::assertDispatched('eloquent.updated: ' . Course::class);

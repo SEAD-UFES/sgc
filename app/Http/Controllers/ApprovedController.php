@@ -54,7 +54,7 @@ class ApprovedController extends Controller
     public function store(StoreApprovedRequest $request)
     {
         try {
-            $this->service->create($request->validated());
+            $this->service->create($request->toDto());
         } catch (\Exception $e) {
             return redirect()->route('approveds.index')->withErrors(['noStore' => 'Não foi possível salvar o Aprovado: ' . $e->getMessage()]);
         }

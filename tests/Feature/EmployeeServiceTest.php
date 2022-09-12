@@ -8,6 +8,8 @@ use App\Models\Bond;
 use App\Models\BondDocument;
 use App\Models\Employee;
 use App\Models\User;
+use App\Services\Dto\StoreEmployeeDto;
+use App\Services\Dto\UpdateEmployeeDto;
 use App\Services\EmployeeService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -94,43 +96,37 @@ class EmployeeServiceTest extends TestCase
 
         $attributes['name'] = 'Mary Doe';
         $attributes['cpf'] = '33333333333';
+        $attributes['job'] = '';
+        $attributes['birthday'] = '';
+        $attributes['birthCity'] = '';
+        $attributes['idNumber'] = '';
+        $attributes['idIssueDate'] = '';
+        $attributes['idIssueAgency'] = '';
+        $attributes['spouseName'] = '';
+        $attributes['fatherName'] = '';
+        $attributes['motherName'] = '';
+        $attributes['addressStreet'] = '';
+        $attributes['addressComplement'] = '';
+        $attributes['addressNumber'] = '';
+        $attributes['addressDistrict'] = '';
+        $attributes['addressPostalCode'] = '';
+        $attributes['addressCity'] = '';
+        $attributes['areaCode'] = '';
+        $attributes['phone'] = '';
+        $attributes['mobile'] = '';
         $attributes['email'] = 'marydoe@test3.com';
+
         $attributes = array_merge($attributes, $this->getBankAccountAttributes());
 
-        Event::fakeFor(function () use ($attributes) {
+        $dto = new StoreEmployeeDto($attributes);
+
+        Event::fakeFor(function () use ($dto) {
             //execution
-            $this->service->create($attributes);
+            $this->service->create($dto);
 
             //verifications
             Event::assertDispatched('eloquent.created: ' . Employee::class);
             $this->assertEquals('Mary Doe', Employee::find(3)?->name);
-            $this->assertCount(3, Employee::all());
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function employeeShouldBeCreatedWithUser(): void
-    {
-        //setting up scenario
-        $attributes = [];
-
-        $attributes['name'] = 'Mary Doe';
-        $attributes['cpf'] = '33333333333';
-        $attributes['email'] = 'marydoe@test3.com';
-        $attributes = array_merge($attributes, $this->getBankAccountAttributes());
-
-        User::factory()->create(['email' => 'marydoe@test3.com', 'employee_id' => null]);
-
-        Event::fakeFor(function () use ($attributes) {
-            //execution
-            $this->service->create($attributes);
-
-            //verifications
-            Event::assertDispatched('eloquent.created: ' . Employee::class);
-            $this->assertEquals('Mary Doe', Employee::find(3)?->name);
-            $this->assertEquals('marydoe@test3.com', Employee::find(3)?->user?->email);
             $this->assertCount(3, Employee::all());
         });
     }
@@ -145,15 +141,35 @@ class EmployeeServiceTest extends TestCase
         $employee = Employee::find(1);
 
         $attributes = [];
-
         $attributes['name'] = 'Bob Doe';
         $attributes['cpf'] = '44444444444';
+        $attributes['job'] = '';
+        $attributes['birthday'] = '';
+        $attributes['birthCity'] = '';
+        $attributes['idNumber'] = '';
+        $attributes['idIssueDate'] = '';
+        $attributes['idIssueAgency'] = '';
+        $attributes['spouseName'] = '';
+        $attributes['fatherName'] = '';
+        $attributes['motherName'] = '';
+        $attributes['addressStreet'] = '';
+        $attributes['addressComplement'] = '';
+        $attributes['addressNumber'] = '';
+        $attributes['addressDistrict'] = '';
+        $attributes['addressPostalCode'] = '';
+        $attributes['addressCity'] = '';
+        $attributes['areaCode'] = '';
+        $attributes['phone'] = '';
+        $attributes['mobile'] = '';
         $attributes['email'] = 'bobdoe@test4.com';
+        
         $attributes = array_merge($attributes, $this->getBankAccountAttributes());
 
-        Event::fakeFor(function () use ($employee, $attributes) {
+        $dto = new UpdateEmployeeDto($attributes);
+
+        Event::fakeFor(function () use ($employee, $dto) {
             //execution
-            $this->service->update($attributes, $employee);
+            $this->service->update($dto, $employee);
 
             //verifications
             Event::assertDispatched('eloquent.updated: ' . Employee::class);
@@ -247,9 +263,9 @@ class EmployeeServiceTest extends TestCase
         $generator = $this->faker->unique();
 
         return [
-            'bank_name' => 'Test Bank',
-            'agency_number' => (string) $generator->numberBetween(1000, 9999),
-            'account_number' => (string) $generator->numberBetween(1000, 9999),
+            'bankName' => 'Test Bank',
+            'agencyNumber' => (string) $generator->numberBetween(1000, 9999),
+            'accountNumber' => (string) $generator->numberBetween(1000, 9999),
         ];
     }
 }

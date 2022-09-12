@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Role;
 
+use App\Services\Dto\UpdateRoleDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -37,5 +38,15 @@ class UpdateRoleRequest extends FormRequest
     {
         $srr = new StoreRoleRequest();
         return $srr->messages();
+    }
+
+    public function toDto(): UpdateRoleDto
+    {
+        return new UpdateRoleDto(
+            name: $this->validated('name') ?? '',
+            description: $this->validated('description') ?? '',
+            grantValue: $this->validated('grant_value') ?? '',
+            grantTypeId: $this->validated('grant_type_id') ?? '',
+        );
     }
 }

@@ -6,6 +6,8 @@ use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Employee;
 use App\Models\User;
+use App\Services\Dto\StoreUserDto;
+use App\Services\Dto\UpdateUserDto;
 use App\Services\UserService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -87,9 +89,11 @@ class UserServiceTest extends TestCase
         $attributes['password'] = 'password3';
         $attributes['active'] = true;
 
-        Event::fakeFor(function () use ($attributes) {
+        $dto = new StoreUserDto($attributes);
+
+        Event::fakeFor(function () use ($dto) {
             //execution
-            $this->service->create($attributes);
+            $this->service->create($dto);
 
             //verifications
             Event::assertDispatched('eloquent.creating: ' . User::class);
@@ -111,10 +115,13 @@ class UserServiceTest extends TestCase
 
         $attributes['email'] = 'marydoe@test4.com';
         $attributes['password'] = 'password4';
+        $attributes['active'] = false;
 
-        Event::fakeFor(function () use ($user, $attributes) {
+        $dto = new UpdateUserDto($attributes);
+
+        Event::fakeFor(function () use ($user, $dto) {
             //execution
-            $this->service->update($attributes, $user);
+            $this->service->update($dto, $user);
 
             //verifications
             Event::assertDispatched('eloquent.updating: ' . User::class);
@@ -140,9 +147,12 @@ class UserServiceTest extends TestCase
         $attributes['password'] = '';
         $attributes['active'] = true;
 
-        Event::fakeFor(function () use ($user, $attributes) {
+        $dto = new UpdateUserDto($attributes);
+
+        Event::fakeFor(function () use ($user, $dto) {
             //execution
-            $this->service->update($attributes, $user);
+            $this->service->update($dto, $user);
+
 
             //verifications
             Event::assertDispatched('eloquent.updating: ' . User::class);
@@ -171,16 +181,20 @@ class UserServiceTest extends TestCase
         $attributes = [];
 
         $attributes['email'] = 'userShouldHaveEmployeeAtached@test4.com';
-        $attributes['employee_id'] = Employee::orderBy('id', 'desc')->first()->id;
+        $attributes['employeeId'] = Employee::orderBy('id', 'desc')->first()->id;
+        $attributes['password'] = '';
+        $attributes['active'] = true;
 
-        Event::fakeFor(function () use ($attributes, $user) {
+        $dto = new UpdateUserDto($attributes);
+
+        Event::fakeFor(function () use ($user, $attributes, $dto) {
             //execution
-            $this->service->update($attributes, $user);
+            $this->service->update($dto, $user);
 
             //verifications
             Event::assertDispatched('eloquent.updating: ' . User::class);
             $this->assertContains('Mary Doe', Employee::pluck('name')->toArray());
-            $this->assertEquals($attributes['employee_id'], $user->employee_id);
+            $this->assertEquals($attributes['employeeId'], $user->employee_id);
             $this->assertCount(3, User::all());
         });
     }

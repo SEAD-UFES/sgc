@@ -60,7 +60,7 @@ class RoleController extends Controller
     public function store(StoreRoleRequest $request): RedirectResponse
     {
         try {
-            $this->service->create($request->validated());
+            $this->service->create($request->toDto());
         } catch (\Exception $e) {
             return redirect()->route('bonds.index')->withErrors(['noStore' => 'Não foi possível salvar a Função: ' . $e->getMessage()]);
         }
@@ -107,7 +107,7 @@ class RoleController extends Controller
     public function update(UpdateRoleRequest $request, Role $role): RedirectResponse
     {
         try {
-            $this->service->update($request->validated(), $role);
+            $this->service->update($request->toDto(), $role);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar a Função: ' . $e->getMessage()]);
         }

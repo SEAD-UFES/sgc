@@ -27,15 +27,8 @@ class UpdateCurrentPasswordController extends Controller
          */
         $user = auth()->user();
 
-        /**
-         * @var array<string, string> $requestArr
-         */
-        $requestArr = $request->validated();
-        $requestArr['active'] = 'on';
-        $requestArr['email'] = $user->email;
-
         try {
-            $user = $this->service->update($requestArr, $user);
+            $user = $this->service->updateCurrentPassword($request->toDto(), $user);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
         }

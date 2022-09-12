@@ -56,7 +56,7 @@ class UserController extends Controller
     public function store(StoreUserRequest $request): RedirectResponse
     {
         try {
-            $this->service->create($request->validated());
+            $this->service->create($request->toDto());
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
         }
@@ -103,7 +103,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user): RedirectResponse
     {
         try {
-            $user = $this->service->update($request->validated(), $user);
+            $user = $this->service->update($request->toDto(), $user);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
         }

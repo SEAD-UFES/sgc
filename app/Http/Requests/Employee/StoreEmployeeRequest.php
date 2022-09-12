@@ -4,6 +4,7 @@ namespace App\Http\Requests\Employee;
 
 use App\Enums\Genders;
 use App\Enums\MaritalStatuses;
+use App\Services\Dto\StoreEmployeeDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Enum;
@@ -98,5 +99,40 @@ class StoreEmployeeRequest extends FormRequest
             'email.email' => 'O email deve ser válido',
             'email.unique' => 'O email não pode repetir um previamente já cadastrado por outra pessoa',
         ];
+    }
+
+    public function toDto(): StoreEmployeeDto
+    {
+        return new StoreEmployeeDto(
+            name: $this->validated('name') ?? '',
+            cpf: $this->validated('cpf') ?? '',
+            job: $this->validated('job') ?? '',
+            gender: $this->validated('gender'),
+            birthday: $this->validated('birthday') ?? '',
+            birthStateId: $this->validated('birth_state_id'),
+            birthCity: $this->validated('birth_city') ?? '',
+            documentTypeId: $this->validated('document_type_id'),
+            idNumber: $this->validated('id_number') ?? '',
+            idIssueDate: $this->validated('id_issue_date') ?? '',
+            idIssueAgency: $this->validated('id_issue_agency') ?? '',
+            maritalStatus: $this->validated('marital_status'),
+            spouseName: $this->validated('spouse_name') ?? '',
+            fatherName: $this->validated('father_name') ?? '',
+            motherName: $this->validated('mother_name') ?? '',
+            addressStreet: $this->validated('address_street') ?? '',
+            addressComplement: $this->validated('address_complement') ?? '',
+            addressNumber: $this->validated('address_number') ?? '',
+            addressDistrict: $this->validated('address_district') ?? '',
+            addressPostalCode: $this->validated('address_postal_code') ?? '',
+            addressStateId: $this->validated('address_state_id'),
+            addressCity: $this->validated('address_city') ?? '',
+            areaCode: $this->validated('area_code') ?? '',
+            phone: $this->validated('phone') ?? '',
+            mobile: $this->validated('mobile') ?? '',
+            email: $this->validated('email') ?? '',
+            bankName: $this->validated('bank_name') ?? '',
+            agencyNumber: $this->validated('agency_number') ?? '',
+            accountNumber: $this->validated('account_number') ?? '',
+        );
     }
 }

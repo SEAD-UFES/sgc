@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\EmployeeDocument;
 
+use App\Services\Dto\StoreEmployeeDocumentDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -45,5 +46,14 @@ class StoreEmployeeDocumentRequest extends FormRequest
             'employee_id.required' => 'O Colaborador é obrigatório',
             'employee_id.exists' => 'O Colaborador deve estar entre os fornecidos',
         ];
+    }
+
+    public function toDto(): StoreEmployeeDocumentDto
+    {
+        return new StoreEmployeeDocumentDto(
+            file: $this->file('file'),
+            documentTypeId: $this->validated('document_type_id') ?? '',
+            employeeId: $this->validated('employee_id') ?? '',
+        );
     }
 }

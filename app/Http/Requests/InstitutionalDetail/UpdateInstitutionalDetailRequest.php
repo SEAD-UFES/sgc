@@ -4,6 +4,7 @@ namespace App\Http\Requests\InstitutionalDetail;
 
 use App\Models\Employee;
 use App\Models\InstitutionalDetail;
+use App\Services\Dto\UpdateInstitutionalDetailDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -58,5 +59,13 @@ class UpdateInstitutionalDetailRequest extends FormRequest
             'email.email' => 'O email deve ser válido',
             'email.unique' => 'O email não pode repetir um previamente já cadastrado',
         ];
+    }
+
+    public function toDto(): UpdateInstitutionalDetailDto
+    {
+        return new UpdateInstitutionalDetailDto(
+            login: $this->validated('login') ?? '',
+            email: $this->validated('email') ?? '',
+        );
     }
 }

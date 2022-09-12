@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\BondDocument;
 
+use App\Services\Dto\StoreBondDocumentDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -45,5 +46,14 @@ class StoreBondDocumentRequest extends FormRequest
             'bond_id.required' => 'O Vínculo é obrigatório',
             'bond_id.exists' => 'O Vínculo deve estar entre os fornecidos',
         ];
+    }
+
+    public function toDto(): StoreBondDocumentDto
+    {
+        return new StoreBondDocumentDto(
+            file: $this->file('file'),
+            documentTypeId: $this->validated('document_type_id') ?? '',
+            bondId: $this->validated('bond_id') ?? '',
+        );
     }
 }

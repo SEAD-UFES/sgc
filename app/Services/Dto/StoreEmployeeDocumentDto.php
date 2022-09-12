@@ -7,9 +7,9 @@ use Spatie\DataTransferObject\DataTransferObject;
 
 class StoreEmployeeDocumentDto extends DataTransferObject
 {
-    public string $document_type_id;
+    public string $documentTypeId;
 
-    public string $employee_id;
+    public string $employeeId;
 
     public UploadedFile $file;
 }

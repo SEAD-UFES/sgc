@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\User;
 
+use App\Services\Dto\StoreUserDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -28,6 +29,7 @@ class StoreUserRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
             'active' => 'sometimes',
+            'employee_id' => 'nullable|exists:employees,id',
         ];
     }
 
@@ -41,6 +43,17 @@ class StoreUserRequest extends FormRequest
             'email.email' => 'O endereço de E-mail deve ser válido',
             'email.unique' => 'O endereço não pode ser igual a outro já cadastrado',
             'password.required' => 'A Senha é obrigatória',
+            'employee_id.exists' => 'O Colaborador deve ser válido',
         ];
+    }
+
+    public function toDto(): StoreUserDto
+    {
+        return new StoreUserDto(
+            email: $this->validated('email') ?? '',
+            password: $this->validated('password') ?? '',
+            active: ($this->validated('active') ?? '') === 'on',
+            employeeId: $this->validated('employee_id'),
+        );
     }
 }

@@ -54,7 +54,7 @@ class CourseController extends Controller
      */
     public function store(StoreCourseRequest $request): RedirectResponse
     {
-        $this->service->create($request->validated());
+        $this->service->create($request->toDto());
 
         return redirect()->route('courses.index')->with('success', 'Curso criado com sucesso.');
     }
@@ -84,7 +84,7 @@ class CourseController extends Controller
     public function update(UpdateCourseRequest $request, Course $course): RedirectResponse
     {
         try {
-            $this->service->update($request->validated(), $course);
+            $this->service->update($request->toDto(), $course);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o curso: ' . $e->getMessage()]);
         }

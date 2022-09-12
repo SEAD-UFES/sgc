@@ -10,11 +10,11 @@ class StoreCourseDto extends DataTransferObject
 
     public string $description;
 
-    public string $course_type_id;
+    public string $courseTypeId;
 
-    public string $begin;
+    public ?string $begin;
 
-    public string $end;
+    public ?string $end;
 
-    public string $lms_url;
+    public string $lmsUrl;
 }

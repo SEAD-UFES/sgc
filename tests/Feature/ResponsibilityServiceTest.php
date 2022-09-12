@@ -8,6 +8,8 @@ use App\Models\Course;
 use App\Models\User;
 use App\Models\UserType;
 use App\Models\Responsibility;
+use App\Services\Dto\StoreResponsibilityDto;
+use App\Services\Dto\UpdateResponsibilityDto;
 use App\Services\ResponsibilityService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -88,15 +90,17 @@ class ResponsibilityServiceTest extends TestCase
         //setting up scenario
         $attributes = [];
 
-        $attributes['user_id'] = 2;
-        $attributes['user_type_id'] = 1;
-        $attributes['course_id'] = 2;
+        $attributes['userId'] = 2;
+        $attributes['userTypeId'] = 1;
+        $attributes['courseId'] = 2;
         $attributes['begin'] = now();
         $attributes['end'] = now();
 
-        Event::fakeFor(function () use ($attributes) {
+        $dto = new StoreResponsibilityDto($attributes);
+
+        Event::fakeFor(function () use ($dto) {
             //execution
-            $responsibility = $this->service->create($attributes);
+            $responsibility = $this->service->create($dto);
 
             //verifications
             Event::assertDispatched('eloquent.created: ' . Responsibility::class);
@@ -121,15 +125,17 @@ class ResponsibilityServiceTest extends TestCase
 
         $attributes = [];
 
-        $attributes['user_id'] = $newUser->id;
-        $attributes['user_type_id'] = $newUserType->id;
-        $attributes['course_id'] = $newCourse->id;
+        $attributes['userId'] = $newUser->id;
+        $attributes['userTypeId'] = $newUserType->id;
+        $attributes['courseId'] = $newCourse->id;
         $attributes['begin'] = now();
         $attributes['end'] = now();
 
-        Event::fakeFor(function () use ($attributes, $responsibility) {
+        $dto = new UpdateResponsibilityDto($attributes);
+
+        Event::fakeFor(function () use ($dto, $responsibility) {
             //execution
-            $this->service->update($attributes, $responsibility);
+            $this->service->update($dto, $responsibility);
 
             //verifications
             Event::assertDispatched('eloquent.updated: ' . Responsibility::class);

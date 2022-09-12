@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\InstitutionalDetail;
 
+use App\Services\Dto\StoreInstitutionalDetailDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -41,5 +42,13 @@ class StoreInstitutionalDetailRequest extends FormRequest
             'email.email' => 'O email deve ser válido',
             'email.unique' => 'O email não pode repetir um previamente já cadastrado',
         ];
+    }
+
+    public function toDto(): StoreInstitutionalDetailDto
+    {
+        return new StoreInstitutionalDetailDto(
+            login: $this->validated('login') ?? '',
+            email: $this->validated('email') ?? '',
+        );
     }
 }

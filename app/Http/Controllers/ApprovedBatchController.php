@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Approved\CreateApprovedRequest;
 use App\Http\Requests\Approved\ImportApprovedsFileRequest;
-use App\Http\Requests\Approved\StoreApprovedsRequest;
+use App\Http\Requests\Approved\StoreApprovedBatchRequest;
 use App\Services\ApprovedService;
 use App\Services\ApprovedsSourceService;
 use Illuminate\Http\RedirectResponse;
@@ -70,11 +70,11 @@ class ApprovedBatchController extends Controller
     /**
      * Undocumented function
      *
-     * @param StoreApprovedsRequest $request
+     * @param StoreApprovedBatchRequest $request
      *
      * @return RedirectResponse
      */
-    public function storeManyStep2(StoreApprovedsRequest $request): RedirectResponse
+    public function storeManyStep2(StoreApprovedBatchRequest $request): RedirectResponse
     {
         try {
             $this->service->batchStore($request->validated());

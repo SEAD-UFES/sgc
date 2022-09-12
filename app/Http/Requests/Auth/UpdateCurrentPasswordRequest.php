@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Services\Dto\UpdateCurrentPasswordDto;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCurrentPasswordRequest extends FormRequest
@@ -39,5 +40,13 @@ class UpdateCurrentPasswordRequest extends FormRequest
             'confirmPassword.required' => 'A Confirmação da Nova Senha é obrigatória',
             'confirmPassword.same' => 'A Confirmação da Nova Senha deve ser igual a Nova Senha',
         ];
+    }
+
+    public function toDto(): UpdateCurrentPasswordDto
+    {
+        return new UpdateCurrentPasswordDto(
+            password: $this->validated('password'),
+            confirmPassword: $this->validated('confirm_password'),
+        );
     }
 }

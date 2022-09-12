@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Bond;
 
 use App\Enums\KnowledgeAreas;
+use App\Services\Dto\StoreBondDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Enum;
@@ -26,6 +27,7 @@ class StoreBondRequest extends FormRequest
      */
     public function rules(): array
     {
+        // TODO: change course_name in this context to knowledge_course_name
         return [
 
             'employee_id' => 'required|exists:employees,id',
@@ -59,5 +61,21 @@ class StoreBondRequest extends FormRequest
             'end.date' => 'Início deve ser uma data',
             'knowledge_area.Illuminate\Validation\Rules\Enum' => 'O campo deve ser preenchido com uma das opções fornecidas',
         ];
+    }
+
+    public function toDto(): StoreBondDto
+    {
+        return new StoreBondDto(
+            employeeId: $this->validated('employee_id') ?? '',
+            roleId: $this->validated('role_id') ?? '',
+            courseId: $this->validated('course_id') ?? '',
+            poleId: $this->validated('pole_id') ?? '',
+            begin: $this->validated('begin'),
+            end: $this->validated('end'),
+            volunteer: ($this->validated('volunteer') ?? '') === 'on',
+            knowledgeArea: $this->validated('knowledge_area'),
+            courseName: $this->validated('course_name') ?? '',
+            institutionName: $this->validated('institution_name') ?? '',
+        );
     }
 }

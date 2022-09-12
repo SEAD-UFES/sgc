@@ -6,8 +6,9 @@ use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Helpers\TextHelper;
 use App\Models\Course;
+use App\Services\Dto\StoreCourseDto;
+use App\Services\Dto\UpdateCourseDto;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Arr;
 
 class CourseService
 {
@@ -33,25 +34,20 @@ class CourseService
     /**
      * Undocumented function
      *
-     * @param array<string, string> $attributes
+     * @param StoreCourseDto $storeCourseDto
      *
      * @return Course
      */
-    public function create(array $attributes): Course
+    public function create(StoreCourseDto $storeCourseDto): Course
     {
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return TextHelper::titleCase($value);
-        });
-
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return $key === 'lms_url' ? mb_strtolower($value) : $value;
-        });
-
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return $value === '' ? null : $value;
-        });
-
-        return Course::create($attributes);
+        return Course::create([
+            'name' => TextHelper::titleCase($storeCourseDto->name),
+            'description' => TextHelper::titleCase($storeCourseDto->description),
+            'course_type_id' => $storeCourseDto->courseTypeId,
+            'begin' => $storeCourseDto->begin,
+            'end' => $storeCourseDto->end,
+            'lms_url' => mb_strtolower($storeCourseDto->lmsUrl),
+        ]);
     }
 
     /**
@@ -69,26 +65,21 @@ class CourseService
     }
 
     /**
-     * @param array<string, string> $attributes
+     * @param UpdateCourseDto $updateCourseDto
      * @param Course $course
      *
      * @return Course
      */
-    public function update(array $attributes, Course $course): Course
+    public function update(UpdateCourseDto $updateCourseDto, Course $course): Course
     {
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return TextHelper::titleCase($value);
-        });
-
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return $key === 'lms_url' ? mb_strtolower($value) : $value;
-        });
-
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return $value === '' ? null : $value;
-        });
-
-        $course->update($attributes);
+        $course->update([
+            'name' => TextHelper::titleCase($updateCourseDto->name),
+            'description' => TextHelper::titleCase($updateCourseDto->description),
+            'course_type_id' => $updateCourseDto->courseTypeId,
+            'begin' => $updateCourseDto->begin,
+            'end' => $updateCourseDto->end,
+            'lms_url' => mb_strtolower($updateCourseDto->lmsUrl),
+        ]);
 
         return $course;
     }

@@ -5,6 +5,10 @@ namespace App\Services;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\User;
+use App\Services\Dto\StoreUserDto;
+use App\Services\Dto\UpdateCurrentPasswordDto;
+use App\Services\Dto\UpdateUserDto;
+use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
 
@@ -32,18 +36,18 @@ class UserService
     /**
      * Undocumented function
      *
-     * @param array<string, string> $attributes
+     * @param StoreUserDto $storeUserDto
      *
      * @return User
      */
-    public function create(array $attributes): User
+    public function create(StoreUserDto $storeUserDto): User
     {
-        $attributes['email'] = mb_strtolower($attributes['email']);
-
-        $attributes['password'] = Hash::make($attributes['password']);
-        $attributes['active'] = isset($attributes['active']);
-
-        return User::create($attributes);
+        return User::create([
+            'email' => mb_strtolower($storeUserDto->email),
+            'password' => Hash::make($storeUserDto->password),
+            'active' => $storeUserDto->active,
+            'employee_id' => $storeUserDto->employeeId,
+        ]);
     }
 
     /**
@@ -63,24 +67,40 @@ class UserService
     /**
      * Undocumented function
      *
-     * @param array<string, string> $attributes
+     * @param UpdateUserDto $updateUserDto
      * @param User $user
      *
      * @return User
      */
-    public function update(array $attributes, User $user): User
+    public function update(UpdateUserDto $updateUserDto, User $user): User
     {
-        $attributes['email'] = mb_strtolower($attributes['email']);
+        $user->update([
+            'email' => mb_strtolower($updateUserDto->email),
+            'password' => $updateUserDto->password !== '' ? Hash::make($updateUserDto->password) : $user->password,
+            'active' => $updateUserDto->active,
+            'employee_id' => $updateUserDto->employeeId,
+        ]);
 
-        if (isset($attributes['password']) && $attributes['password'] !== '') {
-            $attributes['password'] = Hash::make($attributes['password']);
-        } else {
-            unset($attributes['password']);
+        return $user;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param UpdateCurrentPasswordDto $updateCurrentPasswordDto
+     * @param User $user
+     *
+     * @return User
+     */
+    public function updateCurrentPassword(UpdateCurrentPasswordDto $updateCurrentPasswordDto, User $user): User
+    {
+        if ($updateCurrentPasswordDto->password === null || $updateCurrentPasswordDto->password === '') {
+            throw new Exception('A senha não pode ser vazia');
         }
 
-        $attributes['active'] = isset($attributes['active']);
-
-        $user->update($attributes);
+        $user->update([
+            'password' => Hash::make($updateCurrentPasswordDto->password),
+        ]);
 
         return $user;
     }

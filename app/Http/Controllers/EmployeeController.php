@@ -62,11 +62,7 @@ class EmployeeController extends Controller
             /**
              * @var Employee $employee
              */
-            $employee = $this->service->create($request->validated());
-
-            if ($request->importDocuments === 'true') {
-                return redirect()->route('employeesDocuments.createMany', $employee->id)->with('success', 'Colaborador criado com sucesso.');
-            }
+            $employee = $this->service->create($request->toDto());
         } catch (\Exception $e) {
             return redirect()->route('employees.index')->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $e->getMessage()]);
         }
@@ -118,7 +114,7 @@ class EmployeeController extends Controller
     public function update(UpdateEmployeeRequest $request, Employee $employee): RedirectResponse
     {
         try {
-            $this->service->update($request->validated(), $employee);
+            $this->service->update($request->toDto(), $employee);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $e->getMessage()]);
         }

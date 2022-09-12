@@ -13,6 +13,8 @@ use App\Models\Employee;
 use App\Models\EmployeeDocument;
 use App\Models\UserType;
 use App\Services\BondService;
+use App\Services\Dto\StoreBondDto;
+use App\Services\Dto\UpdateBondDto;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
@@ -126,18 +128,21 @@ class BondServiceTest extends TestCase
         //setting up scenario
         $attributes = [];
 
-        $attributes['employee_id'] = 1;
-        $attributes['role_id'] = 2;
-        $attributes['course_id'] = 2;
-        $attributes['pole_id'] = 1;
+        $attributes['employeeId'] = 1;
+        $attributes['roleId'] = 2;
+        $attributes['courseId'] = 2;
+        $attributes['poleId'] = 1;
+        $attributes['volunteer'] = false;
         $attributes = array_merge($attributes, $this->getQualificationAttributes());
+
+        $dto = new StoreBondDto($attributes);
 
         //Should be mocked?
         UserType::create(['name' => 'Assistant', 'acronym' => 'ass', 'description' => '']);
 
-        Event::fakeFor(function () use ($attributes) {
+        Event::fakeFor(function () use ($dto) {
             //execution
-            $this->service->create($attributes);
+            $this->service->create($dto);
 
             //verifications
             Event::assertDispatched('eloquent.created: ' . Bond::class);
@@ -155,24 +160,27 @@ class BondServiceTest extends TestCase
         //setting up scenario
         $attributes = [];
 
-        $attributes['employee_id'] = 1;
-        $attributes['role_id'] = 2;
-        $attributes['course_id'] = 2;
-        $attributes['pole_id'] = 1;
+        $attributes['employeeId'] = 1;
+        $attributes['roleId'] = 2;
+        $attributes['courseId'] = 2;
+        $attributes['poleId'] = 1;
+        $attributes['volunteer'] = false;
         $attributes = array_merge($attributes, $this->getQualificationAttributes());
+
+        $dto = new StoreBondDto($attributes);
 
         //Should be mocked?
         UserType::create(['name' => 'Assistant', 'acronym' => 'ass', 'description' => '']);
 
         Document::factory()->create([
             'original_name' => 'EmployeeDummyFile.pdf',
-            'documentable_id' => EmployeeDocument::factory()->createOne(['employee_id' => $attributes['employee_id']])->id,
+            'documentable_id' => EmployeeDocument::factory()->createOne(['employee_id' => $attributes['employeeId']])->id,
             'documentable_type' => 'App\Models\EmployeeDocument',
         ]);
 
-        Event::fakeFor(function () use ($attributes) {
+        Event::fakeFor(function () use ($dto) {
             //execution
-            $this->service->create($attributes);
+            $this->service->create($dto);
 
             //verifications
             Event::assertDispatched('eloquent.created: ' . Bond::class);
@@ -194,13 +202,18 @@ class BondServiceTest extends TestCase
 
         $attributes = [];
 
-        $attributes['employee_id'] = 2;
-        $attributes['course_id'] = 2;
+        $attributes['employeeId'] = 2;
+        $attributes['roleId'] = 2;
+        $attributes['courseId'] = 2;
+        $attributes['poleId'] = 1;
+        $attributes['volunteer'] = false;
         $attributes = array_merge($attributes, $this->getQualificationAttributes());
 
-        Event::fakeFor(function () use ($attributes, $bond) {
+        $dto = new UpdateBondDto($attributes);
+
+        Event::fakeFor(function () use ($dto, $bond) {
             //execution
-            $this->service->update($attributes, $bond);
+            $this->service->update($dto, $bond);
 
             //verifications
             Event::assertDispatched('eloquent.updated: ' . Bond::class);
@@ -260,9 +273,9 @@ class BondServiceTest extends TestCase
     private function getQualificationAttributes(): array
     {
         return [
-            'knowledge_area' => strval($this->faker->randomElement(KnowledgeAreas::getValuesInAlphabeticalOrder())),
-            'course_name' => 'Test Course',
-            'institution_name' => 'Test Institution',
+            'knowledgeArea' => strval($this->faker->randomElement(KnowledgeAreas::getValuesInAlphabeticalOrder())),
+            'courseName' => 'Test Course',
+            'institutionName' => 'Test Institution',
         ];
     }
 }

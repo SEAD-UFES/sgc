@@ -41,7 +41,7 @@ class InstitutionalDetailController extends Controller
     public function store(StoreInstitutionalDetailRequest $request, Employee $employee): RedirectResponse
     {
         try {
-            $this->service->create($request->validated(), $employee);
+            $this->service->create($request->toDto(), $employee);
         } catch (\Exception $e) {
             return redirect()->route('employees.show', $employee->id)->withErrors(['noStore' => 'Não foi possível salvar os Detalhes Intitucionais: ' . $e->getMessage()]);
         }
@@ -80,7 +80,7 @@ class InstitutionalDetailController extends Controller
         $institutionalDetail = $employee->institutionalDetail;
 
         try {
-            $institutionalDetail = $this->service->update($request->validated(), $institutionalDetail, $employee);
+            $institutionalDetail = $this->service->update($request->toDto(), $employee);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar os Detalhes Institucionais: ' . $e->getMessage()]);
         }

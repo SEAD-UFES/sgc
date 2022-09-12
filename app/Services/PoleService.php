@@ -6,8 +6,9 @@ use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Helpers\TextHelper;
 use App\Models\Pole;
+use App\Services\Dto\StorePoleDto;
+use App\Services\Dto\UpdatePoleDto;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Arr;
 
 class PoleService
 {
@@ -33,21 +34,16 @@ class PoleService
     /**
      * Undocumented function
      *
-     * @param array<string, string> $attributes
+     * @param StorePoleDto $storePoleDto
      *
      * @return Pole
      */
-    public function create(array $attributes): Pole
+    public function create(StorePoleDto $storePoleDto): Pole
     {
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return TextHelper::titleCase($value);
-        });
-
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return $value === '' ? null : $value;
-        });
-
-        return Pole::create($attributes);
+        return Pole::create([
+            'name' => TextHelper::titleCase($storePoleDto->name),
+            'description' => TextHelper::titleCase($storePoleDto->description),
+        ]);
     }
 
     /**
@@ -67,22 +63,17 @@ class PoleService
     /**
      * Undocumented function
      *
-     * @param array<string, string> $attributes
+     * @param UpdatePoleDto $updatePoleDto
      * @param Pole $pole
      *
      * @return Pole
      */
-    public function update(array $attributes, Pole $pole): Pole
+    public function update(UpdatePoleDto $updatePoleDto, Pole $pole): Pole
     {
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return TextHelper::titleCase($value);
-        });
-
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return $value === '' ? null : $value;
-        });
-
-        $pole->update($attributes);
+        $pole->update([
+            'name' => TextHelper::titleCase($updatePoleDto->name),
+            'description' => TextHelper::titleCase($updatePoleDto->description),
+        ]);
 
         return $pole;
     }

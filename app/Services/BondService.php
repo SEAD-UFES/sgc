@@ -16,6 +16,8 @@ use App\Models\Document;
 use App\Models\DocumentType;
 use App\Models\EmployeeDocument;
 use App\Services\Dto\ReviewBondDto;
+use App\Services\Dto\StoreBondDto;
+use App\Services\Dto\UpdateBondDto;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
@@ -43,58 +45,39 @@ class BondService
     /**
      * Undocumented function
      *
-     * @param array<string, string> $attributes
+     * @param StoreBondDto $storeBondDto
      *
-     * @return Bond
+     * @return mixed
      */
-    public function create(array $attributes): ?Bond
+    public function create(StoreBondDto $storeBondDto): mixed
     {
-        $attributes['volunteer'] = isset($attributes['volunteer']);
-        $attributes['terminated_at'] = null;
-        $attributes['impediment'] = true;
-        $attributes['impediment_description'] = 'Vínculo ainda não revisado';
-        $attributes['uaba_checked_at'] = null;
-
-        $bond = null;
-
-        DB::transaction(static function () use ($attributes, &$bond) {
-            $bond = Bond::create($attributes);
-
-            $bond->qualification()->create([
-                'knowledge_area' => $attributes['knowledge_area'],
-                'course_name' => TextHelper::titleCase($attributes['course_name']),
-                'institution_name' => TextHelper::titleCase($attributes['institution_name']),
+        return DB::transaction(static function () use ($storeBondDto) {
+            $bond = new Bond([
+                'employee_id' => $storeBondDto->employeeId,
+                'role_id' => $storeBondDto->roleId,
+                'course_id' => $storeBondDto->courseId,
+                'pole_id' => $storeBondDto->poleId,
+                'begin' => $storeBondDto->begin,
+                'end' => $storeBondDto->end,
+                'terminated_at' => null,
+                'volunteer' => $storeBondDto->volunteer,
+                'impediment' => true,
+                'impediment_description' => 'SGC: Vínculo ainda não revisado',
+                'uaba_checked_at' => null,
             ]);
 
-            $employeeDocuments = EmployeeDocument::where('employee_id', $bond->employee_id)->get();
-            foreach ($employeeDocuments as $employeeDocument) {
-                $bondDocument = new BondDocument();
-                $bondDocument->bond_id = $bond->id;
-                $bondDocument->save();
+            $bond->save();
 
-                /**
-                 * @var Document $employeeBaseDocument
-                 */
-                $employeeBaseDocument = $employeeDocument->document;
+            $bond->qualification()->create([
+                'knowledge_area' => $storeBondDto->knowledgeArea,
+                'course_name' => TextHelper::titleCase($storeBondDto->courseName),
+                'institution_name' => TextHelper::titleCase($storeBondDto->institutionName),
+            ]);
 
-                /**
-                 * @var DocumentType $employeeBaseDocumentType
-                 */
-                $employeeBaseDocumentType = $employeeBaseDocument->documentType;
-
-                $newDocument = new Document();
-                $newDocument->original_name = $employeeBaseDocument->original_name;
-                $newDocument->file_data = $employeeBaseDocument->file_data;
-                $newDocument->document_type_id = $employeeBaseDocumentType->id;
-                $newDocument->documentable_type = BondDocument::class;
-                $newDocument->documentable_id = $bondDocument->id;
-                $newDocument->save();
-            }
+            self::carryEmployeeDocuments($bond);
 
             BondCreated::dispatch($bond);
         });
-
-        return $bond;
     }
 
     /**
@@ -114,22 +97,30 @@ class BondService
     /**
      * Undocumented function
      *
-     * @param array<string, string> $attributes
+     * @param UpdateBondDto $updateBondDto
      * @param Bond $bond
      *
      * @return Bond
      */
-    public function update(array $attributes, Bond $bond): Bond
+    public function update(UpdateBondDto $updateBondDto, Bond $bond): Bond
     {
-        $attributes['volunteer'] = isset($attributes['volunteer']);
+        DB::transaction(static function () use ($updateBondDto, $bond) {
+            $bond->update([
+                'employee_id' => $updateBondDto->employeeId,
+                'role_id' => $updateBondDto->roleId,
+                'course_id' => $updateBondDto->courseId,
+                'pole_id' => $updateBondDto->poleId,
+                'begin' => $updateBondDto->begin,
+                'end' => $updateBondDto->end,
+                'volunteer' => $updateBondDto->volunteer,
+            ]);
 
-        $bond->update($attributes);
-
-        $bond->qualification()->updateOrCreate([], [
-            'knowledge_area' => $attributes['knowledge_area'],
-            'course_name' => TextHelper::titleCase($attributes['course_name']),
-            'institution_name' => TextHelper::titleCase($attributes['institution_name']),
-        ]);
+            $bond->qualification()->updateOrCreate([
+                'knowledge_area' => $updateBondDto->knowledgeArea,
+                'course_name' => TextHelper::titleCase($updateBondDto->courseName),
+                'institution_name' => TextHelper::titleCase($updateBondDto->institutionName),
+            ]);
+        });
 
         return $bond;
     }
@@ -204,5 +195,42 @@ class BondService
         BondReviewRequested::dispatch($bond);
 
         return $bond;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Bond $bond
+     *
+     * @return void
+     */
+    private static function carryEmployeeDocuments(Bond $bond): void
+    {
+        $employeeDocuments = EmployeeDocument::where('employee_id', $bond->employee_id)->get();
+        foreach ($employeeDocuments as $employeeDocument) {
+            $bondDocument = new BondDocument([
+                'bond_id' => $bond->id,
+            ]);
+            $bondDocument->save();
+
+            /**
+             * @var Document $employeeBaseDocument
+             */
+            $employeeBaseDocument = $employeeDocument->document;
+
+            /**
+             * @var DocumentType $employeeBaseDocumentType
+             */
+            $employeeBaseDocumentType = $employeeBaseDocument->documentType;
+
+            $newDocument = new Document([
+                'original_name' => $employeeBaseDocument->original_name,
+                'file_data' => $employeeBaseDocument->file_data,
+                'document_type_id' => $employeeBaseDocumentType->id,
+                'documentable_type' => BondDocument::class,
+                'documentable_id' => $bondDocument->id,
+            ]);
+            $newDocument->save();
+        }
     }
 }

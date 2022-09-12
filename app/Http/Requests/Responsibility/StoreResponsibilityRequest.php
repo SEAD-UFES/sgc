@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Responsibility;
 
+use App\Services\Dto\StoreResponsibilityDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -48,5 +49,16 @@ class StoreResponsibilityRequest extends FormRequest
             'begin.date' => 'O início deve ser uma data.',
             'end.date' => 'O fim deve ser uma data.',
         ];
+    }
+
+    public function toDto(): StoreResponsibilityDto
+    {
+        return new StoreResponsibilityDto(
+            userId: $this->validated('user_id') ?? '',
+            userTypeId: $this->validated('user_type_id') ?? '',
+            courseId: $this->validated('course_id'),
+            begin: $this->validated('begin'),
+            end: $this->validated('end'),
+        );
     }
 }

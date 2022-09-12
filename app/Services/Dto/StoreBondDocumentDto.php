@@ -7,9 +7,9 @@ use Spatie\DataTransferObject\DataTransferObject;
 
 class StoreBondDocumentDto extends DataTransferObject
 {
-    public string $document_type_id;
+    public string $documentTypeId;
 
-    public string $bond_id;
+    public string $bondId;
 
     public UploadedFile $file;
 }

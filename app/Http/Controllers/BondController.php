@@ -64,7 +64,7 @@ class BondController extends Controller
         }
 
         try {
-            $this->service->create($request->validated());
+            $this->service->create($request->toDto());
         } catch (\Exception $e) {
             return redirect()->route('bonds.index')->withErrors(['noStore' => 'Não foi possível salvar o Vínculo: ' . $e->getMessage()]);
         }
@@ -122,7 +122,7 @@ class BondController extends Controller
         }
 
         try {
-            $bond = $this->service->update($request->validated(), $bond);
+            $bond = $this->service->update($request->toDto(), $bond);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar o vínculo: ' . $e->getMessage()]);
         }

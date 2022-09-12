@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Role;
+use App\Services\Dto\StoreRoleDto;
+use App\Services\Dto\UpdateRoleDto;
 use App\Services\RoleService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -79,12 +81,14 @@ class RoleServiceTest extends TestCase
 
         $attributes['name'] = 'Role Gama';
         $attributes['description'] = '3rd Role';
-        $attributes['grant_value'] = 123456;
-        $attributes['grant_type_id'] = 1;
+        $attributes['grantValue'] = 123456;
+        $attributes['grantTypeId'] = 1;
 
-        Event::fakeFor(function () use ($attributes) {
+        $dto = new StoreRoleDto($attributes);
+
+        Event::fakeFor(function () use ($dto) {
             //execution
-            $this->service->create($attributes);
+            $this->service->create($dto);
 
             //verifications
             Event::assertDispatched('eloquent.created: ' . Role::class);
@@ -106,10 +110,14 @@ class RoleServiceTest extends TestCase
 
         $attributes['name'] = 'Role Delta';
         $attributes['description'] = 'New 1st Role';
+        $attributes['grantValue'] = 123456;
+        $attributes['grantTypeId'] = 1;
 
-        Event::fakeFor(function () use ($attributes, $role) {
+        $dto = new UpdateRoleDto($attributes);
+
+        Event::fakeFor(function () use ($dto, $role) {
             //execution
-            $this->service->update($attributes, $role);
+            $this->service->update($dto, $role);
 
             //verifications
             Event::assertDispatched('eloquent.updated: ' . Role::class);

@@ -9,9 +9,10 @@ use App\Models\Bond;
 use App\Models\Course;
 use App\Models\Employee;
 use App\Models\User;
+use App\Services\Dto\StoreEmployeeDto;
+use App\Services\Dto\UpdateEmployeeDto;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class EmployeeService
@@ -38,42 +39,48 @@ class EmployeeService
     /**
      * Undocumented function
      *
-     * @param array<string, string> $attributes
+     * @param StoreEmployeeDto $storeEmployeeDto
      *
-     * @return Employee
+     * @return mixed
      */
-    public function create(array $attributes): ?Employee
+    public function create(StoreEmployeeDto $storeEmployeeDto): mixed
     {
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            switch ($key) {
-                case 'email':
-                    return mb_strtolower($value);
-                case 'id_issue_agency':
-                    return mb_strtoupper($value);
-                case 'marital_status':
-                    return $value;
-                default:
-                    return TextHelper::titleCase($value);
-            }
-        });
-
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return $value === '' ? null : $value;
-        });
-
-        $employee = null;
-        DB::transaction(function () use ($attributes, &$employee) {
-            $employee = Employee::create($attributes);
-            $this->userAttach($employee);
-
+        return DB::transaction(static function () use ($storeEmployeeDto) {
+            $employee = new Employee([
+                'name' => TextHelper::titleCase($storeEmployeeDto->name),
+                'cpf' => $storeEmployeeDto->cpf,
+                'job' => TextHelper::titleCase($storeEmployeeDto->job),
+                'gender' => $storeEmployeeDto->gender,
+                'birthday' => $storeEmployeeDto->birthday,
+                'birth_state_id' => $storeEmployeeDto->birthStateId,
+                'birth_city' => TextHelper::titleCase($storeEmployeeDto->birthCity),
+                'document_type_id' => $storeEmployeeDto->documentTypeId,
+                'id_number' => $storeEmployeeDto->idNumber,
+                'id_issue_date' => $storeEmployeeDto->idIssueDate,
+                'id_issue_agency' => mb_strtoupper($storeEmployeeDto->idIssueAgency),
+                'marital_status' => $storeEmployeeDto->maritalStatus,
+                'spouse_name' => TextHelper::titleCase($storeEmployeeDto->spouseName),
+                'father_name' => TextHelper::titleCase($storeEmployeeDto->fatherName),
+                'mother_name' => TextHelper::titleCase($storeEmployeeDto->motherName),
+                'address_street' => TextHelper::titleCase($storeEmployeeDto->addressStreet),
+                'address_complement' => TextHelper::titleCase($storeEmployeeDto->addressComplement),
+                'address_number' => $storeEmployeeDto->addressNumber,
+                'address_district' => TextHelper::titleCase($storeEmployeeDto->addressDistrict),
+                'address_postal_code' => $storeEmployeeDto->addressPostalCode,
+                'address_state_id' => $storeEmployeeDto->addressStateId,
+                'address_city' => TextHelper::titleCase($storeEmployeeDto->addressCity),
+                'area_code' => $storeEmployeeDto->areaCode,
+                'phone' => $storeEmployeeDto->phone,
+                'mobile' => $storeEmployeeDto->mobile,
+                'email' => mb_strtolower($storeEmployeeDto->email),
+            ]);
+            $employee->save();
             $employee->bankAccount()->create([
-                'bank_name' => TextHelper::titleCase($attributes['bank_name']),
-                'agency_number' => $attributes['agency_number'],
-                'account_number' => $attributes['account_number'],
+                'bank_name' => TextHelper::titleCase($storeEmployeeDto->bankName),
+                'agency_number' => $storeEmployeeDto->agencyNumber,
+                'account_number' => $storeEmployeeDto->accountNumber,
             ]);
         });
-
-        return $employee;
     }
 
     /**
@@ -93,44 +100,50 @@ class EmployeeService
     /**
      * Undocumented function
      *
-     * @param array<string, string> $attributes
+     * @param UpdateEmployeeDto $updateEmployeeDto
      * @param Employee $employee
      *
      * @return Employee
      */
-    public function update(array $attributes, Employee $employee): ?Employee
+    public function update(UpdateEmployeeDto $updateEmployeeDto, Employee $employee): ?Employee
     {
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            switch ($key) {
-                case 'email':
-                    return mb_strtolower($value);
-                case 'id_issue_agency':
-                    return mb_strtoupper($value);
-                case 'marital_status':
-                    return $value;
-                default:
-                    return TextHelper::titleCase($value);
-            }
-        });
-
-        $attributes = Arr::map($attributes, static function ($value, $key) {
-            return $value === '' ? null : $value;
-        });
-
-        DB::transaction(function () use ($attributes, $employee) {
-            $employee->update($attributes);
-            $this->userAttach($employee);
-
-            $employee->bankAccount()->updateOrCreate([], [
-                'bank_name' => TextHelper::titleCase($attributes['bank_name']),
-                'agency_number' => $attributes['agency_number'],
-                'account_number' => $attributes['account_number'],
+        DB::transaction(static function () use ($updateEmployeeDto, $employee) {
+            $employee->update([
+                'name' => TextHelper::titleCase($updateEmployeeDto->name),
+                'cpf' => $updateEmployeeDto->cpf,
+                'job' => TextHelper::titleCase($updateEmployeeDto->job),
+                'gender' => $updateEmployeeDto->gender,
+                'birthday' => $updateEmployeeDto->birthday,
+                'birth_state_id' => $updateEmployeeDto->birthStateId,
+                'birth_city' => TextHelper::titleCase($updateEmployeeDto->birthCity),
+                'document_type_id' => $updateEmployeeDto->documentTypeId,
+                'id_number' => $updateEmployeeDto->idNumber,
+                'id_issue_date' => $updateEmployeeDto->idIssueDate,
+                'id_issue_agency' => mb_strtoupper($updateEmployeeDto->idIssueAgency),
+                'marital_status' => $updateEmployeeDto->maritalStatus,
+                'spouse_name' => TextHelper::titleCase($updateEmployeeDto->spouseName),
+                'father_name' => TextHelper::titleCase($updateEmployeeDto->fatherName),
+                'mother_name' => TextHelper::titleCase($updateEmployeeDto->motherName),
+                'address_street' => TextHelper::titleCase($updateEmployeeDto->addressStreet),
+                'address_complement' => TextHelper::titleCase($updateEmployeeDto->addressComplement),
+                'address_number' => $updateEmployeeDto->addressNumber,
+                'address_district' => TextHelper::titleCase($updateEmployeeDto->addressDistrict),
+                'address_postal_code' => $updateEmployeeDto->addressPostalCode,
+                'address_state_id' => $updateEmployeeDto->addressStateId,
+                'address_city' => TextHelper::titleCase($updateEmployeeDto->addressCity),
+                'area_code' => $updateEmployeeDto->areaCode,
+                'phone' => $updateEmployeeDto->phone,
+                'mobile' => $updateEmployeeDto->mobile,
+                'email' => mb_strtolower($updateEmployeeDto->email),
             ]);
-
-            return $employee;
+            $employee->bankAccount()->updateOrCreate([
+                'bank_name' => TextHelper::titleCase($updateEmployeeDto->bankName),
+                'agency_number' => $updateEmployeeDto->agencyNumber,
+                'account_number' => $updateEmployeeDto->accountNumber,
+            ]);
         });
 
-        return null;
+        return $employee;
     }
 
     /**
@@ -172,22 +185,5 @@ class EmployeeService
             $employee->employeeDocuments()->delete();
             $employee->delete();
         });
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param Employee $employee
-     *
-     * @return void
-     */
-    private function userAttach(Employee $employee)
-    {
-        $existentUser = User::where('email', $employee->email)->doesntHave('employee')->first();
-
-        if (! is_null($existentUser)) {
-            $existentUser->employee_id = $employee->id;
-            $existentUser->save();
-        }
     }
 }

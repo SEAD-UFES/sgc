@@ -10,6 +10,7 @@ use App\Models\Course;
 use App\Models\Pole;
 use App\Models\Role;
 use App\Services\ApprovedService;
+use App\Services\Dto\StoreApprovedDto;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
@@ -179,35 +180,37 @@ class ApprovedServiceTest extends TestCase
 
         $attributes['name'] = 'Dilan Doe';
         $attributes['email'] = 'dilan@othertest.com';
-        $attributes['area_code'] = '03';
+        $attributes['areaCode'] = '03';
         $attributes['phone'] = '01234567';
         $attributes['mobile'] = '012345678';
         $attributes['announcement'] = '003';
 
-        $attributes['role_id'] = Role::factory()->createOne(
+        $attributes['roleId'] = Role::factory()->createOne(
             [
                 'name' => 'Super Role',
                 'description' => 'Super Role',
             ]
         )->getAttribute('id');
 
-        $attributes['course_id'] = Course::factory()->createOne(
+        $attributes['courseId'] = Course::factory()->createOne(
             [
                 'name' => 'Course Omicron',
                 'description' => 'Course Omicron',
             ]
         )->getAttribute('id');
 
-        $attributes['pole_id'] = Pole::factory()->createOne(
+        $attributes['poleId'] = Pole::factory()->createOne(
             [
                 'name' => 'Pole Teta',
                 'description' => 'Pole Teta',
             ]
         )->getAttribute('id');
 
-        Event::fakeFor(function () use ($attributes) {
+        $dto = new StoreApprovedDto($attributes);
+
+        Event::fakeFor(function () use ($dto) {
             //execution
-            $this->service->create($attributes);
+            $this->service->create($dto);
 
             //verifications
             Event::assertDispatched('eloquent.created: ' . Approved::class);
@@ -236,12 +239,24 @@ class ApprovedServiceTest extends TestCase
         $approveds[0]['check'] = true;
         $approveds[0]['name'] = 'Bob Doe';
         $approveds[0]['email'] = 'bob@test3.com';
+        $approveds[0]['area_code'] = '27';
+        $approveds[0]['phone'] = '33333333';
+        $approveds[0]['mobile'] = '99999999';
         $approveds[0]['announcement'] = '003';
+        $approveds[0]['role_id'] = '1';
+        $approveds[0]['course_id'] = '1';
+        $approveds[0]['pole_id'] = '1';
 
         $approveds[1]['check'] = true;
         $approveds[1]['name'] = 'Mary Doe';
         $approveds[1]['email'] = 'mary@test4.com';
+        $approveds[1]['area_code'] = '27';
+        $approveds[1]['phone'] = '33333333';
+        $approveds[1]['mobile'] = '99999999';
         $approveds[1]['announcement'] = '004';
+        $approveds[1]['role_id'] = '1';
+        $approveds[1]['course_id'] = '1';
+        $approveds[1]['pole_id'] = '1';
 
         $attributes = [];
         $attributes['approveds'] = $approveds;
