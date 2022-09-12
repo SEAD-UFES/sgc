@@ -48,6 +48,7 @@ class ApprovedState extends Model
             if ($this->name === 'Não contatado') {
                 return ApprovedState::where('name', 'Contatado')->first();
             }
+
             if ($this->name === 'Contatado') {
                 return ApprovedState::where('name', 'Aceitante')->orWhere('name', 'Desistente')->first();
             }
