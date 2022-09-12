@@ -10,14 +10,13 @@ use App\Models\EmployeeDocument;
 use Exception;
 use finfo;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class DocumentService implements DocumentServiceInterface
+class DocumentService
 {
     protected ?string $referentId;
 
@@ -75,49 +74,6 @@ class DocumentService implements DocumentServiceInterface
         $documents->withQueryString();
 
         return $documents;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param array<string, string|UploadedFile> $attributes
-     *
-     * @return void
-     */
-    public function create(array $attributes): void
-    {
-        /**
-         * @var UploadedFile $uploadedFile
-         */
-        $uploadedFile = $attributes['file'];
-
-        $attributes['original_name'] = $uploadedFile->getClientOriginalName();
-
-        $attributes['file_data'] = $this->getFileData($uploadedFile);
-
-        $attributes['documentable_type'] = $this->documentClass;
-
-        DB::transaction(function () use ($attributes) {
-            // Get old versions of this document type
-            $oldDocuments = $this->getOldDocuments($attributes);
-
-            // Delete old versions of this document type
-            $this->deleteOldDocuments($oldDocuments);
-
-            // 'employee_id' or 'bond_id'
-            $referentId = $this->documentClass::referentId();
-
-            /** @var EmployeeDocument|BondDocument $documentable */
-            $documentable = $this->documentClass::create([
-                $referentId => $attributes[$referentId],
-            ]);
-
-            /** @var Document $document */
-            $document = new Document($attributes);
-            $documentable->document()->save($document);
-
-            return $document;
-        });
     }
 
     /**
@@ -373,38 +329,11 @@ class DocumentService implements DocumentServiceInterface
     }
 
     /**
-     * Undocumented function
-     *
-     * @param array<string, string> $document
-     *
-     * @return EloquentCollection<int, Document>
-     */
-    private function getOldDocuments($document): EloquentCollection
-    {
-        $referentId = $this->documentClass::referentId();
-
-        /* Quering for the documents with specific documentable type (EmployeeDocument or BondDocument) and document type
-        where documentables referent (employee or bond) match the data from the form. */
-        /**
-         * @var EloquentCollection<int, Document> $oldDocuments
-         */
-        $oldDocuments = Document::whereHasMorph(
-            'documentable',
-            $this->documentClass,
-            static function (Builder $query) use ($document, $referentId) {
-                $query->where($referentId, $document[$referentId]);
-            }
-        )->where('document_type_id', $document['document_type_id'])->get();
-
-        return $oldDocuments;
-    }
-
-    /**
      * @param EloquentCollection<int, Document> $oldDocuments
      *
      * @return void
      */
-    private function deleteOldDocuments(EloquentCollection $oldDocuments): void
+    protected function deleteOldDocuments(EloquentCollection $oldDocuments): void
     {
         /* If there are old documents, get the documentables */
         $oldDocumentables = $oldDocuments->map(static function ($oldDocument) {
