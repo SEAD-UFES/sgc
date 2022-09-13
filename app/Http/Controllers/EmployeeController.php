@@ -80,7 +80,7 @@ class EmployeeController extends Controller
      */
     public function show(ShowEmployeeRequest $request, Employee $employee): View
     {
-        $this->service->read($employee);
+        $employee = $this->service->read($employee);
 
         $employeeDocuments = EmployeeDocument::where('employee_id', $employee->id)->with('document')->orderBy('updated_at', 'desc')->get();
         $activeBonds = $employee->bonds()->active()->orderBy('begin', 'ASC')->get();

@@ -83,7 +83,7 @@ class BondController extends Controller
      */
     public function show(ShowBondRequest $request, Bond $bond): View
     {
-        $this->service->read($bond);
+        $bond = $this->service->read($bond);
 
         $documents = Document::whereHasMorph('documentable', BondDocument::class, static function ($query) use ($bond) {
             $query->where('bond_id', $bond->id);

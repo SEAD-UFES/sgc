@@ -1,6 +1,6 @@
 <div class="card mb-3">
     <div class="card-header" data-bs-toggle="collapse" href="#employeeDataContent" role="button" aria-expanded="true" aria-controls="employeeDataContent">
-        <h4 class='mb-0'>Dados do colaborador</h4>
+        <h4 class='mb-0'>Dados do Colaborador</h4>
     </div>
     
     <div class="collapse show" id="employeeDataContent" >

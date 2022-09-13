@@ -3,7 +3,7 @@
 
 <div class="card mb-3">
     <div class="card-header" data-bs-toggle="collapse" href="#bondDataContent" role="button" aria-expanded="true" aria-controls="bondDataContent">
-        <h4 class='mb-0'>Dados do vínculo</h4>
+        <h4 class='mb-0'>Dados do Vínculo</h4>
     </div>
 
     <div class="collapse show" id="bondDataContent" >

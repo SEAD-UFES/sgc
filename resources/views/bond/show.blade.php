@@ -24,7 +24,7 @@
                     <div class="card mb-3">
                         <div class="card-header" data-bs-toggle="collapse" href="#bondDocumentListContent" role="button"
                             aria-expanded="true" aria-controls="bondDocumentListContent">
-                            <h4 class='mb-0'>Documentos do vínculo</h4>
+                            <h4 class='mb-0'>Documentos do Vínculo</h4>
                         </div>
                         <div class="collapse show" id="bondDocumentListContent">
                             <div class="card-body">
@@ -73,7 +73,7 @@
                         <div class="card-header {{ $bond->impediment == 0 ? 'bg-success' : 'bg-warning' }}"
                             data-bs-toggle="collapse" href="#bondReviewContent" role="button" aria-expanded="true"
                             aria-controls="bondReviewContent">
-                            <h4 class='mb-0'>Revisão do vínculo</h4>
+                            <h4 class='mb-0'>Revisão do Vínculo</h4>
                         </div>
 
                         <div class="collapse show" id="bondReviewContent">
@@ -164,7 +164,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card mb-4">
+                    <div class="card mb-3">
                         <div class="card-header" data-bs-toggle="collapse" href="#institutionDetails" role="button"
                             aria-expanded="true" aria-controls="institutionDetails">
                             <h4 class='mb-0'>Detalhes Institucionais</h4>
@@ -185,7 +185,28 @@
                             </div>
                         </div>
                     </div>
+                    <div class="card mb-3">
+                        <div class="card-header" data-bs-toggle="collapse" href="#activityDetails" role="button"
+                            aria-expanded="true" aria-controls="activityDetails">
+                            <h4 class='mb-0'>Informações de Cadastro</h4>
+                        </div>
+                        <div class="collapse show" id="activityDetails">
+                            <div class="card-body">
+                                <div class="mb-2 row">
+                                    <div class="col-sm-12 col-lg-12"><h5>Cadastrado</h5></div>
+                                    <div class="col-sm-6 col-lg-6"><strong>Por:</strong> {{ $bond->createdBy?->name ?? '-' }}</div>
+                                    <div class="col-sm-6 col-lg-6"><strong>Em:</strong> {{ (is_null($bond->createdOn)) ? '-' : \Carbon\Carbon::parse($bond->createdOn)->isoFormat('DD/MM/Y HH:mm') }}</div>
+                                </div>
+                                <div class="mb-2 row">
+                                    <div class="col-sm-12 col-lg-12"><h5>Atualizado por último</h5></div>
+                                    <div class="col-sm-6 col-lg-6"><strong>Por:</strong> {{ $bond->updatedBy?->name ?? '-' }}</div>
+                                    <div class="col-sm-6 col-lg-6"><strong>Em:</strong> {{ (is_null($bond->updatedOn)) ? '-' : \Carbon\Carbon::parse($bond->updatedOn)->isoFormat('DD/MM/Y HH:mm') }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <a href="{{ route('bonds.index') }}" class="btn btn-secondary">Lista de Vínculos</a>
+                    <br/><br/>
                 </div>
             </div>
         </main>

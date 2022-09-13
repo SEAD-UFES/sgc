@@ -11,9 +11,11 @@ use App\Models\Employee;
 use App\Models\User;
 use App\Services\Dto\StoreEmployeeDto;
 use App\Services\Dto\UpdateEmployeeDto;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Models\Activity;
 
 class EmployeeService
 {
@@ -93,6 +95,40 @@ class EmployeeService
     public function read(Employee $employee): Employee
     {
         ModelRead::dispatch($employee);
+
+        /* $activityCreated = Activity::select('activity_log.causer_id', 'activity_log.created_at')
+            ->where('activity_log.subject_id', $employee->id)
+            ->where('activity_log.subject_type', Employee::class)
+            ->where('activity_log.event', 'created')
+            ->where('activity_log.causer_type', User::class)
+            ->orderBy('activity_log.id', 'desc')
+            ->first();
+
+        $createdBy = User::find($activityCreated?->causer_id)?->name;
+        $createdByUser = $createdBy ? $createdBy : '-';
+        $createdOn = $activityCreated?->created_at;
+        $createdOnDate = $createdOn != null ? \Carbon\Carbon::parse($createdOn)->isoFormat('DD/MM/Y HH:mm') : '-';
+
+        $activityUpdated = Activity::select('activity_log.causer_id', 'activity_log.created_at')
+            ->where('activity_log.subject_id', $employee->id)
+            ->where('activity_log.subject_type', Employee::class)
+            ->where('activity_log.event', 'updated')
+            ->where('activity_log.causer_type', User::class)
+            ->orderBy('activity_log.id', 'desc')
+            ->first();
+
+        $updatedBy = User::find($activityUpdated?->causer_id)?->name;
+        $updatedByUser = $updatedBy ? $updatedBy : '-';
+        $updatedOn = $activityUpdated?->created_at;
+        $updatedOnDate = $updatedOn != null ? \Carbon\Carbon::parse($updatedOn)->isoFormat('DD/MM/Y HH:mm') : '-';
+
+        dd($createdByUser, $createdOn, $updatedByUser, $updatedOn); */
+
+        $activity = $this->getActivity($employee);
+
+        foreach ($activity as $property => $value) {
+            $employee->$property = $value;
+        }
 
         return $employee;
     }
@@ -185,5 +221,44 @@ class EmployeeService
             $employee->employeeDocuments()->delete();
             $employee->delete();
         });
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Employee $employee
+     *
+     * @return array<string, User|Carbon|null>
+     */
+    private function getActivity(Employee $employee): array
+    {
+        $activityCreated = Activity::select('activity_log.causer_id', 'activity_log.created_at')
+            ->where('activity_log.subject_id', $employee->id)
+            ->where('activity_log.subject_type', Employee::class)
+            ->where('activity_log.event', 'created')
+            ->where('activity_log.causer_type', User::class)
+            ->orderBy('activity_log.id', 'desc')
+            ->first();
+
+        $createdBy = User::find($activityCreated?->causer_id);
+        $createdOn = $activityCreated?->created_at;
+
+        $activityUpdated = Activity::select('activity_log.causer_id', 'activity_log.created_at')
+            ->where('activity_log.subject_id', $employee->id)
+            ->where('activity_log.subject_type', Employee::class)
+            ->where('activity_log.event', 'updated')
+            ->where('activity_log.causer_type', User::class)
+            ->orderBy('activity_log.id', 'desc')
+            ->first();
+
+        $updatedBy = User::find($activityUpdated?->causer_id);
+        $updatedOn = $activityUpdated?->created_at;
+
+        return [
+            'createdBy' => $createdBy,
+            'createdOn' => $createdOn,
+            'updatedBy' => $updatedBy,
+            'updatedOn' => $updatedOn,
+        ];
     }
 }

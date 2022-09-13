@@ -15,11 +15,14 @@ use App\Models\BondDocument;
 use App\Models\Document;
 use App\Models\DocumentType;
 use App\Models\EmployeeDocument;
+use App\Models\User;
 use App\Services\Dto\ReviewBondDto;
 use App\Services\Dto\StoreBondDto;
 use App\Services\Dto\UpdateBondDto;
+use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Models\Activity;
 
 class BondService
 {
@@ -62,7 +65,7 @@ class BondService
                 'terminated_at' => null,
                 'volunteer' => $storeBondDto->volunteer,
                 'impediment' => true,
-                'impediment_description' => 'SGC: Vínculo ainda não revisado',
+                'impediment_description' => '[SGC: Vínculo ainda não revisado]',
                 'uaba_checked_at' => null,
             ]);
 
@@ -90,6 +93,12 @@ class BondService
     public function read(Bond $bond): Bond
     {
         ModelRead::dispatch($bond);
+
+        $activity = $this->getActivity($bond);
+
+        foreach ($activity as $property => $value) {
+            $bond->$property = $value;
+        }
 
         return $bond;
     }
@@ -232,5 +241,44 @@ class BondService
             ]);
             $newDocument->save();
         }
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Bond $bond
+     *
+     * @return array<string, User|Carbon|null>
+     */
+    private function getActivity(Bond $bond): array
+    {
+        $activityCreated = Activity::select('activity_log.causer_id', 'activity_log.created_at')
+            ->where('activity_log.subject_id', $bond->id)
+            ->where('activity_log.subject_type', Bond::class)
+            ->where('activity_log.event', 'created')
+            ->where('activity_log.causer_type', User::class)
+            ->orderBy('activity_log.id', 'desc')
+            ->first();
+
+        $createdBy = User::find($activityCreated?->causer_id);
+        $createdOn = $activityCreated?->created_at;
+
+        $activityUpdated = Activity::select('activity_log.causer_id', 'activity_log.created_at')
+            ->where('activity_log.subject_id', $bond->id)
+            ->where('activity_log.subject_type', Bond::class)
+            ->where('activity_log.event', 'updated')
+            ->where('activity_log.causer_type', User::class)
+            ->orderBy('activity_log.id', 'desc')
+            ->first();
+
+        $updatedBy = User::find($activityUpdated?->causer_id);
+        $updatedOn = $activityUpdated?->created_at;
+
+        return [
+            'createdBy' => $createdBy,
+            'createdOn' => $createdOn,
+            'updatedBy' => $updatedBy,
+            'updatedOn' => $updatedOn,
+        ];
     }
 }

@@ -365,7 +365,7 @@ class EmployeeTest extends TestCase
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.show', 1))
-            ->assertSee(['Listar Colaboradores', 'Nome:', 'CPF:', 'Profissão:', 'Contato e endereço'])
+            ->assertSee(['Listar Colaboradores', 'Nome:', 'CPF:', 'Profissão:', 'Contato e Endereço'])
             ->assertStatus(200);
     }
 
@@ -386,7 +386,7 @@ class EmployeeTest extends TestCase
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.show', 1))
-            ->assertSee(['Listar Colaboradores', 'Nome:', 'CPF:', 'Profissão:', 'Contato e endereço'])
+            ->assertSee(['Listar Colaboradores', 'Nome:', 'CPF:', 'Profissão:', 'Contato e Endereço'])
             ->assertStatus(200);
     }
 
@@ -407,7 +407,7 @@ class EmployeeTest extends TestCase
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.show', 1))
-            ->assertSee(['Listar Colaboradores', 'Nome:', 'CPF:', 'Profissão:', 'Contato e endereço'])
+            ->assertSee(['Listar Colaboradores', 'Nome:', 'CPF:', 'Profissão:', 'Contato e Endereço'])
             ->assertStatus(200);
     }
 
@@ -428,7 +428,7 @@ class EmployeeTest extends TestCase
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         $this->get(route('employees.show', 1))
-            ->assertSee(['Listar Colaboradores', 'Nome:', 'CPF:', 'Profissão:', 'Contato e endereço'])
+            ->assertSee(['Listar Colaboradores', 'Nome:', 'CPF:', 'Profissão:', 'Contato e Endereço'])
             ->assertStatus(200);
     }
 

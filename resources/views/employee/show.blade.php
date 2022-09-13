@@ -19,7 +19,7 @@
 
                     <div class="card mb-3">
                         <div class="card-header" data-bs-toggle="collapse" href="#employeePersonalDataContent" role="button" aria-expanded="true" aria-controls="employeePersonalDataContent">
-                            <h4 class='mb-0'>Dados pessoais</h4>
+                            <h4 class='mb-0'>Dados Pessoais</h4>
                         </div>
                         <div class="collapse show" id="employeePersonalDataContent" >
                             <div class="card-body">
@@ -111,7 +111,7 @@
 
                     <div class="card mb-3">
                         <div class="card-header" data-bs-toggle="collapse" href="#employeeContactDataContent" role="button" aria-expanded="true" aria-controls="employeeContactDataContent">
-                            <h4 class='mb-0'>Contato e endereço</h4>
+                            <h4 class='mb-0'>Contato e Endereço</h4>
                         </div>
                         <div class="collapse show" id="employeeContactDataContent" >
                             <div class="card-body">
@@ -217,7 +217,7 @@
 
                     <div class="card mb-3">
                         <div class="card-header" data-bs-toggle="collapse" href="#employeeDocumentListContent" role="button" aria-expanded="true" aria-controls="employeeDocumentListContent">
-                            <h4 class='mb-0'>Documentos do colaborador</h4>
+                            <h4 class='mb-0'>Documentos do Colaborador</h4>
                         </div>
                         <div class="collapse show" id="employeeDocumentListContent" >
                             <div class="card-body">
@@ -271,7 +271,7 @@
 
                     <div class="card mb-3">
                         <div class="card-header" data-bs-toggle="collapse" href="#bondListContent" role="button" aria-expanded="true" aria-controls="bondListContent">
-                            <h4 class='mb-0'>Vínculos ativos</h4>
+                            <h4 class='mb-0'>Vínculos Ativos</h4>
                         </div>
                         <div class="collapse show" id="bondListContent" >
                             <div class="card-body">
@@ -359,7 +359,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card mb-4">
+                    <div class="card mb-3">
                         <div class="card-header" data-bs-toggle="collapse" href="#institutionDetails" role="button"
                             aria-expanded="true" aria-controls="institutionDetails">
                             <h4 class='mb-0'>Detalhes Institucionais</h4>
@@ -378,13 +378,32 @@
                                     @can('employee-update', $employee)
                                         <a href="{{ route('employees.institutionalDetails.edit', $employee->id) }}" data-bs-toggle="tooltip" title="Editar Detalhes Institucionais" class="btn btn-primary btn-sm">
                                             <i class="bi-pencil-fill"></i> Editar Detalhes Institucionais
-                                        </a>&nbsp;
+                                        </a>
                                     @endcan
                                 </div>
                             </div>
                         </div>
                     </div>
-
+                    <div class="card mb-3">
+                        <div class="card-header" data-bs-toggle="collapse" href="#activityDetails" role="button"
+                            aria-expanded="true" aria-controls="activityDetails">
+                            <h4 class='mb-0'>Informações de Cadastro</h4>
+                        </div>
+                        <div class="collapse show" id="activityDetails">
+                            <div class="card-body">
+                                <div class="mb-2 row">
+                                    <div class="col-sm-12 col-lg-12"><h5>Cadastrado</h5></div>
+                                    <div class="col-sm-6 col-lg-6"><strong>Por:</strong> {{ $employee->createdBy?->name ?? '-' }}</div>
+                                    <div class="col-sm-6 col-lg-6"><strong>Em:</strong> {{ (is_null($employee->createdOn)) ? '-' : \Carbon\Carbon::parse($employee->createdOn)->isoFormat('DD/MM/Y HH:mm') }}</div>
+                                </div>
+                                <div class="mb-2 row">
+                                    <div class="col-sm-12 col-lg-12"><h5>Atualizado por último</h5></div>
+                                    <div class="col-sm-6 col-lg-6"><strong>Por:</strong> {{ $employee->updatedBy?->name ?? '-' }}</div>
+                                    <div class="col-sm-6 col-lg-6"><strong>Em:</strong> {{ (is_null($employee->updatedOn)) ? '-' : \Carbon\Carbon::parse($employee->updatedOn)->isoFormat('DD/MM/Y HH:mm') }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card mb-3">
                         <div class="card-header" data-bs-toggle="collapse" href="#userListContent" role="button" aria-expanded="true" aria-controls="userListContent">
                             <h4 class='mb-0'>Usuários de sistema associados</h4>
@@ -457,7 +476,7 @@
                         </div>
                     </div>
                     <a href="{{ route('employees.index') }}" class="btn btn-secondary">Lista de Colaboradores</a>
-                    <br/>
+                    <br/><br/>
                 </div>
             </div>
         </main>
