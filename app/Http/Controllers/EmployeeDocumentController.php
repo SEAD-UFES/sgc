@@ -53,7 +53,7 @@ class EmployeeDocumentController extends Controller
     {
         $this->service->create($request->toDto());
 
-        return redirect()->route('employeesDocuments.index')->with('success', 'Arquivo importado com sucesso.');
+        return redirect()->route('employees_documents.index')->with('success', 'Arquivo importado com sucesso.');
     }
 
     /**

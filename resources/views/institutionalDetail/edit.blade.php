@@ -16,10 +16,10 @@
                 <div class="col-xl-10 col-xxl-8">
                     @include('_components.alerts')
                     @if (isset($institutionalDetail))
-                        <form action={{ route('employees.institutionalDetails.update', $employee->id) }} method="POST">
+                        <form action={{ route('employees.institutional_details.update', $employee->id) }} method="POST">
                             @method('PATCH')
                     @else
-                        <form action={{ route('employees.institutionalDetails.store', $employee->id) }} method="POST">
+                        <form action={{ route('employees.institutional_details.store', $employee->id) }} method="POST">
                     @endif
                     @component('institutionalDetail.componentInstitutionalDetailForm', compact('institutionalDetail'))
                     @endcomponent

@@ -44,7 +44,7 @@
                                                         </td>
                                                         <td>{{ $document->documentType->name }}</td>
                                                         <td>
-                                                            <a href="{{ route('bondsDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]) }}"
+                                                            <a href="{{ route('bonds_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]) }}"
                                                                 target="_blank">{{ $document->original_name }}</a>
                                                         </td>
                                                     </tr>
@@ -53,7 +53,7 @@
                                         </table>
                                     </div>
 
-                                    <a href="{{ route('bondsDocuments.export', $bond) }}"
+                                    <a href="{{ route('bonds_documents.export', $bond) }}"
                                         class="btn btn-primary btn-sm mt-1">
                                         &nbsp;&#8627; Fazer o download de todos os documentos do vínculo (zip)
                                     </a>
@@ -111,7 +111,7 @@
 
                                 @can('bond-requestReview')
                                     <a class="btn btn-primary btn-sm mt-1"
-                                        href="{{ route('bonds.requestReview', $bond->id) }}">Enviar solicitação de revisão de
+                                        href="{{ route('bonds.request_review', $bond->id) }}">Enviar solicitação de revisão de
                                         vínculo</a>
                                 @endcan
 
@@ -179,7 +179,7 @@
                                     <div class="col-sm-4 col-lg-3"><strong>Email Institucional:</strong></div>
                                     <div class="col-sm-8 col-lg-9">{{ $bond->employee->institutionalDetail->email ?? '-' }}</div>
                                 </div>
-                                <a href="{{ route('bonds.sendInstitutionalDetailEmail', $bond) }}" class="btn btn-primary btn-sm mt-1">
+                                <a href="{{ route('bonds.send_new_employee_emails', $bond) }}" class="btn btn-primary btn-sm mt-1">
                                     Enviar comunicado sobre a criação do Login de Acesso
                                 </a>
                             </div>

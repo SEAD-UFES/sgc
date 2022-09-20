@@ -85,7 +85,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <form action={{ route('approveds.storeMany.step2') }} method="POST">
+                    <form action={{ route('approveds.store_many.step_2') }} method="POST">
                         @csrf
                         <div class="table-responsive">
                             <table class="table table-striped table-hover">

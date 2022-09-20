@@ -57,6 +57,6 @@ class EmployeeDocumentBatchController extends Controller
     {
         $this->service->createManyDocumentsStep2($request->all());
 
-        return redirect()->route('employeesDocuments.index')->with('success', 'Arquivos importados com sucesso.');
+        return redirect()->route('employees_documents.index')->with('success', 'Arquivos importados com sucesso.');
     }
 }

@@ -50,7 +50,7 @@ class ApprovedBatchController extends Controller
             return back()->withErrors($e->getMessage());
         }
 
-        return redirect()->route('approveds.createMany.step2')->with('success', 'Arquivo importado com sucesso.');
+        return redirect()->route('approveds.create_many.step_2')->with('success', 'Arquivo importado com sucesso.');
     }
 
     /**

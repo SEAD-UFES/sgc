@@ -16,7 +16,7 @@
                 <div class="col-xl-10 col-xxl-8">
                     @include('_components.alerts')
                     <br />
-                    <form action={{ route('bondsDocuments.storeMany2') }} method="POST">
+                    <form action={{ route('bonds_documents.store_many_2') }} method="POST">
                         @csrf
                         <input type="hidden" name="fileSetCount" value="{{ count($bondDocuments) }}">
                         <input type="hidden" name="bond_id" value="{{ $bondDocuments->first()['bond_id'] }}">

@@ -105,7 +105,7 @@
                     <a href="{{ route('home') }}" class="btn btn-secondary">Voltar para o Início</a>
                     @can('approved-store')
                         <a href="{{ route('approveds.create') }}" class="btn btn-warning">Cadastrar novo Aprovado</a>
-                        <a href="{{ route('approveds.createMany.step1') }}" class="btn btn-warning">Importar planilha de Aprovados</a>
+                        <a href="{{ route('approveds.create_many.step_1') }}" class="btn btn-warning">Importar planilha de Aprovados</a>
                     @endcan
                     <br /><br />
                 </div>

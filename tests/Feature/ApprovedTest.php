@@ -486,7 +486,7 @@ class ApprovedTest extends TestCase
      */
     public function guestShouldntAccessStepOneCreateApprovedsPage()
     {
-        $this->get(route('approveds.createMany.step1'))
+        $this->get(route('approveds.create_many.step_1'))
             ->assertStatus(401);
     }
 
@@ -502,7 +502,7 @@ class ApprovedTest extends TestCase
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
 
-        $this->get(route('approveds.createMany.step1'))
+        $this->get(route('approveds.create_many.step_1'))
             ->assertStatus(403);
     }
 
@@ -522,7 +522,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('approveds.createMany.step1'))
+        $this->get(route('approveds.create_many.step_1'))
             ->assertSee(['Importar Aprovados', 'Enviar arquivo'])
             ->assertStatus(200);
     }
@@ -543,7 +543,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('approveds.createMany.step1'))
+        $this->get(route('approveds.create_many.step_1'))
             ->assertSee(['Importar Aprovados', 'Enviar arquivo'])
             ->assertStatus(200);
     }
@@ -564,7 +564,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('approveds.createMany.step1'))
+        $this->get(route('approveds.create_many.step_1'))
             ->assertStatus(403);
     }
 
@@ -584,7 +584,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('approveds.createMany.step1'))
+        $this->get(route('approveds.create_many.step_1'))
             ->assertSee(['Importar Aprovados', 'Enviar arquivo'])
             ->assertStatus(200);
     }
@@ -605,7 +605,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('approveds.createMany.step1'))
+        $this->get(route('approveds.create_many.step_1'))
             ->assertStatus(403);
     }
 
@@ -625,7 +625,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('approveds.createMany.step1'))
+        $this->get(route('approveds.create_many.step_1'))
             ->assertStatus(403);
     }
 
@@ -670,7 +670,7 @@ class ApprovedTest extends TestCase
      */
     public function guestShouldntAccessStepTwoCreateApprovedsPage()
     {
-        $this->get(route('approveds.createMany.step2'))
+        $this->get(route('approveds.create_many.step_2'))
             ->assertStatus(401);
     }
 
@@ -686,7 +686,7 @@ class ApprovedTest extends TestCase
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null, 'importedApproveds' => $this->createTestImportedApproveds()]);
 
-        $this->get(route('approveds.createMany.step2'))
+        $this->get(route('approveds.create_many.step_2'))
             ->assertStatus(403);
     }
 
@@ -706,7 +706,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility(), 'importedApproveds' => $this->createTestImportedApproveds()]);
 
-        $this->get(route('approveds.createMany.step2'))
+        $this->get(route('approveds.create_many.step_2'))
             ->assertSee(['Revisão de Importação', 'Importar', 'Carl Doe', 'Doug Doe'])
             ->assertStatus(200);
     }
@@ -727,7 +727,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility(), 'importedApproveds' => $this->createTestImportedApproveds()]);
 
-        $this->get(route('approveds.createMany.step2'))
+        $this->get(route('approveds.create_many.step_2'))
             ->assertSee(['Revisão de Importação', 'Importar', 'Carl Doe', 'Doug Doe'])
             ->assertStatus(200);
     }
@@ -748,7 +748,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility(), 'importedApproveds' => $this->createTestImportedApproveds()]);
 
-        $this->get(route('approveds.createMany.step2'))
+        $this->get(route('approveds.create_many.step_2'))
             ->assertStatus(403);
     }
 
@@ -768,7 +768,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility(), 'importedApproveds' => $this->createTestImportedApproveds()]);
 
-        $this->get(route('approveds.createMany.step2'))
+        $this->get(route('approveds.create_many.step_2'))
             ->assertSee(['Revisão de Importação', 'Importar', 'Carl Doe', 'Doug Doe'])
             ->assertStatus(200);
     }
@@ -789,7 +789,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility(), 'importedApproveds' => $this->createTestImportedApproveds()]);
 
-        $this->get(route('approveds.createMany.step2'))
+        $this->get(route('approveds.create_many.step_2'))
             ->assertStatus(403);
     }
 
@@ -809,7 +809,7 @@ class ApprovedTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility(), 'importedApproveds' => $this->createTestImportedApproveds()]);
 
-        $this->get(route('approveds.createMany.step2'))
+        $this->get(route('approveds.create_many.step_2'))
             ->assertStatus(403);
     }
 
@@ -1075,7 +1075,7 @@ class ApprovedTest extends TestCase
     {
         $approvedArr = $this->createTestImportedApprovedsArray();
 
-        $this->post(route('approveds.storeMany.step2'), $approvedArr)
+        $this->post(route('approveds.store_many.step_2'), $approvedArr)
             ->assertStatus(401);
     }
 
@@ -1092,7 +1092,7 @@ class ApprovedTest extends TestCase
 
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null])
-            ->followingRedirects()->post(route('approveds.storeMany.step2'), $approvedArr)
+            ->followingRedirects()->post(route('approveds.store_many.step_2'), $approvedArr)
             ->assertStatus(403);
     }
 
@@ -1114,7 +1114,7 @@ class ApprovedTest extends TestCase
 
         $approvedArr = $this->createTestImportedApprovedsArray();
 
-        $this->followingRedirects()->post(route('approveds.storeMany.step2'), $approvedArr)
+        $this->followingRedirects()->post(route('approveds.store_many.step_2'), $approvedArr)
             ->assertSee($this->expectedApprovedInfo())
             ->assertStatus(200);
     }
@@ -1137,7 +1137,7 @@ class ApprovedTest extends TestCase
 
         $approvedArr = $this->createTestImportedApprovedsArray();
 
-        $this->followingRedirects()->post(route('approveds.storeMany.step2'), $approvedArr)
+        $this->followingRedirects()->post(route('approveds.store_many.step_2'), $approvedArr)
             ->assertSee($this->expectedApprovedInfo())
             ->assertStatus(200);
     }
@@ -1160,7 +1160,7 @@ class ApprovedTest extends TestCase
 
         $approvedArr = $this->createTestImportedApprovedsArray();
 
-        $this->followingRedirects()->post(route('approveds.storeMany.step2'), $approvedArr)
+        $this->followingRedirects()->post(route('approveds.store_many.step_2'), $approvedArr)
             ->assertStatus(403);
     }
 
@@ -1182,7 +1182,7 @@ class ApprovedTest extends TestCase
 
         $approvedArr = $this->createTestImportedApprovedsArray();
 
-        $this->followingRedirects()->post(route('approveds.storeMany.step2'), $approvedArr)
+        $this->followingRedirects()->post(route('approveds.store_many.step_2'), $approvedArr)
             ->assertSee($this->expectedApprovedInfo())
             ->assertStatus(200);
     }
@@ -1205,7 +1205,7 @@ class ApprovedTest extends TestCase
 
         $approvedArr = $this->createTestImportedApprovedsArray();
 
-        $this->followingRedirects()->post(route('approveds.storeMany.step2'), $approvedArr)
+        $this->followingRedirects()->post(route('approveds.store_many.step_2'), $approvedArr)
             ->assertStatus(403);
     }
 
@@ -1227,7 +1227,7 @@ class ApprovedTest extends TestCase
 
         $approvedArr = $this->createTestImportedApprovedsArray();
 
-        $this->followingRedirects()->post(route('approveds.storeMany.step2'), $approvedArr)
+        $this->followingRedirects()->post(route('approveds.store_many.step_2'), $approvedArr)
             ->assertStatus(403);
     }
 

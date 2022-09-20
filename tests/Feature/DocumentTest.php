@@ -163,7 +163,7 @@ class DocumentTest extends TestCase
      */
     public function guestShouldntListEmployeesDocuments()
     {
-        $this->get(route('employeesDocuments.index'))
+        $this->get(route('employees_documents.index'))
             ->assertStatus(401);
     }
 
@@ -179,7 +179,7 @@ class DocumentTest extends TestCase
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
 
-        $this->get(route('employeesDocuments.index'))
+        $this->get(route('employees_documents.index'))
             ->assertStatus(403);
     }
 
@@ -199,7 +199,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('employeesDocuments.index'))
+        $this->get(route('employees_documents.index'))
             ->assertSee('Document Employee Alpha.pdf')
             ->assertStatus(200);
     }
@@ -220,7 +220,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('employeesDocuments.index'))
+        $this->get(route('employees_documents.index'))
             ->assertSee('Document Employee Alpha.pdf')
             ->assertStatus(200);
     }
@@ -241,7 +241,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('employeesDocuments.index'))
+        $this->get(route('employees_documents.index'))
             ->assertSee('Document Employee Alpha.pdf')
             ->assertStatus(200);
     }
@@ -262,7 +262,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('employeesDocuments.index'))
+        $this->get(route('employees_documents.index'))
             ->assertSee('Document Employee Alpha.pdf')
             ->assertStatus(200);
     }
@@ -283,7 +283,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('employeesDocuments.index'))
+        $this->get(route('employees_documents.index'))
             ->assertStatus(403);
     }
 
@@ -303,7 +303,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('employeesDocuments.index'))
+        $this->get(route('employees_documents.index'))
             ->assertStatus(403);
     }
 
@@ -316,7 +316,7 @@ class DocumentTest extends TestCase
      */
     public function guestShouldntListBondsDocuments()
     {
-        $this->get(route('bondsDocuments.index'))
+        $this->get(route('bonds_documents.index'))
             ->assertStatus(401);
     }
 
@@ -332,7 +332,7 @@ class DocumentTest extends TestCase
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
 
-        $this->get(route('bondsDocuments.index'))
+        $this->get(route('bonds_documents.index'))
             ->assertStatus(403);
     }
 
@@ -352,7 +352,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bondsDocuments.index'))
+        $this->get(route('bonds_documents.index'))
             ->assertSee('Document Bond Beta.pdf')
             ->assertStatus(200);
     }
@@ -373,7 +373,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bondsDocuments.index'))
+        $this->get(route('bonds_documents.index'))
             ->assertSee('Document Bond Beta.pdf')
             ->assertStatus(200);
     }
@@ -394,7 +394,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bondsDocuments.index'))
+        $this->get(route('bonds_documents.index'))
             ->assertSee('Document Bond Beta.pdf')
             ->assertStatus(200);
     }
@@ -415,7 +415,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bondsDocuments.index'))
+        $this->get(route('bonds_documents.index'))
             ->assertSee('Document Bond Beta.pdf')
             ->assertStatus(200);
     }
@@ -436,7 +436,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bondsDocuments.index'))
+        $this->get(route('bonds_documents.index'))
             ->assertStatus(403);
     }
 
@@ -456,7 +456,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bondsDocuments.index'))
+        $this->get(route('bonds_documents.index'))
             ->assertStatus(403);
     }
 
@@ -486,7 +486,7 @@ class DocumentTest extends TestCase
     {
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
-        $this->get(route('employeesDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('employees_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertStatus(401);
     }
 
@@ -504,7 +504,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
-        $this->get(route('employeesDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('employees_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertStatus(403);
     }
 
@@ -526,7 +526,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
-        $this->get(route('employeesDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('employees_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -549,7 +549,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
-        $this->get(route('employeesDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('employees_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -572,7 +572,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
-        $this->get(route('employeesDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('employees_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -595,7 +595,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
-        $this->get(route('employeesDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('employees_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -618,7 +618,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
-        $this->get(route('employeesDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('employees_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertStatus(403);
     }
 
@@ -640,7 +640,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getEmployeeDocument();
-        $this->get(route('employeesDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('employees_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertStatus(403);
     }
 
@@ -664,7 +664,7 @@ class DocumentTest extends TestCase
     {
         /** @var Document $document */
         $document = $this->getBondDocument();
-        $this->get(route('bondsDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('bonds_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertStatus(401);
     }
 
@@ -682,7 +682,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getBondDocument();
-        $this->get(route('bondsDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('bonds_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertStatus(403);
     }
 
@@ -704,7 +704,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getBondDocument();
-        $this->get(route('bondsDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('bonds_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -727,7 +727,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getBondDocument();
-        $this->get(route('bondsDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('bonds_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -750,7 +750,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getBondDocument();
-        $this->get(route('bondsDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('bonds_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -773,7 +773,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getBondDocument();
-        $this->get(route('bondsDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('bonds_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -796,7 +796,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getBondDocument();
-        $this->get(route('bondsDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('bonds_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertStatus(403);
     }
 
@@ -818,7 +818,7 @@ class DocumentTest extends TestCase
 
         /** @var Document $document */
         $document = $this->getBondDocument();
-        $this->get(route('bondsDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $this->get(route('bonds_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
             ->assertStatus(403);
     }
 
@@ -840,7 +840,7 @@ class DocumentTest extends TestCase
      */
     public function guestShouldntAccessCreateEmployeeDocumentPage()
     {
-        $this->get(route('employeesDocuments.create'))
+        $this->get(route('employees_documents.create'))
             ->assertStatus(401);
     }
 
@@ -856,7 +856,7 @@ class DocumentTest extends TestCase
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
 
-        $this->get(route('employeesDocuments.create'))
+        $this->get(route('employees_documents.create'))
             ->assertStatus(403);
     }
 
@@ -876,7 +876,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('employeesDocuments.create'))
+        $this->get(route('employees_documents.create'))
             ->assertSee($this->expectedCreateEmployeeDocumentPageContent())
             ->assertStatus(200);
     }
@@ -897,7 +897,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('employeesDocuments.create'))
+        $this->get(route('employees_documents.create'))
             ->assertSee($this->expectedCreateEmployeeDocumentPageContent())
             ->assertStatus(200);
     }
@@ -918,7 +918,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('employeesDocuments.create'))
+        $this->get(route('employees_documents.create'))
             ->assertSee($this->expectedCreateEmployeeDocumentPageContent())
             ->assertStatus(200);
     }
@@ -939,7 +939,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('employeesDocuments.create'))
+        $this->get(route('employees_documents.create'))
             ->assertSee($this->expectedCreateEmployeeDocumentPageContent())
             ->assertStatus(200);
     }
@@ -960,7 +960,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('employeesDocuments.create'))
+        $this->get(route('employees_documents.create'))
             ->assertStatus(403);
     }
 
@@ -980,7 +980,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('employeesDocuments.create'))
+        $this->get(route('employees_documents.create'))
             ->assertStatus(403);
     }
 
@@ -1002,7 +1002,7 @@ class DocumentTest extends TestCase
      */
     public function guestShouldntAccessCreateBondDocumentPage()
     {
-        $this->get(route('bondsDocuments.create'))
+        $this->get(route('bonds_documents.create'))
             ->assertStatus(401);
     }
 
@@ -1018,7 +1018,7 @@ class DocumentTest extends TestCase
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
 
-        $this->get(route('bondsDocuments.create'))
+        $this->get(route('bonds_documents.create'))
             ->assertStatus(403);
     }
 
@@ -1038,7 +1038,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bondsDocuments.create'))
+        $this->get(route('bonds_documents.create'))
             ->assertSee($this->expectedCreateBondDocumentPageContent())
             ->assertStatus(200);
     }
@@ -1059,7 +1059,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bondsDocuments.create'))
+        $this->get(route('bonds_documents.create'))
             ->assertSee($this->expectedCreateBondDocumentPageContent())
             ->assertStatus(200);
     }
@@ -1080,7 +1080,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bondsDocuments.create'))
+        $this->get(route('bonds_documents.create'))
             ->assertSee($this->expectedCreateBondDocumentPageContent())
             ->assertStatus(200);
     }
@@ -1101,7 +1101,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bondsDocuments.create'))
+        $this->get(route('bonds_documents.create'))
             ->assertSee($this->expectedCreateBondDocumentPageContent())
             ->assertStatus(200);
     }
@@ -1122,7 +1122,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bondsDocuments.create'))
+        $this->get(route('bonds_documents.create'))
             ->assertStatus(403);
     }
 
@@ -1142,7 +1142,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bondsDocuments.create'))
+        $this->get(route('bonds_documents.create'))
             ->assertStatus(403);
     }
 
@@ -1193,7 +1193,7 @@ class DocumentTest extends TestCase
     {
         $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
 
-        $this->post(route('employeesDocuments.store'), $employeeDocumentArr)
+        $this->post(route('employees_documents.store'), $employeeDocumentArr)
             ->assertStatus(401);
     }
 
@@ -1210,7 +1210,7 @@ class DocumentTest extends TestCase
 
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null])
-            ->followingRedirects()->post(route('employeesDocuments.store'), $employeeDocumentArr)
+            ->followingRedirects()->post(route('employees_documents.store'), $employeeDocumentArr)
             ->assertStatus(403);
     }
 
@@ -1232,7 +1232,7 @@ class DocumentTest extends TestCase
 
         $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
 
-        $this->followingRedirects()->post(route('employeesDocuments.store'), $employeeDocumentArr)
+        $this->followingRedirects()->post(route('employees_documents.store'), $employeeDocumentArr)
             ->assertSee($this->expectedInfo())
             ->assertStatus(200);
     }
@@ -1255,7 +1255,7 @@ class DocumentTest extends TestCase
 
         $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
 
-        $this->followingRedirects()->post(route('employeesDocuments.store'), $employeeDocumentArr)
+        $this->followingRedirects()->post(route('employees_documents.store'), $employeeDocumentArr)
             ->assertSee($this->expectedInfo())
             ->assertStatus(200);
     }
@@ -1278,7 +1278,7 @@ class DocumentTest extends TestCase
 
         $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
 
-        $this->followingRedirects()->post(route('employeesDocuments.store'), $employeeDocumentArr)
+        $this->followingRedirects()->post(route('employees_documents.store'), $employeeDocumentArr)
             ->assertSee($this->expectedInfo())
             ->assertStatus(200);
     }
@@ -1301,7 +1301,7 @@ class DocumentTest extends TestCase
 
         $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
 
-        $this->followingRedirects()->post(route('employeesDocuments.store'), $employeeDocumentArr)
+        $this->followingRedirects()->post(route('employees_documents.store'), $employeeDocumentArr)
             ->assertSee($this->expectedInfo())
             ->assertStatus(200);
     }
@@ -1324,7 +1324,7 @@ class DocumentTest extends TestCase
 
         $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
 
-        $this->followingRedirects()->post(route('employeesDocuments.store'), $employeeDocumentArr)
+        $this->followingRedirects()->post(route('employees_documents.store'), $employeeDocumentArr)
             ->assertStatus(403);
     }
 
@@ -1346,7 +1346,7 @@ class DocumentTest extends TestCase
 
         $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
 
-        $this->followingRedirects()->post(route('employeesDocuments.store'), $employeeDocumentArr)
+        $this->followingRedirects()->post(route('employees_documents.store'), $employeeDocumentArr)
             ->assertStatus(403);
     }
 
@@ -1364,7 +1364,7 @@ class DocumentTest extends TestCase
     {
         $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
 
-        $this->post(route('bondsDocuments.store'), $bondDocumentArr)
+        $this->post(route('bonds_documents.store'), $bondDocumentArr)
             ->assertStatus(401);
     }
 
@@ -1381,7 +1381,7 @@ class DocumentTest extends TestCase
 
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null])
-            ->followingRedirects()->post(route('bondsDocuments.store'), $bondDocumentArr)
+            ->followingRedirects()->post(route('bonds_documents.store'), $bondDocumentArr)
             ->assertStatus(403);
     }
 
@@ -1403,7 +1403,7 @@ class DocumentTest extends TestCase
 
         $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
 
-        $this->followingRedirects()->post(route('bondsDocuments.store'), $bondDocumentArr)
+        $this->followingRedirects()->post(route('bonds_documents.store'), $bondDocumentArr)
             ->assertSee($this->expectedInfo())
             ->assertStatus(200);
     }
@@ -1426,7 +1426,7 @@ class DocumentTest extends TestCase
 
         $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
 
-        $this->followingRedirects()->post(route('bondsDocuments.store'), $bondDocumentArr)
+        $this->followingRedirects()->post(route('bonds_documents.store'), $bondDocumentArr)
             ->assertSee($this->expectedInfo())
             ->assertStatus(200);
     }
@@ -1449,7 +1449,7 @@ class DocumentTest extends TestCase
 
         $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
 
-        $this->followingRedirects()->post(route('bondsDocuments.store'), $bondDocumentArr)
+        $this->followingRedirects()->post(route('bonds_documents.store'), $bondDocumentArr)
             ->assertSee($this->expectedInfo())
             ->assertStatus(200);
     }
@@ -1472,7 +1472,7 @@ class DocumentTest extends TestCase
 
         $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
 
-        $this->followingRedirects()->post(route('bondsDocuments.store'), $bondDocumentArr)
+        $this->followingRedirects()->post(route('bonds_documents.store'), $bondDocumentArr)
             ->assertSee($this->expectedInfo())
             ->assertStatus(200);
     }
@@ -1495,7 +1495,7 @@ class DocumentTest extends TestCase
 
         $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
 
-        $this->followingRedirects()->post(route('bondsDocuments.store'), $bondDocumentArr)
+        $this->followingRedirects()->post(route('bonds_documents.store'), $bondDocumentArr)
             ->assertStatus(403);
     }
 
@@ -1517,7 +1517,7 @@ class DocumentTest extends TestCase
 
         $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
 
-        $this->followingRedirects()->post(route('bondsDocuments.store'), $bondDocumentArr)
+        $this->followingRedirects()->post(route('bonds_documents.store'), $bondDocumentArr)
             ->assertStatus(403);
     }
 
@@ -1545,13 +1545,13 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('employeesDocuments.index'))
+        $this->get(route('employees_documents.index'))
             ->assertSee([$originalName, $originalDocTypeName])
             ->assertStatus(200);
 
         $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class, (string) $originalDocTypeId, (string) $originalReferentId);
 
-        $this->followingRedirects()->post(route('employeesDocuments.store'), $employeeDocumentArr)
+        $this->followingRedirects()->post(route('employees_documents.store'), $employeeDocumentArr)
             ->assertSee(['Document Gama.pdf', $originalDocTypeName])
             ->assertDontSee([$originalName])
             ->assertStatus(200);
@@ -1580,13 +1580,13 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bondsDocuments.index'))
+        $this->get(route('bonds_documents.index'))
             ->assertSee([$originalName, $originalDocTypeName])
             ->assertStatus(200);
 
         $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class, (string) $originalDocTypeId, (string) $originalReferentId);
 
-        $this->followingRedirects()->post(route('bondsDocuments.store'), $bondDocumentArr)
+        $this->followingRedirects()->post(route('bonds_documents.store'), $bondDocumentArr)
             ->assertSee(['Document Gama.pdf', $originalDocTypeName])
             ->assertDontSee([$originalName])
             ->assertStatus(200);

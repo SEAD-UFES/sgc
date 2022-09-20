@@ -60,6 +60,6 @@ class BondDocumentBatchController extends Controller
     {
         $this->service->createManyDocumentsStep2($request->all());
 
-        return redirect()->route('bondsDocuments.index')->with('success', 'Arquivos importados com sucesso.');
+        return redirect()->route('bonds_documents.index')->with('success', 'Arquivos importados com sucesso.');
     }
 }

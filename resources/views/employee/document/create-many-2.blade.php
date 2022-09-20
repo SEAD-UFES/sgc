@@ -16,7 +16,7 @@
                 <div class="col-xl-10 col-xxl-8">
                     @include('_components.alerts')
                     <br />
-                    <form action={{ route('employeesDocuments.storeMany2') }} method="POST">
+                    <form action={{ route('employees_documents.store_many_2') }} method="POST">
                         @csrf
                         <input type="hidden" name="fileSetCount" value="{{ count($employeeDocuments) }}">
                         <input type="hidden" name="employee_id" value="{{ $employeeDocuments->first()['employee_id'] }}">

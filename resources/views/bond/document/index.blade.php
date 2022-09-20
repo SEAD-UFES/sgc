@@ -33,7 +33,7 @@
                     @component('bond.document.componentList', compact('documents'))@endcomponent
                     <a href="{{ route('home') }}" class="btn btn-secondary">Voltar para o Início</a>
                     @can('approved-store')
-                        <a href="{{ route('bondsDocuments.create') }}" class="btn btn-warning">Importar Documento de Vínculo</a>
+                        <a href="{{ route('bonds_documents.create') }}" class="btn btn-warning">Importar Documento de Vínculo</a>
                     @endcan
                     <br /><br />
                 </div>

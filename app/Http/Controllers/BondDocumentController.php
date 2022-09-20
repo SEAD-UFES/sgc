@@ -63,7 +63,7 @@ class BondDocumentController extends Controller
     {
         $this->service->create($request->toDto());
 
-        return redirect()->route('bondsDocuments.index')->with('success', 'Arquivo importado com sucesso.');
+        return redirect()->route('bonds_documents.index')->with('success', 'Arquivo importado com sucesso.');
     }
 
     /**

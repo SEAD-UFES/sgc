@@ -51,7 +51,7 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="{{ route('employeesDocuments.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]) }}"
+                                            <a href="{{ route('employees_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]) }}"
                                                 target="_blank">{{ $document->original_name }}</a>
                                         </td>
                                         <td>{{ $document->document_type }}</td>
@@ -64,7 +64,7 @@
                     {!! $documents->links() !!}
                     <a href="{{ route('home') }}" class="btn btn-secondary">Voltar para o Início</a>
                     @can('employeeDocument-store')
-                        <a href="{{ route('employeesDocuments.create') }}" class="btn btn-warning">Importar Documento de Colaborador</a>
+                        <a href="{{ route('employees_documents.create') }}" class="btn btn-warning">Importar Documento de Colaborador</a>
                     @endcan
                     <br /><br />
                 </div>

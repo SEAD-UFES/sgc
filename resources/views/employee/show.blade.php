@@ -240,7 +240,7 @@
                                                         </td>
                                                         <td>{{ $employeeDocument->document->documentType->name }}</td>
                                                         <td>
-                                                            <a href="{{ route('employeesDocuments.show', ['id' => $employeeDocument->document->id, 'type' => 'EmployeeDocument', 'htmlTitle' => $employeeDocument->document->original_name]) }}"
+                                                            <a href="{{ route('employees_documents.show', ['id' => $employeeDocument->document->id, 'type' => 'EmployeeDocument', 'htmlTitle' => $employeeDocument->document->original_name]) }}"
                                                                 target="_blank">{{ $employeeDocument->document->original_name }}</a>
                                                         </td>
                                                     </tr>
@@ -249,10 +249,10 @@
                                         </table>
 
                                         <div class="">
-                                            <a href="{{ route('employeesDocuments.export', $employee) }}" class="btn btn-primary btn-sm mt-1">
+                                            <a href="{{ route('employees_documents.export', $employee) }}" class="btn btn-primary btn-sm mt-1">
                                                 &nbsp;&#8627; Fazer o download de todos os documentos do colaborador (zip)
                                             </a>
-                                            <a class="btn btn-primary btn-sm mt-1" href="{{ route('employeesDocuments.index', ['employeeCpfContains[0]' => $employee->cpf]) }}" target="_blank">
+                                            <a class="btn btn-primary btn-sm mt-1" href="{{ route('employees_documents.index', ['employeeCpfContains[0]' => $employee->cpf]) }}" target="_blank">
                                                 Listagem avançada...
                                             </a>    
                                         </div>
@@ -260,7 +260,7 @@
                                 @else
                                     <p class="mb-0">O colaborador não possui documentos cadastrados.</p>
                                     <div class="">
-                                        <a class="btn btn-primary btn-sm mt-1" href="{{ route('employeesDocuments.index', ['employeeCpfContains[0]' => $employee->cpf]) }}" target="_blank">
+                                        <a class="btn btn-primary btn-sm mt-1" href="{{ route('employees_documents.index', ['employeeCpfContains[0]' => $employee->cpf]) }}" target="_blank">
                                             Listagem avançada...
                                         </a>    
                                     </div>
@@ -376,7 +376,7 @@
                                 </div>
                                 <div class="">
                                     @can('employee-update', $employee)
-                                        <a href="{{ route('employees.institutionalDetails.edit', $employee->id) }}" data-bs-toggle="tooltip" title="Editar Detalhes Institucionais" class="btn btn-primary btn-sm">
+                                        <a href="{{ route('employees.institutional_details.edit', $employee->id) }}" data-bs-toggle="tooltip" title="Editar Detalhes Institucionais" class="btn btn-primary btn-sm">
                                             <i class="bi-pencil-fill"></i> Editar Detalhes Institucionais
                                         </a>
                                     @endcan

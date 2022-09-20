@@ -60,12 +60,12 @@
                                             </td>
                                         @break
                                         @case('App\Notifications\RightsDocumentArchived')
-                                            <td><strong>= Novo <a href="{{ route('bonds.rights.show', ['id' => $notification->data['document_id'], 'type' => 'BondDocument', 'htmlTitle' => $notification->data['document_name']]) }}"
+                                            <td><strong>= Novo <a href="{{ route('rights.show', ['id' => $notification->data['document_id'], 'type' => 'BondDocument', 'htmlTitle' => $notification->data['document_name']]) }}"
                                                         target="_blank">Documento de Termos e Licença</a> =</strong><br />
                                                 Colaborador: {{ $notification->data['employee_name'] }}<br />
                                                 Função: {{ $notification->data['role_name'] }} |
                                                 Curso: {{ $notification->data['course_name'] }}<br />
-                                                <a href="{{ route('bonds.rights.index') }}" target="_blank">[Listar Documentos de Termos e Licença]</a>
+                                                <a href="{{ route('rights.index') }}" target="_blank">[Listar Documentos de Termos e Licença]</a>
                                             </td>
                                         @break
                                         @case('App\Notifications\BondReviewRequested')

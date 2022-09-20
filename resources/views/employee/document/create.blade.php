@@ -14,7 +14,7 @@
             <div class="row justify-content-center">
                 <div class="col-xl-10 col-xxl-8">
                     @include('_components.alerts')
-                    <form action={{ route('employeesDocuments.store') }} method="POST" enctype="multipart/form-data">
+                    <form action={{ route('employees_documents.store') }} method="POST" enctype="multipart/form-data">
                         @csrf
                         
                         <div class="mb-3">
@@ -51,9 +51,9 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary">Enviar arquivo</button>
-                        <a href="{{ route('employeesDocuments.index') }}" class="btn btn-secondary">Cancelar</a>
+                        <a href="{{ route('employees_documents.index') }}" class="btn btn-secondary">Cancelar</a>
                         @can('employeeDocument-store')
-                            <a href="{{ route('employeesDocuments.createMany') }}" class="btn btn-warning">Desejo importar vários documentos de colaborador</a>
+                            <a href="{{ route('employees_documents.create_many') }}" class="btn btn-warning">Desejo importar vários documentos de colaborador</a>
                         @endcan
 
                         @error('noStore')

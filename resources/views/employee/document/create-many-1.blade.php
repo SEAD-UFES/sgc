@@ -14,7 +14,7 @@
             <div class="row justify-content-center">
                 <div class="col-xl-10 col-xxl-8">
                     @include('_components.alerts')
-                    <form action={{ route('employeesDocuments.storeMany1') }} method="POST" enctype="multipart/form-data">
+                    <form action={{ route('employees_documents.store_many_1') }} method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
                             <label for="inputFile1" class="form-label">Selecione os arquivos</label>
@@ -41,7 +41,7 @@
                             @enderror
                         </div>
                         <button type="submit" class="btn btn-primary">Enviar arquivos</button>
-                        <a href="{{ route('employeesDocuments.index') }}" class="btn btn-secondary">Cancelar</a>
+                        <a href="{{ route('employees_documents.index') }}" class="btn btn-secondary">Cancelar</a>
                         @error('noStore')
                             <div class="text-danger">> {{ $message }}</div>
                         @enderror

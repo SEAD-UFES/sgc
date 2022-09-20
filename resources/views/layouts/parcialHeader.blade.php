@@ -24,7 +24,7 @@
                                 @endcan
                                 @can('approved-store')
                                     <li><a class="dropdown-item" href="{{ route('approveds.create') }}">Cadastrar Aprovado</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('approveds.createMany.step1') }}">Importar Planilha</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('approveds.create_many.step_1') }}">Importar Planilha</a></li>
                                 @endcan
                                 @canany(['approved-list', 'approved-store'])
                                     <li><hr class="dropdown-divider"></li>
@@ -37,10 +37,10 @@
                                     <li><a class="dropdown-item" href="{{ route('employees.create') }}">Cadastrar Colaborador</a></li>
                                 @endcan
                                 @can('employeeDocument-list')
-                                    <li><a class="dropdown-item" href="{{ route('employeesDocuments.index') }}">Listar Documentos de Colaboradores</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('employees_documents.index') }}">Listar Documentos de Colaboradores</a></li>
                                 @endcan
                                 @can('employeeDocument-store')
-                                    <li><a class="dropdown-item" href="{{ route('employeesDocuments.create') }}">Importar Documento de Colaborador</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('employees_documents.create') }}">Importar Documento de Colaborador</a></li>
                                 @endcan
                                 <li><hr class="dropdown-divider"></li>
                                 <li><h6 class="dropdown-header">Vínculos</h6></li>
@@ -51,10 +51,10 @@
                                     <li><a class="dropdown-item" href="{{ route('bonds.create') }}">Cadastrar Vínculo</a></li>
                                 @endcan
                                 @can('bondDocument-list')
-                                    <li><a class="dropdown-item" href="{{ route('bondsDocuments.index') }}">Listar Documentos de Vínculos</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('bonds_documents.index') }}">Listar Documentos de Vínculos</a></li>
                                 @endcan
                                 @can('bondDocument-store')
-                                    <li><a class="dropdown-item" href="{{ route('bondsDocuments.create') }}">Importar Documento de Vínculo</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('bonds_documents.create') }}">Importar Documento de Vínculo</a></li>
                                 @endcan
                             </ul>
                         </li>
@@ -65,7 +65,7 @@
                         <a class="nav-link dropdown-toogle" href="" id="navbarSupportedContentMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false">Relatórios</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarSupportedContentMenuLink3">
                             <li><h6 class="dropdown-header">Termos e Licença</h6></li>
-                            <li><a class="dropdown-item" href="{{ route('bonds.rights.index') }}">Listar Documentos de Termos e Licença</a></li>
+                            <li><a class="dropdown-item" href="{{ route('rights.index') }}">Listar Documentos de Termos e Licença</a></li>
                         </ul>
                     </li>
 
@@ -106,8 +106,8 @@
                                 @can('isAdm-global')
                                     <li><hr class="dropdown-divider"></li>
                                     <li><h6 class="dropdown-header">SGC</h6></li>
-                                    <li><a class="dropdown-item" href="{{ route('logs') }}">Logs de sistema</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('sysinfo') }}">System Info</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('system_logs.index') }}">Logs de sistema</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('system_info') }}">System Info</a></li>
                                 @endcan
                             </ul>
                         </li>
@@ -115,7 +115,7 @@
                 </ul>
                 
                 @if (auth()->user()->hasActiveResponsibilities())
-                    <form class="d-flex" action={{ route('currentResponsibility.change') }} method="POST">
+                    <form class="d-flex" action={{ route('users.responsibility_switch') }} method="POST">
                         @csrf
                         <select class="form-select form-select-sm" aria-label="responsibility" name="activeResponsibilitys" data-bs-toggle="tooltip" data-bs-placement="left" title="Mudar papel atual" onchange="submit();">
                             @foreach (auth()->user()->getActiveResponsibilities()->get() as $responsibility)
@@ -129,7 +129,7 @@
                 @endif
 
                 <ul class="list-unstyled ms-1 mb-2 mb-lg-0">
-                    <li>Bem vind{{ auth()->user()->genderArticle }}, <a href="{{ route('users.currentPasswordEdit') }}" data-bs-toggle="tooltip" data-bs-placement="left" title="Alterar senha do Usuário">{{ auth()->user()->name }}</a>!
+                    <li>Bem vind{{ auth()->user()->genderArticle }}, <a href="{{ route('users.current_password_edit') }}" data-bs-toggle="tooltip" data-bs-placement="left" title="Alterar senha do Usuário">{{ auth()->user()->name }}</a>!
                         &nbsp;<a class="btn btn-sm btn-danger" href="{{ route('auth.logout') }}" data-bs-toggle="tooltip" data-bs-placement="left" title="Sair do sistema">Sair</a>
                     </li>
                 </ul>

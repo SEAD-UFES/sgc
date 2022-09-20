@@ -86,7 +86,7 @@
                                         @endcan
                                         @can('user-update')
                                             <form name="{{ 'formUnlink' . $user->id }}"
-                                                action="{{ route('users.destroyEmployeeLink', $user) }}" method="POST">
+                                                action="{{ route('users.destroy_employee_link', $user) }}" method="POST">
                                                 @method('DELETE')
                                                 @csrf
                                                 <button type="button" data-bs-toggle="tooltip" title="Desassociar colaborador"
