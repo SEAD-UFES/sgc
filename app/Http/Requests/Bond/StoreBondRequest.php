@@ -17,7 +17,9 @@ class StoreBondRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('bond-create');
+        $course_id = $this->get('course_id');
+
+        return Gate::allows('bond-store-course_id', $course_id);
     }
 
     /**

@@ -14,8 +14,11 @@ class UpdateBondRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize(Bond $bond): bool
+    public function authorize(): bool
     {
+        /** @var Bond $bond */
+        $bond = $this->route('bond');
+
         return Gate::allows('bond-update', $bond);
     }
 
