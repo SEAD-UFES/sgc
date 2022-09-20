@@ -6,7 +6,7 @@ use App\Events\NotificationDismissed;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\DatabaseNotification;
 
-class NotificationController extends Controller
+class DismissNotificationController extends Controller
 {
     /**
      * Mark notification as read.
@@ -15,7 +15,7 @@ class NotificationController extends Controller
      *
      * @return RedirectResponse
      */
-    public function dismiss(DatabaseNotification $notification): RedirectResponse
+    public function __invoke(DatabaseNotification $notification): RedirectResponse
     {
         try {
             $notification->markAsRead();
