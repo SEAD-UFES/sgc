@@ -522,8 +522,8 @@ class BondTest extends TestCase
         Arr::forget($bondArr, ['id', 'impediment', 'impediment_description', 'uaba_checked_at', 'created_at', 'updated_at']);
 
         $this->followingRedirects()->post('/bonds', $bondArr)
-            ->assertSee('O usuário não pode escolher esse curso')
-            ->assertStatus(200);
+            ->assertSee('403')
+            ->assertStatus(403);
     }
 
 
