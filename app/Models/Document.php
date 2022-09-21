@@ -5,6 +5,7 @@ namespace App\Models;
 use App\ModelFilters\DocumentFilter;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -110,15 +111,36 @@ class Document extends Model
     }
 
     /**
-     * @param string $bondId
+     * @param Builder<Document> $query
+     * @param int $bondId
      *
      * @return Builder<Document>
      */
-    public static function bondDocumentsByBondId($bondId): Builder
+    public function scopeByBondId(Builder $query, int $bondId): Builder
     {
-        return Document::whereHasMorph('documentable', \App\Models\BondDocument::class, static function ($query) use ($bondId) {
+        return $query->whereHasMorph('documentable', \App\Models\BondDocument::class, static function ($query) use ($bondId) {
             $query->where('bond_documents.bond_id', $bondId);
         });
+    }
+
+    /**
+     * @param Builder<Document> $query
+     *
+     * @return Builder<Document>
+     */
+    public function scopeWithDocumentables(Builder $query): Builder
+    {
+        return $query->with('documentable');
+    }
+
+    /**
+     * @param Builder<Document> $query
+     *
+     * @return Collection<int, Document>
+     */
+    public function scopeGetInRecentOrder(Builder $query): Collection
+    {
+        return $query->orderBy('id', 'desc')->get();
     }
 
     /**

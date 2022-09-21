@@ -164,4 +164,19 @@ class BondDocumentService extends DocumentService
 
         return $query->get();
     }
+
+    /**
+     * Undocumented function
+     *
+     * @param Bond $bond
+     *
+     * @return Collection<int, Document>
+     */
+    public function getByBond(Bond $bond): Collection
+    {
+        /** @var Collection<int, Document> $bondDocuments */
+        $bondDocuments = Document::byBondId($bond->id)->withDocumentables()->getInRecentOrder();
+
+        return $bondDocuments;
+    }
 }

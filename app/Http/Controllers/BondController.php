@@ -10,16 +10,14 @@ use App\Http\Requests\Bond\ShowBondRequest;
 use App\Http\Requests\Bond\StoreBondRequest;
 use App\Http\Requests\Bond\UpdateBondRequest;
 use App\Models\Bond;
-use App\Models\BondDocument;
-use App\Models\Document;
+use App\Services\BondDocumentService;
 use App\Services\BondService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class BondController extends Controller
 {
-    public function __construct(private BondService $service)
+    public function __construct(private BondService $service, private BondDocumentService $documentService)
     {
     }
 
@@ -58,11 +56,6 @@ class BondController extends Controller
      */
     public function store(StoreBondRequest $request): RedirectResponse
     {
-        //user can only store bonds with allowed course_ids
-        if (! Gate::allows('bond-store-course_id', $request->course_id)) {
-            return redirect()->route('bonds.index')->withErrors('O usuário não pode escolher esse curso.');
-        }
-
         try {
             $this->service->create($request->toDto());
         } catch (\Exception $e) {
@@ -85,9 +78,7 @@ class BondController extends Controller
     {
         $bond = $this->service->read($bond);
 
-        $documents = Document::whereHasMorph('documentable', BondDocument::class, static function ($query) use ($bond) {
-            $query->where('bond_id', $bond->id);
-        })->with('documentable')->orderBy('updated_at', 'desc')->get();
+        $documents = $this->documentService->getByBond($bond);
 
         return view('bond.show', compact(['bond', 'documents']));
     }
@@ -116,11 +107,7 @@ class BondController extends Controller
      */
     public function update(UpdateBondRequest $request, Bond $bond): RedirectResponse
     {
-        //user can only update bonds to allowed course_ids
-        if (! Gate::allows('bond-store-course_id', $request->course_id)) {
-            return back()->withErrors('courses', 'O usuário não pode escolher este curso.');
-        }
-
+        // TODO: Needs Fix: Coordinator of 'Course A' can change the bond of his course to another course via http post request or form manipulation
         try {
             $bond = $this->service->update($request->toDto(), $bond);
         } catch (\Exception $e) {
