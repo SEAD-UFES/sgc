@@ -16,6 +16,7 @@ use App\Models\Document;
 use App\Models\DocumentType;
 use App\Models\EmployeeDocument;
 use App\Models\User;
+use App\Services\BondDocumentService;
 use App\Services\Dto\ReviewBondDto;
 use App\Services\Dto\StoreBondDto;
 use App\Services\Dto\UpdateBondDto;
@@ -26,6 +27,10 @@ use Spatie\Activitylog\Models\Activity;
 
 class BondService
 {
+    public function __construct(private BondDocumentService $documentService)
+    {
+    }
+    
     /**
      * Undocumented function
      *
@@ -94,10 +99,12 @@ class BondService
     {
         ModelRead::dispatch($bond);
 
+        $bond->setAttribute('documents', $this->documentService->getByBond($bond));
+
         $activity = $this->getActivity($bond);
 
         foreach ($activity as $property => $value) {
-            $bond->$property = $value;
+            $bond->setAttribute($property, $value);
         }
 
         return $bond;

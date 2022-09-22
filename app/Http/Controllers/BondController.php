@@ -10,14 +10,13 @@ use App\Http\Requests\Bond\ShowBondRequest;
 use App\Http\Requests\Bond\StoreBondRequest;
 use App\Http\Requests\Bond\UpdateBondRequest;
 use App\Models\Bond;
-use App\Services\BondDocumentService;
 use App\Services\BondService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class BondController extends Controller
 {
-    public function __construct(private BondService $service, private BondDocumentService $documentService)
+    public function __construct(private BondService $service)
     {
     }
 
@@ -78,9 +77,7 @@ class BondController extends Controller
     {
         $bond = $this->service->read($bond);
 
-        $documents = $this->documentService->getByBond($bond);
-
-        return view('bond.show', compact(['bond', 'documents']));
+        return view('bond.show', compact(['bond']));
     }
 
     /**

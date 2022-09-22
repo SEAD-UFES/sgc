@@ -19,16 +19,18 @@
 
                     @include('_components.alerts')
 
+                    <h4>Vínculo: {{ $bond->employee->name . ' - ' . $bond->role->name . ' - ' . $bond->course->name }}</h4>
+
                     @component('bond.componentBondDetails', compact('bond'))@endcomponent
 
                     <div class="card mb-3">
-                        <div class="card-header" data-bs-toggle="collapse" href="#bondDocumentListContent" role="button"
-                            aria-expanded="true" aria-controls="bondDocumentListContent">
+                        <div class="card-header collapsed" data-bs-toggle="collapse" href="#bondDocumentListContent" role="button"
+                            aria-expanded="false" aria-controls="bondDocumentListContent">
                             <h4 class='mb-0'>Documentos do Vínculo</h4>
                         </div>
-                        <div class="collapse show" id="bondDocumentListContent">
+                        <div class="collapse" id="bondDocumentListContent">
                             <div class="card-body">
-                                @if ($documents->count() > 0)
+                                @if ($bond->documents->count() > 0)
                                     <div class="table-responsive">
                                         <table class="table table-hover">
                                             <thead>
@@ -37,7 +39,7 @@
                                                 <th>Nome do arquivo</th>
                                             </thead>
                                             <tbody>
-                                                @foreach ($documents as $document)
+                                                @foreach ($bond->documents as $document)
                                                     <tr>
                                                         <td>
                                                             {{ $document->updated_at ? \Carbon\Carbon::parse($document->updated_at)->isoFormat('DD/MM/Y HH:mm') : '-' }}
@@ -66,7 +68,7 @@
 
                     @php
                         $rightsTypeId = App\Models\DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first()->id;
-                        $hasRights = $documents->where('document_type_id', $rightsTypeId)->count() > 0;
+                        $hasRights = $bond->documents->where('document_type_id', $rightsTypeId)->count() > 0;
                     @endphp
 
                     <div class="card {{ $bond->impediment == 0 ? 'border-success' : 'border-warning' }}  mb-3">
@@ -165,11 +167,11 @@
                         </div>
                     </div>
                     <div class="card mb-3">
-                        <div class="card-header" data-bs-toggle="collapse" href="#institutionDetails" role="button"
-                            aria-expanded="true" aria-controls="institutionDetails">
+                        <div class="card-header collapsed" data-bs-toggle="collapse" href="#institutionDetails" role="button"
+                            aria-expanded="false" aria-controls="institutionDetails">
                             <h4 class='mb-0'>Detalhes Institucionais</h4>
                         </div>
-                        <div class="collapse show" id="institutionDetails">
+                        <div class="collapse" id="institutionDetails">
                             <div class="card-body">
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Login Institucional:</strong></div>
@@ -186,11 +188,11 @@
                         </div>
                     </div>
                     <div class="card mb-3">
-                        <div class="card-header" data-bs-toggle="collapse" href="#activityDetails" role="button"
-                            aria-expanded="true" aria-controls="activityDetails">
+                        <div class="card-header collapsed" data-bs-toggle="collapse" href="#activityDetails" role="button"
+                            aria-expanded="false" aria-controls="activityDetails">
                             <h4 class='mb-0'>Informações de Cadastro</h4>
                         </div>
-                        <div class="collapse show" id="activityDetails">
+                        <div class="collapse" id="activityDetails">
                             <div class="card-body">
                                 <div class="mb-2 row">
                                     <div class="col-sm-12 col-lg-12"><h5>Cadastrado</h5></div>
