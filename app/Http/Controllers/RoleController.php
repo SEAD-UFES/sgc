@@ -69,21 +69,6 @@ class RoleController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param ShowRoleRequest $request
-     * @param  Role  $role
-     *
-     * @return View
-     */
-    public function show(ShowRoleRequest $request, Role $role): View
-    {
-        $this->service->read($role);
-
-        return view('role.show', compact('role'));
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param EditRoleRequest $request

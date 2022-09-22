@@ -136,6 +136,9 @@ Route::middleware('auth')->group(function () {
             'show'
         ]);
     Route::resource('responsibilities', ResponsibilityController::class);
-    Route::resource('roles', RoleController::class);
+    Route::resource('roles', RoleController::class)
+        ->except([
+            'show'
+        ]);
     Route::resource('users', UserController::class);
 });
