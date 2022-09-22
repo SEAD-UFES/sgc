@@ -10,6 +10,7 @@ use App\Models\Employee;
 use App\Models\User;
 use App\Services\Dto\StoreEmployeeDto;
 use App\Services\Dto\UpdateEmployeeDto;
+use App\Services\EmployeeDocumentService;
 use App\Services\EmployeeService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -47,7 +48,7 @@ class EmployeeServiceTest extends TestCase
             ]
         );
 
-        $this->service = new EmployeeService();
+        $this->service = new EmployeeService(new EmployeeDocumentService());
     }
 
     /**
