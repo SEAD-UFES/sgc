@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace tests\Unit\app\Http\Controllers;
 
 use App\Http\Controllers\ApprovedController;
 use App\Http\Requests\Approved\DestroyApprovedRequest;

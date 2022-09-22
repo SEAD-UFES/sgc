@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace tests\Unit\app\Http\Controllers;
 
 use App\Http\Controllers\BondController;
 use App\Http\Requests\Bond\DestroyBondRequest;
