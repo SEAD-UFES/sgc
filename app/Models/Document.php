@@ -112,6 +112,19 @@ class Document extends Model
 
     /**
      * @param Builder<Document> $query
+     * @param int $employeeId
+     *
+     * @return Builder<Document>
+     */
+    public function scopeByEmployeeId(Builder $query, int $employeeId): Builder
+    {
+        return $query->whereHasMorph('documentable', \App\Models\EmployeeDocument::class, static function ($query) use ($employeeId) {
+            $query->where('employee_documents.employee_id', $employeeId);
+        });
+    }
+
+    /**
+     * @param Builder<Document> $query
      * @param int $bondId
      *
      * @return Builder<Document>

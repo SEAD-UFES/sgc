@@ -109,4 +109,19 @@ class EmployeeDocumentService extends DocumentService
 
         return $query->get();
     }
+
+    /**
+     * Undocumented function
+     *
+     * @param Employee $employee
+     *
+     * @return Collection<int, Document>
+     */
+    public function getByEmployee(Employee $employee): Collection
+    {
+        /** @var Collection<int, Document> $employeeDocuments */
+        $employeeDocuments = Document::byEmployeeId($employee->id)->withDocumentables()->getInRecentOrder();
+
+        return $employeeDocuments;
+    }
 }

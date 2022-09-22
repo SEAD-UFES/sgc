@@ -223,7 +223,7 @@
                         </div>
                         <div class="collapse" id="employeeDocumentListContent" >
                             <div class="card-body">
-                                @if($employeeDocuments->count() > 0)
+                                @if($employee->documents->count() > 0)
                                     <div class="table-responsive">
                                         <table class="table table-hover">
                                             <thead>
@@ -232,18 +232,18 @@
                                                 <th>Nome do arquivo</th>
                                             </thead>
                                             <tbody>
-                                                @foreach ($employeeDocuments as $employeeDocument)
+                                                @foreach ($employee->documents as $employeeDocument)
                                                     <tr>
                                                         <td>
-                                                            {{$employeeDocument->document->updated_at 
-                                                                ? \Carbon\Carbon::parse($employeeDocument->document->updated_at)->isoFormat('DD/MM/Y HH:mm') 
+                                                            {{$employeeDocument->updated_at 
+                                                                ? \Carbon\Carbon::parse($employeeDocument->updated_at)->isoFormat('DD/MM/Y HH:mm') 
                                                                 : '-'
                                                             }}
                                                         </td>
-                                                        <td>{{ $employeeDocument->document->documentType->name }}</td>
+                                                        <td>{{ $employeeDocument->documentType->name }}</td>
                                                         <td>
-                                                            <a href="{{ route('employees_documents.show', ['id' => $employeeDocument->document->id, 'type' => 'EmployeeDocument', 'htmlTitle' => $employeeDocument->document->original_name]) }}"
-                                                                target="_blank">{{ $employeeDocument->document->original_name }}</a>
+                                                            <a href="{{ route('employees_documents.show', ['id' => $employeeDocument->id, 'type' => 'EmployeeDocument', 'htmlTitle' => $employeeDocument->original_name]) }}"
+                                                                target="_blank">{{ $employeeDocument->original_name }}</a>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -277,10 +277,7 @@
                         </div>
                         <div class="collapse" id="bondListContent" >
                             <div class="card-body">
-                                @php
-                                    $activeBonds = $employee->bonds()->active()->orderBy('begin', 'ASC')->get();
-                                @endphp
-                                @if($activeBonds->count() > 0)
+                                @if($employee->activeBonds->count() > 0)
                                     <div class="table-responsive">
                                         <table class="table table-hover">
                                             <thead>
@@ -294,7 +291,7 @@
                                                 <th class="text-center">Ações</th>
                                             </thead>
                                             <tbody>
-                                                @foreach ($activeBonds as $bond)
+                                                @foreach ($employee->activeBonds as $bond)
                                                     <tr>
                                                         <td>
                                                             {{ \Carbon\Carbon::parse($bond->begin)->isoFormat('DD/MM/Y') }}

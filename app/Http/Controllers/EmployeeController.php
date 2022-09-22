@@ -10,7 +10,6 @@ use App\Http\Requests\Employee\ShowEmployeeRequest;
 use App\Http\Requests\Employee\StoreEmployeeRequest;
 use App\Http\Requests\Employee\UpdateEmployeeRequest;
 use App\Models\Employee;
-use App\Models\EmployeeDocument;
 use App\Services\EmployeeService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -82,10 +81,7 @@ class EmployeeController extends Controller
     {
         $employee = $this->service->read($employee);
 
-        $employeeDocuments = EmployeeDocument::where('employee_id', $employee->id)->with('document')->orderBy('updated_at', 'desc')->get();
-        $activeBonds = $employee->bonds()->active()->orderBy('begin', 'ASC')->get();
-
-        return view('employee.show', compact(['employee', 'employeeDocuments', 'activeBonds']));
+        return view('employee.show', compact(['employee']));
     }
 
     /**

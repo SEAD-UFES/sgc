@@ -11,6 +11,7 @@ use App\Models\Employee;
 use App\Models\User;
 use App\Services\Dto\StoreEmployeeDto;
 use App\Services\Dto\UpdateEmployeeDto;
+use App\Services\EmployeeDocumentService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -19,6 +20,10 @@ use Spatie\Activitylog\Models\Activity;
 
 class EmployeeService
 {
+    public function __construct(private EmployeeDocumentService $documentService)
+    {
+    }
+
     /**
      * Undocumented function
      *
@@ -96,33 +101,8 @@ class EmployeeService
     {
         ModelRead::dispatch($employee);
 
-        /* $activityCreated = Activity::select('activity_log.causer_id', 'activity_log.created_at')
-            ->where('activity_log.subject_id', $employee->id)
-            ->where('activity_log.subject_type', Employee::class)
-            ->where('activity_log.event', 'created')
-            ->where('activity_log.causer_type', User::class)
-            ->orderBy('activity_log.id', 'desc')
-            ->first();
-
-        $createdBy = User::find($activityCreated?->causer_id)?->name;
-        $createdByUser = $createdBy ? $createdBy : '-';
-        $createdOn = $activityCreated?->created_at;
-        $createdOnDate = $createdOn != null ? \Carbon\Carbon::parse($createdOn)->isoFormat('DD/MM/Y HH:mm') : '-';
-
-        $activityUpdated = Activity::select('activity_log.causer_id', 'activity_log.created_at')
-            ->where('activity_log.subject_id', $employee->id)
-            ->where('activity_log.subject_type', Employee::class)
-            ->where('activity_log.event', 'updated')
-            ->where('activity_log.causer_type', User::class)
-            ->orderBy('activity_log.id', 'desc')
-            ->first();
-
-        $updatedBy = User::find($activityUpdated?->causer_id)?->name;
-        $updatedByUser = $updatedBy ? $updatedBy : '-';
-        $updatedOn = $activityUpdated?->created_at;
-        $updatedOnDate = $updatedOn != null ? \Carbon\Carbon::parse($updatedOn)->isoFormat('DD/MM/Y HH:mm') : '-';
-
-        dd($createdByUser, $createdOn, $updatedByUser, $updatedOn); */
+        $employee->setAttribute('documents', $this->documentService->getByEmployee($employee));
+        $employee->setAttribute('activeBonds', $employee->bonds()->active()->orderBy('begin', 'ASC')->get());
 
         $activity = $this->getActivity($employee);
 
