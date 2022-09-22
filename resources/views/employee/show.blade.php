@@ -17,6 +17,8 @@
                     
                     @include('_components.alerts')
 
+                    <h4>Colaborador: {{ $employee->name }}</h4>
+
                     <div class="card mb-3">
                         <div class="card-header" data-bs-toggle="collapse" href="#employeePersonalDataContent" role="button" aria-expanded="true" aria-controls="employeePersonalDataContent">
                             <h4 class='mb-0'>Dados Pessoais</h4>
@@ -110,10 +112,10 @@
                     </div>
 
                     <div class="card mb-3">
-                        <div class="card-header" data-bs-toggle="collapse" href="#employeeContactDataContent" role="button" aria-expanded="true" aria-controls="employeeContactDataContent">
+                        <div class="card-header collapsed" data-bs-toggle="collapse" href="#employeeContactDataContent" role="button" aria-expanded="false" aria-controls="employeeContactDataContent">
                             <h4 class='mb-0'>Contato e Endereço</h4>
                         </div>
-                        <div class="collapse show" id="employeeContactDataContent" >
+                        <div class="collapse" id="employeeContactDataContent" >
                             <div class="card-body">
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Código de Área:</strong></div>
@@ -183,10 +185,10 @@
                     </div>
 
                     <div class="card mb-3">
-                        <div class="card-header" data-bs-toggle="collapse" href="#employeeBankAccountDataContent" role="button" aria-expanded="true" aria-controls="employeeBankAccountDataContent">
+                        <div class="card-header collapsed" data-bs-toggle="collapse" href="#employeeBankAccountDataContent" role="button" aria-expanded="false" aria-controls="employeeBankAccountDataContent">
                             <h4 class='mb-0'>Informações Bancárias</h4>
                         </div>
-                        <div class="collapse show" id="employeeBankAccountDataContent" >
+                        <div class="collapse" id="employeeBankAccountDataContent" >
                             <div class="card-body">
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Banco:</strong></div>
@@ -216,10 +218,10 @@
                     </div>
 
                     <div class="card mb-3">
-                        <div class="card-header" data-bs-toggle="collapse" href="#employeeDocumentListContent" role="button" aria-expanded="true" aria-controls="employeeDocumentListContent">
+                        <div class="card-header collapsed" data-bs-toggle="collapse" href="#employeeDocumentListContent" role="button" aria-expanded="false" aria-controls="employeeDocumentListContent">
                             <h4 class='mb-0'>Documentos do Colaborador</h4>
                         </div>
-                        <div class="collapse show" id="employeeDocumentListContent" >
+                        <div class="collapse" id="employeeDocumentListContent" >
                             <div class="card-body">
                                 @if($employeeDocuments->count() > 0)
                                     <div class="table-responsive">
@@ -270,10 +272,10 @@
                     </div>
 
                     <div class="card mb-3">
-                        <div class="card-header" data-bs-toggle="collapse" href="#bondListContent" role="button" aria-expanded="true" aria-controls="bondListContent">
+                        <div class="card-header collapsed" data-bs-toggle="collapse" href="#bondListContent" role="button" aria-expanded="false" aria-controls="bondListContent">
                             <h4 class='mb-0'>Vínculos Ativos</h4>
                         </div>
-                        <div class="collapse show" id="bondListContent" >
+                        <div class="collapse" id="bondListContent" >
                             <div class="card-body">
                                 @php
                                     $activeBonds = $employee->bonds()->active()->orderBy('begin', 'ASC')->get();
@@ -360,11 +362,11 @@
                         </div>
                     </div>
                     <div class="card mb-3">
-                        <div class="card-header" data-bs-toggle="collapse" href="#institutionDetails" role="button"
-                            aria-expanded="true" aria-controls="institutionDetails">
+                        <div class="card-header collapsed" data-bs-toggle="collapse" href="#institutionDetails" role="button"
+                            aria-expanded="false" aria-controls="institutionDetails">
                             <h4 class='mb-0'>Detalhes Institucionais</h4>
                         </div>
-                        <div class="collapse show" id="institutionDetails">
+                        <div class="collapse" id="institutionDetails">
                             <div class="card-body">
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Login Institucional:</strong></div>
@@ -385,11 +387,11 @@
                         </div>
                     </div>
                     <div class="card mb-3">
-                        <div class="card-header" data-bs-toggle="collapse" href="#activityDetails" role="button"
-                            aria-expanded="true" aria-controls="activityDetails">
+                        <div class="card-header collapsed" data-bs-toggle="collapse" href="#activityDetails" role="button"
+                            aria-expanded="false" aria-controls="activityDetails">
                             <h4 class='mb-0'>Informações de Cadastro</h4>
                         </div>
-                        <div class="collapse show" id="activityDetails">
+                        <div class="collapse" id="activityDetails">
                             <div class="card-body">
                                 <div class="mb-2 row">
                                     <div class="col-sm-12 col-lg-12"><h5>Cadastrado</h5></div>
@@ -405,10 +407,10 @@
                         </div>
                     </div>
                     <div class="card mb-3">
-                        <div class="card-header" data-bs-toggle="collapse" href="#userListContent" role="button" aria-expanded="true" aria-controls="userListContent">
+                        <div class="card-header collapsed" data-bs-toggle="collapse" href="#userListContent" role="button" aria-expanded="false" aria-controls="userListContent">
                             <h4 class='mb-0'>Usuários de sistema associados</h4>
                         </div>
-                        <div class="collapse show" id="userListContent" >
+                        <div class="collapse" id="userListContent" >
                             <div class="card-body">
                                 @if($employee->users->count() > 0)
                                     <div class="table-responsive">

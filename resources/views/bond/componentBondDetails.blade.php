@@ -2,11 +2,11 @@
 @component('employee.componentBasicEmployeeData', ['employee'=>$bond->employee])@endcomponent
 
 <div class="card mb-3">
-    <div class="card-header" data-bs-toggle="collapse" href="#bondDataContent" role="button" aria-expanded="true" aria-controls="bondDataContent">
+    <div class="card-header collapsed" data-bs-toggle="collapse" href="#bondDataContent" role="button" aria-expanded="false" aria-controls="bondDataContent">
         <h4 class='mb-0'>Dados do Vínculo</h4>
     </div>
 
-    <div class="collapse show" id="bondDataContent" >
+    <div class="collapse" id="bondDataContent" >
         <div class="card-body">
             <div class="mb-2 row">
                 <div class="col-sm-4 col-lg-3"><strong>Função:</strong></div>
@@ -53,11 +53,11 @@
 </div>
 
 <div class="card mb-3">
-    <div class="card-header" data-bs-toggle="collapse" href="#bondQualificationDataContent" role="button" aria-expanded="true" aria-controls="bondQualificationDataContent">
+    <div class="card-header collapsed" data-bs-toggle="collapse" href="#bondQualificationDataContent" role="button" aria-expanded="false" aria-controls="bondQualificationDataContent">
         <h4 class='mb-0'>Qualificação</h4>
     </div>
 
-    <div class="collapse show" id="bondQualificationDataContent" >
+    <div class="collapse" id="bondQualificationDataContent" >
         <div class="card-body">
             <div class="mb-2 row">
                 <div class="col-sm-4 col-lg-3"><strong>Área do último Curso Superior:</strong></div>
