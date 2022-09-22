@@ -30,7 +30,7 @@ class BondService
     public function __construct(private BondDocumentService $documentService)
     {
     }
-    
+
     /**
      * Undocumented function
      *
