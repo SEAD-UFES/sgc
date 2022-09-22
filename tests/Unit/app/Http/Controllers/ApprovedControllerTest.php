@@ -9,7 +9,6 @@ use App\Http\Requests\Approved\StoreApprovedRequest;
 use App\Http\Requests\Approved\UpdateApprovedStateRequest;
 use App\Models\Approved;
 use App\Services\ApprovedService;
-use App\Services\Dto\StoreApprovedDto;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Pagination\LengthAwarePaginator;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -40,8 +39,6 @@ class ApprovedControllerTest extends TestCase
         // Create a stub for the IndexApprovedRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(IndexApprovedRequest::class);
-        $requestStub->expects($this->any())->method('authorize')
-            ->willReturn(true);
 
         // Provides a fake LengthAwarePaginator to be returned by the service's list method.
         $lengthAwarePaginator = $this->createStub(LengthAwarePaginator::class);
@@ -55,19 +52,9 @@ class ApprovedControllerTest extends TestCase
 
     public function testControllerStoreShouldCallServiceCreateMethod(): void
     {
-        // Create a stub for the StoreApprovedDto class.
-        /** @var MockObject $storeApprovedDto */
-        $storeApprovedDto = $this->createStub(StoreApprovedDto::class);
-
         // Create a stub for the StoreApprovedRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(StoreApprovedRequest::class);
-        $requestStub->expects($this->any())->method('authorize')
-            ->willReturn(true);
-        $requestStub->expects($this->any())->method('rules')
-            ->willReturn([]);
-        $requestStub->expects($this->any())->method('toDto')
-            ->willReturn($storeApprovedDto);
 
         // Expects the service's create method to be called once.
         $this->serviceMock->expects($this->once())->method('create');
@@ -80,10 +67,6 @@ class ApprovedControllerTest extends TestCase
         // Create a stub for the UpdateApprovedStateRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(UpdateApprovedStateRequest::class);
-        $requestStub->expects($this->any())->method('authorize')
-            ->willReturn(true);
-        $requestStub->expects($this->any())->method('rules')
-            ->willReturn([]);
         $requestStub->expects($this->any())->method('all')
             ->willReturn([]);
 
@@ -101,10 +84,6 @@ class ApprovedControllerTest extends TestCase
         // Create a stub for the DestroyApprovedRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(DestroyApprovedRequest::class);
-        $requestStub->expects($this->any())->method('authorize')
-            ->willReturn(true);
-        $requestStub->expects($this->any())->method('rules')
-            ->willReturn([]);
 
         /** @var MockObject $approvedStub */
         $approvedStub = $this->createStub(Approved::class);
