@@ -65,21 +65,6 @@ class PoleController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  ShowPoleRequest  $request
-     * @param  Pole  $pole
-     *
-     * @return View
-     */
-    public function show(ShowPoleRequest $request, Pole $pole): View
-    {
-        $this->service->read($pole);
-
-        return view('pole.show', compact('pole'));
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  EditPoleRequest  $request

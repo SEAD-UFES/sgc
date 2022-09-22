@@ -131,7 +131,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('bonds', BondController::class);
     Route::resource('courses', CourseController::class);
     Route::resource('employees', EmployeeController::class);
-    Route::resource('poles', PoleController::class);
+    Route::resource('poles', PoleController::class)
+        ->except([
+            'show'
+        ]);
     Route::resource('responsibilities', ResponsibilityController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
