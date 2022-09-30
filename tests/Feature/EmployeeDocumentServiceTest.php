@@ -5,10 +5,10 @@ namespace Tests\Feature;
 use App\Events\ModelListed;
 use App\Models\Document;
 use App\Models\EmployeeDocument;
-use App\Services\Dto\StoreEmployeeDocumentDto;
+use App\Repositories\EmployeeDocumentRepository;
+use App\Services\Dto\StoreDocumentDto;
 use App\Services\EmployeeDocumentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
@@ -23,7 +23,7 @@ class EmployeeDocumentServiceTest extends TestCase
     {
         parent::__construct();
 
-        $this->service = new EmployeeDocumentService();
+        $this->service = new EmployeeDocumentService(new EmployeeDocumentRepository());
     }
 
     //setting up scenario for all tests
@@ -71,12 +71,12 @@ class EmployeeDocumentServiceTest extends TestCase
     public function documentShouldBeCreated(): void
     {
         //setting up scenario
-        $attributes['file'] = UploadedFile::fake()->create('Document Gama.pdf', 20, 'application/pdf');
-
+        $attributes['fileName'] = 'Document Gama.pdf';
+        $attributes['fileData'] = (string) 'data:application/pdf;base64,';
         $attributes['documentTypeId'] = (string) 1;
-        $attributes['employeeId'] = (string) 2;
+        $attributes['referentId'] = (string) 2;
 
-        $dto = new StoreEmployeeDocumentDto($attributes);
+        $dto = new StoreDocumentDto($attributes);
 
         Event::fakeFor(function () use ($dto) {
             //execution

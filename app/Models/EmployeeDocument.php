@@ -21,11 +21,6 @@ class EmployeeDocument extends Model
     use LogsActivity;
 
     /**
-     * @const string
-     */
-    public const REFERENT_ID = 'employee_id';
-
-    /**
      * @var array<int, string>
      */
     public static $sortable = [
@@ -74,39 +69,6 @@ class EmployeeDocument extends Model
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
-    }
-
-    /**
-     * @return Builder<Document>
-     */
-    public function queryDocuments(): Builder
-    {
-        return $this->query = Document::select(
-            [
-                'documents.id',
-                'documents.original_name',
-                'documents.document_type_id',
-                'document_types.name AS document_type',
-                'documents.created_at',
-                'documents.updated_at',
-
-                'employees.id AS employee_id',
-                'employees.name AS employee_name',
-                'employees.cpf AS employee_cpf',
-            ]
-        )
-            ->whereHasMorph('documentable', \App\Models\EmployeeDocument::class)
-            ->join('document_types', 'document_types.id', '=', 'documents.document_type_id')
-            ->join('employee_documents', 'employee_documents.id', '=', 'documentable_id')
-            ->join('employees', 'employees.id', '=', 'employee_documents.employee_id');
-    }
-
-    /**
-     * @return string
-     */
-    public static function referentId(): string
-    {
-        return self::REFERENT_ID;
     }
 
     public function getActivitylogOptions(): LogOptions

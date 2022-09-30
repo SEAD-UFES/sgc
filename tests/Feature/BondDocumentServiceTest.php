@@ -7,14 +7,13 @@ use App\Models\Bond;
 use App\Models\BondDocument;
 use App\Models\Document;
 use App\Models\DocumentType;
+use App\Repositories\BondDocumentRepository;
+use App\Repositories\RightsDocumentRepository;
 use App\Services\BondDocumentService;
-use App\Services\DocumentService;
-use App\Services\Dto\StoreBondDocumentDto;
+use App\Services\Dto\StoreDocumentDto;
+use App\Services\RightsDocumentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Storage;
-use Mockery\MockInterface;
 use Tests\TestCase;
 
 class BondDocumentServiceTest extends TestCase
@@ -22,13 +21,15 @@ class BondDocumentServiceTest extends TestCase
     use RefreshDatabase;
 
     private BondDocumentService $service;
+    private RightsDocumentService $rightsService;
 
     /** @return void  */
     public function __construct()
     {
         parent::__construct();
 
-        $this->service = new BondDocumentService();
+        $this->service = new BondDocumentService(new BondDocumentRepository());
+        $this->rightsService = new RightsDocumentService(new RightsDocumentRepository());
     }
 
 
@@ -119,7 +120,7 @@ class BondDocumentServiceTest extends TestCase
 
         Event::fakeFor(function () {
             //execution
-            $documents = $this->service->listRights();
+            $documents = $this->rightsService->list();
 
             //verifications
             Event::assertDispatched(ModelListed::class);
@@ -134,12 +135,12 @@ class BondDocumentServiceTest extends TestCase
     public function documentShouldBeCreated(): void
     {
         //setting up scenario
-        $attributes['file'] = UploadedFile::fake()->create('Document Gama.pdf', 20, 'application/pdf');
-
+        $attributes['fileName'] = (string) 'Document Gama.pdf';
+        $attributes['fileData'] = (string) 'data:application/pdf;base64,';
         $attributes['documentTypeId'] = (string) 1;
-        $attributes['bondId'] = (string) 1;
+        $attributes['referentId'] = (string) 1;
 
-        $dto = new StoreBondDocumentDto($attributes);
+        $dto = new StoreDocumentDto($attributes);
 
         Event::fakeFor(function () use ($dto) {
             //execution

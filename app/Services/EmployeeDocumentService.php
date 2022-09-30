@@ -3,67 +3,63 @@
 namespace App\Services;
 
 use App\Events\EmployeeDocumentExported;
+use App\Events\ModelListed;
+use App\Interfaces\EmployeeDocumentRepositoryInterface;
 use App\Models\Document;
 use App\Models\Employee;
 use App\Models\EmployeeDocument;
-use App\Services\Dto\StoreEmployeeDocumentDto;
-use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\UploadedFile;
+use App\Services\Dto\StoreDocumentDto;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
-class EmployeeDocumentService extends DocumentService
+class EmployeeDocumentService extends GenericDocumentService
 {
-    public function __construct()
+    public function __construct(private EmployeeDocumentRepositoryInterface $repository)
     {
-        parent::__construct(EmployeeDocument::class, Employee::class);
+        parent::__construct();
     }
 
     /**
      * Undocumented function
      *
-     * @param StoreEmployeeDocumentDto $storeEmployeeDocumentDto
+     * @param string $sort
+     * @param string $direction
      *
-     * @return void
+     * @return LengthAwarePaginator
      */
-    public function create(StoreEmployeeDocumentDto $storeEmployeeDocumentDto): void
+    public function list(string $sort = 'documents.id', string $direction = 'desc'): LengthAwarePaginator
     {
-        DB::transaction(function () use ($storeEmployeeDocumentDto) {
-            /**
-             * @var UploadedFile $uploadedFile
-             */
-            $uploadedFile = $storeEmployeeDocumentDto->file;
+        ModelListed::dispatch(EmployeeDocument::class);
 
-            $originalName = $uploadedFile->getClientOriginalName();
+        return $this->repository::all(sort: $sort, direction: $direction);
+    }
 
-            $fileData = $this->getFileData($uploadedFile);
+    /**
+     * Undocumented function
+     *
+     * @param StoreDocumentDto $storeEmployeeDocumentDto
+     *
+     * @return ?Document
+     */
+    public function create(StoreDocumentDto $storeEmployeeDocumentDto): ?Document
+    {
+        $document = null;
 
-            // Get old versions of this document type
-            $oldDocuments = $this->getOldDocuments($storeEmployeeDocumentDto);
+        DB::transaction(function () use ($storeEmployeeDocumentDto, &$document) {
+            $oldDocuments = $this->repository
+                ->getByEmployeeIdOfTypeId(
+                    (int) $storeEmployeeDocumentDto->referentId,
+                    (int) $storeEmployeeDocumentDto->documentTypeId
+                );
 
-            // Delete old versions of this document type
-            $this->deleteOldDocuments($oldDocuments);
+            foreach ($oldDocuments as $oldDocument) {
+                $this->repository->delete($oldDocument->id);
+            }
 
-            /** @var EmployeeDocument $documentable */
-            $documentable = new EmployeeDocument([
-                'employee_id' => $storeEmployeeDocumentDto->employeeId,
-            ]);
-
-            $documentable->save();
-
-            /** @var Document $document */
-            $document = new Document([
-                'original_name' => $originalName,
-                'document_type_id' => $storeEmployeeDocumentDto->documentTypeId,
-                'documentable_type' => EmployeeDocument::class,
-                'documentable_id' => $documentable->id,
-                'file_data' => $fileData,
-            ]);
-
-            $documentable->document()->save($document);
-
-            return $document;
+            $document = $this->repository->create($storeEmployeeDocumentDto);
         });
+
+        return $document;
     }
 
     /**
@@ -74,54 +70,14 @@ class EmployeeDocumentService extends DocumentService
      *
      * @return string
      */
-    public function exportDocuments(Employee $employee, ?string $zipFileName = null): string
+    public function zipDocuments(Employee $employee, ?string $zipFileName = null): string
     {
-        /**
-         * @var Collection<int, EmployeeDocument> $documentables
-         */
-        $documentables = $employee->employeeDocuments()->get(); // <= Particular line
-        $zipFileName = $zipFileName ?? date('Y-m-d') . '_' . $employee->name . '.zip'; // <= Particular line
+        $employeeDocuments = $this->repository->getByEmployeeId($employee->id);
+
+        $zipFileName = $zipFileName ?? date('Y-m-d') . '_' . $employee->name . '.zip';
 
         EmployeeDocumentExported::dispatch($employee);
 
-        return parent::exportGenericDocuments($documentables, $zipFileName);
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param StoreEmployeeDocumentDto $storeEmployeeDocumentDto
-     *
-     * @return Collection<int, Document>
-     */
-    private function getOldDocuments(StoreEmployeeDocumentDto $storeEmployeeDocumentDto): Collection
-    {
-        $query = Document::query();
-
-        $query = $query->where('document_type_id', $storeEmployeeDocumentDto->documentTypeId);
-        $query = $query->whereHasMorph(
-            'documentable',
-            EmployeeDocument::class,
-            static function (Builder $query) use ($storeEmployeeDocumentDto) {
-                $query->where('employee_id', $storeEmployeeDocumentDto->employeeId);
-            }
-        );
-
-        return $query->get();
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param Employee $employee
-     *
-     * @return Collection<int, Document>
-     */
-    public function getByEmployee(Employee $employee): Collection
-    {
-        /** @var Collection<int, Document> $employeeDocuments */
-        $employeeDocuments = Document::byEmployeeId($employee->id)->withDocumentables()->getInRecentOrder();
-
-        return $employeeDocuments;
+        return parent::zipGenericDocuments($employeeDocuments, $zipFileName);
     }
 }

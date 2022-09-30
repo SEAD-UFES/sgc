@@ -46,7 +46,7 @@
                                         <td>{{ $document->role_name }}</td>
                                         <td>{{ $document->course_name }}</td>
                                         <td>{{ $document->pole_name }}</td>
-                                        <td><a href={{ route('rights.show', ['id' => $document->id, 'type' => 'BondDocument', 'htmlTitle' => $document->original_name]) }}
+                                        <td><a href={{ route('rights.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]) }}
                                                 target="_blank">{{ $document->original_name }}</a></td>
                                     </tr>
                                 @endforeach

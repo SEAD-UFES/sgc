@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RightsDocument\IndexRightsDocumentRequest;
 use App\Http\Requests\RightsDocument\ShowRightsDocumentRequest;
-use App\Services\BondDocumentService;
+use App\Services\RightsDocumentService;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Response as FacadesResponse;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class RightsDocumentController extends Controller
 {
-    public function __construct(private BondDocumentService $service)
+    public function __construct(private RightsDocumentService $service)
     {
     }
 
@@ -32,7 +32,7 @@ class RightsDocumentController extends Controller
          */
         $direction = $request->query('direction') ?? '';
 
-        $documents = $this->service->listRights(sort: $sort, direction: $direction);
+        $documents = $this->service->list(sort: $sort, direction: $direction);
 
         return view('reports.rightsIndex', compact('documents'));
     }
@@ -47,23 +47,14 @@ class RightsDocumentController extends Controller
      */
     public function show(ShowRightsDocumentRequest $request, int $id): Response
     {
-        $file = $this->service->getDocument($id);
-
         /**
-         * @var string $data
+         * @var Collection<string, string> $file
          */
-        $data = $file->get('data');
+        $file = $this->service->assembleDocument($id);
 
-        /**
-         * @var string $fileName
-         */
-        $fileName = $file->get('name');
-
-        /**
-         * @var string $mime
-         */
-        $mime = $file->get('mime');
-
-        return FacadesResponse::make($data, 200, ['filename=' => $fileName])->header('Content-Type', $mime);
+        return response($file->get('data'), 200, [
+            'Content-Type' => $file->get('mime'),
+            'Content-Disposition' => 'inline',
+        ]);
     }
 }

@@ -1168,10 +1168,12 @@ class DocumentTest extends TestCase
             ]
         );
 
+        $referentIdColumnName = $documentClass === EmployeeDocument::class ? 'employee_id' : 'bond_id';
+
         $requestAttributes = [];
         $requestAttributes['file'] = $testDocumentFile;
         $requestAttributes['document_type_id'] = $documentTypeId ?? $testDocumentType->id;
-        $requestAttributes[$documentClass::referentId()] = $referentId;
+        $requestAttributes[$referentIdColumnName] = $referentId;
 
         return $requestAttributes;
     }
@@ -1536,7 +1538,7 @@ class DocumentTest extends TestCase
         $originalDocTypeId = $originalDocument->document_type_id;
         $originalDocTypeName = DocumentType::find($originalDocTypeId)->name;
         $originalDocumentable = $originalDocument->documentable()->first();
-        $originalReferentId = $originalDocumentable->pluck($originalDocumentable->referentId())->first();
+        $originalReferentId = $originalDocumentable->pluck('employee_id')->first();
 
         $this->actingAs(self::$userAdm);
 
@@ -1571,7 +1573,7 @@ class DocumentTest extends TestCase
         $originalDocTypeId = $originalDocument->document_type_id;
         $originalDocTypeName = DocumentType::find($originalDocTypeId)->name;
         $originalDocumentable = $originalDocument->documentable()->first();
-        $originalReferentId = $originalDocumentable->pluck($originalDocumentable->referentId())->first();
+        $originalReferentId = $originalDocumentable->pluck('bond_id')->first();
 
         $this->actingAs(self::$userAdm);
 

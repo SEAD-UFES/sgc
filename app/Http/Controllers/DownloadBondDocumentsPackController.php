@@ -9,7 +9,7 @@ use Exception;
 use Illuminate\Http\RedirectResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class ExportBondDocumentPackController extends Controller
+class DownloadBondDocumentsPackController extends Controller
 {
     /**
      * @param BondDocumentService $service
@@ -31,7 +31,7 @@ class ExportBondDocumentPackController extends Controller
     public function __invoke(ExportBondDocumentPackRequest $request, Bond $bond): BinaryFileResponse|RedirectResponse
     {
         try {
-            $zipFileName = $this->service->exportDocuments($bond);
+            $zipFileName = $this->service->zipDocuments($bond);
         } catch (Exception $e) {
             return redirect()->route('bonds.show', $bond)->withErrors('Erro ao gerar o arquivo compactado: ' . $e->getMessage());
         }

@@ -5,9 +5,9 @@ namespace Tests\Feature;
 use App\Events\ModelRead;
 use App\Models\BondDocument;
 use App\Models\Document;
-use App\Models\Employee;
 use App\Models\EmployeeDocument;
-use App\Services\DocumentService;
+use App\Repositories\GenericDocumentRepository;
+use App\Services\GenericDocumentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
@@ -16,13 +16,13 @@ class GenericDocumentServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    private DocumentService $service;
+    private GenericDocumentService $service;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->service = new DocumentService(EmployeeDocument::class, Employee::class);
+        $this->service = new GenericDocumentService(new GenericDocumentRepository());
     }
 
     //setting up scenario for all tests
@@ -45,27 +45,6 @@ class GenericDocumentServiceTest extends TestCase
                 'documentable_type' => BondDocument::class,
             ]
         );
-
-        //
-    }
-
-    /**
-     * @test
-     */
-    public function documentShouldBeRetrieved()
-    {
-        //setting up scenario
-        $document = Document::find(1);
-
-        Event::fakeFor(function () use ($document) {
-            //execution
-            $document = $this->service->read($document);
-
-            //verifications
-            Event::assertDispatched(ModelRead::class);
-            $this->assertEquals('Document Employee Alpha.pdf', $document->original_name);
-            $this->assertCount(2, Document::all());
-        });
     }
 
     /**
@@ -75,12 +54,11 @@ class GenericDocumentServiceTest extends TestCase
     {
         Event::fakeFor(function () {
             //execution
-            $document = $this->service->getDocument(1);
+            $document = $this->service->assembleDocument(1);
 
             //verifications
             Event::assertDispatched(ModelRead::class);
             $this->assertEquals('Document Employee Alpha.pdf', $document->get('name'));
-            $this->assertEquals(EmployeeDocument::class, $document->get('class'));
         });
     }
 }

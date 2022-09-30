@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests\BondDocument;
 
-use App\Services\Dto\StoreBondDocumentDto;
+use App\Services\Dto\StoreDocumentDto;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Gate;
 
 class StoreBondDocumentRequest extends FormRequest
@@ -48,12 +49,16 @@ class StoreBondDocumentRequest extends FormRequest
         ];
     }
 
-    public function toDto(): StoreBondDocumentDto
+    public function toDto(): StoreDocumentDto
     {
-        return new StoreBondDocumentDto(
-            file: $this->file('file'),
+        /** @var UploadedFile $file */
+        $file = $this->file('file');
+
+        return new StoreDocumentDto(
+            fileName: $file->getClientOriginalName(),
+            fileData: base64_encode($file->getContent()),
             documentTypeId: $this->validated('document_type_id') ?? '',
-            bondId: $this->validated('bond_id') ?? '',
+            referentId: $this->validated('bond_id') ?? '',
         );
     }
 }

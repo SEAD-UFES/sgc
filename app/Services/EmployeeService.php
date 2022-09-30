@@ -5,13 +5,13 @@ namespace App\Services;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Helpers\TextHelper;
+use App\Interfaces\EmployeeDocumentRepositoryInterface;
 use App\Models\Bond;
 use App\Models\Course;
 use App\Models\Employee;
 use App\Models\User;
 use App\Services\Dto\StoreEmployeeDto;
 use App\Services\Dto\UpdateEmployeeDto;
-use App\Services\EmployeeDocumentService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -20,7 +20,7 @@ use Spatie\Activitylog\Models\Activity;
 
 class EmployeeService
 {
-    public function __construct(private EmployeeDocumentService $documentService)
+    public function __construct(private EmployeeDocumentRepositoryInterface $documentRepository)
     {
     }
 
@@ -101,7 +101,7 @@ class EmployeeService
     {
         ModelRead::dispatch($employee);
 
-        $employee->setAttribute('documents', $this->documentService->getByEmployee($employee));
+        $employee->setAttribute('documents', $this->documentRepository->getByEmployeeId($employee->id));
         $employee->setAttribute('activeBonds', $employee->bonds()->active()->orderBy('begin', 'ASC')->get());
 
         $activity = $this->getActivity($employee);

@@ -8,6 +8,7 @@ use App\Models\Bond;
 use App\Models\BondDocument;
 use App\Models\Employee;
 use App\Models\User;
+use App\Repositories\EmployeeDocumentRepository;
 use App\Services\Dto\StoreEmployeeDto;
 use App\Services\Dto\UpdateEmployeeDto;
 use App\Services\EmployeeDocumentService;
@@ -48,7 +49,7 @@ class EmployeeServiceTest extends TestCase
             ]
         );
 
-        $this->service = new EmployeeService(new EmployeeDocumentService());
+        $this->service = new EmployeeService(new EmployeeDocumentRepository());
     }
 
     /**

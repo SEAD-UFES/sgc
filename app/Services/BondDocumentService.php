@@ -4,117 +4,64 @@ namespace App\Services;
 
 use App\Events\BondDocumentExported;
 use App\Events\ModelListed;
+use App\Interfaces\BondDocumentRepositoryInterface;
 use App\Models\Bond;
 use App\Models\BondDocument;
 use App\Models\Document;
 use App\Models\Employee;
-use App\Services\Dto\StoreBondDocumentDto;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Builder;
+use App\Services\Dto\StoreDocumentDto;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\UploadedFile;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
-class BondDocumentService extends DocumentService
+class BondDocumentService extends GenericDocumentService
 {
-    public function __construct()
+    public function __construct(private BondDocumentRepositoryInterface $repository)
     {
-        parent::__construct(BondDocument::class, Bond::class);
+        parent::__construct();
     }
 
     /**
      * Undocumented function
      *
-     * @param ?string $sort
-     * @param ?string $direction
+     * @param string $sort
+     * @param string $direction
      *
      * @return LengthAwarePaginator
      */
-    public function listRights(?string $sort = 'documents.id', ?string $direction = 'desc'): LengthAwarePaginator
+    public function list(string $sort = 'documents.id', string $direction = 'desc'): LengthAwarePaginator
     {
-        $sort = $sort ?? 'documents.id';
-        $direction = $direction ?? 'desc';
-
-        /**
-         * @var array<int, string> $sortable
-         */
-        $sortable = BondDocument::$sortable;
-
-        /**
-         * @var array<int, string> $directions
-         */
-        $directions = ['asc', 'desc'];
-
-        if (! in_array($sort, $sortable) || ! in_array($direction, $directions)) {
-            $sort = 'documents.id';
-            $direction = 'desc';
-        }
-
         ModelListed::dispatch(BondDocument::class);
 
-        /**
-         * @var BondDocument $documentInstance
-         */
-        $documentInstance = new BondDocument();
-
-        /**
-         * @var Builder<Document> $query
-         */
-        $query = $documentInstance->queryRights();
-        $query = $query->AcceptRequest(BondDocument::$accepted_filters)->filter();
-        $query = $query->orderBy($sort, $direction);
-
-        $documents = $query->paginate(10);
-        $documents->withQueryString();
-
-        return $documents;
+        return $this->repository::all(sort: $sort, direction: $direction);
     }
 
     /**
      * Undocumented function
      *
-     * @param StoreBondDocumentDto $storeBondDocumentDto
+     * @param StoreDocumentDto $storeBondDocumentDto
      *
-     * @return void
+     * @return ?Document
      */
-    public function create(StoreBondDocumentDto $storeBondDocumentDto): void
+    public function create(StoreDocumentDto $storeBondDocumentDto): ?Document
     {
-        DB::transaction(function () use ($storeBondDocumentDto) {
-            /**
-             * @var UploadedFile $uploadedFile
-             */
-            $uploadedFile = $storeBondDocumentDto->file;
+        $document = null;
 
-            $originalName = $uploadedFile->getClientOriginalName();
+        DB::transaction(function () use ($storeBondDocumentDto, &$document) {
+            $oldDocuments = $this->repository
+                ->getByBondIdOfTypeId(
+                    (int) $storeBondDocumentDto->referentId,
+                    (int) $storeBondDocumentDto->documentTypeId
+                );
 
-            $fileData = $this->getFileData($uploadedFile);
+            foreach ($oldDocuments as $oldDocument) {
+                $this->repository->delete($oldDocument->id);
+            }
 
-            // Get old versions of this document type
-            $oldDocuments = $this->getOldDocuments($storeBondDocumentDto);
-
-            // Delete old versions of this document type
-            $this->deleteOldDocuments($oldDocuments);
-
-            /** @var BondDocument $documentable */
-            $documentable = new BondDocument([
-                'bond_id' => $storeBondDocumentDto->bondId,
-            ]);
-
-            $documentable->save();
-
-            /** @var Document $document */
-            $document = new Document([
-                'original_name' => $originalName,
-                'document_type_id' => $storeBondDocumentDto->documentTypeId,
-                'documentable_type' => BondDocument::class,
-                'documentable_id' => $documentable->id,
-                'file_data' => $fileData,
-            ]);
-
-            $documentable->document()->save($document);
-
-            return $document;
+            $document = $this->repository->create($storeBondDocumentDto);
         });
+
+        return $document;
     }
 
     /**
@@ -125,58 +72,20 @@ class BondDocumentService extends DocumentService
      *
      * @return string
      */
-    public function exportDocuments(Bond $bond, ?string $zipFileName = null): string
+    public function zipDocuments(Bond $bond, ?string $zipFileName = null): string
     {
         /**
-         * @var Collection<int, BondDocument> $documentables
+         * @var Collection<int, Document> $bondDocuments
          */
-        $documentables = $bond->bondDocuments()->get(); // <= Particular line
+        $bondDocuments = $this->repository->getByBondId($bond->id);
         /**
          * @var Employee $employee
          */
         $employee = $bond->employee;
-        $zipFileName = $zipFileName ?? date('Y-m-d') . '_' . $employee->name . '_' . $bond->id . '.zip'; // <= Particular line
+        $zipFileName = $zipFileName ?? date('Y-m-d') . '_' . $employee->name . '_' . $bond->id . '.zip';
 
         BondDocumentExported::dispatch($bond);
 
-        return parent::exportGenericDocuments($documentables, $zipFileName);
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param StoreBondDocumentDto $storeBondDocumentDto
-     *
-     * @return Collection<int, Document>
-     */
-    private function getOldDocuments(StoreBondDocumentDto $storeBondDocumentDto): Collection
-    {
-        $query = Document::query();
-
-        $query = $query->where('document_type_id', $storeBondDocumentDto->documentTypeId);
-        $query = $query->whereHasMorph(
-            'documentable',
-            BondDocument::class,
-            static function (Builder $query) use ($storeBondDocumentDto) {
-                $query->where('bond_id', $storeBondDocumentDto->bondId);
-            }
-        );
-
-        return $query->get();
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param Bond $bond
-     *
-     * @return Collection<int, Document>
-     */
-    public function getByBond(Bond $bond): Collection
-    {
-        /** @var Collection<int, Document> $bondDocuments */
-        $bondDocuments = Document::byBondId($bond->id)->withDocumentables()->getInRecentOrder();
-
-        return $bondDocuments;
+        return parent::zipGenericDocuments($bondDocuments, $zipFileName);
     }
 }

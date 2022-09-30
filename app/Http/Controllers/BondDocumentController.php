@@ -9,7 +9,7 @@ use App\Http\Requests\BondDocument\StoreBondDocumentRequest;
 use App\Services\BondDocumentService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Response as FacadesResponse;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class BondDocumentController extends Controller
@@ -76,23 +76,14 @@ class BondDocumentController extends Controller
      */
     public function show(ShowBondDocumentRequest $request, int $id): Response
     {
-        $file = $this->service->getDocument($id);
-
         /**
-         * @var string $data
+         * @var Collection<string, string> $file
          */
-        $data = $file->get('data');
+        $file = $this->service->assembleDocument($id);
 
-        /**
-         * @var string $fileName
-         */
-        $fileName = $file->get('name');
-
-        /**
-         * @var string $mime
-         */
-        $mime = $file->get('mime');
-
-        return FacadesResponse::make($data, 200, ['filename=' => $fileName])->header('Content-Type', $mime);
+        return response($file->get('data'), 200, [
+            'Content-Type' => $file->get('mime'),
+            'Content-Disposition' => 'inline',
+        ]);
     }
 }

@@ -10,13 +10,13 @@ use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Events\RightsDocumentArchived;
 use App\Helpers\TextHelper;
+use App\Interfaces\BondDocumentRepositoryInterface;
 use App\Models\Bond;
 use App\Models\BondDocument;
 use App\Models\Document;
 use App\Models\DocumentType;
 use App\Models\EmployeeDocument;
 use App\Models\User;
-use App\Services\BondDocumentService;
 use App\Services\Dto\ReviewBondDto;
 use App\Services\Dto\StoreBondDto;
 use App\Services\Dto\UpdateBondDto;
@@ -27,7 +27,7 @@ use Spatie\Activitylog\Models\Activity;
 
 class BondService
 {
-    public function __construct(private BondDocumentService $documentService)
+    public function __construct(private BondDocumentRepositoryInterface $documentRepository)
     {
     }
 
@@ -99,7 +99,7 @@ class BondService
     {
         ModelRead::dispatch($bond);
 
-        $bond->setAttribute('documents', $this->documentService->getByBond($bond));
+        $bond->setAttribute('documents', $this->documentRepository->getByBondId($bond->id));
 
         $activity = $this->getActivity($bond);
 

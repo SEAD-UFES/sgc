@@ -12,6 +12,7 @@ use App\Models\Document;
 use App\Models\Employee;
 use App\Models\EmployeeDocument;
 use App\Models\UserType;
+use App\Repositories\BondDocumentRepository;
 use App\Services\BondDocumentService;
 use App\Services\BondService;
 use App\Services\Dto\StoreBondDto;
@@ -68,7 +69,7 @@ class BondServiceTest extends TestCase
             ]
         );
 
-        $this->service = new BondService(new BondDocumentService());
+        $this->service = new BondService(new BondDocumentRepository());
     }
 
     /**

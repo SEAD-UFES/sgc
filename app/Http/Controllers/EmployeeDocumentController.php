@@ -9,7 +9,7 @@ use App\Http\Requests\EmployeeDocument\StoreEmployeeDocumentRequest;
 use App\Services\EmployeeDocumentService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Response as FacadesResponse;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class EmployeeDocumentController extends Controller
@@ -25,7 +25,17 @@ class EmployeeDocumentController extends Controller
      */
     public function index(IndexEmployeeDocumentRequest $request): View
     {
-        $documents = $this->service->list(sort: $request->query('sort'), direction: $request->query('direction'));
+        /**
+         * @var string $sort
+         */
+        $sort = $request->query('sort') ?? '';
+
+        /**
+         * @var string $direction
+         */
+        $direction = $request->query('direction') ?? '';
+
+        $documents = $this->service->list(sort: $sort, direction: $direction);
 
         return view('employee.document.index', compact('documents'));
     }
@@ -66,23 +76,14 @@ class EmployeeDocumentController extends Controller
      */
     public function show(ShowEmployeeDocumentRequest $request, int $id): Response
     {
-        $file = $this->service->getDocument($id);
-
         /**
-         * @var string $data
+         * @var Collection<string, string> $file
          */
-        $data = $file->get('data');
+        $file = $this->service->assembleDocument($id);
 
-        /**
-         * @var string $fileName
-         */
-        $fileName = $file->get('name');
-
-        /**
-         * @var string $mime
-         */
-        $mime = $file->get('mime');
-
-        return FacadesResponse::make($data, 200, ['filename=' => $fileName])->header('Content-Type', $mime);
+        return response($file->get('data'), 200, [
+            'Content-Type' => $file->get('mime'),
+            'Content-Disposition' => 'inline',
+        ]);
     }
 }

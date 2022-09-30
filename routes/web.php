@@ -14,6 +14,8 @@ use App\Http\Controllers\DismissNotificationController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeDocumentBatchController;
 use App\Http\Controllers\EmployeeDocumentController;
+use App\Http\Controllers\DownloadBondDocumentsPackController;
+use App\Http\Controllers\DownloadEmployeeDocumentsPackController;
 use App\Http\Controllers\InstitutionalDetailController;
 use App\Http\Controllers\PoleController;
 use App\Http\Controllers\RequestBondReviewController;
@@ -80,7 +82,6 @@ Route::middleware('auth')->group(function () {
         Route::get('bonds/documents/create', 'create')->name('bonds_documents.create');
         Route::post('bonds/documents', 'store')->name('bonds_documents.store');
         Route::get('bonds/documents/{id}/{htmlTitle}', 'show')->name('bonds_documents.show');
-        Route::get('bonds/{bond}/documents-export', 'export')->name('bonds_documents.export');
     });
 
     Route::controller(EmployeeDocumentBatchController::class)->group(function () {
@@ -94,7 +95,6 @@ Route::middleware('auth')->group(function () {
         Route::get('employees/documents/create', 'create')->name('employees_documents.create');
         Route::post('employees/documents', 'store')->name('employees_documents.store');
         Route::get('employees/documents/{id}/{htmlTitle}', 'show')->name('employees_documents.show');
-        Route::get('employees/{employee}/documents-export/', 'export')->name('employees_documents.export');
     });
 
     Route::controller(InstitutionalDetailController::class)->group(function () {
@@ -124,6 +124,8 @@ Route::middleware('auth')->group(function () {
     Route::get('notifications/{notification}/dismiss', DismissNotificationController::class)->name('notifications.dismiss');
     Route::patch('users/current/password', UpdateCurrentPasswordController::class)->name('users.current_password_update');
     Route::delete('users/{user}/destroy-employee-link', DestroyUserEmployeeLinkController::class)->name('users.destroy_employee_link');
+    Route::get('bonds/{bond}/documents-export', DownloadBondDocumentsPackController::class)->name('bonds_documents.export');
+    Route::get('employees/{employee}/documents-export/', DownloadEmployeeDocumentsPackController::class)->name('employees_documents.export');
 
     Route::get('coursetypes', [CourseTypeController::class, 'index'])->name('coursetypes.index');
 
