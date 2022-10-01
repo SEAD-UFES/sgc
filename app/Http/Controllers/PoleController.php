@@ -6,7 +6,6 @@ use App\Http\Requests\Pole\CreatePoleRequest;
 use App\Http\Requests\Pole\DestroyPoleRequest;
 use App\Http\Requests\Pole\EditPoleRequest;
 use App\Http\Requests\Pole\IndexPoleRequest;
-use App\Http\Requests\Pole\ShowPoleRequest;
 use App\Http\Requests\Pole\StorePoleRequest;
 use App\Http\Requests\Pole\UpdatePoleRequest;
 use App\Models\Pole;

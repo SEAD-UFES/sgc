@@ -7,7 +7,6 @@ use App\Http\Requests\Role\CreateRoleRequest;
 use App\Http\Requests\Role\DestroyRoleRequest;
 use App\Http\Requests\Role\EditRoleRequest;
 use App\Http\Requests\Role\IndexRoleRequest;
-use App\Http\Requests\Role\ShowRoleRequest;
 use App\Http\Requests\Role\StoreRoleRequest;
 use App\Http\Requests\Role\UpdateRoleRequest;
 use App\Models\Role;

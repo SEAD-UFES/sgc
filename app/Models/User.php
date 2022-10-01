@@ -289,7 +289,6 @@ class User extends Authenticatable
             );
         }
 
-
         /**
          * @var ?Genders $gender
          */

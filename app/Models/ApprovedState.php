@@ -31,32 +31,6 @@ class ApprovedState extends Model
         return $this->hasMany(Approved::class);
     }
 
-    /**
-     * @return bool
-     */
-    public function hasNext(): bool
-    {
-        return $this->name !== 'Desistente' && $this->name !== 'Aceitante';
-    }
-
-    /**
-     * @return ApprovedState|null
-     */
-    public function getNext(): ApprovedState|null
-    {
-        if ($this->hasNext()) {
-            if ($this->name === 'Não contatado') {
-                return ApprovedState::where('name', 'Contatado')->first();
-            }
-
-            if ($this->name === 'Contatado') {
-                return ApprovedState::where('name', 'Aceitante')->orWhere('name', 'Desistente')->first();
-            }
-        }
-
-        return null;
-    }
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
