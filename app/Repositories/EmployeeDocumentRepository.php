@@ -112,7 +112,6 @@ class EmployeeDocumentRepository extends GenericDocumentRepository implements Em
                 'original_name' => $documentDto->fileName,
                 'document_type_id' => $documentDto->documentTypeId,
                 'documentable_type' => EmployeeDocument::class,
-                'documentable_id' => $documentDto->referentId,
                 'file_data' => $documentDto->fileData,
             ]);
 

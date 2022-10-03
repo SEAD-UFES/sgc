@@ -131,7 +131,6 @@ class BondDocumentRepository extends GenericDocumentRepository implements BondDo
                 'original_name' => $documentDto->fileName,
                 'document_type_id' => $documentDto->documentTypeId,
                 'documentable_type' => BondDocument::class,
-                'documentable_id' => $documentDto->referentId,
                 'file_data' => $documentDto->fileData,
             ]);
 
