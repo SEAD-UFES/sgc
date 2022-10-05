@@ -2,6 +2,10 @@
 
 @section('title', 'Cadastrar Usuário')
 
+@section('headerScripts')
+    <script src="{{ asset('js/enable_searchable_select.js') }}"></script>
+@endsection
+
 @section('content')
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb border-top border-bottom bg-light">

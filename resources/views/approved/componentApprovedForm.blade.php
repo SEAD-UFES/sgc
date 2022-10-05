@@ -60,7 +60,7 @@
 <div class="row g-3 mb-3">
     <div class="col-5 col-sm-5 col-md-4 col-lg-4">
         <label for="selectRoles1" class="form-label">Função*</label>
-        <select name="role_id" id="selectRoles1" class="form-select" data-live-search="true">
+        <select name="role_id" id="selectRoles1" class="form-select searchable-select">
             <option value="">Selecione a Função</option>
             @foreach ($roles as $role)
                 <option value="{{ $role->id }}" {{ isset($approved) ? ($approved->role_id == $role->id ? 'selected' : '') : ($role->id == 1 ? 'selected' : '') }}>{{ $role->name }}</option>
@@ -72,7 +72,7 @@
     </div>
     <div class="col-5 col-sm-5 col-md-4 col-lg-4">
         <label for="selectCourses1" class="form-label">Curso*</label>
-        <select name="course_id" id="selectCourses1" class="form-select" data-live-search="true">
+        <select name="course_id" id="selectCourses1" class="form-select searchable-select">
             <option value="">Selecione o curso</option>
             @foreach ($courses as $course)
                 <option value="{{ $course->id }}" {{ isset($approved) ? ($approved->course_id == $course->id ? 'selected' : '') : ($course->id == 1 ? 'selected' : '') }}>{{ $course->name }}</option>
@@ -84,7 +84,7 @@
     </div>
     <div class="col-5 col-sm-5 col-md-2 col-lg-2">
         <label for="selectPoles1" class="form-label">Polo*</label>
-        <select name="pole_id" id="selectPoles1" class="form-select" data-live-search="true">
+        <select name="pole_id" id="selectPoles1" class="form-select searchable-select">
             <option value="">Selecione o polo</option>
             @foreach ($poles as $pole)
                 <option value="{{ $pole->id }}" {{ isset($approved) ? ($approved->pole_id == $pole->id ? 'selected' : '') : ($pole->id == 1 ? 'selected' : '') }}>{{ $pole->name }}</option>

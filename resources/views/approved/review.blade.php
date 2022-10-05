@@ -52,7 +52,7 @@
                         <span class="text-danger my-auto d-inline d-xl-none">&dArr;</span>
                         <select name="courses_mass" id="courses_mass"
                             onchange="selectRotateAssign('courses', {{ count($importedApproveds) }}, document.getElementById('courses_mass').value)"
-                            class="form-select w-auto" data-live-search="true">
+                            class="form-select w-auto">
                             <option value="">Selecione o curso</option>
                             @foreach ($courses as $course)
                                 <option value="{{ $course->id }}">{{ $course->name }}</option>
@@ -60,7 +60,7 @@
                         </select>
                         <select name="roles_mass" id="roles_mass"
                             onchange="selectRotateAssign('roles', {{ count($importedApproveds) }}, document.getElementById('roles_mass').value)"
-                            class="form-select w-auto" data-live-search="true">
+                            class="form-select w-auto">
                             <option value="">Selecione a Função</option>
                             @foreach ($roles as $role)
                                 <option value="{{ $role->id }}">{{ $role->name }}</option>
@@ -68,7 +68,7 @@
                         </select>
                         <select name="poles_mass" id="poles_mass"
                             onchange="selectRotateAssign('poles', {{ count($importedApproveds) }}, document.getElementById('poles_mass').value)"
-                            class="form-select w-auto" data-live-search="true">
+                            class="form-select w-auto">
                             <option value="">Selecione o polo</option>
                             @foreach ($poles as $pole)
                                 <option value="{{ $pole->id }}">{{ $pole->name }}</option>
@@ -142,7 +142,7 @@
                                             <td class="p-0">
                                                 <select name="approveds[{{ $key }}][course_id]"
                                                     id="courses_{{ $key }}" class="form-select"
-                                                    data-live-search="true">
+                                                   >
                                                     <option value="">Selecione o curso</option>
                                                     @foreach ($courses as $course)
                                                         <option value="{{ $course->id }}"
@@ -152,7 +152,7 @@
                                             </td>
                                             <td class="p-0">
                                                 <select name="approveds[{{ $key }}][role_id]" id="roles_{{ $key }}"
-                                                    class="form-select" data-live-search="true">
+                                                    class="form-select">
                                                     <option value="">Selecione a Função</option>
                                                     @foreach ($roles as $role)
                                                         <option value="{{ $role->id }}"
@@ -162,7 +162,7 @@
                                             </td>
                                             <td class="p-0"><select name="approveds[{{ $key }}][pole_id]"
                                                     id="poles_{{ $key }}" class="form-select"
-                                                    data-live-search="true">
+                                                   >
                                                     <option value="">Selecione o polo</option>
                                                     @foreach ($poles as $pole)
                                                         <option value="{{ $pole->id }}"

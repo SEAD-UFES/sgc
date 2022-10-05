@@ -2,6 +2,10 @@
 
 @section('title', 'Importar Documento de Colaborador')
 
+@section('headerScripts')
+    <script src="{{ asset('js/enable_searchable_select.js') }}"></script>
+@endsection
+
 @section('content')
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb border-top border-bottom bg-light">
@@ -37,7 +41,7 @@
 
                         <div class="mb-3">
                             <label for="selectEmployee1" class="form-label">Colaborador*</label>
-                            <select name="employee_id" id="selectEmployee1" class="form-select">
+                            <select name="employee_id" id="selectEmployee1" class="form-select searchable-select">
                                 <option value="">Selecione o colaborador</option>
                                 @foreach ($employees as $employee)
                                     <option value="{{ $employee->id }}">

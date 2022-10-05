@@ -2,7 +2,7 @@
 <div class="row g-3 mb-3">
     <div class="col-12 col-lg-6">
         <label for="selectEmployee1" class="form-label">Colaborador*</label>
-        <select name="employee_id" id="selectEmployee1" class="form-select">
+        <select name="employee_id" id="selectEmployee1" class="form-select searchable-select">
             <option value="">Selecione o colaborador</option>
             @foreach ($employees as $employee)
                 <option value="{{ $employee->id }}"
@@ -30,7 +30,7 @@
     </div>
     <div class="col-12 col-md-7">
         <label for="selectCourse1" class="form-label">Curso*</label>
-        <select name="course_id" id="selectCourse1" class="form-select">
+        <select name="course_id" id="selectCourse1" class="form-select searchable-select">
             <option value="">Selecione o curso</option>
             @foreach ($courses as $course)
                 <option value="{{ $course->id }}"
@@ -44,7 +44,7 @@
     </div>
     <div class="col-12 col-md-5">
         <label for="selectPole1" class="form-label">Polo*</label>
-        <select name="pole_id" id="selectPole1" class="form-select">
+        <select name="pole_id" id="selectPole1" class="form-select searchable-select">
             <option value="">Selecione o polo</option>
             @foreach ($poles as $pole)
                 <option value="{{ $pole->id }}"
