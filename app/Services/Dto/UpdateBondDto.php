@@ -14,9 +14,11 @@ class UpdateBondDto extends DataTransferObject
 
     public string $poleId;
 
-    public ?string $begin;
+    public string $begin;
 
-    public ?string $end;
+    public string $end;
+
+    public string $announcement;
 
     public bool $volunteer;
 

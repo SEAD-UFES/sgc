@@ -70,6 +70,7 @@ class Bond extends Pivot
         //'classroom_id',
         'begin',
         'end',
+        'announcement',
         'terminated_at',
         'volunteer',
         'impediment',

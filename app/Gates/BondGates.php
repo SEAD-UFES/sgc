@@ -42,6 +42,10 @@ class BondGates
                 return true;
             }
 
+            if (is_null($course_id)) {
+                return false;
+            }
+
             //coord on this course then ok.
             return Gate::forUser($user)->any(['isCoord-course_id'], $course_id);
         });

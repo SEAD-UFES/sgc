@@ -67,6 +67,7 @@ class BondService
                 'pole_id' => $storeBondDto->poleId,
                 'begin' => $storeBondDto->begin,
                 'end' => $storeBondDto->end,
+                'announcement' => $storeBondDto->announcement,
                 'terminated_at' => null,
                 'volunteer' => $storeBondDto->volunteer,
                 'impediment' => true,
@@ -128,6 +129,7 @@ class BondService
                 'pole_id' => $updateBondDto->poleId,
                 'begin' => $updateBondDto->begin,
                 'end' => $updateBondDto->end,
+                'announcement' => $updateBondDto->announcement,
                 'volunteer' => $updateBondDto->volunteer,
             ]);
 

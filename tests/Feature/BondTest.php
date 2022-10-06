@@ -563,6 +563,7 @@ class BondTest extends TestCase
                 )->id,
                 'begin' => Carbon::today()->format('Y-m-d H:i:s'),
                 'end' => Carbon::today()->addYear()->format('Y-m-d H:i:s'),
+                'announcement' => '01/2022',
                 'volunteer' => $volunteer,
             ]
         );

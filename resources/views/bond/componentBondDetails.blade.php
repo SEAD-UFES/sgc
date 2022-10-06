@@ -9,6 +9,10 @@
     <div class="collapse" id="bondDataContent" >
         <div class="card-body">
             <div class="mb-2 row">
+                <div class="col-sm-4 col-lg-3"><strong>Edital:</strong></div>
+                <div class="col-sm-8 col-lg-9">{{ $bond->announcement ?? '-' }}</div>
+            </div>
+            <div class="mb-2 row">
                 <div class="col-sm-4 col-lg-3"><strong>Função:</strong></div>
                 <div class="col-sm-8 col-lg-9">{{ $bond->role->name ?? '-' }}</div>
             </div>

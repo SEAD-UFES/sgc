@@ -57,14 +57,28 @@
         @enderror
     </div>
     <div class="col-6 col-md-3">
-        <label for="inputBegin1" class="form-label">Início</label>
+        <label for="inputBegin1" class="form-label">Início*</label>
         <input type="date" name="begin" value="{{ isset($bond) ? $bond->begin : old('begin') }}" id="inputBegin1"
             class="form-control">
+            @error('begin')
+                <div class="text-danger">> {{ $message }}</div>
+            @enderror
     </div>
     <div class="col-6 col-md-3">
-        <label for="inputEnd1" class="form-label">Fim</label>
+        <label for="inputEnd1" class="form-label">Fim*</label>
         <input type="date" name="end" value="{{ isset($bond) ? $bond->end : old('end') }}" id="inputEnd1"
             class="form-control">
+            @error('end')
+                <div class="text-danger">> {{ $message }}</div>
+            @enderror
+    </div>
+    <div class="col-6 col-sm-6 col-md-4 col-lg-4">
+        <label for="inputAnnouncement1" class="form-label">Edital*</label>
+        <input name="announcement" id="inputAnnouncement1" type="text" class="form-control" placeholder="Edital"
+            value="{{ isset($bond) ? $bond->announcement : old('announcement') }}" maxlength="9" />
+        @error('announcement')
+            <div class="text-danger">> {{ $message }}</div>
+        @enderror
     </div>
     <div class="col-12 col-md-12">
         <div class="form-check">

@@ -51,6 +51,7 @@ class UpdateBondRequest extends FormRequest
             poleId: $this->validated('pole_id') ?? '',
             begin: $this->validated('begin'),
             end: $this->validated('end'),
+            announcement: $this->validated('announcement'),
             volunteer: ($this->validated('volunteer') ?? '') === 'on',
             knowledgeArea: $this->validated('knowledge_area'),
             courseName: $this->validated('course_name') ?? '',

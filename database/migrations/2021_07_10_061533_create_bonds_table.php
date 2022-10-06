@@ -22,6 +22,7 @@ class CreateBondsTable extends Migration
             //$table->foreignId('classroom_id')->constrained('classrooms');
             $table->date('begin')->nullable();
             $table->date('end')->nullable();
+            $table->string('announcement', 10)->nullable();
             $table->timestamp('terminated_at')->nullable();
             $table->boolean('volunteer')->default(false);
             $table->boolean('impediment')->default(true);

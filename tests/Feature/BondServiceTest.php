@@ -134,6 +134,9 @@ class BondServiceTest extends TestCase
         $attributes['roleId'] = 2;
         $attributes['courseId'] = 2;
         $attributes['poleId'] = 1;
+        $attributes['begin'] = '2022-01-01';
+        $attributes['end'] = '2032-01-01';
+        $attributes['announcement'] = '01/2022';
         $attributes['volunteer'] = false;
         $attributes = array_merge($attributes, $this->getQualificationAttributes());
 
@@ -166,6 +169,9 @@ class BondServiceTest extends TestCase
         $attributes['roleId'] = 2;
         $attributes['courseId'] = 2;
         $attributes['poleId'] = 1;
+        $attributes['begin'] = '2022-01-01';
+        $attributes['end'] = '2032-01-01';
+        $attributes['announcement'] = '01/2022';
         $attributes['volunteer'] = false;
         $attributes = array_merge($attributes, $this->getQualificationAttributes());
 
@@ -208,6 +214,9 @@ class BondServiceTest extends TestCase
         $attributes['roleId'] = 2;
         $attributes['courseId'] = 2;
         $attributes['poleId'] = 1;
+        $attributes['begin'] = '2022-01-01';
+        $attributes['end'] = '2032-01-01';
+        $attributes['announcement'] = '01/2022';
         $attributes['volunteer'] = false;
         $attributes = array_merge($attributes, $this->getQualificationAttributes());
 
