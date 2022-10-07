@@ -77,11 +77,13 @@ class BondService
 
             $bond->save();
 
-            $bond->qualification()->create([
-                'knowledge_area' => $storeBondDto->knowledgeArea,
-                'course_name' => TextHelper::titleCase($storeBondDto->courseName),
-                'institution_name' => TextHelper::titleCase($storeBondDto->institutionName),
-            ]);
+            if ($storeBondDto->knowledgeArea !== null) {
+                $bond->qualification()->create([
+                    'knowledge_area' => $storeBondDto->knowledgeArea,
+                    'course_name' => TextHelper::titleCase($storeBondDto->courseName),
+                    'institution_name' => TextHelper::titleCase($storeBondDto->institutionName),
+                ]);
+            }
 
             self::carryEmployeeDocuments($bond);
 
@@ -133,11 +135,13 @@ class BondService
                 'volunteer' => $updateBondDto->volunteer,
             ]);
 
-            $bond->qualification()->updateOrCreate([
-                'knowledge_area' => $updateBondDto->knowledgeArea,
-                'course_name' => TextHelper::titleCase($updateBondDto->courseName),
-                'institution_name' => TextHelper::titleCase($updateBondDto->institutionName),
-            ]);
+            if ($updateBondDto->knowledgeArea !== null) {
+                $bond->qualification()->updateOrCreate([
+                    'knowledge_area' => $updateBondDto->knowledgeArea,
+                    'course_name' => TextHelper::titleCase($updateBondDto->courseName),
+                    'institution_name' => TextHelper::titleCase($updateBondDto->institutionName),
+                ]);
+            }
         });
 
         return $bond;
