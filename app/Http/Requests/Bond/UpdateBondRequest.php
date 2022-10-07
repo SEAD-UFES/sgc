@@ -19,7 +19,10 @@ class UpdateBondRequest extends FormRequest
         /** @var Bond $bond */
         $bond = $this->route('bond');
 
-        return Gate::allows('bond-update', $bond);
+        /** @var ?int $formCourseId */
+        $formCourseId = $this->integer('course_id');
+
+        return Gate::allows('bond-updateTo', ['bond' => $bond, 'course_id' => $formCourseId]);
     }
 
     /**

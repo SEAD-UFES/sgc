@@ -17,10 +17,10 @@ class StoreBondRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $user = $this->user();
-        $courseId = $this->get('course_id');
+        /** @var ?int $formCourseId */
+        $formCourseId = $this->integer('course_id');
 
-        return Gate::allows('bond-store-course_id', $courseId);
+        return Gate::allows('bond-store-course_id', ['course_id' => $formCourseId]);
     }
 
     /**
@@ -38,7 +38,7 @@ class StoreBondRequest extends FormRequest
             'course_id' => 'required|exists:courses,id',
             'pole_id' => 'required|exists:poles,id',
             'begin' => 'required|date',
-            'end' => 'required|date',
+            'end' => 'nullable|date',
             'announcement' => 'required|string',
             'volunteer' => 'sometimes',
             'knowledge_area' => ['nullable', 'required_with:course_name,institution_name', new Enum(KnowledgeAreas::class)], //Rule::in(KnowledgeAreas::getValuesInAlphabeticalOrder())],
@@ -62,7 +62,6 @@ class StoreBondRequest extends FormRequest
             'pole_id.required' => 'O polo é obrigatório',
             'pole_id.exists' => 'O polo deve ser preenchido com uma das opções fornecidas',
             'begin.required' => 'Início da atuação é obrigatório',
-            'end.required' => 'Fim da atuação é obrigatório',
             'begin.date' => 'Início deve ser uma data',
             'end.date' => 'Fim deve ser uma data',
             'announcement.required' => 'Edital é obrigatório',

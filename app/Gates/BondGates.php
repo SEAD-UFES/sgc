@@ -2,6 +2,8 @@
 
 namespace App\Gates;
 
+use App\Models\Bond;
+use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 
 class BondGates
@@ -36,7 +38,7 @@ class BondGates
             return Gate::forUser($user)->any(['isCoord']);
         });
 
-        Gate::define('bond-store-course_id', static function ($user, $course_id) {
+        Gate::define('bond-store-course_id', static function (User $user, ?int $course_id) {
             //who can do it (global).
             if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global'])) {
                 return true;
@@ -50,7 +52,7 @@ class BondGates
             return Gate::forUser($user)->any(['isCoord-course_id'], $course_id);
         });
 
-        Gate::define('bond-update', static function ($user, $bond) {
+        Gate::define('bond-update', static function (User $user, Bond $bond) {
             //who can do it (global).
             if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global'])) {
                 return true;
@@ -58,6 +60,20 @@ class BondGates
 
             //coord on this course then ok.
             return Gate::forUser($user)->any(['isCoord-course_id'], $bond->course_id);
+        });
+
+        Gate::define('bond-updateTo', static function (User $user, Bond $bond, ?int $course_id) {
+            //who can do it (global).
+            if (Gate::forUser($user)->any(['isAdm-global', 'isDir-global', 'isAss-global', 'isSec-global'])) {
+                return true;
+            }
+
+            if (is_null($course_id)) {
+                return false;
+            }
+
+            //coord on this course then ok.
+            return Gate::forUser($user)->any(['isCoord-course_id'], $bond->course_id) && Gate::forUser($user)->any(['isCoord-course_id'], $course_id);
         });
 
         Gate::define('bond-destroy', static function ($user) {

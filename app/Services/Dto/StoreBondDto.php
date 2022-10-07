@@ -16,7 +16,7 @@ class StoreBondDto extends DataTransferObject
 
     public string $begin;
 
-    public string $end;
+    public ?string $end;
 
     public string $announcement;
 

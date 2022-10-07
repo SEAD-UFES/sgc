@@ -104,7 +104,8 @@ class BondController extends Controller
      */
     public function update(UpdateBondRequest $request, Bond $bond): RedirectResponse
     {
-        // TODO: Needs Fix: Coordinator of 'Course A' can change the bond of his course to another course via http post request or form manipulation
+        // Fixed with form requests: Coordinator of 'Course A' can change the bond of his course to
+        // another course B via http post request or form manipulation
         try {
             $bond = $this->service->update($request->toDto(), $bond);
         } catch (\Exception $e) {
