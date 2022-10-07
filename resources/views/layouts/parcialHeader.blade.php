@@ -117,7 +117,7 @@
                 @if (auth()->user()->hasActiveResponsibilities())
                     <form class="d-flex" action={{ route('users.responsibility_switch') }} method="POST">
                         @csrf
-                        <select class="form-select form-select-sm" aria-label="responsibility" name="activeResponsibilitys" data-bs-toggle="tooltip" data-bs-placement="left" title="Mudar papel atual" onchange="submit();">
+                        <select class="form-select form-select-sm" aria-label="responsibility" name="responsibility_id" data-bs-toggle="tooltip" data-bs-placement="left" title="Mudar papel atual" onchange="submit();">
                             @foreach (auth()->user()->getActiveResponsibilities()->get() as $responsibility)
                                 <option value="{{ $responsibility->id }}"
                                     {{ auth()->user()->getCurrentResponsibility() && $responsibility->id === auth()->user()->getCurrentResponsibility()->id ? 'selected' : '' }}>
