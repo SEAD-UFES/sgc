@@ -45,8 +45,8 @@
                                     <tr>
                                         <td>{{ $role->name }}</td>
                                         <td>{{ $role->description }}</td>
-                                        <td>{{ numfmt_format_currency(numfmt_create('pt_BR', NumberFormatter::CURRENCY), $role->grantValueReal , 'BRL') }}</td>
-                                        <td>{{ $role->grantType->name }}</td>
+                                        <td>{{ numfmt_format_currency(numfmt_create('pt_BR', NumberFormatter::CURRENCY), $role->grant_value , 'BRL') }}</td>
+                                        <td>{{ $role->grant_type->label() }}</td>
                                         <td class="text-center"><div class="d-inline-flex">
                                             @can('role-update')
                                                 <a href="{{ route('roles.edit', $role) }}" data-bs-toggle="tooltip" title="Editar Função" class="btn btn-primary btn-sm">

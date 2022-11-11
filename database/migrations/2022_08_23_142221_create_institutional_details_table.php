@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('institutional_details', function (Blueprint $table) {
-            $table->id();
-            $table->string('login')->nullable()->unique();
-            $table->string('email')->nullable()->unique();
-            $table->foreignId('employee_id')->unique()->constrained('employees');
+            $table->unsignedBigInteger('employee_id', false)->primary();
+            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade')->onUpdate('no action');
+            $table->string('login')->unique();
+            $table->string('email')->unique();
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bank_accounts');
+        Schema::dropIfExists('institutional_details');
     }
 };

@@ -14,21 +14,38 @@ class BankAccount extends Model
     use LogsActivity;
 
     /**
+     * @var string
+     */
+    protected $table = 'bank_accounts';
+
+    /**
+     * @var string
+     */
+    protected $primaryKey = 'employee_id';
+
+    /**
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
      * @var array<int, string>
      */
     protected $fillable = [
+        'employee_id',
         'bank_name',
         'agency_number',
-        'account_number',
-        'employee_id',
+        'account',
     ];
+
+    // ==================== Relationships ====================
 
     /**
      * @return BelongsTo<Employee, BankAccount>
      */
     public function employee(): BelongsTo
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsTo(Employee::class, 'employee_id', 'id');
     }
 
     public function getActivitylogOptions(): LogOptions

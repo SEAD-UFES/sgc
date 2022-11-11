@@ -15,21 +15,17 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            GrantTypeSeeder::class,
             UserTypeSeeder::class,
+            SystemUserSeeder::class,
             RoleSeeder::class,
-            StateSeeder::class,
             DocumentTypeSeeder::class,
             //EmployeeSeeder::class,
             //UserSeeder::class,
-            CourseTypeSeeder::class,
             CourseSeeder::class,
             PoleSeeder::class,
             //BondSeeder::class,
-            ApprovedStateSeeder::class,
             //ApprovedSeeder::class,
-            //EmployeeDocumentSeeder::class,
-            //BondDocumentSeeder::class,
+            //DocumentSeeder::class,
             //DocumentSeeder::class,
             //DummyEmployeeSeeder::class,
             //ResponsibilitySeeder::class
@@ -40,12 +36,12 @@ class DatabaseSeeder extends Seeder
                 EmployeeSeeder::class,
                 UserSeeder::class,
                 BondSeeder::class,
-                ApprovedSeeder::class,
-                EmployeeDocumentSeeder::class,
-                BondDocumentSeeder::class,
+                ApplicantSeeder::class,
                 DocumentSeeder::class,
                 DummyEmployeeSeeder::class,
-                ResponsibilitySeeder::class
+                ResponsibilitySeeder::class,
+                CourseClassSeeder::class,
+                BondCourseSeeder::class,
             ]);
         }
 

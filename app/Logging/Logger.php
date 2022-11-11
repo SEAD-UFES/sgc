@@ -83,8 +83,7 @@ class Logger implements LoggerInterface
         authenticate
         logout
         import
-        exportBondDocuments
-        exportEmployeeDocuments
+        exportDocuments
 
     ========================================================================================================*/
 
@@ -137,7 +136,7 @@ class Logger implements LoggerInterface
         $executorLabel = (($userEmail ?? request()->email) ?? request()->ip()) ?? '';
         $executorId = $user?->id ?? '-';
 
-        $executorUserTypeName = $user?->getCurrentResponsibility()->userType->name ?? 'NullCurrentResponsibility';
+        $executorUserTypeName = session('loggedInUser.currentResponsibility')->userType->name ?? 'NullCurrentResponsibility';
 
         $logText = "\tHTTP_ERROR\t| " . NetworkHelper::getClientIpAddress() . "\t| User:${executorId}:${executorLabel} [${executorUserTypeName}]\t| attempted " . $method . " on '" . $uri . "' with result " . $httpErrorCode;
 
@@ -167,9 +166,9 @@ class Logger implements LoggerInterface
             $executor = Auth::user();
             $executorId = $executor->id;
             $executorLabel = $executor->email;
-            /** @var Responsibility|null $executorCurrentUta */
-            $executorCurrentUta = $executor->getCurrentResponsibility();
-            $executorUserTypeName = $executorCurrentUta?->userType->name ?? 'NullCurrentResponsibility';
+            /** @var Responsibility|null $executorCurrentResponsibility */
+            $executorCurrentResponsibility = session('loggedInUser.currentResponsibility');
+            $executorUserTypeName = $executorCurrentResponsibility?->userType->name ?? 'NullCurrentResponsibility';
         } else {
             $executorLabel = request()->ip() . ' (Seed?)';
         }
@@ -179,9 +178,9 @@ class Logger implements LoggerInterface
             $executor = $activity->causer;
             $executorId = $executor->id;
             $executorLabel = $executor->email;
-            /** @var Responsibility|null $executorCurrentUta */
-            $executorCurrentUta = $executor->getCurrentResponsibility();
-            $executorUserTypeName = $executorCurrentUta?->userType->name ?? 'NullCurrentResponsibility';
+            /** @var Responsibility|null $executorCurrentResponsibility */
+            $executorCurrentResponsibility = session('loggedInUser.currentResponsibility');
+            $executorUserTypeName = $executorCurrentResponsibility?->userType->name ?? 'NullCurrentResponsibility';
         }
 
         if (is_string($activity)) {
@@ -241,7 +240,7 @@ class Logger implements LoggerInterface
         $executorLabel = (($userEmail ?? request()->email) ?? request()->ip()) ?? '';
         $executorId = $user?->id ?? '-';
 
-        $executorUserTypeName = $user?->getCurrentResponsibility()->userType->name ?? 'NullCurrentResponsibility';
+        $executorUserTypeName = session('loggedInUser.currentResponsibility')->userType->name ?? 'NullCurrentResponsibility';
 
         if (isset($model) && is_a($model, Model::class)) {
             $modelClassLabel = class_basename($model);
@@ -277,7 +276,10 @@ class Logger implements LoggerInterface
         $executorLabel = (($userEmail ?? request()->email) ?? request()->ip()) ?? '';
         $executorId = $user?->id ?? '-';
 
-        $executorUserTypeName = $user?->getCurrentResponsibility()->userType->name ?? 'NullCurrentResponsibility';
+        /** @var Responsibility */
+        $currentResponsibility = session('loggedInUser.currentResponsibility');
+
+        $executorUserTypeName = $currentResponsibility?->userType->name ?? 'NullCurrentResponsibility';
 
         if (isset($model) && ! is_string($model) && is_a($model, Model::class)) {
             $modelClassLabel = class_basename($model);
@@ -309,7 +311,7 @@ class Logger implements LoggerInterface
         $_executor = $executor ?? Auth::user();
         $executorId = $_executor->id ?? 'NoID';
         $executorEmail = isset($_executor->email) ? ':' . $_executor->email : ":\t";
-        $executorRole = $_executor instanceof User ? (is_null($_executor->getCurrentResponsibility()) ? 'Null Current Responsibility' : $_executor->getCurrentResponsibility()->userType->name) : 'NoRole';
+        $executorRole = $_executor instanceof User ? (is_null(session('loggedInUser.currentResponsibility')) ? 'Null Current Responsibility' : session('loggedInUser.currentResponsibility')->userType->name) : 'NoRole';
 
         return "${executorId}${executorEmail} [${executorRole}]";
     }
@@ -386,8 +388,7 @@ class Logger implements LoggerInterface
             'updating',
             'update',
             'updated',
-            'exportBondDocuments',
-            'exportEmployeeDocuments',
+            'exportDocuments',
             'dismiss',
         ];
 

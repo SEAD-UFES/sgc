@@ -2,38 +2,28 @@
 
 namespace App\Providers;
 
-use App\Models\Approved;
-use App\Models\ApprovedState;
+use App\Models\Applicant;
 use App\Models\Bond;
-use App\Models\BondDocument;
 use App\Models\Course;
-use App\Models\CourseType;
+use App\Models\CourseClass;
 use App\Models\Document;
 use App\Models\DocumentType;
 use App\Models\Employee;
-use App\Models\EmployeeDocument;
-use App\Models\GrantType;
 use App\Models\Pole;
 use App\Models\Responsibility;
 use App\Models\Role;
-use App\Models\State;
 use App\Models\User;
 use App\Models\UserType;
-use App\Observers\ApprovedObserver;
-use App\Observers\ApprovedStateObserver;
-use App\Observers\BondDocumentObserver;
+use App\Observers\ApplicantObserver;
 use App\Observers\BondObserver;
+use App\Observers\CourseClassObserver;
 use App\Observers\CourseObserver;
-use App\Observers\CourseTypeObserver;
 use App\Observers\DocumentObserver;
 use App\Observers\DocumentTypeObserver;
-use App\Observers\EmployeeDocumentObserver;
 use App\Observers\EmployeeObserver;
-use App\Observers\GrantTypeObserver;
 use App\Observers\PoleObserver;
 use App\Observers\ResponsibilityObserver;
 use App\Observers\RoleObserver;
-use App\Observers\StateObserver;
 use App\Observers\UserObserver;
 use App\Observers\UserTypeObserver;
 use Illuminate\Auth\Events\Registered;
@@ -60,20 +50,15 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Approved::observe(ApprovedObserver::class);
-        ApprovedState::observe(ApprovedStateObserver::class);
+        Applicant::observe(ApplicantObserver::class);
         Bond::observe(BondObserver::class);
-        BondDocument::observe(BondDocumentObserver::class);
         Course::observe(CourseObserver::class);
-        CourseType::observe(CourseTypeObserver::class);
+        CourseClass::observe(CourseClassObserver::class);
         Document::observe(DocumentObserver::class);
         DocumentType::observe(DocumentTypeObserver::class);
         Employee::observe(EmployeeObserver::class);
-        EmployeeDocument::observe(EmployeeDocumentObserver::class);
-        GrantType::observe(GrantTypeObserver::class);
         Pole::observe(PoleObserver::class);
         Role::observe(RoleObserver::class);
-        State::observe(StateObserver::class);
         User::observe(UserObserver::class);
         UserType::observe(UserTypeObserver::class);
         Responsibility::observe(ResponsibilityObserver::class);

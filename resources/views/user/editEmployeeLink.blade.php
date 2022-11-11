@@ -15,7 +15,7 @@
             <div class="row justify-content-center">
                 <div class="col-xl-10 col-xxl-8">
                     @include('_components.alerts')
-                    <h4>Usuário: {{ $user->email }}</h4>
+                    <h4>Usuário: {{ $user->login }}</h4>
                     <br />
                     <form action="{{ route('users.updateEmployeeLink', $user->id) }}" method="POST">
                         @method('PATCH')

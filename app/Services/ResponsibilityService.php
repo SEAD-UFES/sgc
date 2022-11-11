@@ -20,7 +20,7 @@ class ResponsibilityService
     {
         ModelListed::dispatch(Responsibility::class);
 
-        $query = Responsibility::with(['user:id,email', 'userType:id,name', 'course:id,name']);
+        $query = Responsibility::with(['user:id,login', 'userType:id,name', 'course:id,name']);
         $query = $query->AcceptRequest(Responsibility::$accepted_filters)->filter();
         $query = $query->sortable(['updated_at' => 'desc']);
 
@@ -70,7 +70,7 @@ class ResponsibilityService
     {
         ModelRead::dispatch($responsibility);
 
-        return Responsibility::with(['user:id,email', 'userType:id,name', 'course:id,name'])->find($responsibility->id);
+        return Responsibility::with(['user:id,login', 'userType:id,name', 'course:id,name'])->find($responsibility->id);
     }
 
     /**

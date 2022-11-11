@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('bonds', function (Blueprint $table) {
-            $table->string('announcement', 10)->nullable()->after('end');
+            $table->string('hiring_process', 10)->nullable()->after('end');
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('bonds', function (Blueprint $table) {
-            $table->dropColumn('announcement');
+            $table->dropColumn('hiring_process');
         });
     }
 };

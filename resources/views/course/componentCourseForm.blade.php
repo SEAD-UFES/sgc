@@ -19,17 +19,17 @@
         @enderror
     </div>
     <div class="col-12 col-md-6">
-        <label for="selectType1" class="form-label">Tipo*</label>
-        <select name="course_type_id" id="selectType1" class="form-select">
+        <label for="selectDegree1" class="form-label">Tipo*</label>
+        <select name="degree" id="selectDegree1" class="form-select">
             <option value="">Selecione o tipo</option>
-            @foreach ($courseTypes as $courseType)
-                <option value="{{ $courseType->id }}"
-                    {{ isset($course) ? ($course->course_type_id == $courseType->id ? 'selected' : '') : (old('course_type_id') == $courseType->id ? 'selected' : '') }}>
-                    {{ $courseType->name }}
+            @foreach ($degrees as $degree)
+                <option value="{{ $degree->name }}"
+                    {{ isset($course) ? ($course->degree == $degree->name ? 'selected' : '') : (old('degree') == $degree->name ? 'selected' : '') }}>
+                    {{ $degree->value }}
                 </option>
             @endforeach
         </select>
-        @error('course_type_id')
+        @error('degree')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>

@@ -2,12 +2,23 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Genders;
+use App\Enums\MaritalStatuses;
+use App\Enums\States;
+use App\Models\Address;
+use App\Models\Employee;
+use App\Models\Identity as Identity;
+use App\Models\PersonalDetail;
+use App\Models\Phone;
+use App\Models\Spouse;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class EmployeeSeeder extends Seeder
 {
+    /**
+     * @var string
+     */
     protected $tableName = 'employees';
 
     /**
@@ -17,62 +28,119 @@ class EmployeeSeeder extends Seeder
      */
     public function run()
     {
-        DB::table($this->tableName)->insert([
+        $employee1 = Employee::create([
             'cpf' => '11111111111',
             'name' => 'Mateus',
-            'job' => 'Técnico',
-            'gender' => 'Masculino',
-            'birthday' =>  Carbon::create('1980', '09', '12'),
-            'birth_state_id' => 1,
-            'birth_city' => 'Amaji',
-            'id_number' => '20893574028',
-            'document_type_id' => 1,
-            'id_issue_date' => Carbon::create('2000', '05', '11'),
-            'id_issue_agency' => 'SSP',
-            'marital_status' => 'Casado(a)',
-            'spouse_name' => 'Júlia',
-            'father_name' => 'João',
-            'mother_name' => 'Rosicléia',
-            'address_street' => 'Cerejeiras',
-            'address_complement' => 'Cond. Jatobá',
-            'address_number' => '357',
-            'address_district' => 'Morrinhos',
-            'address_postal_code' => '35952654',
-            'address_state_id' => 3,
-            'address_city' => 'Água Branca',
-            'area_code' => '46',
-            'phone' => '4635986521',
-            'mobile' => '46995598652',
+            'gender' => Genders::M->name,
             'email' => 'admin@ufes.br',
         ]);
 
-        DB::table($this->tableName)->insert([
+        PersonalDetail::create([
+            'employee_id' => $employee1->id,
+            'job' => 'Técnico',
+            'birth_date' =>  Carbon::create(1980, 9, 12),
+            'birth_state' => States::ES->name,
+            'birth_city' => 'Amaji',
+            'marital_status' => MaritalStatuses::CASADO->name,
+            'father_name' => 'Jonatas',
+            'mother_name' => 'Maricléia',
+        ]);
+
+        Identity::create([
+            'employee_id' => $employee1->id,
+            'type_id' => 1,
+            'number' => '20893574028',
+            'issue_date' => Carbon::create(2000, 5, 11),
+            'issuer' => 'SSP',
+            'issuer_state' => States::ES->name,
+        ]);
+
+        Spouse::create([
+            'employee_id' => $employee1->id,
+            'name' => 'Júlia',
+        ]);
+
+        Address::create([
+            'employee_id' => $employee1->id,
+            'state' => States::ES->name,
+            'street' => 'Cerejeiras',
+            'number' => '357',
+            'complement' => 'Cond. Jatobá',
+            'district' => 'Morrinhos',
+            'city' => 'Água Branca',
+            'zip_code' => '35952654',
+        ]);
+
+        Phone::create([
+            'employee_id' => $employee1->id,
+            'area_code' => '46',
+            'number' => '995598652',
+            'type' => 'Celular',
+        ]);
+
+        Phone::create([
+            'employee_id' => $employee1->id,
+            'area_code' => '46',
+            'number' => '35986521',
+            'type' => 'Fixo',
+        ]);
+
+
+        $employee2 = Employee::create([
             'cpf' => '22222222222',
             'name' => 'Júlia',
+            'gender' => Genders::F->name,
+            'email' => 'diretor@ufes.br',
+        ]);
+
+        PersonalDetail::create([
+            'employee_id' => $employee2->id,
             'job' => 'Técnico',
-            'gender' => 'Feminino',
-            'birthday' =>  Carbon::create('1990', '03', '21'),
-            'birth_state_id' => 1,
+            'birth_date' =>  Carbon::create(1990, 3, 21),
+            'birth_state' => States::ES->name,
             'birth_city' => 'Amaji',
-            'id_number' => '20893574028',
-            'document_type_id' => 1,
-            'id_issue_date' => Carbon::create('2005', '07', '01'),
-            'id_issue_agency' => 'SSP',
-            'marital_status' => 'Casado(a)',
-            'spouse_name' => 'Mateus',
+            'marital_status' => MaritalStatuses::CASADO->name,
             'father_name' => 'João',
             'mother_name' => 'Rosicléia',
-            'address_street' => 'Cerejeiras',
-            'address_complement' => 'Cond. Jatobá',
-            'address_number' => '357',
-            'address_district' => 'Morrinhos',
-            'address_postal_code' => '35952654',
-            'address_state_id' => 3,
-            'address_city' => 'Água Branca',
+        ]);
+
+        Identity::create([
+            'employee_id' => $employee2->id,
+            'type_id' => 1,
+            'number' => '20893574028',
+            'issue_date' => Carbon::create(2005, 7, 1),
+            'issuer' => 'SSP',
+            'issuer_state' => States::ES->name,
+        ]);
+
+        Spouse::create([
+            'employee_id' => $employee2->id,
+            'name' => 'Mateus',
+        ]);
+
+        Address::create([
+            'employee_id' => $employee2->id,
+            'state' => States::ES->name,
+            'street' => 'Cerejeiras',
+            'number' => '357',
+            'complement' => 'Cond. Jatobá',
+            'district' => 'Morrinhos',
+            'city' => 'Água Branca',
+            'zip_code' => '35952654',
+        ]);
+
+        Phone::create([
+            'employee_id' => $employee2->id,
             'area_code' => '46',
-            'phone' => '4635986521',
-            'mobile' => '9959866452',
-            'email' => 'diretor@ufes.br',
+            'number' => '959866452',
+            'type' => 'Celular',
+        ]);
+
+        Phone::create([
+            'employee_id' => $employee2->id,
+            'area_code' => '46',
+            'number' => '35986521',
+            'type' => 'Fixo',
         ]);
     }
 }

@@ -14,6 +14,21 @@ class DocumentType extends Model
     use LogsActivity;
 
     /**
+     * @var string
+     */
+    protected $table = 'document_types';
+
+    /**
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
      * @var array<int, string>
      */
     protected $fillable = [
@@ -22,19 +37,11 @@ class DocumentType extends Model
     ];
 
     /**
-     * @return HasMany<EmployeeDocument>
+     * @return HasMany<Document>
      */
-    public function employeeDocuments(): HasMany
+    public function documents(): HasMany
     {
-        return $this->hasMany(EmployeeDocument::class);
-    }
-
-    /**
-     * @return HasMany<BondDocument>
-     */
-    public function bondDocuments(): HasMany
-    {
-        return $this->hasMany(BondDocument::class);
+        return $this->hasMany(Document::class);
     }
 
     public function getActivitylogOptions(): LogOptions

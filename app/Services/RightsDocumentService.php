@@ -3,15 +3,14 @@
 namespace App\Services;
 
 use App\Events\ModelListed;
-use App\Models\BondDocument;
+use App\Models\Document;
 use App\Repositories\RightsDocumentRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class RightsDocumentService extends GenericDocumentService
+class RightsDocumentService
 {
     public function __construct(private RightsDocumentRepository $repository)
     {
-        parent::__construct();
     }
 
     /**
@@ -24,7 +23,7 @@ class RightsDocumentService extends GenericDocumentService
      */
     public function list(string $sort = 'documents.id', string $direction = 'desc'): LengthAwarePaginator
     {
-        ModelListed::dispatch(BondDocument::class);
+        ModelListed::dispatch(Document::class);
 
         return $this->repository::getAllDocuments(sort: $sort, direction: $direction);
     }

@@ -2,15 +2,10 @@
 
 namespace App\Services\Dto;
 
-use Spatie\DataTransferObject\DataTransferObject;
-
-class UpdateUserDto extends DataTransferObject
+final class UpdateUserDto
 {
-    public string $email;
-
-    public string $password;
-
-    public bool $active;
-
-    public ?string $employeeId;
+    public readonly string $login;
+    public readonly string $password;
+    public readonly bool $active;
+    public readonly ?int $employeeId;
 }

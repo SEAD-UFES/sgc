@@ -8,6 +8,7 @@ use App\Models\Employee;
 use App\Models\Pole;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
@@ -22,10 +23,14 @@ class BondFormComposer
      */
     public function compose(View $view): void
     {
+        $knowledgeAreas = Arr::sort(KnowledgeAreas::cases(), function ($knowledgeArea) {
+            return $knowledgeArea->label();
+        });
+
         $view->with([
             'courses' => $this->getAllowedCourses(),
             'employees' => Employee::orderBy('name')->get(),
-            'knowledgeAreas' => KnowledgeAreas::getValuesInAlphabeticalOrder(),
+            'knowledgeAreas' => $knowledgeAreas,
             'poles' => Pole::orderBy('name')->get(),
             'roles' => Role::orderBy('name')->get(),
         ]);

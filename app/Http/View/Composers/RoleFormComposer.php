@@ -2,7 +2,7 @@
 
 namespace App\Http\View\Composers;
 
-use App\Models\GrantType;
+use App\Enums\GrantTypes;
 use Illuminate\View\View;
 
 class RoleFormComposer
@@ -17,7 +17,7 @@ class RoleFormComposer
     public function compose(View $view): void
     {
         $view->with([
-            'grantTypes' => GrantType::orderBy('name')->get(),
+            'grantTypes' => GrantTypes::cases(),
         ]);
     }
 }

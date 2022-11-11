@@ -2,17 +2,13 @@
 
 namespace App\Services\Dto;
 
-use Spatie\DataTransferObject\DataTransferObject;
+use Illuminate\Support\Facades\Date;
 
-class StoreResponsibilityDto extends DataTransferObject
+final class StoreResponsibilityDto
 {
-    public string $userId;
-
-    public string $userTypeId;
-
-    public ?string $courseId;
-
-    public ?string $begin;
-
-    public ?string $end;
+    public readonly int $userId;
+    public readonly int $userTypeId;
+    public readonly ?int $courseId;
+    public readonly ?Date $begin;
+    public readonly ?Date $end;
 }

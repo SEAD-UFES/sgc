@@ -45,19 +45,24 @@
                             </thead>
                             <tbody>
                                 @foreach ($employees as $employee)
+                                    @php
+                                        $view_area_code = $employee->phones?->where('type', 'Celular')->first()?->area_code;
+                                        $view_landline = $employee->phones?->where('type', 'Fixo')->first()?->area_code.$employee->phones?->where('type', 'Fixo')->first()?->number;
+                                        $view_cellphone = $employee->phones?->where('type', 'Celular')->first()?->area_code.$employee->phones?->where('type', 'Celular')->first()?->number;
+                                    @endphp
                                     <tr>
                                         <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
-                                        data-bs-content="<strong>E-mail:</strong> <a href='mailto:{{ $employee->email }}'>{{ $employee->email }}</a> | <strong>Área:</strong> {{ $employee->area_code }} | <strong>Telefone:</strong> <a href='tel:{{ $employee->phone }}'>{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{4})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $employee->phone) }}</a> | <strong>Celular:</strong> <a href='tel:{{ $employee->mobile }}'>{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{5})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $employee->mobile) }}</a>">
+                                        data-bs-content="<strong>E-mail:</strong> <a href='mailto:{{ $employee->email }}'>{{ $employee->email }}</a> | <strong>Área:</strong> {{ $view_area_code }} | <strong>Fixo:</strong> <a href='tel:{{ $view_landline }}'>{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{4})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $view_landline) }}</a> | <strong>Celular:</strong> <a href='tel:{{ $view_cellphone }}'>{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{5})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $view_cellphone) }}</a>">
                                             {{ preg_replace('~(\d{3})(\d{3})(\d{3})(\d{2})~', '$1.$2.$3-$4', $employee->cpf) }}
                                         </td>
                                         <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
-                                        data-bs-content="<strong>E-mail:</strong> <a href='mailto:{{ $employee->email }}'>{{ $employee->email }}</a> | <strong>Área:</strong> {{ $employee->area_code }} | <strong>Telefone:</strong> <a href='tel:{{ $employee->phone }}'>{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{4})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $employee->phone) }}</a> | <strong>Celular:</strong> <a href='tel:{{ $employee->mobile }}'>{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{5})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $employee->mobile) }}</a>">
+                                        data-bs-content="<strong>E-mail:</strong> <a href='mailto:{{ $employee->email }}'>{{ $employee->email }}</a> | <strong>Área:</strong> {{ $view_area_code }} | <strong>Fixo:</strong> <a href='tel:{{ $view_landline }}'>{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{4})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $view_landline) }}</a> | <strong>Celular:</strong> <a href='tel:{{ $view_cellphone }}'>{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{5})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $view_cellphone) }}</a>">
                                             {{ $employee->name }}
                                         </td>
-                                        <td>{{ $employee->job }}</td>
-                                        <td>{{ $employee->address_city }}</td>
+                                        <td>{{ $employee->personalDetail?->job }}</td>
+                                        <td>{{ $employee->address?->city }}</td>
                                         @can('isAdm-global')
-                                            <td>{{ $employee->user->email ?? '' }}</td>
+                                            <td>{{ $employee->user?->login ?? '-' }}</td>
                                         @endcan
                                         <td class="text-center"><div class="d-inline-flex">
                                             @can('employee-show')

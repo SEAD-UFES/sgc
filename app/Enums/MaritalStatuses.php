@@ -2,31 +2,37 @@
 
 namespace App\Enums;
 
-enum MaritalStatuses: string
+use JsonSerializable;
+
+enum MaritalStatuses: string implements JsonSerializable
 {
-    case SOLTEIRO = 'Solteiro(a)';
-    case CASADO = 'Casado(a)';
-    case SEPARADO = 'Separado(a)';
-    case DIVORCIADO = 'Divorciado(a)';
-    case VIUVO = 'Viúvo(a)';
-    case UNIAO = 'União Estável';
+    case SOLTEIRO = 'SOLTEIRO';
+    case CASADO = 'CASADO';
+    case SEPARADO = 'SEPARADO';
+    case DIVORCIADO = 'DIVORCIADO';
+    case VIUVO = 'VIUVO';
+    case UNIAO = 'UNIAO';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::SOLTEIRO => 'Solteiro(a)',
+            self::CASADO => 'Casado(a)',
+            self::SEPARADO => 'Separado(a)',
+            self::DIVORCIADO => 'Divorciado(a)',
+            self::VIUVO => 'Viúvo(a)',
+            self::UNIAO => 'União Estável',
+        };
+    }
 
     /**
-     * @return array<int, string>
+     * @return array<string, string>
      */
-    public static function getValuesInAlphabeticalOrder(): array
+    public function jsonSerialize(): array
     {
-        /**
-         * @var array<int, string>
-         */
-        $arr = [];
-
-        foreach (self::cases() as $case) {
-            $arr[] = $case->value;
-        }
-
-        sort($arr, SORT_NATURAL | SORT_FLAG_CASE);
-
-        return $arr;
+        return [
+            'name' => $this->name,
+            'value' => $this->label(),
+        ];
     }
 }

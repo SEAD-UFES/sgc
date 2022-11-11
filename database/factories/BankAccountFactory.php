@@ -18,10 +18,10 @@ class BankAccountFactory extends Factory
     public function definition()
     {
         return [
+            'employee_id' => null,
             'bank_name' => $this->faker->company,
             'agency_number' => (string) $this->faker->randomNumber(4),
-            'account_number' => (string) $this->faker->randomNumber(8),
-            'employee_id' => Employee::factory(),
+            'account' => (string) $this->faker->randomNumber(8),
 
             'created_at' => now(),
             'updated_at' => now(),

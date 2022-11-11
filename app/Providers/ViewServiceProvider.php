@@ -2,21 +2,19 @@
 
 namespace App\Providers;
 
-use App\Http\View\Composers\ApprovedFormComposer;
-use App\Http\View\Composers\ApprovedIndexComposer;
-use App\Http\View\Composers\BondDocumentBatchFormComposer;
-use App\Http\View\Composers\BondDocumentFormComposer;
-use App\Http\View\Composers\BondDocumentIndexComposer;
+use App\Http\View\Composers\ApplicantFormComposer;
+use App\Http\View\Composers\ApplicantIndexComposer;
+use App\Http\View\Composers\DocumentBatchFormComposer;
+use App\Http\View\Composers\DocumentFormComposer;
+use App\Http\View\Composers\DocumentIndexComposer;
 use App\Http\View\Composers\BondFormComposer;
 use App\Http\View\Composers\BondIndexComposer;
 use App\Http\View\Composers\CourseFormComposer;
 use App\Http\View\Composers\CourseIndexComposer;
 use App\Http\View\Composers\CourseTypeIndexComposer;
-use App\Http\View\Composers\EmployeeDocumentBatchFormComposer;
-use App\Http\View\Composers\EmployeeDocumentFormComposer;
-use App\Http\View\Composers\EmployeeDocumentIndexComposer;
 use App\Http\View\Composers\EmployeeFormComposer;
 use App\Http\View\Composers\EmployeeIndexComposer;
+use App\Http\View\Composers\HeaderComposer;
 use App\Http\View\Composers\PoleIndexComposer;
 use App\Http\View\Composers\ResponsibilityFormComposer;
 use App\Http\View\Composers\ResponsibilityIndexComposer;
@@ -46,13 +44,13 @@ class ViewServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer(
-            ['approved.create', 'approved.review'],
-            ApprovedFormComposer::class
+            ['applicant.create', 'applicant.review'],
+            ApplicantFormComposer::class
         );
 
         View::composer(
-            ['approved.index'],
-            ApprovedIndexComposer::class
+            ['applicant.index'],
+            ApplicantIndexComposer::class
         );
 
         View::composer(
@@ -66,18 +64,18 @@ class ViewServiceProvider extends ServiceProvider
         );
 
         View::composer(
-            ['bond.document.create'],
-            BondDocumentFormComposer::class
+            ['document.create'],
+            DocumentFormComposer::class
         );
 
         View::composer(
-            ['bond.document.index', 'reports.rightsIndex'],
-            BondDocumentIndexComposer::class
+            ['document.index', 'reports.rightsIndex'],
+            DocumentIndexComposer::class
         );
 
         View::composer(
-            ['bond.document.create-many-2'],
-            BondDocumentBatchFormComposer::class
+            ['document.create-many-2'],
+            DocumentBatchFormComposer::class
         );
 
         View::composer(
@@ -96,28 +94,13 @@ class ViewServiceProvider extends ServiceProvider
         );
 
         View::composer(
-            ['employee.create', 'employee.edit', 'approved.designate'],
+            ['employee.create', 'employee.edit', 'applicant.designate'],
             EmployeeFormComposer::class
         );
 
         View::composer(
             ['employee.index'],
             EmployeeIndexComposer::class
-        );
-
-        View::composer(
-            ['employee.document.create'],
-            EmployeeDocumentFormComposer::class
-        );
-
-        View::composer(
-            ['employee.document.index'],
-            EmployeeDocumentIndexComposer::class
-        );
-
-        View::composer(
-            ['employee.document.create-many-2'],
-            EmployeeDocumentBatchFormComposer::class
         );
 
         View::composer(
@@ -153,6 +136,11 @@ class ViewServiceProvider extends ServiceProvider
         View::composer(
             ['user.index'],
             UserIndexComposer::class
+        );
+
+        View::composer(
+            ['layouts.partialHeader'],
+            HeaderComposer::class
         );
     }
 }

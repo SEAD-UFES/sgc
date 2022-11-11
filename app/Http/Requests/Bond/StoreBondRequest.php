@@ -3,8 +3,9 @@
 namespace App\Http\Requests\Bond;
 
 use App\Enums\KnowledgeAreas;
-use App\Services\Dto\StoreBondDto;
+use App\Services\Dto\BondDto;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Enum;
 
@@ -30,20 +31,19 @@ class StoreBondRequest extends FormRequest
      */
     public function rules(): array
     {
-        // TODO: change course_name in this context to knowledge_course_name
         return [
 
             'employee_id' => 'required|exists:employees,id',
             'role_id' => 'required|exists:roles,id',
-            'course_id' => 'required|exists:courses,id',
-            'pole_id' => 'required|exists:poles,id',
+            'course_id' => 'nullable|exists:courses,id',
+            'pole_id' => 'nullable|exists:poles,id',
             'begin' => 'required|date',
-            'end' => 'nullable|date',
-            'announcement' => 'required|string',
+            'terminated_at' => 'nullable|date',
+            'hiring_process' => 'required|string',
             'volunteer' => 'sometimes',
-            'knowledge_area' => ['nullable', 'required_with:course_name,institution_name', new Enum(KnowledgeAreas::class)], //Rule::in(KnowledgeAreas::getValuesInAlphabeticalOrder())],
-            'course_name' => 'nullable|string|required_with:knowledge_area,institution_name',
-            'institution_name' => 'nullable|string|required_with:knowledge_area,course_name',
+            'qualification_knowledge_area' => ['required', new Enum(KnowledgeAreas::class)],
+            'qualification_course' => 'required|string',
+            'qualification_institution' => 'required|string',
         ];
     }
 
@@ -57,32 +57,33 @@ class StoreBondRequest extends FormRequest
             'employee_id.exists' => 'O Colaborador deve estar entre os fornecidos',
             'role_id.required' => 'A Função é obrigatória',
             'role_id.exists' => 'A Função deve ser preenchido com uma das opções fornecidas',
-            'course_id.required' => 'O curso é obrigatório',
             'course_id.exists' => 'O curso deve ser preenchido com uma das opções fornecidas',
-            'pole_id.required' => 'O polo é obrigatório',
             'pole_id.exists' => 'O polo deve ser preenchido com uma das opções fornecidas',
             'begin.required' => 'Início da atuação é obrigatório',
             'begin.date' => 'Início deve ser uma data',
-            'end.date' => 'Fim deve ser uma data',
-            'announcement.required' => 'Edital é obrigatório',
-            'knowledge_area.Illuminate\Validation\Rules\Enum' => 'O campo deve ser preenchido com uma das opções fornecidas',
+            'terminated_at.date' => 'Fim deve ser uma data',
+            'hiring_process.required' => 'Edital é obrigatório',
+            'qualification_knowledge_area.required' => 'Área de conhecimento é obrigatória',
+            'qualification_knowledge_area.Illuminate\Validation\Rules\Enum' => 'O campo deve ser preenchido com uma das opções fornecidas',
+            'qualification_course.required' => 'Nome do curso é obrigatório',
+            'qualification_institution.required' => 'Nome da instituição é obrigatório',
         ];
     }
 
-    public function toDto(): StoreBondDto
+    public function toDto(): BondDto
     {
-        return new StoreBondDto(
-            employeeId: $this->validated('employee_id') ?? '',
-            roleId: $this->validated('role_id') ?? '',
-            courseId: $this->validated('course_id') ?? '',
-            poleId: $this->validated('pole_id') ?? '',
-            begin: $this->validated('begin'),
-            end: $this->validated('end'),
-            announcement: $this->validated('announcement'),
+        return new BondDto(
+            employeeId: intval($this->validated('employee_id')),
+            roleId: intval($this->validated('role_id')),
+            courseId: intval($this->validated('course_id')) !== 0 ? intval($this->validated('course_id')) : null,
+            poleId: intval($this->validated('pole_id')) !== 0 ? intval($this->validated('pole_id')) : null,
+            begin: Date::parse($this->validated('begin')),
+            terminatedAt: $this->validated('terminated_at') !== null ? Date::parse($this->validated('terminated_at')) : null,
+            hiringProcess: str($this->validated('hiring_process')),
             volunteer: ($this->validated('volunteer') ?? '') === 'on',
-            knowledgeArea: $this->validated('knowledge_area'),
-            courseName: $this->validated('course_name') ?? '',
-            institutionName: $this->validated('institution_name') ?? '',
+            qualificationKnowledgeArea: KnowledgeAreas::tryFrom($this->validated('qualification_knowledge_area')),
+            qualificationCourse: str($this->validated('qualification_course')),
+            qualificationInstitution: str($this->validated('qualification_institution')),
         );
     }
 }

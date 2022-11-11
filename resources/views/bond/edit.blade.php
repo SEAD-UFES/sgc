@@ -2,13 +2,17 @@
 
 @section('title', 'Editar Vínculo')
 
+@section('headerScripts')
+    <script src="{{ asset('js/enable_searchable_select.js') }}"></script>
+@endsection
+
 @section('content')
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb border-top border-bottom bg-light">
             <li class="breadcrumb-item">Colaboradores</li>
             <li class="breadcrumb-item"><a href="{{ route('bonds.index') }}">Listar Vínculos</a></li>
             <li class="breadcrumb-item active" aria-current="page">Editar vínculo:
-                [{{ $bond->employee->name . '-' . $bond->role->name . '-' . $bond->course->name . '-' . $bond->pole->name }}]
+                [{{ $bond->employee->name . '-' . $bond->role->name . (isset($bond->course) ? ('-' . $bond->course?->name) : '') . (isset($bond->pole) ? ('-' . $bond->pole?->name) : '') }}]
             </li>
         </ol>
     </nav>

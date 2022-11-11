@@ -4,8 +4,8 @@ namespace App\Http\View\Composers;
 
 use App\Enums\Genders;
 use App\Enums\MaritalStatuses;
+use App\Enums\States;
 use App\Models\DocumentType;
-use App\Models\State;
 use Illuminate\View\View;
 
 class EmployeeFormComposer
@@ -20,11 +20,10 @@ class EmployeeFormComposer
     public function compose(View $view): void
     {
         $view->with([
-            'genders' => Genders::getValuesInAlphabeticalOrder(),
-            'birthStates' => State::orderBy('name')->get(),
-            'documentTypes' => DocumentType::orderBy('name')->get(),
-            'maritalStatuses' => MaritalStatuses::getValuesInAlphabeticalOrder(),
-            'addressStates' => State::orderBy('name')->get(),
+            'genders' => Genders::cases(),
+            'states' => States::cases(),
+            'documentTypes' => DocumentType::whereIn('name', ['RG', 'CNH', 'Passaporte', 'Carteira de Identidade Profissional'])->orderBy('name')->get(),
+            'maritalStatuses' => MaritalStatuses::cases(),
         ]);
     }
 }

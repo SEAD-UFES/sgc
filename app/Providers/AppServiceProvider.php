@@ -2,12 +2,10 @@
 
 namespace App\Providers;
 
-use App\Interfaces\BondDocumentRepositoryInterface;
-use App\Interfaces\EmployeeDocumentRepositoryInterface;
+use App\Interfaces\DocumentRepositoryInterface;
 use App\Logging\Logger;
 use App\Logging\LoggerInterface;
-use App\Repositories\BondDocumentRepository;
-use App\Repositories\EmployeeDocumentRepository;
+use App\Repositories\DocumentRepository;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
@@ -21,8 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public $bindings = [
         LoggerInterface::class => Logger::class,
-        EmployeeDocumentRepositoryInterface::class => EmployeeDocumentRepository::class,
-        BondDocumentRepositoryInterface::class => BondDocumentRepository::class,
+        DocumentRepositoryInterface::class => DocumentRepository::class,
     ];
 
     /**

@@ -2,11 +2,8 @@
 
 namespace App\Services\Dto;
 
-use Spatie\DataTransferObject\DataTransferObject;
-
-class ReviewBondDto extends DataTransferObject
+final class ReviewBondDto
 {
-    public bool $impediment;
-
-    public string $impedimentDescription;
+    public readonly bool $impediment; // TODO: nedds review
+    public readonly string $impedimentDescription;
 }

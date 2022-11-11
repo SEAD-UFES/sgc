@@ -1,12 +1,12 @@
 @extends('layouts.basic')
 
-@section('title', 'Documentos de Termos e Licença')
+@section('title', 'Termos de cessão de direitos')
 
 @section('content')
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb border-top border-bottom bg-light">
             <li class="breadcrumb-item">Relatórios</li>
-            <li class="breadcrumb-item active" aria-current="page">Listar Documentos de Termos e Licença</li>
+            <li class="breadcrumb-item active" aria-current="page">Listar Termos de cessão de direitos</li>
         </ol>
     </nav>
     <section id="pageContent">
@@ -37,7 +37,7 @@
                                 <th>@sortablelink('role_name', 'Função')</th>
                                 <th>@sortablelink('course_name', 'Curso')</th>
                                 <th>@sortablelink('pole_name', 'Polo')</th>
-                                <th>@sortablelink('original_name', 'Nome')</th>
+                                <th>@sortablelink('file_name', 'Nome')</th>
                             </thead>
                             <tbody>
                                 @foreach ($documents as $document)
@@ -46,8 +46,8 @@
                                         <td>{{ $document->role_name }}</td>
                                         <td>{{ $document->course_name }}</td>
                                         <td>{{ $document->pole_name }}</td>
-                                        <td><a href={{ route('rights.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]) }}
-                                                target="_blank">{{ $document->original_name }}</a></td>
+                                        <td><a href={{ route('rights.show', ['id' => $document->id, 'htmlTitle' => $document->file_name]) }}
+                                                target="_blank">{{ $document->file_name }}</a></td>
                                     </tr>
                                 @endforeach
                             </tbody>

@@ -2,19 +2,14 @@
 
 namespace App\Services\Dto;
 
-use Spatie\DataTransferObject\DataTransferObject;
+use Illuminate\Support\Facades\Date;
 
-class StoreCourseDto extends DataTransferObject
+final class StoreCourseDto
 {
-    public string $name;
-
-    public string $description;
-
-    public string $courseTypeId;
-
-    public ?string $begin;
-
-    public ?string $end;
-
-    public string $lmsUrl;
+    public readonly string $name;
+    public readonly string $description;
+    public readonly int $courseTypeId;
+    public readonly ?Date $begin;
+    public readonly ?Date $end;
+    public readonly string $lmsUrl;
 }

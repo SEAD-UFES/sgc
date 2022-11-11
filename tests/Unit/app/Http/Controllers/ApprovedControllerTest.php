@@ -2,24 +2,24 @@
 
 namespace tests\Unit\app\Http\Controllers;
 
-use App\Http\Controllers\ApprovedController;
-use App\Http\Requests\Approved\DestroyApprovedRequest;
-use App\Http\Requests\Approved\IndexApprovedRequest;
-use App\Http\Requests\Approved\StoreApprovedRequest;
-use App\Http\Requests\Approved\UpdateApprovedStateRequest;
-use App\Models\Approved;
-use App\Services\ApprovedService;
+use App\Http\Controllers\ApplicantController;
+use App\Http\Requests\Applicant\DestroyApplicantRequest;
+use App\Http\Requests\Applicant\IndexApplicantRequest;
+use App\Http\Requests\Applicant\StoreApplicantRequest;
+use App\Http\Requests\Applicant\UpdateApplicantStateRequest;
+use App\Models\Applicant;
+use App\Services\ApplicantService;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Pagination\LengthAwarePaginator;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 
-class ApprovedControllerTest extends TestCase
+class ApplicantControllerTest extends TestCase
 {
     use WithoutMiddleware;
 
-    /** @var ApprovedController $controller */
-    private ApprovedController $controller;
+    /** @var ApplicantController $controller */
+    private ApplicantController $controller;
 
     /** @var MockObject $serviceMock */
     private MockObject $serviceMock;
@@ -28,17 +28,17 @@ class ApprovedControllerTest extends TestCase
     {
         parent::setUp();
 
-        // Create a Mock for the ApprovedService class.
-        $this->serviceMock = $this->createMock(ApprovedService::class);
+        // Create a Mock for the ApplicantService class.
+        $this->serviceMock = $this->createMock(ApplicantService::class);
 
-        $this->controller = new ApprovedController($this->serviceMock);
+        $this->controller = new ApplicantController($this->serviceMock);
     }
 
     public function testControllerIndexShouldCallServiceListMethod(): void
     {
-        // Create a stub for the IndexApprovedRequest class.
+        // Create a stub for the IndexApplicantRequest class.
         /** @var MockObject $requestStub */
-        $requestStub = $this->createStub(IndexApprovedRequest::class);
+        $requestStub = $this->createStub(IndexApplicantRequest::class);
 
         // Provides a fake LengthAwarePaginator to be returned by the service's list method.
         $lengthAwarePaginator = $this->createStub(LengthAwarePaginator::class);
@@ -52,9 +52,9 @@ class ApprovedControllerTest extends TestCase
 
     public function testControllerStoreShouldCallServiceCreateMethod(): void
     {
-        // Create a stub for the StoreApprovedRequest class.
+        // Create a stub for the StoreApplicantRequest class.
         /** @var MockObject $requestStub */
-        $requestStub = $this->createStub(StoreApprovedRequest::class);
+        $requestStub = $this->createStub(StoreApplicantRequest::class);
 
         // Expects the service's create method to be called once.
         $this->serviceMock->expects($this->once())->method('create');
@@ -64,33 +64,33 @@ class ApprovedControllerTest extends TestCase
 
     public function testControllerUpdateShouldCallServiceChangeStateMethod(): void
     {
-        // Create a stub for the UpdateApprovedStateRequest class.
+        // Create a stub for the UpdateApplicantStateRequest class.
         /** @var MockObject $requestStub */
-        $requestStub = $this->createStub(UpdateApprovedStateRequest::class);
+        $requestStub = $this->createStub(UpdateApplicantStateRequest::class);
         $requestStub->expects($this->any())->method('all')
             ->willReturn([]);
 
-        /** @var MockObject $approvedStub */
-        $approvedStub = $this->createStub(Approved::class);
+        /** @var MockObject $applicantStub */
+        $applicantStub = $this->createStub(Applicant::class);
 
         // Expects the service's changeState method to be called once.
         $this->serviceMock->expects($this->once())->method('changeState');
 
-        $this->controller->update($requestStub, $approvedStub);
+        $this->controller->update($requestStub, $applicantStub);
     }
 
     public function testControllerDestroyShouldCallServiceDeleteMethod(): void
     {
-        // Create a stub for the DestroyApprovedRequest class.
+        // Create a stub for the DestroyApplicantRequest class.
         /** @var MockObject $requestStub */
-        $requestStub = $this->createStub(DestroyApprovedRequest::class);
+        $requestStub = $this->createStub(DestroyApplicantRequest::class);
 
-        /** @var MockObject $approvedStub */
-        $approvedStub = $this->createStub(Approved::class);
+        /** @var MockObject $applicantStub */
+        $applicantStub = $this->createStub(Applicant::class);
 
         // Expects the service's delete method to be called once.
         $this->serviceMock->expects($this->once())->method('delete');
 
-        $this->controller->destroy($requestStub, $approvedStub);
+        $this->controller->destroy($requestStub, $applicantStub);
     }
 }

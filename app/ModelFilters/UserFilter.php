@@ -10,7 +10,7 @@ trait UserFilter
     public function emailContains(Builder $builder, $value)
     {
         $values = ModelFilterHelper::inputToArray($value);
-        return ModelFilterHelper::contains($builder, 'email', $values);
+        return ModelFilterHelper::contains($builder, 'login', $values);
     }
 
     // public function usertypeNameContains(Builder $builder, $value)

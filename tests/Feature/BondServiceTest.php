@@ -6,17 +6,16 @@ use App\Enums\KnowledgeAreas;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Bond;
-use App\Models\BondDocument;
+use App\Models\Document;
 use App\Models\Course;
 use App\Models\Document;
 use App\Models\Employee;
-use App\Models\EmployeeDocument;
 use App\Models\UserType;
-use App\Repositories\BondDocumentRepository;
-use App\Services\BondDocumentService;
+use App\Repositories\DocumentRepository;
+use App\Services\DocumentService;
 use App\Services\BondService;
-use App\Services\Dto\StoreBondDto;
-use App\Services\Dto\UpdateBondDto;
+use App\Services\Dto\BondDto;
+use App\Services\Dto\BondDto;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
@@ -69,7 +68,7 @@ class BondServiceTest extends TestCase
             ]
         );
 
-        $this->service = new BondService(new BondDocumentRepository());
+        $this->service = new BondService(new DocumentRepository());
     }
 
     /**
@@ -136,11 +135,11 @@ class BondServiceTest extends TestCase
         $attributes['poleId'] = 1;
         $attributes['begin'] = '2022-01-01';
         $attributes['end'] = '2032-01-01';
-        $attributes['announcement'] = '01/2022';
+        $attributes['hiring_process'] = '01/2022';
         $attributes['volunteer'] = false;
         $attributes = array_merge($attributes, $this->getQualificationAttributes());
 
-        $dto = new StoreBondDto($attributes);
+        $dto = new BondDto($attributes);
 
         //Should be mocked?
         UserType::create(['name' => 'Assistant', 'acronym' => 'ass', 'description' => '']);
@@ -154,48 +153,6 @@ class BondServiceTest extends TestCase
             $this->assertCount(3, Bond::all());
             $this->assertEquals('John Doe', Bond::find(3)?->employee?->name);
             $this->assertEquals('Course Beta', Bond::find(3)?->course?->name);
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function bondShouldBeCreatedWithEmployeeDocument(): void
-    {
-        //setting up scenario
-        $attributes = [];
-
-        $attributes['employeeId'] = 1;
-        $attributes['roleId'] = 2;
-        $attributes['courseId'] = 2;
-        $attributes['poleId'] = 1;
-        $attributes['begin'] = '2022-01-01';
-        $attributes['end'] = '2032-01-01';
-        $attributes['announcement'] = '01/2022';
-        $attributes['volunteer'] = false;
-        $attributes = array_merge($attributes, $this->getQualificationAttributes());
-
-        $dto = new StoreBondDto($attributes);
-
-        //Should be mocked?
-        UserType::create(['name' => 'Assistant', 'acronym' => 'ass', 'description' => '']);
-
-        Document::factory()->create([
-            'original_name' => 'EmployeeDummyFile.pdf',
-            'documentable_id' => EmployeeDocument::factory()->createOne(['employee_id' => $attributes['employeeId']])->id,
-            'documentable_type' => 'App\Models\EmployeeDocument',
-        ]);
-
-        Event::fakeFor(function () use ($dto) {
-            //execution
-            $this->service->create($dto);
-
-            //verifications
-            Event::assertDispatched('eloquent.created: ' . Bond::class);
-            $this->assertEquals('John Doe', Bond::find(3)?->employee?->name);
-            $this->assertEquals('Course Beta', Bond::find(3)?->course?->name);
-            $this->assertEquals('EmployeeDummyFile.pdf', Bond::find(3)?->employee?->EmployeeDocuments()->first()?->document?->original_name);
-            $this->assertCount(3, Bond::all());
         });
     }
 
@@ -216,11 +173,11 @@ class BondServiceTest extends TestCase
         $attributes['poleId'] = 1;
         $attributes['begin'] = '2022-01-01';
         $attributes['end'] = '2032-01-01';
-        $attributes['announcement'] = '01/2022';
+        $attributes['hiring_process'] = '01/2022';
         $attributes['volunteer'] = false;
         $attributes = array_merge($attributes, $this->getQualificationAttributes());
 
-        $dto = new UpdateBondDto($attributes);
+        $dto = new BondDto($attributes);
 
         Event::fakeFor(function () use ($dto, $bond) {
             //execution
@@ -262,9 +219,9 @@ class BondServiceTest extends TestCase
         $bond = Bond::find(1);
 
         Document::factory()->create([
-            'original_name' => 'BondDummyFile.pdf',
-            'documentable_id' => BondDocument::factory()->createOne(['bond_id' => $bond?->id])->id,
-            'documentable_type' => 'App\Models\BondDocument',
+            'file_name' => 'BondDummyFile.pdf',
+            'documentable_id' => Document::factory()->createOne(['bond_id' => $bond?->id])->id,
+            'documentable_type' => 'App\Models\Document',
         ]);
 
         Event::fakeFor(function () use ($bond) {

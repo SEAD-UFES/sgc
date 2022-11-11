@@ -2,19 +2,15 @@
 
 namespace App\Services\Dto;
 
-use Spatie\DataTransferObject\DataTransferObject;
+use App\Enums\Degrees;
+use Illuminate\Support\Facades\Date;
 
-class UpdateCourseDto extends DataTransferObject
+final class UpdateCourseDto
 {
-    public string $name;
-
-    public string $description;
-
-    public string $courseTypeId;
-
-    public ?string $begin;
-
-    public ?string $end;
-
-    public string $lmsUrl;
+    public readonly string $name;
+    public readonly string $description;
+    public readonly Degrees $degree;
+    public readonly ?Date $begin;
+    public readonly ?Date $end;
+    public readonly string $lmsUrl;
 }

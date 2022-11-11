@@ -6,7 +6,7 @@
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb border-top border-bottom bg-light">
             <li class="breadcrumb-item">Sistema</li>
-            <li class="breadcrumb-item active" aria-current="page">Alterar senha: {{ $user->email }}</li>
+            <li class="breadcrumb-item active" aria-current="page">Alterar senha: {{ $user->login }}</li>
         </ol>
     </nav>
     <section id="pageContent">
@@ -18,8 +18,8 @@
                         @method('PATCH')
                         @csrf
                         <div class="mb-3">
-                            <label class="form-label">E-Mail</label>
-                            <div class="col-sm-8 col-lg-9">{{ $user->email ?? '-' }}</div>
+                            <label class="form-label">Login</label>
+                            <div class="col-sm-8 col-lg-9">{{ $user->login ?? '-' }}</div>
                         </div>
                         <div class="mb-3">
                             <label for="inputPassword1" class="form-label">Nova Senha</label>

@@ -22,17 +22,45 @@ class Responsibility extends Model
     use LogsActivity;
 
     /**
+     * @var string
+     */
+    protected $table = 'responsibilities';
+
+    /**
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
+     * The attributes that are mass assignable.
+     *
      * @var array<int, string>
      */
-    public $sortable = [
-        'id',
-        'user.email',
-        'userType.name',
+    protected $fillable = [
+        'user_id',
+        'user_type_id',
+        'course_id',
         'begin',
         'end',
-        'created_at',
-        'updated_at',
     ];
+
+    // /**
+    //  * @var array<int, string>
+    //  */
+    // public $sortable = [
+    //     'id',
+    //     'user.email',
+    //     'userType.name',
+    //     'begin',
+    //     'end',
+    //     'created_at',
+    //     'updated_at',
+    // ];
 
     /**
      * @var array<int, string>
@@ -50,25 +78,14 @@ class Responsibility extends Model
         'userId',
     ];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'user_id',
-        'user_type_id',
-        'course_id',
-        'begin',
-        'end',
-    ];
+    // /**
+    //  * @var array<int, string>
+    //  *
+    //  * @phpstan-ignore-next-line
+    //  */
+    // private static $whiteListFilter = ['*'];
 
-    /**
-     * @var array<int, string>
-     *
-     * @phpstan-ignore-next-line
-     */
-    private static $whiteListFilter = ['*'];
+    // ==================== Relationships ====================
 
     /**
      * @return BelongsTo<User, Responsibility>
@@ -94,19 +111,19 @@ class Responsibility extends Model
         return $this->belongsTo(Course::class);
     }
 
-    /**
-     * @param Builder<Responsibility> $query
-     *
-     * @return Builder<Responsibility>
-     */
-    public function scopeActive(Builder $query): Builder
-    {
-        return $query->where('begin', '<=', Carbon::today()->toDateString())
-            ->where(static function ($query) {
-                $query->where('end', '>=', Carbon::today()->toDateString())
-                    ->orWhereNull('end');
-            });
-    }
+    // /**
+    //  * @param Builder<Responsibility> $query
+    //  *
+    //  * @return Builder<Responsibility>
+    //  */
+    // public function scopeActive(Builder $query): Builder
+    // {
+    //     return $query->where('begin', '<=', Carbon::today()->toDateString())
+    //         ->where(static function ($query) {
+    //             $query->where('end', '>=', Carbon::today()->toDateString())
+    //                 ->orWhereNull('end');
+    //         });
+    // }
 
     public function getActivitylogOptions(): LogOptions
     {

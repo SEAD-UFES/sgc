@@ -7,7 +7,7 @@
         <ol class="breadcrumb border-top border-bottom bg-light">
             <li class="breadcrumb-item">Usuários</li>
             <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Listar Usuários</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ $user->email }}</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ $user->login }}</li>
         </ol>
     </nav>
     <section id="pageContent">
@@ -26,7 +26,7 @@
                             <div class="card-body">
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Login:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $user->email ?? '-' }}</div>
+                                    <div class="col-sm-8 col-lg-9">{{ $user->login ?? '-' }}</div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Status:</strong></div>

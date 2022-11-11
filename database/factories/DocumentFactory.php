@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Bond;
 use App\Models\Document;
 use App\Models\DocumentType;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -29,14 +30,12 @@ class DocumentFactory extends Factory
             . "ZWRpYUJveCBbIDAgMCA5OSA5IF0KPj4KZW5kb2JqCjMgMCBvYmoKPDwKL1BhZ2"
             . "VzIDUgMCBSCi9UeXBlIC9DYXRhbG9nCj4+CmVuZG9iagp0cmFpbGVyCjw8Ci9S"
             . "b290IDMgMCBSCj4+CiUlRU9G";
-
-        //$documentable = random_int(1, 2) == 1 ? EmployeeDocument::factory()->create() : BondDocument::factory()->create();
-        
+           
         return [
-            'original_name' => $this->faker->lexify('????????????????????.pdf'),
+            'file_name' => $this->faker->lexify('????????????????????.pdf'),
             'document_type_id' => DocumentType::factory(),
-            'documentable_id' => null,
-            'documentable_type' => null,
+            'related_id' => Bond::factory(),
+            'related_type' => Bond::class,
             'file_data' => $fileBase64,
             'created_at' => now(),
             'updated_at' => now(),

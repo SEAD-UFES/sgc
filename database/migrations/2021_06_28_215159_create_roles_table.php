@@ -18,7 +18,7 @@ class CreateRolesTable extends Migration
             $table->string('name', 50);
             $table->string('description', 110);
             $table->unsignedInteger('grant_value');
-            $table->foreignId('grant_type_id')->constrained('grant_types');
+            $table->string('grant_type', 20);
             $table->timestamps();
         });
     }

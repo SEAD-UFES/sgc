@@ -7,7 +7,11 @@ use Illuminate\Support\Facades\DB;
 
 class UserTypeSeeder extends Seeder
 {
+    /**
+     * @var string
+     */
     protected $tableName = 'user_types';
+
     /**
      * Run the database seeds.
      *

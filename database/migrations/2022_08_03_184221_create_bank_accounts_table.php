@@ -14,11 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('bank_accounts', function (Blueprint $table) {
-            $table->id();
-            $table->string('bank_name')->nullable();
-            $table->string('agency_number')->nullable();
-            $table->string('account_number')->nullable();
-            $table->foreignId('employee_id')->constrained('employees');
+            $table->unsignedBigInteger('employee_id', false)->primary();
+            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade')->onUpdate('no action');
+            $table->string('bank_name');
+            $table->string('agency_number');
+            $table->string('account');
             $table->timestamps();
         });
     }

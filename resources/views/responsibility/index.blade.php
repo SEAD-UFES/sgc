@@ -37,7 +37,7 @@
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
-                                <th>@sortablelink('user.email', 'Usuário')</th>
+                                <th>@sortablelink('user.login', 'Usuário')</th>
                                 <th>@sortablelink('userType.name', 'Papel')</th>
                                 <th>@sortablelink('begin', 'Início')</th>
                                 <th>@sortablelink('end', 'Fim')</th>
@@ -46,10 +46,10 @@
                             <tbody>
                                 @foreach ($responsibilities as $responsibility)
                                     <tr>
-                                        <td>{{ $responsibility->user->email }}</td>
+                                        <td>{{ $responsibility->user->login }}</td>
                                         <td>{{ $responsibility->userType->name }} {{ $responsibility->course ? "(".$responsibility->course->name.")": '' }}</td>
-                                        <td>{{ $responsibility->begin }}</td>
-                                        <td>{{ $responsibility->end ?? "-" }}</td>
+                                        <td>{{ isset($responsibility->begin) ? \Carbon\Carbon::parse($responsibility->begin)->isoFormat('DD/MM/Y') : '-' }}</td>
+                                        <td>{{ isset($responsibility->end) ? \Carbon\Carbon::parse($responsibility->end)->isoFormat('DD/MM/Y') : '-' }}</td>
                                         <td class="text-center"><div class="d-inline-flex">
                                             @can('responsibility-update')
                                                 <a href="{{ route('responsibilities.edit', $responsibility) }}" data-bs-toggle="tooltip" title="Editar usuário" class="btn btn-primary btn-sm">

@@ -15,10 +15,10 @@
                             <h3>Login</h3>
                             @csrf
                             <div class="mb-3">
-                                <label for="inputEmail1" class="form-label">E-Mail*</label>
-                                <input name="email" type="text" autocomplete="username" id="inputEmail1" class="form-control" placeholder="Email"
-                                    value="{{ old('email') }}" />
-                                @error('email')
+                                <label for="inputLogin1" class="form-label">Login*</label>
+                                <input name="login" type="text" autocomplete="username" id="inputLogin1" class="form-control" placeholder="Login"
+                                    value="{{ old('login') }}" />
+                                @error('login')
                                     <div class="text-danger">&gt; {{ $message }}</div>
                                 @enderror
                             </div>

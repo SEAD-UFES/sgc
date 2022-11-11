@@ -26,7 +26,7 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email|unique:users,email',
+            'login' => 'required|email|unique:users,login',
             'password' => 'required',
             'active' => 'sometimes',
             'employee_id' => 'nullable|exists:employees,id',
@@ -39,9 +39,9 @@ class StoreUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.required' => 'O E-mail é obrigatório',
-            'email.email' => 'O endereço de E-mail deve ser válido',
-            'email.unique' => 'O endereço não pode ser igual a outro já cadastrado',
+            'login.required' => 'O E-mail é obrigatório',
+            'login.email' => 'O endereço de E-mail deve ser válido',
+            'login.unique' => 'O endereço não pode ser igual a outro já cadastrado',
             'password.required' => 'A Senha é obrigatória',
             'employee_id.exists' => 'O Colaborador deve ser válido',
         ];
@@ -50,7 +50,7 @@ class StoreUserRequest extends FormRequest
     public function toDto(): StoreUserDto
     {
         return new StoreUserDto(
-            email: $this->validated('email') ?? '',
+            login: $this->validated('login') ?? '',
             password: $this->validated('password') ?? '',
             active: ($this->validated('active') ?? '') === 'on',
             employeeId: $this->validated('employee_id'),

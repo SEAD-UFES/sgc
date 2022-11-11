@@ -7,6 +7,7 @@ use App\Enums\MaritalStatuses;
 use App\ModelFilters\EmployeeFilter;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,18 +27,43 @@ class Employee extends Model
     use LogsActivity;
 
     /**
+     * @var string
+     */
+    protected $table = 'employees';
+
+    /**
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
      * @var array<int, string>
      */
-    public $sortable = [
-        'id',
+    protected $fillable = [
         'cpf',
         'name',
-        'job',
-        'address_city',
-        'user.email',
-        'created_at',
-        'updated_at',
+        'gender',
+        'email',
     ];
+
+    // /**
+    //  * @var array<int, string>
+    //  */
+    // public $sortable = [
+    //     'id',
+    //     'cpf',
+    //     'name',
+    //     'job',
+    //     'address_city',
+    //     'user.email',
+    //     'created_at',
+    //     'updated_at',
+    // ];
 
     /**
      * @var array<int, string>
@@ -50,112 +76,59 @@ class Employee extends Model
         'userEmailContains',
     ];
 
-    /**
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'cpf',
-        'job',
-        'gender',
-        'birthday',
-        'birth_state_id',
-        'birth_city',
-        'id_number',
-        'document_type_id',
-        'id_issue_date',
-        'id_issue_agency',
-        'marital_status',
-        'spouse_name',
-        'father_name',
-        'mother_name',
-        'address_street',
-        'address_complement',
-        'address_number',
-        'address_district',
-        'address_postal_code',
-        'address_state_id',
-        'address_city',
-        'area_code',
-        'phone',
-        'mobile',
-        'email',
-    ];
+    // /**
+    //  * @var array<int, string>
+    //  *
+    //  * @phpstan-ignore-next-line
+    //  */
+    // private static $whiteListFilter = ['*'];
+
+    // ==================== Casts ====================
 
     protected $casts = [
         'gender' => Genders::class,
-        'marital_status' => MaritalStatuses::class,
     ];
 
-    /**
-     * @var array<int, string>
-     *
-     * @phpstan-ignore-next-line
-     */
-    private static $whiteListFilter = ['*'];
+    // ==================== Accessors and Mutators ====================
+
+    // public function getGenderAttribute()
+    // {
+    //     return Genders::fromName($this->getAttribute('gender'));
+    // }
+
+    // protected function gender(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn () => Employee::find($this->id)->pluck('gender') === 'F' ? Genders::F : Genders::M,
+    //         set: fn ($value) => $value === Genders::F ? 'F' : 'M',
+    //     );
+    // }
+
+
+    // ==================== Relationships ====================
 
     /**
-     * @return BelongsTo<State, Employee>
+     * @return HasOne<Identity>
      */
-    public function birthState(): BelongsTo
+    public function identity(): HasOne
     {
-        return $this->belongsTo(State::class);
+        return $this->hasOne(Identity::class, 'employee_id', 'id');
     }
 
     /**
-     * @return BelongsTo<DocumentType, Employee>
+     * @return HasOne<PersonalDetail>
      */
-    public function documentType(): BelongsTo
+    public function personalDetail(): HasOne
     {
-        return $this->belongsTo(DocumentType::class);
+        return $this->hasOne(PersonalDetail::class);
     }
 
     /**
-     * @return BelongsTo<State, Employee>
+     * @return HasOne<Spouse>
      */
-    public function addressState(): BelongsTo
+    public function spouse(): HasOne
     {
-        return $this->belongsTo(State::class);
-    }
-
-    /**
-     * @return HasMany<User>
-     */
-    public function users(): HasMany
-    {
-        return $this->hasMany(User::class);
-    }
-
-    /**
-     * @return HasOne<User>
-     */
-    public function user(): HasOne
-    {
-        return $this->hasOne(User::class);
-    }
-
-    /**
-     * @return BelongsToMany<Course>
-     */
-    public function courses(): BelongsToMany
-    {
-        return $this->belongsToMany(Course::class, 'bonds')->withPivot('id', 'course_id', 'employee_id', 'role_id', 'pole_id', /* 'classroom_id',*/ 'begin', 'end', 'terminated_at', 'volunteer', 'impediment', 'impediment_description', 'uaba_checked_at')->using(Bond::class)->as('bond')->withTimestamps();
-    }
-
-    /**
-     * @return HasMany<EmployeeDocument>
-     */
-    public function employeeDocuments(): HasMany
-    {
-        return $this->hasMany(EmployeeDocument::class);
-    }
-
-    /**
-     * @return HasMany<Bond>
-     */
-    public function bonds(): HasMany
-    {
-        return $this->hasMany(Bond::class);
+        return $this->hasOne(Spouse::class);
     }
 
     /**
@@ -175,51 +148,101 @@ class Employee extends Model
     }
 
     /**
-     * @return bool
+     * @return HasOne<Address>
      */
-    public function hasDocuments(): bool
+    public function address(): HasOne
     {
-        return ! is_null($this->employeeDocuments->first());
+        return $this->hasOne(Address::class);
     }
 
     /**
-     * @return bool
+     * @return HasOne<User>
      */
-    public function hasBond(): bool
+    public function user(): HasOne
     {
-        return $this->bonds->count() > 0;
+        return $this->hasOne(User::class);
     }
 
     /**
-     * @param Builder<Employee> $query
-     * @param int $courseId
-     *
-     * @return Builder<Employee>
+     * @return HasMany<Phone>
      */
-    public function scopeByCourse(Builder $query, ?int $courseId = null): Builder
+    public function phones(): HasMany
     {
-        if ($courseId === null) {
-            return $query->join('bonds as bonds_A', 'bonds_A.employee_id', '=', 'employees.id')
-                ->join('courses as courses_A', 'courses_A.id', '=', 'bonds_A.course_id')
-                ->addSelect('courses_A.name as course_name');
-        }
-
-        return $query->join('bonds as bonds_A', 'bonds_A.employee_id', '=', 'employees.id')
-            ->join('courses as courses_A', 'courses_A.id', '=', 'bonds_A.course_id')
-            ->where('bonds_A.course_id', $courseId)
-            ->addSelect('courses_A.name as course_name');
+        return $this->hasMany(Phone::class);
     }
 
     /**
-     * @param Builder<Employee> $query
-     *
-     * @return Builder<Employee>
+     * @return HasMany<Bond>
      */
-    public function scopeCoordinator(Builder $query): Builder
+    public function bonds(): HasMany
     {
-        return $query->where('employees.job', 'like', 'Coord%')
-            ->addSelect('employees.job as job');
+        return $this->hasMany(Bond::class);
     }
+
+    /**
+     * @return HasMany<Impediment>
+     */
+    public function createdImpediments(): HasMany
+    {
+        return $this->hasMany(Impediment::class, 'reviewer_id');
+    }
+
+    /**
+     * @return HasMany<Impediment>
+     */
+    public function closedImpediments(): HasMany
+    {
+        return $this->hasMany(Impediment::class, 'closed_by_id');
+    }
+
+    // =========================
+
+    // /**
+    //  * @return BelongsToMany<Course>
+    //  */
+    // public function courses(): BelongsToMany
+    // {
+    //     return $this->belongsToMany(Course::class, 'bonds')->withPivot('id', 'course_id', 'employee_id', 'role_id', 'pole_id', /* 'classroom_id',*/ 'begin', 'end', 'terminated_at', 'volunteer', 'impediment', 'impediment_description', 'uaba_checked_at')->using(Bond::class)->as('bond')->withTimestamps();
+    // }
+
+    // /**
+    //  * @return bool
+    //  */
+    // public function hasBond(): bool
+    // {
+    //     return $this->bonds->count() > 0;
+    // }
+
+    // /**
+    //  * @param Builder<Employee> $query
+    //  * @param int $courseId
+    //  *
+    //  * @return Builder<Employee>
+    //  */
+    // public function scopeByCourse(Builder $query, ?int $courseId = null): Builder
+    // {
+    //     if ($courseId === null) {
+    //         return $query->join('bonds as bonds_A', 'bonds_A.employee_id', '=', 'employees.id')
+    //             ->join('courses as courses_A', 'courses_A.id', '=', 'bonds_A.course_id')
+    //             ->addSelect('courses_A.name as course_name');
+    //     }
+
+    //     return $query->join('bonds as bonds_A', 'bonds_A.employee_id', '=', 'employees.id')
+    //         ->join('courses as courses_A', 'courses_A.id', '=', 'bonds_A.course_id')
+    //         ->where('bonds_A.course_id', $courseId)
+    //         ->addSelect('courses_A.name as course_name');
+    // }
+
+    // /**
+    //  * @param Builder<Employee> $query
+    //  *
+    //  * @return Builder<Employee>
+    //  */
+    // public function scopeCoordinator(Builder $query): Builder
+    // {
+    //     return $query->where('employees.job', 'like', 'Coord%')
+    //         ->addSelect('employees.job as job');
+    // }
 
     public function getActivitylogOptions(): LogOptions
     {

@@ -51,31 +51,29 @@
                                 @foreach ($bonds as $bond)
                                     <tr>
                                         <td>
-                                            {{ isset($bond->employee->cpf) ? preg_replace('~(\d{3})(\d{3})(\d{3})(\d{2})~', '$1.$2.$3-$4', $bond->employee->cpf) : '-' }}
+                                            {{  preg_replace('~(\d{3})(\d{3})(\d{3})(\d{2})~', '$1.$2.$3-$4', $bond->employee->cpf) }}
                                         </td>
                                         <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
                                             data-bs-content="
-                                                <strong>Edital: </strong>{{ isset($bond->announcement) ? $bond->announcement : '-' }} |
-                                                <strong>Início: </strong>{{ isset($bond->begin) ? \Carbon\Carbon::parse($bond->begin)->isoFormat('DD/MM/Y') : '-' }} | 
-                                                <strong>Fim: </strong>{{ isset($bond->end) ? \Carbon\Carbon::parse($bond->end)->isoFormat('DD/MM/Y') : '-' }} | 
+                                                <strong>Edital: </strong>{{ $bond->hiring_process }} |
+                                                <strong>Início: </strong>{{ \Carbon\Carbon::parse($bond->begin)->isoFormat('DD/MM/Y') }} | 
                                                 <strong>Encerrado: </strong>{{ isset($bond->terminated_at) ? \Carbon\Carbon::parse($bond->terminated_at)->isoFormat('DD/MM/Y') : '-' }} | 
-                                                <strong>Verificado: </strong>{{ isset($bond->uaba_checked_at) ? \Carbon\Carbon::parse($bond->uaba_checked_at)->isoFormat('DD/MM/Y') : '-' }}
+                                                <strong>Verificado: </strong>{{ isset($bond->impediments?->sortByDesc('updated_at')->first()->reviwer_checked_at) ? \Carbon\Carbon::parse($bond->impediments?->sortByDesc('updated_at')->first()->reviwer_checked_at)->isoFormat('DD/MM/Y') : '-' }}
                                             ">
                                             {{ $bond->employee->name }}</td>
                                         <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
                                             data-bs-content="
-                                                <strong>Edital: </strong>{{ isset($bond->announcement) ? $bond->announcement : '-' }} |
-                                                <strong>Início: </strong>{{ isset($bond->begin) ? \Carbon\Carbon::parse($bond->begin)->isoFormat('DD/MM/Y') : '-' }} | 
-                                                <strong>Fim: </strong>{{ isset($bond->end) ? \Carbon\Carbon::parse($bond->end)->isoFormat('DD/MM/Y') : '-' }} | 
+                                                <strong>Edital: </strong>{{ $bond->hiring_process }} |
+                                                <strong>Início: </strong>{{ \Carbon\Carbon::parse($bond->begin)->isoFormat('DD/MM/Y') }} | 
                                                 <strong>Encerrado: </strong>{{ isset($bond->terminated_at) ? \Carbon\Carbon::parse($bond->terminated_at)->isoFormat('DD/MM/Y') : '-' }} | 
-                                                <strong>Verificado: </strong>{{ isset($bond->uaba_checked_at) ? \Carbon\Carbon::parse($bond->uaba_checked_at)->isoFormat('DD/MM/Y') : '-' }}
+                                                <strong>Verificado: </strong>{{ isset($bond->impediments?->sortByDesc('updated_at')->first()->reviwer_checked_at) ? \Carbon\Carbon::parse($bond->impediments?->sortByDesc('updated_at')->first()->reviwer_checked_at)->isoFormat('DD/MM/Y') : '-' }}
                                             ">
                                             {{ $bond->role->name }}
                                         </td>
-                                        <td>{{ $bond->course->name }}</td>
-                                        <td>{{ $bond->pole->name }}</td>
+                                        <td>{{ $bond->course?->name ?? '-' }}</td>
+                                        <td>{{ $bond->pole?->name ?? '-' }}</td>
                                         <td>{{ $bond->volunteer === 1 ? 'Sim' : 'Não' }}</td>
-                                        <td>{{ $bond->impediment === 1 ? 'Sim' : 'Não' }}</td>
+                                        <td>{{ $bond->impediments->count() > 0 ? 'Sim' : 'Não' }}</td>
                                         <td class="text-center"><div class="d-inline-flex">
                                             @can('bond-show')
                                                 <a href="{{ route('bonds.show', $bond) }}" data-bs-toggle="tooltip" title="Ver Vínculo" class="btn btn-primary btn-sm">

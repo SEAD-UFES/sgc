@@ -2,11 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Models\BondDocument;
 use App\Models\Course;
 use App\Models\Document;
 use App\Models\DocumentType;
-use App\Models\EmployeeDocument;
 use App\Models\User;
 use App\Models\UserType;
 use App\Models\Responsibility;
@@ -131,180 +129,13 @@ class DocumentTest extends TestCase
             'course_id' => null,
         ]);
 
-        /** @var EmployeeDocument $employeeDocument */
-        $employeeDocument = EmployeeDocument::factory()->createOne();
-
-        /** @var BondDocument $bondDocument */
-        $bondDocument = BondDocument::factory()->createOne();
-
         Document::factory()->createOne(
             [
-                'original_name' => 'Document Employee Alpha.pdf',
-                'documentable_id' => $employeeDocument->id,
-                'documentable_type' => EmployeeDocument::class,
+                'file_name' => 'Document Bond Beta.pdf',
+                'documentable_id' => $document->id,
+                'documentable_type' => Document::class,
             ]
         );
-
-        Document::factory()->createOne(
-            [
-                'original_name' => 'Document Bond Beta.pdf',
-                'documentable_id' => $bondDocument->id,
-                'documentable_type' => BondDocument::class,
-            ]
-        );
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function guestShouldntListEmployeesDocuments()
-    {
-        $this->get(route('employees_documents.index'))
-            ->assertStatus(401);
-    }
-
-    /**
-     * Authenticated user without permission Shouldnt list employees
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function authenticatedUserWithoutPermissionShouldntListEmployeesDocuments()
-    {
-        $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentResponsibility' => null]);
-
-        $this->get(route('employees_documents.index'))
-            ->assertStatus(403);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function administratorShouldListEmployeesDocuments()
-    {
-        $this->actingAs(self::$userAdm);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        $this->get(route('employees_documents.index'))
-            ->assertSee('Document Employee Alpha.pdf')
-            ->assertStatus(200);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function directorShouldListEmployeesDocuments()
-    {
-        $this->actingAs(self::$userDir);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        $this->get(route('employees_documents.index'))
-            ->assertSee('Document Employee Alpha.pdf')
-            ->assertStatus(200);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function assistantShouldListEmployeesDocuments()
-    {
-        $this->actingAs(self::$userAss);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        $this->get(route('employees_documents.index'))
-            ->assertSee('Document Employee Alpha.pdf')
-            ->assertStatus(200);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function secretaryShouldListEmployeesDocuments()
-    {
-        $this->actingAs(self::$userSec);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        $this->get(route('employees_documents.index'))
-            ->assertSee('Document Employee Alpha.pdf')
-            ->assertStatus(200);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function ldiShouldntListEmployeesDocuments()
-    {
-        $this->actingAs(self::$userLdi);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        $this->get(route('employees_documents.index'))
-            ->assertStatus(403);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function coordinatorShouldntListEmployeesDocuments()
-    {
-        $this->actingAs(self::$userCoord);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        $this->get(route('employees_documents.index'))
-            ->assertStatus(403);
     }
 
     /**
@@ -316,7 +147,7 @@ class DocumentTest extends TestCase
      */
     public function guestShouldntListBondsDocuments()
     {
-        $this->get(route('bonds_documents.index'))
+        $this->get(route('documents.index'))
             ->assertStatus(401);
     }
 
@@ -332,7 +163,7 @@ class DocumentTest extends TestCase
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
 
-        $this->get(route('bonds_documents.index'))
+        $this->get(route('documents.index'))
             ->assertStatus(403);
     }
 
@@ -352,7 +183,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bonds_documents.index'))
+        $this->get(route('documents.index'))
             ->assertSee('Document Bond Beta.pdf')
             ->assertStatus(200);
     }
@@ -373,7 +204,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bonds_documents.index'))
+        $this->get(route('documents.index'))
             ->assertSee('Document Bond Beta.pdf')
             ->assertStatus(200);
     }
@@ -394,7 +225,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bonds_documents.index'))
+        $this->get(route('documents.index'))
             ->assertSee('Document Bond Beta.pdf')
             ->assertStatus(200);
     }
@@ -415,7 +246,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bonds_documents.index'))
+        $this->get(route('documents.index'))
             ->assertSee('Document Bond Beta.pdf')
             ->assertStatus(200);
     }
@@ -436,7 +267,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bonds_documents.index'))
+        $this->get(route('documents.index'))
             ->assertStatus(403);
     }
 
@@ -456,201 +287,16 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bonds_documents.index'))
+        $this->get(route('documents.index'))
             ->assertStatus(403);
     }
-
-
-    // ================= See Employee Documents Tests =================
-
-    /** @return Document */
-    private function getEmployeeDocument(): Document
-    {
-        return Document::where('documentable_type', EmployeeDocument::class)->first();
-    }
-
-    /** @return array<string> */
-    private function expectedDocumentContent(): array
-    {
-        return ['PDF', 'Test', 'EOF'];
-    }
-
-    /**
-     * Guest Shouldnt access employee document
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function guestShouldntAccessEmployeeDocument()
-    {
-        /** @var Document $document */
-        $document = $this->getEmployeeDocument();
-        $this->get(route('employees_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
-            ->assertStatus(401);
-    }
-
-    /**
-     * Authenticated user without permission Shouldnt Access Employees document
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function authenticatedUserWithoutPermissionShouldntAccessEmployeeDocument()
-    {
-        $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentResponsibility' => null]);
-
-        /** @var Document $document */
-        $document = $this->getEmployeeDocument();
-        $this->get(route('employees_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
-            ->assertStatus(403);
-    }
-
-    /**
-     * Admin user Should access employee document
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function administratorShouldAccessEmployeeDocument()
-    {
-        $this->actingAs(self::$userAdm);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        /** @var Document $document */
-        $document = $this->getEmployeeDocument();
-        $this->get(route('employees_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
-            ->assertSee($this->expectedDocumentContent())
-            ->assertStatus(200);
-    }
-
-    /**
-     * director user Should access employee document
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function directorShouldAccessEmployeeDocument()
-    {
-        $this->actingAs(self::$userDir);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        /** @var Document $document */
-        $document = $this->getEmployeeDocument();
-        $this->get(route('employees_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
-            ->assertSee($this->expectedDocumentContent())
-            ->assertStatus(200);
-    }
-
-    /**
-     * assistant user Should access employee document
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function assistantShouldAccessEmployeeDocument()
-    {
-        $this->actingAs(self::$userAss);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        /** @var Document $document */
-        $document = $this->getEmployeeDocument();
-        $this->get(route('employees_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
-            ->assertSee($this->expectedDocumentContent())
-            ->assertStatus(200);
-    }
-
-    /**
-     * secretary user Should access employee document
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function secretaryShouldAccessEmployeeDocument()
-    {
-        $this->actingAs(self::$userSec);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        /** @var Document $document */
-        $document = $this->getEmployeeDocument();
-        $this->get(route('employees_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
-            ->assertSee($this->expectedDocumentContent())
-            ->assertStatus(200);
-    }
-
-    /**
-     * ldi user Should access employee document
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function ldiShouldntAccessEmployeeDocument()
-    {
-        $this->actingAs(self::$userLdi);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        /** @var Document $document */
-        $document = $this->getEmployeeDocument();
-        $this->get(route('employees_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
-            ->assertStatus(403);
-    }
-
-    /**
-     * coordinator user Should access employee document
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function coordinatorShouldntAccessEmployeeDocument()
-    {
-        $this->actingAs(self::$userCoord);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        /** @var Document $document */
-        $document = $this->getEmployeeDocument();
-        $this->get(route('employees_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
-            ->assertStatus(403);
-    }
-
 
     // ================= See Bond Documents Tests =================
 
     /** @return Document */
-    private function getBondDocument(): Document
+    private function getDocument(): Document
     {
-        return Document::where('documentable_type', BondDocument::class)->first();
+        return Document::where('documentable_type', Document::class)->first();
     }
 
     /**
@@ -660,11 +306,11 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function guestShouldntAccessBondDocument()
+    public function guestShouldntAccessDocument()
     {
         /** @var Document $document */
-        $document = $this->getBondDocument();
-        $this->get(route('bonds_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $document = $this->getDocument();
+        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->file_name]))
             ->assertStatus(401);
     }
 
@@ -675,14 +321,14 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function authenticatedUserWithoutPermissionShouldntAccessBondDocument()
+    public function authenticatedUserWithoutPermissionShouldntAccessDocument()
     {
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
 
         /** @var Document $document */
-        $document = $this->getBondDocument();
-        $this->get(route('bonds_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $document = $this->getDocument();
+        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->file_name]))
             ->assertStatus(403);
     }
 
@@ -693,7 +339,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function administratorShouldAccessBondDocument()
+    public function administratorShouldAccessDocument()
     {
         $this->actingAs(self::$userAdm);
 
@@ -703,8 +349,8 @@ class DocumentTest extends TestCase
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Document $document */
-        $document = $this->getBondDocument();
-        $this->get(route('bonds_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $document = $this->getDocument();
+        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->file_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -716,7 +362,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function directorShouldAccessBondDocument()
+    public function directorShouldAccessDocument()
     {
         $this->actingAs(self::$userDir);
 
@@ -726,8 +372,8 @@ class DocumentTest extends TestCase
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Document $document */
-        $document = $this->getBondDocument();
-        $this->get(route('bonds_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $document = $this->getDocument();
+        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->file_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -739,7 +385,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function assistantShouldAccessBondDocument()
+    public function assistantShouldAccessDocument()
     {
         $this->actingAs(self::$userAss);
 
@@ -749,8 +395,8 @@ class DocumentTest extends TestCase
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Document $document */
-        $document = $this->getBondDocument();
-        $this->get(route('bonds_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $document = $this->getDocument();
+        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->file_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -762,7 +408,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function secretaryShouldAccessBondDocument()
+    public function secretaryShouldAccessDocument()
     {
         $this->actingAs(self::$userSec);
 
@@ -772,8 +418,8 @@ class DocumentTest extends TestCase
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Document $document */
-        $document = $this->getBondDocument();
-        $this->get(route('bonds_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $document = $this->getDocument();
+        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->file_name]))
             ->assertSee($this->expectedDocumentContent())
             ->assertStatus(200);
     }
@@ -785,7 +431,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function ldiShouldntAccessBondDocument()
+    public function ldiShouldntAccessDocument()
     {
         $this->actingAs(self::$userLdi);
 
@@ -795,8 +441,8 @@ class DocumentTest extends TestCase
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Document $document */
-        $document = $this->getBondDocument();
-        $this->get(route('bonds_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
+        $document = $this->getDocument();
+        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->file_name]))
             ->assertStatus(403);
     }
 
@@ -807,7 +453,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function coordinatorShouldntAccessBondDocument()
+    public function coordinatorShouldntAccessDocument()
     {
         $this->actingAs(self::$userCoord);
 
@@ -817,170 +463,8 @@ class DocumentTest extends TestCase
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
         /** @var Document $document */
-        $document = $this->getBondDocument();
-        $this->get(route('bonds_documents.show', ['id' => $document->id, 'htmlTitle' => $document->original_name]))
-            ->assertStatus(403);
-    }
-
-
-    // ================= See Create Employee Document Form Tests =================
-
-    /** @return array<string> */
-    private function expectedCreateEmployeeDocumentPageContent(): array
-    {
-        return ['Importar Documento de Colaborador', 'Tipo de Documento', 'Selecione o colaborador'];
-    }
-
-    /**
-     * Guest Shouldnt access create employee document page
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function guestShouldntAccessCreateEmployeeDocumentPage()
-    {
-        $this->get(route('employees_documents.create'))
-            ->assertStatus(401);
-    }
-
-    /**
-     * Authenticated user without permission Shouldnt Access create employee document page
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function authenticatedUserWithoutPermissionShouldntAccessCreateEmployeeDocumentPage()
-    {
-        $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentResponsibility' => null]);
-
-        $this->get(route('employees_documents.create'))
-            ->assertStatus(403);
-    }
-
-    /**
-     * Admin user Should access create employee document page
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function administratorShouldAccessCreateEmployeeDocumentPage()
-    {
-        $this->actingAs(self::$userAdm);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        $this->get(route('employees_documents.create'))
-            ->assertSee($this->expectedCreateEmployeeDocumentPageContent())
-            ->assertStatus(200);
-    }
-
-    /**
-     * director user Should access create employee document page
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function directorShouldAccessCreateEmployeeDocumentPage()
-    {
-        $this->actingAs(self::$userDir);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        $this->get(route('employees_documents.create'))
-            ->assertSee($this->expectedCreateEmployeeDocumentPageContent())
-            ->assertStatus(200);
-    }
-
-    /**
-     * assistant user Should access create employee document page
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function assistantShouldAccessCreateEmployeeDocumentPage()
-    {
-        $this->actingAs(self::$userAss);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        $this->get(route('employees_documents.create'))
-            ->assertSee($this->expectedCreateEmployeeDocumentPageContent())
-            ->assertStatus(200);
-    }
-
-    /**
-     * secretary user Should access create employee document page
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function secretaryShouldAccessCreateEmployeeDocumentPage()
-    {
-        $this->actingAs(self::$userSec);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        $this->get(route('employees_documents.create'))
-            ->assertSee($this->expectedCreateEmployeeDocumentPageContent())
-            ->assertStatus(200);
-    }
-
-    /**
-     * ldi user Should access create employee document page
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function ldiShouldntAccessCreateEmployeeDocumentPage()
-    {
-        $this->actingAs(self::$userLdi);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        $this->get(route('employees_documents.create'))
-            ->assertStatus(403);
-    }
-
-    /**
-     * coordinator user Should access create employee document page
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function coordinatorShouldntAccessCreateEmployeeDocumentPage()
-    {
-        $this->actingAs(self::$userCoord);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        $this->get(route('employees_documents.create'))
+        $document = $this->getDocument();
+        $this->get(route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->file_name]))
             ->assertStatus(403);
     }
 
@@ -988,7 +472,7 @@ class DocumentTest extends TestCase
     // ================= See Create Bond Document Form Tests =================
 
     /** @return array<string> */
-    private function expectedCreateBondDocumentPageContent(): array
+    private function expectedCreateDocumentPageContent(): array
     {
         return ['Importar Documento de Vínculo', 'Tipo de Documento', 'Vínculo'];
     }
@@ -1000,9 +484,9 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function guestShouldntAccessCreateBondDocumentPage()
+    public function guestShouldntAccessCreateDocumentPage()
     {
-        $this->get(route('bonds_documents.create'))
+        $this->get(route('documents.create'))
             ->assertStatus(401);
     }
 
@@ -1013,12 +497,12 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function authenticatedUserWithoutPermissionShouldntAccessCreateBondDocumentPage()
+    public function authenticatedUserWithoutPermissionShouldntAccessCreateDocumentPage()
     {
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
 
-        $this->get(route('bonds_documents.create'))
+        $this->get(route('documents.create'))
             ->assertStatus(403);
     }
 
@@ -1029,7 +513,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function administratorShouldAccessCreateBondDocumentPage()
+    public function administratorShouldAccessCreateDocumentPage()
     {
         $this->actingAs(self::$userAdm);
 
@@ -1038,8 +522,8 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bonds_documents.create'))
-            ->assertSee($this->expectedCreateBondDocumentPageContent())
+        $this->get(route('documents.create'))
+            ->assertSee($this->expectedCreateDocumentPageContent())
             ->assertStatus(200);
     }
 
@@ -1050,7 +534,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function directorShouldAccessCreateBondDocumentPage()
+    public function directorShouldAccessCreateDocumentPage()
     {
         $this->actingAs(self::$userDir);
 
@@ -1059,8 +543,8 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bonds_documents.create'))
-            ->assertSee($this->expectedCreateBondDocumentPageContent())
+        $this->get(route('documents.create'))
+            ->assertSee($this->expectedCreateDocumentPageContent())
             ->assertStatus(200);
     }
 
@@ -1071,7 +555,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function assistantShouldAccessCreateBondDocumentPage()
+    public function assistantShouldAccessCreateDocumentPage()
     {
         $this->actingAs(self::$userAss);
 
@@ -1080,8 +564,8 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bonds_documents.create'))
-            ->assertSee($this->expectedCreateBondDocumentPageContent())
+        $this->get(route('documents.create'))
+            ->assertSee($this->expectedCreateDocumentPageContent())
             ->assertStatus(200);
     }
 
@@ -1092,7 +576,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function secretaryShouldAccessCreateBondDocumentPage()
+    public function secretaryShouldAccessCreateDocumentPage()
     {
         $this->actingAs(self::$userSec);
 
@@ -1101,8 +585,8 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bonds_documents.create'))
-            ->assertSee($this->expectedCreateBondDocumentPageContent())
+        $this->get(route('documents.create'))
+            ->assertSee($this->expectedCreateDocumentPageContent())
             ->assertStatus(200);
     }
 
@@ -1113,7 +597,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function ldiShouldntAccessCreateBondDocumentPage()
+    public function ldiShouldntAccessCreateDocumentPage()
     {
         $this->actingAs(self::$userLdi);
 
@@ -1122,7 +606,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bonds_documents.create'))
+        $this->get(route('documents.create'))
             ->assertStatus(403);
     }
 
@@ -1133,7 +617,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function coordinatorShouldntAccessCreateBondDocumentPage()
+    public function coordinatorShouldntAccessCreateDocumentPage()
     {
         $this->actingAs(self::$userCoord);
 
@@ -1142,213 +626,7 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bonds_documents.create'))
-            ->assertStatus(403);
-    }
-
-
-    // ================= Create Employee Document Tests =================
-
-    /**
-     * @param ?string $documentClass
-     * @param ?string $documentTypeId
-     * @param ?string $referentId
-     *
-     * @return array<string, mixed>
-     */
-    private function createTestDocumentAttributes(?string $documentClass = EmployeeDocument::class, ?string $documentTypeId = null, ?string $referentId = '1'): array
-    {
-        /** @var UploadedFile $testDocumentFile */
-        $testDocumentFile = UploadedFile::fake()->create((debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']) . '_Document Gama.pdf', 20, 'application/pdf');
-
-        /** @var DocumentType $testDocumentType */
-        $testDocumentType = DocumentType::factory()->createOne(
-            [
-                'name' => 'Test Doc Type',
-            ]
-        );
-
-        $referentIdColumnName = $documentClass === EmployeeDocument::class ? 'employee_id' : 'bond_id';
-
-        $requestAttributes = [];
-        $requestAttributes['file'] = $testDocumentFile;
-        $requestAttributes['document_type_id'] = $documentTypeId ?? $testDocumentType->id;
-        $requestAttributes[$referentIdColumnName] = $referentId;
-
-        return $requestAttributes;
-    }
-
-    /** @return array<string>  */
-    private function expectedInfo(): array
-    {
-        return ['Document Gama.pdf', 'Test Doc Type'];
-    }
-
-    /**
-     * Guest Shouldnt create employee document
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function guestShouldntCreateEmployeeDocument()
-    {
-        $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
-
-        $this->post(route('employees_documents.store'), $employeeDocumentArr)
-            ->assertStatus(401);
-    }
-
-    /**
-     * Authenticated user without permission Shouldnt create employee document
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function authenticatedUserWithoutPermissionShouldntCreateEmployeeDocument()
-    {
-        $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
-
-        $this->actingAs(self::$userAlien)
-            ->withSession(['loggedInUser.currentResponsibility' => null])
-            ->followingRedirects()->post(route('employees_documents.store'), $employeeDocumentArr)
-            ->assertStatus(403);
-    }
-
-    /**
-     * Admin user Should create employees document
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function administratorShouldCreateEmployeeDocument()
-    {
-        $this->actingAs(self::$userAdm);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
-
-        $this->followingRedirects()->post(route('employees_documents.store'), $employeeDocumentArr)
-            ->assertSee($this->expectedInfo())
-            ->assertStatus(200);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function directorShouldCreateEmployeeDocument()
-    {
-        $this->actingAs(self::$userDir);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
-
-        $this->followingRedirects()->post(route('employees_documents.store'), $employeeDocumentArr)
-            ->assertSee($this->expectedInfo())
-            ->assertStatus(200);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function assistantShouldCreateEmployeeDocument()
-    {
-        $this->actingAs(self::$userAss);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
-
-        $this->followingRedirects()->post(route('employees_documents.store'), $employeeDocumentArr)
-            ->assertSee($this->expectedInfo())
-            ->assertStatus(200);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function secretaryShouldCreateEmployeeDocument()
-    {
-        $this->actingAs(self::$userSec);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
-
-        $this->followingRedirects()->post(route('employees_documents.store'), $employeeDocumentArr)
-            ->assertSee($this->expectedInfo())
-            ->assertStatus(200);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function coordinatorShouldntCreateEmployeeDocument()
-    {
-        $this->actingAs(self::$userCoord);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
-
-        $this->followingRedirects()->post(route('employees_documents.store'), $employeeDocumentArr)
-            ->assertStatus(403);
-    }
-
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     *
-     * @test
-     */
-    public function ldiShouldntCreateEmployeeDocument()
-    {
-        $this->actingAs(self::$userLdi);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class);
-
-        $this->followingRedirects()->post(route('employees_documents.store'), $employeeDocumentArr)
+        $this->get(route('documents.create'))
             ->assertStatus(403);
     }
 
@@ -1362,11 +640,11 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function guestShouldntCreateBondDocument()
+    public function guestShouldntCreateDocument()
     {
-        $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
+        $bondDocumentArr = $this->createTestDocumentAttributes(Document::class);
 
-        $this->post(route('bonds_documents.store'), $bondDocumentArr)
+        $this->post(route('documents.store'), $bondDocumentArr)
             ->assertStatus(401);
     }
 
@@ -1377,13 +655,13 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function authenticatedUserWithoutPermissionShouldntCreateBondDocument()
+    public function authenticatedUserWithoutPermissionShouldntCreateDocument()
     {
-        $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
+        $bondDocumentArr = $this->createTestDocumentAttributes(Document::class);
 
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null])
-            ->followingRedirects()->post(route('bonds_documents.store'), $bondDocumentArr)
+            ->followingRedirects()->post(route('documents.store'), $bondDocumentArr)
             ->assertStatus(403);
     }
 
@@ -1394,7 +672,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function administratorShouldCreateBondDocument()
+    public function administratorShouldCreateDocument()
     {
         $this->actingAs(self::$userAdm);
 
@@ -1403,9 +681,9 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
+        $bondDocumentArr = $this->createTestDocumentAttributes(Document::class);
 
-        $this->followingRedirects()->post(route('bonds_documents.store'), $bondDocumentArr)
+        $this->followingRedirects()->post(route('documents.store'), $bondDocumentArr)
             ->assertSee($this->expectedInfo())
             ->assertStatus(200);
     }
@@ -1417,7 +695,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function directorShouldCreateBondDocument()
+    public function directorShouldCreateDocument()
     {
         $this->actingAs(self::$userDir);
 
@@ -1426,9 +704,9 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
+        $bondDocumentArr = $this->createTestDocumentAttributes(Document::class);
 
-        $this->followingRedirects()->post(route('bonds_documents.store'), $bondDocumentArr)
+        $this->followingRedirects()->post(route('documents.store'), $bondDocumentArr)
             ->assertSee($this->expectedInfo())
             ->assertStatus(200);
     }
@@ -1440,7 +718,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function assistantShouldCreateBondDocument()
+    public function assistantShouldCreateDocument()
     {
         $this->actingAs(self::$userAss);
 
@@ -1449,9 +727,9 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
+        $bondDocumentArr = $this->createTestDocumentAttributes(Document::class);
 
-        $this->followingRedirects()->post(route('bonds_documents.store'), $bondDocumentArr)
+        $this->followingRedirects()->post(route('documents.store'), $bondDocumentArr)
             ->assertSee($this->expectedInfo())
             ->assertStatus(200);
     }
@@ -1463,7 +741,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function secretaryShouldCreateBondDocument()
+    public function secretaryShouldCreateDocument()
     {
         $this->actingAs(self::$userSec);
 
@@ -1472,9 +750,9 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
+        $bondDocumentArr = $this->createTestDocumentAttributes(Document::class);
 
-        $this->followingRedirects()->post(route('bonds_documents.store'), $bondDocumentArr)
+        $this->followingRedirects()->post(route('documents.store'), $bondDocumentArr)
             ->assertSee($this->expectedInfo())
             ->assertStatus(200);
     }
@@ -1486,7 +764,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function coordinatorShouldntCreateBondDocument()
+    public function coordinatorShouldntCreateDocument()
     {
         $this->actingAs(self::$userCoord);
 
@@ -1495,9 +773,9 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
+        $bondDocumentArr = $this->createTestDocumentAttributes(Document::class);
 
-        $this->followingRedirects()->post(route('bonds_documents.store'), $bondDocumentArr)
+        $this->followingRedirects()->post(route('documents.store'), $bondDocumentArr)
             ->assertStatus(403);
     }
 
@@ -1508,7 +786,7 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function ldiShouldntCreateBondDocument()
+    public function ldiShouldntCreateDocument()
     {
         $this->actingAs(self::$userLdi);
 
@@ -1517,9 +795,9 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class);
+        $bondDocumentArr = $this->createTestDocumentAttributes(Document::class);
 
-        $this->followingRedirects()->post(route('bonds_documents.store'), $bondDocumentArr)
+        $this->followingRedirects()->post(route('documents.store'), $bondDocumentArr)
             ->assertStatus(403);
     }
 
@@ -1531,45 +809,10 @@ class DocumentTest extends TestCase
      *
      * @test
      */
-    public function newEmployeeDocumentShouldOverwriteOldOne()
+    public function newDocumentShouldOverwriteOldOne()
     {
-        $originalDocument = Document::where('documentable_type', EmployeeDocument::class)->first();
-        $originalName = $originalDocument->original_name;
-        $originalDocTypeId = $originalDocument->document_type_id;
-        $originalDocTypeName = DocumentType::find($originalDocTypeId)->name;
-        $originalDocumentable = $originalDocument->documentable()->first();
-        $originalReferentId = $originalDocumentable->pluck('employee_id')->first();
-
-        $this->actingAs(self::$userAdm);
-
-        /** @var User $authUser */
-        $authUser = auth()->user();
-
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
-
-        $this->get(route('employees_documents.index'))
-            ->assertSee([$originalName, $originalDocTypeName])
-            ->assertStatus(200);
-
-        $employeeDocumentArr = $this->createTestDocumentAttributes(EmployeeDocument::class, (string) $originalDocTypeId, (string) $originalReferentId);
-
-        $this->followingRedirects()->post(route('employees_documents.store'), $employeeDocumentArr)
-            ->assertSee(['Document Gama.pdf', $originalDocTypeName])
-            ->assertDontSee([$originalName])
-            ->assertStatus(200);
-
-        $this->assertDatabaseHas('documents', ['original_name' => $employeeDocumentArr['file']->name, 'document_type_id' => $originalDocTypeId, 'documentable_type' => EmployeeDocument::class]);
-    }
-
-    /**
-     * @return void
-     *
-     * @test
-     */
-    public function newBondDocumentShouldOverwriteOldOne()
-    {
-        $originalDocument = Document::where('documentable_type', BondDocument::class)->first();
-        $originalName = $originalDocument->original_name;
+        $originalDocument = Document::where('documentable_type', Document::class)->first();
+        $originalName = $originalDocument->file_name;
         $originalDocTypeId = $originalDocument->document_type_id;
         $originalDocTypeName = DocumentType::find($originalDocTypeId)->name;
         $originalDocumentable = $originalDocument->documentable()->first();
@@ -1582,17 +825,17 @@ class DocumentTest extends TestCase
 
         $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
 
-        $this->get(route('bonds_documents.index'))
+        $this->get(route('documents.index'))
             ->assertSee([$originalName, $originalDocTypeName])
             ->assertStatus(200);
 
-        $bondDocumentArr = $this->createTestDocumentAttributes(BondDocument::class, (string) $originalDocTypeId, (string) $originalReferentId);
+        $bondDocumentArr = $this->createTestDocumentAttributes(Document::class, (string) $originalDocTypeId, (string) $originalReferentId);
 
-        $this->followingRedirects()->post(route('bonds_documents.store'), $bondDocumentArr)
+        $this->followingRedirects()->post(route('documents.store'), $bondDocumentArr)
             ->assertSee(['Document Gama.pdf', $originalDocTypeName])
             ->assertDontSee([$originalName])
             ->assertStatus(200);
 
-        $this->assertDatabaseHas('documents', ['original_name' => $bondDocumentArr['file']->name, 'document_type_id' => $originalDocTypeId, 'documentable_type' => BondDocument::class]);
+        $this->assertDatabaseHas('documents', ['file_name' => $bondDocumentArr['file']->name, 'document_type_id' => $originalDocTypeId, 'documentable_type' => Document::class]);
     }
 }

@@ -8,7 +8,9 @@ use Carbon\Carbon;
 
 class ResponsibilitySeeder extends Seeder
 {
-
+    /**
+     * @var string
+     */
     protected $tableName = 'responsibilities';
 
     /**
@@ -18,8 +20,11 @@ class ResponsibilitySeeder extends Seeder
      */
     public function run()
     {
+        $sysAdmId = DB::table('users')->select('id')->where('login', 'admin@ufes.br')->limit(1)->value('id');
+        $dirId = DB::table('users')->select('id')->where('login', 'diretor@ufes.br')->limit(1)->value('id');
+
         DB::table($this->tableName)->insert([
-            'user_id' => 1,
+            'user_id' => $sysAdmId,
             'user_type_id' => 1,
             'course_id' => null,
             'begin' => Carbon::now(),
@@ -27,7 +32,7 @@ class ResponsibilitySeeder extends Seeder
         ]);
 
         DB::table($this->tableName)->insert([
-            'user_id' => 1,
+            'user_id' => $sysAdmId,
             'user_type_id' => 4,
             'course_id' => null,
             'begin' => Carbon::now(),
@@ -35,7 +40,7 @@ class ResponsibilitySeeder extends Seeder
         ]);
 
         DB::table($this->tableName)->insert([
-            'user_id' => 7,
+            'user_id' => $dirId,
             'user_type_id' => 6,
             'course_id' => 5,
             'begin' => Carbon::now(),

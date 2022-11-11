@@ -15,7 +15,7 @@
                 <div class="col-xl-10 col-xxl-8">
                     @include('_components.alerts')
                     <form action={{ route('courses.store') }} method="POST">
-                        @component('course.componentCourseForm', compact('courseTypes'))@endcomponent
+                        @component('course.componentCourseForm', compact('degrees'))@endcomponent
                         <br />
                         <button type="submit" class="btn btn-primary">Cadastrar</button>
                         <a href="{{ route('courses.index') }}" class="btn btn-secondary">Cancelar</a>

@@ -2,15 +2,12 @@
 
 namespace App\Services\Dto;
 
-use Spatie\DataTransferObject\DataTransferObject;
+use App\Enums\GrantTypes;
 
-class UpdateRoleDto extends DataTransferObject
+final class UpdateRoleDto
 {
-    public string $name;
-
-    public string $description;
-
-    public string $grantValue;
-
-    public string $grantTypeId;
+    public readonly string $name;
+    public readonly string $description;
+    public readonly int $grantValue;
+    public readonly GrantTypes $grantType;
 }

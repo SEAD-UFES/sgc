@@ -49,9 +49,9 @@
                                     <tr>
                                         <td>{{ $course->name }}</td>
                                         <td>{{ $course->description }}</td>
-                                        <td>{{ $course->courseType->name }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($course->begin)->isoFormat('DD/MM/Y') }}</td> 
-                                        <td>{{ \Carbon\Carbon::parse($course->end)->isoFormat('DD/MM/Y') }}</td>
+                                        <td>{{ $course->degree->value }}</td>
+                                        <td>{{ isset($course->begin) ? \Carbon\Carbon::parse($course->begin)->isoFormat('DD/MM/Y') : '-' }}</td> 
+                                        <td>{{ isset($course->terminatedAt) ? \Carbon\Carbon::parse($course->terminatedAt)->isoFormat('DD/MM/Y') : '-' }}</td>
                                         <td class="text-center"><div class="d-inline-flex">
                                             @can('course-update')
                                                 <a href="{{ route('courses.edit', $course) }}" data-bs-toggle="tooltip" title="Editar curso" class="btn btn-primary btn-sm">

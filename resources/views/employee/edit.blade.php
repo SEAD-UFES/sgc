@@ -17,7 +17,7 @@
                     @include('_components.alerts')
                     <form action="{{ route('employees.update', $employee->id) }}" method="POST">
                         @method('PATCH')
-                        @component('employee.componentEmployeeForm',  compact('genders', 'birthStates', 'documentTypes', 'maritalStatuses', 'addressStates', 'employee', 'fromApproved'))@endcomponent
+                        @component('employee.componentEmployeeForm',  compact('genders', 'states', 'documentTypes', 'maritalStatuses', 'employee', 'fromApplicant'))@endcomponent
                         <br />
                         <button type="submit" class="btn btn-primary">Atualizar</button>
                         <a href="{{ route('employees.index') }}" class="btn btn-secondary">Cancelar</a>

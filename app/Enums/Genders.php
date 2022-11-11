@@ -2,27 +2,29 @@
 
 namespace App\Enums;
 
-enum Genders: string
+use JsonSerializable;
+
+enum Genders: string implements JsonSerializable
 {
-    case F = 'Feminino';
-    case M = 'Masculino';
+    case F = 'F';
+    case M = 'M';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::F => 'Feminino',
+            self::M => 'Masculino',
+        };
+    }
 
     /**
-     * @return array<int, string>
+     * @return array<string, string>
      */
-    public static function getValuesInAlphabeticalOrder(): array
+    public function jsonSerialize(): array
     {
-        /**
-         * @var array<int, string>
-         */
-        $arr = [];
-
-        foreach (self::cases() as $case) {
-            $arr[] = $case->value;
-        }
-
-        sort($arr, SORT_NATURAL | SORT_FLAG_CASE);
-
-        return $arr;
+        return [
+            'name' => $this->name,
+            'value' => $this->label(),
+        ];
     }
 }

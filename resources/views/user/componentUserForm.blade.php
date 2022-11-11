@@ -1,9 +1,9 @@
 @csrf
 <div class="mb-3">
-    <label for="inputEmail1" class="form-label">E-Mail*</label>
-    <input name="email" type="email" autocomplete="username" id="inputEmail1" class="form-control"
-        placeholder="nome@empresa.com" value="{{ isset($user) ? $user->email : old('email') }}" />
-    @error('email')
+    <label for="inputLogin1" class="form-label">Login*</label>
+    <input name="login" type="email" autocomplete="username" id="inputLogin1" class="form-control"
+        placeholder="nome@empresa.com" value="{{ isset($user) ? $user->login : old('login') }}" />
+    @error('login')
         <div class="text-danger">> {{ $message }}</div>
     @enderror
 </div>
