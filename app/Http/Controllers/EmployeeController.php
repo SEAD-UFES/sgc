@@ -43,9 +43,9 @@ class EmployeeController extends Controller
      */
     public function create(CreateEmployeeRequest $request): View
     {
-        $fromApproved = false;
+        $fromApplicant = false;
 
-        return view('employee.create', compact('fromApproved'));
+        return view('employee.create', compact('fromApplicant'));
     }
 
     /**
@@ -94,9 +94,11 @@ class EmployeeController extends Controller
      */
     public function edit(EditEmployeeRequest $request, Employee $employee): View
     {
-        $fromApproved = false;
+        $fromApplicant = false;
 
-        return view('employee.edit', compact('employee', 'fromApproved'));
+        $employee = $this->service->read($employee);
+
+        return view('employee.edit', compact('employee', 'fromApplicant'));
     }
 
     /**

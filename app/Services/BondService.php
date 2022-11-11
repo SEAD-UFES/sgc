@@ -10,16 +10,12 @@ use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Events\RightsDocumentArchived;
 use App\Helpers\TextHelper;
-use App\Interfaces\BondDocumentRepositoryInterface;
+use App\Interfaces\DocumentRepositoryInterface;
 use App\Models\Bond;
-use App\Models\BondDocument;
-use App\Models\Document;
 use App\Models\DocumentType;
-use App\Models\EmployeeDocument;
 use App\Models\User;
 use App\Services\Dto\ReviewBondDto;
-use App\Services\Dto\StoreBondDto;
-use App\Services\Dto\UpdateBondDto;
+use App\Services\Dto\BondDto;
 use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
@@ -27,20 +23,20 @@ use Spatie\Activitylog\Models\Activity;
 
 class BondService
 {
-    public function __construct(private BondDocumentRepositoryInterface $documentRepository)
+    public function __construct(private DocumentRepositoryInterface $documentRepository)
     {
     }
 
     /**
      * Undocumented function
      *
-     * @return LengthAwarePaginator
+     * @return LengthAwarePaginator<Bond>
      */
     public function list(): LengthAwarePaginator
     {
         ModelListed::dispatch(Bond::class);
 
-        $query = Bond::with(['employee', 'course', 'role', 'pole']);
+        $query = Bond::with(['employee', 'courses', 'role', 'poles']);
         $query = $query->AcceptRequest(Bond::$accepted_filters)->filter();
         $query = $query->sortable(['updated_at' => 'desc']);
 
@@ -53,42 +49,55 @@ class BondService
     /**
      * Undocumented function
      *
-     * @param StoreBondDto $storeBondDto
+     * @param BondDto $bondDto
      *
      * @return mixed
      */
-    public function create(StoreBondDto $storeBondDto): mixed
+    public function create(BondDto $bondDto): mixed
     {
-        return DB::transaction(static function () use ($storeBondDto) {
-            $bond = new Bond([
-                'employee_id' => $storeBondDto->employeeId,
-                'role_id' => $storeBondDto->roleId,
-                'course_id' => $storeBondDto->courseId,
-                'pole_id' => $storeBondDto->poleId,
-                'begin' => $storeBondDto->begin,
-                'end' => $storeBondDto->end,
-                'announcement' => $storeBondDto->announcement,
-                'terminated_at' => null,
-                'volunteer' => $storeBondDto->volunteer,
-                'impediment' => true,
-                'impediment_description' => '[SGC: Vínculo ainda não revisado]',
-                'uaba_checked_at' => null,
-            ]);
+        $bond = null;
 
+        DB::transaction(static function () use ($bondDto, &$bond) {
+            $bond = new Bond([
+                'employee_id' => $bondDto->employeeId,
+                'role_id' => $bondDto->roleId,
+                'begin' => $bondDto->begin,
+                'terminated_at' => $bondDto->terminatedAt,
+                'hiring_process' => $bondDto->hiringProcess,
+                'volunteer' => $bondDto->volunteer,
+            ]);
             $bond->save();
 
-            if ($storeBondDto->knowledgeArea !== null) {
-                $bond->qualification()->create([
-                    'knowledge_area' => $storeBondDto->knowledgeArea,
-                    'course_name' => TextHelper::titleCase($storeBondDto->courseName),
-                    'institution_name' => TextHelper::titleCase($storeBondDto->institutionName),
-                ]);
+            if ($bondDto->courseId) {
+                $bond->courses()->attach($bondDto->courseId);
             }
 
-            self::carryEmployeeDocuments($bond);
+            if ($bondDto->poleId) {
+                $bond->poles()->attach($bondDto->poleId);
+            }
+
+            $bond->impediments()->create([
+                'description' => '[SGC: Vínculo ainda não revisado]',
+                'reviewer_id' => User::where('login', 'sgc_system')->first()?->id,
+                'reviewed_at' => Carbon::now(),
+            ]);
+
+            $bond->impediments()->create([
+                'description' => '[SGC: Documento "Termo de cessão de direitos" ainda não arquivado]',
+                'reviewer_id' => User::where('login', 'sgc_system')->first()?->id,
+                'reviewed_at' => Carbon::now(),
+            ]);
+
+            $bond->qualification()->create([
+                'knowledge_area' => $bondDto->qualificationKnowledgeArea,
+                'course_name' => TextHelper::titleCase($bondDto->qualificationCourse),
+                'institution_name' => TextHelper::titleCase($bondDto->qualificationInstitution),
+            ]);
 
             BondCreated::dispatch($bond);
         });
+        
+        return $bond;
     }
 
     /**
@@ -116,12 +125,12 @@ class BondService
     /**
      * Undocumented function
      *
-     * @param UpdateBondDto $updateBondDto
+     * @param BondDto $updateBondDto
      * @param Bond $bond
      *
      * @return Bond
      */
-    public function update(UpdateBondDto $updateBondDto, Bond $bond): Bond
+    public function update(BondDto $updateBondDto, Bond $bond): Bond
     {
         DB::transaction(static function () use ($updateBondDto, $bond) {
             $bond->update([
@@ -130,16 +139,16 @@ class BondService
                 'course_id' => $updateBondDto->courseId,
                 'pole_id' => $updateBondDto->poleId,
                 'begin' => $updateBondDto->begin,
-                'end' => $updateBondDto->end,
-                'announcement' => $updateBondDto->announcement,
+                'terminated_at' => $updateBondDto->terminatedAt,
+                'hiring_process' => $updateBondDto->hiringProcess,
                 'volunteer' => $updateBondDto->volunteer,
             ]);
 
-            if ($updateBondDto->knowledgeArea !== null) {
+            if ($updateBondDto->qualificationKnowledgeArea !== null) {
                 $bond->qualification()->updateOrCreate([
-                    'knowledge_area' => $updateBondDto->knowledgeArea,
-                    'course_name' => TextHelper::titleCase($updateBondDto->courseName),
-                    'institution_name' => TextHelper::titleCase($updateBondDto->institutionName),
+                    'knowledge_area' => $updateBondDto->qualificationKnowledgeArea,
+                    'course_name' => TextHelper::titleCase($updateBondDto->qualificationCourse),
+                    'institution_name' => TextHelper::titleCase($updateBondDto->qualificationInstitution),
                 ]);
             }
         });
@@ -157,7 +166,7 @@ class BondService
     public function delete(Bond $bond)
     {
         DB::transaction(static function () use ($bond) {
-            foreach ($bond->bondDocuments as $document) {
+            foreach ($bond->documents as $document) {
                 $document->delete();
             }
 
@@ -181,11 +190,11 @@ class BondService
         $impediment = $reviewBondDto->impediment;
         $impediment_description = $reviewBondDto->impedimentDescription;
 
-        $bondHaveRights = $bond->hasRightsDocuments();
+        $bondHaveRights = self::bondHaveRights($bond);
 
-        if (! $bondHaveRights) {
+        if (!$bondHaveRights) {
             $impediment = true;
-            $impediment_description = "{$impediment_description}\n[SGC: O Sistema não encontrou documento de Termos e Licença.]";
+            $impediment_description = "{$impediment_description}\n[SGC: O Sistema não encontrou documento de Termo de cessão de direitos.]";
         }
 
         $bond->update([
@@ -217,43 +226,6 @@ class BondService
         BondReviewRequested::dispatch($bond);
 
         return $bond;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param Bond $bond
-     *
-     * @return void
-     */
-    private static function carryEmployeeDocuments(Bond $bond): void
-    {
-        $employeeDocuments = EmployeeDocument::where('employee_id', $bond->employee_id)->get();
-        foreach ($employeeDocuments as $employeeDocument) {
-            $bondDocument = new BondDocument([
-                'bond_id' => $bond->id,
-            ]);
-            $bondDocument->save();
-
-            /**
-             * @var Document $employeeBaseDocument
-             */
-            $employeeBaseDocument = $employeeDocument->document;
-
-            /**
-             * @var DocumentType $employeeBaseDocumentType
-             */
-            $employeeBaseDocumentType = $employeeBaseDocument->documentType;
-
-            $newDocument = new Document([
-                'original_name' => $employeeBaseDocument->original_name,
-                'file_data' => $employeeBaseDocument->file_data,
-                'document_type_id' => $employeeBaseDocumentType->id,
-                'documentable_type' => BondDocument::class,
-                'documentable_id' => $bondDocument->id,
-            ]);
-            $newDocument->save();
-        }
     }
 
     /**
@@ -293,5 +265,21 @@ class BondService
             'updatedBy' => $updatedBy,
             'updatedOn' => $updatedOn,
         ];
+    }
+
+    /**
+     * @param Bond $bond
+     *
+     * @return bool
+     */
+    public static function bondHaveRights(Bond $bond): bool
+    {
+        $typeId = DocumentType::where('name', 'Termo de cessão de direitos')->first()?->id;
+
+        if ($bond->documents->where('document_type_id', $typeId)->count() > 0) {
+            return true;
+        }
+        
+        return false;
     }
 }

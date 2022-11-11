@@ -7,7 +7,10 @@ use Illuminate\Support\Facades\DB;
 
 class DocumentTypeSeeder extends Seeder
 {
-        protected $tableName = 'document_types';
+    /**
+     * @var string
+     */
+    protected $tableName = 'document_types';
 
     /**
      * Run the database seeds.
@@ -32,6 +35,16 @@ class DocumentTypeSeeder extends Seeder
         ]);
 
         DB::table($this->tableName)->insert([
+            'name' => 'Passaporte',
+            'description' => 'Passaporte brasileiro emitido pela Polícia Federal ou pelo Ministério das Relações Exteriores',
+        ]);
+
+        DB::table($this->tableName)->insert([
+            'name' => 'Carteira de Identidade Profissional',
+            'description' => 'Carteira de Identidade Profissional emitida por entidades de classe (OAB, CRM, CRBio, CREA)',
+        ]);
+
+        DB::table($this->tableName)->insert([
             'name' => 'SIAPE',
             'description' => 'Sistema Integrado de Administração de Pessoal',
         ]);
@@ -42,7 +55,7 @@ class DocumentTypeSeeder extends Seeder
         ]);
 
         DB::table($this->tableName)->insert([
-            'name' => 'Ficha de Inscrição - Termos e Licença',
+            'name' => 'Termo de cessão de direitos',
             'description' => '',
         ]);
 

@@ -8,12 +8,21 @@ use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
+    /**
+     * @var string
+     */
     protected $tableName = 'users';
 
+
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
     public function run()
     {
         DB::table($this->tableName)->insert([
-            'email' => 'admin@ufes.br',
+            'login' => 'admin@ufes.br',
             'password' => Hash::make('changeme'),
             // 'user_type_id' => 1,
             'active' => true,
@@ -21,7 +30,7 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table($this->tableName)->insert([
-            'email' => 'diretor@ufes.br',
+            'login' => 'diretor@ufes.br',
             'password' => Hash::make('changeme'),
             // 'user_type_id' => 2,
             'active' => true,
@@ -29,7 +38,7 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table($this->tableName)->insert([
-            'email' => 'uab@ufes.br',
+            'login' => 'uab@ufes.br',
             'password' => Hash::make('changeme'),
             // 'user_type_id' => 3,
             'active' => true,
@@ -37,7 +46,7 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table($this->tableName)->insert([
-            'email' => 'secretario@ufes.br',
+            'login' => 'secretario@ufes.br',
             'password' => Hash::make('changeme'),
             // 'user_type_id' => 4,
             'active' => true,
@@ -45,7 +54,7 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table($this->tableName)->insert([
-            'email' => 'ldi@ufes.br',
+            'login' => 'ldi@ufes.br',
             'password' => Hash::make('changeme'),
             // 'user_type_id' => 5,
             'active' => true,
@@ -53,7 +62,7 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table($this->tableName)->insert([
-            'email' => 'ldi_inativo@ufes.br',
+            'login' => 'ldi_inativo@ufes.br',
             'password' => Hash::make('changeme'),
             // 'user_type_id' => 5,
             'active' => false,
@@ -61,7 +70,7 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table($this->tableName)->insert([
-            'email' => 'coordenador01@ufes.br',
+            'login' => 'coordenador01@ufes.br',
             'password' => Hash::make('changeme'),
             // 'user_type_id' => 6,
             'active' => true,
@@ -69,7 +78,7 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table($this->tableName)->insert([
-            'email' => 'comum01@ufes.br',
+            'login' => 'comum01@ufes.br',
             'password' => Hash::make('changeme'),
             // 'user_type_id' => 6,
             'active' => true,
@@ -77,7 +86,7 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table($this->tableName)->insert([
-            'email' => 'assistente01@ufes.br',
+            'login' => 'assistente01@ufes.br',
             'password' => Hash::make('changeme'),
             'active' => true,
             'employee_id' => null,

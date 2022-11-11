@@ -2,11 +2,8 @@
 
 namespace App\Services\Dto;
 
-use Spatie\DataTransferObject\DataTransferObject;
-
-class StoreInstitutionalDetailDto extends DataTransferObject
+final class StoreInstitutionalDetailDto
 {
-    public string $login;
-
-    public string $email;
+    public readonly string $login;
+    public readonly string $email;
 }

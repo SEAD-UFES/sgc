@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Responsibility;
 use App\Models\User;
+use App\Repositories\ResponsibilityRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,6 +14,10 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class AuthController extends Controller
 {
+    public function __construct(private ResponsibilityRepository $responsibilityRepository)
+    {
+    }
+
     /**
      * @return RedirectResponse|View
      */
@@ -35,16 +41,17 @@ class AuthController extends Controller
     {
         $request->validated();
 
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active' => true])) {
+        if (Auth::attempt(['login' => $request->login, 'password' => $request->password, 'active' => true])) {
             $request->session()->regenerate();
-
+           
             /**
-             * @var User  $authUser
+             * @var User $loggedUser
              */
-            $authUser = auth()->user();
+            $loggedUser = User::where('login', $request->validated('login'))->first();
 
-            $firstUtaId = $authUser->getFirstActiveResponsibility()?->id;
-            $authUser->setCurrentResponsibility($firstUtaId);
+            $firstResponsibility = $this->responsibilityRepository->getFirstActiveResponsibilityByUserId($loggedUser->getAttribute('id'));
+
+            session(['loggedInUser.currentResponsibility' => $firstResponsibility]);
 
             return redirect()->route('home');
         }
@@ -73,17 +80,16 @@ class AuthController extends Controller
      */
     public function switchCurrentResponsibility(Request $request): RedirectResponse
     {
-        /**
-         * @var User $currentUser
-         */
+        /** @var User */
         $currentUser = auth()->user();
 
-        /**
-         * @var int $newResponsibilityId
-         */
+        /** @var int */
         $newResponsibilityId = $request->get('responsibility_id');
 
-        $currentUser->setCurrentResponsibility($newResponsibilityId);
+        /** @var Responsibility */
+        $newResponsibility = $this->responsibilityRepository->getActiveResponsibilityByIdAssertUserId($newResponsibilityId, $currentUser->id);
+
+        session(['loggedInUser.currentResponsibility' => $newResponsibility]);
         return redirect()->back();
     }
 

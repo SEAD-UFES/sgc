@@ -36,67 +36,72 @@
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Profissão:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->job ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail->job ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Gênero:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->gender?->value ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->gender->label() ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Data de Nascimento:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->birthday != null ? \Carbon\Carbon::parse($employee->birthday)->isoFormat('DD/MM/Y') : '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail->birth_date != null ? \Carbon\Carbon::parse($employee->birth_date)->isoFormat('DD/MM/Y') : '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>UF Nascimento:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->birthState->uf ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail->birth_state->name ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Cidade de Nascimento:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->birth_city ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail->birth_city ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Tipo de Documento:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->documentType->name ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->identity->type->name ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Número do Documento:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->id_number ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->identity->number ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Data de Expedição:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->id_issue_date != null ? \Carbon\Carbon::parse($employee->id_issue_date)->isoFormat('DD/MM/Y') : '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->identity->issue_date != null ? \Carbon\Carbon::parse($employee->id_issue_date)->isoFormat('DD/MM/Y') : '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Orgão Expedidor:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->id_issue_agency ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->identity->issuer ?? '-' }}
+                                    </div>
+                                </div>
+                                <div class="mb-2 row">
+                                    <div class="col-sm-4 col-lg-3"><strong>Estado Expedidor:</strong></div>
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->identity->issuer_state ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Estado Civil:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->marital_status?->value ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail->marital_status->label() ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Nome cônjuge:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->spouse_name ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->spouse->name ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Nome do pai:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->father_name ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail->father_name ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Nome da mãe:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->mother_name ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail->mother_name ?? '-' }}
                                     </div>
                                 </div>
                         
@@ -119,17 +124,28 @@
                             <div class="card-body">
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Código de Área:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->area_code ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->phones->where('type', 'Celular')->first()->area_code ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Telefone:</strong></div>
-                                    <div class="col-sm-8 col-lg-9"><a href='tel:{{ $employee->phone }}'>{{ isset($employee->phone) ? preg_replace('~(\d{2})[^\d]{0,7}(\d{4})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $employee->phone) : '-' }}</a>
-                                    </div>
+                                    @php
+                                        $landline = $employee->phones->where('type', 'Fixo')->first();
+                                    @endphp
+                                    @if ($landline != null)
+                                        <div class="col-sm-8 col-lg-9"><a href='tel:{{ $landline->area_code . $landline->number }}'>{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{4})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $landline->area_code . $landline->number) }}</a>
+                                        </div>
+                                    @else
+                                        <div class="col-sm-8 col-lg-9">-
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="mb-2 row">
+                                    @php
+                                        $mobile = $employee->phones->where('type', 'Celular')->first();
+                                    @endphp
                                     <div class="col-sm-4 col-lg-3"><strong>Celular:</strong></div>
-                                    <div class="col-sm-8 col-lg-9"><a href='tel:{{ $employee->mobile }}'>{{ isset($employee->mobile) ? preg_replace('~(\d{2})[^\d]{0,7}(\d{5})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $employee->mobile) : '-' }}</a>
+                                    <div class="col-sm-8 col-lg-9"><a href='tel:{{ $mobile->area_code . $mobile->number }}'>{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{5})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $mobile->area_code . $mobile->number) }}</a>
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
@@ -139,37 +155,37 @@
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Logradouro:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->address_street ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->address->street ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Complemento:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->address_complement ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->address->complement ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Número:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->address_number ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->address->number ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Bairro:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->address_district ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->address->district ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>CEP:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ isset($employee->address_postal_code) ? preg_replace('~(\d{2})(\d{3})(\d{3})~', '$1$2-$3', $employee->address_postal_code) : '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ isset($employee->address->zip_code) ? preg_replace('~(\d{2})(\d{3})(\d{3})~', '$1$2-$3', $employee->address->zip_code) : '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>UF:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->addressState->uf ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->address->state->name ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Cidade:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->address_city ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->address->city ?? '-' }}
                                     </div>
                                 </div>
 
@@ -202,7 +218,7 @@
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Conta Corrente:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->bankAccount->account_number ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->bankAccount->account ?? '-' }}
                                     </div>
                                 </div>
 
@@ -213,60 +229,6 @@
                                         </a>&nbsp;
                                     @endcan
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card mb-3">
-                        <div class="card-header collapsed" data-bs-toggle="collapse" href="#employeeDocumentListContent" role="button" aria-expanded="false" aria-controls="employeeDocumentListContent">
-                            <h4 class='mb-0'>Documentos do Colaborador</h4>
-                        </div>
-                        <div class="collapse" id="employeeDocumentListContent" >
-                            <div class="card-body">
-                                @if($employee->documents->count() > 0)
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <th>Última atualização</th>
-                                                <th>Tipo do arquivo</th>
-                                                <th>Nome do arquivo</th>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($employee->documents as $employeeDocument)
-                                                    <tr>
-                                                        <td>
-                                                            {{$employeeDocument->updated_at 
-                                                                ? \Carbon\Carbon::parse($employeeDocument->updated_at)->isoFormat('DD/MM/Y HH:mm') 
-                                                                : '-'
-                                                            }}
-                                                        </td>
-                                                        <td>{{ $employeeDocument->documentType->name }}</td>
-                                                        <td>
-                                                            <a href="{{ route('employees_documents.show', ['id' => $employeeDocument->id, 'type' => 'EmployeeDocument', 'htmlTitle' => $employeeDocument->original_name]) }}"
-                                                                target="_blank">{{ $employeeDocument->original_name }}</a>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-
-                                        <div class="">
-                                            <a href="{{ route('employees_documents.export', $employee) }}" class="btn btn-primary btn-sm mt-1">
-                                                &nbsp;&#8627; Fazer o download de todos os documentos do colaborador (zip)
-                                            </a>
-                                            <a class="btn btn-primary btn-sm mt-1" href="{{ route('employees_documents.index', ['employeeCpfContains[0]' => $employee->cpf]) }}" target="_blank">
-                                                Listagem avançada...
-                                            </a>    
-                                        </div>
-                                    </div>
-                                @else
-                                    <p class="mb-0">O colaborador não possui documentos cadastrados.</p>
-                                    <div class="">
-                                        <a class="btn btn-primary btn-sm mt-1" href="{{ route('employees_documents.index', ['employeeCpfContains[0]' => $employee->cpf]) }}" target="_blank">
-                                            Listagem avançada...
-                                        </a>    
-                                    </div>
-                                @endif
                             </div>
                         </div>
                     </div>
@@ -392,12 +354,12 @@
                             <div class="card-body">
                                 <div class="mb-2 row">
                                     <div class="col-sm-12 col-lg-12"><h5>Cadastrado</h5></div>
-                                    <div class="col-sm-6 col-lg-6"><strong>Por:</strong> {{ $employee->createdBy?->name ?? '-' }}</div>
+                                    <div class="col-sm-6 col-lg-6"><strong>Por:</strong> {{ $employee->createdBy?->login ?? '-' }}</div>
                                     <div class="col-sm-6 col-lg-6"><strong>Em:</strong> {{ (is_null($employee->createdOn)) ? '-' : \Carbon\Carbon::parse($employee->createdOn)->isoFormat('DD/MM/Y HH:mm') }}</div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-12 col-lg-12"><h5>Atualizado por último</h5></div>
-                                    <div class="col-sm-6 col-lg-6"><strong>Por:</strong> {{ $employee->updatedBy?->name ?? '-' }}</div>
+                                    <div class="col-sm-6 col-lg-6"><strong>Por:</strong> {{ $employee->updatedBy?->login ?? '-' }}</div>
                                     <div class="col-sm-6 col-lg-6"><strong>Em:</strong> {{ (is_null($employee->updatedOn)) ? '-' : \Carbon\Carbon::parse($employee->updatedOn)->isoFormat('DD/MM/Y HH:mm') }}</div>
                                 </div>
                             </div>
@@ -409,7 +371,7 @@
                         </div>
                         <div class="collapse" id="userListContent" >
                             <div class="card-body">
-                                @if($employee->users->count() > 0)
+                                @if($employee->user != null)
                                     <div class="table-responsive">
                                         <table class="table table-hover">
                                             <thead>
@@ -420,45 +382,45 @@
                                                 <th class="text-center" >Ações</th>
                                             </thead>
                                             <tbody>
-                                                @foreach ($employee->users as $user)
+                                                {{-- @foreach ($employee->users as $user) --}}
                                                     <tr>
                                                         <td>
-                                                            {{ $user->email }}
+                                                            {{ $employee->user->login }}
                                                         </td>
                                                         <td>
-                                                            {{ $user->active === 1 ? 'Sim' : 'Não' }}
+                                                            {{ $employee->user->active === 1 ? 'Sim' : 'Não' }}
                                                         </td>
                                                         <td>
-                                                            {{ (isset($bond) && $user->created_at )
+                                                            {{ (isset($bond) && $employee->user->created_at )
                                                                 ? \Carbon\Carbon::parse($bond->end)->isoFormat('DD/MM/Y') 
                                                                 : '-'
                                                             }}
                                                         </td>
                                                         <td>
-                                                            {{ (isset($bond) && $user->updated_at) 
+                                                            {{ (isset($bond) && $employee->user->updated_at) 
                                                                 ? \Carbon\Carbon::parse($bond->end)->isoFormat('DD/MM/Y') 
                                                                 : '-'
                                                             }}
                                                         </td>
                                                         <td class="text-center"><div class="d-inline-flex">
                                                             @can('user-show')
-                                                                <a href="{{route('users.show', $user)}}" data-bs-toggle="tooltip" title="Ver usuário" class="btn btn-primary btn-sm"><i class="bi-eye-fill"></i></a>&nbsp;
+                                                                <a href="{{route('users.show', $employee->user)}}" data-bs-toggle="tooltip" title="Ver usuário" class="btn btn-primary btn-sm"><i class="bi-eye-fill"></i></a>&nbsp;
                                                             @endcan
                                                             @can('user-update')
-                                                                <a href="{{route('users.edit', $user)}}" data-bs-toggle="tooltip" title="Editar usuário" class="btn btn-primary btn-sm"><i class="bi-pencil-fill"></i></a>&nbsp;
+                                                                <a href="{{route('users.edit', $employee->user)}}" data-bs-toggle="tooltip" title="Editar usuário" class="btn btn-primary btn-sm"><i class="bi-pencil-fill"></i></a>&nbsp;
                                                             @endcan
                                                             @can('user-destroy')
-                                                                <form name="{{ 'formDelete' . $user->id }}" action="{{ route('users.destroy', $user) }}" method="POST">
+                                                                <form name="{{ 'formDelete' . $employee->user->id }}" action="{{ route('users.destroy', $employee->user) }}" method="POST">
                                                                     @method('DELETE')
                                                                     @csrf
-                                                                    <button type="button" data-bs-toggle="tooltip" title="Excluir usuário" onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse usuário?\')) document.forms[\'formDelete' . $user->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
+                                                                    <button type="button" data-bs-toggle="tooltip" title="Excluir usuário" onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse usuário?\')) document.forms[\'formDelete' . $employee->user->id . '\'].submit();' }}" class="btn btn-danger btn-sm">
                                                                         <i class="bi-trash-fill"></i>
                                                                     </button>
                                                                 </form>
                                                             @endcan
                                                         </td>
                                                     </tr>
-                                                @endforeach
+                                                {{-- @endforeach --}}
                                             </tbody>
                                         </table>
                                     </div>

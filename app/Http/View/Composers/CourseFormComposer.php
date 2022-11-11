@@ -2,7 +2,7 @@
 
 namespace App\Http\View\Composers;
 
-use App\Models\CourseType;
+use App\Enums\Degrees;
 use Illuminate\View\View;
 
 class CourseFormComposer
@@ -17,7 +17,7 @@ class CourseFormComposer
     public function compose(View $view): void
     {
         $view->with([
-            'courseTypes' => CourseType::orderBy('name')->get(),
+            'degrees' => Degrees::cases(),
         ]);
     }
 }

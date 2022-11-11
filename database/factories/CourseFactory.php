@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\Degrees;
 use App\Models\Course;
 use App\Models\CourseType;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -40,9 +41,8 @@ class CourseFactory extends Factory
         return [
             'name' => $name,
             'description' => $description,
-            'course_type_id' => CourseType::factory(),
-            'begin' => $begin,
-            'end' => $end,
+            'degree' => Degrees::cases()[array_rand(Degrees::cases())],
+            'lms_url' => $this->faker->url,
             'created_at' => now(),
             'updated_at' => now(),
         ];

@@ -20,6 +20,7 @@ use App\Notifications\BondImpeded as BondImpededNotification;
 use App\Notifications\BondReviewRequested as BondReviewRequestedNotification;
 use App\Notifications\InstitutionalLoginConfirmationRequired as InstitutionalLoginConfirmationRequiredNotification;
 use App\Notifications\RightsDocumentArchived as RightsDocumentArchivedNotification;
+use App\Repositories\UserRepository;
 use App\Services\MailService;
 use Illuminate\Support\Facades\Notification;
 
@@ -33,7 +34,7 @@ class DomainEventSubscriber
 
     private int $ldiUtId;
 
-    public function __construct(private LoggerInterface $logger, private MailService $mailService)
+    public function __construct(private LoggerInterface $logger, private MailService $mailService, private UserRepository $userRepository)
     {
         $this->secUtId = UserType::getIdByAcronym('sec');
         $this->coordUtId = UserType::getIdByAcronym('coord');
@@ -80,16 +81,16 @@ class DomainEventSubscriber
      */
     public function handleBondReviewRequested(BondReviewRequested $event)
     {
-        $secUsers = User::active()->ofActiveType($this->secUtId)->get();
+        $secUsers = $this->userRepository->getActiveUsersOfActiveTypeId($this->secUtId);
 
         /**
          * @var Course $course
          */
         $course = $event->bond->course;
         $courseId = $course->id;
-        $coordUsers = User::active()->ofActiveType($this->coordUtId)->ofCourse($courseId)->get();
+        $coordUsers = $this->userRepository->getActiveUsersOfActiveTypeIdOfCourseId($this->coordUtId, $courseId);
 
-        $assUsers = User::active()->ofActiveType($this->assUtId)->get();
+        $assUsers = $this->userRepository->getActiveUsersOfActiveTypeId($this->assUtId);
 
         $users = $secUsers->merge($coordUsers)->merge($assUsers);
 
@@ -109,14 +110,14 @@ class DomainEventSubscriber
      */
     public function handleBondImpeded(BondImpeded $event)
     {
-        $secUsers = User::active()->ofActiveType($this->secUtId)->get();
+        $secUsers = $this->userRepository->getActiveUsersOfActiveTypeId($this->secUtId);
 
         /**
          * @var Course $course
          */
         $course = $event->bond->course;
         $courseId = $course->id;
-        $coordUsers = User::active()->ofActiveType($this->coordUtId)->ofCourse($courseId)->get();
+        $coordUsers = $this->userRepository->getActiveUsersOfActiveTypeIdOfCourseId($this->coordUtId, $courseId);
 
         $users = $secUsers->merge($coordUsers);
 
@@ -137,7 +138,7 @@ class DomainEventSubscriber
     public function handleBondCreated(BondCreated $event)
     {
         //Notify grantor assistants
-        $coordOrAssistants = User::active()->ofActiveType($this->assUtId)->get();
+        $coordOrAssistants = $this->userRepository->getActiveUsersOfActiveTypeId($this->assUtId);
 
         Notification::send($coordOrAssistants, new BondCreatedNotification($event->bond));
 
@@ -156,7 +157,7 @@ class DomainEventSubscriber
      */
     public function handleRightsDocumentArchived(RightsDocumentArchived $event)
     {
-        $ldiUsers = User::active()->ofActiveType($this->ldiUtId)->get();
+        $ldiUsers = $this->userRepository->getActiveUsersOfActiveTypeId($this->ldiUtId);
 
         Notification::send($ldiUsers, new RightsDocumentArchivedNotification($event->bond));
 

@@ -15,25 +15,44 @@ class Qualification extends Model
     use LogsActivity;
 
     /**
+     * @var string
+     */
+    protected $table = 'qualifications';
+
+    /**
+     * @var string
+     */
+    protected $primaryKey = 'bond_id';
+
+    /**
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
      * @var array<int, string>
      */
     protected $fillable = [
+        'bond_id',
         'knowledge_area',
         'course_name',
         'institution_name',
-        'bond_id',
     ];
+
+    // ==================== Casts ====================
 
     protected $casts = [
         'knowledge_area' => KnowledgeAreas::class,
     ];
+
+    // ==================== Relationships ====================
 
     /**
      * @return BelongsTo<Bond, Qualification>
      */
     public function bond(): BelongsTo
     {
-        return $this->belongsTo(Bond::class);
+        return $this->belongsTo(Bond::class, 'bond_id', 'id');
     }
 
     public function getActivitylogOptions(): LogOptions

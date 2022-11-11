@@ -14,11 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('qualifications', function (Blueprint $table) {
-            $table->id();
-            $table->string('knowledge_area')->nullable();
-            $table->string('course_name')->nullable();
-            $table->string('institution_name')->nullable();
-            $table->foreignId('bond_id')->constrained('bonds');
+            $table->unsignedBigInteger('bond_id', false)->primary();
+            $table->foreign('bond_id')->references('id')->on('bonds')->onDelete('cascade')->onUpdate('no action');
+            $table->string('knowledge_area');
+            $table->string('course_name');
+            $table->string('institution_name');
             $table->timestamps();
         });
     }

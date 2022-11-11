@@ -60,7 +60,7 @@ class DocumentBatchService
             $referentIdColumnName = $this->documentClass::referentIdColumnName();
 
             $document[$referentIdColumnName] = $attributes[$referentIdColumnName];
-            $document['original_name'] = $file->getClientOriginalName();
+            $document['file_name'] = $file->getClientOriginalName();
             $document['filePath'] = $tmpFilePath;
 
             $documents->push($document);
@@ -91,7 +91,7 @@ class DocumentBatchService
             $document['documentable_type'] = $this->documentClass;
 
             for ($i = 0; $i < $documentsCount; $i++) {
-                $document['original_name'] = $attributes['fileName_' . $i];
+                $document['file_name'] = $attributes['fileName_' . $i];
                 $document['document_type_id'] = $attributes['document_type_id_' . $i];
 
                 $filePath = $attributes['filePath_' . $i];

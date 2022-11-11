@@ -14,20 +14,37 @@ class InstitutionalDetail extends Model
     use LogsActivity;
 
     /**
+     * @var string
+     */
+    protected $table = 'institutional_details';
+
+    /**
+     * @var string
+     */
+    protected $primaryKey = 'employee_id';
+
+    /**
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
      * @var array<int, string>
      */
     protected $fillable = [
+        'employee_id',
         'login',
         'email',
-        'employee_id',
     ];
+
+    // ==================== Relationships ====================
 
     /**
      * @return BelongsTo<Employee, InstitutionalDetail>
      */
     public function employee(): BelongsTo
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsTo(Employee::class, 'employee_id', 'id');
     }
 
     public function getActivitylogOptions(): LogOptions

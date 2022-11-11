@@ -1,6 +1,6 @@
 @extends('layouts.basic')
 
-@section('title', 'Home')
+@section('title', 'Início')
 
 @section('content')
 <nav aria-label="breadcrumb">
@@ -8,9 +8,9 @@
         <li class="breadcrumb-item active" aria-current="page">
             Home&nbsp;
             @if (session('loggedInUser.currentResponsibility')?->id != null)
-                [{{ auth()->user()->getCurrentResponsibility()->user->email }} -
-                {{ auth()->user()->getCurrentResponsibility()->userType->name }}
-                {{ auth()->user()->getCurrentResponsibility()->course_id ? " - " . auth()->user()->getCurrentResponsibility()->course->name : "" }}]
+                [{{ session('loggedInUser.currentResponsibility')->user->login }} -
+                {{ session('loggedInUser.currentResponsibility')->userType->name }}
+                {{ session('loggedInUser.currentResponsibility')->course_id ? " - " . session('loggedInUser.currentResponsibility')->course->name : "" }}]
             @endif
         </li>
     </ol>
@@ -60,12 +60,12 @@
                                             </td>
                                         @break
                                         @case('App\Notifications\RightsDocumentArchived')
-                                            <td><strong>= Novo <a href="{{ route('rights.show', ['id' => $notification->data['document_id'], 'type' => 'BondDocument', 'htmlTitle' => $notification->data['document_name']]) }}"
-                                                        target="_blank">Documento de Termos e Licença</a> =</strong><br />
+                                            <td><strong>= Novo <a href="{{ route('rights.show', ['id' => $notification->data['document_id'], 'type' => 'Document', 'htmlTitle' => $notification->data['document_name']]) }}"
+                                                        target="_blank">Termo de cessão de direitos</a> =</strong><br />
                                                 Colaborador: {{ $notification->data['employee_name'] }}<br />
                                                 Função: {{ $notification->data['role_name'] }} |
                                                 Curso: {{ $notification->data['course_name'] }}<br />
-                                                <a href="{{ route('rights.index') }}" target="_blank">[Listar Documentos de Termos e Licença]</a>
+                                                <a href="{{ route('rights.index') }}" target="_blank">[Listar Termo de cessão de direitos]</a>
                                             </td>
                                         @break
                                         @case('App\Notifications\BondReviewRequested')

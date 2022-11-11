@@ -1,3 +1,9 @@
+<script>
+    $(document).ready(function(){
+        Inputmask().mask(document.querySelectorAll("input"));
+    });
+</script>
+
 @csrf
 <div class="row g-3 mb-3">
     <div class="col-12 col-lg-6">
@@ -28,13 +34,13 @@
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
-    <div class="col-12 col-md-7">
-        <label for="selectCourse1" class="form-label">Curso*</label>
+    <div class="col-12 col-sm-12 col-md-7 col-lg-6 col-xl-6 col-xxl-6">
+        <label for="selectCourse1" class="form-label">Curso</label>
         <select name="course_id" id="selectCourse1" class="form-select searchable-select">
-            <option value="">Selecione o curso</option>
+            <option value="">Não se aplica</option>
             @foreach ($courses as $course)
                 <option value="{{ $course->id }}"
-                    {{ isset($bond) ? ($bond->course_id == $course->id ? 'selected' : '') : (old('course_id') == $course->id ? 'selected' : '') }}>
+                    {{ isset($bond) ? ($bond->course?->id == $course->id ? 'selected' : '') : (old('course_id') == $course->id ? 'selected' : '') }}>
                     {{ $course->name }}</option>
             @endforeach
         </select>
@@ -42,13 +48,13 @@
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
-    <div class="col-12 col-md-5">
-        <label for="selectPole1" class="form-label">Polo*</label>
+    <div class="col-12 col-sm-12 col-md-5 col-lg-6 col-xl-6 col-xl-6">
+        <label for="selectPole1" class="form-label">Polo</label>
         <select name="pole_id" id="selectPole1" class="form-select searchable-select">
-            <option value="">Selecione o polo</option>
+            <option value="">Não se aplica</option>
             @foreach ($poles as $pole)
                 <option value="{{ $pole->id }}"
-                    {{ isset($bond) ? ($bond->pole_id == $pole->id ? 'selected' : '') : (old('pole_id') == $pole->id ? 'selected' : '') }}>
+                    {{ isset($bond) ? ($bond->pole?->id == $pole->id ? 'selected' : '') : (old('pole_id') == $pole->id ? 'selected' : '') }}>
                     {{ $pole->name }}</option>
             @endforeach
         </select>
@@ -56,32 +62,36 @@
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
-    <div class="col-6 col-md-3">
+</div>
+<div class="row g-3 mb-3">
+    <div class="col-4 col-sm-4 col-md-3 col-lg-2">
         <label for="inputBegin1" class="form-label">Início*</label>
         <input type="date" name="begin" value="{{ isset($bond) ? $bond->begin : old('begin') }}" id="inputBegin1"
-            class="form-control">
+            class="form-control" required />
             @error('begin')
                 <div class="text-danger">> {{ $message }}</div>
             @enderror
     </div>
-    <div class="col-6 col-md-3">
-        <label for="inputEnd1" class="form-label">Fim*</label>
-        <input type="date" name="end" value="{{ isset($bond) ? $bond->end : old('end') }}" id="inputEnd1"
+    <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+        <label for="inputTerminated1" class="form-label">Terminado em</label>
+        <input type="date" name="terminated_at" value="{{ isset($bond) ? $bond->terminated_at : old('terminated_at') }}" id="inputTerminated1"
             class="form-control">
-            @error('end')
+            @error('terminated_at')
                 <div class="text-danger">> {{ $message }}</div>
             @enderror
     </div>
-    <div class="col-6 col-sm-6 col-md-4 col-lg-4">
-        <label for="inputAnnouncement1" class="form-label">Edital*</label>
-        <input name="announcement" id="inputAnnouncement1" type="text" class="form-control" placeholder="Edital"
-            value="{{ isset($bond) ? $bond->announcement : old('announcement') }}" maxlength="9" />
-        @error('announcement')
+    <div class="col-4 col-sm-4 col-md-2 col-lg-2">
+        <label for="inputHiringProcess1" class="form-label">Edital*</label>
+        <input name="hiring_process" id="inputHiringProcess1" type="text" class="form-control" placeholder="0000/0000"
+            value="{{ isset($bond) ? $bond->hiring_process : old('hiring_process') }}" maxlength="9"
+            data-inputmask="'mask': '(9/9999)|(99/9999)|(999/9999)|(9999/9999)', 'removeMaskOnSubmit': false"
+            pattern="(([0-9]{1})?([0-9]{1})?([0-9]{1})?([0-9]{1})[\/]\d{4})" required />
+        @error('hiring_process')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
-    <div class="col-12 col-md-12">
-        <div class="form-check">
+    <div class="col-12 col-md-4 d-flex align-items-end">
+        <div class="form-check mt-md-10">
             <input type="checkbox" class="form-check-input" name="volunteer" id="inputVolunteer1"
                 {{ isset($bond) ? ($bond->volunteer ? 'checked' : '') : (old('volunteer') ? 'checked' : '') }} />
             <label for="inputVolunteer1" class="form-label">Voluntário</label>
@@ -90,32 +100,32 @@
 </div>
 <div class="row g-3 mb-3">
     <div class="col-6 col-sm-6 col-md-4 col-lg-3">
-        <label for="selectKnowledgeArea1" class="form-label">Área do último Curso Superior</label>
-        <select name="knowledge_area" id="selectKnowledgeArea1" class="form-select">
+        <label for="selectKnowledgeArea1" class="form-label">Área último Curso Superior*</label>
+        <select name="qualification_knowledge_area" id="selectKnowledgeArea1" class="form-select">
             <option value="">Selecione a Área</option>
             @foreach ($knowledgeAreas as $knowledgeArea)
-                <option value="{{ $knowledgeArea }}"
-                    {{ isset($bond) && isset($bond->qualification) ? ($bond->qualification->knowledge_area?->value == $knowledgeArea ? 'selected' : '') : (old('knowledge_area') == $knowledgeArea ? 'selected' : '') }}>
-                    {{ $knowledgeArea }}</option>
+                <option value="{{ $knowledgeArea->name }}"
+                    {{ isset($bond) && isset($bond->qualification) ? ($bond->qualification?->knowledge_area == $knowledgeArea->name ? 'selected' : '') : (old('qualification_knowledge_area') == $knowledgeArea->name ? 'selected' : '') }}>
+                    {{ $knowledgeArea->label() }}</option>
             @endforeach
         </select>
-        @error('knowledge_area')
+        @error('qualification_knowledge_area')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-6 col-sm-6 col-md-4 col-lg-4">
-        <label for="inputCourse1" class="form-label">Último curso de titulação</label>
-        <input name="course_name" id="inputCourse1" type="text" class="form-control" placeholder="Curso"
-            value="{{ isset($bond) && isset($bond->qualification) ? $bond->qualification->course_name : old('course_name') }}" maxlength="100" />
-        @error('course_name')
+        <label for="inputCourse1" class="form-label">Último curso de titulação*</label>
+        <input name="qualification_course" id="inputCourse1" type="text" class="form-control" placeholder="Curso"
+            value="{{ isset($bond) && isset($bond->qualification) ? $bond->qualification?->course_name : old('qualification_course') }}" maxlength="100" required />
+        @error('qualification_course')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
     <div class="col-12 col-sm-12 col-md-4 col-lg-5">
-        <label for="inputInstitution1" class="form-label">Nome da Instituição de Titulação</label>
-        <input name="institution_name" id="inputInstitution1" type="text" class="form-control" placeholder="Instituição"
-            value="{{ isset($bond) && isset($bond->qualification) ? $bond->qualification->institution_name : old('institution_name') }}" maxlength="100" />
-        @error('institution_name')
+        <label for="inputInstitution1" class="form-label">Nome Instituição de Titulação*</label>
+        <input name="qualification_institution" id="inputInstitution1" type="text" class="form-control" placeholder="Instituição"
+            value="{{ isset($bond) && isset($bond->qualification) ? $bond->qualification?->institution_name : old('qualification_institution') }}" maxlength="100" required />
+        @error('qualification_institution')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>

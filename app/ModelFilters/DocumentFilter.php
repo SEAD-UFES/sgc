@@ -24,7 +24,7 @@ trait DocumentFilter
     public function originalnameContains(Builder $builder, $value)
     {
         $values = ModelFilterHelper::inputToArray($value);
-        return ModelFilterHelper::contains($builder, 'original_name', $values);
+        return ModelFilterHelper::contains($builder, 'file_name', $values);
     }
 
     public function documentTypeNameContains(Builder $builder, $value)

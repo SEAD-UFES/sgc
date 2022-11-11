@@ -16,9 +16,9 @@ class CreateDocumentsTable extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->string('original_name');
+            $table->string('file_name');
+            $table->morphs('related');
             $table->foreignId('document_type_id')->constrained('document_types');
-            $table->morphs('documentable');
             $table->timestamps();
         });
 
@@ -32,6 +32,6 @@ class CreateDocumentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employee_documents');
+        Schema::dropIfExists('documents');
     }
 }

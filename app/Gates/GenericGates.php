@@ -2,6 +2,7 @@
 
 namespace App\Gates;
 
+use App\Models\Responsibility;
 use App\Models\User;
 use App\Models\UserType;
 use Illuminate\Support\Facades\Gate;
@@ -101,13 +102,11 @@ class GenericGates
     private static function checkGenericRoleUta(string $acronym): bool
     {
         //return $user->userType->acronym == $acronym;
-        /**
-         * @var User $currentUser
-         */
-        $currentUser = auth()->user();
 
         //need to have session Responsibility active.
-        $currentResponsibility = $currentUser->getCurrentResponsibility();
+        /** @var Responsibility */
+        $currentResponsibility = session('loggedInUser.currentResponsibility');
+
         if (! $currentResponsibility instanceof \App\Models\Responsibility) {
             return false;
         }
@@ -123,12 +122,10 @@ class GenericGates
 
     private static function checkGlobalRoleUta(string $acronym): bool
     {
-        /**
-         * @var User $currentUser
-         */
-        $currentUser = auth()->user();
         //need to have session Responsibility active.
-        $currentResponsibility = $currentUser->getCurrentResponsibility();
+        /** @var Responsibility */
+        $currentResponsibility = session('loggedInUser.currentResponsibility');
+
         if (! $currentResponsibility instanceof \App\Models\Responsibility) {
             return false;
         }

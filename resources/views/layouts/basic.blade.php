@@ -14,11 +14,11 @@
 </head>
 
 <body>
-    @include('layouts.parcialHeader')
+    @include('layouts.partialHeader')
     <div class="container-fluid">
         @yield('content')
     </div>
-    @include('layouts.parcialFooter')
+    @include('layouts.partialFooter')
     @yield('scripts')
 </body>
 

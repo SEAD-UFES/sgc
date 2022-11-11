@@ -2,11 +2,8 @@
 
 namespace App\Services\Dto;
 
-use Spatie\DataTransferObject\DataTransferObject;
-
-class StorePoleDto extends DataTransferObject
+final class StorePoleDto
 {
-    public string $name;
-
-    public string $description;
+    public readonly string $name;
+    public readonly string $description;
 }

@@ -45,15 +45,15 @@
     </div>
     <div class="col-6">
         <label for="selectType1" class="form-label">Tipo*</label>
-        <select name="grant_type_id" id="selectType1" class="form-select">
+        <select name="grant_type" id="selectType1" class="form-select">
             <option value="">Selecione o tipo</option>
             @foreach ($grantTypes as $grantType)
-                <option value="{{ $grantType->id }}"
-                    {{ isset($role) ? ($role->grant_type_id == $grantType->id ? 'selected' : '') : (old('grant_type_id') == $grantType->id ? 'selected' : '') }}>
-                    {{ $grantType->name }}</option>
+                <option value="{{ $grantType->name }}"
+                    {{ isset($role) ? ($role->grant_type == $grantType->name ? 'selected' : '') : (old('grant_type') == $grantType->name ? 'selected' : '') }}>
+                    {{ $grantType->value }}</option>
             @endforeach
         </select>
-        @error('grant_type_id')
+        @error('grant_type')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>

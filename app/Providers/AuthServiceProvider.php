@@ -2,11 +2,10 @@
 
 namespace App\Providers;
 
-use App\Gates\ApprovedGates;
-use App\Gates\BondDocumentGates;
+use App\Gates\ApplicantGates;
+use App\Gates\DocumentGates;
 use App\Gates\BondGates;
 use App\Gates\CourseGates;
-use App\Gates\EmployeeDocumentGates;
 use App\Gates\EmployeeGates;
 use App\Gates\GenericGates;
 use App\Gates\PoleGates;
@@ -44,10 +43,9 @@ class AuthServiceProvider extends ServiceProvider
         PoleGates::define();
         CourseGates::define();
         RoleGates::define();
-        BondDocumentGates::define();
+        DocumentGates::define();
         BondGates::define();
-        EmployeeDocumentGates::define();
         EmployeeGates::define();
-        ApprovedGates::define();
+        ApplicantGates::define();
     }
 }

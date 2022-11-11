@@ -2,33 +2,41 @@
 
 namespace App\Enums;
 
-enum KnowledgeAreas: string
+use JsonSerializable;
+
+enum KnowledgeAreas: string implements JsonSerializable
 {
-    case EXATAS = 'Ciências Exatas e da Terra';
-    case BIOLOGICAS = 'Ciências Biológicas';
-    case ENGENHARIAS = 'Engenharias';
-    case SAUDE = 'Ciências da Saúde';
-    case AGRARIAS = 'Ciências Agrárias';
-    case SOCIAIS = 'Ciências Sociais Aplicadas';
-    case HUMANAS = 'Ciências Humanas';
-    case LINGUISTICA = 'Linguística, Letras e Artes';
+    case EXATAS = 'EXATAS';
+    case BIOLOGICAS = 'BIOLOGICAS';
+    case ENGENHARIAS = 'ENGENHARIAS';
+    case SAUDE = 'SAUDE';
+    case AGRARIAS = 'AGRARIAS';
+    case SOCIAIS = 'SOCIAIS';
+    case HUMANAS = 'HUMANAS';
+    case LINGUISTICA = 'LINGUISTICA';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::EXATAS => 'Ciências Exatas e da Terra',
+            self::BIOLOGICAS => 'Ciências Biológicas',
+            self::ENGENHARIAS => 'Engenharias',
+            self::SAUDE => 'Ciências da Saúde',
+            self::AGRARIAS => 'Ciências Agrárias',
+            self::SOCIAIS => 'Ciências Sociais Aplicadas',
+            self::HUMANAS => 'Ciências Humanas',
+            self::LINGUISTICA => 'Linguística, Letras e Artes',
+        };
+    }
 
     /**
-     * @return array<int, string>
+     * @return array<string, string>
      */
-    public static function getValuesInAlphabeticalOrder(): array
+    public function jsonSerialize(): array
     {
-        /**
-         * @var array<int, string>
-         */
-        $arr = [];
-
-        foreach (self::cases() as $case) {
-            $arr[] = $case->value;
-        }
-
-        sort($arr, SORT_NATURAL | SORT_FLAG_CASE);
-
-        return $arr;
+        return [
+            'name' => $this->name,
+            'value' => $this->label(),
+        ];
     }
 }

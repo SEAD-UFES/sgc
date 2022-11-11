@@ -23,7 +23,7 @@ class CourseService
 
         $query = new Course();
         $query = $query->AcceptRequest(Course::$accepted_filters)->filter();
-        $query = $query->sortable(['name' => 'asc'])->with('courseType');
+        $query = $query->sortable(['name' => 'asc']);
 
         $courses = $query->paginate(10);
         $courses->withQueryString();

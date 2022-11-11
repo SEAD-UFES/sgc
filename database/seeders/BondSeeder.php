@@ -8,7 +8,11 @@ use Carbon\Carbon;
 
 class BondSeeder extends Seeder
 {
+    /**
+     * @var string
+     */
     protected $tableName = 'bonds';
+   
     /**
      * Run the database seeds.
      *
@@ -17,112 +21,106 @@ class BondSeeder extends Seeder
     public function run()
     {
         DB::table($this->tableName)->insert([
-            'course_id' => 1,
-            'employee_id' => 1,
-            'role_id' => 1,
-            'pole_id' => 1,
-            //'classroom_id' => null,
-            'begin' => Carbon::create('2020', '03', '05'),
-            'end' => Carbon::create('2027', '07', '03'),
-            'announcement' => '01/2022',
-            'terminated_at' => null,
-            'volunteer' => false,
-            'impediment' => false,
-            'impediment_description' => '',
-            'uaba_checked_at' => Carbon::create('2021', '07', '01'),
-            'created_at' => Carbon::create('2020', '03', '05'),
-            'updated_at' => Carbon::create('2020', '03', '05'),
+            'employee_id' => 1, //
+            'role_id' => 1, //
+            'begin' => Carbon::create(2020, 3, 5), //
+            'hiring_process' => '01/2022', //
+            'terminated_at' => null, //
+            'volunteer' => false, //
+            'created_at' => Carbon::create(2020, 3, 5),
+            'updated_at' => Carbon::create(2020, 3, 5),
+
+            // 'course_id' => 1,
+            // 'pole_id' => 1,
+            // 'impediment' => false,
+            // 'impediment_description' => '',
+            // 'uaba_checked_at' => Carbon::create('2021', '07', '01'),
         ]);
 
         DB::table($this->tableName)->insert([
-            'course_id' => 2,
-            'employee_id' => 1,
-            'role_id' => 2,
-            'pole_id' => 1,
-            //'classroom_id' => null,
-            'begin' => Carbon::create('2020', '03', '05'),
-            'end' => Carbon::create('2027', '07', '03'),
-            'announcement' => '01/2022',
-            'terminated_at' => Carbon::create('2020', '09', '05'),
-            'volunteer' => false,
-            'impediment' => false,
-            'impediment_description' => '',
-            'uaba_checked_at' => Carbon::create('2021', '07', '01'),
-            'created_at' => Carbon::create('2020', '03', '05'),
-            'updated_at' => Carbon::create('2020', '03', '05'),
+            'employee_id' => 1, //
+            'role_id' => 2, //
+            'begin' => Carbon::create(2020, 3, 5), //
+            'hiring_process' => '01/2022', //
+            'terminated_at' => Carbon::create(2020, 9, 5), //
+            'volunteer' => false, //
+            'created_at' => Carbon::create(2020, 3, 5),
+            'updated_at' => Carbon::create(2020, 3, 5),
+
+            // 'course_id' => 2,
+            // 'pole_id' => 1,
+            // 'impediment' => false,
+            // 'impediment_description' => '',
+            // 'uaba_checked_at' => Carbon::create('2021', '07', '01'),
         ]);
 
         DB::table($this->tableName)->insert([
-            'course_id' => 3,
-            'employee_id' => 1,
-            'role_id' => 3,
-            'pole_id' => 1,
-            //'classroom_id' => null,
-            'begin' => Carbon::create('2020', '03', '05'),
-            'end' => Carbon::create('2020', '09', '05'),
-            'announcement' => '01/2022',
-            'terminated_at' => null,
-            'volunteer' => false,
-            'impediment' => false,
-            'impediment_description' => '',
-            'uaba_checked_at' => Carbon::create('2021', '07', '01'),
-            'created_at' => Carbon::create('2020', '03', '05'),
-            'updated_at' => Carbon::create('2020', '03', '05'),
+            'employee_id' => 1, //
+            'role_id' => 3, //
+            'begin' => Carbon::create(2020, 3, 5), //
+            'hiring_process' => '01/2022', //
+            'terminated_at' => null, //
+            'volunteer' => false, //
+            'created_at' => Carbon::create(2020, 3, 5),
+            'updated_at' => Carbon::create(2020, 3, 5),
+
+            // 'course_id' => 3,
+            // 'pole_id' => 1,
+            // 'impediment' => false,
+            // 'impediment_description' => '',
+            // 'uaba_checked_at' => Carbon::create('2021', '07', '01'),
         ]);
 
         DB::table($this->tableName)->insert([
-            'course_id' => 4,
-            'employee_id' => 1,
-            'role_id' => 4,
-            'pole_id' => 2,
-            //'classroom_id' => null,
-            'begin' => Carbon::create('2020', '03', '05'),
-            'end' => Carbon::create('2029', '09', '05'),
-            'announcement' => '01/2022',
-            'terminated_at' => null,
-            'volunteer' => false,
-            'impediment' => true,
-            'impediment_description' => 'Assinatura não confere com o documento',
-            'uaba_checked_at' => Carbon::create('2021', '07', '01'),
-            'created_at' => Carbon::create('2020', '03', '05'),
-            'updated_at' => Carbon::create('2020', '03', '05'),
+            'employee_id' => 1, //
+            'role_id' => 4, //
+            'begin' => Carbon::create(2020, 3, 5), //
+            'hiring_process' => '01/2022', //
+            'terminated_at' => null, //
+            'volunteer' => false, //
+            'created_at' => Carbon::create(2020, 3, 5),
+            'updated_at' => Carbon::create(2020, 3, 5),
+
+            // 'course_id' => 4,
+            // 'pole_id' => 2,
+            // 'impediment' => true,
+            // 'impediment_description' => 'Assinatura não confere com o documento',
+            // 'uaba_checked_at' => Carbon::create('2021', '07', '01'),
         ]);
 
 
         DB::table($this->tableName)->insert([
-            'course_id' => 5,
-            'employee_id' => 1,
-            'role_id' => 3,
-            'pole_id' => 1,
-            //'classroom_id' => null,
-            'begin' => Carbon::create('2020', '03', '05'),
-            'end' => Carbon::create('2029', '09', '05'),
-            'announcement' => '01/2022',
-            'terminated_at' => null,
-            'volunteer' => false,
-            'impediment' => false,
-            'impediment_description' => '',
-            'uaba_checked_at' => Carbon::create('2021', '07', '01'),
-            'created_at' => Carbon::create('2020', '03', '05'),
-            'updated_at' => Carbon::create('2020', '03', '05'),
+            'employee_id' => 1, //
+            'role_id' => 3, //
+            'begin' => Carbon::create(2020, 3, 5), //
+            'hiring_process' => '01/2022', //
+            'terminated_at' => null, //
+            'volunteer' => false, //
+            'created_at' => Carbon::create(2020, 3, 5),
+            'updated_at' => Carbon::create(2020, 3, 5),
+
+            // 'course_id' => 5,
+            // 'pole_id' => 1,
+            // 'impediment' => false,
+            // 'impediment_description' => '',
+            // 'uaba_checked_at' => Carbon::create('2021', '07', '01'),
         ]);
 
         DB::table($this->tableName)->insert([
-            'course_id' => 6,
-            'employee_id' => 2,
-            'role_id' => 4,
-            'pole_id' => 5,
-            //'classroom_id' => null,
-            'begin' => Carbon::create('2020', '03', '05'),
-            'end' => Carbon::create('2027', '07', '03'),
-            'announcement' => '01/2022',
-            'terminated_at' => null,
-            'volunteer' => true,
-            'impediment' => false,
-            'impediment_description' => '',
-            'uaba_checked_at' => Carbon::create('2021', '07', '01'),
-            'created_at' => Carbon::create('2020', '03', '05'),
-            'updated_at' => Carbon::create('2020', '03', '05'),
+            'employee_id' => 2, //
+            'role_id' => 4, //
+            'begin' => Carbon::create(2020, 3, 5), //
+            'hiring_process' => '01/2022', //
+            'terminated_at' => null, //
+            'volunteer' => true, //
+            'created_at' => Carbon::create(2020, 3, 5),
+            'updated_at' => Carbon::create(2020, 3, 5),
+
+            // 'course_id' => 6,
+            // 'pole_id' => 5,
+            // 'impediment' => false,
+            // 'impediment_description' => '',
+            // 'uaba_checked_at' => Carbon::create('2021', '07', '01'),
         ]);
     }
 }

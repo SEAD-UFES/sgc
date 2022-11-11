@@ -2,15 +2,13 @@
 
 namespace App\Services\Dto;
 
-use Spatie\DataTransferObject\DataTransferObject;
-
-class StoreUserDto extends DataTransferObject
+final class StoreUserDto
 {
-    public string $email;
-
-    public string $password;
-
-    public bool $active;
-
-    public ?string $employeeId;
+    public function __construct(
+        public readonly string $login,
+        public readonly string $password,
+        public readonly bool $active,
+        public readonly ?int $employeeId,
+    ) {
+    }
 }

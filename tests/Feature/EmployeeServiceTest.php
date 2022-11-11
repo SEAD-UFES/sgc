@@ -5,13 +5,11 @@ namespace Tests\Feature;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Bond;
-use App\Models\BondDocument;
+use App\Models\Document;
 use App\Models\Employee;
 use App\Models\User;
-use App\Repositories\EmployeeDocumentRepository;
-use App\Services\Dto\StoreEmployeeDto;
-use App\Services\Dto\UpdateEmployeeDto;
-use App\Services\EmployeeDocumentService;
+use App\Services\Dto\EmployeeDto;
+use App\Services\Dto\EmployeeDto;
 use App\Services\EmployeeService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -49,7 +47,7 @@ class EmployeeServiceTest extends TestCase
             ]
         );
 
-        $this->service = new EmployeeService(new EmployeeDocumentRepository());
+        $this->service = new EmployeeService();
     }
 
     /**
@@ -99,7 +97,7 @@ class EmployeeServiceTest extends TestCase
         $attributes['name'] = 'Mary Doe';
         $attributes['cpf'] = '33333333333';
         $attributes['job'] = '';
-        $attributes['birthday'] = '';
+        $attributes['birth_date'] = '';
         $attributes['birthCity'] = '';
         $attributes['idNumber'] = '';
         $attributes['idIssueDate'] = '';
@@ -120,7 +118,7 @@ class EmployeeServiceTest extends TestCase
 
         $attributes = array_merge($attributes, $this->getBankAccountAttributes());
 
-        $dto = new StoreEmployeeDto($attributes);
+        $dto = new EmployeeDto($attributes);
 
         Event::fakeFor(function () use ($dto) {
             //execution
@@ -146,7 +144,7 @@ class EmployeeServiceTest extends TestCase
         $attributes['name'] = 'Bob Doe';
         $attributes['cpf'] = '44444444444';
         $attributes['job'] = '';
-        $attributes['birthday'] = '';
+        $attributes['birth_date'] = '';
         $attributes['birthCity'] = '';
         $attributes['idNumber'] = '';
         $attributes['idIssueDate'] = '';
@@ -167,7 +165,7 @@ class EmployeeServiceTest extends TestCase
         
         $attributes = array_merge($attributes, $this->getBankAccountAttributes());
 
-        $dto = new UpdateEmployeeDto($attributes);
+        $dto = new EmployeeDto($attributes);
 
         Event::fakeFor(function () use ($employee, $dto) {
             //execution
@@ -229,7 +227,7 @@ class EmployeeServiceTest extends TestCase
     /**
      * @test
      */
-    public function employeeWithBondDocumentsShouldBeDeleted(): void
+    public function employeeWithDocumentsShouldBeDeleted(): void
     {
         //setting up scenario
         $employee = Employee::find(1);
@@ -241,7 +239,7 @@ class EmployeeServiceTest extends TestCase
             'employee_id' => $employee?->id,
         ]);
 
-        BondDocument::factory()->createOne([
+        Document::factory()->createOne([
             'bond_id' => $bond->id,
         ]);
 

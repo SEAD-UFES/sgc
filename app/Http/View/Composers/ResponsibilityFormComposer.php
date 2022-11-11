@@ -20,7 +20,7 @@ class ResponsibilityFormComposer
     {
         $view->with([
             'courses' => Course::orderBy('name')->get(),
-            'users' => User::orderBy('email')->get(),
+            'users' => User::orderBy('login')->get(),
             'userTypes' => UserType::orderBy('name')->get(),
         ]);
     }

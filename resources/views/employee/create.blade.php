@@ -23,8 +23,8 @@
                 <div class="col-xl-10 col-xxl-8">
                     @include('_components.alerts')
                     <form action={{ route('employees.store') }} name="formCreate" method="POST">
-                        @component('employee.componentEmployeeForm', compact('genders', 'birthStates', 'documentTypes',
-                        'maritalStatuses', 'addressStates', 'fromApproved'))@endcomponent
+                        @component('employee.componentEmployeeForm', compact('genders', 'states', 'documentTypes',
+                        'maritalStatuses', 'fromApplicant'))@endcomponent
                         <input type="hidden" name="importDocuments" id="importDocuments" value="false" />
                         <br />
                         <button type="submit" class="btn btn-primary">Cadastrar</button>

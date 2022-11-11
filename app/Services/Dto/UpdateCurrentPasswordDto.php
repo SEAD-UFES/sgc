@@ -2,11 +2,8 @@
 
 namespace App\Services\Dto;
 
-use Spatie\DataTransferObject\DataTransferObject;
-
-class UpdateCurrentPasswordDto extends DataTransferObject
+final class UpdateCurrentPasswordDto
 {
-    public ?string $password;
-
-    public ?string $confirmPassword;
+    public readonly ?string $password;
+    public readonly ?string $confirmPassword;
 }

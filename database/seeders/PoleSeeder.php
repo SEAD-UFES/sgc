@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\DB;
 
 class PoleSeeder extends Seeder
 {
+    /**
+     * @var string
+     */
     protected $tableName = 'poles';
     /**
      * Run the database seeds.

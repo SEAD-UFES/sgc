@@ -2,11 +2,8 @@
 
 namespace App\Services\Dto;
 
-use Spatie\DataTransferObject\DataTransferObject;
-
-class UpdatePoleDto extends DataTransferObject
+final class UpdatePoleDto
 {
-    public string $name;
-
-    public string $description;
+    public readonly string $name;
+    public readonly string $description;
 }

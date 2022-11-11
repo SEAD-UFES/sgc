@@ -43,7 +43,7 @@ class UserService
     public function create(StoreUserDto $storeUserDto): User
     {
         return User::create([
-            'email' => mb_strtolower($storeUserDto->email),
+            'login' => mb_strtolower($storeUserDto->login),
             'password' => Hash::make($storeUserDto->password),
             'active' => $storeUserDto->active,
             'employee_id' => $storeUserDto->employeeId,
@@ -75,7 +75,7 @@ class UserService
     public function update(UpdateUserDto $updateUserDto, User $user): User
     {
         $user->update([
-            'email' => mb_strtolower($updateUserDto->email),
+            'login' => mb_strtolower($updateUserDto->login),
             'password' => $updateUserDto->password !== '' ? Hash::make($updateUserDto->password) : $user->password,
             'active' => $updateUserDto->active,
             'employee_id' => $updateUserDto->employeeId,

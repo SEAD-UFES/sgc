@@ -2,10 +2,18 @@
 
 namespace Database\Seeders;
 
+use App\Models\Address;
+use App\Models\BankAccount;
 use Illuminate\Database\Seeder;
 use App\Models\Employee;
 use App\Models\Course;
 use App\Models\Bond;
+use App\Models\BondCourse;
+use App\Models\BondPole;
+use App\Models\Identity;
+use App\Models\InstitutionalDetail;
+use App\Models\PersonalDetail;
+use App\Models\Phone;
 use App\Models\Role;
 use App\Models\Pole;
 
@@ -24,22 +32,56 @@ class DummyEmployeeSeeder extends Seeder
          * - each course has only one coordinator
          * - coordinators only have one course
          */
-        $pole = Pole::where('name', 'SEAD')->first();
-
         foreach (Course::all() as $course) {
             $role = Role::where('name', 'like', 'Coordenador de curso%')->get()->random();
 
             $employee = Employee::factory()
-                ->assumePopulatedDatabase()
+                // ->assumePopulatedDatabase()
+                ->create();
+
+            PersonalDetail::factory()
                 ->create([
-                    'job' => 'Coordenador de Curso',
+                    'employee_id' => $employee->id,
                 ]);
 
-            Bond::factory()->create([
+            Phone::factory()->makeLandline()
+                ->create([
+                    'employee_id' => $employee->id,
+                ])->make;
+
+            Phone::factory()->makeMobile()
+                ->create([
+                    'employee_id' => $employee->id,
+                ]);
+
+            Address::factory()
+                ->create([
+                    'employee_id' => $employee->id,
+                ]);
+
+            BankAccount::factory()
+                ->create([
+                    'employee_id' => $employee->id,
+                ]);
+
+            InstitutionalDetail::factory()
+                ->create([
+                    'employee_id' => $employee->id,
+                ]);
+
+            Identity::factory()
+                ->create([
+                    'employee_id' => $employee->id,
+                ]);
+
+            $bond = Bond::factory()->create([
                 'employee_id' => $employee,
-                'course_id' => $course,
                 'role_id' => $role,
-                'pole_id' => $pole,
+            ]);
+
+            BondCourse::create([
+                'bond_id' => $bond->getAttribute('id'),
+                'course_id' => $course->getAttribute('id'),
             ]);
         }
 
@@ -58,18 +100,115 @@ class DummyEmployeeSeeder extends Seeder
         foreach ($courses as $course) {
             foreach ($poles as $pole) {
                 $employee = Employee::factory()
-                    ->assumePopulatedDatabase()
+                    // ->assumePopulatedDatabase()
+                    ->create();
+
+                PersonalDetail::factory()
                     ->create([
-                        'job' => 'Tutor Presencial',
+                        'employee_id' => $employee->id,
                     ]);
 
-                Bond::factory()->create([
+                Phone::factory()->makelandline()
+                    ->create([
+                        'employee_id' => $employee->id,
+                    ]);
+
+                Phone::factory()->makeMobile()
+                    ->create([
+                        'employee_id' => $employee->id,
+                    ]);
+
+                Address::factory()
+                    ->create([
+                        'employee_id' => $employee->id,
+                    ]);
+
+                BankAccount::factory()
+                    ->create([
+                        'employee_id' => $employee->id,
+                    ]);
+
+                InstitutionalDetail::factory()
+                    ->create([
+                        'employee_id' => $employee->id,
+                    ]);
+
+                Identity::factory()
+                    ->create([
+                        'employee_id' => $employee->id,
+                    ]);
+
+                $bond = Bond::factory()->create([
                     'employee_id' => $employee,
-                    'course_id' => $course,
                     'role_id' => $role,
-                    'pole_id' => $pole,
+                ]);
+
+                BondCourse::create([
+                    'bond_id' => $bond->getAttribute('id'),
+                    'course_id' => $course->getAttribute('id'),
+                ]);
+
+                BondPole::create([
+                    'bond_id' => $bond->getAttribute('id'),
+                    'pole_id' => $pole->getAttribute('id'),
                 ]);
             }
+        }
+
+        /*
+         *  "Tutores a distância" (um por curso)
+         */
+        foreach (Course::all() as $course) {
+            $role = Role::where('name', 'Tutor a Distancia')->first();
+
+            $employee = Employee::factory()
+                // ->assumePopulatedDatabase()
+                ->create();
+
+            PersonalDetail::factory()
+                ->create([
+                    'employee_id' => $employee->id,
+                ]);
+
+            Phone::factory()->makeLandline()
+                ->create([
+                    'employee_id' => $employee->id,
+                ]);
+
+            Phone::factory()->makeMobile()
+                ->create([
+                    'employee_id' => $employee->id,
+                ]);
+
+            Address::factory()
+                ->create([
+                    'employee_id' => $employee->id,
+                ]);
+
+            BankAccount::factory()
+                ->create([
+                    'employee_id' => $employee->id,
+                ]);
+
+            InstitutionalDetail::factory()
+                ->create([
+                    'employee_id' => $employee->id,
+                ]);
+
+            Identity::factory()
+                ->create([
+                    'employee_id' => $employee->id,
+                ]);
+
+            $bond = Bond::factory()->create([
+                'employee_id' => $employee,
+                'role_id' => $role,
+            ]);
+
+            BondCourse::create([
+                'bond_id' => $bond->getAttribute('id'),
+                'course_id' => $course->getAttribute('id'),
+            ]);
         }
     }
 }

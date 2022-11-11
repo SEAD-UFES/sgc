@@ -6,7 +6,7 @@
         @foreach ($users as $user)
             <option value="{{ $user->id }}"
                 {{ isset($responsibility) ? ($responsibility->user_id == $user->id ? 'selected' : '') : (old('user_id') == $user->id ? 'selected' : '') }}>
-                {{ $user->email }}</option>
+                {{ $user->login }}</option>
         @endforeach
     </select>
     @error('user_id')

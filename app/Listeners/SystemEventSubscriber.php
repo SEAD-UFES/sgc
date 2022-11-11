@@ -2,8 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\BondDocumentExported;
-use App\Events\EmployeeDocumentExported;
+use App\Events\DocumentExported;
 use App\Events\FileImported;
 use App\Events\NotificationDismissed;
 use App\Logging\LoggerInterface;
@@ -86,30 +85,15 @@ class SystemEventSubscriber
     /**
      * Handle bond document exported events.
      *
-     * @param  BondDocumentExported  $event
+     * @param  DocumentExported  $event
      *
      * @return void
      */
-    public function handleBondDocumentExported(BondDocumentExported $event)
+    public function handleDocumentExported(DocumentExported $event)
     {
         $this->logger->logSystemEvent(
             'bond_document_exported',
             $event->bond,
-        );
-    }
-
-    /**
-     * Handle employee document exported events.
-     *
-     * @param  EmployeeDocumentExported  $event
-     *
-     * @return void
-     */
-    public function handleEmployeeDocumentExported(EmployeeDocumentExported $event)
-    {
-        $this->logger->logSystemEvent(
-            'employee_document_exported',
-            $event->employee,
         );
     }
 
@@ -141,8 +125,7 @@ class SystemEventSubscriber
             Login::class => 'handleUserLogin',
             Logout::class => 'handleUserLogout',
             FileImported::class => 'handleFileImported',
-            BondDocumentExported::class => 'handleBondDocumentExported',
-            EmployeeDocumentExported::class => 'handleEmployeeDocumentExported',
+            DocumentExported::class => 'handleDocumentExported',
             NotificationDismissed::class => 'handleNotificationDismissed',
         ];
     }

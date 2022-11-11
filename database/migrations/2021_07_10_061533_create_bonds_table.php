@@ -15,19 +15,12 @@ class CreateBondsTable extends Migration
     {
         Schema::create('bonds', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_id')->constrained('courses');
             $table->foreignId('employee_id')->constrained('employees');
             $table->foreignId('role_id')->constrained('roles');
-            $table->foreignId('pole_id')->constrained('poles');
-            //$table->foreignId('classroom_id')->constrained('classrooms');
-            $table->date('begin')->nullable();
-            $table->date('end')->nullable();
-            $table->string('announcement', 10)->nullable();
-            $table->timestamp('terminated_at')->nullable();
             $table->boolean('volunteer')->default(false);
-            $table->boolean('impediment')->default(true);
-            $table->string('impediment_description')->nullable()->default('Vínculo ainda não revisado');
-            $table->timestamp('uaba_checked_at')->nullable();
+            $table->string('hiring_process', 10);
+            $table->date('begin');
+            $table->timestamp('terminated_at')->nullable();
             $table->timestamps();
         });
     }

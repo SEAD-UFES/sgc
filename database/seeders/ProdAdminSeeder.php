@@ -10,17 +10,24 @@ use Carbon\Carbon;
 class ProdAdminSeeder extends Seeder
 {
 
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
     public function run()
     {
         DB::table('users')->insert([
-            'email' => 'admin@ufes.br',
+            'login' => 'admin@ufes.br',
             'password' => Hash::make('changeme'),
             'active' => true,
             'employee_id' => null,
         ]);
+
+        $sysAdmId = DB::query()->from('users')->where('login', 'admin@ufes.br')->limit(1)->truncate('id');
         
         DB::table('responsibilities')->insert([
-            'user_id' => 1,
+            'user_id' => $sysAdmId,
             'user_type_id' => 1,
             'course_id' => null,
             'begin' => Carbon::now(),

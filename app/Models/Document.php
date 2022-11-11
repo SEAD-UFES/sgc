@@ -26,34 +26,60 @@ class Document extends Model
     use LogsActivity;
 
     /**
-     * @var array<int, string>
+     * @var string
      */
-    public $sortable = [
-        'id',
-        'original_name',
-        'created_at',
-        'updated_at',
-    ];
-
     protected $table = 'documents';
+
+    /**
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * @var bool
+     */
+    public $incrementing = true;
 
     /**
      * @var array<int, string>
      */
     protected $fillable = [
-        'original_name',
+        'file_name',
+        'related_type',
+        'related_id',
         'document_type_id',
-        'documentable_type',
-        'documentable_id',
         'file_data',
     ];
 
     /**
      * @var array<int, string>
-     *
-     * @phpstan-ignore-next-line
      */
-    private static $whiteListFilter = ['*'];
+    public static $sortable = [
+        'id',
+        'file_name',
+        'created_at',
+        'updated_at',
+    ];
+
+    /**
+     * @var array<int, string>
+     */
+    public static $accepted_filters = [
+        'originalnameContains',
+        'documentTypeNameContains',
+        'bond',
+        'bondEmployeeNameContains',
+        'bondRoleNameContains',
+        'bondPoleNameContains',
+        'bondCourseNameContains',
+    ];
+
+    // /**
+    //  * @var array<int, string>
+    //  *
+    //  * @phpstan-ignore-next-line
+    //  */
+    // private static $whiteListFilter = ['*'];
 
     /**
      * @return BelongsTo<DocumentType, Document>
@@ -66,7 +92,7 @@ class Document extends Model
     /**
      * @return MorphTo<Model, Document>
      */
-    public function documentable(): MorphTo
+    public function related(): MorphTo
     {
         return $this->morphTo();
     }

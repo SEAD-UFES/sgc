@@ -3,7 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\Bond;
-use App\Models\BondDocument;
+use App\Models\Document;
 use App\Models\Course;
 use App\Models\Document;
 use App\Models\DocumentType;
@@ -32,11 +32,11 @@ class RightsDocumentArchived extends Notification implements ShouldQueue
         /**
          * @var DocumentType $documentType
          */
-        $documentType = DocumentType::where('name', 'Ficha de Inscrição - Termos e Licença')->first();
+        $documentType = DocumentType::where('name', 'Termo de cessão de direitos')->first();
         /**
          * @var Document $rightsDocument
          */
-        $rightsDocument = Document::where('document_type_id', $documentType->id)->whereHasMorph('documentable', BondDocument::class, function ($query) {
+        $rightsDocument = Document::where('document_type_id', $documentType->id)->whereHasMorph('documentable', Document::class, function ($query) {
             $query->where('bond_id', $this->bond->id);
         })->first();
         $this->document = $rightsDocument;
@@ -99,7 +99,7 @@ class RightsDocumentArchived extends Notification implements ShouldQueue
             'employee_name' => $employee->name,
             'role_name' => $role->name,
             'document_id' => (string) $this->document->id,
-            'document_name' => $this->document->original_name,
+            'document_name' => $this->document->file_name,
         ];
     }
 }

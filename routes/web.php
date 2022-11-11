@@ -1,21 +1,19 @@
 <?php
 
-use App\Http\Controllers\ApprovedBatchController;
-use App\Http\Controllers\ApprovedController;
+use App\Http\Controllers\ApplicantBatchController;
+use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BondController;
-use App\Http\Controllers\BondDocumentBatchController;
-use App\Http\Controllers\BondDocumentController;
+use App\Http\Controllers\DocumentBatchController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseTypeController;
-use App\Http\Controllers\DesignateApprovedController;
+use App\Http\Controllers\DesignateApplicantController;
 use App\Http\Controllers\DestroyUserEmployeeLinkController;
 use App\Http\Controllers\DismissNotificationController;
 use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\EmployeeDocumentBatchController;
-use App\Http\Controllers\EmployeeDocumentController;
-use App\Http\Controllers\DownloadBondDocumentsPackController;
-use App\Http\Controllers\DownloadEmployeeDocumentsPackController;
+use App\Http\Controllers\DownloadDocumentsPackController;
+use App\Http\Controllers\ImpedimentController;
 use App\Http\Controllers\InstitutionalDetailController;
 use App\Http\Controllers\PoleController;
 use App\Http\Controllers\RequestBondReviewController;
@@ -57,44 +55,31 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::controller(ApprovedBatchController::class)->group(function () {
-        Route::get('approveds/create-many/step-1', 'createManyStep1')->name('approveds.create_many.step_1');
-        Route::post('approveds/create-many/step-1', 'storeManyStep1')->name('approveds.store_many.step_1');
-        Route::get('approveds/create-many/step-2', 'createManyStep2')->name('approveds.create_many.step_2');
-        Route::post('approveds/create-many/step-2', 'storeManyStep2')->name('approveds.store_many.step_2');
+    Route::controller(ApplicantBatchController::class)->group(function () {
+        Route::get('applicants/create-many/step-1', 'createManyStep1')->name('applicants.create_many.step_1');
+        Route::post('applicants/create-many/step-1', 'storeManyStep1')->name('applicants.store_many.step_1');
+        Route::get('applicants/create-many/step-2', 'createManyStep2')->name('applicants.create_many.step_2');
+        Route::post('applicants/create-many/step-2', 'storeManyStep2')->name('applicants.store_many.step_2');
     });
 
-    Route::controller(ApprovedController::class)->group(function () {
-        Route::get('approveds', 'index')->name('approveds.index');
-        Route::get('approveds/create', 'create')->name('approveds.create');
-        Route::post('approveds', 'store')->name('approveds.store');
-        Route::patch('approveds/{approved}', 'update')->name('approveds.update');
-        Route::delete('approveds/{approved}', 'destroy')->name('approveds.destroy');
+    Route::controller(ApplicantController::class)->group(function () {
+        Route::get('applicants', 'index')->name('applicants.index');
+        Route::get('applicants/create', 'create')->name('applicants.create');
+        Route::post('applicants', 'store')->name('applicants.store');
+        Route::patch('applicants/{applicant}', 'update')->name('applicants.update');
+        Route::delete('applicants/{applicant}', 'destroy')->name('applicants.destroy');
     });
-    Route::controller(BondDocumentBatchController::class)->group(function () {
-        Route::get('bonds/documents/create-many/step-1', 'create')->name('bonds_documents.create_many');
-        Route::post('bonds/documents/create-many/step-2', 'store')->name('bonds_documents.store_many_1');
-        Route::post('bonds/documents/create-many/step-3', 'store2')->name('bonds_documents.store_many_2');
-    });
-
-    Route::controller(BondDocumentController::class)->group(function () {
-        Route::get('bonds/documents', 'index')->name('bonds_documents.index');
-        Route::get('bonds/documents/create', 'create')->name('bonds_documents.create');
-        Route::post('bonds/documents', 'store')->name('bonds_documents.store');
-        Route::get('bonds/documents/{id}/{htmlTitle}', 'show')->name('bonds_documents.show');
+    Route::controller(DocumentBatchController::class)->group(function () {
+        Route::get('documents/create-many/step-1', 'create')->name('documents.create_many');
+        Route::post('documents/create-many/step-2', 'store')->name('documents.store_many_1');
+        Route::post('documents/create-many/step-3', 'store2')->name('documents.store_many_2');
     });
 
-    Route::controller(EmployeeDocumentBatchController::class)->group(function () {
-        Route::get('employees/documents/create-many/step-1/{id?}', 'create')->name('employees_documents.create_many');
-        Route::post('employees/documents/create-many/step-2', 'store')->name('employees_documents.store_many_1');
-        Route::post('employees/documents/create-many/step-3', 'store2')->name('employees_documents.store_many_2');
-    });
-
-    Route::controller(EmployeeDocumentController::class)->group(function () {
-        Route::get('employees/documents', 'index')->name('employees_documents.index');
-        Route::get('employees/documents/create', 'create')->name('employees_documents.create');
-        Route::post('employees/documents', 'store')->name('employees_documents.store');
-        Route::get('employees/documents/{id}/{htmlTitle}', 'show')->name('employees_documents.show');
+    Route::controller(DocumentController::class)->group(function () {
+        Route::get('documents', 'index')->name('documents.index');
+        Route::get('documents/create', 'create')->name('documents.create');
+        Route::post('documents', 'store')->name('documents.store');
+        Route::get('documents/{id}/{htmlTitle}', 'show')->name('documents.show');
     });
 
     Route::controller(InstitutionalDetailController::class)->group(function () {
@@ -117,15 +102,14 @@ Route::middleware('auth')->group(function () {
     });
 
     // Single Action Controllers
-    Route::get('approveds/{approved}/designate', DesignateApprovedController::class)->name('approveds.designate');
+    Route::get('applicants/{applicant}/designate', DesignateApplicantController::class)->name('applicants.designate');
     Route::get('bonds/{bond}/institutional-details/send-email', SendNewEmployeeEmailsController::class)->name('bonds.send_new_employee_emails');
     Route::post('bonds/{bond}/review', ReviewBondController::class)->name('bonds.review');
     Route::get('bonds/{bond}/review-request', RequestBondReviewController::class)->name('bonds.request_review');
     Route::get('notifications/{notification}/dismiss', DismissNotificationController::class)->name('notifications.dismiss');
     Route::patch('users/current/password', UpdateCurrentPasswordController::class)->name('users.current_password_update');
     Route::delete('users/{user}/destroy-employee-link', DestroyUserEmployeeLinkController::class)->name('users.destroy_employee_link');
-    Route::get('bonds/{bond}/documents-export', DownloadBondDocumentsPackController::class)->name('bonds_documents.export');
-    Route::get('employees/{employee}/documents-export/', DownloadEmployeeDocumentsPackController::class)->name('employees_documents.export');
+    Route::get('bonds/{bond}/documents-export', DownloadDocumentsPackController::class)->name('documents.export');
 
     Route::get('coursetypes', [CourseTypeController::class, 'index'])->name('coursetypes.index');
 
@@ -143,4 +127,8 @@ Route::middleware('auth')->group(function () {
             'show'
         ]);
     Route::resource('users', UserController::class);
+
+    Route::resource('impediments', ImpedimentController::class)->only([
+        'store', 'update'
+    ]);
 });
