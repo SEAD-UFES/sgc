@@ -43,7 +43,7 @@
                                 <option value="">Selecione o vínculo</option>
                                 @foreach ($bonds as $bond)
                                     <option value="{{ $bond->id }}" {{-- {{($documentType->id == $document->document_type_id) ? 'selected' : ''}} --}}>
-                                        {{ $bond->employee->name . ' - ' . $bond->role->name . ' - ' . $bond->course->name }}</option>
+                                        {{ $bond->employee->name . ' - ' . $bond->role->name . (isset($bond->course) ? (' - ' . $bond->course->name) : '') }}</option>
                                 @endforeach
                             </select>
                             @error('bond_id')

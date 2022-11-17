@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use App\Models\Bond;
-use App\Models\Document;
 use App\Models\Course;
 use App\Models\Document;
 use App\Models\DocumentType;
@@ -36,9 +35,9 @@ class RightsDocumentArchived extends Notification implements ShouldQueue
         /**
          * @var Document $rightsDocument
          */
-        $rightsDocument = Document::where('document_type_id', $documentType->id)->whereHasMorph('documentable', Document::class, function ($query) {
-            $query->where('bond_id', $this->bond->id);
-        })->first();
+        $rightsDocument = Document::where('document_type_id', $documentType->id)
+            ->whereHasMorph('related', Bond::class)
+            ->where('related_id', $this->bond->id)->first();
         $this->document = $rightsDocument;
     }
 

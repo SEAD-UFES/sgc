@@ -62,6 +62,10 @@ class DocumentService
 
             $document = $this->repository->createBondDocument($storeDocumentDto);
         });
+        
+        /** @var Bond */
+        $bond = Bond::find($storeDocumentDto->relatedId);
+        BondService::bondCheckRights($bond);
 
         return $document;
     }

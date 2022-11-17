@@ -214,12 +214,12 @@
                             <div class="card-body">
                                 <div class="mb-2 row">
                                     <div class="col-sm-12 col-lg-12"><h5>Cadastrado</h5></div>
-                                    <div class="col-sm-6 col-lg-6"><strong>Por:</strong> {{ $bond->createdBy?->name ?? '-' }}</div>
+                                    <div class="col-sm-6 col-lg-6"><strong>Por:</strong> {{ $bond->createdBy?->login ?? '-' }}</div>
                                     <div class="col-sm-6 col-lg-6"><strong>Em:</strong> {{ (is_null($bond->createdOn)) ? '-' : \Carbon\Carbon::parse($bond->createdOn)->isoFormat('DD/MM/Y HH:mm') }}</div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-12 col-lg-12"><h5>Atualizado por último</h5></div>
-                                    <div class="col-sm-6 col-lg-6"><strong>Por:</strong> {{ $bond->updatedBy?->name ?? '-' }}</div>
+                                    <div class="col-sm-6 col-lg-6"><strong>Por:</strong> {{ $bond->updatedBy?->login ?? '-' }}</div>
                                     <div class="col-sm-6 col-lg-6"><strong>Em:</strong> {{ (is_null($bond->updatedOn)) ? '-' : \Carbon\Carbon::parse($bond->updatedOn)->isoFormat('DD/MM/Y HH:mm') }}</div>
                                 </div>
                             </div>

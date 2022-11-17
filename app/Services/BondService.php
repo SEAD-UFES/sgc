@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Events\BondCreated;
 use App\Events\BondImpeded;
-use App\Events\BondLiberated;
 use App\Events\BondReviewRequested;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
@@ -14,7 +13,6 @@ use App\Interfaces\DocumentRepositoryInterface;
 use App\Models\Bond;
 use App\Models\DocumentType;
 use App\Models\User;
-use App\Services\Dto\ReviewBondDto;
 use App\Services\Dto\BondDto;
 use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -23,6 +21,8 @@ use Spatie\Activitylog\Models\Activity;
 
 class BondService
 {
+    private const RIGHTS_IMPEDIMENT_DESCRIPTION = '[SGC: Documento "Termo de cessão de direitos" ainda não importado]';
+
     public function __construct(private DocumentRepositoryInterface $documentRepository)
     {
     }
@@ -83,7 +83,7 @@ class BondService
             ]);
 
             $bond->impediments()->create([
-                'description' => '[SGC: Documento "Termo de cessão de direitos" ainda não arquivado]',
+                'description' => self::RIGHTS_IMPEDIMENT_DESCRIPTION,
                 'reviewer_id' => User::where('login', 'sgc_system')->first()?->id,
                 'reviewed_at' => Carbon::now(),
             ]);
@@ -94,9 +94,9 @@ class BondService
                 'institution_name' => TextHelper::titleCase($bondDto->qualificationInstitution),
             ]);
 
-            BondCreated::dispatch($bond);
+            // BondCreated::dispatch($bond);
+            // BondImpeded::dispatch($bond);
         });
-        
         return $bond;
     }
 
@@ -125,30 +125,63 @@ class BondService
     /**
      * Undocumented function
      *
-     * @param BondDto $updateBondDto
+     * @param BondDto $bondDto
      * @param Bond $bond
      *
      * @return Bond
      */
-    public function update(BondDto $updateBondDto, Bond $bond): Bond
+    public function update(BondDto $bondDto, Bond $bond): Bond
     {
-        DB::transaction(static function () use ($updateBondDto, $bond) {
+        DB::transaction(static function () use ($bondDto, $bond) {
             $bond->update([
-                'employee_id' => $updateBondDto->employeeId,
-                'role_id' => $updateBondDto->roleId,
-                'course_id' => $updateBondDto->courseId,
-                'pole_id' => $updateBondDto->poleId,
-                'begin' => $updateBondDto->begin,
-                'terminated_at' => $updateBondDto->terminatedAt,
-                'hiring_process' => $updateBondDto->hiringProcess,
-                'volunteer' => $updateBondDto->volunteer,
+                'employee_id' => $bondDto->employeeId,
+                'role_id' => $bondDto->roleId,
+                'begin' => $bondDto->begin,
+                'terminated_at' => $bondDto->terminatedAt,
+                'hiring_process' => $bondDto->hiringProcess,
+                'volunteer' => $bondDto->volunteer,
             ]);
 
-            if ($updateBondDto->qualificationKnowledgeArea !== null) {
+            if (isset($bondDto->courseId)) {
+                if ($bond->courses->count() > 0) {
+                    $bond->courses->first()?->update([
+                        'course_id' => $bondDto->courseId,
+                    ]);
+                }
+                else {
+                    $bond->courses()->attach($bondDto->courseId);
+                }
+            } else {
+                $bond->courses()->detach();
+            }
+
+            if ($bondDto->poleId) {
+                if ($bond->poles->count() > 0) {
+                    $bond->poles->first()?->update([
+                        'pole_id' => $bondDto->poleId,
+                    ]);
+                }
+                else {
+                    $bond->poles()->attach($bondDto->poleId);
+                }
+            } else {
+                $bond->poles()->detach();
+            }
+
+            $bond->impediments()->create([
+                'description' => '[SGC: Vínculo atualizado e ainda não revisado]',
+                'reviewer_id' => User::where('login', 'sgc_system')->first()?->id,
+                'reviewed_at' => Carbon::now(),
+            ]);
+            BondImpeded::dispatch($bond);
+
+            self::bondCheckRights($bond);
+
+            if ($bondDto->qualificationKnowledgeArea !== null) {
                 $bond->qualification()->updateOrCreate([
-                    'knowledge_area' => $updateBondDto->qualificationKnowledgeArea,
-                    'course_name' => TextHelper::titleCase($updateBondDto->qualificationCourse),
-                    'institution_name' => TextHelper::titleCase($updateBondDto->qualificationInstitution),
+                    'knowledge_area' => $bondDto->qualificationKnowledgeArea,
+                    'course_name' => TextHelper::titleCase($bondDto->qualificationCourse),
+                    'institution_name' => TextHelper::titleCase($bondDto->qualificationInstitution),
                 ]);
             }
         });
@@ -166,52 +199,45 @@ class BondService
     public function delete(Bond $bond)
     {
         DB::transaction(static function () use ($bond) {
-            foreach ($bond->documents as $document) {
-                $document->delete();
-            }
+            $bond->documents()->delete();
+
+            $bond->courses()->detach();
+            $bond->poles()->detach();
 
             $bond->qualification()->delete();
+
+            $bond->impediments()->delete();
 
             $bond->delete();
         });
     }
 
-    /**
-     * Undocumented function
-     *
-     * @param ReviewBondDto $reviewBondDto
-     * @param Bond $bond
-     *
-     * @return Bond
-     */
-    public function review(ReviewBondDto $reviewBondDto, Bond $bond): Bond
-    {
-        //get impediment; check if bond have 'rights'; if not, impediment = true.
-        $impediment = $reviewBondDto->impediment;
-        $impediment_description = $reviewBondDto->impedimentDescription;
+    // /**
+    //  * Undocumented function
+    //  *
+    //  * @param ReviewBondDto $reviewBondDto
+    //  * @param Bond $bond
+    //  *
+    //  * @return Bond
+    //  */
+    // public function review(ReviewBondDto $reviewBondDto, Bond $bond): Bond
+    // {
 
-        $bondHaveRights = self::bondHaveRights($bond);
+    //     $bond->update([
+    //         'impediment' => $impediment,
+    //         'impediment_description' => $impediment_description,
+    //         'uaba_checked_at' => now(),
+    //     ]);
 
-        if (!$bondHaveRights) {
-            $impediment = true;
-            $impediment_description = "{$impediment_description}\n[SGC: O Sistema não encontrou documento de Termo de cessão de direitos.]";
-        }
+    //     if ($bond->impediment === true) {
+    //         BondImpeded::dispatch($bond);
+    //     } else {
+    //         BondLiberated::dispatch($bond);
+    //         RightsDocumentArchived::dispatch($bond);
+    //     }
 
-        $bond->update([
-            'impediment' => $impediment,
-            'impediment_description' => $impediment_description,
-            'uaba_checked_at' => now(),
-        ]);
-
-        if ($bond->impediment === true) {
-            BondImpeded::dispatch($bond);
-        } else {
-            BondLiberated::dispatch($bond);
-            RightsDocumentArchived::dispatch($bond);
-        }
-
-        return $bond;
-    }
+    //     return $bond;
+    // }
 
     /**
      * Undocumented function
@@ -279,7 +305,30 @@ class BondService
         if ($bond->documents->where('document_type_id', $typeId)->count() > 0) {
             return true;
         }
-        
+
         return false;
+    }
+
+    public static function bondCheckRights(Bond $bond): void
+    {
+        $bondHaveRights = self::bondHaveRights($bond);
+
+        $bondAlreadyImpededForRights = $bond->impediments->contains('description', self::RIGHTS_IMPEDIMENT_DESCRIPTION);
+
+        if ($bondHaveRights && $bondAlreadyImpededForRights) {
+            $bond->impediments()->where('description', self::RIGHTS_IMPEDIMENT_DESCRIPTION)->update([
+                'closed_by_id' => User::where('login', 'sgc_system')->first()?->id,
+                'closed_at' => Carbon::now(),
+            ]);
+            RightsDocumentArchived::dispatch($bond);
+        }
+
+        if (!$bondHaveRights && !$bondAlreadyImpededForRights) {
+            $bond->impediments()->create([
+                'description' => self::RIGHTS_IMPEDIMENT_DESCRIPTION,
+                'reviewer_id' => User::where('login', 'sgc_system')->first()?->id,
+                'reviewed_at' => Carbon::now(),
+            ]);
+        }
     }
 }
