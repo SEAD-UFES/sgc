@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CourseTypeService;
+use App\Enums\Degrees;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class CourseTypeController extends Controller
 {
-    public function __construct(private CourseTypeService $service)
-    {
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +17,7 @@ class CourseTypeController extends Controller
      */
     public function index(Request $request): View
     {
-        $courseTypes = $this->service->list();
+        $courseTypes = Degrees:: cases();
 
         return view('coursetype.index', compact('courseTypes'));
     }

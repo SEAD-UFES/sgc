@@ -5,26 +5,23 @@ namespace App\Services;
 use App\Events\ModelRead;
 use App\Models\Employee;
 use App\Models\InstitutionalDetail;
-use App\Services\Dto\StoreInstitutionalDetailDto;
-use App\Services\Dto\UpdateInstitutionalDetailDto;
-use Illuminate\Support\Arr;
+use App\Services\Dto\InstitutionalDetailDto;
 
 class InstitutionalDetailService
 {
     /**
      * Undocumented function
      *
-     * @param StoreInstitutionalDetailDto $storeInstitutionalDetailDto
+     * @param InstitutionalDetailDto $storeInstitutionalDetailDto
      * @param Employee $employee
      *
      * @return InstitutionalDetail
      */
-    public function create(StoreInstitutionalDetailDto $storeInstitutionalDetailDto, Employee $employee): InstitutionalDetail
+    public function create(InstitutionalDetailDto $storeInstitutionalDetailDto, Employee $employee): InstitutionalDetail
     {
-        return InstitutionalDetail::create([
+        return $employee->institutionalDetail()->create([
             'login' => mb_strtolower($storeInstitutionalDetailDto->login),
             'email' => mb_strtolower($storeInstitutionalDetailDto->email),
-            'employee_id' => $employee->id,
         ]);
     }
 
@@ -45,30 +42,20 @@ class InstitutionalDetailService
     /**
      * Undocumented function
      *
-     * @param UpdateInstitutionalDetailDto $updateInstitutionalDetailDto
+     * @param InstitutionalDetailDto $updateInstitutionalDetailDto
      * @param Employee $employee
      *
      * @return InstitutionalDetail
      */
-    public function update(UpdateInstitutionalDetailDto $updateInstitutionalDetailDto, Employee $employee): InstitutionalDetail
+    public function update(InstitutionalDetailDto $updateInstitutionalDetailDto, Employee $employee): InstitutionalDetail
     {
-        $detail = $employee->institutionalDetail;
-
-        if ($detail === null) {
-            return $this->create(
-                new StoreInstitutionalDetailDto(
-                    Arr::only($updateInstitutionalDetailDto->toArray(), ['login', 'email'])
-                ),
-                $employee
-            );
-        }
-
-        $detail->update([
-            'login' => mb_strtolower($updateInstitutionalDetailDto->login),
-            'email' => mb_strtolower($updateInstitutionalDetailDto->email),
-        ]);
-
-        return $detail;
+        return $employee->institutionalDetail()->updateOrCreate(
+            ['employee_id' => $employee->id],
+            [
+                'login' => mb_strtolower($updateInstitutionalDetailDto->login),
+                'email' => mb_strtolower($updateInstitutionalDetailDto->email),
+            ]
+        );
     }
 
     /**

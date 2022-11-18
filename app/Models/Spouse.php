@@ -14,6 +14,11 @@ class Spouse extends Model
     use LogsActivity;
 
     /**
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
      * @var string
      */
     protected $table = 'spouses';
@@ -22,11 +27,6 @@ class Spouse extends Model
      * @var string
      */
     protected $primaryKey = 'employee_id';
-
-    /**
-     * @var bool
-     */
-    public $incrementing = false;
 
     /**
      * @var array<int, string>

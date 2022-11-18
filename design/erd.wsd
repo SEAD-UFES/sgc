@@ -1,0 +1,235 @@
+@startuml
+
+' hide the spot
+hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+skinparam ranksep 40
+skinparam nodesep 60
+
+entity "applicants" {
+    name
+    email
+    hiring_process
+    call_state
+}
+
+entity "applicant_call_states" #Yellow {
+    value
+    name
+    --
+    [Enum]
+}
+
+entity "addresses" #HotPink {
+    street
+    number
+    complement
+    district
+    city
+    zip_code
+}
+
+entity "bank_accounts" #HotPink {
+    -bank_name
+    -agency_number
+    -account_number
+}
+
+entity "bonds" #HotPink {
+    begin
+    terminated_at
+    hiring_process
+    volunteer
+    reviewer_checked_at
+}
+
+entity "impediments" #Pink {
+    description
+}
+
+entity "courses" #Coral {
+    -name
+    description
+    degree
+    lms_url
+}
+
+entity "course_classes" #Coral {
+    -code
+    name
+    cpp
+}
+
+entity "course_degrees" #Yellow {
+    value
+    name
+    --
+    [Enum]
+}
+
+entity "documents" #HotPink {
+    file_name
+    file_data
+}
+
+entity "document_types" #Coral {
+    -name
+    description
+}
+
+entity "employees" #Coral {
+    -cpf
+    name
+    job
+    gender
+    birth_date
+    birth_city
+    marital_status
+    father_name
+    mother_name
+    email
+}
+
+entity "spouses" #Pink {
+    name
+}
+
+entity "ids" #Pink {
+    number
+    issue_date
+    issue_agency_name
+}
+
+entity "grant_types" #Yellow {
+    value
+    name
+    --
+    [Enum]
+}
+
+entity "institutional_details" #Pink {
+    -login
+    email
+}
+
+entity "phones" #HotPink {
+    -area_code
+    -number
+    type
+}
+
+entity "poles" #Coral {
+    -name
+    description
+}
+
+entity "qualifications" #Pink {
+    knowledge_area
+    course_name
+    institution_name
+}
+
+entity "roles" #Coral {
+    -name
+    description
+    grant_value
+    grant_type
+}
+
+entity "states" #Yellow {
+    value
+    name
+    --
+    [Enum]
+}
+
+entity "users" #Coral {
+    -login_email
+    password
+    active
+}
+
+entity "user_types" #Coral {
+    -name
+    acronym
+    description
+}
+
+entity "genders" #Yellow {
+    value
+    name
+    --
+    [Enum]
+}
+
+entity "knowledge_areas" #Yellow {
+    value
+    name
+    --
+    [Enum]
+}
+
+entity "marital_statuses" #Yellow {
+    value
+    name
+    --
+    [Enum]
+}
+
+employees ||..o| spouses #Green
+addresses }o..|| states
+applicants ||...|{ phones
+
+'applicants }o..|| applicant_states
+applicant_call_states ||..o{ applicants
+applicants }o..o| courses #Tomato
+applicants }o...o| poles #Tomato
+applicants }o..|| roles
+
+bonds }o..o|courses #Tomato
+'bonds }o..o|course_classes
+course_classes |o...o{ bonds #Tomato
+bonds ||..o{ documents
+bonds }o..o| poles #Tomato
+bonds ||..|| qualifications #Green
+bonds }o..|| roles
+
+courses }o..|| course_degrees
+
+documents }o..|| document_types
+
+employees ||..|{ addresses
+'employees ||..|{ bank_accounts
+bank_accounts }|..|| employees
+employees ||..|{ bonds
+employees ||..o{ documents
+'employees }o..|| document_types
+'employees ||..|| institutional_details
+institutional_details |o..|| employees #Green
+employees ||..|{ phones
+employees }o..|| states
+
+roles }o..|| grant_types
+
+users }o..|| employees
+users }o..|{ user_types #Red
+
+'employees }o..|| genders
+genders ||.o{ employees
+'employees }o..|| marital_statuses
+marital_statuses ||..o{ employees
+qualifications }o..|| knowledge_areas
+
+bonds ||.o| impediments #Green
+
+employees ||..|| ids #Green
+ids }o..|| document_types
+ids }o..|| states
+
+bonds ||.o| users #Green
+
+course_classes }o..|| courses
+
+@enduml

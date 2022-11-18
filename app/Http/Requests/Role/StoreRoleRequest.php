@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests\Role;
 
-use App\Services\Dto\StoreRoleDto;
+use App\Enums\GrantTypes;
+use App\Services\Dto\RoleDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreRoleRequest extends FormRequest
 {
@@ -21,7 +23,7 @@ class StoreRoleRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, string>
+     * @return array<string, string|array<int, mixed>>
      */
     public function rules(): array
     {
@@ -29,7 +31,7 @@ class StoreRoleRequest extends FormRequest
             'name' => 'required|max:50',
             'description' => 'max:110',
             'grant_value' => 'numeric',
-            'grant_type_id' => 'required|exists:grant_types,id',
+            'grant_type' => ['required', new Enum(GrantTypes::class)],
         ];
     }
 
@@ -43,18 +45,18 @@ class StoreRoleRequest extends FormRequest
             'name.max' => 'O Nome deve conter no máximo 50 caracteres',
             'description.max' => 'A Descrição deve conter no máximo 50 caracteres',
             'grant_value.numeric' => 'O valor da bolsa deve ser numérico',
-            'grant_type_id.required' => 'O Tipo de Bolsa é obrigatório',
-            'grant_type_id.exists' => 'O Tipo de Bolsa deve estar entre os fornecidos',
+            'grant_type.required' => 'O Tipo de Bolsa é obrigatório',
+            'grant_type.Illuminate\Validation\Rules\Enum' => 'O Tipo de Bolsa deve estar entre os fornecidos',
         ];
     }
 
-    public function toDto(): StoreRoleDto
+    public function toDto(): RoleDto
     {
-        return new StoreRoleDto(
-            name: $this->validated('name') ?? '',
-            description: $this->validated('description') ?? '',
-            grantValue: $this->validated('grant_value') ?? '',
-            grantTypeId: $this->validated('grant_type_id') ?? '',
+        return new RoleDto(
+            name: strval($this->validated('name') ?? ''),
+            description: strval($this->validated('description') ?? ''),
+            grantValue: intval($this->validated('grant_value')),
+            grantType: GrantTypes::from(strval($this->validated('grant_type'))),
         );
     }
 }

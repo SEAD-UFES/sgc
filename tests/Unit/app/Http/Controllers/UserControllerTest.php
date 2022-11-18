@@ -9,6 +9,7 @@ use App\Http\Requests\User\ShowUserRequest;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
+use App\Services\Dto\UserDto;
 use App\Services\UserService;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -56,6 +57,13 @@ class UserControllerTest extends TestCase
         // Create a stub for the StoreUserRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(StoreUserRequest::class);
+        $requestStub->expects($this->any())->method('toDto')
+            ->willReturn(new UserDto(
+                login: '',
+                password: '',
+                active: true,
+                employeeId: 1,
+            ));
 
         // Expects the service's create method to be called once.
         $this->serviceMock->expects($this->once())->method('create');
@@ -84,6 +92,13 @@ class UserControllerTest extends TestCase
         // Create a stub for the UpdateUserRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(UpdateUserRequest::class);
+        $requestStub->expects($this->any())->method('toDto')
+            ->willReturn(new UserDto(
+                login: '',
+                password: '',
+                active: true,
+                employeeId: 1,
+            ));
 
         /** @var MockObject $UserStub */
         $UserStub = $this->createStub(User::class);

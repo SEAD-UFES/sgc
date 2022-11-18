@@ -36,7 +36,7 @@
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Profissão:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail->job ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail?->job ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
@@ -46,62 +46,62 @@
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Data de Nascimento:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail->birth_date != null ? \Carbon\Carbon::parse($employee->birth_date)->isoFormat('DD/MM/Y') : '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail?->birth_date != null ? \Carbon\Carbon::parse($employee->birth_date)->isoFormat('DD/MM/Y') : '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>UF Nascimento:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail->birth_state->name ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail?->birth_state->name ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Cidade de Nascimento:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail->birth_city ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail?->birth_city ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Tipo de Documento:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->identity->type->name ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->identity?->type->name ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Número do Documento:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->identity->number ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->identity?->number ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Data de Expedição:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->identity->issue_date != null ? \Carbon\Carbon::parse($employee->id_issue_date)->isoFormat('DD/MM/Y') : '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->identity?->issue_date != null ? \Carbon\Carbon::parse($employee->id_issue_date)->isoFormat('DD/MM/Y') : '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Orgão Expedidor:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->identity->issuer ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->identity?->issuer ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Estado Expedidor:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->identity->issuer_state ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->identity?->issuer_state ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Estado Civil:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail->marital_status->label() ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail?->marital_status->label() ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Nome cônjuge:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->spouse->name ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->spouse?->name ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Nome do pai:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail->father_name ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail?->father_name ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Nome da mãe:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail->mother_name ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->personalDetail?->mother_name ?? '-' }}
                                     </div>
                                 </div>
                         
@@ -124,16 +124,16 @@
                             <div class="card-body">
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Código de Área:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->phones->where('type', 'Celular')->first()->area_code ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->phones?->where('type', 'Celular')->first()?->area_code ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Telefone:</strong></div>
                                     @php
-                                        $landline = $employee->phones->where('type', 'Fixo')->first();
+                                        $landline = $employee->phones?->where('type', 'Fixo')->first();
                                     @endphp
                                     @if ($landline != null)
-                                        <div class="col-sm-8 col-lg-9"><a href='tel:{{ $landline->area_code . $landline->number }}'>{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{4})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $landline->area_code . $landline->number) }}</a>
+                                        <div class="col-sm-8 col-lg-9"><a href='tel:{{ $landline?->area_code . $landline?->number  }}'>{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{4})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $landline?->area_code . $landline?->number ) }}</a>
                                         </div>
                                     @else
                                         <div class="col-sm-8 col-lg-9">-
@@ -142,10 +142,10 @@
                                 </div>
                                 <div class="mb-2 row">
                                     @php
-                                        $mobile = $employee->phones->where('type', 'Celular')->first();
+                                        $mobile = $employee->phones?->where('type', 'Celular')->first();
                                     @endphp
                                     <div class="col-sm-4 col-lg-3"><strong>Celular:</strong></div>
-                                    <div class="col-sm-8 col-lg-9"><a href='tel:{{ $mobile->area_code . $mobile->number }}'>{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{5})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $mobile->area_code . $mobile->number) }}</a>
+                                    <div class="col-sm-8 col-lg-9"><a href='tel:{{ $mobile?->area_code . $mobile?->number }}'>{{ preg_replace('~(\d{2})[^\d]{0,7}(\d{5})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $mobile?->area_code . $mobile?->number) }}</a>
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
@@ -155,37 +155,37 @@
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Logradouro:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->address->street ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->address?->street ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Complemento:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->address->complement ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->address?->complement ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Número:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->address->number ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->address?->number ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Bairro:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->address->district ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->address?->district ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>CEP:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ isset($employee->address->zip_code) ? preg_replace('~(\d{2})(\d{3})(\d{3})~', '$1$2-$3', $employee->address->zip_code) : '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ isset($employee->address?->zip_code) ? preg_replace('~(\d{2})(\d{3})(\d{3})~', '$1$2-$3', $employee->address?->zip_code) : '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>UF:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->address->state->name ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->address?->state->name ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Cidade:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->address->city ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->address?->city ?? '-' }}
                                     </div>
                                 </div>
 
@@ -208,17 +208,17 @@
                             <div class="card-body">
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Banco:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->bankAccount->bank_name ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->bankAccount?->bank_name ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Agência:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->bankAccount->agency_number ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->bankAccount?->agency_number ?? '-' }}
                                     </div>
                                 </div>
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Conta Corrente:</strong></div>
-                                    <div class="col-sm-8 col-lg-9">{{ $employee->bankAccount->account ?? '-' }}
+                                    <div class="col-sm-8 col-lg-9">{{ $employee->bankAccount?->account ?? '-' }}
                                     </div>
                                 </div>
 

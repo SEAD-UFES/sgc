@@ -19,7 +19,7 @@ class ApplicantIndexComposer
     public function compose(View $view): void
     {
         $view->with([
-            'filters' => ModelFilterHelper::buildFilters(request(), Applicant::$accepted_filters),
+            'filters' => ModelFilterHelper::buildFilters(request(), Applicant::$acceptedFilters),
             'applicantStates' => CallStates::cases(),
         ]);
     }

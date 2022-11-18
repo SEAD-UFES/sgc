@@ -2,11 +2,11 @@
 
     <table class="table table-striped table-hover">
         <thead>
-            <th>@sortablelink('employee_name', 'Colaborador') </th>
-            <th>@sortablelink('role_name', 'Cargo') </th>
-            <th>@sortablelink('course_name', 'Curso') </th>
+            <th>@sortablelink('employeeName', 'Colaborador') </th>
+            <th>@sortablelink('roleName', 'Função') </th>
+            <th>@sortablelink('courseName', 'Curso') </th>
             <th>@sortablelink('file_name', 'Nome do arquivo')</th>
-            <th>@sortablelink('document_type', 'Tipo')</th>
+            <th>@sortablelink('typeName', 'Tipo')</th>
         </thead>
         <tbody>
             @foreach ($documents as $document)
@@ -22,7 +22,7 @@
                         </a>
                     </td>
                     <td>
-                        {{ $document->course_name }}
+                        {{ $document->course_name ?? '-' }}
                     </td>
                     <td>
                         <a href="{{ route('documents.show', ['id' => $document->id, 'htmlTitle' => $document->file_name]) }}"

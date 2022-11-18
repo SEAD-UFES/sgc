@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use App\ModelFilters\ResponsibilityFilter;
-use Carbon\Carbon;
+use App\Models\Filters\ResponsibilityFilter;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,6 +20,40 @@ class Responsibility extends Model
     use LogsActivity;
 
     /**
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
+     * @var array<int, string>
+     */
+    public static $sortable = [
+        'id',
+        'user.email',
+        'userType.name',
+        'begin',
+        'end',
+        'created_at',
+        'updated_at',
+    ];
+
+    /**
+     * @var array<int, string>
+     */
+    public static $acceptedFilters = [
+        'userLoginContains',
+        'usertypeNameContains',
+        'courseNameContains',
+        'beginExactly',
+        'beginBigOrEqu',
+        'beginLowOrEqu',
+        'endExactly',
+        'endBigOrEqu',
+        'endLowOrEqu',
+        'userId',
+    ];
+
+    /**
      * @var string
      */
     protected $table = 'responsibilities';
@@ -30,11 +62,6 @@ class Responsibility extends Model
      * @var string
      */
     protected $primaryKey = 'id';
-
-    /**
-     * @var bool
-     */
-    public $incrementing = true;
 
     /**
      * The attributes that are mass assignable.
@@ -49,41 +76,12 @@ class Responsibility extends Model
         'end',
     ];
 
-    // /**
-    //  * @var array<int, string>
-    //  */
-    // public $sortable = [
-    //     'id',
-    //     'user.email',
-    //     'userType.name',
-    //     'begin',
-    //     'end',
-    //     'created_at',
-    //     'updated_at',
-    // ];
-
     /**
      * @var array<int, string>
+     *
+     * @phpstan-ignore-next-line
      */
-    public static $accepted_filters = [
-        'userEmailContains',
-        'usertypeNameContains',
-        'courseNameContains',
-        'beginExactly',
-        'beginBigOrEqu',
-        'beginLowOrEqu',
-        'endExactly',
-        'endBigOrEqu',
-        'endLowOrEqu',
-        'userId',
-    ];
-
-    // /**
-    //  * @var array<int, string>
-    //  *
-    //  * @phpstan-ignore-next-line
-    //  */
-    // private static $whiteListFilter = ['*'];
+    private static $whiteListFilter = ['*'];
 
     // ==================== Relationships ====================
 
@@ -110,20 +108,6 @@ class Responsibility extends Model
     {
         return $this->belongsTo(Course::class);
     }
-
-    // /**
-    //  * @param Builder<Responsibility> $query
-    //  *
-    //  * @return Builder<Responsibility>
-    //  */
-    // public function scopeActive(Builder $query): Builder
-    // {
-    //     return $query->where('begin', '<=', Carbon::today()->toDateString())
-    //         ->where(static function ($query) {
-    //             $query->where('end', '>=', Carbon::today()->toDateString())
-    //                 ->orWhereNull('end');
-    //         });
-    // }
 
     public function getActivitylogOptions(): LogOptions
     {

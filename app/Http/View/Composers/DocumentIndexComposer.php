@@ -18,7 +18,7 @@ class DocumentIndexComposer
     public function compose(View $view): void
     {
         $view->with([
-            'filters' => ModelFilterHelper::buildFilters(request(), Document::$accepted_filters),
+            'filters' => ModelFilterHelper::buildFilters(request(), Document::$acceptedFilters),
         ]);
     }
 }

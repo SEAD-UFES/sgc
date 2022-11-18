@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\ModelFilters\BondFilter;
+use App\Models\Filters\BondFilter;
 use Carbon\Carbon;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,6 +26,34 @@ class Bond extends Pivot
     use LogsActivity;
 
     /**
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
+     * @var array<int, string>
+     */
+    public static $sortable = [
+        'volunteer',
+        'created_at',
+        'updated_at',
+        'last_open_impediment_date',
+    ];
+
+    /**
+     * @var array<int, string>
+     */
+    public static $acceptedFilters = [
+        'employeeCpfContains',
+        'employeeNameContains',
+        'roleNameContains',
+        'courseNameContains',
+        'poleNameContains',
+        'volunteerExactly',
+        'impedimentExactly',
+    ];
+
+    /**
      * @var string
      */
     protected $table = 'bonds';
@@ -34,11 +62,6 @@ class Bond extends Pivot
      * @var string
      */
     protected $primaryKey = 'id';
-
-    /**
-     * @var bool
-     */
-    public $incrementing = true;
 
     /**
      * @var array<int, string>
@@ -52,37 +75,12 @@ class Bond extends Pivot
         'terminated_at',
     ];
 
-    // /**
-    //  * @var array<int, string>
-    //  */
-    // public $sortable = [
-    //     'id',
-    //     'volunteer',
-    //     'begin',
-    //     'terminated_at',
-    //     'created_at',
-    //     'updated_at',
-    // ];
-
     /**
      * @var array<int, string>
+     *
+     * @phpstan-ignore-next-line
      */
-    public static $accepted_filters = [
-        'employeeCpfContains',
-        'employeeNameContains',
-        'roleNameContains',
-        'courseNameContains',
-        'poleNameContains',
-        'volunteerExactly',
-        'impedimentExactly',
-    ];
-
-    // /**
-    //  * @var array<int, string>
-    //  *
-    //  * @phpstan-ignore-next-line
-    //  */
-    // private static $whiteListFilter = ['*'];
+    private static $whiteListFilter = ['*'];
 
     // ==================== Accessors ====================
 
@@ -108,6 +106,14 @@ class Bond extends Pivot
     public function getPoleAttribute(): ?Pole
     {
         return $this->poles->first();
+    }
+
+    /**
+     * @return ?Carbon
+     */
+    public function getLastOpenImpedimentDateAttribute(): ?Carbon
+    {
+        return $this->impediments->whereNull('closed_at')->sortByDesc('created_at')->first()?->created_at;
     }
 
     // ==================== Relationships ====================
@@ -176,54 +182,84 @@ class Bond extends Pivot
         return $this->morphMany(Document::class, 'related');
     }
 
-    // ========================================================
+    // ==================== ColumnSortable overriding ====================
 
-    // /**
-    //  * @return HasMany<Document>
-    //  */
-    // public function rightsDocuments(): HasMany
-    // {
-    //     return $this->documents()
-    //         ->join('documents', 'documents.related_id', '=', 'bond_documents.id')
-    //         ->join('document_types', 'document_types.id', '=', 'documents.document_type_id')
-    //         ->where('related_type', Document::class)
-    //         ->where('document_types.name', 'like', '%Termos e Licença%');
-    // }
+    /**
+     * @param Builder<Bond> $query
+     * @param string $direction
+     *
+     * @return Builder<Bond>
+     */
+    public function cpfSortable(Builder $query, string $direction): Builder
+    {
+        return $query->orderBy('employees.cpf', $direction);
+    }
 
-    // /**
-    //  * @return bool
-    //  */
-    // public function hasRightsDocuments(): bool
-    // {
-    //     return $this->rightsDocuments()->count() > 0;
-    // }
+    /**
+     * @param Builder<Bond> $query
+     * @param string $direction
+     *
+     * @return Builder<Bond>
+     */
+    public function nameSortable(Builder $query, string $direction): Builder
+    {
+        return $query->orderBy('employees.name', $direction);
+    }
 
-    // /**
-    //  * @param Builder<Bond> $query
-    //  *
-    //  * @return Builder<Bond>
-    //  */
-    // public function scopeActive($query): Builder
-    // {
-    //     return $query->where('bonds.begin', '<=', Carbon::today()->toDateString())
-    //         ->where(
-    //             static function ($query) {
-    //                 $query->where('bonds.end', '>=', Carbon::today()->toDateString())
-    //                     ->orWhereNull('bonds.end');
-    //             }
-    //         );
-    // }
+    /**
+     * @param Builder<Bond> $query
+     * @param string $direction
+     *
+     * @return Builder<Bond>
+     */
+    public function roleSortable(Builder $query, string $direction): Builder
+    {
+        return $query->orderBy('roles.name', $direction);
+    }
 
-    // /**
-    //  * @param Builder<Bond> $query
-    //  * @param bool $status
-    //  *
-    //  * @return Builder<Bond>
-    //  */
-    // public function scopeImpededStatus(Builder $query, bool $status): Builder
-    // {
-    //     return $query->where('bonds.impediment', $status);
-    // }
+    /**
+     * @param Builder<Bond> $query
+     * @param string $direction
+     *
+     * @return Builder<Bond>
+     */
+    public function courseSortable(Builder $query, string $direction): Builder
+    {
+        return $query->orderBy('courses.name', $direction);
+    }
+
+    /**
+     * @param Builder<Bond> $query
+     * @param string $direction
+     *
+     * @return Builder<Bond>
+     */
+    public function poleSortable(Builder $query, string $direction): Builder
+    {
+        return $query->orderBy('poles.name', $direction);
+    }
+
+    /**
+     * @param Builder<Bond> $query
+     * @param string $direction
+     *
+     * @return Builder<Bond>
+     */
+    public function volunteerSortable(Builder $query, string $direction): Builder
+    {
+        return $query->orderBy('bonds.volunteer', $direction);
+    }
+
+    /**
+     * @param Builder<Bond> $query
+     * @param string $direction
+     *
+     * @return Builder<Bond>
+     */
+    public function impededSortable(Builder $query, string $direction): Builder
+    {
+        return $query->orderBy('last_open_impediment_date', $direction);
+    }
 
     public function getActivitylogOptions(): LogOptions
     {

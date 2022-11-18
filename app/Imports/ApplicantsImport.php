@@ -6,7 +6,6 @@ use App\Enums\CallStates;
 use App\Helpers\Phone;
 use App\Helpers\TextHelper;
 use App\Models\Applicant;
-use App\Models\ApplicantState;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithColumnLimit;

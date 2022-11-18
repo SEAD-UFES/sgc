@@ -114,7 +114,7 @@
                     <select class="form-select form-select-sm" aria-label="responsibility" name="responsibility_id" data-bs-toggle="tooltip" data-bs-placement="left" title="Mudar papel atual" onchange="submit();">
                             @foreach ($activeResponsibilities as $responsibility)
                                 <option value="{{ $responsibility->getAttribute('id') }}"
-                                    {{ $responsibility->getAttribute('id') === $currentResponsibility->getAttribute('id') ? 'selected' : '' }}>
+                                    {{ $responsibility->getAttribute('id') === $currentResponsibility?->getAttribute('id') ? 'selected' : '' }}>
                                     {{ $responsibility->userType->name }}{{ $responsibility->course ? ' - ' . $responsibility->course->name : '' }}
                                 </option>
                             @endforeach

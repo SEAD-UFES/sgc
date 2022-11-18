@@ -24,8 +24,8 @@
             <option value="">Selecione o tipo</option>
             @foreach ($degrees as $degree)
                 <option value="{{ $degree->name }}"
-                    {{ isset($course) ? ($course->degree == $degree->name ? 'selected' : '') : (old('degree') == $degree->name ? 'selected' : '') }}>
-                    {{ $degree->value }}
+                    {{ isset($course) ? ($course->degree == $degree ? 'selected' : '') : (old('degree') == $degree->name ? 'selected' : '') }}>
+                    {{ $degree->label() }}
                 </option>
             @endforeach
         </select>
@@ -33,19 +33,9 @@
             <div class="text-danger">> {{ $message }}</div>
         @enderror
     </div>
-    <div class="col-6 col-md-3">
-        <label for="inputBegin1" class="form-label">Início</label>
-        <input type="date" name="begin" id="inputBegin1" class="form-control"
-            value="{{ isset($course) ? $course->begin : old('begin') }}">
-    </div>
-    <div class="col-6 col-md-3">
-        <label for="inputEnd1" class="form-label">Fim</label>
-        <input type="date" name="end" id="inputEnd1" class="form-control"
-            value="{{ isset($course) ? $course->end : old('end') }}">
-    </div>
     <div class="col-12">
         <label for="inputLmsUrl1" class="form-label">Endereço do AVA:</label>
-        <input name="lms_url" type="text" id="inputLmsUrl1" class="form-control" placeholder="Endereço do AVA"
+        <input name="lms_url" type="url" id="inputLmsUrl1" class="form-control" placeholder="Endereço do AVA"
             value="{{ isset($course) ? $course->lms_url : old('lms_url') }}" />
         @error('lms_url')
             <div class="text-danger">> {{ $message }}</div>

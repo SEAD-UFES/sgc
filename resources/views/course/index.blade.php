@@ -39,9 +39,7 @@
                             <thead>
                                 <th>@sortablelink('name', 'Nome')</th>
                                 <th>@sortablelink('description', 'Descrição')</th>
-                                <th>@sortablelink('courseType.name', 'Tipo do Curso')</th>
-                                <th>@sortablelink('begin', 'Início')</th>
-                                <th>@sortablelink('end', 'Fim')</th>
+                                <th>@sortablelink('degree', 'Tipo do Curso')</th>
                                 <th class="text-center">Ações</th>
                             </thead>
                             <tbody>
@@ -49,9 +47,7 @@
                                     <tr>
                                         <td>{{ $course->name }}</td>
                                         <td>{{ $course->description }}</td>
-                                        <td>{{ $course->degree->value }}</td>
-                                        <td>{{ isset($course->begin) ? \Carbon\Carbon::parse($course->begin)->isoFormat('DD/MM/Y') : '-' }}</td> 
-                                        <td>{{ isset($course->terminatedAt) ? \Carbon\Carbon::parse($course->terminatedAt)->isoFormat('DD/MM/Y') : '-' }}</td>
+                                        <td>{{ $course->degree->label() }}</td>
                                         <td class="text-center"><div class="d-inline-flex">
                                             @can('course-update')
                                                 <a href="{{ route('courses.edit', $course) }}" data-bs-toggle="tooltip" title="Editar curso" class="btn btn-primary btn-sm">

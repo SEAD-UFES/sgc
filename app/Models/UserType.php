@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -18,6 +17,11 @@ class UserType extends Model
     use LogsActivity;
 
     /**
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
      * @var string
      */
     protected $table = 'user_types';
@@ -26,11 +30,6 @@ class UserType extends Model
      * @var string
      */
     protected $primaryKey = 'id';
-
-    /**
-     * @var bool
-     */
-    public $incrementing = true;
 
     /**
      * The attributes that are mass assignable.
@@ -64,7 +63,7 @@ class UserType extends Model
          * @var UserType
          */
         $userType = UserType::select('id')->where('acronym', $acronym)->take(1)->first();
-        return $userType->getAttribute('id');
+        return intval($userType->getAttribute('id'));
     }
 
     public function getActivitylogOptions(): LogOptions

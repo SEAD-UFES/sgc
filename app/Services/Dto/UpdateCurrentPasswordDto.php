@@ -2,8 +2,11 @@
 
 namespace App\Services\Dto;
 
-final class UpdateCurrentPasswordDto
+class UpdateCurrentPasswordDto
 {
-    public readonly ?string $password;
-    public readonly ?string $confirmPassword;
+    public function __construct(
+        public readonly string $password,
+        public readonly string $confirmPassword,
+    ) {
+    }
 }

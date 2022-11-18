@@ -8,8 +8,8 @@ use App\Http\Requests\Document\batch\StoreDocumentBatchRequest;
 use App\Models\Bond;
 use App\Services\DocumentService;
 use Exception;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 
 class DocumentBatchController extends Controller
 {

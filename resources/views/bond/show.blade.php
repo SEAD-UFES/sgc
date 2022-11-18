@@ -71,8 +71,8 @@
                         $hasRights = $bond->documents->where('document_type_id', $rightsTypeId)->count() > 0;
                     @endphp
 
-                    <div class="card {{ $bond->impediments->count() == 0 ? 'border-success' : 'border-warning' }}  mb-3">
-                        <div class="card-header {{ $bond->impediments->count() == 0 ? 'bg-success' : 'bg-warning' }}"
+                    <div class="card {{ is_null($bond->last_open_impediment_date) ? 'border-success' : 'border-warning' }}  mb-3">
+                        <div class="card-header {{ is_null($bond->last_open_impediment_date) ? 'bg-success' : 'bg-warning' }}"
                             data-bs-toggle="collapse" href="#bondReviewContent" role="button" aria-expanded="true"
                             aria-controls="bondReviewContent">
                             <h4 class='mb-0'>Revisão do Vínculo</h4>
@@ -84,7 +84,7 @@
                                 <div class="mb-2 row">
                                     <div class="col-sm-4 col-lg-3"><strong>Última revisão:</strong></div>
                                     <div class="col-sm-8 col-lg-9">
-                                        {{ $bond->impediments != null ? \Carbon\Carbon::parse($bond->impediments?->sortByDesc('updated_at')->first()?->reviewer_checked_at)->isoFormat('DD/MM/YYYY HH:mm:ss') : '-' }}
+                                        {{ $bond->impediments != null ? \Carbon\Carbon::parse($bond->last_open_impediment_date)->isoFormat('DD/MM/YYYY HH:mm:ss') : '-' }}
                                     </div>
                                 </div>
 
@@ -93,7 +93,7 @@
                                         <strong>Status do vínculo:</strong>
                                     </div>
                                     <div class="col-sm-8 col-lg-9">
-                                        {{ $bond->impediments->count() == 0 ? 'Sem pendências' : 'Impedido' }}
+                                        {{ is_null($bond->last_open_impediment_date) ? 'Sem pendências' : 'Impedido' }}
                                     </div>
                                     @if (!$hasRights)
                                         <div class="bg-danger">Atenção: Sem o documento "Termo de cessão de direitos" o vínculo permanecerá impedido.</div>
@@ -105,8 +105,8 @@
                                         <table class="table table-striped table-hover">
                                             <thead>
                                                 <th>Impedimento</th>
-                                                <th>Revisor</th>
-                                                <th>Revisado em</th>
+                                                <th>Impedido por</th>
+                                                <th>Impedido em</th>
                                                 @can('bond-review')
                                                     <th>Ações</th>
                                                 @endcan
@@ -130,10 +130,10 @@
                                                             @endif
                                                         </td>
                                                         <td>{{ $impediment->reviewer->login }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($impediment->reviewed_at)->isoFormat('DD/MM/Y HH:mm') }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($impediment->created_at)->isoFormat('DD/MM/Y HH:mm') }}</td>
                                                         @can('bond-review')
                                                             <td>
-                                                                @if ($impediment->closed_at == null)
+                                                                @if ($impediment->closed_at == null && $impediment->description !== '[SGC: Documento "Termo de cessão de direitos" ainda não importado]')
                                                                     <form name="{{ 'formImpedimentClose' . $impediment->id }}"
                                                                         action="{{ route('impediments.update', $impediment->id) }}" method="POST">
                                                                         @method('PATCH')

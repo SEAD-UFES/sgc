@@ -30,7 +30,7 @@ class RoleController extends Controller
     public function index(IndexRoleRequest $request): View
     {
         //filters
-        $filters = ModelFilterHelper::buildFilters($request, Role::$accepted_filters);
+        $filters = ModelFilterHelper::buildFilters($request, Role::$acceptedFilters);
 
         $roles = $this->service->list();
 

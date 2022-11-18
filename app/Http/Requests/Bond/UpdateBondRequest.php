@@ -52,15 +52,15 @@ class UpdateBondRequest extends FormRequest
         return new BondDto(
             employeeId: intval($this->validated('employee_id')),
             roleId: intval($this->validated('role_id')),
-            courseId: intval($this->validated('course_id')) !== 0 ? intval($this->validated('course_id')) : null,
-            poleId: intval($this->validated('pole_id')) !== 0 ? intval($this->validated('pole_id')) : null,
+            courseId: $this->validated('course_id') !== null ? intval($this->validated('course_id')) : null,
+            poleId: $this->validated('pole_id') !== null ? intval($this->validated('pole_id')) : null,
             begin: Date::parse($this->validated('begin')),
             terminatedAt: $this->validated('terminated_at') !== null ? Date::parse($this->validated('terminated_at')) : null,
-            hiringProcess: str($this->validated('hiring_process')),
+            hiringProcess: strval($this->validated('hiring_process')),
             volunteer: ($this->validated('volunteer') ?? '') === 'on',
-            qualificationKnowledgeArea: KnowledgeAreas::tryFrom($this->validated('qualification_knowledge_area')),
-            qualificationCourse: str($this->validated('qualification_course')),
-            qualificationInstitution: str($this->validated('qualification_institution')),
+            qualificationKnowledgeArea: KnowledgeAreas::from(strval($this->validated('qualification_knowledge_area'))),
+            qualificationCourse: strval($this->validated('qualification_course')),
+            qualificationInstitution: strval($this->validated('qualification_institution')),
         );
     }
 }

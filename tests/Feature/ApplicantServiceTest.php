@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Applicant;
-use App\Models\ApplicantState;
 use App\Models\Course;
 use App\Models\Pole;
 use App\Models\Role;
@@ -34,7 +33,7 @@ class ApplicantServiceTest extends TestCase
                 'name' => 'John Doe',
                 'email' => 'john@test.com',
                 'area_code' => '01',
-                'phone' => '12345678',
+                'landline' => '12345678',
                 'mobile' => '123456789',
                 'hiring_process' => '001',
             ]
@@ -45,7 +44,7 @@ class ApplicantServiceTest extends TestCase
                 'name' => 'Jane Doe',
                 'email' => 'jane@othertest.com',
                 'area_code' => '02',
-                'phone' => '01234567',
+                'landline' => '01234567',
                 'mobile' => '012345678',
                 'hiring_process' => '002',
             ]
@@ -116,7 +115,7 @@ class ApplicantServiceTest extends TestCase
 
             //verifications
             Event::assertDispatched('eloquent.deleted: ' . Applicant::class);
-            $this->assertEquals('Jane Doe', $this->service->list()->first()->name);
+            $this->assertEquals('Jane Doe', $this->service->list()->first()?->name);
             $this->assertCount(1, Applicant::all());
         });
     }
@@ -128,19 +127,11 @@ class ApplicantServiceTest extends TestCase
      */
     public function applicantStateShouldChange()
     {
-        //setting up scenario
-        $state_id = ApplicantState::factory()->createOne(
-            [
-                'name' => 'Foo',
-                'description' => 'Bar',
-            ]
-        )->getAttribute('id');
-
         /**
          * @var array<string, string> $attributes
          */
         $attributes = [];
-        $attributes['states'] = $state_id;
+        $attributes['states'] = 'NC';
 
         /**
          * @var Applicant $applicant
@@ -153,7 +144,7 @@ class ApplicantServiceTest extends TestCase
 
             //verifications
             Event::assertDispatched('eloquent.saved: ' . Applicant::class);
-            $this->assertEquals('Foo', $applicant->applicantState->name);
+            $this->assertEquals('NC', $applicant->call_state->name);
             $this->assertCount(2, Applicant::all());
         });
     }
@@ -165,14 +156,6 @@ class ApplicantServiceTest extends TestCase
      */
     public function applicantShouldBeCreated()
     {
-        //setting up scenario
-        ApplicantState::factory()->create(
-            [
-                'name' => 'Não contatado',
-                'description' => 'Bar',
-            ]
-        );
-
         /**
          * @var array<string, string> $attributes
          */
@@ -181,32 +164,32 @@ class ApplicantServiceTest extends TestCase
         $attributes['name'] = 'Dilan Doe';
         $attributes['email'] = 'dilan@othertest.com';
         $attributes['areaCode'] = '03';
-        $attributes['phone'] = '01234567';
+        $attributes['landline'] = '01234567';
         $attributes['mobile'] = '012345678';
-        $attributes['hiring_process'] = '003';
+        $attributes['hiringProcess'] = '003';
 
-        $attributes['roleId'] = Role::factory()->createOne(
+        $attributes['roleId'] = strval(Role::factory()->createOne(
             [
                 'name' => 'Super Role',
                 'description' => 'Super Role',
             ]
-        )->getAttribute('id');
+        )->getAttribute('id'));
 
-        $attributes['courseId'] = Course::factory()->createOne(
+        $attributes['courseId'] = strval(Course::factory()->createOne(
             [
                 'name' => 'Course Omicron',
                 'description' => 'Course Omicron',
             ]
-        )->getAttribute('id');
+        )->getAttribute('id'));
 
-        $attributes['poleId'] = Pole::factory()->createOne(
+        $attributes['poleId'] = strval(Pole::factory()->createOne(
             [
                 'name' => 'Pole Teta',
                 'description' => 'Pole Teta',
             ]
-        )->getAttribute('id');
+        )->getAttribute('id'));
 
-        $dto = new ApplicantDto($attributes);
+        $dto = new ApplicantDto(...$attributes);
 
         Event::fakeFor(function () use ($dto) {
             //execution
@@ -226,21 +209,13 @@ class ApplicantServiceTest extends TestCase
      */
     public function shouldPersistApplicantsList()
     {
-        //setting up scenario
-        ApplicantState::factory()->createOne(
-            [
-                'name' => 'Não contatado',
-                'description' => 'Bar',
-            ]
-        );
-
         $applicants = [];
 
         $applicants[0]['check'] = true;
         $applicants[0]['name'] = 'Bob Doe';
         $applicants[0]['email'] = 'bob@test3.com';
         $applicants[0]['area_code'] = '27';
-        $applicants[0]['phone'] = '33333333';
+        $applicants[0]['landline'] = '33333333';
         $applicants[0]['mobile'] = '99999999';
         $applicants[0]['hiring_process'] = '003';
         $applicants[0]['role_id'] = '1';
@@ -251,7 +226,7 @@ class ApplicantServiceTest extends TestCase
         $applicants[1]['name'] = 'Mary Doe';
         $applicants[1]['email'] = 'mary@test4.com';
         $applicants[1]['area_code'] = '27';
-        $applicants[1]['phone'] = '33333333';
+        $applicants[1]['landline'] = '33333333';
         $applicants[1]['mobile'] = '99999999';
         $applicants[1]['hiring_process'] = '004';
         $applicants[1]['role_id'] = '1';

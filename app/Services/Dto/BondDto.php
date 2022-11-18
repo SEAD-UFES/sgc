@@ -5,7 +5,7 @@ namespace App\Services\Dto;
 use App\Enums\KnowledgeAreas;
 use Illuminate\Support\Carbon;
 
-final class BondDto
+class BondDto
 {
     public function __construct(
         public readonly int $employeeId,

@@ -62,7 +62,7 @@ COPY ./.docker/nginx.conf /etc/nginx/nginx.conf
 # Installing PHP
 RUN apk add --no-cache php81 php81-fpm
 
-RUN ln -s /usr/bin/php81 /usr/bin/php
+# # RUN ln -s /usr/bin/php81 /usr/bin/php
 RUN ln -s /usr/sbin/php-fpm81 /usr/sbin/php-fpm
 
 # Defining ENV variables which will be used in configuration

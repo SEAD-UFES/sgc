@@ -14,6 +14,21 @@ class DocumentType extends Model
     use LogsActivity;
 
     /**
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
+     * @var array<int, string>
+     */
+    public static $sortable = [
+        'id',
+        'name',
+        'created_at',
+        'updated_at',
+    ];
+
+    /**
      * @var string
      */
     protected $table = 'document_types';
@@ -22,11 +37,6 @@ class DocumentType extends Model
      * @var string
      */
     protected $primaryKey = 'id';
-
-    /**
-     * @var bool
-     */
-    public $incrementing = true;
 
     /**
      * @var array<int, string>

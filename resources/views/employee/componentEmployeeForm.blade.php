@@ -46,7 +46,7 @@
         <div class="col-8 col-sm-9 col-md-3 col-lg-4">
             <label for="inputJob1" class="form-label">Profissão*</label>
             <input name="job" id="inputJob1" type="text" class="form-control" placeholder="Profissão"
-                value="{{ (isset($employee) and !$fromApplicant) ? $employee->personalDetail->job : old('job') }}" maxlength="50" />
+                value="{{ (isset($employee) and !$fromApplicant) ? $employee->personalDetail?->job : old('job') }}" maxlength="50" />
             @error('job')
                 <div class="text-danger">> {{ $message }}</div>
             @enderror
@@ -148,7 +148,7 @@
                 <option value="">Selecione o tipo</option>
                 @foreach ($documentTypes as $documentType)
                     <option value="{{ $documentType->id }}"
-                        {{ (isset($employee) and !$fromApplicant) ? ($employee->identity->type_id == $documentType->id ? 'selected' : $employee->identity->type_id . '=' . $documentType->id) : (old('document_type_id') == $documentType->id ? 'selected' : '') }}>
+                        {{ (isset($employee) and !$fromApplicant) ? ($employee->identity?->type_id == $documentType->id ? 'selected' : $employee->identity?->type_id . '=' . $documentType->id) : (old('document_type_id') == $documentType->id ? 'selected' : '') }}>
                         {{ $documentType->name }}</option>
                 @endforeach
             </select>

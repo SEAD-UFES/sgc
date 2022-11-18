@@ -6,8 +6,7 @@ use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Helpers\TextHelper;
 use App\Models\Role;
-use App\Services\Dto\StoreRoleDto;
-use App\Services\Dto\UpdateRoleDto;
+use App\Services\Dto\RoleDto;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class RoleService
@@ -15,17 +14,17 @@ class RoleService
     /**
      * Undocumented function
      *
-     * @return LengthAwarePaginator
+     * @return LengthAwarePaginator<Role>
      */
     public function list(): LengthAwarePaginator
     {
         ModelListed::dispatch(Role::class);
 
-        $roles_query = new Role();
-        $roles_query = $roles_query->AcceptRequest(Role::$accepted_filters)->filter();
-        $roles_query = $roles_query->sortable(['name' => 'asc']);
+        $query = Role::select('id', 'name', 'description', 'grant_value', 'grant_type');
+        $query = $query->AcceptRequest(Role::$acceptedFilters)->filter();
+        $query = $query->sortable(['name' => 'asc']);
 
-        $roles = $roles_query->paginate(10);
+        $roles = $query->paginate(10);
         $roles->withQueryString();
 
         return $roles;
@@ -34,17 +33,17 @@ class RoleService
     /**
      * Undocumented function
      *
-     * @param StoreRoleDto $storeRoleDto
+     * @param RoleDto $storeRoleDto
      *
      * @return Role
      */
-    public function create(StoreRoleDto $storeRoleDto): Role
+    public function create(RoleDto $storeRoleDto): Role
     {
         return Role::create([
             'name' => TextHelper::titleCase($storeRoleDto->name),
             'description' => TextHelper::titleCase($storeRoleDto->description),
             'grant_value' => $storeRoleDto->grantValue,
-            'grant_type_id' => $storeRoleDto->grantTypeId,
+            'grant_type' => $storeRoleDto->grantType,
         ]);
     }
 
@@ -65,18 +64,18 @@ class RoleService
     /**
      * Undocumented function
      *
-     * @param UpdateRoleDto $updateRoleDto
+     * @param RoleDto $updateRoleDto
      * @param Role $role
      *
      * @return Role
      */
-    public function update(UpdateRoleDto $updateRoleDto, Role $role): Role
+    public function update(RoleDto $updateRoleDto, Role $role): Role
     {
         $role->update([
             'name' => TextHelper::titleCase($updateRoleDto->name),
             'description' => TextHelper::titleCase($updateRoleDto->description),
             'grant_value' => $updateRoleDto->grantValue,
-            'grant_type_id' => $updateRoleDto->grantTypeId,
+            'grant_type_id' => $updateRoleDto->grantType,
         ]);
 
         return $role;

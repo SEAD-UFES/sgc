@@ -7,14 +7,14 @@ class TextHelper
     /**
      * returns text correctly cased
      *
-     * @param ?string $string
+     * @param string $string
      * @param array<int, string> $delimiters
      * @param array<int, string> $exceptions
      *
      * @return string
      */
     public static function titleCase(
-        ?string $string = '',
+        string $string = '',
         array $delimiters = [' '/* , "-", ".", "'", "O'", "Mc" */],
         array $exceptions = ['da', 'de', 'do', 'das', 'dos', /* "út", "u", "s", "és", "utca", "tér", "krt", "körút", "sétány", */ 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX', 'XXI', 'XXII', 'XXIII', 'XXIV', 'XXV', 'XXVI', 'XXVII', 'XXVIII', 'XXIX', 'XXX', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th']
     ): string {
@@ -27,6 +27,9 @@ class TextHelper
         $string = mb_convert_case($string, MB_CASE_TITLE, 'UTF-8');
 
         foreach ($delimiters as $delimiter) {
+            if ($delimiter === '') {
+                continue;
+            }
             $words = explode($delimiter, $string);
             $newwords = [];
             foreach ($words as $word) {
@@ -59,7 +62,9 @@ class TextHelper
      */
     public static function removeAccents(string $str): string
     {
-        return transliterator_transliterate('NFKC; [:Nonspacing Mark:] Remove; NFKC; Any-Latin; Latin-ASCII', $str);
+        $newStr = transliterator_transliterate('NFKC; [:Nonspacing Mark:] Remove; NFKC; Any-Latin; Latin-ASCII', $str);
+
+        return $newStr !== false ? $newStr : $str;
     }
 
     /**
@@ -69,6 +74,12 @@ class TextHelper
      */
     public static function removeNonDigits($str)
     {
-        return preg_replace('/\D/', '', $str);
+        $newStr = preg_replace('/\D/', '', $str);
+
+        if ($newStr === null) {
+            throw new \Exception('Error removing non digits from string: ' . $str);
+        }
+
+        return $newStr;
     }
 }

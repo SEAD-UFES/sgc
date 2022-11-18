@@ -17,7 +17,7 @@ class RightsDocumentArchived extends Notification implements ShouldQueue
     use Queueable;
 
     /**
-     * @var Document
+     * @var ?Document
      */
     protected $document;
 
@@ -32,13 +32,10 @@ class RightsDocumentArchived extends Notification implements ShouldQueue
          * @var DocumentType $documentType
          */
         $documentType = DocumentType::where('name', 'Termo de cessão de direitos')->first();
-        /**
-         * @var Document $rightsDocument
-         */
-        $rightsDocument = Document::where('document_type_id', $documentType->id)
+
+        $this->document = Document::where('document_type_id', $documentType->id)
             ->whereHasMorph('related', Bond::class)
             ->where('related_id', $this->bond->id)->first();
-        $this->document = $rightsDocument;
     }
 
     /**
@@ -78,7 +75,7 @@ class RightsDocumentArchived extends Notification implements ShouldQueue
     public function toArray($notifiable): array
     {
         /**
-         * @var Course $course
+         * @var ?Course $course
          */
         $course = $this->bond->course;
 
@@ -94,11 +91,11 @@ class RightsDocumentArchived extends Notification implements ShouldQueue
 
         return [
             'bond_id' => (string) $this->bond->id,
-            'course_name' => $course->name,
+            'course_name' => $course?->name ?? 'Não informado',
             'employee_name' => $employee->name,
             'role_name' => $role->name,
-            'document_id' => (string) $this->document->id,
-            'document_name' => $this->document->file_name,
+            'document_id' => (string) $this->document?->id,
+            'document_name' => $this->document?->file_name ?? 'ERRO',
         ];
     }
 }

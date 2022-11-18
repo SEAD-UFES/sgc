@@ -2,7 +2,7 @@
 
 namespace App\Services\Dto;
 
-final class ApplicantDto
+class ApplicantDto
 {
     public function __construct(
         public readonly string $name,

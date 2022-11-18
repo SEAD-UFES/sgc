@@ -10,12 +10,12 @@ use Illuminate\Pagination\LengthAwarePaginator;
 interface DocumentRepositoryInterface
 {
     /**
-     * @param string $sort
-     * @param string $direction
+     * @param ?string $sort
+     * @param ?string $direction
      *
-     *  @return LengthAwarePaginator
+     *  @return LengthAwarePaginator<Document>
      */
-    public static function all(string $sort = 'documents.id', string $direction = 'desc');
+    public static function all(?string $sort, ?string $direction);
 
     /**
      * @param int $bondId

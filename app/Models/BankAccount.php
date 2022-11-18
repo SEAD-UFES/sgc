@@ -14,6 +14,11 @@ class BankAccount extends Model
     use LogsActivity;
 
     /**
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
      * @var string
      */
     protected $table = 'bank_accounts';
@@ -22,11 +27,6 @@ class BankAccount extends Model
      * @var string
      */
     protected $primaryKey = 'employee_id';
-
-    /**
-     * @var bool
-     */
-    public $incrementing = false;
 
     /**
      * @var array<int, string>

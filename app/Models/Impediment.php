@@ -14,6 +14,11 @@ class Impediment extends Model
     use LogsActivity;
 
     /**
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
      * @var string
      */
     protected $table = 'impediments';
@@ -24,18 +29,12 @@ class Impediment extends Model
     protected $primaryKey = 'id';
 
     /**
-     * @var bool
-     */
-    public $incrementing = true;
-
-    /**
      * @var array<int, string>
      */
     protected $fillable = [
         'bond_id',
         'description',
         'reviewer_id',
-        'reviewed_at',
         'closed_by_id',
         'closed_at',
     ];
@@ -51,7 +50,7 @@ class Impediment extends Model
     }
 
     /**
-     * @return BelongsTo<Employee, Impediment>
+     * @return BelongsTo<User, Impediment>
      */
     public function reviewer(): BelongsTo
     {
@@ -59,7 +58,7 @@ class Impediment extends Model
     }
 
     /**
-     * @return BelongsTo<Employee, Impediment>
+     * @return BelongsTo<User, Impediment>
      */
     public function closedBy(): BelongsTo
     {

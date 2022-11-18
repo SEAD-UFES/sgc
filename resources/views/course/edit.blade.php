@@ -17,7 +17,7 @@
                     @include('_components.alerts')
                     <form action={{ route('courses.update', $course->id) }} method="POST">
                         @method('PATCH')
-                        @component('course.componentCourseForm', compact('course', 'courseTypes'))@endcomponent
+                        @component('course.componentCourseForm', compact('course', 'degrees'))@endcomponent
                         <br />
                         <button type="submit" class="btn btn-primary">Atualizar</button>
                         <a href="{{ route('courses.index') }}" class="btn btn-secondary">Cancelar</a>

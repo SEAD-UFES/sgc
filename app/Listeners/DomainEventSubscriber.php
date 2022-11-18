@@ -6,6 +6,7 @@ use App\Events\BondCreated;
 use App\Events\BondImpeded;
 use App\Events\BondLiberated;
 use App\Events\BondReviewRequested;
+use App\Events\BondUpdated;
 use App\Events\EmployeeDesignated;
 use App\Events\InstitutionalLoginConfirmationRequired as InstitutionalLoginConfirmationRequiredEvent;
 use App\Events\InstitutionalLoginConfirmed;
@@ -18,6 +19,7 @@ use App\Models\UserType;
 use App\Notifications\BondCreated as BondCreatedNotification;
 use App\Notifications\BondImpeded as BondImpededNotification;
 use App\Notifications\BondReviewRequested as BondReviewRequestedNotification;
+use App\Notifications\BondUpdated as BondUpdatedNotification;
 use App\Notifications\InstitutionalLoginConfirmationRequired as InstitutionalLoginConfirmationRequiredNotification;
 use App\Notifications\RightsDocumentArchived as RightsDocumentArchivedNotification;
 use App\Repositories\UserRepository;
@@ -144,6 +146,26 @@ class DomainEventSubscriber
 
         $this->logger->logDomainEvent(
             'bond_created',
+            $event->bond
+        );
+    }
+
+    /**
+     * Handle bond updated events.
+     *
+     * @param  BondUpdated  $event
+     *
+     * @return void
+     */
+    public function handleBondUpdated(BondUpdated $event)
+    {
+        //Notify grantor assistants
+        $coordOrAssistants = $this->userRepository->getActiveUsersOfActiveTypeId($this->assUtId);
+
+        Notification::send($coordOrAssistants, new BondUpdatedNotification($event->bond));
+
+        $this->logger->logDomainEvent(
+            'bond_updated',
             $event->bond
         );
     }

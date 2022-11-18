@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Enums\GrantTypes;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Role;
-use App\Services\Dto\StoreRoleDto;
-use App\Services\Dto\UpdateRoleDto;
+use App\Services\Dto\RoleDto;
 use App\Services\RoleService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -82,9 +82,9 @@ class RoleServiceTest extends TestCase
         $attributes['name'] = 'Role Gama';
         $attributes['description'] = '3rd Role';
         $attributes['grantValue'] = 123456;
-        $attributes['grantTypeId'] = 1;
+        $attributes['grantType'] = GrantTypes::P;
 
-        $dto = new StoreRoleDto($attributes);
+        $dto = new RoleDto(...$attributes);
 
         Event::fakeFor(function () use ($dto) {
             //execution
@@ -111,9 +111,9 @@ class RoleServiceTest extends TestCase
         $attributes['name'] = 'Role Delta';
         $attributes['description'] = 'New 1st Role';
         $attributes['grantValue'] = 123456;
-        $attributes['grantTypeId'] = 1;
+        $attributes['grantType'] = GrantTypes::P;
 
-        $dto = new UpdateRoleDto($attributes);
+        $dto = new RoleDto(...$attributes);
 
         Event::fakeFor(function () use ($dto, $role) {
             //execution

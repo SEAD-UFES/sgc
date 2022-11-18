@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Pole;
 
-use App\Services\Dto\StorePoleDto;
+use App\Services\Dto\PoleDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -43,11 +43,11 @@ class StorePoleRequest extends FormRequest
         ];
     }
 
-    public function toDto(): StorePoleDto
+    public function toDto(): PoleDto
     {
-        return new StorePoleDto(
-            name: $this->validated('name') ?? '',
-            description: $this->validated('description') ?? '',
+        return new PoleDto(
+            name: strval($this->validated('name') ?? ''),
+            description: strval($this->validated('description') ?? ''),
         );
     }
 }

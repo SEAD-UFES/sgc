@@ -18,7 +18,7 @@ class ResponsibilityIndexComposer
     public function compose(View $view): void
     {
         $view->with([
-            'filters' => ModelFilterHelper::buildFilters(request(), Responsibility::$accepted_filters),
+            'filters' => ModelFilterHelper::buildFilters(request(), Responsibility::$acceptedFilters),
         ]);
     }
 }

@@ -9,6 +9,7 @@ use App\Http\Requests\Pole\ShowPoleRequest;
 use App\Http\Requests\Pole\StorePoleRequest;
 use App\Http\Requests\Pole\UpdatePoleRequest;
 use App\Models\Pole;
+use App\Services\Dto\PoleDto;
 use App\Services\PoleService;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -56,6 +57,11 @@ class PoleControllerTest extends TestCase
         // Create a stub for the StorePoleRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(StorePoleRequest::class);
+        $requestStub->expects($this->any())->method('toDto')
+            ->willReturn(new PoleDto(
+                name: '',
+                description: '',
+            ));
 
         // Expects the service's create method to be called once.
         $this->serviceMock->expects($this->once())->method('create');
@@ -68,6 +74,11 @@ class PoleControllerTest extends TestCase
         // Create a stub for the UpdatePoleRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(UpdatePoleRequest::class);
+        $requestStub->expects($this->any())->method('toDto')
+            ->willReturn(new PoleDto(
+                name: '',
+                description: '',
+            ));
 
         /** @var MockObject $PoleStub */
         $PoleStub = $this->createStub(Pole::class);

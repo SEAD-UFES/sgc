@@ -5,8 +5,7 @@ namespace Tests\Feature;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Pole;
-use App\Services\Dto\StorePoleDto;
-use App\Services\Dto\UpdatePoleDto;
+use App\Services\Dto\PoleDto;
 use App\Services\PoleService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -82,7 +81,7 @@ class PoleServiceTest extends TestCase
         $attributes['name'] = 'Pole Gama';
         $attributes['description'] = '3rd Pole';
 
-        $dto = new StorePoleDto($attributes);
+        $dto = new PoleDto(...$attributes);
 
         Event::fakeFor(function () use ($dto) {
             //execution
@@ -109,7 +108,7 @@ class PoleServiceTest extends TestCase
         $attributes['name'] = 'Pole Delta';
         $attributes['description'] = 'New 1st Pole';
 
-        $dto = new UpdatePoleDto($attributes);
+        $dto = new PoleDto(...$attributes);
 
         Event::fakeFor(function () use ($dto, $pole) {
             //execution

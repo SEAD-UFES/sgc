@@ -14,6 +14,11 @@ class InstitutionalDetail extends Model
     use LogsActivity;
 
     /**
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
      * @var string
      */
     protected $table = 'institutional_details';
@@ -22,11 +27,6 @@ class InstitutionalDetail extends Model
      * @var string
      */
     protected $primaryKey = 'employee_id';
-
-    /**
-     * @var bool
-     */
-    public $incrementing = false;
 
     /**
      * @var array<int, string>

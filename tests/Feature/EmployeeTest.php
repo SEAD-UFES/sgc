@@ -2,16 +2,21 @@
 
 namespace Tests\Feature;
 
+use App\Enums\MaritalStatuses;
+use App\Enums\States;
 use App\Models\BankAccount;
 use App\Models\Course;
+use App\Models\DocumentType;
 use App\Models\Employee;
 use App\Models\User;
 use App\Models\UserType;
 use App\Models\Responsibility;
+use App\Repositories\ResponsibilityRepository;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 /**
@@ -20,7 +25,7 @@ use Tests\TestCase;
 class EmployeeTest extends TestCase
 {
     use DatabaseMigrations;
-    //use RefreshDatabase;
+    use RefreshDatabase;
     use WithFaker;
 
     private static User $userAdm;
@@ -31,13 +36,22 @@ class EmployeeTest extends TestCase
     private static User $userLdi;
     private static User $userAlien;
 
+    private ResponsibilityRepository $responsibilityRepository;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->responsibilityRepository = new ResponsibilityRepository();
+    }
+
     public function setUp(): void
     {
         parent::setUp();
 
         self::$userAdm = User::factory()->createOne(
             [
-                'email' => 'adm_email@test.com',
+                'login' => 'adm_email@test.com',
             ]
         );
 
@@ -51,7 +65,7 @@ class EmployeeTest extends TestCase
 
         self::$userDir = User::factory()->createOne(
             [
-                'email' => 'dir_email@test.com',
+                'login' => 'dir_email@test.com',
             ]
         );
 
@@ -65,7 +79,7 @@ class EmployeeTest extends TestCase
 
         self::$userAss = User::factory()->createOne(
             [
-                'email' => 'ass_email@test.com',
+                'login' => 'ass_email@test.com',
             ]
         );
 
@@ -79,7 +93,7 @@ class EmployeeTest extends TestCase
 
         self::$userSec = User::factory()->createOne(
             [
-                'email' => 'sec_email@test.com',
+                'login' => 'sec_email@test.com',
             ]
         );
 
@@ -93,7 +107,7 @@ class EmployeeTest extends TestCase
 
         self::$userCoord = User::factory()->createOne(
             [
-                'email' => 'coord_email@test.com',
+                'login' => 'coord_email@test.com',
             ]
         );
 
@@ -110,7 +124,7 @@ class EmployeeTest extends TestCase
 
         self::$userLdi = User::factory()->createOne(
             [
-                'email' => 'ldi_email@test.com',
+                'login' => 'ldi_email@test.com',
             ]
         );
 
@@ -124,7 +138,7 @@ class EmployeeTest extends TestCase
 
         self::$userAlien = User::factory()->createOne(
             [
-                'email' => 'alien_email@test.com',
+                'login' => 'alien_email@test.com',
             ]
         );
 
@@ -139,7 +153,7 @@ class EmployeeTest extends TestCase
         BankAccount::factory()->createOne([
             'bank_name' => 'Banco do Brasil',
             'agency_number' => '123',
-            'account_number' => '12345678',
+            'account' => '12345678',
             'employee_id' => Employee::factory()->createOne(
                 [
                     'name' => 'John Doe',
@@ -150,12 +164,16 @@ class EmployeeTest extends TestCase
         BankAccount::factory()->createOne([
             'bank_name' => 'Banco do Brasil',
             'agency_number' => '123',
-            'account_number' => '12345678',
+            'account' => '12345678',
             'employee_id' => Employee::factory()->createOne(
                 [
                     'name' => 'Jane Doe',
                 ]
             ),
+        ]);
+
+        DocumentType::factory()->createOne([
+            'name' => 'RG',
         ]);
         //$this->createApplication();
     }
@@ -205,7 +223,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.index'))
             ->assertSee('Listar Colaboradores')
@@ -227,7 +245,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.index'))
             ->assertSee(['John Doe', 'Jane Doe'])
@@ -248,7 +266,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.index'))
             ->assertSee(['John Doe', 'Jane Doe'])
@@ -269,7 +287,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.index'))
             ->assertSee(['John Doe', 'Jane Doe'])
@@ -290,7 +308,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.index'))
             ->assertStatus(403);
@@ -310,7 +328,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.index'))
             ->assertSee(['John Doe', 'Jane Doe'])
@@ -362,7 +380,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.show', 1))
             ->assertSee(['Listar Colaboradores', 'Nome:', 'CPF:', 'Profissão:', 'Contato e Endereço'])
@@ -383,7 +401,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.show', 1))
             ->assertSee(['Listar Colaboradores', 'Nome:', 'CPF:', 'Profissão:', 'Contato e Endereço'])
@@ -404,7 +422,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.show', 1))
             ->assertSee(['Listar Colaboradores', 'Nome:', 'CPF:', 'Profissão:', 'Contato e Endereço'])
@@ -425,7 +443,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.show', 1))
             ->assertSee(['Listar Colaboradores', 'Nome:', 'CPF:', 'Profissão:', 'Contato e Endereço'])
@@ -446,7 +464,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.show', 1))
             ->assertStatus(403);
@@ -466,7 +484,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.show', 1))
             ->assertStatus(403);
@@ -517,7 +535,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.create'))
             ->assertSee(['Cadastrar Colaborador', 'Nome*', 'CPF*', 'Profissão', 'Cadastrar'])
@@ -538,7 +556,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.create'))
             ->assertSee(['Cadastrar Colaborador', 'Nome*', 'CPF*', 'Profissão', 'Cadastrar'])
@@ -559,7 +577,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.create'))
             ->assertSee(['Cadastrar Colaborador', 'Nome*', 'CPF*', 'Profissão', 'Cadastrar'])
@@ -580,7 +598,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.create'))
             ->assertSee(['Cadastrar Colaborador', 'Nome*', 'CPF*', 'Profissão', 'Cadastrar'])
@@ -601,7 +619,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.create'))
             ->assertStatus(403);
@@ -621,7 +639,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.create'))
             ->assertStatus(403);
@@ -638,7 +656,7 @@ class EmployeeTest extends TestCase
      */
     public function guestShouldntCreateEmployee()
     {
-        $employeeArr = $this->createTestEmployee()->toArray();
+        $employeeArr = $this->createTestEmployeeArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
         $employeeArr = array_merge($employeeArr, $this->createTestBankAccountArr());
 
@@ -655,7 +673,7 @@ class EmployeeTest extends TestCase
      */
     public function authenticatedUserWithoutPermissionShouldntCreateEmployee()
     {
-        $employeeArr = $this->createTestEmployee()->toArray();
+        $employeeArr = $this->createTestEmployeeArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
         $employeeArr = array_merge($employeeArr, $this->createTestBankAccountArr());
 
@@ -674,7 +692,7 @@ class EmployeeTest extends TestCase
      */
     public function administratorShouldCreateEmployee()
     {
-        $employeeArr = $this->createTestEmployee()->toArray();
+        $employeeArr = $this->createTestEmployeeArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
         $employeeArr = array_merge($employeeArr, $this->createTestBankAccountArr());
 
@@ -683,7 +701,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()])
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))])
             ->followingRedirects()->post(route('employees.store'), $employeeArr)
             ->assertSee($this->expectedEmployeeInfo())
             ->assertStatus(200);
@@ -703,9 +721,9 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
-        $employeeArr = $this->createTestEmployee()->toArray();
+        $employeeArr = $this->createTestEmployeeArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
         $employeeArr = array_merge($employeeArr, $this->createTestBankAccountArr());
 
@@ -728,9 +746,9 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
-        $employeeArr = $this->createTestEmployee()->toArray();
+        $employeeArr = $this->createTestEmployeeArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
         $employeeArr = array_merge($employeeArr, $this->createTestBankAccountArr());
 
@@ -753,9 +771,9 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
-        $employeeArr = $this->createTestEmployee()->toArray();
+        $employeeArr = $this->createTestEmployeeArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
         $employeeArr = array_merge($employeeArr, $this->createTestBankAccountArr());
 
@@ -778,9 +796,9 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
-        $employeeArr = $this->createTestEmployee()->toArray();
+        $employeeArr = $this->createTestEmployeeArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
         $employeeArr = array_merge($employeeArr, $this->createTestBankAccountArr());
 
@@ -802,9 +820,9 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
-        $employeeArr = $this->createTestEmployee()->toArray();
+        $employeeArr = $this->createTestEmployeeArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
         $employeeArr = array_merge($employeeArr, $this->createTestBankAccountArr());
 
@@ -857,7 +875,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.edit', 1))
             ->assertSee(['Editar', 'Nome*', 'CPF*', 'Profissão', 'Atualizar'])
@@ -878,7 +896,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.edit', 1))
             ->assertSee(['Editar', 'Nome*', 'CPF*', 'Profissão', 'Atualizar'])
@@ -899,7 +917,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.edit', 1))
             ->assertSee(['Editar', 'Nome*', 'CPF*', 'Profissão', 'Atualizar'])
@@ -920,7 +938,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.edit', 1))
             ->assertSee(['Editar', 'Nome*', 'CPF*', 'Profissão', 'Atualizar'])
@@ -941,7 +959,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.edit', 1))
             ->assertStatus(403);
@@ -961,7 +979,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('employees.edit', 1))
             ->assertStatus(403);
@@ -988,7 +1006,7 @@ class EmployeeTest extends TestCase
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
         $originalEmployeeArr['bank_name'] = $originalBankAccount?->bank_name;
         $originalEmployeeArr['agency_number'] = $originalBankAccount?->agency_number;
-        $originalEmployeeArr['account_number'] = $originalBankAccount?->account_number;
+        $originalEmployeeArr['account_number'] = $originalBankAccount?->account;
 
         $this->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
             ->assertStatus(401);
@@ -1016,7 +1034,7 @@ class EmployeeTest extends TestCase
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
         $originalEmployeeArr['bank_name'] = $originalBankAccount?->bank_name;
         $originalEmployeeArr['agency_number'] = $originalBankAccount?->agency_number;
-        $originalEmployeeArr['account_number'] = $originalBankAccount?->account_number;
+        $originalEmployeeArr['account_number'] = $originalBankAccount?->account;
 
         $this->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
             ->assertStatus(403);
@@ -1036,7 +1054,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
@@ -1046,11 +1064,34 @@ class EmployeeTest extends TestCase
 
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
+        $originalEmployeeArr['cpf_number'] = $originalEmployeeArr['cpf'];
+        $originalEmployeeArr['job'] = $originalEmployee->personalDetail?->job ?? 'New Job';
+        $originalEmployeeArr['birth_date'] = $originalEmployee->personalDetail?->birth_date ?? strval(Carbon::now()->subYears(30));
+        $originalEmployeeArr['birth_state'] = $originalEmployee->personalDetail?->birth_state ?? $this->faker->randomElement(States::cases())->name;
+        $originalEmployeeArr['birth_city'] = $originalEmployee->personalDetail?->birth_city ?? 'New City';
+        $originalEmployeeArr['marital_status'] = $originalEmployee->personalDetail?->marital_status ?? $this->faker->randomElement(MaritalStatuses::cases())->name;
+        $originalEmployeeArr['father_name'] = $originalEmployee->personalDetail?->father_name ?? 'New Father Name';
+        $originalEmployeeArr['mother_name'] = $originalEmployee->personalDetail?->mother_name ?? 'New Mother Name';
+        $originalEmployeeArr['document_type_id'] = $originalEmployee->identity?->type_id ?? DocumentType::select('id')->limit(1)->get()->first()->id;
+        $originalEmployeeArr['identity_number'] = $originalEmployee->identity?->number ?? '99966655544';
+        $originalEmployeeArr['identity_issuer'] = $originalEmployee->identity?->issuer ?? 'New Issuer';
+        $originalEmployeeArr['issuer_state'] = $originalEmployee->identity?->issuer_state ?? $this->faker->randomElement(States::cases())->name;
+        $originalEmployeeArr['identity_issue_date'] = $originalEmployee->identity?->issue_date ?? strval(Carbon::now()->subYears(10));
+        $originalEmployeeArr['address_street'] = $originalEmployee->address?->street ?? 'New Street';
+        $originalEmployeeArr['address_number'] = $originalEmployee->address?->number ?? '999';
+        $originalEmployeeArr['address_complement'] = $originalEmployee->address?->complement ?? 'New Complement';
+        $originalEmployeeArr['address_district'] = $originalEmployee->address?->district ?? 'New district';
+        $originalEmployeeArr['address_state'] = $originalEmployee->address?->state ?? $this->faker->randomElement(States::cases())->name;
+        $originalEmployeeArr['address_city'] = $originalEmployee->address?->city ?? 'New City';
+        $originalEmployeeArr['address_zip_code'] = $originalEmployee->address?->zip_code ?? '99999999';
+        $originalEmployeeArr['landline'] = $originalEmployee->phone?->landline ?? '2739999999';
+        $originalEmployeeArr['mobile'] = $originalEmployee->phone?->mobile ?? '2799999999';
+        $originalEmployeeArr['area_code'] = $originalEmployee->phone?->area_code ?? '27';
         $originalEmployeeArr['bank_name'] = $originalBankAccount?->bank_name;
         $originalEmployeeArr['agency_number'] = $originalBankAccount?->agency_number;
-        $originalEmployeeArr['account_number'] = $originalBankAccount?->account_number;
+        $originalEmployeeArr['account_number'] = $originalBankAccount?->account;
 
-        $this->withoutExceptionHandling()->followingRedirects()->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
+        $this->followingRedirects()->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
             ->assertSee($this->updatedEmployeeData())
             ->assertStatus(200);
     }
@@ -1069,7 +1110,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
@@ -1077,11 +1118,35 @@ class EmployeeTest extends TestCase
         $originalEmployeeArr = $originalEmployee->toArray();
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
+
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
+        $originalEmployeeArr['cpf_number'] = $originalEmployeeArr['cpf'];
+        $originalEmployeeArr['job'] = $originalEmployee->personalDetail?->job ?? 'New Job';
+        $originalEmployeeArr['birth_date'] = $originalEmployee->personalDetail?->birth_date ?? strval(Carbon::now()->subYears(30));
+        $originalEmployeeArr['birth_state'] = $originalEmployee->personalDetail?->birth_state ?? $this->faker->randomElement(States::cases())->name;
+        $originalEmployeeArr['birth_city'] = $originalEmployee->personalDetail?->birth_city ?? 'New City';
+        $originalEmployeeArr['marital_status'] = $originalEmployee->personalDetail?->marital_status ?? $this->faker->randomElement(MaritalStatuses::cases())->name;
+        $originalEmployeeArr['father_name'] = $originalEmployee->personalDetail?->father_name ?? 'New Father Name';
+        $originalEmployeeArr['mother_name'] = $originalEmployee->personalDetail?->mother_name ?? 'New Mother Name';
+        $originalEmployeeArr['document_type_id'] = $originalEmployee->identity?->type_id ?? DocumentType::select('id')->limit(1)->get()->first()->id;
+        $originalEmployeeArr['identity_number'] = $originalEmployee->identity?->number ?? '99966655544';
+        $originalEmployeeArr['identity_issuer'] = $originalEmployee->identity?->issuer ?? 'New Issuer';
+        $originalEmployeeArr['issuer_state'] = $originalEmployee->identity?->issuer_state ?? $this->faker->randomElement(States::cases())->name;
+        $originalEmployeeArr['identity_issue_date'] = $originalEmployee->identity?->issue_date ?? strval(Carbon::now()->subYears(10));
+        $originalEmployeeArr['address_street'] = $originalEmployee->address?->street ?? 'New Street';
+        $originalEmployeeArr['address_number'] = $originalEmployee->address?->number ?? '999';
+        $originalEmployeeArr['address_complement'] = $originalEmployee->address?->complement ?? 'New Complement';
+        $originalEmployeeArr['address_district'] = $originalEmployee->address?->district ?? 'New district';
+        $originalEmployeeArr['address_state'] = $originalEmployee->address?->state ?? $this->faker->randomElement(States::cases())->name;
+        $originalEmployeeArr['address_city'] = $originalEmployee->address?->city ?? 'New City';
+        $originalEmployeeArr['address_zip_code'] = $originalEmployee->address?->zip_code ?? '99999999';
+        $originalEmployeeArr['landline'] = $originalEmployee->phone?->landline ?? '2739999999';
+        $originalEmployeeArr['mobile'] = $originalEmployee->phone?->mobile ?? '2799999999';
+        $originalEmployeeArr['area_code'] = $originalEmployee->phone?->area_code ?? '27';
         $originalEmployeeArr['bank_name'] = $originalBankAccount?->bank_name;
         $originalEmployeeArr['agency_number'] = $originalBankAccount?->agency_number;
-        $originalEmployeeArr['account_number'] = $originalBankAccount?->account_number;
+        $originalEmployeeArr['account_number'] = $originalBankAccount?->account;
 
         $this->followingRedirects()->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
             ->assertSee($this->updatedEmployeeData())
@@ -1102,7 +1167,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
@@ -1110,11 +1175,35 @@ class EmployeeTest extends TestCase
         $originalEmployeeArr = $originalEmployee->toArray();
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
+
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
+        $originalEmployeeArr['cpf_number'] = $originalEmployeeArr['cpf'];
+        $originalEmployeeArr['job'] = $originalEmployee->personalDetail?->job ?? 'New Job';
+        $originalEmployeeArr['birth_date'] = $originalEmployee->personalDetail?->birth_date ?? strval(Carbon::now()->subYears(30));
+        $originalEmployeeArr['birth_state'] = $originalEmployee->personalDetail?->birth_state ?? $this->faker->randomElement(States::cases())->name;
+        $originalEmployeeArr['birth_city'] = $originalEmployee->personalDetail?->birth_city ?? 'New City';
+        $originalEmployeeArr['marital_status'] = $originalEmployee->personalDetail?->marital_status ?? $this->faker->randomElement(MaritalStatuses::cases())->name;
+        $originalEmployeeArr['father_name'] = $originalEmployee->personalDetail?->father_name ?? 'New Father Name';
+        $originalEmployeeArr['mother_name'] = $originalEmployee->personalDetail?->mother_name ?? 'New Mother Name';
+        $originalEmployeeArr['document_type_id'] = $originalEmployee->identity?->type_id ?? DocumentType::select('id')->limit(1)->get()->first()->id;
+        $originalEmployeeArr['identity_number'] = $originalEmployee->identity?->number ?? '99966655544';
+        $originalEmployeeArr['identity_issuer'] = $originalEmployee->identity?->issuer ?? 'New Issuer';
+        $originalEmployeeArr['issuer_state'] = $originalEmployee->identity?->issuer_state ?? $this->faker->randomElement(States::cases())->name;
+        $originalEmployeeArr['identity_issue_date'] = $originalEmployee->identity?->issue_date ?? strval(Carbon::now()->subYears(10));
+        $originalEmployeeArr['address_street'] = $originalEmployee->address?->street ?? 'New Street';
+        $originalEmployeeArr['address_number'] = $originalEmployee->address?->number ?? '999';
+        $originalEmployeeArr['address_complement'] = $originalEmployee->address?->complement ?? 'New Complement';
+        $originalEmployeeArr['address_district'] = $originalEmployee->address?->district ?? 'New district';
+        $originalEmployeeArr['address_state'] = $originalEmployee->address?->state ?? $this->faker->randomElement(States::cases())->name;
+        $originalEmployeeArr['address_city'] = $originalEmployee->address?->city ?? 'New City';
+        $originalEmployeeArr['address_zip_code'] = $originalEmployee->address?->zip_code ?? '99999999';
+        $originalEmployeeArr['landline'] = $originalEmployee->phone?->landline ?? '2739999999';
+        $originalEmployeeArr['mobile'] = $originalEmployee->phone?->mobile ?? '2799999999';
+        $originalEmployeeArr['area_code'] = $originalEmployee->phone?->area_code ?? '27';
         $originalEmployeeArr['bank_name'] = $originalBankAccount?->bank_name;
         $originalEmployeeArr['agency_number'] = $originalBankAccount?->agency_number;
-        $originalEmployeeArr['account_number'] = $originalBankAccount?->account_number;
+        $originalEmployeeArr['account_number'] = $originalBankAccount?->account;
 
         $this->followingRedirects()->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
             ->assertSee($this->updatedEmployeeData())
@@ -1135,7 +1224,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
@@ -1143,11 +1232,35 @@ class EmployeeTest extends TestCase
         $originalEmployeeArr = $originalEmployee->toArray();
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
+
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
+        $originalEmployeeArr['cpf_number'] = $originalEmployeeArr['cpf'];
+        $originalEmployeeArr['job'] = $originalEmployee->personalDetail?->job ?? 'New Job';
+        $originalEmployeeArr['birth_date'] = $originalEmployee->personalDetail?->birth_date ?? strval(Carbon::now()->subYears(30));
+        $originalEmployeeArr['birth_state'] = $originalEmployee->personalDetail?->birth_state ?? $this->faker->randomElement(States::cases())->name;
+        $originalEmployeeArr['birth_city'] = $originalEmployee->personalDetail?->birth_city ?? 'New City';
+        $originalEmployeeArr['marital_status'] = $originalEmployee->personalDetail?->marital_status ?? $this->faker->randomElement(MaritalStatuses::cases())->name;
+        $originalEmployeeArr['father_name'] = $originalEmployee->personalDetail?->father_name ?? 'New Father Name';
+        $originalEmployeeArr['mother_name'] = $originalEmployee->personalDetail?->mother_name ?? 'New Mother Name';
+        $originalEmployeeArr['document_type_id'] = $originalEmployee->identity?->type_id ?? DocumentType::select('id')->limit(1)->get()->first()->id;
+        $originalEmployeeArr['identity_number'] = $originalEmployee->identity?->number ?? '99966655544';
+        $originalEmployeeArr['identity_issuer'] = $originalEmployee->identity?->issuer ?? 'New Issuer';
+        $originalEmployeeArr['issuer_state'] = $originalEmployee->identity?->issuer_state ?? $this->faker->randomElement(States::cases())->name;
+        $originalEmployeeArr['identity_issue_date'] = $originalEmployee->identity?->issue_date ?? strval(Carbon::now()->subYears(10));
+        $originalEmployeeArr['address_street'] = $originalEmployee->address?->street ?? 'New Street';
+        $originalEmployeeArr['address_number'] = $originalEmployee->address?->number ?? '999';
+        $originalEmployeeArr['address_complement'] = $originalEmployee->address?->complement ?? 'New Complement';
+        $originalEmployeeArr['address_district'] = $originalEmployee->address?->district ?? 'New district';
+        $originalEmployeeArr['address_state'] = $originalEmployee->address?->state ?? $this->faker->randomElement(States::cases())->name;
+        $originalEmployeeArr['address_city'] = $originalEmployee->address?->city ?? 'New City';
+        $originalEmployeeArr['address_zip_code'] = $originalEmployee->address?->zip_code ?? '99999999';
+        $originalEmployeeArr['landline'] = $originalEmployee->phone?->landline ?? '2739999999';
+        $originalEmployeeArr['mobile'] = $originalEmployee->phone?->mobile ?? '2799999999';
+        $originalEmployeeArr['area_code'] = $originalEmployee->phone?->area_code ?? '27';
         $originalEmployeeArr['bank_name'] = $originalBankAccount?->bank_name;
         $originalEmployeeArr['agency_number'] = $originalBankAccount?->agency_number;
-        $originalEmployeeArr['account_number'] = $originalBankAccount?->account_number;
+        $originalEmployeeArr['account_number'] = $originalBankAccount?->account;
 
         $this->followingRedirects()->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
             ->assertSee($this->updatedEmployeeData())
@@ -1168,7 +1281,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
@@ -1176,11 +1289,35 @@ class EmployeeTest extends TestCase
         $originalEmployeeArr = $originalEmployee->toArray();
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
+
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
+        $originalEmployeeArr['cpf_number'] = $originalEmployeeArr['cpf'];
+        $originalEmployeeArr['job'] = $originalEmployee->personalDetail?->job ?? 'New Job';
+        $originalEmployeeArr['birth_date'] = $originalEmployee->personalDetail?->birth_date ?? strval(Carbon::now()->subYears(30));
+        $originalEmployeeArr['birth_state'] = $originalEmployee->personalDetail?->birth_state ?? $this->faker->randomElement(States::cases())->name;
+        $originalEmployeeArr['birth_city'] = $originalEmployee->personalDetail?->birth_city ?? 'New City';
+        $originalEmployeeArr['marital_status'] = $originalEmployee->personalDetail?->marital_status ?? $this->faker->randomElement(MaritalStatuses::cases())->name;
+        $originalEmployeeArr['father_name'] = $originalEmployee->personalDetail?->father_name ?? 'New Father Name';
+        $originalEmployeeArr['mother_name'] = $originalEmployee->personalDetail?->mother_name ?? 'New Mother Name';
+        $originalEmployeeArr['document_type_id'] = $originalEmployee->identity?->type_id ?? DocumentType::select('id')->limit(1)->get()->first()->id;
+        $originalEmployeeArr['identity_number'] = $originalEmployee->identity?->number ?? '99966655544';
+        $originalEmployeeArr['identity_issuer'] = $originalEmployee->identity?->issuer ?? 'New Issuer';
+        $originalEmployeeArr['issuer_state'] = $originalEmployee->identity?->issuer_state ?? $this->faker->randomElement(States::cases())->name;
+        $originalEmployeeArr['identity_issue_date'] = $originalEmployee->identity?->issue_date ?? strval(Carbon::now()->subYears(10));
+        $originalEmployeeArr['address_street'] = $originalEmployee->address?->street ?? 'New Street';
+        $originalEmployeeArr['address_number'] = $originalEmployee->address?->number ?? '999';
+        $originalEmployeeArr['address_complement'] = $originalEmployee->address?->complement ?? 'New Complement';
+        $originalEmployeeArr['address_district'] = $originalEmployee->address?->district ?? 'New district';
+        $originalEmployeeArr['address_state'] = $originalEmployee->address?->state ?? $this->faker->randomElement(States::cases())->name;
+        $originalEmployeeArr['address_city'] = $originalEmployee->address?->city ?? 'New City';
+        $originalEmployeeArr['address_zip_code'] = $originalEmployee->address?->zip_code ?? '99999999';
+        $originalEmployeeArr['landline'] = $originalEmployee->phone?->landline ?? '2739999999';
+        $originalEmployeeArr['mobile'] = $originalEmployee->phone?->mobile ?? '2799999999';
+        $originalEmployeeArr['area_code'] = $originalEmployee->phone?->area_code ?? '27';
         $originalEmployeeArr['bank_name'] = $originalBankAccount?->bank_name;
         $originalEmployeeArr['agency_number'] = $originalBankAccount?->agency_number;
-        $originalEmployeeArr['account_number'] = $originalBankAccount?->account_number;
+        $originalEmployeeArr['account_number'] = $originalBankAccount?->account;
 
         $this->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
             ->assertStatus(403);
@@ -1200,7 +1337,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
@@ -1208,11 +1345,35 @@ class EmployeeTest extends TestCase
         $originalEmployeeArr = $originalEmployee->toArray();
         Arr::forget($originalEmployeeArr, ['id', 'created_at', 'updated_at']);
 
+
         $originalEmployeeArr['name'] = $this->updatedEmployeeData()['name'];
         $originalEmployeeArr['email'] = $this->updatedEmployeeData()['email'];
+        $originalEmployeeArr['cpf_number'] = $originalEmployeeArr['cpf'];
+        $originalEmployeeArr['job'] = $originalEmployee->personalDetail?->job ?? 'New Job';
+        $originalEmployeeArr['birth_date'] = $originalEmployee->personalDetail?->birth_date ?? strval(Carbon::now()->subYears(30));
+        $originalEmployeeArr['birth_state'] = $originalEmployee->personalDetail?->birth_state ?? $this->faker->randomElement(States::cases())->name;
+        $originalEmployeeArr['birth_city'] = $originalEmployee->personalDetail?->birth_city ?? 'New City';
+        $originalEmployeeArr['marital_status'] = $originalEmployee->personalDetail?->marital_status ?? $this->faker->randomElement(MaritalStatuses::cases())->name;
+        $originalEmployeeArr['father_name'] = $originalEmployee->personalDetail?->father_name ?? 'New Father Name';
+        $originalEmployeeArr['mother_name'] = $originalEmployee->personalDetail?->mother_name ?? 'New Mother Name';
+        $originalEmployeeArr['document_type_id'] = $originalEmployee->identity?->type_id ?? DocumentType::select('id')->limit(1)->get()->first()->id;
+        $originalEmployeeArr['identity_number'] = $originalEmployee->identity?->number ?? '99966655544';
+        $originalEmployeeArr['identity_issuer'] = $originalEmployee->identity?->issuer ?? 'New Issuer';
+        $originalEmployeeArr['issuer_state'] = $originalEmployee->identity?->issuer_state ?? $this->faker->randomElement(States::cases())->name;
+        $originalEmployeeArr['identity_issue_date'] = $originalEmployee->identity?->issue_date ?? strval(Carbon::now()->subYears(10));
+        $originalEmployeeArr['address_street'] = $originalEmployee->address?->street ?? 'New Street';
+        $originalEmployeeArr['address_number'] = $originalEmployee->address?->number ?? '999';
+        $originalEmployeeArr['address_complement'] = $originalEmployee->address?->complement ?? 'New Complement';
+        $originalEmployeeArr['address_district'] = $originalEmployee->address?->district ?? 'New district';
+        $originalEmployeeArr['address_state'] = $originalEmployee->address?->state ?? $this->faker->randomElement(States::cases())->name;
+        $originalEmployeeArr['address_city'] = $originalEmployee->address?->city ?? 'New City';
+        $originalEmployeeArr['address_zip_code'] = $originalEmployee->address?->zip_code ?? '99999999';
+        $originalEmployeeArr['landline'] = $originalEmployee->phone?->landline ?? '2739999999';
+        $originalEmployeeArr['mobile'] = $originalEmployee->phone?->mobile ?? '2799999999';
+        $originalEmployeeArr['area_code'] = $originalEmployee->phone?->area_code ?? '27';
         $originalEmployeeArr['bank_name'] = $originalBankAccount?->bank_name;
         $originalEmployeeArr['agency_number'] = $originalBankAccount?->agency_number;
-        $originalEmployeeArr['account_number'] = $originalBankAccount?->account_number;
+        $originalEmployeeArr['account_number'] = $originalBankAccount?->account;
 
         $this->put(route('employees.update', $originalEmployee->id), $originalEmployeeArr)
             ->assertStatus(403);
@@ -1273,7 +1434,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $employeeBefore = Employee::find(1);
 
@@ -1300,7 +1461,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $employeeBefore = Employee::find(1);
 
@@ -1325,7 +1486,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $employeeBefore = Employee::find(1);
 
@@ -1350,7 +1511,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $employeeBefore = Employee::find(1);
 
@@ -1375,7 +1536,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $employeeBefore = Employee::find(1);
 
@@ -1400,7 +1561,7 @@ class EmployeeTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $employeeBefore = Employee::find(1);
 
@@ -1414,45 +1575,43 @@ class EmployeeTest extends TestCase
     /**
      * @mixin \Faker\Generator
      *
-     * @return Employee
+     * @return array<string, string>
      */
-    private function createTestEmployee(): Employee
+    private function createTestEmployeeArray(): array
     {
         $generator = $this->faker->unique();
 
         /** @phpstan-ignore-next-line */
         $cpf = $generator->cpf($formatted = false);
 
-        return Employee::factory()->makeOne(
-            [
-                'name' => 'Carl Doe',
-                'cpf' => $cpf,
-                'job' => 'carldoejob',
-                'gender' => null,
-                'birth_date' => '',
-                'birth_state_id' => null,
-                'birth_city' => '',
-                'id_number' => '',
-                'document_type_id' => null,
-                'id_issue_date' => '',
-                'id_issue_agency' => '',
-                'marital_status' => null,
-                'spouse_name' => '',
-                'father_name' => '',
-                'mother_name' => '',
-                'address_street' => '',
-                'address_complement' => '',
-                'address_number' => '',
-                'address_district' => '',
-                'address_zip_code' => '',
-                'address_state_id' => null,
-                'address_city' => '',
-                'area_code' => '',
-                'phone' => '',
-                'mobile' => '',
-                'email' => (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']) . '@test-case.com',
-            ]
-        );
+        return [
+            'name' => 'Carl Doe',
+            'gender' => 'M',
+            'email' => strval((debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']) . '@test-case.com'),
+            'cpf_number' => $cpf,
+            'job' => 'carldoejob',
+            'birth_date' => strval(Carbon::now()->subYears(30)),
+            'birth_state' => $this->faker->randomElement(States::cases())->name,
+            'birth_city' => 'New City',
+            'marital_status' => $this->faker->randomElement(MaritalStatuses::cases())->name,
+            'father_name' => 'New Father Name',
+            'mother_name' => 'New Mother Name',
+            'document_type_id' => strval(DocumentType::select('id')->limit(1)->get()->first()->id),
+            'identity_number' => '99966655544',
+            'identity_issuer' => 'New Issuer',
+            'issuer_state' => $this->faker->randomElement(States::cases())->name,
+            'identity_issue_date' => strval(Carbon::now()->subYears(10)),
+            'address_street' => 'New Street',
+            'address_number' => '999',
+            'address_complement' => 'New Complement',
+            'address_district' => 'New district',
+            'address_state' =>  $this->faker->randomElement(States::cases())->name,
+            'address_city' => 'New City',
+            'address_zip_code' => '99999999',
+            'landline' => '2739999999',
+            'mobile' => '2799999999',
+            'area_code' => '27',
+        ];
     }
 
     /**

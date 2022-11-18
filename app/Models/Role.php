@@ -3,12 +3,10 @@
 namespace App\Models;
 
 use App\Enums\GrantTypes;
-use App\ModelFilters\RoleFilter;
+use App\Models\Filters\RoleFilter;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Kyslik\ColumnSortable\Sortable;
 use Spatie\Activitylog\LogOptions;
@@ -23,6 +21,36 @@ class Role extends Model
     use LogsActivity;
 
     /**
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
+     * @var array<int, string>
+     */
+    public static $sortable = [
+        'id',
+        'name',
+        'description',
+        'grant_value',
+        'grant_type',
+        'created_at',
+        'updated_at',
+    ];
+
+    /**
+     * @var array<int, string>
+     */
+    public static $acceptedFilters = [
+        'nameContains',
+        'descriptionContains',
+        'grantvalueExactly',
+        'grantvalueBigOrEqu',
+        'grantvalueLowOrEqu',
+        'grantTypeNameContains',
+    ];
+
+    /**
      * @var string
      */
     protected $table = 'roles';
@@ -31,11 +59,6 @@ class Role extends Model
      * @var string
      */
     protected $primaryKey = 'id';
-
-    /**
-     * @var bool
-     */
-    public $incrementing = true;
 
     /**
      * The attributes that are mass assignable.
@@ -49,55 +72,20 @@ class Role extends Model
         'grant_type',
     ];
 
-    // /**
-    //  * @var array<int, string>
-    //  */
-    // public $sortable = ['id', 'name', 'description', 'grant_value', 'created_at', 'updated_at'];
-
-    /**
-     * @var array<int, string>
-     */
-    public static $accepted_filters = [
-        'nameContains',
-        'descriptionContains',
-        'grantvalueExactly',
-        'grantvalueBigOrEqu',
-        'grantvalueLowOrEqu',
-        'grantTypeNameContains',
-    ];
-
-    // /**
-    //  * @var array<int, string>
-    //  *
-    //  * @phpstan-ignore-next-line
-    //  */
-    // private static $whiteListFilter = ['*'];
-
     // ==================== Casts ====================
 
     protected $casts = [
         'grant_type' => GrantTypes::class,
     ];
 
-    // ===============================================
-
-
-    /* public function bonds()
-    {
-        return $this->hasMany(User::class);
-    } */
+    /**
+     * @var array<int, string>
+     *
+     * @phpstan-ignore-next-line
+     */
+    private static $whiteListFilter = ['*'];
 
     // ==================== Accessors ====================
-
-    // /**
-    //  * @return Attribute<float, float>
-    //  */
-    // protected function grantValueReal(): Attribute
-    // {
-    //     return Attribute::make(
-    //         get: fn ($value) => $this->grant_value / 100,
-    //     );
-    // }
 
     /**
      * @return float

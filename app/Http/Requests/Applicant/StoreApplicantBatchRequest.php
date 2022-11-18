@@ -29,7 +29,9 @@ class StoreApplicantBatchRequest extends FormRequest
         ];
 
         if ($this->has('applicants')) {
-            foreach ($this->input('applicants') as $key => $val) {
+            /** @var array<int, array<string, ?string>> $applicants*/
+            $applicants = $this->input('applicants');
+            foreach ($applicants as $key => $val) {
                 if (isset($val['check'])) {
                     $rules['applicants.' . $key . '.name'] = 'required|string|max:255';
                     $rules['applicants.' . $key . '.email'] = 'required|email|max:255';

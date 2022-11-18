@@ -15,6 +15,11 @@ class CourseClass extends Model
     use LogsActivity;
 
     /**
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
      * @var string
      */
     protected $table = 'course_classes';
@@ -23,11 +28,6 @@ class CourseClass extends Model
      * @var string
      */
     protected $primaryKey = 'id';
-
-    /**
-     * @var bool
-     */
-    public $incrementing = true;
 
     /**
      * @var array<int, string>
@@ -48,7 +48,7 @@ class CourseClass extends Model
     }
 
     /**
-     * @return BelogsTo<Course>
+     * @return BelongsTo<Course, CourseClass>
      */
     public function course(): BelongsTo
     {

@@ -19,47 +19,50 @@ class ApplicantService
     /**
      * Undocumented function
      *
-     * @return LengthAwarePaginator
+     * @return LengthAwarePaginator<Applicant>
      */
     public function list(): LengthAwarePaginator
     {
         ModelListed::dispatch(Applicant::class);
 
-        $query = Applicant::with(['course', 'pole', 'role']);
-        $query = $query->AcceptRequest(Applicant::$accepted_filters)->filter();
-        $query = $query->sortable(['updated_at' => 'desc']);
+        $query = Applicant::with(['course', 'pole', 'role'])
 
-        $applicants = $query->paginate(10);
-        $applicants->withQueryString();
+            // AcceptRequest: mehdi-fathi/eloquent-filter
+            ->AcceptRequest(Applicant::$acceptedFilters)->filter()
+            ->sortable()
+            ->orderByDesc('applicants.updated_at');
 
-        return $applicants;
+        return $query->paginate(10)
+
+            // AbstractPaginator->withQueryString():
+            // append all of the current request's query string values to the pagination links
+            // [https://laravel.com/docs/9.x/pagination]
+            ->withQueryString();
     }
 
     /**
      * Undocumented function
      *
-     * @param ApplicantDto $ApplicantDto
+     * @param ApplicantDto $applicantDto
      *
      * @return Applicant
      */
-    public function create(ApplicantDto $ApplicantDto): Applicant
+    public function create(ApplicantDto $applicantDto): Applicant
     {
         $applicant = new Applicant([
-            'name' => TextHelper::titleCase($ApplicantDto->name),
-            'email' => mb_strtolower($ApplicantDto->email),
-            'area_code' => $ApplicantDto->areaCode,
-            'landline' => $ApplicantDto->landline,
-            'mobile' => $ApplicantDto->mobile,
-            'hiring_process' => mb_strtoupper($ApplicantDto->hiringProcess),
-            'role_id' => $ApplicantDto->roleId,
-            'course_id' => $ApplicantDto->courseId,
-            'pole_id' => $ApplicantDto->poleId,
+            'name' => TextHelper::titleCase($applicantDto->name),
+            'email' => mb_strtolower($applicantDto->email),
+            'area_code' => $applicantDto->areaCode,
+            'landline' => $applicantDto->landline,
+            'mobile' => $applicantDto->mobile,
+            'hiring_process' => mb_strtoupper($applicantDto->hiringProcess),
+            'role_id' => $applicantDto->roleId,
+            'course_id' => $applicantDto->courseId,
+            'pole_id' => $applicantDto->poleId,
             'call_state' => CallStates::NC,
         ]);
 
-        DB::transaction(static function () use ($applicant) {
-            $applicant->save();
-        });
+        $applicant->save();
 
         return $applicant;
     }
@@ -100,7 +103,7 @@ class ApplicantService
      */
     public function changeState(array $attributes, Applicant $applicant): void
     {
-        $applicant->call_state = CallStates::tryFrom($attributes['states'])->name;
+        $applicant->call_state = CallStates::from(strval($attributes['states']));
 
         $applicant->save();
     }
@@ -122,19 +125,19 @@ class ApplicantService
         DB::transaction(function () use ($applicants) {
             foreach ($applicants as $applicant) {
                 if (Arr::exists($applicant, 'check')) {
-                    $ApplicantDto = new ApplicantDto(
-                        name: Arr::get($applicant, 'name'),
-                        email: Arr::get($applicant, 'email'),
-                        areaCode: Arr::get($applicant, 'area_code'),
-                        landline: Arr::get($applicant, 'landline'),
-                        mobile: Arr::get($applicant, 'mobile'),
-                        hiringProcess: Arr::get($applicant, 'hiring_process'),
-                        roleId: Arr::get($applicant, 'role_id'),
-                        courseId: Arr::get($applicant, 'course_id'),
-                        poleId: Arr::get($applicant, 'pole_id'),
+                    $applicantDto = new ApplicantDto(
+                        name: strval(Arr::get($applicant, 'name')),
+                        email: strval(Arr::get($applicant, 'email')),
+                        areaCode: strval(Arr::get($applicant, 'area_code')),
+                        landline: strval(Arr::get($applicant, 'landline')),
+                        mobile: strval(Arr::get($applicant, 'mobile')),
+                        hiringProcess: strval(Arr::get($applicant, 'hiring_process')),
+                        roleId: intval(Arr::get($applicant, 'role_id')),
+                        courseId: Arr::get($applicant, 'course_id') !== null ? intval(Arr::get($applicant, 'course_id')) : null,
+                        poleId: Arr::get($applicant, 'pole_id') !== null ? intval(Arr::get($applicant, 'pole_id')) : null,
                     );
 
-                    $this->create($ApplicantDto);
+                    $this->create($applicantDto);
                 }
             }
         });
@@ -142,9 +145,9 @@ class ApplicantService
 
     public function designateApplicant(Applicant $applicant): Employee
     {
-        $alreadyRegistered = Employee::where('email', $applicant->email)->exists();
-        if ($alreadyRegistered) {
-            throw new Exception('Já existe um funcionário cadastrado com esse e-mail.');
+        // TODO: Refactor this method
+        if (Employee::where('email', $applicant->email)->exists()) {
+            throw new Exception('Já existe um colaborador cadastrado com esse e-mail.');
         }
 
         return new Employee([

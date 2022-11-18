@@ -18,7 +18,6 @@ use App\Http\Controllers\InstitutionalDetailController;
 use App\Http\Controllers\PoleController;
 use App\Http\Controllers\RequestBondReviewController;
 use App\Http\Controllers\ResponsibilityController;
-use App\Http\Controllers\ReviewBondController;
 use App\Http\Controllers\RightsDocumentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SendNewEmployeeEmailsController;
@@ -104,7 +103,6 @@ Route::middleware('auth')->group(function () {
     // Single Action Controllers
     Route::get('applicants/{applicant}/designate', DesignateApplicantController::class)->name('applicants.designate');
     Route::get('bonds/{bond}/institutional-details/send-email', SendNewEmployeeEmailsController::class)->name('bonds.send_new_employee_emails');
-    Route::post('bonds/{bond}/review', ReviewBondController::class)->name('bonds.review');
     Route::get('bonds/{bond}/review-request', RequestBondReviewController::class)->name('bonds.request_review');
     Route::get('notifications/{notification}/dismiss', DismissNotificationController::class)->name('notifications.dismiss');
     Route::patch('users/current/password', UpdateCurrentPasswordController::class)->name('users.current_password_update');

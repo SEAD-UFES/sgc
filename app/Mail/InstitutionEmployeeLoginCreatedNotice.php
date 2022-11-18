@@ -6,6 +6,7 @@ use App\Models\Bond;
 use App\Models\Course;
 use App\Models\Employee;
 use App\Models\InstitutionalDetail;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -15,7 +16,7 @@ class InstitutionEmployeeLoginCreatedNotice extends Mailable
     use Queueable;
     use SerializesModels;
 
-    private ?Employee $sender;
+    private ?User $sender;
 
     private Bond $receiverBond;
 
@@ -24,7 +25,7 @@ class InstitutionEmployeeLoginCreatedNotice extends Mailable
      *
      * @return void
      */
-    public function __construct(?Employee $sender, Bond $receiverBond)
+    public function __construct(?User $sender, Bond $receiverBond)
     {
         $this->sender = $sender;
         $this->receiverBond = $receiverBond;
@@ -40,17 +41,12 @@ class InstitutionEmployeeLoginCreatedNotice extends Mailable
         /**
          * @var string $senderName
          */
-        $senderName = $this->sender?->name;
-
-        /**
-         * @var InstitutionalDetail $senderInstitutionalDetail
-         */
-        $senderInstitutionalDetail = $this->sender?->institutionalDetail;
+        $senderName = $this->sender?->employee->name ?? $this->sender?->login;
 
         /**
          * @var string $senderInstitutionalEmail
          */
-        $senderInstitutionalEmail = is_null($senderInstitutionalDetail) ? 'secretaria.sead@ufes.br' : $senderInstitutionalDetail->email;
+        $senderInstitutionalEmail = ($this->sender?->employee->email ?? $this->sender?->login) ?? 'secretaria.sead@ufes.br';
 
         /**
          * @var Employee $receiver
@@ -60,7 +56,7 @@ class InstitutionEmployeeLoginCreatedNotice extends Mailable
         /**
          * @var string $receiverGender
          */
-        $receiverGender = $receiver->gender->value;
+        $receiverGender = $receiver->gender?->name;
 
         /**
          * @var string $receiverName
@@ -88,14 +84,14 @@ class InstitutionEmployeeLoginCreatedNotice extends Mailable
         $receiverInstitutionEmail = $institutionalDetail->email;
 
         /**
-         * @var Course $receiverCourse
+         * @var ?Course $receiverCourse
          */
         $receiverCourse = $this->receiverBond->course;
 
         /**
-         * @var string $lmsUrl
+         * @var ?string $lmsUrl
          */
-        $lmsUrl = $receiverCourse->lms_url;
+        $lmsUrl = $receiverCourse?->lms_url;
 
         return $this->subject('Informação Sobre Criação de Login de Acesso')->from('secretaria.sead@ufes.br', 'Sead - Secretaria Acadêmica')->replyTo('secretaria.sead@ufes.br')->markdown('emails.employeeRegistration.institution-employee-login-created-notice')
             ->with([

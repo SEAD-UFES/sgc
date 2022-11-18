@@ -2,6 +2,7 @@
 
 namespace tests\Unit\app\Http\Controllers;
 
+use App\Enums\GrantTypes;
 use App\Http\Controllers\RoleController;
 use App\Http\Requests\Role\DestroyRoleRequest;
 use App\Http\Requests\Role\IndexRoleRequest;
@@ -9,6 +10,7 @@ use App\Http\Requests\Role\ShowRoleRequest;
 use App\Http\Requests\Role\StoreRoleRequest;
 use App\Http\Requests\Role\UpdateRoleRequest;
 use App\Models\Role;
+use App\Services\Dto\RoleDto;
 use App\Services\RoleService;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -56,6 +58,13 @@ class RoleControllerTest extends TestCase
         // Create a stub for the StoreRoleRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(StoreRoleRequest::class);
+        $requestStub->expects($this->any())->method('toDto')
+            ->willReturn(new RoleDto(
+                name: '',
+                description: '',
+                grantValue: 0,
+                grantType: GrantTypes::M,
+            ));
 
         // Expects the service's create method to be called once.
         $this->serviceMock->expects($this->once())->method('create');
@@ -68,6 +77,13 @@ class RoleControllerTest extends TestCase
         // Create a stub for the UpdateRoleRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(UpdateRoleRequest::class);
+        $requestStub->expects($this->any())->method('toDto')
+            ->willReturn(new RoleDto(
+                name: '',
+                description: '',
+                grantValue: 0,
+                grantType: GrantTypes::M,
+            ));
 
         /** @var MockObject $RoleStub */
         $RoleStub = $this->createStub(Role::class);

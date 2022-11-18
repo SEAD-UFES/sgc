@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\User;
 use App\Models\UserType;
 use App\Models\Responsibility;
+use App\Repositories\ResponsibilityRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,12 +14,21 @@ class CourseTest extends TestCase
 {
     use RefreshDatabase;
 
-    private static $userAdm;
-    private static $userDir;
-    private static $userAss;
-    private static $userSec;
-    private static $userCoord;
-    private static $userLdi;
+    private static User $userAdm;
+    private static User $userDir;
+    private static User $userAss;
+    private static User $userSec;
+    private static User $userCoord;
+    private static User $userLdi;
+
+    private ResponsibilityRepository $responsibilityRepository;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->responsibilityRepository = new ResponsibilityRepository();
+    }
 
     public function setUp(): void
     {
@@ -107,8 +117,12 @@ class CourseTest extends TestCase
      */
     public function administratorShouldListCourses()
     {
-        $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userAdm);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])
@@ -124,8 +138,12 @@ class CourseTest extends TestCase
      */
     public function directorShouldListCourses()
     {
-        $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userDir);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])
@@ -141,8 +159,12 @@ class CourseTest extends TestCase
      */
     public function assistantShouldListCourses()
     {
-        $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userAss);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])
@@ -158,8 +180,12 @@ class CourseTest extends TestCase
      */
     public function secretaryShouldListCourses()
     {
-        $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userSec);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])
@@ -175,8 +201,12 @@ class CourseTest extends TestCase
      */
     public function ldiShouldntListCourses()
     {
-        $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userLdi);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/courses')
             ->assertStatus(403);
@@ -191,8 +221,12 @@ class CourseTest extends TestCase
      */
     public function coordinatorShouldListCourses()
     {
-        $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userCoord);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/courses')
             ->assertSee(['Course Alpha', 'Course Beta'])

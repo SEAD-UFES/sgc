@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Helpers\DocumentRepositoryHelper;
+use App\Helpers\ModelSortValidator;
 use App\Interfaces\DocumentRepositoryInterface;
 use App\Models\Bond;
 use App\Models\Document;
@@ -10,53 +10,64 @@ use App\Services\Dto\DocumentDto;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\DB;
 
 class DocumentRepository implements DocumentRepositoryInterface
 {
     /**
      * Undocumented function
      *
-     * @param string $sort
-     * @param string $direction
+     * @param ?string $direction
+     * @param ?string $sort
      *
-     * @return LengthAwarePaginator
+     * @return LengthAwarePaginator<Document>
      */
-    public static function all(string $sort = 'documents.id', string $direction = 'desc'): LengthAwarePaginator
+    public static function all(?string $direction, ?string $sort): LengthAwarePaginator
     {
-        $sort = DocumentRepositoryHelper::validateSort(Document::class, $sort);
-        $direction = DocumentRepositoryHelper::validateDirection($direction);
+        $sort = ModelSortValidator::validateSort(Document::class, $sort);
+        $direction = ModelSortValidator::validateDirection($direction);
 
         /**
          * @var Builder<Document> $query
          */
         $query = Document::select([
-            'employees.name as employee_name',
+            'documents.id',
+            'documents.file_name',
+
+            'document_types.name as document_type',
+
+            'bonds.id as bond_id',
+
             'roles.name as role_name',
             'courses.name as course_name',
-            'documents.file_name',
-            'document_types.name as document_type',
-            'documents.id',
+
             'employees.id as employee_id',
-            'bonds.id as bond_id',
+            'employees.name as employee_name',
         ])
-            ->with('related')
-            ->where('documents.related_type', 'App\Models\Bond')
-            ->join('document_types', 'documents.document_type_id', '=', 'document_types.id')
+            ->whereHasMorph('related', Bond::class)
+
+            ->join('document_types as document_types', 'documents.document_type_id', '=', 'document_types.id')
             ->join('bonds', 'documents.related_id', '=', 'bonds.id')
             ->join('employees', 'bonds.employee_id', '=', 'employees.id')
             ->join('roles', 'bonds.role_id', '=', 'roles.id')
-            ->join('bond_course', 'bonds.id', '=', 'bond_course.bond_id')
-            ->join('courses', 'bond_course.course_id', '=', 'courses.id')
-            ->AcceptRequest(Document::class::$accepted_filters)->filter() // AcceptRequest: mehdi-fathi/eloquent-filter
-            ->orderBy($sort, $direction);
+            ->leftJoin('bond_course', 'bonds.id', '=', 'bond_course.bond_id')
+            ->leftJoin('courses', 'bond_course.course_id', '=', 'courses.id')
+
+            // AcceptRequest: mehdi-fathi/eloquent-filter
+            ->AcceptRequest(Document::$acceptedFilters)->filter()
+            ->sortable()
+            ->orderByDesc('documents.id');
 
         /** @var LengthAwarePaginator<Document> $documents */
         $documents = $query->paginate(10);
-        $documents->withQueryString(); // AbstractPaginator->withQueryString(): append all of the current request's query string values to the pagination links [https://laravel.com/docs/9.x/pagination]
+
+        // AbstractPaginator->withQueryString():
+        // append all of the current request's query string values to the pagination links
+        // [https://laravel.com/docs/9.x/pagination]
+        $documents->withQueryString();
 
         return $documents;
     }
+
     /**
      * @param int $documentId
      *
@@ -75,9 +86,10 @@ class DocumentRepository implements DocumentRepositoryInterface
      */
     public static function getByBondIdOfTypeId(int $bondId, int $typeId)
     {
-        return Document::where('document_type_id', $typeId)->whereHasMorph('related', Bond::class, static function ($query) use ($bondId) {
-            $query->where('related_id', $bondId);
-        })->with('related')->orderBy('id', 'desc')->get();
+        return Document::where('document_type_id', $typeId)
+            ->whereHasMorph('related', Bond::class, static function ($query) use ($bondId) {
+                $query->where('related_id', $bondId);
+            })->with('related')->orderBy('id', 'desc')->get();
     }
 
     /**
@@ -85,12 +97,12 @@ class DocumentRepository implements DocumentRepositoryInterface
      * @param string $sort
      * @param string $direction
      *
-     * @return LengthAwarePaginator
+     * @return LengthAwarePaginator<Document>
      */
     public static function getByTypeId(int $typeId, string $sort = 'documents.id', string $direction = 'desc'): LengthAwarePaginator
     {
-        $sort = DocumentRepositoryHelper::validateSort(Document::class, $sort);
-        $direction = DocumentRepositoryHelper::validateDirection($direction);
+        $sort = ModelSortValidator::validateSort(Document::class, $sort);
+        $direction = ModelSortValidator::validateDirection($direction);
 
         /**
          * @var Builder<Document> $query
@@ -102,7 +114,11 @@ class DocumentRepository implements DocumentRepositoryInterface
 
         /** @var LengthAwarePaginator<Document> $documents */
         $documents = $query->paginate(10);
-        $documents->withQueryString(); // AbstractPaginator->withQueryString(): append all of the current request's query string values to the pagination links [https://laravel.com/docs/9.x/pagination]
+
+        // AbstractPaginator->withQueryString():
+        // append all of the current request's query string values to the pagination links
+        // [https://laravel.com/docs/9.x/pagination]
+        $documents->withQueryString();
 
         return $documents;
     }
@@ -124,9 +140,8 @@ class DocumentRepository implements DocumentRepositoryInterface
      *
      * @return Document
      */
-    public static function createBondDocument(DocumentDto $documentDto)
+    public static function createBondDocument(DocumentDto $documentDto): Document
     {
-        /** @var Document $document */
         return Document::create([
             'file_name' => $documentDto->fileName,
             'document_type_id' => $documentDto->documentTypeId,

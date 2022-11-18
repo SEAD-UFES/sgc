@@ -2,14 +2,15 @@
 
 namespace Tests\Feature;
 
+use App\Enums\CallStates;
 use App\Models\Applicant;
-use App\Models\ApplicantState;
 use App\Models\Course;
 use App\Models\Pole;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserType;
 use App\Models\Responsibility;
+use App\Repositories\ResponsibilityRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
 use Tests\TestCase;
@@ -26,13 +27,22 @@ class ApplicantTest extends TestCase
     private static User $userLdi;
     private static User $userAlien;
 
+    private ResponsibilityRepository $responsibilityRepository;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->responsibilityRepository = new ResponsibilityRepository();
+    }
+
     public function setUp(): void
     {
         parent::setUp();
 
         self::$userAdm = User::factory()->createOne(
             [
-                'email' => 'adm_email@test.com',
+                'login' => 'adm_email@test.com',
             ]
         );
 
@@ -46,7 +56,7 @@ class ApplicantTest extends TestCase
 
         self::$userDir = User::factory()->createOne(
             [
-                'email' => 'dir_email@test.com',
+                'login' => 'dir_email@test.com',
             ]
         );
 
@@ -60,7 +70,7 @@ class ApplicantTest extends TestCase
 
         self::$userAss = User::factory()->createOne(
             [
-                'email' => 'ass_email@test.com',
+                'login' => 'ass_email@test.com',
             ]
         );
 
@@ -74,7 +84,7 @@ class ApplicantTest extends TestCase
 
         self::$userSec = User::factory()->createOne(
             [
-                'email' => 'sec_email@test.com',
+                'login' => 'sec_email@test.com',
             ]
         );
 
@@ -88,7 +98,7 @@ class ApplicantTest extends TestCase
 
         self::$userCoord = User::factory()->createOne(
             [
-                'email' => 'coord_email@test.com',
+                'login' => 'coord_email@test.com',
             ]
         );
 
@@ -105,7 +115,7 @@ class ApplicantTest extends TestCase
 
         self::$userLdi = User::factory()->createOne(
             [
-                'email' => 'ldi_email@test.com',
+                'login' => 'ldi_email@test.com',
             ]
         );
 
@@ -119,7 +129,7 @@ class ApplicantTest extends TestCase
 
         self::$userAlien = User::factory()->createOne(
             [
-                'email' => 'alien_email@test.com',
+                'login' => 'alien_email@test.com',
             ]
         );
 
@@ -136,7 +146,7 @@ class ApplicantTest extends TestCase
                 'name' => 'John Doe',
                 'email' => 'john@test.com',
                 'area_code' => '01',
-                'phone' => '12345678',
+                'landline' => '12345678',
                 'mobile' => '123456789',
                 'hiring_process' => '001',
             ]
@@ -147,19 +157,11 @@ class ApplicantTest extends TestCase
                 'name' => 'Jane Doe',
                 'email' => 'jane@othertest.com',
                 'area_code' => '02',
-                'phone' => '01234567',
+                'landline' => '01234567',
                 'mobile' => '012345678',
                 'hiring_process' => '002',
             ]
         );
-
-        ApplicantState::factory()->createOne([
-            'name' => 'Não contatado',
-        ]);
-
-        ApplicantState::factory()->createOne([
-            'name' => 'Updated State',
-        ]);
     }
 
 
@@ -208,7 +210,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('applicants.index'))
             ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])
@@ -229,7 +231,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('applicants.index'))
             ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])
@@ -250,7 +252,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('applicants.index'))
             ->assertStatus(403);
@@ -270,7 +272,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('applicants.index'))
             ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])
@@ -291,7 +293,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('applicants.index'))
             ->assertStatus(403);
@@ -311,7 +313,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('applicants.index'))
             ->assertSee(['John Doe', 'Jane Doe', 'john@test.com', 'jane@othertest.com'])
@@ -365,7 +367,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('applicants.create'))
             ->assertSee(['Cadastrar Aprovado', 'Telefone'])
@@ -386,7 +388,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('applicants.create'))
             ->assertSee(['Cadastrar Aprovado', 'Telefone'])
@@ -407,7 +409,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('applicants.create'))
             ->assertStatus(403);
@@ -427,7 +429,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('applicants.create'))
             ->assertSee(['Cadastrar Aprovado', 'Telefone'])
@@ -448,7 +450,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('applicants.create'))
             ->assertStatus(403);
@@ -468,7 +470,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('applicants.create'))
             ->assertStatus(403);
@@ -520,7 +522,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('applicants.create_many.step_1'))
             ->assertSee(['Importar Aprovados', 'Enviar arquivo'])
@@ -541,7 +543,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('applicants.create_many.step_1'))
             ->assertSee(['Importar Aprovados', 'Enviar arquivo'])
@@ -562,7 +564,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('applicants.create_many.step_1'))
             ->assertStatus(403);
@@ -582,7 +584,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('applicants.create_many.step_1'))
             ->assertSee(['Importar Aprovados', 'Enviar arquivo'])
@@ -603,7 +605,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('applicants.create_many.step_1'))
             ->assertStatus(403);
@@ -623,7 +625,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('applicants.create_many.step_1'))
             ->assertStatus(403);
@@ -704,7 +706,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility(), 'importedApplicants' => $this->createTestImportedApplicants()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id'))), 'importedApplicants' => $this->createTestImportedApplicants()]);
 
         $this->get(route('applicants.create_many.step_2'))
             ->assertSee(['Revisão de Importação', 'Importar', 'Carl Doe', 'Doug Doe'])
@@ -725,7 +727,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility(), 'importedApplicants' => $this->createTestImportedApplicants()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id'))), 'importedApplicants' => $this->createTestImportedApplicants()]);
 
         $this->get(route('applicants.create_many.step_2'))
             ->assertSee(['Revisão de Importação', 'Importar', 'Carl Doe', 'Doug Doe'])
@@ -746,7 +748,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility(), 'importedApplicants' => $this->createTestImportedApplicants()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id'))), 'importedApplicants' => $this->createTestImportedApplicants()]);
 
         $this->get(route('applicants.create_many.step_2'))
             ->assertStatus(403);
@@ -766,7 +768,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility(), 'importedApplicants' => $this->createTestImportedApplicants()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id'))), 'importedApplicants' => $this->createTestImportedApplicants()]);
 
         $this->get(route('applicants.create_many.step_2'))
             ->assertSee(['Revisão de Importação', 'Importar', 'Carl Doe', 'Doug Doe'])
@@ -787,7 +789,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility(), 'importedApplicants' => $this->createTestImportedApplicants()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id'))), 'importedApplicants' => $this->createTestImportedApplicants()]);
 
         $this->get(route('applicants.create_many.step_2'))
             ->assertStatus(403);
@@ -807,7 +809,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility(), 'importedApplicants' => $this->createTestImportedApplicants()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id'))), 'importedApplicants' => $this->createTestImportedApplicants()]);
 
         $this->get(route('applicants.create_many.step_2'))
             ->assertStatus(403);
@@ -821,20 +823,12 @@ class ApplicantTest extends TestCase
      */
     private function getTestAttributes(): array
     {
-        //setting up scenario
-        ApplicantState::factory()->create(
-            [
-                'name' => 'Não contatado',
-                'description' => 'Bar',
-            ]
-        );
-
         $attributes = [];
 
         $attributes['name'] = 'Dilan Doe';
         $attributes['email'] = 'dilan@othertest.com';
         $attributes['area_code'] = '03';
-        $attributes['phone'] = '01234567';
+        $attributes['landline'] = '01234567';
         $attributes['mobile'] = '012345678';
         $attributes['hiring_process'] = '003';
 
@@ -908,7 +902,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $applicantArr = $this->getTestAttributes();
 
@@ -931,7 +925,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $applicantArr = $this->getTestAttributes();
 
@@ -954,7 +948,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $applicantArr = $this->getTestAttributes();
 
@@ -976,7 +970,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $applicantArr = $this->getTestAttributes();
 
@@ -999,7 +993,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $applicantArr = $this->getTestAttributes();
 
@@ -1021,7 +1015,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $applicantArr = $this->getTestAttributes();
 
@@ -1110,7 +1104,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $applicantArr = $this->createTestImportedApplicantsArray();
 
@@ -1133,7 +1127,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $applicantArr = $this->createTestImportedApplicantsArray();
 
@@ -1156,7 +1150,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $applicantArr = $this->createTestImportedApplicantsArray();
 
@@ -1178,7 +1172,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $applicantArr = $this->createTestImportedApplicantsArray();
 
@@ -1201,7 +1195,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $applicantArr = $this->createTestImportedApplicantsArray();
 
@@ -1223,7 +1217,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $applicantArr = $this->createTestImportedApplicantsArray();
 
@@ -1234,14 +1228,14 @@ class ApplicantTest extends TestCase
 
     // ================= Update Applicant Tests =================
 
-    /** @return array<string>  */
+    /** @return array<string, string>  */
     private function updatedApplicantData(): array
     {
-        /** @var ApplicantState $updatedState */
-        $updatedState = ApplicantState::where('name', 'Updated State')->first();
+        /** @var string $updatedState */
+        $updatedState = CallStates::AC->name;
 
         return [
-            'states' => (string) $updatedState->id,
+            'call_state' => $updatedState,
         ];
     }
 
@@ -1259,7 +1253,7 @@ class ApplicantTest extends TestCase
         $originalApplicantArr = $originalApplicant->toArray();
         Arr::forget($originalApplicantArr, ['id', 'created_at', 'updated_at']);
 
-        $originalApplicantArr['states'] = $this->updatedApplicantData()['states'];
+        $originalApplicantArr['states'] = $this->updatedApplicantData()['call_state'];
 
         $this->patch(route('applicants.update', $originalApplicant->id), $originalApplicantArr)
             ->assertStatus(401);
@@ -1282,7 +1276,7 @@ class ApplicantTest extends TestCase
         $originalApplicantArr = $originalApplicant->toArray();
         Arr::forget($originalApplicantArr, ['id', 'created_at', 'updated_at']);
 
-        $originalApplicantArr['states'] = $this->updatedApplicantData()['states'];
+        $originalApplicantArr['call_state'] = $this->updatedApplicantData()['call_state'];
 
         $this->patch(route('applicants.update', $originalApplicant->id), $originalApplicantArr)
             ->assertStatus(403);
@@ -1302,17 +1296,17 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         /** @var Applicant $originalApplicant */
         $originalApplicant = Applicant::where('name', 'John Doe')->first();
         $originalApplicantArr = $originalApplicant->toArray();
         Arr::forget($originalApplicantArr, ['id', 'created_at', 'updated_at']);
 
-        $originalApplicantArr['states'] = $this->updatedApplicantData()['states'];
+        $originalApplicantArr['states'] = $this->updatedApplicantData()['call_state'];
 
         $this->followingRedirects()->patch(route('applicants.update', $originalApplicant->id), $originalApplicantArr)
-            ->assertSee('Updated State')
+            ->assertSee('Aceitante')
             ->assertStatus(200);
     }
 
@@ -1330,17 +1324,17 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         /** @var Applicant $originalApplicant */
         $originalApplicant = Applicant::where('name', 'John Doe')->first();
         $originalApplicantArr = $originalApplicant->toArray();
         Arr::forget($originalApplicantArr, ['id', 'created_at', 'updated_at']);
 
-        $originalApplicantArr['states'] = $this->updatedApplicantData()['states'];
+        $originalApplicantArr['states'] = $this->updatedApplicantData()['call_state'];
 
         $this->followingRedirects()->patch(route('applicants.update', $originalApplicant->id), $originalApplicantArr)
-            ->assertSee('Updated State')
+            ->assertSee('Aceitante')
             ->assertStatus(200);
     }
 
@@ -1358,14 +1352,14 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         /** @var Applicant $originalApplicant */
         $originalApplicant = Applicant::where('name', 'John Doe')->first();
         $originalApplicantArr = $originalApplicant->toArray();
         Arr::forget($originalApplicantArr, ['id', 'created_at', 'updated_at']);
 
-        $originalApplicantArr['states'] = $this->updatedApplicantData()['states'];
+        $originalApplicantArr['states'] = $this->updatedApplicantData()['call_state'];
 
         $this->followingRedirects()->patch(route('applicants.update', $originalApplicant->id), $originalApplicantArr)
             ->assertStatus(403);
@@ -1385,17 +1379,17 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         /** @var Applicant $originalApplicant */
         $originalApplicant = Applicant::where('name', 'John Doe')->first();
         $originalApplicantArr = $originalApplicant->toArray();
         Arr::forget($originalApplicantArr, ['id', 'created_at', 'updated_at']);
 
-        $originalApplicantArr['states'] = $this->updatedApplicantData()['states'];
+        $originalApplicantArr['states'] = $this->updatedApplicantData()['call_state'];
 
         $this->followingRedirects()->patch(route('applicants.update', $originalApplicant->id), $originalApplicantArr)
-            ->assertSee('Updated State')
+            ->assertSee('Aceitante')
             ->assertStatus(200);
     }
 
@@ -1413,14 +1407,14 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         /** @var Applicant $originalApplicant */
         $originalApplicant = Applicant::where('name', 'John Doe')->first();
         $originalApplicantArr = $originalApplicant->toArray();
         Arr::forget($originalApplicantArr, ['id', 'created_at', 'updated_at']);
 
-        $originalApplicantArr['states'] = $this->updatedApplicantData()['states'];
+        $originalApplicantArr['states'] = $this->updatedApplicantData()['call_state'];
 
         $this->patch(route('applicants.update', $originalApplicant->id), $originalApplicantArr)
             ->assertStatus(403);
@@ -1440,14 +1434,14 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         /** @var Applicant $originalApplicant */
         $originalApplicant = Applicant::where('name', 'John Doe')->first();
         $originalApplicantArr = $originalApplicant->toArray();
         Arr::forget($originalApplicantArr, ['id', 'created_at', 'updated_at']);
 
-        $originalApplicantArr['states'] = $this->updatedApplicantData()['states'];
+        $originalApplicantArr['states'] = $this->updatedApplicantData()['call_state'];
 
         $this->patch(route('applicants.update', $originalApplicant->id), $originalApplicantArr)
             ->assertStatus(403);
@@ -1509,7 +1503,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $applicantBefore = Applicant::find(1);
 
@@ -1536,7 +1530,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $applicantBefore = Applicant::find(1);
 
@@ -1563,7 +1557,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $applicantBefore = Applicant::find(1);
 
@@ -1588,7 +1582,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $applicantBefore = Applicant::find(1);
 
@@ -1615,7 +1609,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $applicantBefore = Applicant::find(1);
 
@@ -1640,7 +1634,7 @@ class ApplicantTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $applicantBefore = Applicant::find(1);
 

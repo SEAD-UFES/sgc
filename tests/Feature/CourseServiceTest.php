@@ -2,19 +2,21 @@
 
 namespace Tests\Feature;
 
+use App\Enums\Degrees;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Course;
 use App\Services\CourseService;
-use App\Services\Dto\StoreCourseDto;
-use App\Services\Dto\UpdateCourseDto;
+use App\Services\Dto\CourseDto;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 class CourseServiceTest extends TestCase
 {
     use RefreshDatabase;
+    use WithFaker;
 
     //setting up scenario for all tests
     public function setUp(): void
@@ -81,12 +83,10 @@ class CourseServiceTest extends TestCase
 
         $attributes['name'] = 'Course Gama';
         $attributes['description'] = '3rd Course';
-        $attributes['courseTypeId'] = 2;
-        $attributes['begin'] = now();
-        $attributes['end'] = now();
+        $attributes['degree'] = $this->faker->randomElement(Degrees::cases());
         $attributes['lmsUrl'] = 'https://lms.com';
 
-        $dto = new StoreCourseDto($attributes);
+        $dto = new CourseDto(...$attributes);
 
         //execution
         Event::fakeFor(function () use ($dto) {
@@ -113,12 +113,10 @@ class CourseServiceTest extends TestCase
 
         $attributes['name'] = 'Course Delta';
         $attributes['description'] = 'New 1st Course';
-        $attributes['courseTypeId'] = 2;
-        $attributes['begin'] = now();
-        $attributes['end'] = now();
+        $attributes['degree'] = $this->faker->randomElement(Degrees::cases());
         $attributes['lmsUrl'] = 'https://lms.com';
 
-        $dto = new UpdateCourseDto($attributes);
+        $dto = new CourseDto(...$attributes);
 
         Event::fakeFor(function () use ($course, $dto) {
             //execution

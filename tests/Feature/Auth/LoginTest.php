@@ -23,7 +23,7 @@ class LoginTest extends TestCase
         $this->get(route('auth.login'))
             ->assertSuccessful()
             ->assertViewIs('login')
-            ->assertSee('email')
+            ->assertSee('Login')
             ->assertSee('password')
             ->assertSee('submit');
     }
@@ -85,10 +85,14 @@ class LoginTest extends TestCase
      */
     public function userShouldntAuthenticateWithWrongPassword()
     {
-        $user = User::factory()->make();
+        $user = User::factory()->create(
+            [
+                'login' => 'mail@domain.com',
+            ]
+        );
 
         $this->post(route('auth.login'), [
-            'email' => $user->email,
+            'login' => $user->login,
             'password' => Hash::make('wrong-password'),
         ])->assertStatus(401);
     }

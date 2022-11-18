@@ -18,7 +18,7 @@ class UserIndexComposer
     public function compose(View $view): void
     {
         $view->with([
-            'filters' => ModelFilterHelper::buildFilters(request(), User::$accepted_filters),
+            'filters' => ModelFilterHelper::buildFilters(request(), User::$acceptedFilters),
         ]);
     }
 }

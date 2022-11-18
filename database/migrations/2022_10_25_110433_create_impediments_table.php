@@ -18,7 +18,6 @@ class CreateImpedimentsTable extends Migration
             $table->foreignId('bond_id')->constrained('bonds')->cascadeOnDelete();
             $table->string('description')->default('Vínculo ainda não revisado');
             $table->foreignId('reviewer_id')->constrained('users');
-            $table->timestamp('reviewed_at');
             $table->foreignId('closed_by_id')->nullable()->constrained('users');
             $table->timestamp('closed_at')->nullable();
             $table->timestamps();

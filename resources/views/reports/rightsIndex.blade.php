@@ -29,23 +29,38 @@
                             ], 
                         ]
                     )@endcomponent
-                    
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
-                                <th>@sortablelink('employee_name', 'Colaborador')</th>
-                                <th>@sortablelink('role_name', 'Função')</th>
-                                <th>@sortablelink('course_name', 'Curso')</th>
-                                <th>@sortablelink('pole_name', 'Polo')</th>
+                                <th>@sortablelink('employeeName', 'Colaborador')</th>
+                                <th>@sortablelink('roleName', 'Função')</th>
+                                <th>@sortablelink('courseName', 'Curso')</th>
+                                <th>@sortablelink('poleName', 'Polo')</th>
                                 <th>@sortablelink('file_name', 'Nome')</th>
                             </thead>
                             <tbody>
                                 @foreach ($documents as $document)
                                     <tr>
-                                        <td>{{ $document->employee_name }}</td>
-                                        <td>{{ $document->role_name }}</td>
-                                        <td>{{ $document->course_name }}</td>
-                                        <td>{{ $document->pole_name }}</td>
+                                        <td>
+                                            @can('employee-show')
+                                                <a href="{{ route('employees.show', $document->employee_id) }}" target="_blank">
+                                            @endcan
+                                            {{ $document->employee_name }}
+                                            @can('employee-show')
+                                                </a>
+                                            @endcan
+                                        </td>
+                                        <td>
+                                            @can('bond-show')
+                                                <a href="{{ route('bonds.show', $document->bond_id) }}" target="_blank">
+                                            @endcan
+                                            {{ $document->role_name }}
+                                            @can('bond-show')
+                                                </a>
+                                            @endcan
+                                        </td>
+                                        <td>{{ $document->course_name ?? '-' }}</td>
+                                        <td>{{ $document->pole_name ?? '-' }}</td>
                                         <td><a href={{ route('rights.show', ['id' => $document->id, 'htmlTitle' => $document->file_name]) }}
                                                 target="_blank">{{ $document->file_name }}</a></td>
                                     </tr>

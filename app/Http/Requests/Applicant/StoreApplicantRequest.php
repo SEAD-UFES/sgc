@@ -29,7 +29,7 @@ class StoreApplicantRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'area_code' => 'required|string|max:2',
-            'landline' => 'nullable|string|max:10',      //Relaxed form
+            'landline' => 'nullable|string|max:10',
             'mobile' => 'required|string|max:11',
             'hiring_process' => 'required|string|max:8',
             'role_id' => 'required|exists:roles,id',
@@ -67,15 +67,15 @@ class StoreApplicantRequest extends FormRequest
     public function toDto(): ApplicantDto
     {
         return new ApplicantDto(
-            name: str($this->validated('name')) ?? '',
-            email: str($this->validated('email')) ?? '',
-            areaCode: str($this->validated('area_code')) ?? '',
-            landline: str($this->validated('landline')) ?? '',
-            mobile: str($this->validated('mobile')) ?? '',
-            hiringProcess: str($this->validated('hiring_process')) ?? '',
+            name: strval($this->validated('name') ?? ''),
+            email: strval($this->validated('email') ?? ''),
+            areaCode: strval($this->validated('area_code') ?? ''),
+            landline: $this->validated('landline') !== null ? strval($this->validated('landline')) : null,
+            mobile: strval($this->validated('mobile') ?? ''),
+            hiringProcess: strval($this->validated('hiring_process') ?? ''),
             roleId: intval($this->validated('role_id')),
-            courseId: intval($this->validated('course_id')) !== 0 ? intval($this->validated('course_id')) : null,
-            poleId: intval($this->validated('pole_id')) !== 0 ? intval($this->validated('pole_id')) : null,
+            courseId: $this->validated('course_id') !== null ? intval($this->validated('course_id')) : null,
+            poleId: $this->validated('pole_id') !== null ? intval($this->validated('pole_id')) : null,
         );
     }
 }

@@ -3,10 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Bond;
-use App\Models\Course;
 use App\Models\Employee;
 use App\Models\Role;
-use App\Models\Pole;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BondFactory extends Factory
@@ -28,8 +26,8 @@ class BondFactory extends Factory
         // $issueStatus = random_int(1, 3); // 1 - Not reviewed; 2 - Reviewed-Applicant; 3 - Reviewed-Not applicant
 
         return [
-            'employee_id' => Employee::factory(),
-            'role_id' => Role::factory(),
+            'employee_id' => Employee::factory()->createOne()->getAttribute('id'),
+            'role_id' => Role::factory()->createOne()->getAttribute('id'),
             // 'volunteer' => $this->faker->boolean($changeOfGettingTrue = 50),
             'volunteer' => false,
             'hiring_process' => '123/2023',

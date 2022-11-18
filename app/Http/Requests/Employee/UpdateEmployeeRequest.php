@@ -121,16 +121,16 @@ class UpdateEmployeeRequest extends FormRequest
             'address_number.numeric' => 'O Número deve ser número',
             'address_district.required' => 'O bairro é obrigatório',
             'address_district.string' => 'O campo deve ser texto',
-            'address_zip_code.required' => 'O campo é obrigatório',
+            'address_zip_code.required' => 'O campo CEP é obrigatório',
             'address_zip_code.numeric' => 'O CEP deve ser número',
-            'address_state.required' => 'O campo é obrigatório',
+            'address_state.required' => 'O campo Estado é obrigatório',
             'address_state.Illuminate\Validation\Rules\Enum' => 'O campo deve ser preenchido com uma das opções fornecidas',
-            'address_city.required' => 'O campo é obrigatório',
+            'address_city.required' => 'O campo Cidade é obrigatório',
             'address_city.string' => 'O campo deve ser texto',
             'landline.numeric' => 'O Telefone deve ser número',
             'mobile.required' => 'O celular é obrigatório',
             'mobile.numeric' => 'O campo deve ser número',
-            'area_code.required' => 'O campo é obrigatório',
+            'area_code.required' => 'O campo DDD é obrigatório',
             'area_code.numeric' => 'O campo deve ser número',
             'email.required' => 'O email é obrigatório',
             'email.email' => 'O email deve ser válido',
@@ -147,36 +147,36 @@ class UpdateEmployeeRequest extends FormRequest
     public function toDto(): EmployeeDto
     {
         return new EmployeeDto(
-            name: str($this->validated('name')) ?? '',
-            cpf: str($this->validated('cpf_number')) ?? '',
-            job: str($this->validated('job')) ?? '',
-            gender: Genders::tryFrom($this->validated('gender')), //*** */
+            name: strval($this->validated('name') ?? ''),
+            cpf: strval($this->validated('cpf_number') ?? ''),
+            job: strval($this->validated('job') ?? ''),
+            gender: Genders::from(strval($this->validated('gender'))), //*** */
             birthDate: Date::parse($this->validated('birth_date')), //*** */
-            birthState: States::tryFrom($this->validated('birth_state')), //*** */
-            birthCity: str($this->validated('birth_city')) ?? '',
-            maritalStatus: MaritalStatuses::tryFrom($this->validated('marital_status')), //*** */
-            spouseName: str($this->validated('spouse_name')) ?? '',
-            fatherName: str($this->validated('father_name')) ?? '',
-            motherName: str($this->validated('mother_name')) ?? '',
+            birthState: States::from(strval($this->validated('birth_state'))), //*** */
+            birthCity: strval($this->validated('birth_city') ?? ''),
+            maritalStatus: MaritalStatuses::from(strval($this->validated('marital_status'))), //*** */
+            spouseName: $this->validated('spouse_name') !== null ? strval($this->validated('spouse_name')) : null,
+            fatherName: strval($this->validated('father_name') ?? ''),
+            motherName: strval($this->validated('mother_name') ?? ''),
             documentTypeId: intval($this->validated('document_type_id')),
-            identityNumber: str($this->validated('identity_number')) ?? '',
+            identityNumber: strval($this->validated('identity_number') ?? ''),
             identityIssueDate: Date::parse($this->validated('identity_issue_date')), //*** */
-            identityIssuer: str($this->validated('identity_issuer')) ?? '',
-            issuerState: States::tryFrom($this->validated('issuer_state')), //*** */
-            addressStreet: str($this->validated('address_street')) ?? '',
-            addressComplement: str($this->validated('address_complement')) ?? '',
-            addressNumber: str($this->validated('address_number')) ?? '',
-            addressDistrict: str($this->validated('address_district')) ?? '',
-            addressZipCode: str($this->validated('address_zip_code')) ?? '',
-            addressState: States::tryFrom($this->validated('address_state')), //*** */
-            addressCity: str($this->validated('address_city')) ?? '',
-            landline: str($this->validated('landline')) ?? '',
-            mobile: str($this->validated('mobile')) ?? '',
-            areaCode: str($this->validated('area_code')) ?? '',
-            email: str($this->validated('email')) ?? '',
-            bankName: str($this->validated('bank_name')) ?? '',
-            agencyNumber: str($this->validated('agency_number')) ?? '',
-            accountNumber: str($this->validated('account_number')) ?? '',
+            identityIssuer: strval($this->validated('identity_issuer') ?? ''),
+            issuerState: States::from(strval($this->validated('issuer_state'))), //*** */
+            addressStreet: strval($this->validated('address_street') ?? ''),
+            addressComplement: strval($this->validated('address_complement') ?? ''),
+            addressNumber: strval($this->validated('address_number') ?? ''),
+            addressDistrict: strval($this->validated('address_district') ?? ''),
+            addressZipCode: strval($this->validated('address_zip_code') ?? ''),
+            addressState: States::from(strval($this->validated('address_state'))), //*** */
+            addressCity: strval($this->validated('address_city') ?? ''),
+            landline: $this->validated('landline') !== null ? strval($this->validated('landline')) : null,
+            mobile: strval($this->validated('mobile') ?? ''),
+            areaCode: strval($this->validated('area_code') ?? ''),
+            email: strval($this->validated('email') ?? ''),
+            bankName: strval($this->validated('bank_name') ?? ''),
+            agencyNumber: strval($this->validated('agency_number') ?? ''),
+            accountNumber: strval($this->validated('account_number') ?? ''),
         );
     }
 }

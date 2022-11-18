@@ -9,6 +9,7 @@ use App\Http\Requests\Applicant\StoreApplicantRequest;
 use App\Http\Requests\Applicant\UpdateApplicantStateRequest;
 use App\Models\Applicant;
 use App\Services\ApplicantService;
+use App\Services\Dto\ApplicantDto;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Pagination\LengthAwarePaginator;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -24,15 +25,22 @@ class ApplicantControllerTest extends TestCase
     /** @var MockObject $serviceMock */
     private MockObject $serviceMock;
 
-    public function setUp(): void
+    public function __construct()
     {
-        parent::setUp();
-
-        // Create a Mock for the ApplicantService class.
+        parent::__construct();
         $this->serviceMock = $this->createMock(ApplicantService::class);
-
         $this->controller = new ApplicantController($this->serviceMock);
     }
+
+    // public function setUp(): void
+    // {
+    //     parent::setUp();
+
+    //     // Create a Mock for the ApplicantService class.
+    //     $this->serviceMock = $this->createMock(ApplicantService::class);
+
+    //     $this->controller = new ApplicantController($this->serviceMock);
+    // }
 
     public function testControllerIndexShouldCallServiceListMethod(): void
     {
@@ -55,6 +63,18 @@ class ApplicantControllerTest extends TestCase
         // Create a stub for the StoreApplicantRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(StoreApplicantRequest::class);
+        $requestStub->expects($this->any())->method('toDto')
+            ->willReturn(new ApplicantDto(
+                name: 'John Doe',
+                email: 'jhondoe@mail.com',
+                areaCode: '27',
+                landline: '2733371234',
+                mobile: '27996121234',
+                hiringProcess: '69/2023',
+                roleId: 1,
+                courseId: null,
+                poleId: null,
+            ));
 
         // Expects the service's create method to be called once.
         $this->serviceMock->expects($this->once())->method('create');

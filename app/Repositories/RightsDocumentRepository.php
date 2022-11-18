@@ -2,9 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Helpers\DocumentRepositoryHelper;
+use App\Helpers\ModelSortValidator;
+use App\Models\Bond;
 use App\Models\Document;
 use App\Models\DocumentType;
+use App\Models\Impediment;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -13,66 +15,73 @@ class RightsDocumentRepository
     /**
      * Undocumented function
      *
-     * @param string $sort
-     * @param string $direction
+     * @param ?string $direction
+     * @param ?string $sort
      *
-     * @return LengthAwarePaginator
+     * @return LengthAwarePaginator<Document>
      */
-    public static function getAllDocuments(string $sort = 'documents.id', string $direction = 'desc'): LengthAwarePaginator
+    public static function all(?string $direction, ?string $sort): LengthAwarePaginator
     {
-        $sort = DocumentRepositoryHelper::validateSort(Document::class, $sort);
-        $direction = DocumentRepositoryHelper::validateDirection($direction);
+        $sort = ModelSortValidator::validateSort(Document::class, $sort);
+        $direction = ModelSortValidator::validateDirection($direction);
 
         // TODO: Think a better way to do this
-        $documentType = DocumentType::where('name', 'Termo de cessão de direitos')->first();
+        /** @var int $rightsTypeId */
+        $rightsTypeId = DocumentType::select('id')
+            ->where('name', 'Termo de cessão de direitos')
+            ->first()?->getAttribute('id');
 
-        /**
-         * @var Builder<Document> $query
-         */
+        /** @var Builder<Document> $query */
         $query = Document::select([
             'documents.id',
             'documents.file_name',
-            'documents.related_id',
-            'documents.document_type_id',
-            'documents.created_at',
-            'documents.updated_at',
 
-            'document_types.name AS document_type',
+            'document_types.name as document_type',
 
-            'bonds.id AS bond_id',
-            //'bonds.course_id',
-            'bonds.employee_id',
-            'bonds.role_id',
-            //'bonds.pole_id',
-            //'bonds.uaba_checked_at',
-            //'bonds.impediment',
-            'impediments.reviewer_cheked_at',
+            'bonds.id as bond_id',
 
-            'courses.name AS course_name',
-            'roles.name AS role_name',
+            'roles.name as role_name',
+            'courses.name as course_name',
             'poles.name AS pole_name',
-            'employees.name AS employee_name',
 
+            'employees.id as employee_id',
+            'employees.name as employee_name',
         ])
-            ->whereHasMorph('related', Document::class)
-            ->where('documents.document_type_id', $documentType?->id)
-            ->whereNotNull('uaba_checked_at')
-            ->where('impediment', false)
+            ->whereHasMorph('related', Bond::class)
+            ->where('documents.document_type_id', $rightsTypeId)
+            ->whereNotIn('bonds.id', Impediment::select('bond_id')->whereNull('closed_by_id'))
 
             ->join('document_types', 'documents.document_type_id', '=', 'document_types.id')
-            ->join('bond_documents', 'documents.related_id', '=', 'bond_documents.id')
-            ->join('bonds', 'bond_documents.bond_id', '=', 'bonds.id')
-            ->join('courses', 'bonds.course_id', '=', 'courses.id')
-            ->join('roles', 'bonds.role_id', '=', 'roles.id')
-            ->join('poles', 'bonds.pole_id', '=', 'poles.id')
+            ->join('bonds', 'documents.related_id', '=', 'bonds.id')
             ->join('employees', 'bonds.employee_id', '=', 'employees.id')
+            ->join('roles', 'bonds.role_id', '=', 'roles.id')
+            ->leftJoin('bond_course', 'bonds.id', '=', 'bond_course.bond_id')
+            ->leftJoin('courses', 'bond_course.course_id', '=', 'courses.id')
+            ->leftJoin('bond_pole', 'bonds.id', '=', 'bond_pole.bond_id')
+            ->leftJoin('poles', 'bond_pole.pole_id', '=', 'poles.id')
 
-            ->AcceptRequest(Document::$accepted_filters)->filter() // AcceptRequest: mehdi-fathi/eloquent-filter
-            ->orderBy($sort, $direction);
+            ->AcceptRequest(Document::class::$acceptedFilters)->filter() // AcceptRequest: mehdi-fathi/eloquent-filter
+            ->sortable()
+            ->orderBy('documents.id', 'desc');
 
+        /** @var LengthAwarePaginator<Document> $documents */
         $documents = $query->paginate(10);
-        $documents->withQueryString(); // AbstractPaginator->withQueryString(): append all of the current request's query string values to the pagination links [https://laravel.com/docs/9.x/pagination]
+
+        // AbstractPaginator->withQueryString():
+        // append all of the current request's query string values to the pagination links
+        // [https://laravel.com/docs/9.x/pagination]
+        $documents->withQueryString();
 
         return $documents;
+    }
+
+    /**
+     * @param int $documentId
+     *
+     * @return Document
+     */
+    public static function getById(int $documentId)
+    {
+        return Document::where('id', $documentId)->with('related')->firstOrFail();
     }
 }

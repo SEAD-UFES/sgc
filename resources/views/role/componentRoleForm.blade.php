@@ -38,7 +38,7 @@
     <div class="col-6">
         <label for="inputValue1" class="form-label">Valor da bolsa</label>
         <input name="grant_value" type="text" id="inputValue1" class="form-control" placeholder="R$"
-            value="{{ isset($role) ? numfmt_format_currency(numfmt_create('pt_BR', NumberFormatter::CURRENCY), $role->grantValueReal , 'BRL') : old('grant_value') }}" />
+            value="{{ isset($role) ? numfmt_format_currency(numfmt_create('pt_BR', NumberFormatter::CURRENCY), $role->grantValue , 'BRL') : old('grant_value') }}" />
         @error('grant_value')
             <div class="text-danger">> {{ $message }}</div>
         @enderror
@@ -49,8 +49,8 @@
             <option value="">Selecione o tipo</option>
             @foreach ($grantTypes as $grantType)
                 <option value="{{ $grantType->name }}"
-                    {{ isset($role) ? ($role->grant_type == $grantType->name ? 'selected' : '') : (old('grant_type') == $grantType->name ? 'selected' : '') }}>
-                    {{ $grantType->value }}</option>
+                    {{ isset($role) ? ($role->grant_type == $grantType ? 'selected' : '') : (old('grant_type') == $grantType->name ? 'selected' : '') }}>
+                    {{ $grantType->label() }}</option>
             @endforeach
         </select>
         @error('grant_type')

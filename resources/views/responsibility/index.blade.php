@@ -21,7 +21,7 @@
                         [
                             'filters' => $filters,
                             'options' => [
-                                ['label' => 'Usuário', 'value' => 'userEmailContains', 'selected' => true], 
+                                ['label' => 'Usuário', 'value' => 'userLoginContains', 'selected' => true], 
                                 ['label' => 'Papel', 'value' => 'usertypeNameContains'],
                                 ['label' => 'Curso', 'value' => 'courseNameContains'], 
                                 ['label' => 'Início (=)', 'value'=>'beginExactly'],
@@ -39,6 +39,7 @@
                             <thead>
                                 <th>@sortablelink('user.login', 'Usuário')</th>
                                 <th>@sortablelink('userType.name', 'Papel')</th>
+                                <th>@sortablelink('course.name', 'Curso')</th>
                                 <th>@sortablelink('begin', 'Início')</th>
                                 <th>@sortablelink('end', 'Fim')</th>
                                 <th class="text-center">Ações</th>
@@ -48,6 +49,7 @@
                                     <tr>
                                         <td>{{ $responsibility->user->login }}</td>
                                         <td>{{ $responsibility->userType->name }} {{ $responsibility->course ? "(".$responsibility->course->name.")": '' }}</td>
+                                        <td>{{ $responsibility->course ? $responsibility->course->name : '-' }}</td>
                                         <td>{{ isset($responsibility->begin) ? \Carbon\Carbon::parse($responsibility->begin)->isoFormat('DD/MM/Y') : '-' }}</td>
                                         <td>{{ isset($responsibility->end) ? \Carbon\Carbon::parse($responsibility->end)->isoFormat('DD/MM/Y') : '-' }}</td>
                                         <td class="text-center"><div class="d-inline-flex">

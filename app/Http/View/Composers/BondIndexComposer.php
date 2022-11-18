@@ -18,7 +18,7 @@ class BondIndexComposer
     public function compose(View $view): void
     {
         $view->with([
-            'filters' => ModelFilterHelper::buildFilters(request(), Bond::$accepted_filters),
+            'filters' => ModelFilterHelper::buildFilters(request(), Bond::$acceptedFilters),
         ]);
     }
 }

@@ -2,14 +2,73 @@
 
 namespace App\Repositories;
 
+use App\Helpers\ModelSortValidator;
 use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 class UserRepository
 {
+    /**
+     * @param string $sort
+     * @param string $direction
+     *
+     * @return LengthAwarePaginator<Model>
+     */
+    public static function getAllUsersPaginated(string $sort = 'users.id', string $direction = 'desc'): LengthAwarePaginator
+    {
+        $sort = ModelSortValidator::validateSort(User::class, $sort);
+        $direction = ModelSortValidator::validateDirection($direction);
+
+        /** @var Builder $query */
+        $query = self::allUsersQuery($sort, $direction);
+
+        return $query->paginate(10);
+    }
+
+    /**
+     * @param int $userTypeId
+     * @param string $sort
+     * @param string $direction
+     *
+     * @return Collection<int, Model>
+     */
+    public function getActiveUsersOfActiveTypeId(int $userTypeId, string $sort = 'users.id', string $direction = 'desc'): Collection
+    {
+        $sort = ModelSortValidator::validateSort(User::class, $sort);
+        $direction = ModelSortValidator::validateDirection($direction);
+
+        /**
+         * @var Builder $query
+         */
+        $query = self::allActiveUsersOfActiveTypeIdQuery($userTypeId, $sort, $direction);
+
+        return $query->get();
+    }
+
+    /**
+     * @param int $userTypeId
+     * @param int $courseId
+     * @param string $sort
+     * @param string $direction
+     *
+     * @return Collection<int, Model>
+     */
+    public function getActiveUsersOfActiveTypeIdOfCourseId(int $userTypeId, int $courseId, string $sort = 'users.id', string $direction = 'desc'): Collection
+    {
+        $sort = ModelSortValidator::validateSort(User::class, $sort);
+        $direction = ModelSortValidator::validateDirection($direction);
+
+        /**
+         * @var Builder $query
+         */
+        $query = self::allActiveUsersOfActiveTypeIdOfCourseIdQuery($userTypeId, $courseId, $sort, $direction);
+
+        return $query->get();
+    }
     /**
      * Undocumented function
      *
@@ -20,10 +79,6 @@ class UserRepository
      */
     private static function allUsersQuery(string $sort = 'users.id', string $direction = 'desc'): Builder
     {
-
-        /**
-         * @var Builder<User> $query
-         */
         return User::select([
             'users.id',
             'users.login',
@@ -89,65 +144,5 @@ class UserRepository
     {
         return self::allActiveUsersOfActiveTypeIdQuery($userTypeId, $sort, $direction)
             ->where('responsibilities.course_id', $courseId);
-    }
-
-    /**
-     * @param string $sort
-     * @param string $direction
-     *
-     * @return LengthAwarePaginator
-     */
-    public static function getAllUsersPaginated(string $sort = 'users.id', string $direction = 'desc'): LengthAwarePaginator
-    {
-        // $sort = UserRepositoryHelper::validateSort(User::class, $sort);
-        // $direction = UserRepositoryHelper::validateDirection($direction);
-
-        /**
-         * @var Builder<User> $query
-         */
-        $query = self::allUsersQuery($sort, $direction);
-
-        return $query->paginate(10);
-    }
-
-    /**
-     * @param int $userTypeId
-     * @param string $sort
-     * @param string $direction
-     *
-     * @return Collection
-     */
-    public function getActiveUsersOfActiveTypeId(int $userTypeId, string $sort = 'users.id', string $direction = 'desc'): Collection
-    {
-        // $sort = UserRepositoryHelper::validateSort(User::class, $sort);
-        // $direction = UserRepositoryHelper::validateDirection($direction);
-
-        /**
-         * @var Builder<User> $query
-         */
-        $query = self::allActiveUsersOfActiveTypeIdQuery($userTypeId, $sort, $direction);
-
-        return $query->get();
-    }
-
-    /**
-     * @param int $userTypeId
-     * @param int $courseId
-     * @param string $sort
-     * @param string $direction
-     *
-     * @return Collection
-     */
-    public function getActiveUsersOfActiveTypeIdOfCourseId(int $userTypeId, int $courseId, string $sort = 'users.id', string $direction = 'desc'): Collection
-    {
-        // $sort = UserRepositoryHelper::validateSort(User::class, $sort);
-        // $direction = UserRepositoryHelper::validateDirection($direction);
-
-        /**
-         * @var Builder<User> $query
-         */
-        $query = self::allActiveUsersOfActiveTypeIdOfCourseIdQuery($userTypeId, $courseId, $sort, $direction);
-
-        return $query->get();
     }
 }

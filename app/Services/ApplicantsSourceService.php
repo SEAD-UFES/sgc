@@ -19,21 +19,18 @@ class ApplicantsSourceService
      *
      * @return Collection<int, Applicant>
      */
-    public function importApplicantsFromFile(UploadedFile $file): Collection
+    public function readSourceSpreadsheet(UploadedFile $file): Collection
     {
-        /**
-         * @var string $filePath
-         */
-        $filePath = $this->getFilePath($file);
-
         /**
          * @var Collection<int, Applicant> $applicants
          */
-        $applicants = $this->getApplicantsFromFile($filePath);
+        $applicants = $this->importApplicantsFromSpreadsheet($file);
 
-        Storage::delete($filePath);
+        $realPath = $file->getRealPath();
 
-        FileImported::dispatch($filePath);
+        Storage::delete($realPath);
+
+        FileImported::dispatch($file->getClientOriginalName());
 
         return $applicants;
     }
@@ -41,34 +38,17 @@ class ApplicantsSourceService
     /**
      * Undocumented function
      *
-     * @param UploadedFile $file
-     *
-     * @return string|false
-     */
-    protected function getFilePath(UploadedFile $file): string|false
-    {
-        /**
-         * @var string $fileName
-         */
-        $fileName = $file->getClientOriginalName();
-
-        return $file->storeAs('temp', $fileName, 'local');
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $filePath
+     * @param UploadedFile $uploadedFile
      *
      * @return Collection<int, Applicant>
      */
-    protected function getApplicantsFromFile(string $filePath): Collection
+    public function importApplicantsFromSpreadsheet(UploadedFile $uploadedFile): Collection
     {
         /**
          * @var Collection<int, Applicant> $applicants
          */
         $applicants = new Collection();
-        Excel::import(new ApplicantsImport($applicants), $filePath);
+        Excel::import(new ApplicantsImport($applicants), $uploadedFile);
 
         return $applicants;
     }

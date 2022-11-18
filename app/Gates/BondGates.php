@@ -3,6 +3,7 @@
 namespace App\Gates;
 
 use App\Models\Bond;
+use App\Models\Course;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 
@@ -59,7 +60,9 @@ class BondGates
             }
 
             //coord on this course then ok.
-            return Gate::forUser($user)->any(['isCoord-course_id'], $bond->course_id);
+            /** @var Course|null $bondCourse */
+            $bondCourse = $bond->getAttribute('course');
+            return Gate::forUser($user)->any(['isCoord-course_id'], $bondCourse?->getAttribute('id'));
         });
 
         Gate::define('bond-updateTo', static function (User $user, Bond $bond, ?int $course_id) {
@@ -73,7 +76,9 @@ class BondGates
             }
 
             //coord on this course then ok.
-            return Gate::forUser($user)->any(['isCoord-course_id'], $bond->course_id) && Gate::forUser($user)->any(['isCoord-course_id'], $course_id);
+            /** @var Course|null $bondCourse */
+            $bondCourse = $bond->getAttribute('course');
+            return Gate::forUser($user)->any(['isCoord-course_id'], $bondCourse?->getAttribute('id')) && Gate::forUser($user)->any(['isCoord-course_id'], $course_id);
         });
 
         Gate::define('bond-destroy', static function ($user) {

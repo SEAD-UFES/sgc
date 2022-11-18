@@ -14,6 +14,11 @@ class Phone extends Model
     use LogsActivity;
 
     /**
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
      * @var string
      */
     protected $table = 'phones';
@@ -22,11 +27,6 @@ class Phone extends Model
      * @var string
      */
     protected $primaryKey = 'employee_id';
-
-    /**
-     * @var bool
-     */
-    public $incrementing = false;
 
     /**
      * @var array<int, string>

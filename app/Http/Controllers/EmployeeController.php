@@ -58,10 +58,7 @@ class EmployeeController extends Controller
     public function store(StoreEmployeeRequest $request): RedirectResponse
     {
         try {
-            /**
-             * @var Employee $employee
-             */
-            $employee = $this->service->create($request->toDto());
+            $this->service->create($request->toDto());
         } catch (\Exception $e) {
             return redirect()->route('employees.index')->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $e->getMessage()]);
         }

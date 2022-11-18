@@ -2,6 +2,7 @@
 
 namespace tests\Unit\app\Http\Controllers;
 
+use App\Enums\Degrees;
 use App\Http\Controllers\CourseController;
 use App\Http\Requests\Course\DestroyCourseRequest;
 use App\Http\Requests\Course\IndexCourseRequest;
@@ -10,6 +11,7 @@ use App\Http\Requests\Course\StoreCourseRequest;
 use App\Http\Requests\Course\UpdateCourseRequest;
 use App\Models\Course;
 use App\Services\CourseService;
+use App\Services\Dto\CourseDto;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Pagination\LengthAwarePaginator;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -56,6 +58,13 @@ class CourseControllerTest extends TestCase
         // Create a stub for the StoreCourseRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(StoreCourseRequest::class);
+        $requestStub->expects($this->any())->method('toDto')
+            ->willReturn(new CourseDto(
+                name: '',
+                description: '',
+                degree: Degrees::B,
+                lmsUrl: '',
+            ));
 
         // Expects the service's create method to be called once.
         $this->serviceMock->expects($this->once())->method('create');
@@ -68,6 +77,13 @@ class CourseControllerTest extends TestCase
         // Create a stub for the UpdateCourseRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(UpdateCourseRequest::class);
+        $requestStub->expects($this->any())->method('toDto')
+            ->willReturn(new CourseDto(
+                name: '',
+                description: '',
+                degree: Degrees::B,
+                lmsUrl: '',
+            ));
 
         /** @var MockObject $bondStub */
         $bondStub = $this->createStub(Course::class);

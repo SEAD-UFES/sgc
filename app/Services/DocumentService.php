@@ -26,16 +26,16 @@ class DocumentService
     /**
      * Undocumented function
      *
-     * @param string $sort
-     * @param string $direction
+     * @param ?string $direction
+     * @param ?string $sort
      *
-     * @return LengthAwarePaginator
+     * @return LengthAwarePaginator<Document>
      */
-    public function list(string $sort = 'documents.id', string $direction = 'desc'): LengthAwarePaginator
+    public function list(?string $direction, ?string $sort): LengthAwarePaginator
     {
         ModelListed::dispatch(Document::class);
 
-        return $this->repository::all(sort: $sort, direction: $direction);
+        return $this->repository::all(direction: $direction, sort: $sort);
     }
 
     /**
@@ -49,21 +49,21 @@ class DocumentService
     {
         $document = null;
 
-        DB::transaction(function () use ($storeDocumentDto, &$document) {
-            $oldDocuments = $this->repository
-                ->getByBondIdOfTypeId(
-                    (int) $storeDocumentDto->relatedId,
-                    (int) $storeDocumentDto->documentTypeId
-                );
+        // DB::transaction(function () use ($storeDocumentDto, &$document) {
+        //     $oldDocuments = $this->repository
+        //         ->getByBondIdOfTypeId(
+        //             (int) $storeDocumentDto->relatedId,
+        //             (int) $storeDocumentDto->documentTypeId
+        //         );
 
-            foreach ($oldDocuments as $oldDocument) {
-                $this->repository->delete($oldDocument->id);
-            }
+        //     foreach ($oldDocuments as $oldDocument) {
+        //         $this->repository->delete($oldDocument->id);
+        //     }
 
-            $document = $this->repository->createBondDocument($storeDocumentDto);
-        });
-        
-        /** @var Bond */
+        $document = $this->repository->createBondDocument($storeDocumentDto);
+        // });
+
+        /** @var Bond $bond */
         $bond = Bond::find($storeDocumentDto->relatedId);
         BondService::bondCheckRights($bond);
 
@@ -81,7 +81,7 @@ class DocumentService
     public function zipDocuments(Bond $bond, ?string $zipFileName = null): string
     {
         /**
-         * @var Collection<int, Document> $bondDocuments
+         * @var EloquentCollection<int, Document> $bondDocuments
          */
         $bondDocuments = $this->repository->getByBondId($bond->id);
 
@@ -92,16 +92,16 @@ class DocumentService
         $zipFileName = $zipFileName ?? date('Y-m-d') . '_' . $employee->name . '_' . $bond->id . '.zip';
 
         $zip = new \ZipArchive();
-        
+
         if ($zip->open($zipFileName, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
             foreach ($bondDocuments as $document) {
                 $documentName = $document->file_name;
                 $documentData = base64_decode($document->file_data);
                 $zip->addFromString($documentName, $documentData);
             }
-            
+
             $zip->close();
-            
+
             DocumentExported::dispatch($bond);
 
             return $zipFileName;

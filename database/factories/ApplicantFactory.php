@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Enums\CallStates;
 use App\Models\Applicant;
 use App\Models\Course;
 use App\Models\Role;
 use App\Models\Pole;
-use App\Models\ApplicantState;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ApplicantFactory extends Factory
@@ -33,13 +33,13 @@ class ApplicantFactory extends Factory
             'name' => $this->faker->word(),
             'email' => $this->faker->email(),
             'area_code' => $areaCode,
-            'phone' => $areaCode . $this->faker->landline($formatted = false),
+            'landline' => $areaCode . $this->faker->landline($formatted = false),
             'mobile' => $areaCode . $this->faker->cellphone($formatted = false),
             'hiring_process' => $hiring_process,
             'course_id' => Course::factory(),
             'role_id' => Role::factory(),
             'pole_id' => Pole::factory(),
-            'applicant_state_id' => ApplicantState::factory(),
+            'call_state' => CallStates::cases()[array_rand(CallStates::cases())],
 
             'created_at' => now(),
             'updated_at' => now(),

@@ -2,7 +2,8 @@
 
 namespace App\Http\Requests\Role;
 
-use App\Services\Dto\UpdateRoleDto;
+use App\Enums\GrantTypes;
+use App\Services\Dto\RoleDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -21,7 +22,7 @@ class UpdateRoleRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, string>
+     * @return array<string, string|array<int, mixed>>
      */
     public function rules(): array
     {
@@ -40,13 +41,13 @@ class UpdateRoleRequest extends FormRequest
         return $srr->messages();
     }
 
-    public function toDto(): UpdateRoleDto
+    public function toDto(): RoleDto
     {
-        return new UpdateRoleDto(
-            name: $this->validated('name') ?? '',
-            description: $this->validated('description') ?? '',
-            grantValue: $this->validated('grant_value') ?? '',
-            grantTypeId: $this->validated('grant_type_id') ?? '',
+        return new RoleDto(
+            name: strval($this->validated('name') ?? ''),
+            description: strval($this->validated('description') ?? ''),
+            grantValue: intval($this->validated('grant_value')),
+            grantType: GrantTypes::from(strval($this->validated('grant_type'))),
         );
     }
 }

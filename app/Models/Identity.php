@@ -15,6 +15,11 @@ class Identity extends Model
     use LogsActivity;
 
     /**
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
      * @var string
      */
     protected $table = 'identities';
@@ -23,11 +28,6 @@ class Identity extends Model
      * @var string
      */
     protected $primaryKey = 'employee_id';
-
-    /**
-     * @var bool
-     */
-    public $incrementing = false;
 
     /**
      * @var array<int, string>

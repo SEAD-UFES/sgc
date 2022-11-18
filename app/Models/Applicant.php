@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\CallStates;
-use App\ModelFilters\ApplicantFilter;
+use App\Models\Filters\ApplicantFilter;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,6 +21,42 @@ class Applicant extends Model
     use LogsActivity;
 
     /**
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
+     * @var array<int, string>
+     */
+    public static $sortable = [
+        'id',
+        'name',
+        'email',
+        'landline',
+        'mobile',
+        'hiring_process',
+        'call_state',
+        'created_at',
+        'updated_at',
+    ];
+
+    /**
+     * @var array<int, string>
+     */
+    public static $acceptedFilters = [
+        'nameContains',
+        'emailContains',
+        'areacodeContains',
+        'landlineContains',
+        'mobileContains',
+        'hiringprocessContains',
+        'callStateLabelContains',
+        'roleNameContains',
+        'courseNameContains',
+        'poleNameContains',
+    ];
+
+    /**
      * @var string
      */
     protected $table = 'applicants';
@@ -29,11 +65,6 @@ class Applicant extends Model
      * @var string
      */
     protected $primaryKey = 'id';
-
-    /**
-     * @var bool
-     */
-    public $incrementing = true;
 
     /**
      * @var array<int, string>
@@ -51,49 +82,18 @@ class Applicant extends Model
         'call_state',
     ];
 
-    // /**
-    //  * @var array<int, string>
-    //  */
-    // public $sortable = [
-    //     'id',
-    //     'name',
-    //     'email',
-    //     'area_code',
-    //     'landline',
-    //     'mobile',
-    //     'hiring_process',
-    //     'created_at',
-    //     'updated_at',
-    // ];
-
-    /**
-     * @var array<int, string>
-     */
-    public static $accepted_filters = [
-        'nameContains',
-        'emailContains',
-        'areacodeContains',
-        'phoneContains',
-        'mobileContains',
-        'hiring_processContains',
-        'applicantStateNameContains',
-        'roleNameContains',
-        'courseNameContains',
-        'poleNameContains',
-    ];
-
-    // /**
-    //  * @var array<int, string>
-    //  *
-    //  * @phpstan-ignore-next-line
-    //  */
-    // private static $whiteListFilter = ['*'];
-
     // ==================== Casts ====================
 
     protected $casts = [
         'call_state' => CallStates::class,
     ];
+
+    /**
+     * @var array<int, string>
+     *
+     * @phpstan-ignore-next-line
+     */
+    private static $whiteListFilter = ['*'];
 
     // ==================== Relationships ====================
 

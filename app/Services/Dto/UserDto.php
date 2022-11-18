@@ -2,7 +2,7 @@
 
 namespace App\Services\Dto;
 
-final class StoreUserDto
+class UserDto
 {
     public function __construct(
         public readonly string $login,

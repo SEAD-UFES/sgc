@@ -7,7 +7,6 @@ use App\Mail\LmsAccessPermissionRequest;
 use App\Mail\NewTutorEmploymentNotice;
 use App\Models\Bond;
 use App\Models\Employee;
-use App\Models\Responsibility;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
@@ -19,12 +18,12 @@ class MailService
     private string $tutoringCoordinationEmail = 'tutoria.sead@ufes.br';
 
     /**
-     * @param Employee|null $sender
+     * @param User|null $sender
      * @param Bond $receiverBond
      *
      * @return void
      */
-    public function sendInstitutionEmployeeLoginCreatedEmail(?Employee $sender, Bond $receiverBond): void
+    public function sendInstitutionEmployeeLoginCreatedEmail(?User $sender, Bond $receiverBond): void
     {
         /**
          * @var Employee $receiver
@@ -36,24 +35,24 @@ class MailService
     }
 
     /**
-     * @param Employee|null $sender
+     * @param User|null $sender
      * @param Bond $newEmployeeBond
      *
      * @return void
      */
-    public function sendLmsAccessPermissionRequestEmail(?Employee $sender, Bond $newEmployeeBond): void
+    public function sendLmsAccessPermissionRequestEmail(?User $sender, Bond $newEmployeeBond): void
     {
         $receiverEmailAddress = ['marco.cardoso@ufes.br', 'sonia.clarindo@ufes.br']; //$this->educationalDesignTeam;
         Mail::to($receiverEmailAddress)->send(new LmsAccessPermissionRequest($sender, $newEmployeeBond));
     }
 
     /**
-     * @param Employee|null $sender
+     * @param User|null $sender
      * @param Bond $newEmployeeBond
      *
      * @return void
      */
-    public function sendNewTutorEmploymentNoticeEmail(?Employee $sender, Bond $newEmployeeBond): void
+    public function sendNewTutorEmploymentNoticeEmail(?User $sender, Bond $newEmployeeBond): void
     {
         $receiverEmailAddress = ['marco.cardoso@ufes.br', 'sonia.clarindo@ufes.br']; //$this->tutoringCoordinationEmail;
         Mail::to($receiverEmailAddress)->send(new NewTutorEmploymentNotice($sender, $newEmployeeBond));
@@ -67,28 +66,18 @@ class MailService
     public function sendNewEmployeeEmails(Bond $bond): void
     {
         /**
-         * @var Responsibility $loggedInUta
-         */
-        $loggedInUta = session('loggedInUser.currentResponsibility');
-
-        /**
          * @var User $loggedInUser
          */
-        $loggedInUser = $loggedInUta->user;
-
-        /**
-         * @var Employee|null $loggedInEmployee
-         */
-        $loggedInEmployee = $loggedInUser->employee;
+        $loggedInUser = auth()->user();
 
         /**
          * @var Role $employeeRole
          */
         $employeeRole = $bond->role;
-        $this->sendInstitutionEmployeeLoginCreatedEmail($loggedInEmployee, $bond);
-        $this->sendLmsAccessPermissionRequestEmail($loggedInEmployee, $bond);
+        $this->sendInstitutionEmployeeLoginCreatedEmail($loggedInUser, $bond);
+        $this->sendLmsAccessPermissionRequestEmail($loggedInUser, $bond);
         if (str_starts_with($employeeRole->name, 'Tutor')) {
-            $this->sendNewTutorEmploymentNoticeEmail($loggedInEmployee, $bond);
+            $this->sendNewTutorEmploymentNoticeEmail($loggedInUser, $bond);
         }
     }
 }

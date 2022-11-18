@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -23,8 +24,9 @@ class ProdAdminSeeder extends Seeder
             'active' => true,
             'employee_id' => null,
         ]);
-
-        $sysAdmId = DB::query()->from('users')->where('login', 'admin@ufes.br')->limit(1)->truncate('id');
+        /** @var User $sysAdm */
+        $sysAdm = User::where('login', 'admin@ufes.br')->first();
+        $sysAdmId = $sysAdm->getAttribute('id');
         
         DB::table('responsibilities')->insert([
             'user_id' => $sysAdmId,

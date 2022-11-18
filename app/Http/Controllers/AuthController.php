@@ -43,7 +43,7 @@ class AuthController extends Controller
 
         if (Auth::attempt(['login' => $request->login, 'password' => $request->password, 'active' => true])) {
             $request->session()->regenerate();
-           
+
             /**
              * @var User $loggedUser
              */
@@ -80,13 +80,13 @@ class AuthController extends Controller
      */
     public function switchCurrentResponsibility(Request $request): RedirectResponse
     {
-        /** @var User */
+        /** @var User $currentUser */
         $currentUser = auth()->user();
 
-        /** @var int */
+        /** @var int $newResponsibilityId */
         $newResponsibilityId = $request->get('responsibility_id');
 
-        /** @var Responsibility */
+        /** @var Responsibility $newResponsibility */
         $newResponsibility = $this->responsibilityRepository->getActiveResponsibilityByIdAssertUserId($newResponsibilityId, $currentUser->id);
 
         session(['loggedInUser.currentResponsibility' => $newResponsibility]);

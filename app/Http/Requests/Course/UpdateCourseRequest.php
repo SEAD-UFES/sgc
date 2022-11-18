@@ -2,7 +2,8 @@
 
 namespace App\Http\Requests\Course;
 
-use App\Services\Dto\UpdateCourseDto;
+use App\Enums\Degrees;
+use App\Services\Dto\CourseDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -21,7 +22,7 @@ class UpdateCourseRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, string>
+     * @return array<string, string|array<int, mixed>>
      */
     public function rules(): array
     {
@@ -40,15 +41,13 @@ class UpdateCourseRequest extends FormRequest
         return $scr->messages();
     }
 
-    public function toDto(): UpdateCourseDto
+    public function toDto(): CourseDto
     {
-        return new UpdateCourseDto(
-            name: $this->validated('name') ?? '',
-            description: $this->validated('description') ?? '',
-            courseTypeId: $this->validated('course_type_id') ?? '',
-            begin: $this->validated('begin'),
-            end: $this->validated('end'),
-            lmsUrl: $this->validated('lms_url') ?? '',
+        return new CourseDto(
+            name: strval($this->validated('name') ?? ''),
+            description: strval($this->validated('description') ?? ''),
+            degree: Degrees::from(strval($this->validated('degree'))),
+            lmsUrl: strval($this->validated('lms_url') ?? ''),
         );
     }
 }

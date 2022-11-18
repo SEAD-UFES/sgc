@@ -4,14 +4,13 @@ namespace App\Providers;
 
 use App\Http\View\Composers\ApplicantFormComposer;
 use App\Http\View\Composers\ApplicantIndexComposer;
-use App\Http\View\Composers\DocumentBatchFormComposer;
-use App\Http\View\Composers\DocumentFormComposer;
-use App\Http\View\Composers\DocumentIndexComposer;
 use App\Http\View\Composers\BondFormComposer;
 use App\Http\View\Composers\BondIndexComposer;
 use App\Http\View\Composers\CourseFormComposer;
 use App\Http\View\Composers\CourseIndexComposer;
-use App\Http\View\Composers\CourseTypeIndexComposer;
+use App\Http\View\Composers\DocumentBatchFormComposer;
+use App\Http\View\Composers\DocumentFormComposer;
+use App\Http\View\Composers\DocumentIndexComposer;
 use App\Http\View\Composers\EmployeeFormComposer;
 use App\Http\View\Composers\EmployeeIndexComposer;
 use App\Http\View\Composers\HeaderComposer;
@@ -86,11 +85,6 @@ class ViewServiceProvider extends ServiceProvider
         View::composer(
             ['course.index'],
             CourseIndexComposer::class
-        );
-
-        View::composer(
-            ['coursetype.index'],
-            CourseTypeIndexComposer::class
         );
 
         View::composer(

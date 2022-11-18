@@ -36,8 +36,8 @@ class LoginRequest extends FormRequest
     {
         return [
             'login.required' => 'O Login é obrigatório',
-            'login.email' => 'O Login deve ser válido',
-            'login.exists' => 'O Login deve ser válido',
+            'login.email' => 'O Login deve ser válido (Code: em)',
+            'login.exists' => 'O Login deve ser válido (Code: ex)',
             'password.required' => 'A Senha é obrigatória',
         ];
     }

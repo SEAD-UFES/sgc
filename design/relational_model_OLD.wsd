@@ -1,0 +1,311 @@
+@startuml
+
+' hide the spot
+hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+skinparam ranksep 40
+'skinparam nodesep 50
+
+entity "applicants" {
+    *id
+    --
+    applicant_state_id [FK]
+    course_id [FK]
+    pole_id [FK]
+    role_id [FK]
+    name
+    email
+    hiring_process
+}
+
+entity "applicant_states" {
+    *id
+    --
+    -name
+    description
+}
+
+entity "addresses" {
+    *id
+    --
+    employee_id [FK]
+    state_id [FK]
+    street
+    number
+    complement
+    district
+    city
+    zip_code
+}
+
+entity "bank_accounts" {
+    *id
+    --
+    employee_id [FK]
+    -bank_name
+    -agency_number
+    -account_number
+}
+
+entity "bonds" {
+    *id
+    --
+    course_id [FK]
+    course_class_id [FK]
+    employee_id [FK]
+    pole_id [FK]
+    role_id [FK]
+    begin
+    end
+    hiring_process
+    volunteer
+    uaba_checked_at
+}
+
+entity "impediments" {
+    *id
+    --
+    bond_id [FK]
+    description
+}
+
+entity "courses" {
+    *id
+    --
+    course_type_id [FK]
+    -name
+    description
+    begin
+    end
+    lms_url
+}
+
+entity "course_classes" {
+    *id
+    --
+    -code
+    name
+    cpp
+}
+
+entity "course_types" {
+    *id
+    --
+    -name
+    description
+}
+
+entity "documents" {
+    *id
+    --
+    employee_id [FK]
+    bond_id [FK]
+    document_type_id [FK]
+    file_name
+    file_data
+}
+
+entity "document_types" {
+    *id
+    --
+    -name
+    description
+}
+
+entity "employees" {
+    *id
+    --
+    birth_state_id [FK]
+    document_type_id [FK]
+    -cpf
+    name
+    job
+    gender
+    birth_date
+    birth_state
+    birth_city
+    marital_status
+    father_name
+    mother_name
+    email
+}
+
+entity "spouses" {
+    *id
+    --
+    employee_id [FK]
+    name
+}
+
+entity "ids" {
+    *id
+    --
+    employee_id [FK]
+    state_id [FK]
+    number
+    issue_date
+    issue_agecy
+}
+
+entity "grant_types" {
+    *id
+    --
+    -name
+    description
+}
+
+entity "institutional_details" {
+    *id
+    --
+    employee_id [FK]
+    -login
+    email
+}
+
+entity "phones" {
+    *id
+    --
+    employee_id [FK]
+    applicant_id [FK]
+    -area_code
+    -number
+    type
+}
+
+entity "poles" {
+    *id
+    --
+    -name
+    description
+}
+
+entity "qualifications" {
+    *id
+    --
+    knowledge_area
+    course_name
+    institution_name
+}
+
+entity "responsibilities" {
+    *id
+    --
+    user_id [FK]
+    user_type_id [FK]
+    course_id [FK]
+    begin
+    end
+}
+
+entity "roles" {
+    *id
+    --
+    grant_type_id [FK]
+    -name
+    description
+    grant_value
+}
+
+entity "states" {
+    *id
+    --
+    -name
+    fu
+    ibge_fu_code
+}
+
+entity "users" {
+    *id
+    --
+    employee_id [FK]
+    -login_email
+    password
+    active
+}
+
+entity "user_types" {
+    *id
+    --
+    -name
+    acronym
+    description
+}
+
+entity "genders" #Yellow {
+    value
+    name
+    --
+    [App Enum]
+}
+
+entity "knowledge_areas" #Yellow {
+    value
+    name
+    --
+    [App Enum]
+}
+
+entity "marital_statuses" #Yellow {
+    value
+    name
+    --
+    [App Enum]
+}
+
+employees ||..o| spouses
+
+users ||..o{ responsibilities
+responsibilities }o..|| courses
+responsibilities }o..|| user_types
+
+addresses }o..|| states
+applicants ||.|{ phones
+
+'applicants }o..|| applicant_states
+applicant_states ||..o{ applicants
+applicants }o..|| courses
+applicants }o...|| poles
+applicants }o..|| roles
+
+bonds }o..o|courses
+'bonds }o..o|course_classes
+course_classes |o..o{ bonds
+bonds ||..o{ documents
+bonds }o..o| poles
+bonds ||..|| qualifications
+bonds }o..|| roles
+
+courses }o..|| course_types
+
+documents }o..|| document_types
+
+employees ||..|{ addresses
+'employees ||..|{ bank_accounts
+bank_accounts }|..|| employees
+employees ||..|{ bonds
+employees ||..o{ documents
+employees }o..|| document_types
+'employees ||..|| institutional_details
+institutional_details ||..|| employees
+employees ||.|{ phones
+employees }o..|| states
+
+roles }o..|| grant_types
+
+users }o..|| employees
+
+'employees }o..|| genders
+genders ||.o{ employees
+'employees }o..|| marital_statuses
+marital_statuses ||.o{ employees
+qualifications }o..|| knowledge_areas
+
+bonds ||.o| impediments
+
+employees ||..|| ids
+ids }o..|| document_types
+ids }o..|| states
+
+@enduml

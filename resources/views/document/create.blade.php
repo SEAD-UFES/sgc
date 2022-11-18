@@ -52,9 +52,9 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Enviar arquivo</button>
                         <a href="{{ route('documents.index') }}" class="btn btn-secondary">Cancelar</a>
-                        @can('bondDocument-store')
+                        {{-- @can('bondDocument-store')
                             <a href="{{ route('documents.create_many') }}" class="btn btn-warning">Desejo importar vários documentos de vínculo</a>
-                        @endcan
+                        @endcan --}}
                         @error('noStore')
                             <div class="text-danger">> {{ $message }}</div>
                         @enderror

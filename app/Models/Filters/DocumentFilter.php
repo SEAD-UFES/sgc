@@ -1,25 +1,24 @@
 <?php
 
-namespace App\ModelFilters;
+namespace App\Models\Filters;
 
 use App\Helpers\ModelFilterHelper;
-use App\Models\BondDocument;
-use App\Models\EmployeeDocument;
+use App\Models\Bond;
 use Illuminate\Database\Eloquent\Builder;
 
 trait DocumentFilter
 {
-    public function employeeCpfContains(Builder $builder, $value)
+    /* public function employeeCpfContains(Builder $builder, $value)
     {
         $values = ModelFilterHelper::inputToArray($value);
-        return ModelFilterHelper::morphRelationContains($builder, 'documentable', EmployeeDocument::class, 'employee', 'cpf', $values);
+        return ModelFilterHelper::morphRelationContains($builder, 'related', EmployeeDocument::class, 'employee', 'cpf', $values);
     }
 
     public function employeeNameContains(Builder $builder, $value)
     {
         $values = ModelFilterHelper::inputToArray($value);
-        return ModelFilterHelper::morphRelationContains($builder, 'documentable', EmployeeDocument::class, 'employee', 'name', $values);
-    }
+        return ModelFilterHelper::morphRelationContains($builder, 'related', Bond::class, 'employee', 'name', $values);
+    } */
 
     public function originalnameContains(Builder $builder, $value)
     {
@@ -36,24 +35,24 @@ trait DocumentFilter
     public function bondEmployeeNameContains(Builder $builder, $value)
     {
         $values = ModelFilterHelper::inputToArray($value);
-        return ModelFilterHelper::morphRelationContains($builder, 'documentable', BondDocument::class, 'bond.employee', 'name', $values);
+        return ModelFilterHelper::morphRelationContains($builder, 'related', Bond::class, 'employee', 'name', $values);
     }
 
     public function bondRoleNameContains(Builder $builder, $value)
     {
         $values = ModelFilterHelper::inputToArray($value);
-        return ModelFilterHelper::morphRelationContains($builder, 'documentable', BondDocument::class, 'bond.role', 'name', $values);
+        return ModelFilterHelper::morphRelationContains($builder, 'related', Bond::class, 'role', 'name', $values);
     }
 
     public function bondPoleNameContains(Builder $builder, $value)
     {
         $values = ModelFilterHelper::inputToArray($value);
-        return ModelFilterHelper::morphRelationContains($builder, 'documentable', BondDocument::class, 'bond.pole', 'name', $values);
+        return ModelFilterHelper::morphRelationContains($builder, 'related', Bond::class, 'poles', 'name', $values);
     }
 
     public function bondCourseNameContains(Builder $builder, $value)
     {
         $values = ModelFilterHelper::inputToArray($value);
-        return ModelFilterHelper::morphRelationContains($builder, 'documentable', BondDocument::class, 'bond.course', 'name', $values);
+        return ModelFilterHelper::morphRelationContains($builder, 'related', Bond::class, 'courses', 'name', $values);
     }
 }

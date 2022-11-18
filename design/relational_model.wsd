@@ -1,0 +1,279 @@
+@startuml
+
+' hide the spot
+hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+'skinparam ranksep 40
+'skinparam nodesep 60
+
+entity "responsibilities" #Yellow {
+    * id (PK)
+    --
+    + user_id <<unique A>> (FK)
+    + user_type_id <<unique A>> (FK)
+    + course_id <<unique A>> <<nullable>> (FK)
+    begin
+    end <<nullable>>
+}
+
+entity "user_types" #Coral {
+    * id (PK)
+    --
+    - name
+    - acronym <<unique>>
+    description
+}
+
+entity "users" #Coral {
+    * id (PK)
+    --
+    - login <<unique>>
+    password
+    active
+    + employee_id <<unique>><<nullable>> (FK)
+}
+
+entity "institutional_details" #Pink {
+    * employee_id (FK)(PK)
+    --
+    - login <<unique>>
+    - email <<unique>>
+}
+
+entity "bank_accounts" #Pink {
+    * employee_id (FK)(PK)
+    --
+    - bank_name
+    - agency_number
+    - account_number
+}
+
+entity "spouses" #Pink {
+    * employee_id (FK)(PK)
+    --
+    name
+}
+
+entity "addresses" #Pink {
+    * employee_id (FK)(PK)
+    --
+    state [php enum]
+    street
+    number
+    complement
+    district
+    city
+    zip_code
+}
+
+entity "employees" #Coral {
+    * id (PK)
+    --
+    - cpf <<unique>>
+    name
+    gender [php enum]
+    email
+}
+
+entity "impediments" #Pink {
+    * bond_id (FK)(PK)
+    --
+    description
+    + reviewer_id (FK)
+    reviewer_checked_at
+    + closed_by_id <<nullable>> (FK)
+    closed_at <<nullable>>
+}
+
+entity "bonds" #HotPink {
+    * id (PK)
+    --
+    + employee_id (FK)
+    + role_id (FK)
+    volunteer
+    hiring_process
+    begin
+    terminated_at <<nullable>>
+}
+
+entity "personal_details" #Pink {
+    * employee_id (FK)(PK)
+    --
+    job
+    birth_date
+    birth_state [php enum]
+    birth_city
+    marital_status [php enum]
+    father_name
+    mother_name
+}
+
+entity "phones" #HotPink {
+    * id (PK)
+    --
+    + employee_id (FK)
+    - area_code
+    - number
+    type
+}
+
+entity "ids" #Pink {
+    * employee_id (FK)(PK)
+    --
+    + id_type_id (FK)
+    number
+    issue_date
+    issuer
+    issuer_state [php enum]
+}
+
+entity "course_classes" #Coral {
+    * id (PK)
+    --
+    + course_id (FK)
+    - code <<unique>>
+    name
+    cpp <<nullable>>
+}
+
+entity "applicants" {
+    * id (PK)
+    --
+    + role_id (FK)
+    + pole_id <<nullable>> (FK)
+    + course_id <<nullable>> (FK)
+    name
+    email
+    area_code
+    landline <<nullable>>
+    mobile
+    hiring_process
+    call_state [php enum]
+}
+
+entity "roles" #Coral {
+    * id (PK)
+    --
+    - name
+    description
+    grant_value
+    grant_type [php enum]
+}
+
+entity "poles" #Coral {
+    * id (PK)
+    --
+    - name
+    description
+}
+
+entity "bond_class" #Pink {
+    * bond_id (FK)(PK)
+    --
+    + course_class_id (FK)
+}
+
+entity "qualifications" #Pink {
+    * bond_id (FK)(PK)
+    --
+    knowledge_area [php enum]
+    course_name
+    institution_name
+}
+
+entity "bond_pole" #Pink {
+    * bond_id (FK)(PK)
+    --
+    + pole_id (FK)
+}
+
+entity "documents" #HotPink {
+    * id (PK)
+    --
+    + related_id (FK)
+    + document_type_id (FK)
+    file_name
+    file_data
+}
+
+entity "bond_course" #Pink {
+    * bond_id (FK)(PK)
+    --
+    + course_id (FK)
+}
+
+entity "document_types" #Coral {
+    * id (PK)
+    --
+    - name
+    description
+}
+
+entity "courses" #Coral {
+    * id (PK)
+    --
+    - name
+    description
+    degree [php enum]
+    lms_url
+}
+
+employees ||..o| personal_details #Green
+employees ||..o| spouses #Green
+
+'applicants }o..|| applicant_states
+applicants }o..o| courses #Tomato
+applicants }o..o| poles #Tomato
+applicants }o..|| roles
+
+'bonds }o..o|courses #Tomato
+'bonds }o..o|course_classes
+'course_classes |o..o{ bonds #Tomato
+bonds ||..o{ documents #Red
+'bonds }o..o| poles #Tomato
+bonds ||..|| qualifications #Green
+bonds }o..|| roles
+
+bonds ||..o| bond_course
+bond_course }o..|| courses
+
+bonds ||..o| bond_class
+bond_class }o..|| course_classes
+
+bonds ||..o| bond_pole
+bond_pole }o..|| poles
+
+documents }o..|| document_types
+
+employees ||..|| addresses #Green
+'employees ||..|{ bank_accounts
+bank_accounts ||..|| employees #Green
+employees ||..o{ bonds
+'employees ||..o{ documents #Red
+'employees }o..|| document_types
+'employees ||..|| institutional_details
+institutional_details |o..|| employees #Green
+employees ||..|{ phones
+
+users |o..o| employees
+'users }o..|{ user_types #Red
+responsibilities }o..|| users
+responsibilities }o..|| user_types
+responsibilities }o..o| courses
+
+'employees }o..|| genders
+'employees }o..|| marital_statuses
+
+bonds ||..o| impediments #Green
+
+employees ||...|| ids #Green
+ids }o..|| document_types
+
+impediments }o..|| users
+impediments }o..o| users
+
+course_classes }o..|| courses
+
+@enduml

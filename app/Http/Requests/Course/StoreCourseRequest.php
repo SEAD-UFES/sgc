@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests\Course;
 
-use App\Services\Dto\StoreCourseDto;
+use App\Enums\Degrees;
+use App\Services\Dto\CourseDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreCourseRequest extends FormRequest
 {
@@ -21,16 +23,14 @@ class StoreCourseRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, string>
+     * @return array<string, string|array<int, mixed>>
      */
     public function rules(): array
     {
         return [
             'name' => 'required|max:50',
             'description' => 'max:110',
-            'course_type_id' => 'required|exists:course_types,id',
-            'begin' => 'nullable|date',
-            'end' => 'nullable|date',
+            'degree' => ['required', new Enum(Degrees::class)],
             'lms_url' => 'nullable|url',
         ];
     }
@@ -46,23 +46,19 @@ class StoreCourseRequest extends FormRequest
             'name.required' => 'O Nome é obrigatório',
             'name.max' => 'O Nome deve conter no máximo 50 caracteres',
             'description.max' => 'A Descrição deve conter no máximo 110 caracteres',
-            'course_type_id.required' => 'O Tipo é obrigatório',
-            'course_type_id.exists' => 'O Tipo deve estar entre os fornecidos',
-            'begin.date' => 'Início deve ser uma data',
-            'end.date' => 'Início deve ser uma data',
+            'degree.required' => 'O Tipo é obrigatório',
+            'degree.Illuminate\Validation\Rules\Enum' => 'O Tipo deve estar entre os fornecidos',
             'lms_url.url' => 'O Endereço do AVA deve ser uma URL válida',
         ];
     }
 
-    public function toDto(): StoreCourseDto
+    public function toDto(): CourseDto
     {
-        return new StoreCourseDto(
-            name: $this->validated('name') ?? '',
-            description: $this->validated('description') ?? '',
-            courseTypeId: $this->validated('course_type_id') ?? '',
-            begin: $this->validated('begin'),
-            end: $this->validated('end'),
-            lmsUrl: $this->validated('lms_url') ?? '',
+        return new CourseDto(
+            name: strval($this->validated('name') ?? ''),
+            description: strval($this->validated('description') ?? ''),
+            degree: Degrees::from(strval($this->validated('degree'))),
+            lmsUrl: strval($this->validated('lms_url') ?? ''),
         );
     }
 }

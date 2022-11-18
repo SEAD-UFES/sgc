@@ -98,10 +98,10 @@ class DocumentBatchService
                 $document['file_data'] = $this->getFileDataFromPath($filePath);
 
                 // Get old versions of this document type
-                $oldDocuments = $this->getOldDocuments($document);
+                //$oldDocuments = $this->getOldDocuments($document);
 
                 // Delete old versions of this document type
-                $this->deleteDocuments($oldDocuments);
+                //$this->deleteDocuments($oldDocuments);
 
                 $document['documentable_id'] = $this->documentClass::create([
                     $referentIdColumnName => $attributes[$referentIdColumnName],
@@ -133,9 +133,6 @@ class DocumentBatchService
              */
             $fileContent = file_get_contents(base_path('storage/app/' . $filePath), true);
             if ($fileContent !== false) {
-                /**
-                 * @var string $fileContentBase64
-                 */
                 return base64_encode($fileContent);
             }
         }

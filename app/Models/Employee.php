@@ -3,15 +3,10 @@
 namespace App\Models;
 
 use App\Enums\Genders;
-use App\Enums\MaritalStatuses;
-use App\ModelFilters\EmployeeFilter;
+use App\Models\Filters\EmployeeFilter;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Kyslik\ColumnSortable\Sortable;
@@ -27,6 +22,33 @@ class Employee extends Model
     use LogsActivity;
 
     /**
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
+     * @var array<int, string>
+     */
+    public static $sortable = [
+        'id',
+        'cpf',
+        'name',
+        'created_at',
+        'updated_at',
+    ];
+
+    /**
+     * @var array<int, string>
+     */
+    public static $acceptedFilters = [
+        'cpfContains',
+        'nameContains',
+        'jobContains',
+        'addresscityContains',
+        'userEmailContains',
+    ];
+
+    /**
      * @var string
      */
     protected $table = 'employees';
@@ -35,11 +57,6 @@ class Employee extends Model
      * @var string
      */
     protected $primaryKey = 'id';
-
-    /**
-     * @var bool
-     */
-    public $incrementing = true;
 
     /**
      * @var array<int, string>
@@ -51,59 +68,18 @@ class Employee extends Model
         'email',
     ];
 
-    // /**
-    //  * @var array<int, string>
-    //  */
-    // public $sortable = [
-    //     'id',
-    //     'cpf',
-    //     'name',
-    //     'job',
-    //     'address_city',
-    //     'user.email',
-    //     'created_at',
-    //     'updated_at',
-    // ];
-
-    /**
-     * @var array<int, string>
-     */
-    public static $accepted_filters = [
-        'cpfContains',
-        'nameContains',
-        'jobContains',
-        'addresscityContains',
-        'userEmailContains',
-    ];
-
-    // /**
-    //  * @var array<int, string>
-    //  *
-    //  * @phpstan-ignore-next-line
-    //  */
-    // private static $whiteListFilter = ['*'];
-
     // ==================== Casts ====================
 
     protected $casts = [
         'gender' => Genders::class,
     ];
 
-    // ==================== Accessors and Mutators ====================
-
-    // public function getGenderAttribute()
-    // {
-    //     return Genders::fromName($this->getAttribute('gender'));
-    // }
-
-    // protected function gender(): Attribute
-    // {
-    //     return Attribute::make(
-    //         get: fn () => Employee::find($this->id)->pluck('gender') === 'F' ? Genders::F : Genders::M,
-    //         set: fn ($value) => $value === Genders::F ? 'F' : 'M',
-    //     );
-    // }
-
+    /**
+     * @var array<int, string>
+     *
+     * @phpstan-ignore-next-line
+     */
+    private static $whiteListFilter = ['*'];
 
     // ==================== Relationships ====================
 
@@ -196,53 +172,6 @@ class Employee extends Model
     }
 
     // =========================
-
-    // /**
-    //  * @return BelongsToMany<Course>
-    //  */
-    // public function courses(): BelongsToMany
-    // {
-    //     return $this->belongsToMany(Course::class, 'bonds')->withPivot('id', 'course_id', 'employee_id', 'role_id', 'pole_id', /* 'classroom_id',*/ 'begin', 'end', 'terminated_at', 'volunteer', 'impediment', 'impediment_description', 'uaba_checked_at')->using(Bond::class)->as('bond')->withTimestamps();
-    // }
-
-    // /**
-    //  * @return bool
-    //  */
-    // public function hasBond(): bool
-    // {
-    //     return $this->bonds->count() > 0;
-    // }
-
-    // /**
-    //  * @param Builder<Employee> $query
-    //  * @param int $courseId
-    //  *
-    //  * @return Builder<Employee>
-    //  */
-    // public function scopeByCourse(Builder $query, ?int $courseId = null): Builder
-    // {
-    //     if ($courseId === null) {
-    //         return $query->join('bonds as bonds_A', 'bonds_A.employee_id', '=', 'employees.id')
-    //             ->join('courses as courses_A', 'courses_A.id', '=', 'bonds_A.course_id')
-    //             ->addSelect('courses_A.name as course_name');
-    //     }
-
-    //     return $query->join('bonds as bonds_A', 'bonds_A.employee_id', '=', 'employees.id')
-    //         ->join('courses as courses_A', 'courses_A.id', '=', 'bonds_A.course_id')
-    //         ->where('bonds_A.course_id', $courseId)
-    //         ->addSelect('courses_A.name as course_name');
-    // }
-
-    // /**
-    //  * @param Builder<Employee> $query
-    //  *
-    //  * @return Builder<Employee>
-    //  */
-    // public function scopeCoordinator(Builder $query): Builder
-    // {
-    //     return $query->where('employees.job', 'like', 'Coord%')
-    //         ->addSelect('employees.job as job');
-    // }
 
     public function getActivitylogOptions(): LogOptions
     {

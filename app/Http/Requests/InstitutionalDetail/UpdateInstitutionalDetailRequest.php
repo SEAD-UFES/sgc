@@ -4,9 +4,10 @@ namespace App\Http\Requests\InstitutionalDetail;
 
 use App\Models\Employee;
 use App\Models\InstitutionalDetail;
-use App\Services\Dto\UpdateInstitutionalDetailDto;
+use App\Services\Dto\InstitutionalDetailDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 class UpdateInstitutionalDetailRequest extends FormRequest
 {
@@ -23,7 +24,7 @@ class UpdateInstitutionalDetailRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, string>
+     * @return array<string, string|array<int, mixed>>
      */
     public function rules(): array
     {
@@ -37,14 +38,9 @@ class UpdateInstitutionalDetailRequest extends FormRequest
          */
         $institutionalDetail = $employee->institutionalDetail;
 
-        /**
-         * @var int $detailId
-         */
-        $detailId = $institutionalDetail->id;
-
         return [
-            'login' => 'nullable|string|unique:institutional_details,login,' . $detailId . ',id',
-            'email' => 'nullable|email|unique:institutional_details,email,' . $detailId . ',id',
+            'login' => ['required', 'string', Rule::unique('institutional_details', 'login')->ignore($institutionalDetail->employee_id, 'employee_id')],
+            'email' => ['required', 'email', Rule::unique('institutional_details', 'email')->ignore($institutionalDetail->employee_id, 'employee_id')],
         ];
     }
 
@@ -54,18 +50,20 @@ class UpdateInstitutionalDetailRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'login.required' => 'O Login Único é obrigatório',
             'login.string' => 'O Login Único deve ser texto',
             'login.unique' => 'O Login Único não pode repetir um previamente já cadastrado',
+            'email.required' => 'O email é obrigatório',
             'email.email' => 'O email deve ser válido',
             'email.unique' => 'O email não pode repetir um previamente já cadastrado',
         ];
     }
 
-    public function toDto(): UpdateInstitutionalDetailDto
+    public function toDto(): InstitutionalDetailDto
     {
-        return new UpdateInstitutionalDetailDto(
-            login: $this->validated('login') ?? '',
-            email: $this->validated('email') ?? '',
+        return new InstitutionalDetailDto(
+            login: strval($this->validated('login') ?? ''),
+            email: strval($this->validated('email') ?? ''),
         );
     }
 }

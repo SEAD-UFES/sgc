@@ -1,7 +1,8 @@
 <?php
 
-namespace App\ModelFilters;
+namespace App\Models\Filters;
 
+use App\Enums\CallStates;
 use App\Helpers\ModelFilterHelper;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -25,10 +26,10 @@ trait ApplicantFilter
         return ModelFilterHelper::contains($builder, 'area_code', $values);
     }
 
-    public function phoneContains(Builder $builder, $value)
+    public function landlineContains(Builder $builder, $value)
     {
         $values = ModelFilterHelper::inputToArray($value);
-        return ModelFilterHelper::contains($builder, 'phone', $values);
+        return ModelFilterHelper::contains($builder, 'landline', $values);
     }
 
     public function mobileContains(Builder $builder, $value)
@@ -37,16 +38,16 @@ trait ApplicantFilter
         return ModelFilterHelper::contains($builder, 'mobile', $values);
     }
 
-    public function hiring_processContains(Builder $builder, $value)
+    public function hiringprocessContains(Builder $builder, $value)
     {
         $values = ModelFilterHelper::inputToArray($value);
         return ModelFilterHelper::contains($builder, 'hiring_process', $values);
     }
 
-    public function applicantStateNameContains(Builder $builder, $value)
+    public function callStateLabelContains(Builder $builder, $value)
     {
         $values = ModelFilterHelper::inputToArray($value);
-        return ModelFilterHelper::relationContains($builder, 'applicantState', 'name', $values);
+        return ModelFilterHelper::enumLabelsContains($builder, CallStates::class, 'call_state', $values);
     }
 
     public function roleNameContains(Builder $builder, $value)

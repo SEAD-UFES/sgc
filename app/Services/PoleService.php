@@ -6,8 +6,7 @@ use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Helpers\TextHelper;
 use App\Models\Pole;
-use App\Services\Dto\StorePoleDto;
-use App\Services\Dto\UpdatePoleDto;
+use App\Services\Dto\PoleDto;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class PoleService
@@ -15,17 +14,17 @@ class PoleService
     /**
      * Undocumented function
      *
-     * @return LengthAwarePaginator
+     * @return LengthAwarePaginator<Pole>
      */
     public function list(): LengthAwarePaginator
     {
         ModelListed::dispatch(Pole::class);
 
-        $poles_query = new Pole();
-        $poles_query = $poles_query->AcceptRequest(Pole::$accepted_filters)->filter();
-        $poles_query = $poles_query->sortable(['name' => 'asc']);
+        $query = Pole::select('id', 'name', 'description');
+        $query = $query->AcceptRequest(Pole::$acceptedFilters)->filter();
+        $query = $query->sortable(['name' => 'asc']);
 
-        $poles = $poles_query->paginate(10);
+        $poles = $query->paginate(10);
         $poles->withQueryString();
 
         return $poles;
@@ -34,11 +33,11 @@ class PoleService
     /**
      * Undocumented function
      *
-     * @param StorePoleDto $storePoleDto
+     * @param PoleDto $storePoleDto
      *
      * @return Pole
      */
-    public function create(StorePoleDto $storePoleDto): Pole
+    public function create(PoleDto $storePoleDto): Pole
     {
         return Pole::create([
             'name' => TextHelper::titleCase($storePoleDto->name),
@@ -63,12 +62,12 @@ class PoleService
     /**
      * Undocumented function
      *
-     * @param UpdatePoleDto $updatePoleDto
+     * @param PoleDto $updatePoleDto
      * @param Pole $pole
      *
      * @return Pole
      */
-    public function update(UpdatePoleDto $updatePoleDto, Pole $pole): Pole
+    public function update(PoleDto $updatePoleDto, Pole $pole): Pole
     {
         $pole->update([
             'name' => TextHelper::titleCase($updatePoleDto->name),

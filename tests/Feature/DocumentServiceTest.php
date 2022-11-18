@@ -3,9 +3,11 @@
 namespace Tests\Feature;
 
 use App\Events\ModelListed;
+use App\Events\ModelRead;
 use App\Models\Bond;
 use App\Models\Document;
 use App\Models\DocumentType;
+use App\Models\User;
 use App\Repositories\DocumentRepository;
 use App\Repositories\RightsDocumentRepository;
 use App\Services\DocumentService;
@@ -40,34 +42,28 @@ class DocumentServiceTest extends TestCase
         Document::factory()->createOne(
             [
                 'file_name' => 'Document Alpha.pdf',
-                'documentable_id' => Document::factory()
-                    ->createOne([
-                        'bond_id' => Bond::factory()->createOne()->id,
-                    ])->id,
-                'documentable_type' => Document::class,
+                'related_id' => Bond::factory()->createOne()->getAttribute('id'),
+                'related_type' => Bond::class,
                 'document_type_id' => DocumentType::factory()
                     ->createOne(
                         [
                             'name' => 'Type One',
                         ]
-                    )->id,
+                    )->getAttribute('id'),
             ]
         );
 
         Document::factory()->createOne(
             [
                 'file_name' => 'Document Beta.pdf',
-                'documentable_id' => Document::factory()
-                    ->createOne([
-                        'bond_id' => Bond::factory()->createOne()->id,
-                    ])->id,
-                'documentable_type' => Document::class,
+                'related_id' => Bond::factory()->createOne()->getAttribute('id'),
+                'related_type' => Bond::class,
                 'document_type_id' => DocumentType::factory()
                     ->createOne(
                         [
                             'name' => 'Type Two',
                         ]
-                    )->id,
+                    )->getAttribute('id'),
             ]
         );
     }
@@ -79,7 +75,7 @@ class DocumentServiceTest extends TestCase
     {
         Event::fakeFor(function () {
             //execution
-            $documents = $this->service->list();
+            $documents = $this->service->list(null, null);
 
             //verifications
             Event::assertDispatched(ModelListed::class);
@@ -97,34 +93,26 @@ class DocumentServiceTest extends TestCase
         Document::factory()->createOne(
             [
                 'file_name' => 'Document Rights.pdf',
-                'documentable_id' => Document::factory()
-                    ->createOne([
-                        'bond_id' => Bond::factory()
-                            ->createOne(
-                                [
-                                    'uaba_checked_at' => now(),
-                                    'impediment' => false,
-                                ]
-                            )->id,
-                    ])->id,
-                'documentable_type' => Document::class,
+                'related_id' => Bond::factory()
+                    ->createOne()->getAttribute('id'),
+                'related_type' => Bond::class,
                 'document_type_id' => DocumentType::factory()
                     ->createOne(
                         [
                             'name' => 'Termo de cessão de direitos',
                         ]
-                    )->id,
+                    )->getAttribute('id'),
             ]
         );
 
         Event::fakeFor(function () {
             //execution
-            $documents = $this->rightsService->list();
+            $documents = $this->rightsService->list(null, null);
 
             //verifications
             Event::assertDispatched(ModelListed::class);
             $this->assertCount(1, $documents);
-            $this->assertContains('Document Rights.pdf', Document::whereHasMorph('documentable', Document::class)->pluck('file_name')->toArray());
+            $this->assertContains('Document Rights.pdf', Document::whereHasMorph('related', Bond::class)->pluck('file_name')->toArray());
         });
     }
 
@@ -134,21 +122,31 @@ class DocumentServiceTest extends TestCase
     public function documentShouldBeCreated(): void
     {
         //setting up scenario
-        $attributes['fileName'] = (string) 'Document Gama.pdf';
-        $attributes['fileData'] = (string) 'data:application/pdf;base64,';
-        $attributes['documentTypeId'] = (string) 1;
-        $attributes['referentId'] = (string) 1;
+        User::factory()->withoutEmployee()->create([
+            'login' => 'sgc_system',
+        ]);
 
-        $dto = new DocumentDto($attributes);
+        $dto = new DocumentDto(
+            fileName: 'Document Gama.pdf',
+            fileData: 'data:application/pdf;base64,',
+            documentTypeId: intval(DocumentType::factory()
+                ->createOne(
+                    [
+                        'name' => 'Tipo Gama',
+                    ]
+                )->getAttribute('id')),
+            relatedId: 1,
+        );
 
         Event::fakeFor(function () use ($dto) {
             //execution
             $this->service->create($dto);
 
+
             //verifications
             Event::assertDispatched('eloquent.created: ' . Document::class);
-            $this->assertContains('Document Gama.pdf', Document::whereHasMorph('documentable', Document::class)->pluck('file_name')->toArray());
-            $this->assertCount(3, Document::whereHasMorph('documentable', Document::class)->get());
+            $this->assertContains('Document Gama.pdf', Document::whereHasMorph('related', Bond::class)->pluck('file_name')->toArray());
+            $this->assertCount(3, Document::whereHasMorph('related', Bond::class)->get());
             $this->assertCount(3, Document::all());
         });
     }
@@ -156,7 +154,7 @@ class DocumentServiceTest extends TestCase
     /**
      * @test
      */
-    public function documentShouldBePreparedToDownload()
+    public function documentShouldBePreparedToDownload(): void
     {
         Event::fakeFor(function () {
             //execution
@@ -164,7 +162,7 @@ class DocumentServiceTest extends TestCase
 
             //verifications
             Event::assertDispatched(ModelRead::class);
-            $this->assertEquals('Document Employee Alpha.pdf', $document->get('name'));
+            $this->assertEquals('Document Alpha.pdf', $document->get('name'));
         });
     }
 }

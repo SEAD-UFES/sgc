@@ -37,7 +37,7 @@
                                 <th>@sortablelink('name', 'Nome')</th>
                                 <th>@sortablelink('description', 'Descrição')</th>
                                 <th>@sortablelink('grant_value', 'Valor da Bolsa')</th>
-                                <th>@sortablelink('grantType.name', 'Tipo da Bolsa')</th>
+                                <th>@sortablelink('grant_type', 'Tipo da Bolsa')</th>
                                 <th class="text-center">Ações</th>
                             </thead>
                             <tbody>

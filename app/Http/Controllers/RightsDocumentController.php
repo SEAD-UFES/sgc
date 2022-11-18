@@ -25,14 +25,14 @@ class RightsDocumentController extends Controller
         /**
          * @var string $sort
          */
-        $sort = $request->query('sort') ?? '';
+        $sort = $request->query('sort');
 
         /**
          * @var string $direction
          */
-        $direction = $request->query('direction') ?? '';
+        $direction = $request->query('direction');
 
-        $documents = $this->service->list(sort: $sort, direction: $direction);
+        $documents = $this->service->list(direction: $direction, sort: $sort);
 
         return view('reports.rightsIndex', compact('documents'));
     }

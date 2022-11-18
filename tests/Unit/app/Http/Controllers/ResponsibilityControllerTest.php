@@ -9,9 +9,11 @@ use App\Http\Requests\Responsibility\ShowResponsibilityRequest;
 use App\Http\Requests\Responsibility\StoreResponsibilityRequest;
 use App\Http\Requests\Responsibility\UpdateResponsibilityRequest;
 use App\Models\Responsibility;
+use App\Services\Dto\ResponsibilityDto;
 use App\Services\ResponsibilityService;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Carbon;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 
@@ -56,6 +58,14 @@ class ResponsibilityControllerTest extends TestCase
         // Create a stub for the StoreResponsibilityRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(StoreResponsibilityRequest::class);
+        $requestStub->expects($this->any())->method('toDto')
+            ->willReturn(new ResponsibilityDto(
+                userId: 1,
+                userTypeId: 1,
+                courseId: 1,
+                begin: Carbon::now(),
+                end: Carbon::now(),
+            ));
 
         // Expects the service's create method to be called once.
         $this->serviceMock->expects($this->once())->method('create');
@@ -84,6 +94,14 @@ class ResponsibilityControllerTest extends TestCase
         // Create a stub for the UpdateResponsibilityRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(UpdateResponsibilityRequest::class);
+        $requestStub->expects($this->any())->method('toDto')
+            ->willReturn(new ResponsibilityDto(
+                userId: 1,
+                userTypeId: 1,
+                courseId: 1,
+                begin: Carbon::now(),
+                end: Carbon::now(),
+            ));
 
         /** @var MockObject $ResponsibilityStub */
         $ResponsibilityStub = $this->createStub(Responsibility::class);

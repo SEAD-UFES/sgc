@@ -24,10 +24,10 @@
                                 [ 'label'=>'Nome', 'value'=>'nameContains', 'selected'=>true],
                                 [ 'label'=>'E-mail', 'value'=>'emailContains'],
                                 [ 'label'=>'Área', 'value'=>'areacodeContains'],
-                                [ 'label'=>'Telefone', 'value'=>'phoneContains'],
+                                [ 'label'=>'Telefone', 'value'=>'landlineContains'],
                                 [ 'label'=>'Celular', 'value'=>'mobileContains'],
-                                [ 'label'=>'Edital', 'value'=>'hiring_processContains'],
-                                [ 'label'=>'Situação', 'value'=>'applicantStateNameContains'],
+                                [ 'label'=>'Edital', 'value'=>'hiringprocessContains'],
+                                [ 'label'=>'Situação', 'value'=>'callStateLabelContains'],
                                 [ 'label'=>'Função', 'value'=>'roleNameContains'],
                                 [ 'label'=>'Curso', 'value'=>'courseNameContains'],
                                 [ 'label'=>'Polo', 'value'=>'poleNameContains'],
@@ -44,7 +44,7 @@
                                 <th>@sortablelink('landline', 'Telefone')</th>
                                 <th>@sortablelink('mobile', 'Celular')</th>
                                 <th>@sortablelink('hiring_process', 'Edital')</th>
-                                <th>@sortablelink('applicantState.name', 'Situação')</th>
+                                <th>@sortablelink('call_state', 'Situação')</th>
                                 <th>@sortablelink('role.name', 'Função')</th>
                                 <th>@sortablelink('course.name', 'Curso')</th>
                                 <th>@sortablelink('pole.name', 'Polo')</th>
@@ -105,7 +105,7 @@
                         </table>
                     </div>
                     <br />
-                    {!! $applicants->links() !!}
+                    {{ $applicants->links() }}
                     <a href="{{ route('home') }}" class="btn btn-secondary">Voltar para o Início</a>
                     @can('applicant-store')
                         <a href="{{ route('applicants.create') }}" class="btn btn-warning">Cadastrar novo Aprovado</a>

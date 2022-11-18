@@ -37,43 +37,51 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>@sortablelink('employee.cpf', 'CPF')</th>
-                                    <th>@sortablelink('employee.name', 'Colaborador')</th>
-                                    <th>@sortablelink('role.name', 'Função')</th>
-                                    <th>@sortablelink('course.name', 'Curso')</th>
-                                    <th>@sortablelink('pole.name', 'Polo')</th>
+                                    <th>@sortablelink('cpf', 'CPF')</th>
+                                    <th>@sortablelink('name', 'Colaborador')</th>
+                                    <th>@sortablelink('role', 'Função')</th>
+                                    <th>@sortablelink('course', 'Curso')</th>
+                                    <th>@sortablelink('pole', 'Polo')</th>
                                     <th>@sortablelink('volunteer', 'Voluntário') </th>
-                                    <th>@sortablelink('impediment', 'Impedido') </th>
+                                    <th>@sortablelink('impeded', 'Impedido') </th>
                                     <th class="text-center">Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($bonds as $bond)
+                                    @php
+                                        $impediments = $bond->impediments;
+                                        $lastReviewDate = null;
+                                        if ($impediments->count() > 0) {
+                                            $lastImpediment = $impediments->sortByDesc('updated_at')->first();
+                                            $lastReviewDate = $lastImpediment->closed_at ?? $lastImpediment->created_at;
+                                        }
+                                    @endphp
                                     <tr>
                                         <td>
-                                            {{  preg_replace('~(\d{3})(\d{3})(\d{3})(\d{2})~', '$1.$2.$3-$4', $bond->employee->cpf) }}
+                                            {{  preg_replace('~(\d{3})(\d{3})(\d{3})(\d{2})~', '$1.$2.$3-$4', $bond->employee_cpf) }}
                                         </td>
                                         <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
                                             data-bs-content="
                                                 <strong>Edital: </strong>{{ $bond->hiring_process }} |
                                                 <strong>Início: </strong>{{ \Carbon\Carbon::parse($bond->begin)->isoFormat('DD/MM/Y') }} | 
                                                 <strong>Encerrado: </strong>{{ isset($bond->terminated_at) ? \Carbon\Carbon::parse($bond->terminated_at)->isoFormat('DD/MM/Y') : '-' }} | 
-                                                <strong>Verificado: </strong>{{ isset($bond->impediments?->sortByDesc('updated_at')->first()->reviwer_checked_at) ? \Carbon\Carbon::parse($bond->impediments?->sortByDesc('updated_at')->first()->reviwer_checked_at)->isoFormat('DD/MM/Y') : '-' }}
+                                                <strong>Verificado: </strong>{{ isset($lastReviewDate) ? \Carbon\Carbon::parse($lastReviewDate)->isoFormat('DD/MM/Y') : '-' }}
                                             ">
-                                            {{ $bond->employee->name }}</td>
+                                            {{ $bond->employee_name }}</td>
                                         <td data-bs-html="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
                                             data-bs-content="
                                                 <strong>Edital: </strong>{{ $bond->hiring_process }} |
                                                 <strong>Início: </strong>{{ \Carbon\Carbon::parse($bond->begin)->isoFormat('DD/MM/Y') }} | 
                                                 <strong>Encerrado: </strong>{{ isset($bond->terminated_at) ? \Carbon\Carbon::parse($bond->terminated_at)->isoFormat('DD/MM/Y') : '-' }} | 
-                                                <strong>Verificado: </strong>{{ isset($bond->impediments?->sortByDesc('updated_at')->first()->reviwer_checked_at) ? \Carbon\Carbon::parse($bond->impediments?->sortByDesc('updated_at')->first()->reviwer_checked_at)->isoFormat('DD/MM/Y') : '-' }}
+                                                <strong>Verificado: </strong>{{ isset($lastReviewDate) ? \Carbon\Carbon::parse($lastReviewDate)->isoFormat('DD/MM/Y') : '-' }}
                                             ">
-                                            {{ $bond->role->name }}
+                                            {{ $bond->role_name }}
                                         </td>
-                                        <td>{{ $bond->course?->name ?? '-' }}</td>
-                                        <td>{{ $bond->pole?->name ?? '-' }}</td>
+                                        <td>{{ $bond->course_name ?? '-' }}</td>
+                                        <td>{{ $bond->pole_name ?? '-' }}</td>
                                         <td>{{ $bond->volunteer === 1 ? 'Sim' : 'Não' }}</td>
-                                        <td>{{ $bond->impediments->count() > 0 ? 'Sim' : 'Não' }}</td>
+                                        <td>{{ $bond->last_open_impediment_date == null ? 'Não' : 'Sim' }}</td>
                                         <td class="text-center"><div class="d-inline-flex">
                                             @can('bond-show')
                                                 <a href="{{ route('bonds.show', $bond) }}" data-bs-toggle="tooltip" title="Ver Vínculo" class="btn btn-primary btn-sm">

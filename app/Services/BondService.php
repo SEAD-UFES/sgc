@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Events\BondCreated;
 use App\Events\BondImpeded;
 use App\Events\BondReviewRequested;
+use App\Events\BondUpdated;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Events\RightsDocumentArchived;
@@ -12,6 +13,7 @@ use App\Helpers\TextHelper;
 use App\Interfaces\DocumentRepositoryInterface;
 use App\Models\Bond;
 use App\Models\DocumentType;
+use App\Models\Impediment;
 use App\Models\User;
 use App\Services\Dto\BondDto;
 use Carbon\Carbon;
@@ -36,14 +38,29 @@ class BondService
     {
         ModelListed::dispatch(Bond::class);
 
-        $query = Bond::with(['employee', 'courses', 'role', 'poles']);
-        $query = $query->AcceptRequest(Bond::$accepted_filters)->filter();
-        $query = $query->sortable(['updated_at' => 'desc']);
+        $lastOpenImpediments = Impediment::select(['impediments.bond_id', DB::raw('MAX(impediments.created_at) as created_at')])
+            ->where('impediments.closed_at', '=', null)
+            ->groupBy('impediments.bond_id');
 
-        $bonds = $query->paginate(10);
-        $bonds->withQueryString();
+        $query = Bond::with(['employee', 'courses', 'role', 'poles'])
+            ->select(['bonds.*', 'lastOpenImpediments.bond_id', 'lastOpenImpediments.created_at as last_open_impediment_date'])
+            ->leftJoinSub($lastOpenImpediments, 'lastOpenImpediments', function ($join) {
+                $join->on('bonds.id', '=', 'lastOpenImpediments.bond_id');
+            })
+            ->join('employees', 'bonds.employee_id', '=', 'employees.id')
+            ->join('roles', 'bonds.role_id', '=', 'roles.id')
+            ->leftJoin('bond_course', 'bonds.id', '=', 'bond_course.bond_id')
+            ->leftJoin('courses', 'bond_course.course_id', '=', 'courses.id')
+            ->leftJoin('bond_pole', 'bonds.id', '=', 'bond_pole.bond_id')
+            ->leftJoin('poles', 'bond_pole.pole_id', '=', 'poles.id')
+            ->addSelect(['employees.cpf as employee_cpf', 'employees.name as employee_name', 'roles.name as role_name', 'courses.name as course_name', 'poles.name as pole_name'])
 
-        return $bonds;
+            ->AcceptRequest(Bond::$acceptedFilters)->filter()
+            ->sortable()
+            ->orderByDesc('bonds.updated_at');
+
+        return $query->paginate(10)
+            ->withQueryString();
     }
 
     /**
@@ -51,12 +68,10 @@ class BondService
      *
      * @param BondDto $bondDto
      *
-     * @return mixed
+     * @return ?Bond
      */
-    public function create(BondDto $bondDto): mixed
+    public function create(BondDto $bondDto): ?Bond
     {
-        $bond = null;
-
         DB::transaction(static function () use ($bondDto, &$bond) {
             $bond = new Bond([
                 'employee_id' => $bondDto->employeeId,
@@ -68,24 +83,22 @@ class BondService
             ]);
             $bond->save();
 
-            if ($bondDto->courseId) {
-                $bond->courses()->attach($bondDto->courseId);
+            if (isset($bondDto->courseId)) {
+                $bond->courses()->sync([$bondDto->courseId]);
             }
 
-            if ($bondDto->poleId) {
-                $bond->poles()->attach($bondDto->poleId);
+            if (isset($bondDto->poleId)) {
+                $bond->poles()->sync([$bondDto->poleId]);
             }
 
             $bond->impediments()->create([
                 'description' => '[SGC: Vínculo ainda não revisado]',
                 'reviewer_id' => User::where('login', 'sgc_system')->first()?->id,
-                'reviewed_at' => Carbon::now(),
             ]);
 
             $bond->impediments()->create([
                 'description' => self::RIGHTS_IMPEDIMENT_DESCRIPTION,
                 'reviewer_id' => User::where('login', 'sgc_system')->first()?->id,
-                'reviewed_at' => Carbon::now(),
             ]);
 
             $bond->qualification()->create([
@@ -94,10 +107,13 @@ class BondService
                 'institution_name' => TextHelper::titleCase($bondDto->qualificationInstitution),
             ]);
 
-            // BondCreated::dispatch($bond);
-            // BondImpeded::dispatch($bond);
+            BondCreated::dispatch($bond);
+            BondImpeded::dispatch($bond);
+
+            return $bond;
         });
-        return $bond;
+
+        return null;
     }
 
     /**
@@ -143,27 +159,13 @@ class BondService
             ]);
 
             if (isset($bondDto->courseId)) {
-                if ($bond->courses->count() > 0) {
-                    $bond->courses->first()?->update([
-                        'course_id' => $bondDto->courseId,
-                    ]);
-                }
-                else {
-                    $bond->courses()->attach($bondDto->courseId);
-                }
+                $bond->courses()->sync([$bondDto->courseId]);
             } else {
                 $bond->courses()->detach();
             }
 
-            if ($bondDto->poleId) {
-                if ($bond->poles->count() > 0) {
-                    $bond->poles->first()?->update([
-                        'pole_id' => $bondDto->poleId,
-                    ]);
-                }
-                else {
-                    $bond->poles()->attach($bondDto->poleId);
-                }
+            if (isset($bondDto->poleId)) {
+                $bond->poles()->sync([$bondDto->poleId]);
             } else {
                 $bond->poles()->detach();
             }
@@ -171,18 +173,22 @@ class BondService
             $bond->impediments()->create([
                 'description' => '[SGC: Vínculo atualizado e ainda não revisado]',
                 'reviewer_id' => User::where('login', 'sgc_system')->first()?->id,
-                'reviewed_at' => Carbon::now(),
             ]);
-            BondImpeded::dispatch($bond);
-
-            self::bondCheckRights($bond);
 
             if ($bondDto->qualificationKnowledgeArea !== null) {
-                $bond->qualification()->updateOrCreate([
-                    'knowledge_area' => $bondDto->qualificationKnowledgeArea,
-                    'course_name' => TextHelper::titleCase($bondDto->qualificationCourse),
-                    'institution_name' => TextHelper::titleCase($bondDto->qualificationInstitution),
-                ]);
+                $bond->qualification()->updateOrCreate(
+                    ['bond_id' => $bond->id],
+                    [
+                        'knowledge_area' => $bondDto->qualificationKnowledgeArea,
+                        'course_name' => TextHelper::titleCase($bondDto->qualificationCourse),
+                        'institution_name' => TextHelper::titleCase($bondDto->qualificationInstitution),
+                    ]
+                );
+
+                BondUpdated::dispatch($bond);
+                BondImpeded::dispatch($bond);
+
+                self::bondCheckRights($bond);
             }
         });
 
@@ -212,32 +218,8 @@ class BondService
         });
     }
 
-    // /**
-    //  * Undocumented function
-    //  *
-    //  * @param ReviewBondDto $reviewBondDto
-    //  * @param Bond $bond
-    //  *
-    //  * @return Bond
-    //  */
-    // public function review(ReviewBondDto $reviewBondDto, Bond $bond): Bond
-    // {
-
-    //     $bond->update([
-    //         'impediment' => $impediment,
-    //         'impediment_description' => $impediment_description,
-    //         'uaba_checked_at' => now(),
-    //     ]);
-
-    //     if ($bond->impediment === true) {
-    //         BondImpeded::dispatch($bond);
-    //     } else {
-    //         BondLiberated::dispatch($bond);
-    //         RightsDocumentArchived::dispatch($bond);
-    //     }
-
-    //     return $bond;
-    // }
+    // BondLiberated::dispatch($bond);
+    // RightsDocumentArchived::dispatch($bond);
 
     /**
      * Undocumented function
@@ -252,6 +234,44 @@ class BondService
         BondReviewRequested::dispatch($bond);
 
         return $bond;
+    }
+
+    /**
+     * @param Bond $bond
+     *
+     * @return bool
+     */
+    public static function bondHaveRights(Bond $bond): bool
+    {
+        $typeId = DocumentType::where('name', 'Termo de cessão de direitos')->first()?->id;
+
+        if ($bond->documents->where('document_type_id', $typeId)->count() > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function bondCheckRights(Bond $bond): void
+    {
+        $bondHaveRights = self::bondHaveRights($bond);
+
+        $bondAlreadyImpededForRights = $bond->impediments->contains('description', self::RIGHTS_IMPEDIMENT_DESCRIPTION);
+
+        if ($bondHaveRights && $bondAlreadyImpededForRights) {
+            $bond->impediments()->where('description', self::RIGHTS_IMPEDIMENT_DESCRIPTION)->update([
+                'closed_by_id' => User::where('login', 'sgc_system')->first()?->id,
+                'closed_at' => Carbon::now(),
+            ]);
+            RightsDocumentArchived::dispatch($bond);
+        }
+
+        if (! $bondHaveRights && ! $bondAlreadyImpededForRights) {
+            $bond->impediments()->create([
+                'description' => self::RIGHTS_IMPEDIMENT_DESCRIPTION,
+                'reviewer_id' => User::where('login', 'sgc_system')->first()?->id,
+            ]);
+        }
     }
 
     /**
@@ -291,44 +311,5 @@ class BondService
             'updatedBy' => $updatedBy,
             'updatedOn' => $updatedOn,
         ];
-    }
-
-    /**
-     * @param Bond $bond
-     *
-     * @return bool
-     */
-    public static function bondHaveRights(Bond $bond): bool
-    {
-        $typeId = DocumentType::where('name', 'Termo de cessão de direitos')->first()?->id;
-
-        if ($bond->documents->where('document_type_id', $typeId)->count() > 0) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public static function bondCheckRights(Bond $bond): void
-    {
-        $bondHaveRights = self::bondHaveRights($bond);
-
-        $bondAlreadyImpededForRights = $bond->impediments->contains('description', self::RIGHTS_IMPEDIMENT_DESCRIPTION);
-
-        if ($bondHaveRights && $bondAlreadyImpededForRights) {
-            $bond->impediments()->where('description', self::RIGHTS_IMPEDIMENT_DESCRIPTION)->update([
-                'closed_by_id' => User::where('login', 'sgc_system')->first()?->id,
-                'closed_at' => Carbon::now(),
-            ]);
-            RightsDocumentArchived::dispatch($bond);
-        }
-
-        if (!$bondHaveRights && !$bondAlreadyImpededForRights) {
-            $bond->impediments()->create([
-                'description' => self::RIGHTS_IMPEDIMENT_DESCRIPTION,
-                'reviewer_id' => User::where('login', 'sgc_system')->first()?->id,
-                'reviewed_at' => Carbon::now(),
-            ]);
-        }
     }
 }

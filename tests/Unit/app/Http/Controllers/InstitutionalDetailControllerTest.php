@@ -7,6 +7,7 @@ use App\Http\Requests\InstitutionalDetail\StoreInstitutionalDetailRequest;
 use App\Http\Requests\InstitutionalDetail\UpdateInstitutionalDetailRequest;
 use App\Models\Employee;
 use App\Models\InstitutionalDetail;
+use App\Services\Dto\InstitutionalDetailDto;
 use App\Services\InstitutionalDetailService;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -37,6 +38,11 @@ class InstitutionalDetailControllerTest extends TestCase
         // Create a stub for the StoreInstitutionalDetailRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(StoreInstitutionalDetailRequest::class);
+        $requestStub->expects($this->any())->method('toDto')
+            ->willReturn(new InstitutionalDetailDto(
+                login: '',
+                email: '',
+            ));
 
         // Expects the service's create method to be called once.
         $this->serviceMock->expects($this->once())->method('create');
@@ -53,6 +59,11 @@ class InstitutionalDetailControllerTest extends TestCase
         // Create a stub for the UpdateInstitutionalDetailRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(UpdateInstitutionalDetailRequest::class);
+        $requestStub->expects($this->any())->method('toDto')
+            ->willReturn(new InstitutionalDetailDto(
+                login: '',
+                email: '',
+            ));
 
         // Expects the service's changeState method to be called once.
         $this->serviceMock->expects($this->once())->method('update');

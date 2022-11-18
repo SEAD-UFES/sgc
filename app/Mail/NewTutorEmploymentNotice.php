@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\Employee;
 use App\Models\InstitutionalDetail;
 use App\Models\Pole;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -15,7 +16,7 @@ class NewTutorEmploymentNotice extends Mailable
 {
     use Queueable;
     use SerializesModels;
-    private ?Employee $sender;
+    private ?User $sender;
 
     private Bond $employeeBond;
 
@@ -24,7 +25,7 @@ class NewTutorEmploymentNotice extends Mailable
      *
      * @return void
      */
-    public function __construct(?Employee $sender, Bond $employeeBond)
+    public function __construct(?User $sender, Bond $employeeBond)
     {
         $this->sender = $sender;
         $this->employeeBond = $employeeBond;
@@ -40,17 +41,12 @@ class NewTutorEmploymentNotice extends Mailable
         /**
          * @var string $senderName
          */
-        $senderName = $this->sender?->name;
-
-        /**
-         * @var InstitutionalDetail $senderInstitutionalDetail
-         */
-        $senderInstitutionalDetail = $this->sender?->institutionalDetail;
+        $senderName = $this->sender?->employee->name ?? $this->sender?->login;
 
         /**
          * @var string $senderInstitutionalEmail
          */
-        $senderInstitutionalEmail = is_null($senderInstitutionalDetail) ? 'secretaria.sead@ufes.br' : $senderInstitutionalDetail->email;
+        $senderInstitutionalEmail = ($this->sender?->employee->email ?? $this->sender?->login) ?? 'secretaria.sead@ufes.br';
 
         /**
          * @var Employee $employee
@@ -60,7 +56,7 @@ class NewTutorEmploymentNotice extends Mailable
         /**
          * @var string $employeeGender
          */
-        $employeeGender = $employee->gender?->value;
+        $employeeGender = $employee->gender?->name;
 
         /**
          * @var string $employeeName
@@ -68,14 +64,14 @@ class NewTutorEmploymentNotice extends Mailable
         $employeeName = $employee->name;
 
         /**
-         * @var Pole $pole
+         * @var ?Pole $pole
          */
         $pole = $this->employeeBond->pole;
 
         /**
-         * @var string $poleName
+         * @var ?string $poleName
          */
-        $poleName = $pole->name;
+        $poleName = $pole?->name;
 
         /**
          * @var InstitutionalDetail $institutionalDetail
@@ -103,24 +99,32 @@ class NewTutorEmploymentNotice extends Mailable
         $employeeInstitutionEmail = $institutionalDetail->email;
 
         /**
-         * @var Course $course
+         * @var ?Course $course
          */
         $course = $this->employeeBond->course;
 
         /**
-         * @var string $courseName
+         * @var ?string $courseName
          */
-        $courseName = $course->name;
+        $courseName = $course?->name;
 
+        $phone1 = $employee->phones()
+            ->select(['area_code', 'number'])
+            ->where('type', 'Fixo')
+            ->orderByDesc('id')->first();
         /**
-         * @var string $employeePhone
+         * @var ?string $employeePhone
          */
-        $employeePhone = $employee->phone;
+        $employeePhone = $phone1?->area_code . $phone1?->number;
 
+        $phone2 = $employee->phones()
+            ->select(['area_code', 'number'])
+            ->where('type', 'Celular')
+            ->orderByDesc('id')->first();
         /**
-         * @var string $employeeMobile
+         * @var ?string $employeeMobile
          */
-        $employeeMobile = $employee->mobile;
+        $employeeMobile = $phone2?->area_code . $phone2?->number;
 
         return $this->subject('Vinculação de Novo Tutor')->from('secretaria.sead@ufes.br', 'Sead - Secretaria Acadêmica')->replyTo('secretaria.sead@ufes.br')->markdown('emails.employeeRegistration.new-tutor-employment-notice')
             ->with([

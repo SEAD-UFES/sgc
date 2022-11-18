@@ -18,7 +18,7 @@ class PoleIndexComposer
     public function compose(View $view): void
     {
         $view->with([
-            'filters' => ModelFilterHelper::buildFilters(request(), Pole::$accepted_filters),
+            'filters' => ModelFilterHelper::buildFilters(request(), Pole::$acceptedFilters),
         ]);
     }
 }

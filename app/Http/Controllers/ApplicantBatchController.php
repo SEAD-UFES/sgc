@@ -43,7 +43,7 @@ class ApplicantBatchController extends Controller
              * @var UploadedFile $uploadeFile
              */
             $uploadeFile = $request->file('file');
-            $importedApplicants = $this->fileService->importApplicantsFromFile($uploadeFile);
+            $importedApplicants = $this->fileService->readSourceSpreadsheet($uploadeFile);
 
             session(['importedApplicants' => $importedApplicants]);
         } catch (\Exception $e) {

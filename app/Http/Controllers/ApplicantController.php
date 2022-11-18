@@ -30,8 +30,16 @@ class ApplicantController extends Controller
         $applicants = $this->service->list();
 
         foreach ($applicants as $applicant) {
-            $applicant->landline = preg_replace('~(\d{2})[^\d]{0,7}(\d{4})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $applicant->landline);
-            $applicant->mobile = preg_replace('~(\d{2})[^\d]{0,7}(\d{5})[^\d]{0,7}(\d{4})~', '($1) $2-$3', $applicant->mobile);
+            $applicant->landline = preg_replace(
+                '~(\d{2})[^\d]{0,7}(\d{4})[^\d]{0,7}(\d{4})~',
+                '($1) $2-$3',
+                ($applicant->landline ?? '')
+            );
+            $applicant->mobile = preg_replace(
+                '~(\d{2})[^\d]{0,7}(\d{5})[^\d]{0,7}(\d{4})~',
+                '($1) $2-$3',
+                ($applicant->mobile ?? '')
+            ) ?? '';
         }
 
         return view('applicant.index', compact('applicants'))->with('i', (request()->input('page', 1) - 1) * 10);
@@ -58,6 +66,7 @@ class ApplicantController extends Controller
      */
     public function store(StoreApplicantRequest $request)
     {
+        //dd($request);
         try {
             $this->service->create($request->toDto());
         } catch (\Exception $e) {

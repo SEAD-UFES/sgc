@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\GrantTypes;
 use App\Models\Role;
 use App\Models\GrantType;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -29,7 +30,7 @@ class RoleFactory extends Factory
           'name' => $this->faker->word(),
           'description' => $description,
           'grant_value' => $this->faker->numberBetween(50000, 350000),
-          'grant_type_id' => GrantType::factory(),
+          'grant_type' => GrantTypes::cases()[array_rand(GrantTypes::cases())],
           'created_at' => now(),
           'updated_at' => now(),
         ];

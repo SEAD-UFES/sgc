@@ -6,8 +6,7 @@ use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Employee;
 use App\Models\User;
-use App\Services\Dto\StoreUserDto;
-use App\Services\Dto\UpdateUserDto;
+use App\Services\Dto\UserDto;
 use App\Services\UserService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -25,7 +24,7 @@ class UserServiceTest extends TestCase
 
         User::factory()->create(
             [
-                'email' => 'johndoe@test1.com',
+                'login' => 'johndoe@test1.com',
                 'password' => Hash::make('password1'),
                 'active' => true,
             ]
@@ -33,7 +32,7 @@ class UserServiceTest extends TestCase
 
         User::factory()->create(
             [
-                'email' => 'janedoe@test2.com',
+                'login' => 'janedoe@test2.com',
                 'password' => Hash::make('password2'),
             ]
         );
@@ -52,8 +51,8 @@ class UserServiceTest extends TestCase
 
             //verifications
             Event::assertDispatched(ModelListed::class);
-            $this->assertContains('johndoe@test1.com', $users->pluck('email')->toArray());
-            $this->assertContains('janedoe@test2.com', $users->pluck('email')->toArray());
+            $this->assertContains('johndoe@test1.com', $users->pluck('login')->toArray());
+            $this->assertContains('janedoe@test2.com', $users->pluck('login')->toArray());
             $this->assertCount(2, $users);
         });
     }
@@ -72,7 +71,7 @@ class UserServiceTest extends TestCase
 
             //verifications
             Event::assertDispatched(ModelRead::class);
-            $this->assertEquals('johndoe@test1.com', $user->email);
+            $this->assertEquals('johndoe@test1.com', $user->login);
             $this->assertCount(2, User::all());
         });
     }
@@ -85,11 +84,12 @@ class UserServiceTest extends TestCase
         //setting up scenario
         $attributes = [];
 
-        $attributes['email'] = 'bobdoe@test3.com';
+        $attributes['login'] = 'bobdoe@test3.com';
         $attributes['password'] = 'password3';
         $attributes['active'] = true;
+        $attributes['employeeId'] = null;
 
-        $dto = new StoreUserDto($attributes);
+        $dto = new UserDto(...$attributes);
 
         Event::fakeFor(function () use ($dto) {
             //execution
@@ -97,7 +97,7 @@ class UserServiceTest extends TestCase
 
             //verifications
             Event::assertDispatched('eloquent.creating: ' . User::class);
-            $this->assertEquals('bobdoe@test3.com', User::find(3)->email);
+            $this->assertEquals('bobdoe@test3.com', User::find(3)->login);
             $this->assertCount(3, User::all());
         });
     }
@@ -113,11 +113,12 @@ class UserServiceTest extends TestCase
 
         $attributes = [];
 
-        $attributes['email'] = 'marydoe@test4.com';
+        $attributes['login'] = 'marydoe@test4.com';
         $attributes['password'] = 'password4';
         $attributes['active'] = false;
+        $attributes['employeeId'] = null;
 
-        $dto = new UpdateUserDto($attributes);
+        $dto = new UserDto(...$attributes);
 
         Event::fakeFor(function () use ($user, $dto) {
             //execution
@@ -125,7 +126,7 @@ class UserServiceTest extends TestCase
 
             //verifications
             Event::assertDispatched('eloquent.updating: ' . User::class);
-            $this->assertEquals('marydoe@test4.com', User::find(1)->email);
+            $this->assertEquals('marydoe@test4.com', User::find(1)->login);
             $this->assertTrue(Hash::check('password4', User::find(1)->password));
             $this->assertEquals(0, User::find(1)->active);
             $this->assertCount(2, User::all());
@@ -143,11 +144,12 @@ class UserServiceTest extends TestCase
 
         $attributes = [];
 
-        $attributes['email'] = 'billdoe@test5.com';
+        $attributes['login'] = 'billdoe@test5.com';
         $attributes['password'] = '';
         $attributes['active'] = true;
+        $attributes['employeeId'] = null;
 
-        $dto = new UpdateUserDto($attributes);
+        $dto = new UserDto(...$attributes);
 
         Event::fakeFor(function () use ($user, $dto) {
             //execution
@@ -156,7 +158,7 @@ class UserServiceTest extends TestCase
 
             //verifications
             Event::assertDispatched('eloquent.updating: ' . User::class);
-            $this->assertEquals('billdoe@test5.com', User::find(1)->email);
+            $this->assertEquals('billdoe@test5.com', User::find(1)->login);
             $this->assertTrue(Hash::check('password1', User::find(1)->password));
             $this->assertEquals(true, User::find(1)->active);
             $this->assertCount(2, User::all());
@@ -172,7 +174,7 @@ class UserServiceTest extends TestCase
         /**
          * @var User $user
          */
-        $user = User::factory()->createOne(['email' => 'marydoe@test4.com', 'employee_id' => null]);
+        $user = User::factory()->createOne(['login' => 'marydoe@test4.com', 'employee_id' => null]);
         /**
          * @var Employee $employee
          */
@@ -180,12 +182,12 @@ class UserServiceTest extends TestCase
 
         $attributes = [];
 
-        $attributes['email'] = 'userShouldHaveEmployeeAtached@test4.com';
+        $attributes['login'] = 'userShouldHaveEmployeeAtached@test4.com';
         $attributes['employeeId'] = Employee::orderBy('id', 'desc')->first()->id;
         $attributes['password'] = '';
         $attributes['active'] = true;
 
-        $dto = new UpdateUserDto($attributes);
+        $dto = new UserDto(...$attributes);
 
         Event::fakeFor(function () use ($user, $attributes, $dto) {
             //execution
@@ -213,7 +215,7 @@ class UserServiceTest extends TestCase
 
             //verifications
             Event::assertDispatched('eloquent.deleting: ' . User::class);
-            $this->assertEquals('janedoe@test2.com', $this->service->list()->first()->email);
+            $this->assertEquals('janedoe@test2.com', $this->service->list()->first()->login);
             $this->assertCount(1, User::all());
         });
     }

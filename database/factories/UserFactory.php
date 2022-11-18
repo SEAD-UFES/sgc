@@ -29,13 +29,13 @@ class UserFactory extends Factory
     {
         return [
             // 'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
-            'email_verified_at' => now(),
+            'login' => $this->faker->unique()->safeEmail(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'active' => true,
+            'email_verified_at' => now(),
+            'employee_id' => Employee::factory(),
             'remember_token' => Str::random(10),
             //'user_type_id' => UserType::factory(),
-            'employee_id' => Employee::factory(),
-            'active' => true,
             'created_at' => now(),
             'updated_at' => now(),
         ];
@@ -51,6 +51,20 @@ class UserFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'email_verified_at' => null,
+            ];
+        });
+    }
+
+    /**
+     * Indicate that the model's employee_id should be null.
+     *
+     * @return static
+     */
+    public function withoutEmployee()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'employee_id' => null,
             ];
         });
     }

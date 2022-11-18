@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
-// use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BondCourse extends Model
 {
+    /**
+     * @var bool
+     */
+    public $incrementing = false;
     /**
      * @var string
      */
@@ -17,11 +20,6 @@ class BondCourse extends Model
      * @var string
      */
     protected $primaryKey = 'bond_id';
-
-    /**
-     * @var bool
-     */
-    public $incrementing = false;
 
     /**
      * @var array<int, string>

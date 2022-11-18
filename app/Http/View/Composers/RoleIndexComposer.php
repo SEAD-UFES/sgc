@@ -18,7 +18,7 @@ class RoleIndexComposer
     public function compose(View $view): void
     {
         $view->with([
-            'filters' => ModelFilterHelper::buildFilters(request(), Role::$accepted_filters),
+            'filters' => ModelFilterHelper::buildFilters(request(), Role::$acceptedFilters),
         ]);
     }
 }

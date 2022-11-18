@@ -36,10 +36,10 @@
                             <thead>
                                 <th>@sortablelink('cpf', 'CPF')</th>
                                 <th>@sortablelink('name', 'Nome')</th>
-                                <th>@sortablelink('job', 'Profissão')</th>
-                                <th>@sortablelink('address_city', 'Cidade')</th>
+                                <th>@sortablelink('personalDetail.job', 'Profissão')</th>
+                                <th>@sortablelink('address.city', 'Cidade')</th>
                                 @can('isAdm-global')
-                                    <th>@sortablelink('user.email', 'Usuário')</th>
+                                    <th>@sortablelink('user.login', 'Usuário')</th>
                                 @endcan
                                 <th class="text-center">Ações</th>
                             </thead>
@@ -81,7 +81,7 @@
                                                     @method('DELETE')
                                                     @csrf
                                                     <button type="button" data-bs-toggle="tooltip" title="Excluir colaborador" 
-                                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Colaborador e todos os seus documentos, vínculos e documentos de vínculos?\')) document.forms[\'formDelete' . $employee->id . '\'].submit();' }}" 
+                                                        onclick="{{ 'if(confirm(\'Tem certeza que deseja excluir esse Colaborador e todos os seus Vínculos e documentos de vínculos?\')) document.forms[\'formDelete' . $employee->id . '\'].submit();' }}" 
                                                         class="btn btn-danger btn-sm">
                                                         <i class="bi-trash-fill"></i>
                                                     </button>
@@ -94,7 +94,7 @@
                         </table>
                     </div>
                     <br />
-                    {!! $employees->links() !!}
+                    {{ $employees->links() }}
                     <a href="{{ route('home') }}" class="btn btn-secondary">Voltar para o Início</a>
                     @can('employee-store')
                         <a href="{{ route('employees.create') }}" class="btn btn-warning">Cadastrar novo Colaborador</a>

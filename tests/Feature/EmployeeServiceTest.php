@@ -2,17 +2,19 @@
 
 namespace Tests\Feature;
 
+use App\Enums\Genders;
+use App\Enums\MaritalStatuses;
+use App\Enums\States;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
-use App\Models\Bond;
-use App\Models\Document;
+use App\Models\DocumentType;
 use App\Models\Employee;
 use App\Models\User;
-use App\Services\Dto\EmployeeDto;
 use App\Services\Dto\EmployeeDto;
 use App\Services\EmployeeService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
@@ -34,7 +36,7 @@ class EmployeeServiceTest extends TestCase
         Employee::factory()->create(
             [
                 'name' => 'John Doe',
-                'cpf' => '11111111111',
+                'cpf' => random_int(11111111111, 99999999999),
                 'email' => 'jonhdoe@test1.com',
             ]
         );
@@ -42,7 +44,7 @@ class EmployeeServiceTest extends TestCase
         Employee::factory()->create(
             [
                 'name' => 'Jane Doe',
-                'cpf' => '22222222222',
+                'cpf' => random_int(11111111111, 99999999999),
                 'email' => 'janedoe@test2.com',
             ]
         );
@@ -73,6 +75,7 @@ class EmployeeServiceTest extends TestCase
     public function employeeShouldBeRetrieved(): void
     {
         //setting up scenario
+        /** @var Employee $employee */
         $employee = Employee::find(1);
 
         Event::fakeFor(function () use ($employee) {
@@ -95,30 +98,36 @@ class EmployeeServiceTest extends TestCase
         $attributes = [];
 
         $attributes['name'] = 'Mary Doe';
-        $attributes['cpf'] = '33333333333';
+        $attributes['cpf'] = random_int(11111111111, 99999999999); // 000.000.000-00
         $attributes['job'] = '';
-        $attributes['birth_date'] = '';
+        $attributes['gender'] = Genders::F;
+        $attributes['birthDate'] = new Carbon($this->faker->date());
+        $attributes['birthState'] = States::cases()[array_rand(States::cases())];
         $attributes['birthCity'] = '';
-        $attributes['idNumber'] = '';
-        $attributes['idIssueDate'] = '';
-        $attributes['idIssueAgency'] = '';
+        $attributes['maritalStatus'] = MaritalStatuses::cases()[array_rand(MaritalStatuses::cases())];
+        $attributes['identityNumber'] = random_int(11111111111, 99999999999);
+        $attributes['identityIssueDate'] = new Carbon($this->faker->date());
+        $attributes['identityIssuer'] = $this->faker->company;
+        $attributes['issuerState'] = States::cases()[array_rand(States::cases())];
         $attributes['spouseName'] = '';
         $attributes['fatherName'] = '';
         $attributes['motherName'] = '';
+        $attributes['documentTypeId'] = DocumentType::factory()->create()->getAttribute('id');
         $attributes['addressStreet'] = '';
         $attributes['addressComplement'] = '';
         $attributes['addressNumber'] = '';
         $attributes['addressDistrict'] = '';
-        $attributes['addressPostalCode'] = '';
+        $attributes['addressZipCode'] = '';
         $attributes['addressCity'] = '';
+        $attributes['addressState'] = States::cases()[array_rand(States::cases())];
         $attributes['areaCode'] = '';
-        $attributes['phone'] = '';
+        $attributes['landline'] = '';
         $attributes['mobile'] = '';
         $attributes['email'] = 'marydoe@test3.com';
 
         $attributes = array_merge($attributes, $this->getBankAccountAttributes());
 
-        $dto = new EmployeeDto($attributes);
+        $dto = new EmployeeDto(...$attributes);
 
         Event::fakeFor(function () use ($dto) {
             //execution
@@ -137,35 +146,41 @@ class EmployeeServiceTest extends TestCase
     public function employeeShouldBeUpdated(): void
     {
         //setting up scenario
-
+        /** @var Employee $employee */
         $employee = Employee::find(1);
 
         $attributes = [];
         $attributes['name'] = 'Bob Doe';
-        $attributes['cpf'] = '44444444444';
+        $attributes['cpf'] = random_int(11111111111, 99999999999);
         $attributes['job'] = '';
-        $attributes['birth_date'] = '';
+        $attributes['gender'] = Genders::M;
+        $attributes['birthDate'] = new Carbon($this->faker->date());
+        $attributes['birthState'] = States::cases()[array_rand(States::cases())];
         $attributes['birthCity'] = '';
-        $attributes['idNumber'] = '';
-        $attributes['idIssueDate'] = '';
-        $attributes['idIssueAgency'] = '';
+        $attributes['maritalStatus'] = MaritalStatuses::cases()[array_rand(MaritalStatuses::cases())];
+        $attributes['identityNumber'] = random_int(11111111111, 99999999999);
+        $attributes['identityIssueDate'] = new Carbon($this->faker->date());
+        $attributes['identityIssuer'] = $this->faker->company;
+        $attributes['issuerState'] = States::cases()[array_rand(States::cases())];
         $attributes['spouseName'] = '';
         $attributes['fatherName'] = '';
         $attributes['motherName'] = '';
+        $attributes['documentTypeId'] = DocumentType::factory()->create()->getAttribute('id');
         $attributes['addressStreet'] = '';
         $attributes['addressComplement'] = '';
         $attributes['addressNumber'] = '';
         $attributes['addressDistrict'] = '';
-        $attributes['addressPostalCode'] = '';
+        $attributes['addressZipCode'] = '';
+        $attributes['addressState'] = States::cases()[array_rand(States::cases())];
         $attributes['addressCity'] = '';
         $attributes['areaCode'] = '';
-        $attributes['phone'] = '';
+        $attributes['landline'] = '';
         $attributes['mobile'] = '';
         $attributes['email'] = 'bobdoe@test4.com';
         
         $attributes = array_merge($attributes, $this->getBankAccountAttributes());
 
-        $dto = new EmployeeDto($attributes);
+        $dto = new EmployeeDto(...$attributes);
 
         Event::fakeFor(function () use ($employee, $dto) {
             //execution
@@ -185,6 +200,7 @@ class EmployeeServiceTest extends TestCase
     public function employeeShouldBeDeleted(): void
     {
         //setting up scenario
+        /** @var Employee $employee */
         $employee = Employee::find(1);
 
         Event::fakeFor(function () use ($employee) {
@@ -193,7 +209,7 @@ class EmployeeServiceTest extends TestCase
 
             //verifications
             Event::assertDispatched('eloquent.deleted: ' . Employee::class);
-            $this->assertEquals('Jane Doe', $this->service->list()->first()->name);
+            $this->assertEquals('Jane Doe', $this->service->list()->first()?->name);
             $this->assertCount(1, Employee::all());
         });
     }
@@ -204,9 +220,10 @@ class EmployeeServiceTest extends TestCase
     public function employeeWithUserShouldBeDeleted(): void
     {
         //setting up scenario
+        /** @var Employee $employee */
         $employee = Employee::find(1);
 
-        $user = User::factory()->createOne(['email' => 'marydoe@test3.com', 'employee_id' => null]);
+        $user = User::factory()->createOne(['login' => 'marydoe@test3.com', 'employee_id' => null]);
         $user->employee_id = $employee?->id;
         $user->save();
 
@@ -218,38 +235,8 @@ class EmployeeServiceTest extends TestCase
 
             //verifications
             Event::assertDispatched('eloquent.deleted: ' . Employee::class);
-            $this->assertEquals('Jane Doe', $this->service->list()->first()->name);
+            $this->assertEquals('Jane Doe', $this->service->list()->first()?->name);
             $this->assertNull(User::find(1)?->employee_id);
-            $this->assertCount(1, Employee::all());
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function employeeWithDocumentsShouldBeDeleted(): void
-    {
-        //setting up scenario
-        $employee = Employee::find(1);
-
-        /**
-         * @var Bond $bond
-         */
-        $bond = Bond::factory()->createOne([
-            'employee_id' => $employee?->id,
-        ]);
-
-        Document::factory()->createOne([
-            'bond_id' => $bond->id,
-        ]);
-
-        Event::fakeFor(function () use ($employee) {
-            //execution
-            $this->service->delete($employee);
-
-            //verifications
-            Event::assertDispatched('eloquent.deleted: ' . Employee::class);
-            $this->assertEquals('Jane Doe', $this->service->list()->first()->name);
             $this->assertCount(1, Employee::all());
         });
     }

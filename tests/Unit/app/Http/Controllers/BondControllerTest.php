@@ -2,6 +2,7 @@
 
 namespace tests\Unit\app\Http\Controllers;
 
+use App\Enums\KnowledgeAreas;
 use App\Http\Controllers\BondController;
 use App\Http\Requests\Bond\DestroyBondRequest;
 use App\Http\Requests\Bond\IndexBondRequest;
@@ -10,14 +11,18 @@ use App\Http\Requests\Bond\StoreBondRequest;
 use App\Http\Requests\Bond\UpdateBondRequest;
 use App\Models\Bond;
 use App\Services\BondService;
+use App\Services\Dto\BondDto;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Carbon;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 
 class BondControllerTest extends TestCase
 {
     use WithoutMiddleware;
+    use WithFaker;
 
     /** @var BondController $controller */
     private BondController $controller;
@@ -56,6 +61,20 @@ class BondControllerTest extends TestCase
         // Create a stub for the StoreBondRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(StoreBondRequest::class);
+        $requestStub->expects($this->any())->method('toDto')
+            ->willReturn(new BondDto(
+                employeeId: 1,
+                roleId: 1,
+                courseId: 1,
+                poleId: 1,
+                begin: Carbon::now(),
+                terminatedAt: Carbon::now(),
+                hiringProcess: '',
+                volunteer: false,
+                qualificationKnowledgeArea: KnowledgeAreas::AGRARIAS,
+                qualificationCourse: '',
+                qualificationInstitution: '',
+            ));
 
         // Expects the service's create method to be called once.
         $this->serviceMock->expects($this->once())->method('create');
@@ -84,6 +103,20 @@ class BondControllerTest extends TestCase
         // Create a stub for the UpdateBondRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(UpdateBondRequest::class);
+        $requestStub->expects($this->any())->method('toDto')
+            ->willReturn(new BondDto(
+                employeeId: 1,
+                roleId: 1,
+                courseId: 1,
+                poleId: 1,
+                begin: Carbon::now(),
+                terminatedAt: Carbon::now(),
+                hiringProcess: '',
+                volunteer: false,
+                qualificationKnowledgeArea: KnowledgeAreas::AGRARIAS,
+                qualificationCourse: '',
+                qualificationInstitution: '',
+            ));
 
         /** @var MockObject $bondStub */
         $bondStub = $this->createStub(Bond::class);

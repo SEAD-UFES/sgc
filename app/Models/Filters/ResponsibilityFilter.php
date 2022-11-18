@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ModelFilters;
+namespace App\Models\Filters;
 
 use App\Helpers\ModelFilterHelper;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,6 +11,11 @@ trait ResponsibilityFilter
     {
         $values = ModelFilterHelper::inputToArray($value);
         return ModelFilterHelper::relationContains($builder, 'user', 'email', $values);
+    }
+    public function userLoginContains(Builder $builder, $value)
+    {
+        $values = ModelFilterHelper::inputToArray($value);
+        return ModelFilterHelper::relationContains($builder, 'user', 'login', $values);
     }
 
     public function usertypeNameContains(Builder $builder, $value)

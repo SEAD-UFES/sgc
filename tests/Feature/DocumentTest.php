@@ -2,12 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\Models\Bond;
 use App\Models\Course;
 use App\Models\Document;
 use App\Models\DocumentType;
 use App\Models\User;
 use App\Models\UserType;
 use App\Models\Responsibility;
+use App\Repositories\ResponsibilityRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
@@ -24,13 +26,26 @@ class DocumentTest extends TestCase
     private static User $userLdi;
     private static User $userAlien;
 
+    private ResponsibilityRepository $responsibilityRepository;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->responsibilityRepository = new ResponsibilityRepository();
+    }
+
     public function setUp(): void
     {
         parent::setUp();
 
+        User::factory()->withoutEmployee()->create([
+            'login' => 'sgc_system',
+        ]);
+
         self::$userAdm = User::factory()->createOne(
             [
-                'email' => 'adm_email@test.com',
+                'login' => 'adm_email@test.com',
             ]
         );
 
@@ -44,7 +59,7 @@ class DocumentTest extends TestCase
 
         self::$userDir = User::factory()->createOne(
             [
-                'email' => 'dir_email@test.com',
+                'login' => 'dir_email@test.com',
             ]
         );
 
@@ -58,7 +73,7 @@ class DocumentTest extends TestCase
 
         self::$userAss = User::factory()->createOne(
             [
-                'email' => 'ass_email@test.com',
+                'login' => 'ass_email@test.com',
             ]
         );
 
@@ -72,7 +87,7 @@ class DocumentTest extends TestCase
 
         self::$userSec = User::factory()->createOne(
             [
-                'email' => 'sec_email@test.com',
+                'login' => 'sec_email@test.com',
             ]
         );
 
@@ -86,7 +101,7 @@ class DocumentTest extends TestCase
 
         self::$userCoord = User::factory()->createOne(
             [
-                'email' => 'coord_email@test.com',
+                'login' => 'coord_email@test.com',
             ]
         );
 
@@ -103,7 +118,7 @@ class DocumentTest extends TestCase
 
         self::$userLdi = User::factory()->createOne(
             [
-                'email' => 'ldi_email@test.com',
+                'login' => 'ldi_email@test.com',
             ]
         );
 
@@ -117,7 +132,7 @@ class DocumentTest extends TestCase
 
         self::$userAlien = User::factory()->createOne(
             [
-                'email' => 'alien_email@test.com',
+                'login' => 'alien_email@test.com',
             ]
         );
 
@@ -132,8 +147,8 @@ class DocumentTest extends TestCase
         Document::factory()->createOne(
             [
                 'file_name' => 'Document Bond Beta.pdf',
-                'documentable_id' => $document->id,
-                'documentable_type' => Document::class,
+                'related_id' => Bond::factory()->createOne()->getAttribute('id'),
+                'related_type' => Bond::class,
             ]
         );
     }
@@ -181,7 +196,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('documents.index'))
             ->assertSee('Document Bond Beta.pdf')
@@ -202,7 +217,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('documents.index'))
             ->assertSee('Document Bond Beta.pdf')
@@ -223,7 +238,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('documents.index'))
             ->assertSee('Document Bond Beta.pdf')
@@ -244,7 +259,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('documents.index'))
             ->assertSee('Document Bond Beta.pdf')
@@ -265,7 +280,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('documents.index'))
             ->assertStatus(403);
@@ -285,7 +300,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('documents.index'))
             ->assertStatus(403);
@@ -296,7 +311,7 @@ class DocumentTest extends TestCase
     /** @return Document */
     private function getDocument(): Document
     {
-        return Document::where('documentable_type', Document::class)->first();
+        return Document::where('related_type', Bond::class)->first();
     }
 
     /**
@@ -346,7 +361,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         /** @var Document $document */
         $document = $this->getDocument();
@@ -369,7 +384,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         /** @var Document $document */
         $document = $this->getDocument();
@@ -392,7 +407,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         /** @var Document $document */
         $document = $this->getDocument();
@@ -415,7 +430,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         /** @var Document $document */
         $document = $this->getDocument();
@@ -438,7 +453,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         /** @var Document $document */
         $document = $this->getDocument();
@@ -460,7 +475,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         /** @var Document $document */
         $document = $this->getDocument();
@@ -520,7 +535,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('documents.create'))
             ->assertSee($this->expectedCreateDocumentPageContent())
@@ -541,7 +556,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('documents.create'))
             ->assertSee($this->expectedCreateDocumentPageContent())
@@ -562,7 +577,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('documents.create'))
             ->assertSee($this->expectedCreateDocumentPageContent())
@@ -583,7 +598,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('documents.create'))
             ->assertSee($this->expectedCreateDocumentPageContent())
@@ -604,7 +619,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('documents.create'))
             ->assertStatus(403);
@@ -624,7 +639,7 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get(route('documents.create'))
             ->assertStatus(403);
@@ -642,7 +657,7 @@ class DocumentTest extends TestCase
      */
     public function guestShouldntCreateDocument()
     {
-        $bondDocumentArr = $this->createTestDocumentAttributes(Document::class);
+        $bondDocumentArr = $this->createTestDocumentAttributes();
 
         $this->post(route('documents.store'), $bondDocumentArr)
             ->assertStatus(401);
@@ -657,7 +672,7 @@ class DocumentTest extends TestCase
      */
     public function authenticatedUserWithoutPermissionShouldntCreateDocument()
     {
-        $bondDocumentArr = $this->createTestDocumentAttributes(Document::class);
+        $bondDocumentArr = $this->createTestDocumentAttributes();
 
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null])
@@ -679,9 +694,9 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
-        $bondDocumentArr = $this->createTestDocumentAttributes(Document::class);
+        $bondDocumentArr = $this->createTestDocumentAttributes();
 
         $this->followingRedirects()->post(route('documents.store'), $bondDocumentArr)
             ->assertSee($this->expectedInfo())
@@ -702,9 +717,9 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
-        $bondDocumentArr = $this->createTestDocumentAttributes(Document::class);
+        $bondDocumentArr = $this->createTestDocumentAttributes();
 
         $this->followingRedirects()->post(route('documents.store'), $bondDocumentArr)
             ->assertSee($this->expectedInfo())
@@ -725,9 +740,9 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
-        $bondDocumentArr = $this->createTestDocumentAttributes(Document::class);
+        $bondDocumentArr = $this->createTestDocumentAttributes();
 
         $this->followingRedirects()->post(route('documents.store'), $bondDocumentArr)
             ->assertSee($this->expectedInfo())
@@ -748,9 +763,9 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
-        $bondDocumentArr = $this->createTestDocumentAttributes(Document::class);
+        $bondDocumentArr = $this->createTestDocumentAttributes();
 
         $this->followingRedirects()->post(route('documents.store'), $bondDocumentArr)
             ->assertSee($this->expectedInfo())
@@ -771,9 +786,9 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
-        $bondDocumentArr = $this->createTestDocumentAttributes(Document::class);
+        $bondDocumentArr = $this->createTestDocumentAttributes();
 
         $this->followingRedirects()->post(route('documents.store'), $bondDocumentArr)
             ->assertStatus(403);
@@ -793,49 +808,49 @@ class DocumentTest extends TestCase
         /** @var User $authUser */
         $authUser = auth()->user();
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
-        $bondDocumentArr = $this->createTestDocumentAttributes(Document::class);
+        $bondDocumentArr = $this->createTestDocumentAttributes();
 
         $this->followingRedirects()->post(route('documents.store'), $bondDocumentArr)
             ->assertStatus(403);
     }
 
-
-    // ================= Document Overwrite Tests =================
+    /** @return array<string> */
+    private function expectedDocumentContent(): array
+    {
+        return ['PDF', 'Test', 'EOF'];
+    }
 
     /**
-     * @return void
+     * @param string $documentTypeId
+     * @param string $referentId
      *
-     * @test
+     * @return array<string, mixed>
      */
-    public function newDocumentShouldOverwriteOldOne()
+    private function createTestDocumentAttributes(string $documentTypeId = null, string $referentId = '1'): array
     {
-        $originalDocument = Document::where('documentable_type', Document::class)->first();
-        $originalName = $originalDocument->file_name;
-        $originalDocTypeId = $originalDocument->document_type_id;
-        $originalDocTypeName = DocumentType::find($originalDocTypeId)->name;
-        $originalDocumentable = $originalDocument->documentable()->first();
-        $originalReferentId = $originalDocumentable->pluck('bond_id')->first();
+        /** @var UploadedFile $testDocumentFile */
+        $testDocumentFile = UploadedFile::fake()->create((debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']) . '_Document Gama.pdf', 20, 'application/pdf');
 
-        $this->actingAs(self::$userAdm);
+        /** @var DocumentType $testDocumentType */
+        $testDocumentType = DocumentType::factory()->createOne(
+            [
+                'name' => 'Test Doc Type',
+            ]
+        );
 
-        /** @var User $authUser */
-        $authUser = auth()->user();
+        $requestAttributes = [];
+        $requestAttributes['file'] = $testDocumentFile;
+        $requestAttributes['document_type_id'] = $documentTypeId ?? $testDocumentType->id;
+        $requestAttributes['bond_id'] = $referentId;
 
-        $this->withSession(['loggedInUser.currentResponsibility' => $authUser->getFirstActiveResponsibility()]);
+        return $requestAttributes;
+    }
 
-        $this->get(route('documents.index'))
-            ->assertSee([$originalName, $originalDocTypeName])
-            ->assertStatus(200);
-
-        $bondDocumentArr = $this->createTestDocumentAttributes(Document::class, (string) $originalDocTypeId, (string) $originalReferentId);
-
-        $this->followingRedirects()->post(route('documents.store'), $bondDocumentArr)
-            ->assertSee(['Document Gama.pdf', $originalDocTypeName])
-            ->assertDontSee([$originalName])
-            ->assertStatus(200);
-
-        $this->assertDatabaseHas('documents', ['file_name' => $bondDocumentArr['file']->name, 'document_type_id' => $originalDocTypeId, 'documentable_type' => Document::class]);
+    /** @return array<string>  */
+    private function expectedInfo(): array
+    {
+        return ['Document Gama.pdf', 'Test Doc Type'];
     }
 }

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\ModelFilters;
+namespace App\Models\Filters;
 
 use App\Helpers\ModelFilterHelper;
 use Illuminate\Database\Eloquent\Builder;
 
 trait UserFilter
 {
-    public function emailContains(Builder $builder, $value)
+    public function loginContains(Builder $builder, $value)
     {
         $values = ModelFilterHelper::inputToArray($value);
         return ModelFilterHelper::contains($builder, 'login', $values);

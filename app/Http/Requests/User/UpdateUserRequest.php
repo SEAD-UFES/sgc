@@ -3,7 +3,7 @@
 namespace App\Http\Requests\User;
 
 use App\Models\User;
-use App\Services\Dto\UpdateUserDto;
+use App\Services\Dto\UserDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -37,7 +37,7 @@ class UpdateUserRequest extends FormRequest
         $id = $user->id;
 
         return [
-            'email' => 'required|email|unique:users,email,' . $id . ',id',
+            'login' => 'required|email|unique:users,login,' . $id . ',id',
             'password' => 'sometimes',
             'active' => 'sometimes',
             'employee_id' => 'nullable|exists:employees,id',
@@ -50,19 +50,20 @@ class UpdateUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.required' => 'O E-mail é obrigatório',
-            'email.email' => 'O endereço de E-mail deve ser válido',
-            'email.unique' => 'O endereço não pode ser igual a outro já cadastrado',
+            'login.required' => 'O Login é obrigatório',
+            'login.email' => 'O Login deve ser um endereço de E-mail válido',
+            'login.unique' => 'O endereço não pode ser igual a outro já cadastrado',
+            'employee_id.exists' => 'O Colaborador deve ser válido',
         ];
     }
 
-    public function toDto(): UpdateUserDto
+    public function toDto(): UserDto
     {
-        return new UpdateUserDto(
-            email: $this->validated('email') ?? '',
-            password: $this->validated('password') ?? '',
+        return new UserDto(
+            login: strval($this->validated('login') ?? ''),
+            password: strval($this->validated('password') ?? ''),
             active: ($this->validated('active') ?? '') === 'on',
-            employeeId: $this->validated('employee_id'),
+            employeeId: intval($this->validated('employee_id')),
         );
     }
 }

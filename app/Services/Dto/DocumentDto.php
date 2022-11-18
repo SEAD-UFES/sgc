@@ -2,7 +2,7 @@
 
 namespace App\Services\Dto;
 
-final class DocumentDto
+class DocumentDto
 {
     public function __construct(
         public readonly string $fileName,

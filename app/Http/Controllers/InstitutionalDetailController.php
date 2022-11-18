@@ -7,7 +7,6 @@ use App\Http\Requests\InstitutionalDetail\EditInstitutionalDetailRequest;
 use App\Http\Requests\InstitutionalDetail\StoreInstitutionalDetailRequest;
 use App\Http\Requests\InstitutionalDetail\UpdateInstitutionalDetailRequest;
 use App\Models\Employee;
-use App\Models\InstitutionalDetail;
 use App\Services\InstitutionalDetailService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -74,13 +73,8 @@ class InstitutionalDetailController extends Controller
      */
     public function update(UpdateInstitutionalDetailRequest $request, Employee $employee): RedirectResponse
     {
-        /**
-         * @var InstitutionalDetail $institutionalDetail
-         */
-        $institutionalDetail = $employee->institutionalDetail;
-
         try {
-            $institutionalDetail = $this->service->update($request->toDto(), $employee);
+            $this->service->update($request->toDto(), $employee);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível salvar os Detalhes Institucionais: ' . $e->getMessage()]);
         }

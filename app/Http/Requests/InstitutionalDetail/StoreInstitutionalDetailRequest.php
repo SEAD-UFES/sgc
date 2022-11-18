@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\InstitutionalDetail;
 
-use App\Services\Dto\StoreInstitutionalDetailDto;
+use App\Services\Dto\InstitutionalDetailDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -26,8 +26,8 @@ class StoreInstitutionalDetailRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'login' => 'nullable|string|unique:institutional_details,login',
-            'email' => 'nullable|email|unique:institutional_details,email',
+            'login' => 'required|string|unique:institutional_details,login',
+            'email' => 'required|email|unique:institutional_details,email',
         ];
     }
 
@@ -37,18 +37,20 @@ class StoreInstitutionalDetailRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'login.required' => 'O Login Único é obrigatório',
             'login.string' => 'O Login Único deve ser texto',
             'login.unique' => 'O Login Único não pode repetir um previamente já cadastrado',
+            'email.required' => 'O email é obrigatório',
             'email.email' => 'O email deve ser válido',
             'email.unique' => 'O email não pode repetir um previamente já cadastrado',
         ];
     }
 
-    public function toDto(): StoreInstitutionalDetailDto
+    public function toDto(): InstitutionalDetailDto
     {
-        return new StoreInstitutionalDetailDto(
-            login: $this->validated('login') ?? '',
-            email: $this->validated('email') ?? '',
+        return new InstitutionalDetailDto(
+            login: strval($this->validated('login') ?? ''),
+            email: strval($this->validated('email') ?? ''),
         );
     }
 }

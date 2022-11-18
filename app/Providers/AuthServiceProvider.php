@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 use App\Gates\ApplicantGates;
-use App\Gates\DocumentGates;
 use App\Gates\BondGates;
 use App\Gates\CourseGates;
+use App\Gates\DocumentGates;
 use App\Gates\EmployeeGates;
 use App\Gates\GenericGates;
 use App\Gates\PoleGates;

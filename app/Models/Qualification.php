@@ -15,6 +15,11 @@ class Qualification extends Model
     use LogsActivity;
 
     /**
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
      * @var string
      */
     protected $table = 'qualifications';
@@ -23,11 +28,6 @@ class Qualification extends Model
      * @var string
      */
     protected $primaryKey = 'bond_id';
-
-    /**
-     * @var bool
-     */
-    public $incrementing = false;
 
     /**
      * @var array<int, string>

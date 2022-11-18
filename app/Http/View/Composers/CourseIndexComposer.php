@@ -18,7 +18,7 @@ class CourseIndexComposer
     public function compose(View $view): void
     {
         $view->with([
-            'filters' => ModelFilterHelper::buildFilters(request(), Course::$accepted_filters),
+            'filters' => ModelFilterHelper::buildFilters(request(), Course::$acceptedFilters),
         ]);
     }
 }

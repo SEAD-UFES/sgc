@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\ModelFilters\DocumentFilter;
+use App\Models\Filters\DocumentFilter;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,6 +27,38 @@ class Document extends Model
     use LogsActivity;
 
     /**
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
+     * @var array<int, string>
+     */
+    public static $sortable = [
+        'id',
+        'file_name',
+        'created_at',
+        'updated_at',
+        'employeeName',
+        'roleName',
+        'courseName',
+        'typeName',
+    ];
+
+    /**
+     * @var array<int, string>
+     */
+    public static $acceptedFilters = [
+        'originalnameContains',
+        'documentTypeNameContains',
+        'bond',
+        'bondEmployeeNameContains',
+        'bondRoleNameContains',
+        'bondPoleNameContains',
+        'bondCourseNameContains',
+    ];
+
+    /**
      * @var string
      */
     protected $table = 'documents';
@@ -34,11 +67,6 @@ class Document extends Model
      * @var string
      */
     protected $primaryKey = 'id';
-
-    /**
-     * @var bool
-     */
-    public $incrementing = true;
 
     /**
      * @var array<int, string>
@@ -53,33 +81,10 @@ class Document extends Model
 
     /**
      * @var array<int, string>
+     *
+     * @phpstan-ignore-next-line
      */
-    public static $sortable = [
-        'id',
-        'file_name',
-        'created_at',
-        'updated_at',
-    ];
-
-    /**
-     * @var array<int, string>
-     */
-    public static $accepted_filters = [
-        'originalnameContains',
-        'documentTypeNameContains',
-        'bond',
-        'bondEmployeeNameContains',
-        'bondRoleNameContains',
-        'bondPoleNameContains',
-        'bondCourseNameContains',
-    ];
-
-    // /**
-    //  * @var array<int, string>
-    //  *
-    //  * @phpstan-ignore-next-line
-    //  */
-    // private static $whiteListFilter = ['*'];
+    private static $whiteListFilter = ['*'];
 
     /**
      * @return BelongsTo<DocumentType, Document>
@@ -104,5 +109,72 @@ class Document extends Model
             ->logExcept(['updated_at'])
             ->dontLogIfAttributesChangedOnly(['updated_at'])
             ->logOnlyDirty();
+    }
+
+    // ==================== ColumnSortable overriding ====================
+
+    /**
+     * @param Builder<Document> $query
+     * @param string $direction
+     *
+     * @return Builder<Document>
+     */
+    public function employeeNameSortable(Builder $query, string $direction): Builder
+    {
+        $query->orderBy('employees.name', $direction);
+
+        return $query;
+    }
+
+    /**
+     * @param Builder<Document> $query
+     * @param string $direction
+     *
+     * @return Builder<Document>
+     */
+    public function roleNameSortable(Builder $query, string $direction): Builder
+    {
+        $query->orderBy('roles.name', $direction);
+
+        return $query;
+    }
+
+    /**
+     * @param Builder<Document> $query
+     * @param string $direction
+     *
+     * @return Builder<Document>
+     */
+    public function courseNameSortable(Builder $query, string $direction): Builder
+    {
+        $query->orderBy('courses.name', $direction);
+
+        return $query;
+    }
+
+    /**
+     * @param Builder<Document> $query
+     * @param string $direction
+     *
+     * @return Builder<Document>
+     */
+    public function poleNameSortable(Builder $query, string $direction): Builder
+    {
+        $query->orderBy('poles.name', $direction);
+
+        return $query;
+    }
+
+    /**
+     * @param Builder<Document> $query
+     * @param string $direction
+     *
+     * @return Builder<Document>
+     */
+    public function typeNameSortable(Builder $query, string $direction): Builder
+    {
+        $query->orderBy('document_types.name', $direction);
+
+        return $query;
     }
 }

@@ -16,6 +16,18 @@ class PersonalDetail extends Model
     use LogsActivity;
 
     /**
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * @var array<int, string>
+     */
+    public static $sortable = [
+        'job',
+    ];
+
+    /**
      * @var string
      */
     protected $table = 'personal_details';
@@ -24,11 +36,6 @@ class PersonalDetail extends Model
      * @var string
      */
     protected $primaryKey = 'employee_id';
-
-    /**
-     * @var bool
-     */
-    public $incrementing = false;
 
     /**
      * @var array<int, string>

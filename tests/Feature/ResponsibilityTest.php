@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\User;
 use App\Models\UserType;
 use App\Models\Responsibility;
+use App\Repositories\ResponsibilityRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,12 +14,21 @@ class ResponsibilityTest extends TestCase
 {
     use RefreshDatabase;
 
-    private static $userAdm;
-    private static $userDir;
-    private static $userAss;
-    private static $userSec;
-    private static $userCoord;
-    private static $userLdi;
+    private static User $userAdm;
+    private static User $userDir;
+    private static User $userAss;
+    private static User $userSec;
+    private static User $userCoord;
+    private static User $userLdi;
+
+    private ResponsibilityRepository $responsibilityRepository;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->responsibilityRepository = new ResponsibilityRepository();
+    }
 
     public function setUp(): void
     {
@@ -74,7 +84,7 @@ class ResponsibilityTest extends TestCase
 
         Responsibility::factory()->create(
             [
-                'user_id' => User::factory()->create(['email' => 'johndoe@test.com']),
+                'user_id' => User::factory()->create(['login' => 'johndoe@test.com']),
                 'user_type_id' => UserType::factory()->create(['name' => 'Type one']),
                 'course_id' => Course::factory()->create(['name' => 'Course Alpha']),
                 'begin' => now(),
@@ -84,7 +94,7 @@ class ResponsibilityTest extends TestCase
 
         Responsibility::factory()->create(
             [
-                'user_id' => User::factory()->create(['email' => 'janedoe@test2.com']),
+                'user_id' => User::factory()->create(['login' => 'janedoe@test2.com']),
                 'user_type_id' => UserType::factory()->create(['name' => 'Type two']),
                 'course_id' => Course::factory()->create(['name' => 'Course Beta']),
                 'begin' => now(),
@@ -115,8 +125,12 @@ class ResponsibilityTest extends TestCase
      */
     public function administratorShouldListResponsibilities()
     {
-        $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userAdm);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/responsibilities')
             ->assertSee(['johndoe@test.com', 'janedoe@test2.com', 'Type one (Course Alpha)', 'Type two (Course Beta)'])
@@ -132,8 +146,12 @@ class ResponsibilityTest extends TestCase
      */
     public function directorShouldntListResponsibilities()
     {
-        $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userDir);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/responsibilities')
             ->assertStatus(403);
@@ -148,8 +166,12 @@ class ResponsibilityTest extends TestCase
      */
     public function assistantShouldntListResponsibilities()
     {
-        $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userAss);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/responsibilities')
             ->assertStatus(403);
@@ -164,8 +186,12 @@ class ResponsibilityTest extends TestCase
      */
     public function secretaryShouldntListResponsibilities()
     {
-        $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userSec);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/responsibilities')
             ->assertStatus(403);
@@ -180,8 +206,12 @@ class ResponsibilityTest extends TestCase
      */
     public function ldiShouldntListResponsibilities()
     {
-        $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userLdi);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/responsibilities')
             ->assertStatus(403);
@@ -196,8 +226,12 @@ class ResponsibilityTest extends TestCase
      */
     public function coordinatorShouldntListResponsibilities()
     {
-        $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userCoord);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/responsibilities')
             ->assertStatus(403);

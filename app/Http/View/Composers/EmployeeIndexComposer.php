@@ -18,7 +18,7 @@ class EmployeeIndexComposer
     public function compose(View $view): void
     {
         $view->with([
-            'filters' => ModelFilterHelper::buildFilters(request(), Employee::$accepted_filters),
+            'filters' => ModelFilterHelper::buildFilters(request(), Employee::$acceptedFilters),
         ]);
     }
 }

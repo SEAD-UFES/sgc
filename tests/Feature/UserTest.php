@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Models\UserType;
 use App\Models\Responsibility;
+use App\Repositories\ResponsibilityRepository;
 use Illuminate\Database\Eloquent\InvalidCastException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
@@ -14,12 +15,21 @@ class UserTest extends TestCase
 {
     use RefreshDatabase;
 
-    private static $userAdm;
-    private static $userDir;
-    private static $userAss;
-    private static $userSec;
-    private static $userCoord;
-    private static $userLdi;
+    private static User $userAdm;
+    private static User $userDir;
+    private static User $userAss;
+    private static User $userSec;
+    private static User $userCoord;
+    private static User $userLdi;
+
+    private ResponsibilityRepository $responsibilityRepository;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->responsibilityRepository = new ResponsibilityRepository();
+    }
 
     public function setUp(): void
     {
@@ -75,13 +85,13 @@ class UserTest extends TestCase
 
         User::factory()->create(
             [
-                'email' => 'johndoe@test1.com',
+                'login' => 'johndoe@test1.com',
             ]
         );
 
         User::factory()->create(
             [
-                'email' => 'janedoe@test2.com',
+                'login' => 'janedoe@test2.com',
             ]
         );
     }
@@ -108,8 +118,12 @@ class UserTest extends TestCase
      */
     public function administratorShouldListUsers()
     {
-        $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userAdm);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/users')
             ->assertSee(['johndoe@test1.com', 'janedoe@test2.com'])
@@ -125,8 +139,12 @@ class UserTest extends TestCase
      */
     public function directorShouldntListUsers()
     {
-        $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userDir);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/users')
             ->assertStatus(403);
@@ -141,8 +159,12 @@ class UserTest extends TestCase
      */
     public function assistantShouldntListUsers()
     {
-        $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userAss);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/users')
             ->assertStatus(403);
@@ -157,8 +179,12 @@ class UserTest extends TestCase
      */
     public function secretaryShouldntListUsers()
     {
-        $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userSec);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/users')
             ->assertStatus(403);
@@ -173,8 +199,12 @@ class UserTest extends TestCase
      */
     public function ldiShouldntListUsers()
     {
-        $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userLdi);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/users')
             ->assertStatus(403);
@@ -189,8 +219,12 @@ class UserTest extends TestCase
      */
     public function coordinatorShouldntListUsers()
     {
-        $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userCoord);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/users')
             ->assertStatus(403);
@@ -220,11 +254,15 @@ class UserTest extends TestCase
      */
     public function administratorShouldAccessCreateUsersPage()
     {
-        $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userAdm);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/users/create')
-            ->assertSee(['Cadastrar Usuário', 'E-Mail*', 'Nova Senha', 'Ativo', 'Cadastrar'])
+            ->assertSee(['Cadastrar Usuário', 'Login*', 'Nova Senha', 'Ativo', 'Cadastrar'])
             ->assertStatus(200);
     }
 
@@ -237,8 +275,12 @@ class UserTest extends TestCase
      */
     public function directorShouldntAccessCreateUsersPage()
     {
-        $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userDir);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/users/create')
             ->assertStatus(403);
@@ -253,8 +295,12 @@ class UserTest extends TestCase
      */
     public function assistantShouldntAccessCreateUsersPage()
     {
-        $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userAss);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/users/create')
             ->assertStatus(403);
@@ -269,8 +315,12 @@ class UserTest extends TestCase
      */
     public function secretaryShouldntAccessCreateUsersPage()
     {
-        $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userSec);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/users/create')
             ->assertStatus(403);
@@ -285,8 +335,12 @@ class UserTest extends TestCase
      */
     public function ldiShouldntAccessCreateUsersPage()
     {
-        $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userLdi);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/users/create')
             ->assertStatus(403);
@@ -301,8 +355,12 @@ class UserTest extends TestCase
      */
     public function coordinatorShouldntAccessCreateUsersPage()
     {
-        $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userCoord);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $this->get('/users/create')
             ->assertStatus(403);
@@ -335,8 +393,12 @@ class UserTest extends TestCase
      */
     public function administratorShouldCreateUser()
     {
-        $this->actingAs(self::$userAdm)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userAdm);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $user = $this->createTestUserAsArray();
 
@@ -354,8 +416,12 @@ class UserTest extends TestCase
      */
     public function directorShouldntCreateUser()
     {
-        $this->actingAs(self::$userDir)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userDir);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $user = $this->createTestUserAsArray();
 
@@ -372,8 +438,12 @@ class UserTest extends TestCase
      */
     public function assistantShouldntCreateUser()
     {
-        $this->actingAs(self::$userAss)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userAss);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $user = $this->createTestUserAsArray();
 
@@ -390,8 +460,12 @@ class UserTest extends TestCase
      */
     public function secretaryShouldntCreateUser()
     {
-        $this->actingAs(self::$userSec)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userSec);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $user = $this->createTestUserAsArray();
 
@@ -408,8 +482,12 @@ class UserTest extends TestCase
      */
     public function ldiShouldntCreateUser()
     {
-        $this->actingAs(self::$userLdi)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userLdi);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $user = $this->createTestUserAsArray();
 
@@ -426,8 +504,12 @@ class UserTest extends TestCase
      */
     public function coordinatorShouldntCreateUser()
     {
-        $this->actingAs(self::$userCoord)
-            ->withSession(['loggedInUser.currentResponsibility' => auth()->user()->getFirstActiveResponsibility()]);
+        $this->actingAs(self::$userCoord);
+
+        /** @var User $authUser */
+        $authUser = auth()->user();
+
+        $this->withSession(['loggedInUser.currentResponsibility' => $this->responsibilityRepository->getFirstActiveResponsibilityByUserId(intval($authUser->getAttribute('id')))]);
 
         $user = $this->createTestUserAsArray();
 
@@ -448,7 +530,7 @@ class UserTest extends TestCase
     {
         $userArr = User::factory()->make(
             [
-                'email' => 'carl.doe@test.com',
+                'login' => 'carl.doe@test.com',
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
                 'active' => $active,
             ]

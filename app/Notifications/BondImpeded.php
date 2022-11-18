@@ -60,7 +60,7 @@ class BondImpeded extends Notification implements ShouldQueue
     public function toArray($notifiable): array
     {
         /**
-         * @var Course $course
+         * @var ?Course $course
          */
         $course = $this->bond->course;
 
@@ -76,10 +76,10 @@ class BondImpeded extends Notification implements ShouldQueue
 
         return [
             'bond_id' => (string) $this->bond->id,
-            'course_name' => $course->name,
+            'course_name' => $course?->name ?? 'Não informado',
             'employee_name' => $employee->name,
             'role_name' => $role->name,
-            'description' => (string) $this->bond->impediment_description,
+            'description' => $this->bond->impediments()->orderByDesc('created_at')->first()?->description ?? 'ERRO',
         ];
     }
 }

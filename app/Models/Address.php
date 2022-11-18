@@ -15,6 +15,18 @@ class Address extends Model
     use LogsActivity;
 
     /**
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * @var array<int, string>
+     */
+    public static $sortable = [
+        'city',
+    ];
+
+    /**
      * @var string
      */
     protected $table = 'addresses';
@@ -23,11 +35,6 @@ class Address extends Model
      * @var string
      */
     protected $primaryKey = 'employee_id';
-
-    /**
-     * @var bool
-     */
-    public $incrementing = false;
 
     /**
      * @var array<int, string>

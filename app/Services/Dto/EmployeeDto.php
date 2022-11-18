@@ -7,20 +7,20 @@ use App\Enums\MaritalStatuses;
 use App\Enums\States;
 use Illuminate\Support\Carbon;
 
-final class EmployeeDto
+class EmployeeDto
 {
     public function __construct(
-        public readonly string $name, // employee
-        public readonly string $cpf, // employee
-        public readonly string $job, // personal detail
-        public readonly Genders $gender, // employee
-        public readonly Carbon $birthDate, // personal detail
-        public readonly States $birthState, // personal detail
-        public readonly string $birthCity, // personal detail
-        public readonly MaritalStatuses $maritalStatus, // personal detail
+        public readonly string $name,
+        public readonly string $cpf,
+        public readonly string $job,
+        public readonly Genders $gender,
+        public readonly Carbon $birthDate,
+        public readonly States $birthState,
+        public readonly string $birthCity,
+        public readonly MaritalStatuses $maritalStatus,
         public readonly ?string $spouseName,
-        public readonly string $fatherName, // personal detail
-        public readonly string $motherName, // personal detail
+        public readonly string $fatherName,
+        public readonly string $motherName,
         public readonly int $documentTypeId,
         public readonly string $identityNumber,
         public readonly Carbon $identityIssueDate,
@@ -36,7 +36,7 @@ final class EmployeeDto
         public readonly ?string $landline,
         public readonly string $mobile,
         public readonly string $areaCode,
-        public readonly string $email, // employee
+        public readonly string $email,
         public readonly string $bankName,
         public readonly string $agencyNumber,
         public readonly string $accountNumber,

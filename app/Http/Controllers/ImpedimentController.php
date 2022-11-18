@@ -8,10 +8,6 @@ use Illuminate\Http\Request;
 
 class ImpedimentController extends Controller
 {
-    // public function __construct(private ImpedimentService $service)
-    // {
-    // }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -26,8 +22,7 @@ class ImpedimentController extends Controller
             Impediment::create([
                 'bond_id' => $bondId,
                 'description' => $request->impediment_description,
-                'reviewer_id' => $request->user()->id,
-                'reviewed_at' => now(),
+                'reviewer_id' => $request->user()?->id,
             ]);
         } catch (\Exception $e) {
             return back()->withErrors(['noStore' => 'Não foi possível criar o impedimento: ' . $e->getMessage()]);
@@ -46,8 +41,12 @@ class ImpedimentController extends Controller
      */
     public function update(Request $request, Impediment $impediment): RedirectResponse
     {
+        if ($impediment->description === '[SGC: Documento "Termo de cessão de direitos" ainda não importado]') {
+            return back()->withErrors('Não é possível fechar esse tipo de impedimento.');
+        }
+
         try {
-            $closedById = $request->user()->id;
+            $closedById = $request->user()?->id;
             $closedAt = now();
 
             $impediment->update([

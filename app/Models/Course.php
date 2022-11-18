@@ -3,11 +3,10 @@
 namespace App\Models;
 
 use App\Enums\Degrees;
-use App\ModelFilters\CourseFilter;
+use App\Models\Filters\CourseFilter;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Kyslik\ColumnSortable\Sortable;
@@ -23,16 +22,6 @@ class Course extends Model
     use LogsActivity;
 
     /**
-     * @var string
-     */
-    protected $table = 'courses';
-
-    /**
-     * @var string
-     */
-    protected $primaryKey = 'id';
-
-    /**
      * @var bool
      */
     public $incrementing = true;
@@ -40,28 +29,19 @@ class Course extends Model
     /**
      * @var array<int, string>
      */
-    protected $fillable = [
+    public static $sortable = [
+        'id',
         'name',
         'description',
         'degree',
-        'lms_url',
+        'created_at',
+        'updated_at',
     ];
-
-    // /**
-    //  * @var array<int, string>
-    //  */
-    // public $sortable = [
-    //     'id',
-    //     'name',
-    //     'description',
-    //     'created_at',
-    //     'updated_at',
-    // ];
 
     /**
      * @var array<int, string>
      */
-    public static $accepted_filters = [
+    public static $acceptedFilters = [
         'nameContains',
         'descriptionContains',
         'courseTypeNameContains',
@@ -73,12 +53,25 @@ class Course extends Model
         'endLowOrEqu',
     ];
 
-    // /**
-    //  * @var array<int, string>
-    //  *
-    //  * @phpstan-ignore-next-line
-    //  */
-    // private static $whiteListFilter = ['*'];
+    /**
+     * @var string
+     */
+    protected $table = 'courses';
+
+    /**
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'description',
+        'degree',
+        'lms_url',
+    ];
 
     // ==================== Casts ====================
 
@@ -86,10 +79,17 @@ class Course extends Model
         'degree' => Degrees::class,
     ];
 
+    /**
+     * @var array<int, string>
+     *
+     * @phpstan-ignore-next-line
+     */
+    private static $whiteListFilter = ['*'];
+
     // ==================== Relationships ====================
 
     /**
-     * @return BelongsToMany<Bond, Course>
+     * @return BelongsToMany<Bond>
      */
     public function bonds(): BelongsToMany
     {
@@ -121,18 +121,6 @@ class Course extends Model
     }
 
     // ==============================
-
-    // /**
-    //  * @return BelongsToMany<Employee>
-    //  */
-    // public function employees(): BelongsToMany
-    // {
-    //     return $this
-    //         ->belongsToMany(Employee::class, 'bonds')
-    //         ->withPivot('course_id', 'employee_id', 'role_id', 'pole_id', /* 'classroom_id',*/ 'begin', 'end', 'terminated_at', 'volunteer', 'impediment', 'impediment_description', 'uaba_checked_at')
-    //         ->using(Bond::class)->as('bond')
-    //         ->withTimestamps();
-    // }
 
     public function getActivitylogOptions(): LogOptions
     {

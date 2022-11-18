@@ -6,18 +6,21 @@ use App\Enums\KnowledgeAreas;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Bond;
-use App\Models\Document;
+use App\Models\BondCourse;
+use App\Models\BondPole;
 use App\Models\Course;
 use App\Models\Document;
 use App\Models\Employee;
+use App\Models\Pole;
+use App\Models\Role;
+use App\Models\User;
 use App\Models\UserType;
 use App\Repositories\DocumentRepository;
-use App\Services\DocumentService;
 use App\Services\BondService;
-use App\Services\Dto\BondDto;
 use App\Services\Dto\BondDto;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
@@ -36,37 +39,95 @@ class BondServiceTest extends TestCase
     {
         parent::setUp();
 
-        Bond::factory()->create(
-            [
-                'course_id' => Course::factory()->create(
-                    [
-                        'name' => 'Course Alpha',
-                    ]
-                ),
-                'employee_id' => Employee::factory()->create(
-                    [
-                        'name' => 'John Doe',
-                        'email' => 'john@test.com',
-                    ]
-                ),
-            ]
-        );
+        User::factory()->withoutEmployee()->create([
+            'login' => 'sgc_system',
+        ]);
 
-        Bond::factory()->create(
+        $bond = new Bond([
+            'employee_id' => Employee::factory()->createOne(
+                [
+                    'name' => 'John Doe',
+                    'email' => 'john@test.com',
+                ]
+            )->getAttribute('id'),
+            'role_id' => Role::factory()->createOne()->getAttribute('id'),
+            'volunteer' => false,
+            'hiring_process' => '123/2023',
+            'begin' => Carbon::now()->subYear(),
+            'terminated_at' => null,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        $bond->save();
+        $bondId = $bond->getAttribute('id');
+
+        $courseId = Course::factory()->createOne(
             [
-                'course_id' => Course::factory()->create(
-                    [
-                        'name' => 'Course Beta',
-                    ]
-                ),
-                'employee_id' => Employee::factory()->create(
-                    [
-                        'name' => 'Jane Doe',
-                        'email' => 'jane@othertest.com',
-                    ]
-                ),
+                'name' => 'Course Alpha',
+            ]
+        )->getAttribute('id');
+         $bondCourse = new BondCourse(
+             [
+                'bond_id' => $bondId,
+                'course_id' => $courseId,
+             ]
+         );
+        $bondCourse->save();
+        $poleId = Pole::factory()->createOne(
+            [
+                'name' => 'Pole Alpha',
+            ]
+        )->getAttribute('id');
+        $bondPole = new BondPole(
+            [
+                'bond_id' => $bondId,
+                'pole_id' => $poleId,
             ]
         );
+        $bondPole->save();
+
+        $bond = new Bond([
+            'employee_id' => Employee::factory()->createOne(
+                [
+                    'name' => 'Jane Doe',
+                    'email' => 'jane@othertest.com',
+                ]
+            )->getAttribute('id'),
+            'role_id' => Role::factory()->createOne()->getAttribute('id'),
+            'volunteer' => false,
+            'hiring_process' => '123/2023',
+            'begin' => Carbon::now()->subYear(),
+            'terminated_at' => null,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        $bond->save();
+        $bondId = $bond->getAttribute('id');
+
+        $courseId = Course::factory()->createOne(
+            [
+                'name' => 'Course Beta',
+            ]
+        )->getAttribute('id');
+        $bondCourse = new BondCourse(
+            [
+                'bond_id' => $bondId,
+                'course_id' => $courseId,
+            ]
+        );
+        $bondCourse->save();
+        $poleId = Pole::factory()->createOne(
+            [
+                'name' => 'Pole Beta',
+            ]
+        )->getAttribute('id');
+        $bondPole = new BondPole(
+            [
+                'bond_id' => $bondId,
+                'pole_id' => $poleId,
+            ]
+        );
+        $bondPole->save();
 
         $this->service = new BondService(new DocumentRepository());
     }
@@ -133,13 +194,13 @@ class BondServiceTest extends TestCase
         $attributes['roleId'] = 2;
         $attributes['courseId'] = 2;
         $attributes['poleId'] = 1;
-        $attributes['begin'] = '2022-01-01';
-        $attributes['end'] = '2032-01-01';
-        $attributes['hiring_process'] = '01/2022';
+        $attributes['begin'] = new Carbon('2022-01-01');
+        $attributes['terminatedAt'] = null;
+        $attributes['hiringProcess'] = '01/2022';
         $attributes['volunteer'] = false;
         $attributes = array_merge($attributes, $this->getQualificationAttributes());
 
-        $dto = new BondDto($attributes);
+        $dto = new BondDto(...$attributes);
 
         //Should be mocked?
         UserType::create(['name' => 'Assistant', 'acronym' => 'ass', 'description' => '']);
@@ -171,13 +232,13 @@ class BondServiceTest extends TestCase
         $attributes['roleId'] = 2;
         $attributes['courseId'] = 2;
         $attributes['poleId'] = 1;
-        $attributes['begin'] = '2022-01-01';
-        $attributes['end'] = '2032-01-01';
-        $attributes['hiring_process'] = '01/2022';
+        $attributes['begin'] = new Carbon('2022-01-01');
+        $attributes['terminatedAt'] = null;
+        $attributes['hiringProcess'] = '01/2022';
         $attributes['volunteer'] = false;
         $attributes = array_merge($attributes, $this->getQualificationAttributes());
 
-        $dto = new BondDto($attributes);
+        $dto = new BondDto(...$attributes);
 
         Event::fakeFor(function () use ($dto, $bond) {
             //execution
@@ -218,10 +279,10 @@ class BondServiceTest extends TestCase
         //setting up scenario
         $bond = Bond::find(1);
 
-        Document::factory()->create([
+        Document::factory()->createOne([
             'file_name' => 'BondDummyFile.pdf',
-            'documentable_id' => Document::factory()->createOne(['bond_id' => $bond?->id])->id,
-            'documentable_type' => 'App\Models\Document',
+            'related_id' => $bond->getAttribute('id'),
+            'related_type' => Bond::class,
         ]);
 
         Event::fakeFor(function () use ($bond) {
@@ -241,9 +302,9 @@ class BondServiceTest extends TestCase
     private function getQualificationAttributes(): array
     {
         return [
-            'knowledgeArea' => strval($this->faker->randomElement(KnowledgeAreas::getValuesInAlphabeticalOrder())),
-            'courseName' => 'Test Course',
-            'institutionName' => 'Test Institution',
+            'qualificationKnowledgeArea' => $this->faker->randomElement(KnowledgeAreas::cases()),
+            'qualificationCourse' => 'Test Course',
+            'qualificationInstitution' => 'Test Institution',
         ];
     }
 }

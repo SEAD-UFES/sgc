@@ -2,8 +2,6 @@
 
 namespace App\Http\View\Composers;
 
-use App\Enums\Genders;
-use App\Models\Employee;
 use App\Models\Responsibility;
 use App\Models\User;
 use App\Repositories\ResponsibilityRepository;
@@ -26,19 +24,19 @@ class HeaderComposer
     public function compose(View $view): void
     {
         if (Auth::check()) {
-            /** @var User */
+            /** @var User $authUser */
             $authUser = auth()->user();
 
-            /** @var array<int, Responsibility> */
+            /** @var array<int, Responsibility> $activeResponsibilities */
             $activeResponsibilities = $this->responsibilityRepository->getActiveResponsibilitiesByUserId($authUser->id);
 
-            /** @var Responsibility */
+            /** @var Responsibility $currentResponsibility */
             $currentResponsibility = session('loggedInUser.currentResponsibility');
 
             $viewParams = [
                 'currentUser' => $authUser,
                 'gender' => $authUser->employee?->gender,
-                'name' => $authUser->employee?->name ?? $authUser->email,
+                'name' => $authUser->employee?->name ?? $authUser->login,
                 'activeResponsibilities' => $activeResponsibilities,
                 'currentResponsibility' => $currentResponsibility,
             ];

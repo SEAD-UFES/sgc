@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\ModelFilters\PoleFilter;
+use App\Models\Filters\PoleFilter;
 use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,6 +21,24 @@ class Pole extends Model
     use LogsActivity;
 
     /**
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
+     * @var array<int, string>
+     */
+    public static $acceptedFilters = [
+        'nameContains',
+        'descriptionContains',
+    ];
+
+    /**
+     * @var array<int, string>
+     */
+    public static $sortable = ['id', 'name', 'description', 'created_at', 'updated_at'];
+
+    /**
      * @var string
      */
     protected $table = 'poles';
@@ -29,11 +47,6 @@ class Pole extends Model
      * @var string
      */
     protected $primaryKey = 'id';
-
-    /**
-     * @var bool
-     */
-    public $incrementing = true;
 
     /**
      * The attributes that are mass assignable.
@@ -47,28 +60,15 @@ class Pole extends Model
 
     /**
      * @var array<int, string>
+     *
+     * @phpstan-ignore-next-line
      */
-    public static $accepted_filters = [
-        'nameContains',
-        'descriptionContains',
-    ];
-
-    // /**
-    //  * @var array<int, string>
-    //  */
-    // public $sortable = ['id', 'name', 'description', 'created_at', 'updated_at'];
-
-    // /**
-    //  * @var array<int, string>
-    //  *
-    //  * @phpstan-ignore-next-line
-    //  */
-    // private static $whiteListFilter = ['*'];
+    private static $whiteListFilter = ['*'];
 
     // ==================== Relationships ====================
 
     /**
-     * @return BelongsToMany<Bond, Pole>
+     * @return BelongsToMany<Bond>
      */
     public function bonds(): BelongsToMany
     {

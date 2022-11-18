@@ -76,23 +76,19 @@ class GenericGates
 
         /* define a coord with course_id */
         Gate::define('isCoord-course_id', static function (User $user, int $course_id) {
-            /**
-             * @var User $currentUser
-             */
+            /** @var User $currentUser */
             $currentUser = auth()->user();
             //need to have session Responsibility active.
-            $currentResponsibility = $currentUser->getCurrentResponsibility();
+            /** @var Responsibility $currentResponsibility */
+            $currentResponsibility = session('loggedInUser.currentResponsibility');
             if (! $currentResponsibility instanceof \App\Models\Responsibility) {
                 return false;
             }
 
-            /**
-             * @var UserType $currentUserType
-             */
+            /** @var UserType $currentUserType */
             $currentUserType = $currentResponsibility->userType;
             //if currentResponsibility (Responsibility) is coord, ok
             $is_coord = $currentUserType->acronym === 'coord';
-            // Issue #36: For some reason, sometimes $course_id isn't integer, but string... Fixed with typed parameter.
             $course_id_match = $currentResponsibility->course_id === $course_id;
 
             return $is_coord && $course_id_match;
@@ -104,16 +100,14 @@ class GenericGates
         //return $user->userType->acronym == $acronym;
 
         //need to have session Responsibility active.
-        /** @var Responsibility */
+        /** @var Responsibility $currentResponsibility */
         $currentResponsibility = session('loggedInUser.currentResponsibility');
 
         if (! $currentResponsibility instanceof \App\Models\Responsibility) {
             return false;
         }
 
-        /**
-         * @var UserType $currentUserType
-         */
+        /** @var UserType $currentUserType */
         $currentUserType = $currentResponsibility->userType;
 
         //if currentResponsibility (Responsibility) is $acronym, ok
@@ -123,16 +117,14 @@ class GenericGates
     private static function checkGlobalRoleUta(string $acronym): bool
     {
         //need to have session Responsibility active.
-        /** @var Responsibility */
+        /** @var Responsibility $currentResponsibility */
         $currentResponsibility = session('loggedInUser.currentResponsibility');
 
         if (! $currentResponsibility instanceof \App\Models\Responsibility) {
             return false;
         }
 
-        /**
-         * @var UserType $currentUserType
-         */
+        /** @var UserType $currentUserType */
         $currentUserType = $currentResponsibility->userType;
         //if currentResponsibility (Responsibility) is $acronym, ok
         $acronymMatch = $currentUserType->acronym === $acronym;

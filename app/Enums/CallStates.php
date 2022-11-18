@@ -40,7 +40,7 @@ enum CallStates: string implements JsonSerializable
     /**
      * @return array<string, string>
      */
-    public function jsonSerialize():array
+    public function jsonSerialize(): array
     {
         return [
             'name' => $this->name,
