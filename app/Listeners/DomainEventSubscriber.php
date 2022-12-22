@@ -112,16 +112,16 @@ class DomainEventSubscriber
      */
     public function handleBondImpeded(BondImpeded $event)
     {
-        $secUsers = $this->userRepository->getActiveUsersOfActiveTypeId($this->secUtId);
+        $users = $this->userRepository->getActiveUsersOfActiveTypeId($this->secUtId);
 
         /**
-         * @var Course $course
+         * @var ?Course $course
          */
         $course = $event->bond->course;
-        $courseId = $course->id;
-        $coordUsers = $this->userRepository->getActiveUsersOfActiveTypeIdOfCourseId($this->coordUtId, $courseId);
-
-        $users = $secUsers->merge($coordUsers);
+        $courseId = $course?->id;
+        if ($courseId != null) {
+            $users->merge($this->userRepository->getActiveUsersOfActiveTypeIdOfCourseId($this->coordUtId, $courseId));
+        }
 
         Notification::send($users, new BondImpededNotification($event->bond));
         $this->logger->logDomainEvent(

@@ -82,13 +82,13 @@
                                                     </form>
                                                 @endcan
                                                 @can('applicant-designate')
-                                                    @if ($applicant->call_state->value == 'Aceitante')
+                                                    @if ($applicant->call_state->label() == 'Aceitante')
                                                         &nbsp;
                                                         <span onclick="{{ 'if(confirm(\'Tem certeza que deseja nomear esse Aprovado para Colaborador?\')) window.open("' . route('applicants.designate', $applicant) . '")' }}" data-bs-toggle="tooltip" title="Converter o aprovado em Colaborador" class="btn btn-warning btn-sm">Nomear</span>
                                                     @endif
                                                 @endcan
                                                 @can('applicant-destroy')
-                                                    @if ($applicant->call_state->value == 'Desistente')
+                                                    @if ($applicant->call_state->label() == 'Desistente')
                                                         &nbsp;
                                                         <form name="{{ 'formDestroy' . $applicant->id }}" action={{ route('applicants.destroy', ['applicant' => $applicant]) }} method="POST">
                                                             @method('DELETE')
