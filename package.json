@@ -10,13 +10,13 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "axios": "^0.25",
+        "axios": "^1.2.1",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
         "resolve-url-loader": "^5.0.0",
         "sass": "^1.50.1",
-        "sass-loader": "^12.6.0"
+        "sass-loader": "^13.2.0"
     },
     "dependencies": {
         "@popperjs/core": "^2.11.5",
