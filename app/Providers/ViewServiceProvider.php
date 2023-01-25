@@ -6,6 +6,8 @@ use App\Http\View\Composers\ApplicantFormComposer;
 use App\Http\View\Composers\ApplicantIndexComposer;
 use App\Http\View\Composers\BondFormComposer;
 use App\Http\View\Composers\BondIndexComposer;
+use App\Http\View\Composers\CourseClassFormComposer;
+use App\Http\View\Composers\CourseClassIndexComposer;
 use App\Http\View\Composers\CourseFormComposer;
 use App\Http\View\Composers\CourseIndexComposer;
 use App\Http\View\Composers\DocumentBatchFormComposer;
@@ -85,6 +87,16 @@ class ViewServiceProvider extends ServiceProvider
         View::composer(
             ['course.index'],
             CourseIndexComposer::class
+        );
+
+        View::composer(
+            ['courseClass.create', 'courseClass.edit'],
+            CourseClassFormComposer::class
+        );
+
+        View::composer(
+            ['courseClass.index'],
+            CourseClassIndexComposer::class
         );
 
         View::composer(

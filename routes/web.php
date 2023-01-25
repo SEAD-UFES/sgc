@@ -4,6 +4,7 @@ use App\Http\Controllers\ApplicantBatchController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BondController;
+use App\Http\Controllers\CourseClassController;
 use App\Http\Controllers\DocumentBatchController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\CourseController;
@@ -114,6 +115,7 @@ Route::middleware('auth')->group(function () {
     // Resource Controllers
     Route::resource('bonds', BondController::class);
     Route::resource('courses', CourseController::class);
+    Route::resource('course-classes', CourseClassController::class);
     Route::resource('employees', EmployeeController::class);
     Route::resource('poles', PoleController::class)
         ->except([

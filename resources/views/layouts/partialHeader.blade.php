@@ -81,6 +81,12 @@
                                     <li><a class="dropdown-item" href="{{ route('courses.create') }}">Cadastrar{{--  Curso --}}</a></li>
                                 @endcan
                                 <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header">Disciplinas</h6></li>
+                                <li><a class="dropdown-item" href="{{ route('course-classes.index') }}">Listar{{--  Cursos --}}</a></li>
+                                @can('course-store')
+                                    <li><a class="dropdown-item" href="{{ route('course-classes.create') }}">Cadastrar{{--  Curso --}}</a></li>
+                                @endcan
+                                <li><hr class="dropdown-divider"></li>
                                 <li><h6 class="dropdown-header">Polos</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('poles.index') }}">Listar{{--  Polos --}}</a></li>
                                 @can('pole-store')

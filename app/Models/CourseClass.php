@@ -2,16 +2,22 @@
 
 namespace App\Models;
 
+use App\Models\Filters\CourseClassFilter;
+use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Kyslik\ColumnSortable\Sortable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class CourseClass extends Model
 {
     use HasFactory;
+    use Sortable;
+    use CourseClassFilter;
+    use Filterable;
     use LogsActivity;
 
     /**
@@ -38,6 +44,36 @@ class CourseClass extends Model
         'name',
         'cpp',
     ];
+
+    /**
+     * @var array<int, string>
+     */
+    public static $sortable = [
+        'id',
+        'course_id',
+        'code',
+        'name',
+        'cpp',
+        'created_at',
+        'updated_at',
+    ];
+
+    /**
+     * @var array<int, string>
+     */
+    public static $acceptedFilters = [
+        'courseNameContains',
+        'codeContains',
+        'nameContains',
+        'cppContains',
+    ];
+
+    /**
+     * @var array<int, string>
+     *
+     * @phpstan-ignore-next-line
+     */
+    private static $whiteListFilter = ['*'];
 
     /**
      * @return HasMany<Bond>
