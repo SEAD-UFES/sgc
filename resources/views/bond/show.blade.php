@@ -96,7 +96,7 @@
                                         {{ is_null($bond->last_open_impediment_date) ? 'Sem pendências' : 'Impedido' }}
                                     </div>
                                     @if (!$hasRights)
-                                        <div class="bg-danger">Atenção: Sem o documento "Termo de cessão de direitos" o vínculo permanecerá impedido.</div>
+                                        <div class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> <strong>Atenção:</strong> Sem o documento "Termo de cessão de direitos" o vínculo permanecerá impedido.</div>
                                     @endif
                                 </div>
 
@@ -199,7 +199,7 @@
                                     <div class="col-sm-4 col-lg-3"><strong>Email Institucional:</strong></div>
                                     <div class="col-sm-8 col-lg-9">{{ $bond->employee->institutionalDetail->email ?? '-' }}</div>
                                 </div>
-                                <a href="{{ route('bonds.send_new_employee_emails', $bond) }}" class="btn btn-primary btn-sm mt-1">
+                                <a href="{{ route('bonds.send_new_employee_emails', $bond) }}" class="btn btn-primary btn-sm mt-1{{($bond->employee->institutionalDetail == null) ? ' disabled' : '' }}">
                                     Enviar comunicado sobre a criação do Login de Acesso
                                 </a>
                             </div>
