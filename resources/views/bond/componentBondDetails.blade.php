@@ -14,7 +14,7 @@
             </div>
             <div class="mb-2 row">
                 <div class="col-sm-4 col-lg-3"><strong>Função:</strong></div>
-                <div class="col-sm-8 col-lg-9">{{ $bond->role_name ?? '-' }}</div>
+                <div class="col-sm-8 col-lg-9">{{ $bond->role->name ?? '-' }}</div>
             </div>
             <div class="mb-2 row">
                 <div class="col-sm-4 col-lg-3"><strong>Curso:</strong></div>
