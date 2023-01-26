@@ -28,7 +28,7 @@ class UpdateCourseClassRequest extends FormRequest
             'course_id' => 'required|exists:courses,id',
             'code' => 'required|string',
             'name' => 'required|string',
-            'cpp' => 'string',
+            'cpp' => 'nullable|string',
         ];
     }
 
