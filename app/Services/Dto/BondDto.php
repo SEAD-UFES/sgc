@@ -11,6 +11,7 @@ class BondDto
         public readonly int $employeeId,
         public readonly int $roleId,
         public readonly ?int $courseId,
+        public readonly ?int $courseClassId,
         public readonly ?int $poleId,
         public readonly Carbon $begin,
         public readonly ?Carbon $terminatedAt,

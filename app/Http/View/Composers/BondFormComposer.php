@@ -4,6 +4,7 @@ namespace App\Http\View\Composers;
 
 use App\Enums\KnowledgeAreas;
 use App\Models\Course;
+use App\Models\CourseClass;
 use App\Models\Employee;
 use App\Models\Pole;
 use App\Models\Role;
@@ -27,8 +28,13 @@ class BondFormComposer
             return $knowledgeArea->label();
         });
 
+        $allowedCourses = $this->getAllowedCourses();
+
+        $allowedCoursesIds = $allowedCourses->pluck('id')->toArray();
+
         $view->with([
-            'courses' => $this->getAllowedCourses(),
+            'courses' => $allowedCourses,
+            'courseClasses' => CourseClass::orderBy('name')->whereIn('course_id', $allowedCoursesIds)->get(),
             'employees' => Employee::orderBy('name')->get(),
             'knowledgeAreas' => $knowledgeAreas,
             'poles' => Pole::orderBy('name')->get(),

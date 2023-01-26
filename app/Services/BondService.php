@@ -87,6 +87,11 @@ class BondService
                 $bond->courses()->sync([$bondDto->courseId]);
             }
 
+            if (isset($bondDto->courseClassId)) {
+                $bond->courseClasses()->sync([$bondDto->courseClassId]);
+            }
+
+
             if (isset($bondDto->poleId)) {
                 $bond->poles()->sync([$bondDto->poleId]);
             }
@@ -162,6 +167,12 @@ class BondService
                 $bond->courses()->sync([$bondDto->courseId]);
             } else {
                 $bond->courses()->detach();
+            }
+
+            if (isset($bondDto->courseClassId)) {
+                $bond->courseClasses()->sync([$bondDto->courseClassId]);
+            } else {
+                $bond->courseClasses()->detach();
             }
 
             if (isset($bondDto->poleId)) {

@@ -23,7 +23,7 @@
                     @include('_components.alerts')
                     <form action="{{ route('bonds.update', $bond->id) }}" method="POST">
                         @method('PATCH')
-                        @component('bond.componentBondForm', compact('employees', 'roles', 'courses', 'poles', 'bond', 'knowledgeAreas'))@endcomponent
+                        @component('bond.componentBondForm', compact('employees', 'roles', 'courses', 'courseClasses', 'poles', 'bond', 'knowledgeAreas'))@endcomponent
                         <br />
                         <button type="submit" class="btn btn-primary">Atualizar</button>
                         <a href="{{ route('bonds.index') }}" class="btn btn-secondary">Cancelar</a>

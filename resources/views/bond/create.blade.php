@@ -19,7 +19,7 @@
                 <div class="col-xl-10 col-xxl-8">
                     @include('_components.alerts')
                     <form action={{ route('bonds.store') }} method="POST">
-                        @component('bond.componentBondForm', compact('employees', 'roles', 'courses', 'poles', 'knowledgeAreas'))@endcomponent
+                        @component('bond.componentBondForm', compact('employees', 'roles', 'courses', 'courseClasses', 'poles', 'knowledgeAreas'))@endcomponent
                         <br />
                         <button type="submit" class="btn btn-primary">Cadastrar</button>
                         <a href="{{ route('bonds.index') }}" class="btn btn-secondary">Cancelar</a>

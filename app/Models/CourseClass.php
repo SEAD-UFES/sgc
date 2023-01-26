@@ -7,7 +7,7 @@ use eloquentFilter\QueryFilter\ModelFilters\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Kyslik\ColumnSortable\Sortable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -76,11 +76,11 @@ class CourseClass extends Model
     private static $whiteListFilter = ['*'];
 
     /**
-     * @return HasMany<Bond>
+     * @return BelongsToMany<Bond>
      */
-    public function bonds(): HasMany
+    public function bonds(): BelongsToMany
     {
-        return $this->hasMany(Bond::class, 'course_class_id');
+        return $this->belongsToMany(Bond::class, 'bond_course_class', 'course_class_id', 'bond_id');
     }
 
     /**

@@ -49,6 +49,20 @@
         @enderror
     </div>
     <div class="col-12 col-sm-12 col-md-5 col-lg-6 col-xl-6 col-xl-6">
+        <label for="selectCourseClass1" class="form-label">Disciplina</label>
+        <select name="course_class_id" id="selectCourseClass1" class="form-select searchable-select">
+            <option value="">Não se aplica</option>
+            @foreach ($courseClasses as $courseClass)
+                <option value="{{ $courseClass->id }}"
+                    {{ isset($bond) ? ($bond->courseClass?->id == $courseClass->id ? 'selected' : '') : (old('course_class_id') == $courseClass->id ? 'selected' : '') }}>
+                    {{ $courseClass->name . ' - [' . $courseClass->course->name . ']' }}</option>
+            @endforeach
+        </select>
+        @error('course_class_id')
+            <div class="text-danger">> {{ $message }}</div>
+        @enderror
+    </div>
+    <div class="col-12 col-sm-12 col-md-5 col-lg-6 col-xl-6 col-xl-6">
         <label for="selectPole1" class="form-label">Polo</label>
         <select name="pole_id" id="selectPole1" class="form-select searchable-select">
             <option value="">Não se aplica</option>

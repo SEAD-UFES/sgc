@@ -53,6 +53,7 @@ class UpdateBondRequest extends FormRequest
             employeeId: intval($this->validated('employee_id')),
             roleId: intval($this->validated('role_id')),
             courseId: $this->validated('course_id') !== null ? intval($this->validated('course_id')) : null,
+            courseClassId: $this->validated('course_class_id') !== null ? intval($this->validated('course_class_id')) : null,
             poleId: $this->validated('pole_id') !== null ? intval($this->validated('pole_id')) : null,
             begin: Date::parse($this->validated('begin')),
             terminatedAt: $this->validated('terminated_at') !== null ? Date::parse($this->validated('terminated_at')) : null,
