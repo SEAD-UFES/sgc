@@ -13,7 +13,7 @@
         <option value="">Selecione o Curso</option>
         @foreach ($courses as $course)
             <option value="{{ $course->id }}"
-                {{ isset($courseClass) ? ($courseClass->course_id == $course->id ? 'selected' : '') : (old('course_id') == $course->id ? 'selected' : '') }}>
+                {{ isset($courseClass) ? ($courseClass->course_id == $course->id ? 'selected' : '') : (Request::get('givenCourse') != null ? (Request::get('givenCourse') == $course->id ? 'selected' : '') : (old('course_id') == $course->id ? 'selected' : '')) }}>
                 {{ $course->name }}</option>
         @endforeach
     </select>
