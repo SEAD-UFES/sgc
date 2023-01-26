@@ -49,6 +49,11 @@
                                         <td>{{ $course->description }}</td>
                                         <td>{{ $course->degree->label() }}</td>
                                         <td class="text-center"><div class="d-inline-flex">
+                                            @can('course-show')
+                                                <a href="{{ route('courses.show', $course) }}" data-bs-toggle="tooltip" title="Ver curso" class="btn btn-primary btn-sm">
+                                                    <i class="bi-eye-fill"></i>
+                                                </a>&nbsp;
+                                            @endcan
                                             @can('course-update')
                                                 <a href="{{ route('courses.edit', $course) }}" data-bs-toggle="tooltip" title="Editar curso" class="btn btn-primary btn-sm">
                                                     <i class="bi-pencil-fill"></i>

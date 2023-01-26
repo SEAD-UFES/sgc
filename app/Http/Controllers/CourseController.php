@@ -6,6 +6,7 @@ use App\Http\Requests\Course\CreateCourseRequest;
 use App\Http\Requests\Course\DestroyCourseRequest;
 use App\Http\Requests\Course\EditCourseRequest;
 use App\Http\Requests\Course\IndexCourseRequest;
+use App\Http\Requests\Course\ShowCourseRequest;
 use App\Http\Requests\Course\StoreCourseRequest;
 use App\Http\Requests\Course\UpdateCourseRequest;
 use App\Models\Course;
@@ -57,6 +58,22 @@ class CourseController extends Controller
         $this->service->create($request->toDto());
 
         return redirect()->route('courses.index')->with('success', 'Curso criado com sucesso.');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  Course  $course
+     *
+     * @param ShowCourseRequest $request
+     *
+     * @return View
+     */
+    public function show(ShowCourseRequest $request, Course $course): View
+    {
+        $course = $this->service->read($course);
+
+        return view('course.show', compact(['course']));
     }
 
     /**
