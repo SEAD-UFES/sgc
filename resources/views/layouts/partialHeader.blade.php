@@ -57,18 +57,10 @@
                         {{-- <li class="nav-item"><a class="nav-link" href="{{ route('funding') }}">Fomento</a></li> --}}
                     @endcannot
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toogle" href="" id="navbarSupportedContentMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false">Relatórios</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarSupportedContentMenuLink3">
-                            <li><h6 class="dropdown-header">Termos de cessão de direitos</h6></li>
-                            <li><a class="dropdown-item" href="{{ route('rights.index') }}">Listar{{--  Documentos de Termos e Licença --}}</a></li>
-                        </ul>
-                    </li>
-
                     @cannot('isLdi') {{-- @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCoord']) --}}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toogle" href="" id="navbarSupportedContentMenuLink4" role="button" data-bs-toggle="dropdown" aria-expanded="false">Sistema</a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarSupportedContentMenuLink4">
+                            <a class="nav-link dropdown-toogle" href="" id="navbarSupportedContentMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Estrutura</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarSupportedContentMenuLink2">
                                 <li><h6 class="dropdown-header">Funções</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('roles.index') }}">Listar{{--  Funções --}}</a></li>
                                 @can('role-store')
@@ -92,8 +84,23 @@
                                 @can('pole-store')
                                     <li><a class="dropdown-item" href="{{ route('poles.create') }}">Cadastrar{{--  Polo --}}</a></li>
                                 @endcan
+                            </ul>
+                        </li>
+                    @endcannot
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toogle" href="" id="navbarSupportedContentMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false">Relatórios</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarSupportedContentMenuLink3">
+                            <li><h6 class="dropdown-header">Termos de cessão de direitos</h6></li>
+                            <li><a class="dropdown-item" href="{{ route('rights.index') }}">Listar{{--  Documentos de Termos e Licença --}}</a></li>
+                        </ul>
+                    </li>
+
+                    @cannot('isLdi') {{-- @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCoord']) --}}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toogle" href="" id="navbarSupportedContentMenuLink4" role="button" data-bs-toggle="dropdown" aria-expanded="false">Sistema</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarSupportedContentMenuLink4">
                                 @can('isAdm-global')
-                                    <li><hr class="dropdown-divider"></li>
                                     <li><h6 class="dropdown-header">Usuários</h6></li>
                                     <li><a class="dropdown-item" href="{{ route('users.index') }}">Listar{{--  Usuários --}}</a></li>
                                     <li><a class="dropdown-item" href="{{ route('users.create') }}">Cadastrar{{--  Usuário --}}</a></li>
