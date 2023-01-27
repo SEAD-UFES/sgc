@@ -9,6 +9,7 @@ use App\Models\Bond;
 use App\Models\BondCourse;
 use App\Models\BondPole;
 use App\Models\Course;
+use App\Models\CourseClass;
 use App\Models\Document;
 use App\Models\Employee;
 use App\Models\Pole;
@@ -129,6 +130,15 @@ class BondServiceTest extends TestCase
         );
         $bondPole->save();
 
+        (new CourseClass(
+            [
+                'course_id' => 1,
+                'code' => '123',
+                'name' => 'Class Zeta',
+                'cpp' => 10,
+            ]
+        ))->save();
+
         $this->service = new BondService(new DocumentRepository());
     }
 
@@ -193,6 +203,7 @@ class BondServiceTest extends TestCase
         $attributes['employeeId'] = 1;
         $attributes['roleId'] = 2;
         $attributes['courseId'] = 2;
+        $attributes['courseClassId'] = 1;
         $attributes['poleId'] = 1;
         $attributes['begin'] = new Carbon('2022-01-01');
         $attributes['terminatedAt'] = null;
@@ -231,6 +242,7 @@ class BondServiceTest extends TestCase
         $attributes['employeeId'] = 2;
         $attributes['roleId'] = 2;
         $attributes['courseId'] = 2;
+        $attributes['courseClassId'] = 1;
         $attributes['poleId'] = 1;
         $attributes['begin'] = new Carbon('2022-01-01');
         $attributes['terminatedAt'] = null;
