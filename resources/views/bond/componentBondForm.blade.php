@@ -2,6 +2,18 @@
     $(document).ready(function(){
         Inputmask().mask(document.querySelectorAll("input"));
     });
+
+    courseClassesJson = @json($courseClasses);
+    filteredCourseClasses = [];
+
+    function filterCourseClasses() {
+        filteredCourseClasses = courseClassesJson.filter(courseClass => courseClass.course_id == $('#selectCourse1').val());
+        $('#selectCourseClass1').empty();
+        $('#selectCourseClass1').append('<option value="">Não se aplica</option>');
+        filteredCourseClasses.forEach(courseClass => {
+            $('#selectCourseClass1').append('<option value="' + courseClass.id + '">' + courseClass.name + '</option>');
+        });
+    }
 </script>
 
 @csrf
@@ -36,7 +48,7 @@
     </div>
     <div class="col-12 col-sm-12 col-md-7 col-lg-6 col-xl-6 col-xxl-6">
         <label for="selectCourse1" class="form-label">Curso</label>
-        <select name="course_id" id="selectCourse1" class="form-select searchable-select">
+        <select name="course_id" id="selectCourse1" class="form-select searchable-select" onchange="filterCourseClasses()">
             <option value="">Não se aplica</option>
             @foreach ($courses as $course)
                 <option value="{{ $course->id }}"
@@ -114,7 +126,7 @@
 </div>
 <div class="row g-3 mb-3">
     <div class="col-6 col-sm-6 col-md-4 col-lg-3">
-        <label for="selectKnowledgeArea1" class="form-label">Área último Curso Superior*</label>
+        <label for="selectKnowledgeArea1" class="form-label">Área último curso de titulaçãor*</label>
         <select name="qualification_knowledge_area" id="selectKnowledgeArea1" class="form-select">
             <option value="">Selecione a Área</option>
             @foreach ($knowledgeAreas as $knowledgeArea)
@@ -136,7 +148,7 @@
         @enderror
     </div>
     <div class="col-12 col-sm-12 col-md-4 col-lg-5">
-        <label for="inputInstitution1" class="form-label">Nome Instituição de Titulação*</label>
+        <label for="inputInstitution1" class="form-label">Nome instituição de titulação*</label>
         <input name="qualification_institution" id="inputInstitution1" type="text" class="form-control" placeholder="Instituição"
             value="{{ isset($bond) && isset($bond->qualification) ? $bond->qualification?->institution_name : old('qualification_institution') }}" maxlength="100" required />
         @error('qualification_institution')
@@ -144,4 +156,3 @@
         @enderror
     </div>
 </div>
-    
