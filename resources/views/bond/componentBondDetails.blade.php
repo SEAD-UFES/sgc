@@ -22,7 +22,7 @@
             </div>
             <div class="mb-2 row">
                 <div class="col-sm-4 col-lg-3"><strong>Disciplina:</strong></div>
-                <div class="col-sm-8 col-lg-9">{{ $bond->course_class?->orderBy('id')->first()->name ?? '-' }}</div>
+                <div class="col-sm-8 col-lg-9">{{ $bond->courseClasses()?->orderBy('id')->first()->name ?? '-' }}</div>
             </div>
             <div class="mb-2 row">
                 <div class="col-sm-4 col-lg-3"><strong>Polo:</strong></div>
