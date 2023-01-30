@@ -96,11 +96,15 @@
                         </ul>
                     </li>
 
-                    @cannot('isLdi') {{-- @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCoord']) --}}
+                    {{-- @cannot('isLdi') {{-- @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCoord']) --}}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toogle" href="" id="navbarSupportedContentMenuLink4" role="button" data-bs-toggle="dropdown" aria-expanded="false">Sistema</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarSupportedContentMenuLink4">
+                                <li><h6 class="dropdown-header">Conta</h6></li>
+                                <li><a class="dropdown-item" href="{{ route('users.current_password_edit') }}">Alterar senha{{--  Usuários --}}</a></li>
+                                <li><a class="dropdown-item" href="{{ route('auth.logout') }}">Sair{{--  Usuário --}}</a></li>
                                 @can('isAdm-global')
+                                    <li><hr class="dropdown-divider"></li>
                                     <li><h6 class="dropdown-header">Usuários</h6></li>
                                     <li><a class="dropdown-item" href="{{ route('users.index') }}">Listar{{--  Usuários --}}</a></li>
                                     <li><a class="dropdown-item" href="{{ route('users.create') }}">Cadastrar{{--  Usuário --}}</a></li>
@@ -119,7 +123,7 @@
                                 @endcan
                             </ul>
                         </li>
-                    @endcannot
+                    {{-- @endcannot --}}
                 </ul>
                 @if ($activeResponsibilities != null)
                 <form class="d-flex" action={{ route('users.responsibility_switch') }} method="POST">
