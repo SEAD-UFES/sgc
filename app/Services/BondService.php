@@ -91,7 +91,6 @@ class BondService
                 $bond->courseClasses()->sync([$bondDto->courseClassId]);
             }
 
-
             if (isset($bondDto->poleId)) {
                 $bond->poles()->sync([$bondDto->poleId]);
             }

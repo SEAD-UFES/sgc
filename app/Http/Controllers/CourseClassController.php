@@ -22,6 +22,7 @@ class CourseClassController extends Controller
 
     /**
      * @param IndexCourseClassRequest $request
+     *
      * @return View
      */
     public function index(IndexCourseClassRequest $request): View
