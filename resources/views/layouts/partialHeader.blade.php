@@ -14,7 +14,7 @@
 
                     @cannot('isLdi') {{-- @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCoord']) --}}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toogle" href="" id="navbarSupportedContentMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false">Colaboradores</a>
+                            <a class="nav-link" href="" id="navbarSupportedContentMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false">Colaboradores</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarSupportedContentMenuLink1">
                                 @canany(['applicant-list', 'applicant-store'])
                                     <li><h6 class="dropdown-header">Aprovados</h6></li>
@@ -59,7 +59,7 @@
 
                     @cannot('isLdi') {{-- @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCoord']) --}}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toogle" href="" id="navbarSupportedContentMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Estrutura</a>
+                            <a class="nav-link" href="" id="navbarSupportedContentMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Estrutura</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarSupportedContentMenuLink2">
                                 <li><h6 class="dropdown-header">Funções</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('roles.index') }}">Listar{{--  Funções --}}</a></li>
@@ -89,7 +89,7 @@
                     @endcannot
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toogle" href="" id="navbarSupportedContentMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false">Relatórios</a>
+                        <a class="nav-link" href="" id="navbarSupportedContentMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false">Relatórios</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarSupportedContentMenuLink3">
                             <li><h6 class="dropdown-header">Termos de cessão de direitos</h6></li>
                             <li><a class="dropdown-item" href="{{ route('rights.index') }}">Listar{{--  Documentos de Termos e Licença --}}</a></li>
@@ -98,7 +98,7 @@
 
                     {{-- @cannot('isLdi') {{-- @canany(['isAdm', 'isDir', 'isAss', 'isSec', 'isCoord']) --}}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toogle" href="" id="navbarSupportedContentMenuLink4" role="button" data-bs-toggle="dropdown" aria-expanded="false">Sistema</a>
+                            <a class="nav-link" href="" id="navbarSupportedContentMenuLink4" role="button" data-bs-toggle="dropdown" aria-expanded="false">Sistema</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarSupportedContentMenuLink4">
                                 <li><h6 class="dropdown-header">Conta</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('users.current_password_edit') }}">Alterar senha{{--  Usuários --}}</a></li>
