@@ -59,6 +59,11 @@
                                                     <i class="bi-pencil-fill"></i>
                                                 </a>&nbsp;
                                             @endcan
+                                            @can('employee-show')
+                                                <a href="{{ route('courses.list_employees', $course) }}" data-bs-toggle="tooltip" title="Download de documentos dos colaboradores do curso" class="btn btn-warning btn-sm">
+                                                    <i class="bi-person-vcard-fill"></i>
+                                                </a>&nbsp;
+                                            @endcan
                                             @can('course-destroy')
                                                 <form name="{{ 'formDelete' . $course->id }}" action="{{ route('courses.destroy', $course) }}" method="POST">
                                                     @method('DELETE')
