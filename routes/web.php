@@ -101,6 +101,11 @@ Route::middleware('auth')->group(function () {
         Route::get('bonds/rights/{id}/{htmlTitle}', 'show')->name('rights.show');
     });
 
+    Route::get('courses/{course}/employees', [CourseController::class, 'listEmployees'])->name('courses.list_employees');
+    Route::post('courses/employees', [DownloadDocumentsPackController::class, 'createEmployeeFilesZip'])->name('courses.create_employee_files_zip');
+
+    Route::get('bonds/{bond}/documents-export', [DownloadDocumentsPackController::class, 'packBondEmployeeDocuments'])->name('documents.export');
+
     // Single Action Controllers
     Route::get('applicants/{applicant}/designate', DesignateApplicantController::class)->name('applicants.designate');
     Route::get('bonds/{bond}/institutional-details/send-email', SendNewEmployeeEmailsController::class)->name('bonds.send_new_employee_emails');
@@ -108,7 +113,6 @@ Route::middleware('auth')->group(function () {
     Route::get('notifications/{notification}/dismiss', DismissNotificationController::class)->name('notifications.dismiss');
     Route::patch('users/current/password', UpdateCurrentPasswordController::class)->name('users.current_password_update');
     Route::delete('users/{user}/destroy-employee-link', DestroyUserEmployeeLinkController::class)->name('users.destroy_employee_link');
-    Route::get('bonds/{bond}/documents-export', DownloadDocumentsPackController::class)->name('documents.export');
 
     Route::get('coursetypes', [CourseTypeController::class, 'index'])->name('coursetypes.index');
 

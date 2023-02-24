@@ -128,4 +128,12 @@ class CourseController extends Controller
 
         return redirect()->route('courses.index')->with('success', 'Curso excluído com sucesso.');
     }
+
+    public function listEmployees(Course $course): View
+    {
+        $bonds = $course->bonds()->with('employee')->get();
+        $bonds = $bonds->sortBy('employee.name');
+
+        return view('course.listEmployees', compact(['bonds', 'course']));
+    }
 }
