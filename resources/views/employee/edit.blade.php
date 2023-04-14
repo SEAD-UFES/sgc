@@ -1,6 +1,6 @@
 @extends('layouts.basic')
 
-@section('title', 'Editar Funcionário')
+@section('title', 'Editar Colaborador')
 
 @section('content')
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">

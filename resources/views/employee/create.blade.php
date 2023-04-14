@@ -1,6 +1,6 @@
 @extends('layouts.basic')
 
-@section('title', 'Cadastrar Funcionário')
+@section('title', 'Cadastrar Colaborador')
 
 @section('content')
     <script>
