@@ -126,7 +126,7 @@
 </div>
 <div class="row g-3 mb-3">
     <div class="col-6 col-sm-6 col-md-4 col-lg-3">
-        <label for="selectKnowledgeArea1" class="form-label">Área último curso de titulaçãor*</label>
+        <label for="selectKnowledgeArea1" class="form-label">Área último curso de titulação*</label>
         <select name="qualification_knowledge_area" id="selectKnowledgeArea1" class="form-select">
             <option value="">Selecione a Área</option>
             @foreach ($knowledgeAreas as $knowledgeArea)
