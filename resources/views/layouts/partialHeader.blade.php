@@ -139,7 +139,7 @@
                     </form>
                 @endif
                 <ul class="list-unstyled ms-1 mb-2 mb-lg-0">
-                    <li>Bem vind{{ $gender === 'F' ? 'a' : 'o'}}, <a href="{{ route('users.current_password_edit') }}" data-bs-toggle="tooltip" data-bs-placement="left" title="Alterar senha do Usuário">{{ $name }}</a>!
+                    <li>Olá, <a href="{{ route('users.current_password_edit') }}" data-bs-toggle="tooltip" data-bs-placement="left" title="Alterar senha do Usuário">{{ $name }}</a>!
                         &nbsp;<a class="btn btn-sm btn-danger" href="{{ route('auth.logout') }}" data-bs-toggle="tooltip" data-bs-placement="left" title="Sair do sistema">Sair</a>
                     </li>
                 </ul>
