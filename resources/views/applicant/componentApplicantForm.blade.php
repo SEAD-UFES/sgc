@@ -14,11 +14,9 @@
 
         document.getElementById('inputArea1').value = code[1];
     }
-
-    $(document).ready(function() {
-        Inputmask().mask(document.querySelectorAll("input"));
-    });
 </script>
+@vite('resources/js/enable_inputmask.ts')
+@vite('resources/js/enable_searchable_select.ts')
 
 @csrf
 
@@ -71,7 +69,7 @@
 <div class="row g-3 mb-3">
     <div class="col-5 col-sm-5 col-md-4 col-lg-4">
         <label for="selectRoles1" class="form-label">Função*</label>
-        <select name="role_id" id="selectRoles1" class="form-select searchable-select">
+        <select name="role_id" id="selectRoles1" class="form-select select-dropdown">
             <option value="">Selecione a Função</option>
             @foreach ($roles as $role)
                 <option value="{{ $role->id }}">
@@ -85,7 +83,7 @@
     </div>
     <div class="col-5 col-sm-5 col-md-4 col-lg-4">
         <label for="selectCourses1" class="form-label">Curso</label>
-        <select name="course_id" id="selectCourses1" class="form-select searchable-select">
+        <select name="course_id" id="selectCourses1" class="form-select select-dropdown">
             <option value="">Não se aplica</option>
             @foreach ($courses as $course)
                 <option value="{{ $course->id }}">
@@ -99,7 +97,7 @@
     </div>
     <div class="col-5 col-sm-5 col-md-2 col-lg-2">
         <label for="selectPoles1" class="form-label">Polo</label>
-        <select name="pole_id" id="selectPoles1" class="form-select searchable-select">
+        <select name="pole_id" id="selectPoles1" class="form-select select-dropdown">
             <option value="">Não se aplica</option>
             @foreach ($poles as $pole)
                 <option value="{{ $pole->id }}">{{ $pole->name }}</option>

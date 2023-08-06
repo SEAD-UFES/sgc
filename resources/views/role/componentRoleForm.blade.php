@@ -1,21 +1,4 @@
-<script>
-    $(document).ready(function(){
-        Inputmask("decimal", { 
-            onUnMask: function(maskedValue, unmaskedValue) {
-                return parseInt(unmaskedValue);
-            },
-            "groupSeparator": ".",
-            "autoGroup": true,
-            "radixPoint": ",",
-            "digits": "2",
-            "digitsOptional": false,
-            "prefix": "R$ ",
-            "placeholder": "0",
-            "removeMaskOnSubmit": true
-        }).mask(document.getElementById("inputValue1"));
-    });
-</script>
-
+@vite('resources/js/enable_custom_inputmask.ts')
 @csrf
 
 <div class="row g-3 mb-3">

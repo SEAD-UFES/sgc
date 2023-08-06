@@ -3,7 +3,7 @@
 @section('title', 'Importar Documento de Vínculo')
 
 @section('headerScripts')
-    <script src="{{ asset('js/enable_searchable_select.js') }}"></script>
+    @vite('resources/js/enable_searchable_select.ts')
 @endsection
 
 @section('content')
@@ -39,7 +39,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="selectBond1" class="form-label">Vínculo*</label>
-                            <select name="bond_id" id="selectBond1" class="form-select searchable-select">
+                            <select name="bond_id" id="selectBond1" class="form-select select-dropdown">
                                 <option value="">Selecione o vínculo</option>
                                 @foreach ($bonds as $bond)
                                     <option value="{{ $bond->id }}" {{-- {{($documentType->id == $document->document_type_id) ? 'selected' : ''}} --}}>

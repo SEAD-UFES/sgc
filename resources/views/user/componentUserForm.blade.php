@@ -22,7 +22,7 @@
 </div>
 <div class="col-6 col-sm-6 col-md-6 col-lg-6">
     <label for="selectEmployeeLink1" class="form-label">Colaborador associado:</label>
-    <select name="employee_id" id="selectEmployeeLink1" class="form-select searchable-select">
+    <select name="employee_id" id="selectEmployeeLink1" class="form-select select-dropdown">
         <option value="">Nenhum</option>
         @foreach ($employees as $employee)
             <option value="{{ $employee->id }}"

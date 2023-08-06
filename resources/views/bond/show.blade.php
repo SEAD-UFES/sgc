@@ -234,5 +234,5 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('js/enable_tooltip_popover.js') }}"></script>
+    @vite('resources/js/enable_popover.ts')
 @endsection

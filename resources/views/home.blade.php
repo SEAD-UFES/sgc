@@ -103,5 +103,4 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('js/enable_tooltip_popover.js') }}"></script>
 @endsection

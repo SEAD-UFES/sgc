@@ -1,0 +1,10 @@
+// Border color (quick hack for select2-bootstrap-5-theme bug with bootstrap 5 breaking changes)
+$form-select-border-color: #dee2e6;
+
+// Overwrite bootstrap-icons default font path value to direct to the ones on the npm package
+$bootstrap-icons-font-dir: "bootstrap-icons/font/fonts";
+
+// Bootstrap
+@import "bootstrap/scss/bootstrap";
+// Bootstrap-icons
+@import "bootstrap-icons/font/bootstrap-icons";

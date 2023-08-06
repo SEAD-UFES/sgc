@@ -3,7 +3,6 @@
 @section('title', 'Cadastrar Aprovado')
 
 @section('headerScripts')
-    <script src="{{ asset('js/enable_searchable_select.js') }}"></script>
 @endsection
 
 @section('content')
