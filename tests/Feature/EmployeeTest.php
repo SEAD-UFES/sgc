@@ -40,7 +40,7 @@ class EmployeeTest extends TestCase
 
     public function __construct()
     {
-        parent::__construct();
+        parent::__construct('EmployeeTest');
 
         $this->responsibilityRepository = new ResponsibilityRepository();
     }

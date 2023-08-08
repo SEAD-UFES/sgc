@@ -27,7 +27,7 @@ class ApplicantControllerTest extends TestCase
 
     public function __construct()
     {
-        parent::__construct();
+        // parent::__construct('ApplicantControllerTest');
         $this->serviceMock = $this->createMock(ApplicantService::class);
         $this->controller = new ApplicantController($this->serviceMock);
     }

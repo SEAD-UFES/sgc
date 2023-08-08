@@ -25,7 +25,7 @@ class RoleTest extends TestCase
 
     public function __construct()
     {
-        parent::__construct();
+        parent::__construct('RoleTest');
 
         $this->responsibilityRepository = new ResponsibilityRepository();
     }

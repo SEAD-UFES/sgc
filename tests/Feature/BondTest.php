@@ -38,7 +38,7 @@ class BondTest extends TestCase
 
     public function __construct()
     {
-        parent::__construct();
+        parent::__construct('BondTest');
 
         $this->responsibilityRepository = new ResponsibilityRepository();
     }
