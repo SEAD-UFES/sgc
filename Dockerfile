@@ -27,7 +27,7 @@ COPY package.json package-lock.json webpack.mix.js /app/
 COPY resources/ /app/resources/
 
 WORKDIR /app
-RUN npm ci && npm run prod
+RUN npm ci && npm run build
 
 # ===================================== #
 FROM alpine:latest as deploy
