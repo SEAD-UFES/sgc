@@ -36,7 +36,7 @@ class BondServiceTest extends TestCase
     private BondService $service;
 
     //setting up scenario for all tests
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -19,7 +19,7 @@ class CourseServiceTest extends TestCase
     use WithFaker;
 
     //setting up scenario for all tests
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

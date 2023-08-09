@@ -35,7 +35,7 @@ class DocumentServiceTest extends TestCase
 
 
     //setting up scenario for all tests
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

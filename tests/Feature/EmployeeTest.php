@@ -45,7 +45,7 @@ class EmployeeTest extends TestCase
         $this->responsibilityRepository = new ResponsibilityRepository();
     }
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
