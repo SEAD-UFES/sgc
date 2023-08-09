@@ -15,7 +15,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
-class DocumentTest extends TestCase
+final class DocumentTest extends TestCase
 {
     use RefreshDatabase;
 

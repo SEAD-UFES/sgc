@@ -16,7 +16,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
 use Tests\TestCase;
 
-class ApplicantTest extends TestCase
+final class ApplicantTest extends TestCase
 {
     use RefreshDatabase;
 

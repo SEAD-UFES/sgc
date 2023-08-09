@@ -17,7 +17,7 @@ use Illuminate\Support\Carbon;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 
-class ResponsibilityControllerTest extends TestCase
+final class ResponsibilityControllerTest extends TestCase
 {
     use WithoutMiddleware;
 

@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use App\Helpers\TextHelper;
 use PHPUnit\Framework\TestCase;
 
-class TextHelperTest extends TestCase
+final class TextHelperTest extends TestCase
 {
     /**
      * Test titleCase helper function works

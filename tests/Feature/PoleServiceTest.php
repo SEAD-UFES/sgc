@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-class PoleServiceTest extends TestCase
+final class PoleServiceTest extends TestCase
 {
     use RefreshDatabase;
 

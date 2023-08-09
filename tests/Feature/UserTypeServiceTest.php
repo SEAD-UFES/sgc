@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-class UserTypeServiceTest extends TestCase
+final class UserTypeServiceTest extends TestCase
 {
     use RefreshDatabase;
 

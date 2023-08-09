@@ -11,7 +11,7 @@ use App\Repositories\ResponsibilityRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class CourseTest extends TestCase
+final class CourseTest extends TestCase
 {
     use RefreshDatabase;
 

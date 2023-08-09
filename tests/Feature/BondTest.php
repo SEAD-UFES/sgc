@@ -23,7 +23,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Arr;
 use Tests\TestCase;
 
-class BondTest extends TestCase
+final class BondTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;

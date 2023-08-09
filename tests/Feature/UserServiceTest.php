@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
-class UserServiceTest extends TestCase
+final class UserServiceTest extends TestCase
 {
     use RefreshDatabase;
 

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
-class ApplicantsSourceServiceTest extends TestCase
+final class ApplicantsSourceServiceTest extends TestCase
 {
     use RefreshDatabase;
 

@@ -19,7 +19,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-class EmployeeServiceTest extends TestCase
+final class EmployeeServiceTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;

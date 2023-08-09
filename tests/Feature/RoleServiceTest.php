@@ -13,7 +13,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-class RoleServiceTest extends TestCase
+final class RoleServiceTest extends TestCase
 {
     use RefreshDatabase;
 

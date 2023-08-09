@@ -13,7 +13,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 
-class InstitutionalDetailControllerTest extends TestCase
+final class InstitutionalDetailControllerTest extends TestCase
 {
     use WithoutMiddleware;
 

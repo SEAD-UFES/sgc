@@ -19,7 +19,7 @@ use Illuminate\Support\Carbon;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 
-class BondControllerTest extends TestCase
+final class BondControllerTest extends TestCase
 {
     use WithoutMiddleware;
     use WithFaker;

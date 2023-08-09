@@ -15,7 +15,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-class ApplicantServiceTest extends TestCase
+final class ApplicantServiceTest extends TestCase
 {
     use RefreshDatabase;
 

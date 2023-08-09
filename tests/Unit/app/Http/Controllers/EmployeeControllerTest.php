@@ -20,7 +20,7 @@ use Illuminate\Support\Carbon;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 
-class EmployeeControllerTest extends TestCase
+final class EmployeeControllerTest extends TestCase
 {
     use WithoutMiddleware;
 

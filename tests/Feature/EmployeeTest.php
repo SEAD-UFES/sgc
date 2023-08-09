@@ -23,7 +23,7 @@ use Tests\TestCase;
 /**
  * @mixin \App\Models\User
  */
-class EmployeeTest extends TestCase
+final class EmployeeTest extends TestCase
 {
     use DatabaseMigrations;
     use RefreshDatabase;

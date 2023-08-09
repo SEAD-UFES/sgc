@@ -26,7 +26,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-class BondServiceTest extends TestCase
+final class BondServiceTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;

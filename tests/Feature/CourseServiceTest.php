@@ -14,7 +14,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-class CourseServiceTest extends TestCase
+final class CourseServiceTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;
