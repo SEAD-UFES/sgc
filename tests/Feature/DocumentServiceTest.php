@@ -25,20 +25,12 @@ final class DocumentServiceTest extends TestCase
     private DocumentService $service;
     private RightsDocumentService $rightsService;
 
-    /** @return void  */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->service = new DocumentService(new DocumentRepository());
-        $this->rightsService = new RightsDocumentService(new RightsDocumentRepository());
-    }
-
-
     //setting up scenario for all tests
     protected function setUp(): void
     {
         parent::setUp();
+        $this->service = new DocumentService(new DocumentRepository());
+        $this->rightsService = new RightsDocumentService(new RightsDocumentRepository());
 
         Document::factory()->createOne(
             [

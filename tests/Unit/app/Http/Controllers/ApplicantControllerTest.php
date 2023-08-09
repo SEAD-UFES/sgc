@@ -25,25 +25,22 @@ final class ApplicantControllerTest extends TestCase
     /** @var MockObject $serviceMock */
     private MockObject $serviceMock;
 
-    public function __construct()
+    public function setUp(): void
     {
-        parent::__construct();
+        parent::setUp();
+
+        // Create a Mock for the ApplicantService class.
         $this->serviceMock = $this->createMock(ApplicantService::class);
+
         $this->controller = new ApplicantController($this->serviceMock);
     }
 
-    // public function setUp(): void
-    // {
-    //     parent::setUp();
-
-    //     // Create a Mock for the ApplicantService class.
-    //     $this->serviceMock = $this->createMock(ApplicantService::class);
-
-    //     $this->controller = new ApplicantController($this->serviceMock);
-    // }
-
     public function testControllerIndexShouldCallServiceListMethod(): void
     {
+        
+        $this->serviceMock = $this->createMock(ApplicantService::class);
+        $this->controller = new ApplicantController($this->serviceMock);
+
         // Create a stub for the IndexApplicantRequest class.
         /** @var MockObject $requestStub */
         $requestStub = $this->createStub(IndexApplicantRequest::class);
