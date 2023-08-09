@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Applicant;
@@ -14,7 +15,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-class ApplicantServiceTest extends TestCase
+final class ApplicantServiceTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -24,7 +25,7 @@ class ApplicantServiceTest extends TestCase
     private $service;
 
     //setting up scenario for all tests
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -54,11 +55,11 @@ class ApplicantServiceTest extends TestCase
     }
 
     /**
-     * @test
      *
      * @return void
      */
-    public function applicantsShouldBeListed()
+    #[Test]
+    public function applicantsShouldBeListed(): void
     {
         Event::fakeFor(function () {
             //execution
@@ -73,11 +74,11 @@ class ApplicantServiceTest extends TestCase
     }
 
     /**
-     * @test
      *
      * @return void
      */
-    public function applicantShouldBeRetrieved()
+    #[Test]
+    public function applicantShouldBeRetrieved(): void
     {
         //setting up scenario
         /**
@@ -97,11 +98,11 @@ class ApplicantServiceTest extends TestCase
     }
 
     /**
-     * @test
      *
      * @return void
      */
-    public function applicantShouldBeDeleted()
+    #[Test]
+    public function applicantShouldBeDeleted(): void
     {
         //setting up scenario
         /**
@@ -121,11 +122,11 @@ class ApplicantServiceTest extends TestCase
     }
 
     /**
-     * @test
      *
      * @return void
      */
-    public function applicantStateShouldChange()
+    #[Test]
+    public function applicantStateShouldChange(): void
     {
         /**
          * @var array<string, string> $attributes
@@ -150,11 +151,11 @@ class ApplicantServiceTest extends TestCase
     }
 
     /**
-     * @test
      *
      * @return void
      */
-    public function applicantShouldBeCreated()
+    #[Test]
+    public function applicantShouldBeCreated(): void
     {
         /**
          * @var array<string, string> $attributes
@@ -203,11 +204,11 @@ class ApplicantServiceTest extends TestCase
     }
 
     /**
-     * @test
      *
      * @return void
      */
-    public function shouldPersistApplicantsList()
+    #[Test]
+    public function shouldPersistApplicantsList(): void
     {
         $applicants = [];
 

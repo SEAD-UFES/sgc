@@ -15,7 +15,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 
-class ApplicantControllerTest extends TestCase
+final class ApplicantControllerTest extends TestCase
 {
     use WithoutMiddleware;
 

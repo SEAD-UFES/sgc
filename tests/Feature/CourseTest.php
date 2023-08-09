@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\UserType;
@@ -10,7 +11,7 @@ use App\Repositories\ResponsibilityRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class CourseTest extends TestCase
+final class CourseTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -30,7 +31,7 @@ class CourseTest extends TestCase
         $this->responsibilityRepository = new ResponsibilityRepository();
     }
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -99,10 +100,9 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function guestShouldntListCourses()
+    #[Test]
+    public function guestShouldntListCourses(): void
     {
         $this->get('/courses')
             ->assertStatus(401);
@@ -112,10 +112,9 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function administratorShouldListCourses()
+    #[Test]
+    public function administratorShouldListCourses(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -133,10 +132,9 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function directorShouldListCourses()
+    #[Test]
+    public function directorShouldListCourses(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -154,10 +152,9 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function assistantShouldListCourses()
+    #[Test]
+    public function assistantShouldListCourses(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -175,10 +172,9 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function secretaryShouldListCourses()
+    #[Test]
+    public function secretaryShouldListCourses(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -196,10 +192,9 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function ldiShouldntListCourses()
+    #[Test]
+    public function ldiShouldntListCourses(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -216,10 +211,9 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function coordinatorShouldListCourses()
+    #[Test]
+    public function coordinatorShouldListCourses(): void
     {
         $this->actingAs(self::$userCoord);
 

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Course;
@@ -14,12 +15,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-class ResponsibilityServiceTest extends TestCase
+final class ResponsibilityServiceTest extends TestCase
 {
     use RefreshDatabase;
 
     //setting up scenario for all tests
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -46,10 +47,8 @@ class ResponsibilityServiceTest extends TestCase
         $this->service = new ResponsibilityService();
     }
 
-    /**
-     * @test
-     */
-    public function responsibilitiesShouldBeListed()
+    #[Test]
+    public function responsibilitiesShouldBeListed(): void
     {
         Event::fakeFor(function () {
             //execution
@@ -62,10 +61,8 @@ class ResponsibilityServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function responsibilityShouldBeRetrieved()
+    #[Test]
+    public function responsibilityShouldBeRetrieved(): void
     {
         //setting up scenario
         $responsibility = Responsibility::find(1);
@@ -81,10 +78,8 @@ class ResponsibilityServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function responsibilityShouldBeCreated()
+    #[Test]
+    public function responsibilityShouldBeCreated(): void
     {
         //setting up scenario
         $attributes = [];
@@ -109,10 +104,8 @@ class ResponsibilityServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function responsibilityShouldBeUpdated()
+    #[Test]
+    public function responsibilityShouldBeUpdated(): void
     {
         //setting up scenario
 
@@ -144,10 +137,8 @@ class ResponsibilityServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function responsibilityShouldBeDeleted()
+    #[Test]
+    public function responsibilityShouldBeDeleted(): void
     {
         //setting up scenario
         $responsibility = Responsibility::find(1);

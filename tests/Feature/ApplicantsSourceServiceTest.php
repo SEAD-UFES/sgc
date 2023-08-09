@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Events\FileImported;
 use App\Models\Applicant;
 use App\Services\ApplicantsSourceService;
@@ -12,12 +13,12 @@ use Illuminate\Support\Facades\Storage;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
-class ApplicantsSourceServiceTest extends TestCase
+final class ApplicantsSourceServiceTest extends TestCase
 {
     use RefreshDatabase;
 
     //setting up scenario for all tests
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -44,9 +45,7 @@ class ApplicantsSourceServiceTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldImportApplicantsList(): void
     {
         Event::fake();

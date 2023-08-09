@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use App\Helpers\Phone;
 use PHPUnit\Framework\TestCase;
 
-class PhoneVoTest extends TestCase
+final class PhoneVoTest extends TestCase
 {
     /**
      * A basic unit test example.

@@ -17,7 +17,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 
-class RoleControllerTest extends TestCase
+final class RoleControllerTest extends TestCase
 {
     use WithoutMiddleware;
 
