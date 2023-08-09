@@ -24,7 +24,7 @@ class CreateCourseClassRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+
         ];
     }
 }

@@ -119,7 +119,7 @@ class DomainEventSubscriber
          */
         $course = $event->bond->course;
         $courseId = $course?->id;
-        if ($courseId != null) {
+        if ($courseId !== null) {
             $users->merge($this->userRepository->getActiveUsersOfActiveTypeIdOfCourseId($this->coordUtId, $courseId));
         }
 

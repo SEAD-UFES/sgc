@@ -140,7 +140,7 @@ class User extends Authenticatable
     {
         return new Attribute(
             get: fn () => $this->employee?->gender ?? Genders::M,
-            set: static fn($value) => $value === Genders::F ? 'F' : 'M',
+            set: static fn ($value) => $value === Genders::F ? 'F' : 'M',
         );
     }
 }
