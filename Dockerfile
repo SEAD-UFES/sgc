@@ -21,10 +21,13 @@ FROM node:alpine as frontend
 LABEL image=node:alpine
 RUN mkdir -p /app/public
 
-COPY package.json package-lock.json webpack.mix.js /app/
+COPY ./package.json .
+COPY ./package-lock.json .
+COPY ./vite.config.js .
+COPY ./app/ .
 
 # Copy your JavaScript source files
-COPY resources/ /app/resources/
+COPY ./resources/ /app/resources/
 
 WORKDIR /app
 RUN npm ci && npm run build
