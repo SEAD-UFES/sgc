@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Enums\GrantTypes;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
@@ -36,9 +37,7 @@ class RoleServiceTest extends TestCase
         $this->service = new RoleService();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rolesShouldBeListed()
     {
         Event::fakeFor(function () {
@@ -52,9 +51,7 @@ class RoleServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function roleShouldBeRetrieved()
     {
         //setting up scenario
@@ -71,9 +68,7 @@ class RoleServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function roleShouldBeCreated()
     {
         //setting up scenario
@@ -97,9 +92,7 @@ class RoleServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function roleShouldBeUpdated()
     {
         //setting up scenario
@@ -127,9 +120,7 @@ class RoleServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function roleShouldBeDeleted()
     {
         //setting up scenario

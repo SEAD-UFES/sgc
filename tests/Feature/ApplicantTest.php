@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Enums\CallStates;
 use App\Models\Applicant;
 use App\Models\Course;
@@ -171,9 +172,8 @@ class ApplicantTest extends TestCase
      * Guest Shouldnt list applicants.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntListApplicants()
     {
         $this->get(route('applicants.index'))
@@ -184,9 +184,8 @@ class ApplicantTest extends TestCase
      * Authenticated user without permission Shouldnt list applicants
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function authenticatedUserWithoutPermissionShouldntListApplicants()
     {
         $this->actingAs(self::$userAlien)
@@ -200,9 +199,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldListApplicants()
     {
         $this->actingAs(self::$userAdm);
@@ -221,9 +219,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldListApplicants()
     {
         $this->actingAs(self::$userDir);
@@ -242,9 +239,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldntListApplicants()
     {
         $this->actingAs(self::$userAss);
@@ -262,9 +258,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldListApplicants()
     {
         $this->actingAs(self::$userSec);
@@ -283,9 +278,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntListApplicants()
     {
         $this->actingAs(self::$userLdi);
@@ -303,9 +297,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldListApplicants()
     {
         $this->actingAs(self::$userCoord);
@@ -328,9 +321,8 @@ class ApplicantTest extends TestCase
      * Guest Shouldnt access create applicant page
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntAccessCreateApplicantPage()
     {
         $this->get(route('applicants.create'))
@@ -341,9 +333,8 @@ class ApplicantTest extends TestCase
      * Authenticated user without permission Shouldnt Access create applicant page
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function authenticatedUserWithoutPermissionShouldntAccessCreateApplicantPage()
     {
         $this->actingAs(self::$userAlien)
@@ -357,9 +348,8 @@ class ApplicantTest extends TestCase
      * Admin user Should access create applicant page
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldAccessCreateApplicantPage()
     {
         $this->actingAs(self::$userAdm);
@@ -378,9 +368,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldAccessCreateApplicantPage()
     {
         $this->actingAs(self::$userDir);
@@ -399,9 +388,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldntAccessCreateApplicantPage()
     {
         $this->actingAs(self::$userAss);
@@ -419,9 +407,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldAccessCreateApplicantPage()
     {
         $this->actingAs(self::$userSec);
@@ -440,9 +427,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntAccessCreateApplicantPage()
     {
         $this->actingAs(self::$userLdi);
@@ -460,9 +446,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldntAccessCreateApplicantPage()
     {
         $this->actingAs(self::$userCoord);
@@ -483,9 +468,8 @@ class ApplicantTest extends TestCase
      * Guest Shouldnt access create applicant page
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntAccessStepOneCreateApplicantsPage()
     {
         $this->get(route('applicants.create_many.step_1'))
@@ -496,9 +480,8 @@ class ApplicantTest extends TestCase
      * Authenticated user without permission Shouldnt Access create applicant page
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function authenticatedUserWithoutPermissionShouldntAccessStepOneCreateApplicantsPage()
     {
         $this->actingAs(self::$userAlien)
@@ -512,9 +495,8 @@ class ApplicantTest extends TestCase
      * Admin user Should access create applicant page
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldAccessStepOneCreateApplicantsPage()
     {
         $this->actingAs(self::$userAdm);
@@ -533,9 +515,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldAccessStepOneCreateApplicantsPage()
     {
         $this->actingAs(self::$userDir);
@@ -554,9 +535,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldntAccessStepOneCreateApplicantsPage()
     {
         $this->actingAs(self::$userAss);
@@ -574,9 +554,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldAccessStepOneCreateApplicantsPage()
     {
         $this->actingAs(self::$userSec);
@@ -595,9 +574,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntAccessStepOneCreateApplicantsPage()
     {
         $this->actingAs(self::$userLdi);
@@ -615,9 +593,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldntAccessStepOneCreateApplicantsPage()
     {
         $this->actingAs(self::$userCoord);
@@ -667,9 +644,8 @@ class ApplicantTest extends TestCase
      * Guest Shouldnt access create applicant page
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntAccessStepTwoCreateApplicantsPage()
     {
         $this->get(route('applicants.create_many.step_2'))
@@ -680,9 +656,8 @@ class ApplicantTest extends TestCase
      * Authenticated user without permission Shouldnt Access create applicant page
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function authenticatedUserWithoutPermissionShouldntAccessStepTwoCreateApplicantsPage()
     {
         $this->actingAs(self::$userAlien)
@@ -696,9 +671,8 @@ class ApplicantTest extends TestCase
      * Admin user Should access create applicant page
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldAccessStepTwoCreateApplicantsPage()
     {
         $this->actingAs(self::$userAdm);
@@ -717,9 +691,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldAccessStepTwoCreateApplicantsPage()
     {
         $this->actingAs(self::$userDir);
@@ -738,9 +711,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldntAccessStepTwoCreateApplicantsPage()
     {
         $this->actingAs(self::$userAss);
@@ -758,9 +730,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldAccessStepTwoCreateApplicantsPage()
     {
         $this->actingAs(self::$userSec);
@@ -779,9 +750,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntAccessStepTwoCreateApplicantsPage()
     {
         $this->actingAs(self::$userLdi);
@@ -799,9 +769,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldntAccessStepTwoCreateApplicantsPage()
     {
         $this->actingAs(self::$userCoord);
@@ -860,9 +829,8 @@ class ApplicantTest extends TestCase
      * Guest Shouldnt create applicant
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntCreateApplicant()
     {
         $applicantArr = $this->getTestAttributes();
@@ -875,9 +843,8 @@ class ApplicantTest extends TestCase
      * Authenticated user without permission Shouldnt create applicant
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function authenticatedUserWithoutPermissionShouldntCreateApplicant()
     {
         $applicantArr = $this->getTestAttributes();
@@ -892,9 +859,8 @@ class ApplicantTest extends TestCase
      * Admin user Should create applicants
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldCreateApplicant()
     {
         $this->actingAs(self::$userAdm);
@@ -915,9 +881,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldCreateApplicant()
     {
         $this->actingAs(self::$userDir);
@@ -938,9 +903,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldntCreateApplicant()
     {
         $this->actingAs(self::$userAss);
@@ -960,9 +924,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldCreateApplicant()
     {
         $this->actingAs(self::$userSec);
@@ -983,9 +946,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldntCreateApplicant()
     {
         $this->actingAs(self::$userCoord);
@@ -1005,9 +967,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntCreateApplicant()
     {
         $this->actingAs(self::$userLdi);
@@ -1062,9 +1023,8 @@ class ApplicantTest extends TestCase
      * Guest Shouldnt create applicant
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntCreateManyApplicants()
     {
         $applicantArr = $this->createTestImportedApplicantsArray();
@@ -1077,9 +1037,8 @@ class ApplicantTest extends TestCase
      * Authenticated user without permission Shouldnt create applicant
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function authenticatedUserWithoutPermissionShouldntCreateManyApplicants()
     {
         $applicantArr = $this->createTestImportedApplicantsArray();
@@ -1094,9 +1053,8 @@ class ApplicantTest extends TestCase
      * Admin user Should create applicants
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldCreateManyApplicants()
     {
         $this->actingAs(self::$userAdm);
@@ -1117,9 +1075,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldCreateManyApplicants()
     {
         $this->actingAs(self::$userDir);
@@ -1140,9 +1097,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldntCreateManyApplicants()
     {
         $this->actingAs(self::$userAss);
@@ -1162,9 +1118,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldCreateManyApplicants()
     {
         $this->actingAs(self::$userSec);
@@ -1185,9 +1140,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldntCreateManyApplicants()
     {
         $this->actingAs(self::$userCoord);
@@ -1207,9 +1161,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntCreateManyApplicants()
     {
         $this->actingAs(self::$userLdi);
@@ -1243,9 +1196,8 @@ class ApplicantTest extends TestCase
      * Guest Shouldnt update applicant
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntUpdateApplicant()
     {
         /** @var Applicant $originalApplicant */
@@ -1263,9 +1215,8 @@ class ApplicantTest extends TestCase
      * Authenticated user without permission Shouldnt update applicant
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function authenticatedUserWithoutPermissionShouldntUpdateApplicant()
     {
         $this->actingAs(self::$userAlien)
@@ -1286,9 +1237,8 @@ class ApplicantTest extends TestCase
      * Admin user Should update applicant
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldUpdateApplicant()
     {
         $this->actingAs(self::$userAdm);
@@ -1314,9 +1264,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldUpdateApplicant()
     {
         $this->actingAs(self::$userDir);
@@ -1342,9 +1291,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldntUpdateApplicant()
     {
         $this->actingAs(self::$userAss);
@@ -1369,9 +1317,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldUpdateApplicant()
     {
         $this->actingAs(self::$userSec);
@@ -1397,9 +1344,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldntUpdateApplicant()
     {
         $this->actingAs(self::$userCoord);
@@ -1424,9 +1370,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntUpdateApplicant()
     {
         $this->actingAs(self::$userLdi);
@@ -1454,9 +1399,8 @@ class ApplicantTest extends TestCase
      * Guest Shouldnt delete applicant
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntDeleteApplicants()
     {
         $applicantBefore = Applicant::find(1);
@@ -1472,9 +1416,8 @@ class ApplicantTest extends TestCase
      * Authenticated user without permission Shouldnt delete applicant
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function authenticatedUserWithoutPermissionShouldntDeleteApplicants()
     {
         $this->actingAs(self::$userAlien)
@@ -1493,9 +1436,8 @@ class ApplicantTest extends TestCase
      * Admin user Should delete applicant
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldDeleteApplicants()
     {
         $this->actingAs(self::$userAdm);
@@ -1520,9 +1462,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldDeleteApplicants()
     {
         $this->actingAs(self::$userDir);
@@ -1547,9 +1488,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldntDeleteApplicants()
     {
         $this->actingAs(self::$userAss);
@@ -1572,9 +1512,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldDeleteApplicants()
     {
         $this->actingAs(self::$userSec);
@@ -1599,9 +1538,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntDeleteApplicants()
     {
         $this->actingAs(self::$userLdi);
@@ -1624,9 +1562,8 @@ class ApplicantTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldntDeleteApplicants()
     {
         $this->actingAs(self::$userCoord);

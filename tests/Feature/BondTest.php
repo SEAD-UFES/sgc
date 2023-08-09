@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Enums\KnowledgeAreas;
 use App\Models\Bond;
 use App\Models\BondCourse;
@@ -171,9 +172,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntListBonds()
     {
         $this->get('/bonds')
@@ -184,9 +184,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldListBonds()
     {
         $this->actingAs(self::$userAdm);
@@ -205,9 +204,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldListBonds()
     {
         $this->actingAs(self::$userDir);
@@ -226,9 +224,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldListBonds()
     {
         $this->actingAs(self::$userAss);
@@ -247,9 +244,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldListBonds()
     {
         $this->actingAs(self::$userSec);
@@ -268,9 +264,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntListBonds()
     {
         $this->actingAs(self::$userLdi);
@@ -288,9 +283,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldListBonds()
     {
         $this->actingAs(self::$userCoord);
@@ -311,9 +305,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntAccessCreateBondsPage()
     {
         $this->get('/bonds/create')
@@ -324,9 +317,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldAccessCreateBondsPage()
     {
         $this->actingAs(self::$userAdm);
@@ -345,9 +337,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldAccessCreateBondsPage()
     {
         $this->actingAs(self::$userDir);
@@ -366,9 +357,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldAccessCreateBondsPage()
     {
         $this->actingAs(self::$userAss);
@@ -387,9 +377,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldAccessCreateBondsPage()
     {
         $this->actingAs(self::$userSec);
@@ -408,9 +397,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntAccessCreateBondsPage()
     {
         $this->actingAs(self::$userLdi);
@@ -428,9 +416,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldAccessCreateBondsPage()
     {
         $this->actingAs(self::$userCoord);
@@ -452,9 +439,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntCreateBond()
     {
         $bondArr = $this->createTestBondArray();
@@ -469,9 +455,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldCreateBond()
     {
         $this->actingAs(self::$userAdm);
@@ -494,9 +479,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldCreateBond()
     {
         $this->actingAs(self::$userDir);
@@ -519,9 +503,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldCreateBond()
     {
         $this->actingAs(self::$userAss);
@@ -544,9 +527,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldCreateBond()
     {
         $this->actingAs(self::$userSec);
@@ -569,9 +551,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntCreateBond()
     {
         $this->actingAs(self::$userLdi);
@@ -593,9 +574,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorOfSameCourseShouldCreateBond()
     {
         $this->actingAs(self::$userCoord);
@@ -623,9 +603,8 @@ class BondTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorOfAnotherCourseShouldntCreateBond()
     {
         $this->actingAs(self::$userCoord);

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserType;
@@ -99,9 +100,8 @@ class RoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntListRoles()
     {
         $this->get('/roles')
@@ -112,9 +112,8 @@ class RoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldListRoles()
     {
         $this->actingAs(self::$userAdm);
@@ -133,9 +132,8 @@ class RoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldListRoles()
     {
         $this->actingAs(self::$userDir);
@@ -154,9 +152,8 @@ class RoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldListRoles()
     {
         $this->actingAs(self::$userAss);
@@ -175,9 +172,8 @@ class RoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldListRoles()
     {
         $this->actingAs(self::$userSec);
@@ -196,9 +192,8 @@ class RoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntListRoles()
     {
         $this->actingAs(self::$userLdi);
@@ -216,9 +211,8 @@ class RoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldListRoles()
     {
         $this->actingAs(self::$userCoord);

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Enums\MaritalStatuses;
 use App\Enums\States;
 use App\Models\BankAccount;
@@ -184,9 +185,8 @@ class EmployeeTest extends TestCase
      * Guest Shouldnt list employees
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntListEmployees()
     {
         $this->get(route('employees.index'))
@@ -197,9 +197,8 @@ class EmployeeTest extends TestCase
      * Authenticated user without permission Shouldnt list employees
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function authenticatedUserWithoutPermissionShouldntListEmployees()
     {
         $this->actingAs(self::$userAlien)
@@ -213,9 +212,8 @@ class EmployeeTest extends TestCase
      * Admin user Should list employees
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldListEmployees()
     {
         $this->actingAs(self::$userAdm);
@@ -235,9 +233,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldListEmployees()
     {
         $this->actingAs(self::$userDir);
@@ -256,9 +253,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldListEmployees()
     {
         $this->actingAs(self::$userAss);
@@ -277,9 +273,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldListEmployees()
     {
         $this->actingAs(self::$userSec);
@@ -298,9 +293,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntListEmployees()
     {
         $this->actingAs(self::$userLdi);
@@ -318,9 +312,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldListEmployees()
     {
         $this->actingAs(self::$userCoord);
@@ -341,9 +334,8 @@ class EmployeeTest extends TestCase
      * Guest Shouldnt access employee details page
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntAccessEmployeesDetailsPage()
     {
         $this->get(route('employees.show', 1))
@@ -354,9 +346,8 @@ class EmployeeTest extends TestCase
      * Authenticated user without permission Shouldnt Access Employees Details Page
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function authenticatedUserWithoutPermissionShouldntAccessEmployeesDetailsPage()
     {
         $this->actingAs(self::$userAlien)
@@ -370,9 +361,8 @@ class EmployeeTest extends TestCase
      * Admin user Should access employee details page
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldAccessEmployeesDetailsPage()
     {
         $this->actingAs(self::$userAdm);
@@ -391,9 +381,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldAccessEmployeesDetailsPage()
     {
         $this->actingAs(self::$userDir);
@@ -412,9 +401,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldAccessEmployeesDetailsPage()
     {
         $this->actingAs(self::$userAss);
@@ -433,9 +421,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldAccessEmployeesDetailsPage()
     {
         $this->actingAs(self::$userSec);
@@ -454,9 +441,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntAccessEmployeesDetailsPage()
     {
         $this->actingAs(self::$userLdi);
@@ -474,9 +460,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldntAccessEmployeesDetailsPage()
     {
         $this->actingAs(self::$userCoord);
@@ -496,9 +481,8 @@ class EmployeeTest extends TestCase
      * Guest Shouldnt access create employee page
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntAccessCreateEmployeesPage()
     {
         $this->get(route('employees.create'))
@@ -509,9 +493,8 @@ class EmployeeTest extends TestCase
      * Authenticated user without permission Shouldnt Access create employee page
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function authenticatedUserWithoutPermissionShouldntAccessCreateEmployeesPage()
     {
         $this->actingAs(self::$userAlien)
@@ -525,9 +508,8 @@ class EmployeeTest extends TestCase
      * Admin user Should access create employee page
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldAccessCreateEmployeesPage()
     {
         $this->actingAs(self::$userAdm);
@@ -546,9 +528,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldAccessCreateEmployeesPage()
     {
         $this->actingAs(self::$userDir);
@@ -567,9 +548,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldAccessCreateEmployeesPage()
     {
         $this->actingAs(self::$userAss);
@@ -588,9 +568,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldAccessCreateEmployeesPage()
     {
         $this->actingAs(self::$userSec);
@@ -609,9 +588,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntAccessCreateEmployeesPage()
     {
         $this->actingAs(self::$userLdi);
@@ -629,9 +607,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldntAccessCreateEmployeesPage()
     {
         $this->actingAs(self::$userCoord);
@@ -651,9 +628,8 @@ class EmployeeTest extends TestCase
      * Guest Shouldnt create employee
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntCreateEmployee()
     {
         $employeeArr = $this->createTestEmployeeArray();
@@ -668,9 +644,8 @@ class EmployeeTest extends TestCase
      * Authenticated user without permission Shouldnt create employee
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function authenticatedUserWithoutPermissionShouldntCreateEmployee()
     {
         $employeeArr = $this->createTestEmployeeArray();
@@ -687,9 +662,8 @@ class EmployeeTest extends TestCase
      * Admin user Should create employees
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldCreateEmployee()
     {
         $employeeArr = $this->createTestEmployeeArray();
@@ -711,9 +685,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldCreateEmployee()
     {
         $this->actingAs(self::$userDir);
@@ -736,9 +709,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldCreateEmployee()
     {
         $this->actingAs(self::$userAss);
@@ -761,9 +733,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldCreateEmployee()
     {
         $this->actingAs(self::$userSec);
@@ -786,9 +757,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldntCreateEmployee()
     {
         $this->actingAs(self::$userCoord);
@@ -810,9 +780,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntCreateEmployee()
     {
         $this->actingAs(self::$userLdi);
@@ -836,9 +805,8 @@ class EmployeeTest extends TestCase
      * Guest Shouldnt access edit employee page
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntAccessEditEmployeesPage()
     {
         $this->get(route('employees.edit', 1))
@@ -849,9 +817,8 @@ class EmployeeTest extends TestCase
      * Authenticated user without permission Shouldnt access edit employee page
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function authenticatedUserWithoutPermissionShouldntAccessEditEmployeesPage()
     {
         $this->actingAs(self::$userAlien)
@@ -865,9 +832,8 @@ class EmployeeTest extends TestCase
      * Admin user Should access edit employee page
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldAccessEditEmployeesPage()
     {
         $this->actingAs(self::$userAdm);
@@ -886,9 +852,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldAccessEditEmployeesPage()
     {
         $this->actingAs(self::$userDir);
@@ -907,9 +872,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldAccessEditEmployeesPage()
     {
         $this->actingAs(self::$userAss);
@@ -928,9 +892,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldAccessEditEmployeesPage()
     {
         $this->actingAs(self::$userSec);
@@ -949,9 +912,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntAccessEditEmployeesPage()
     {
         $this->actingAs(self::$userLdi);
@@ -969,9 +931,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldntAccessEditEmployeesPage()
     {
         $this->actingAs(self::$userCoord);
@@ -991,9 +952,8 @@ class EmployeeTest extends TestCase
      * Guest Shouldnt update employee
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntUpdateEmployee()
     {
         /** @var Employee $originalEmployee */
@@ -1016,9 +976,8 @@ class EmployeeTest extends TestCase
      * Authenticated user without permission Shouldnt update employee
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function authenticatedUserWithoutPermissionShouldntUpdateEmployee()
     {
         $this->actingAs(self::$userAlien)
@@ -1044,9 +1003,8 @@ class EmployeeTest extends TestCase
      * Admin user Should update employee
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldUpdateEmployee()
     {
         $this->actingAs(self::$userAdm);
@@ -1100,9 +1058,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldUpdateEmployee()
     {
         $this->actingAs(self::$userDir);
@@ -1157,9 +1114,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldUpdateEmployee()
     {
         $this->actingAs(self::$userAss);
@@ -1214,9 +1170,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldUpdateEmployee()
     {
         $this->actingAs(self::$userSec);
@@ -1271,9 +1226,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldntUpdateEmployee()
     {
         $this->actingAs(self::$userCoord);
@@ -1327,9 +1281,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntUpdateEmployee()
     {
         $this->actingAs(self::$userLdi);
@@ -1385,9 +1338,8 @@ class EmployeeTest extends TestCase
      * Guest Shouldnt delete employee
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntDeleteEmployees()
     {
         $employeeBefore = Employee::find(1);
@@ -1403,9 +1355,8 @@ class EmployeeTest extends TestCase
      * Authenticated user without permission Shouldnt delete employee
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function authenticatedUserWithoutPermissionShouldntDeleteEmployees()
     {
         $this->actingAs(self::$userAlien)
@@ -1424,9 +1375,8 @@ class EmployeeTest extends TestCase
      * Admin user Should delete employee
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldDeleteEmployees()
     {
         $this->actingAs(self::$userAdm);
@@ -1451,9 +1401,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldntDeleteEmployees()
     {
         $this->actingAs(self::$userDir);
@@ -1476,9 +1425,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldntDeleteEmployees()
     {
         $this->actingAs(self::$userAss);
@@ -1501,9 +1449,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldntDeleteEmployees()
     {
         $this->actingAs(self::$userSec);
@@ -1526,9 +1473,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntDeleteEmployees()
     {
         $this->actingAs(self::$userLdi);
@@ -1551,9 +1497,8 @@ class EmployeeTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldntDeleteEmployees()
     {
         $this->actingAs(self::$userCoord);

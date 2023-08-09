@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\UserType;
@@ -107,9 +108,8 @@ class ResponsibilityTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntListResponsibilities()
     {
         $this->get('/responsibilities')
@@ -120,9 +120,8 @@ class ResponsibilityTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldListResponsibilities()
     {
         $this->actingAs(self::$userAdm);
@@ -141,9 +140,8 @@ class ResponsibilityTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldntListResponsibilities()
     {
         $this->actingAs(self::$userDir);
@@ -161,9 +159,8 @@ class ResponsibilityTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldntListResponsibilities()
     {
         $this->actingAs(self::$userAss);
@@ -181,9 +178,8 @@ class ResponsibilityTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldntListResponsibilities()
     {
         $this->actingAs(self::$userSec);
@@ -201,9 +197,8 @@ class ResponsibilityTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntListResponsibilities()
     {
         $this->actingAs(self::$userLdi);
@@ -221,9 +216,8 @@ class ResponsibilityTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldntListResponsibilities()
     {
         $this->actingAs(self::$userCoord);

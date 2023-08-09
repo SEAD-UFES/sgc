@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Pole;
 use App\Models\User;
 use App\Models\UserType;
@@ -112,9 +113,8 @@ class PoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldListPoles()
     {
         $this->actingAs(self::$userAdm);
@@ -133,9 +133,8 @@ class PoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldListPoles()
     {
         $this->actingAs(self::$userDir);
@@ -154,9 +153,8 @@ class PoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldListPoles()
     {
         $this->actingAs(self::$userAss);
@@ -175,9 +173,8 @@ class PoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldListPoles()
     {
         $this->actingAs(self::$userSec);
@@ -196,9 +193,8 @@ class PoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntListPoles()
     {
         $this->actingAs(self::$userLdi);
@@ -216,9 +212,8 @@ class PoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldListPoles()
     {
         $this->actingAs(self::$userCoord);

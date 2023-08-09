@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Bond;
@@ -68,9 +69,7 @@ class DocumentServiceTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function documentsShouldBeListed(): void
     {
         Event::fakeFor(function () {
@@ -85,9 +84,7 @@ class DocumentServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rightsShouldBeListed(): void
     {
         Document::factory()->createOne(
@@ -116,9 +113,7 @@ class DocumentServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function documentShouldBeCreated(): void
     {
         //setting up scenario
@@ -151,9 +146,7 @@ class DocumentServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function documentShouldBePreparedToDownload(): void
     {
         Event::fakeFor(function () {

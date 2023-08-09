@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Enums\Degrees;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
@@ -38,9 +39,7 @@ class CourseServiceTest extends TestCase
         $this->service = new CourseService();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function coursesShouldBeListed()
     {
         Event::fakeFor(function () {
@@ -54,9 +53,7 @@ class CourseServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function courseShouldBeRetrieved()
     {
         //setting up scenario
@@ -73,9 +70,7 @@ class CourseServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function courseShouldBeCreated()
     {
         //setting up scenario
@@ -100,9 +95,7 @@ class CourseServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function courseShouldBeUpdated()
     {
         //setting up scenario
@@ -130,9 +123,7 @@ class CourseServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function courseShouldBeDeleted()
     {
         //setting up scenario

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Hash;
@@ -15,9 +16,8 @@ class LoginTest extends TestCase
      * Ensures a guest (unauthenticated user) sees the login form
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldAccessLoginPage()
     {
         $this->get(route('auth.login'))
@@ -32,9 +32,8 @@ class LoginTest extends TestCase
      * A guest must be redirected from the root '/' to the login route
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestIsRedirectedFromRootLogin()
     {
         $this->get(route('root'))
@@ -45,9 +44,8 @@ class LoginTest extends TestCase
      * A guest must not be able to access the home route
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntSeeHome()
     {
         $this->get(route('home'))
@@ -60,9 +58,8 @@ class LoginTest extends TestCase
      * A logged user must be redirected from 'root' to the 'home'.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function authenticatedUserShouldntAccessLoginPage()
     {
         $user = User::factory()->make();
@@ -80,9 +77,8 @@ class LoginTest extends TestCase
      * An existing user cannot login with the wrong password
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function userShouldntAuthenticateWithWrongPassword()
     {
         $user = User::factory()->create(

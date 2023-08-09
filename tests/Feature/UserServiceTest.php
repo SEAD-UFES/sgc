@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Employee;
@@ -40,9 +41,7 @@ class UserServiceTest extends TestCase
         $this->service = new UserService();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function usersShouldBeListed()
     {
         Event::fakeFor(function () {
@@ -57,9 +56,7 @@ class UserServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userShouldBeRetrieved()
     {
         //setting up scenario
@@ -76,9 +73,7 @@ class UserServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userShouldBeCreated()
     {
         //setting up scenario
@@ -102,9 +97,7 @@ class UserServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userShouldBeUpdated()
     {
         //setting up scenario
@@ -133,9 +126,7 @@ class UserServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userShouldBeUpdatedExceptPassword()
     {
         //setting up scenario
@@ -165,9 +156,7 @@ class UserServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userShouldHaveEmployeeAttached()
     {
         //setting up scenario
@@ -201,9 +190,7 @@ class UserServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userShouldBeDeleted()
     {
         //setting up scenario

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\UserType;
@@ -99,9 +100,8 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function guestShouldntListCourses()
     {
         $this->get('/courses')
@@ -112,9 +112,8 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function administratorShouldListCourses()
     {
         $this->actingAs(self::$userAdm);
@@ -133,9 +132,8 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function directorShouldListCourses()
     {
         $this->actingAs(self::$userDir);
@@ -154,9 +152,8 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function assistantShouldListCourses()
     {
         $this->actingAs(self::$userAss);
@@ -175,9 +172,8 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function secretaryShouldListCourses()
     {
         $this->actingAs(self::$userSec);
@@ -196,9 +192,8 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function ldiShouldntListCourses()
     {
         $this->actingAs(self::$userLdi);
@@ -216,9 +211,8 @@ class CourseTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
+    #[Test]
     public function coordinatorShouldListCourses()
     {
         $this->actingAs(self::$userCoord);

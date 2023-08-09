@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Events\ModelListed;
 use App\Models\UserType;
 use App\Services\UserTypeService;
@@ -37,9 +38,7 @@ class UserTypeServiceTest extends TestCase
         $this->service = new UserTypeService();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userTypesShouldBeListed()
     {
         Event::fakeFor(function () {

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Applicant;
@@ -54,10 +55,10 @@ class ApplicantServiceTest extends TestCase
     }
 
     /**
-     * @test
      *
      * @return void
      */
+    #[Test]
     public function applicantsShouldBeListed()
     {
         Event::fakeFor(function () {
@@ -73,10 +74,10 @@ class ApplicantServiceTest extends TestCase
     }
 
     /**
-     * @test
      *
      * @return void
      */
+    #[Test]
     public function applicantShouldBeRetrieved()
     {
         //setting up scenario
@@ -97,10 +98,10 @@ class ApplicantServiceTest extends TestCase
     }
 
     /**
-     * @test
      *
      * @return void
      */
+    #[Test]
     public function applicantShouldBeDeleted()
     {
         //setting up scenario
@@ -121,10 +122,10 @@ class ApplicantServiceTest extends TestCase
     }
 
     /**
-     * @test
      *
      * @return void
      */
+    #[Test]
     public function applicantStateShouldChange()
     {
         /**
@@ -150,10 +151,10 @@ class ApplicantServiceTest extends TestCase
     }
 
     /**
-     * @test
      *
      * @return void
      */
+    #[Test]
     public function applicantShouldBeCreated()
     {
         /**
@@ -203,10 +204,10 @@ class ApplicantServiceTest extends TestCase
     }
 
     /**
-     * @test
      *
      * @return void
      */
+    #[Test]
     public function shouldPersistApplicantsList()
     {
         $applicants = [];

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Pole;
@@ -35,9 +36,7 @@ class PoleServiceTest extends TestCase
         $this->service = new PoleService();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function polesShouldBeListed()
     {
         Event::fakeFor(function () {
@@ -51,9 +50,7 @@ class PoleServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function poleShouldBeRetrieved()
     {
         //setting up scenario
@@ -70,9 +67,7 @@ class PoleServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function poleShouldBeCreated()
     {
         //setting up scenario
@@ -94,9 +89,7 @@ class PoleServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function poleShouldBeUpdated()
     {
         //setting up scenario
@@ -122,9 +115,7 @@ class PoleServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function poleShouldBeDeleted()
     {
         //setting up scenario

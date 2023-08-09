@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Events\FileImported;
 use App\Models\Applicant;
 use App\Services\ApplicantsSourceService;
@@ -44,9 +45,7 @@ class ApplicantsSourceServiceTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldImportApplicantsList(): void
     {
         Event::fake();

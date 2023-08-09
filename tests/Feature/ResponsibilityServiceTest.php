@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Course;
@@ -46,9 +47,7 @@ class ResponsibilityServiceTest extends TestCase
         $this->service = new ResponsibilityService();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function responsibilitiesShouldBeListed()
     {
         Event::fakeFor(function () {
@@ -62,9 +61,7 @@ class ResponsibilityServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function responsibilityShouldBeRetrieved()
     {
         //setting up scenario
@@ -81,9 +78,7 @@ class ResponsibilityServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function responsibilityShouldBeCreated()
     {
         //setting up scenario
@@ -109,9 +104,7 @@ class ResponsibilityServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function responsibilityShouldBeUpdated()
     {
         //setting up scenario
@@ -144,9 +137,7 @@ class ResponsibilityServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function responsibilityShouldBeDeleted()
     {
         //setting up scenario

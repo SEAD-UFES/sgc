@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Enums\Genders;
 use App\Enums\MaritalStatuses;
 use App\Enums\States;
@@ -52,9 +53,7 @@ class EmployeeServiceTest extends TestCase
         $this->service = new EmployeeService();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function employeesShouldBeListed(): void
     {
         Event::fakeFor(function () {
@@ -69,9 +68,7 @@ class EmployeeServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function employeeShouldBeRetrieved(): void
     {
         //setting up scenario
@@ -89,9 +86,7 @@ class EmployeeServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function employeeShouldBeCreated(): void
     {
         //setting up scenario
@@ -140,9 +135,7 @@ class EmployeeServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function employeeShouldBeUpdated(): void
     {
         //setting up scenario
@@ -194,9 +187,7 @@ class EmployeeServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function employeeShouldBeDeleted(): void
     {
         //setting up scenario
@@ -214,9 +205,7 @@ class EmployeeServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function employeeWithUserShouldBeDeleted(): void
     {
         //setting up scenario
