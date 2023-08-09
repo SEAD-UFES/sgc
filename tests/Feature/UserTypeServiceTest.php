@@ -39,7 +39,7 @@ class UserTypeServiceTest extends TestCase
     }
 
     #[Test]
-    public function userTypesShouldBeListed()
+    public function userTypesShouldBeListed(): void
     {
         Event::fakeFor(function () {
             $userTypes = $this->service->list();

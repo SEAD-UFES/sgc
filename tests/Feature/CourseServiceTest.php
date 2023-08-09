@@ -40,7 +40,7 @@ class CourseServiceTest extends TestCase
     }
 
     #[Test]
-    public function coursesShouldBeListed()
+    public function coursesShouldBeListed(): void
     {
         Event::fakeFor(function () {
             //execution
@@ -54,7 +54,7 @@ class CourseServiceTest extends TestCase
     }
 
     #[Test]
-    public function courseShouldBeRetrieved()
+    public function courseShouldBeRetrieved(): void
     {
         //setting up scenario
         $course = Course::find(1);
@@ -71,7 +71,7 @@ class CourseServiceTest extends TestCase
     }
 
     #[Test]
-    public function courseShouldBeCreated()
+    public function courseShouldBeCreated(): void
     {
         //setting up scenario
         $attributes = [];
@@ -96,7 +96,7 @@ class CourseServiceTest extends TestCase
     }
 
     #[Test]
-    public function courseShouldBeUpdated()
+    public function courseShouldBeUpdated(): void
     {
         //setting up scenario
 
@@ -124,7 +124,7 @@ class CourseServiceTest extends TestCase
     }
 
     #[Test]
-    public function courseShouldBeDeleted()
+    public function courseShouldBeDeleted(): void
     {
         //setting up scenario
         $course = Course::find(1);

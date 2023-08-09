@@ -174,7 +174,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntListApplicants()
+    public function guestShouldntListApplicants(): void
     {
         $this->get(route('applicants.index'))
             ->assertStatus(401);
@@ -186,7 +186,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function authenticatedUserWithoutPermissionShouldntListApplicants()
+    public function authenticatedUserWithoutPermissionShouldntListApplicants(): void
     {
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
@@ -201,7 +201,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldListApplicants()
+    public function administratorShouldListApplicants(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -221,7 +221,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldListApplicants()
+    public function directorShouldListApplicants(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -241,7 +241,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldntListApplicants()
+    public function assistantShouldntListApplicants(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -260,7 +260,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldListApplicants()
+    public function secretaryShouldListApplicants(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -280,7 +280,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntListApplicants()
+    public function ldiShouldntListApplicants(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -299,7 +299,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldListApplicants()
+    public function coordinatorShouldListApplicants(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -323,7 +323,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntAccessCreateApplicantPage()
+    public function guestShouldntAccessCreateApplicantPage(): void
     {
         $this->get(route('applicants.create'))
             ->assertStatus(401);
@@ -335,7 +335,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function authenticatedUserWithoutPermissionShouldntAccessCreateApplicantPage()
+    public function authenticatedUserWithoutPermissionShouldntAccessCreateApplicantPage(): void
     {
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
@@ -350,7 +350,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldAccessCreateApplicantPage()
+    public function administratorShouldAccessCreateApplicantPage(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -370,7 +370,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldAccessCreateApplicantPage()
+    public function directorShouldAccessCreateApplicantPage(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -390,7 +390,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldntAccessCreateApplicantPage()
+    public function assistantShouldntAccessCreateApplicantPage(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -409,7 +409,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldAccessCreateApplicantPage()
+    public function secretaryShouldAccessCreateApplicantPage(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -429,7 +429,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntAccessCreateApplicantPage()
+    public function ldiShouldntAccessCreateApplicantPage(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -448,7 +448,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldntAccessCreateApplicantPage()
+    public function coordinatorShouldntAccessCreateApplicantPage(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -470,7 +470,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntAccessStepOneCreateApplicantsPage()
+    public function guestShouldntAccessStepOneCreateApplicantsPage(): void
     {
         $this->get(route('applicants.create_many.step_1'))
             ->assertStatus(401);
@@ -482,7 +482,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function authenticatedUserWithoutPermissionShouldntAccessStepOneCreateApplicantsPage()
+    public function authenticatedUserWithoutPermissionShouldntAccessStepOneCreateApplicantsPage(): void
     {
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
@@ -497,7 +497,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldAccessStepOneCreateApplicantsPage()
+    public function administratorShouldAccessStepOneCreateApplicantsPage(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -517,7 +517,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldAccessStepOneCreateApplicantsPage()
+    public function directorShouldAccessStepOneCreateApplicantsPage(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -537,7 +537,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldntAccessStepOneCreateApplicantsPage()
+    public function assistantShouldntAccessStepOneCreateApplicantsPage(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -556,7 +556,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldAccessStepOneCreateApplicantsPage()
+    public function secretaryShouldAccessStepOneCreateApplicantsPage(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -576,7 +576,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntAccessStepOneCreateApplicantsPage()
+    public function ldiShouldntAccessStepOneCreateApplicantsPage(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -595,7 +595,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldntAccessStepOneCreateApplicantsPage()
+    public function coordinatorShouldntAccessStepOneCreateApplicantsPage(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -646,7 +646,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntAccessStepTwoCreateApplicantsPage()
+    public function guestShouldntAccessStepTwoCreateApplicantsPage(): void
     {
         $this->get(route('applicants.create_many.step_2'))
             ->assertStatus(401);
@@ -658,7 +658,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function authenticatedUserWithoutPermissionShouldntAccessStepTwoCreateApplicantsPage()
+    public function authenticatedUserWithoutPermissionShouldntAccessStepTwoCreateApplicantsPage(): void
     {
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null, 'importedApplicants' => $this->createTestImportedApplicants()]);
@@ -673,7 +673,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldAccessStepTwoCreateApplicantsPage()
+    public function administratorShouldAccessStepTwoCreateApplicantsPage(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -693,7 +693,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldAccessStepTwoCreateApplicantsPage()
+    public function directorShouldAccessStepTwoCreateApplicantsPage(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -713,7 +713,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldntAccessStepTwoCreateApplicantsPage()
+    public function assistantShouldntAccessStepTwoCreateApplicantsPage(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -732,7 +732,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldAccessStepTwoCreateApplicantsPage()
+    public function secretaryShouldAccessStepTwoCreateApplicantsPage(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -752,7 +752,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntAccessStepTwoCreateApplicantsPage()
+    public function ldiShouldntAccessStepTwoCreateApplicantsPage(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -771,7 +771,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldntAccessStepTwoCreateApplicantsPage()
+    public function coordinatorShouldntAccessStepTwoCreateApplicantsPage(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -831,7 +831,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntCreateApplicant()
+    public function guestShouldntCreateApplicant(): void
     {
         $applicantArr = $this->getTestAttributes();
 
@@ -845,7 +845,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function authenticatedUserWithoutPermissionShouldntCreateApplicant()
+    public function authenticatedUserWithoutPermissionShouldntCreateApplicant(): void
     {
         $applicantArr = $this->getTestAttributes();
 
@@ -861,7 +861,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldCreateApplicant()
+    public function administratorShouldCreateApplicant(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -883,7 +883,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldCreateApplicant()
+    public function directorShouldCreateApplicant(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -905,7 +905,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldntCreateApplicant()
+    public function assistantShouldntCreateApplicant(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -926,7 +926,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldCreateApplicant()
+    public function secretaryShouldCreateApplicant(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -948,7 +948,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldntCreateApplicant()
+    public function coordinatorShouldntCreateApplicant(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -969,7 +969,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntCreateApplicant()
+    public function ldiShouldntCreateApplicant(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -1025,7 +1025,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntCreateManyApplicants()
+    public function guestShouldntCreateManyApplicants(): void
     {
         $applicantArr = $this->createTestImportedApplicantsArray();
 
@@ -1039,7 +1039,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function authenticatedUserWithoutPermissionShouldntCreateManyApplicants()
+    public function authenticatedUserWithoutPermissionShouldntCreateManyApplicants(): void
     {
         $applicantArr = $this->createTestImportedApplicantsArray();
 
@@ -1055,7 +1055,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldCreateManyApplicants()
+    public function administratorShouldCreateManyApplicants(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -1077,7 +1077,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldCreateManyApplicants()
+    public function directorShouldCreateManyApplicants(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -1099,7 +1099,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldntCreateManyApplicants()
+    public function assistantShouldntCreateManyApplicants(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -1120,7 +1120,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldCreateManyApplicants()
+    public function secretaryShouldCreateManyApplicants(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -1142,7 +1142,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldntCreateManyApplicants()
+    public function coordinatorShouldntCreateManyApplicants(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -1163,7 +1163,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntCreateManyApplicants()
+    public function ldiShouldntCreateManyApplicants(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -1198,7 +1198,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntUpdateApplicant()
+    public function guestShouldntUpdateApplicant(): void
     {
         /** @var Applicant $originalApplicant */
         $originalApplicant = Applicant::where('name', 'John Doe')->first();
@@ -1217,7 +1217,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function authenticatedUserWithoutPermissionShouldntUpdateApplicant()
+    public function authenticatedUserWithoutPermissionShouldntUpdateApplicant(): void
     {
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
@@ -1239,7 +1239,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldUpdateApplicant()
+    public function administratorShouldUpdateApplicant(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -1266,7 +1266,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldUpdateApplicant()
+    public function directorShouldUpdateApplicant(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -1293,7 +1293,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldntUpdateApplicant()
+    public function assistantShouldntUpdateApplicant(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -1319,7 +1319,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldUpdateApplicant()
+    public function secretaryShouldUpdateApplicant(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -1346,7 +1346,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldntUpdateApplicant()
+    public function coordinatorShouldntUpdateApplicant(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -1372,7 +1372,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntUpdateApplicant()
+    public function ldiShouldntUpdateApplicant(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -1401,7 +1401,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntDeleteApplicants()
+    public function guestShouldntDeleteApplicants(): void
     {
         $applicantBefore = Applicant::find(1);
 
@@ -1418,7 +1418,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function authenticatedUserWithoutPermissionShouldntDeleteApplicants()
+    public function authenticatedUserWithoutPermissionShouldntDeleteApplicants(): void
     {
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
@@ -1438,7 +1438,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldDeleteApplicants()
+    public function administratorShouldDeleteApplicants(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -1464,7 +1464,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldDeleteApplicants()
+    public function directorShouldDeleteApplicants(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -1490,7 +1490,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldntDeleteApplicants()
+    public function assistantShouldntDeleteApplicants(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -1514,7 +1514,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldDeleteApplicants()
+    public function secretaryShouldDeleteApplicants(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -1540,7 +1540,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntDeleteApplicants()
+    public function ldiShouldntDeleteApplicants(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -1564,7 +1564,7 @@ class ApplicantTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldntDeleteApplicants()
+    public function coordinatorShouldntDeleteApplicants(): void
     {
         $this->actingAs(self::$userCoord);
 

@@ -103,7 +103,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntListUsers()
+    public function guestShouldntListUsers(): void
     {
         $this->get('/users')
             ->assertStatus(401);
@@ -115,7 +115,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldListUsers()
+    public function administratorShouldListUsers(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -135,7 +135,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldntListUsers()
+    public function directorShouldntListUsers(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -154,7 +154,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldntListUsers()
+    public function assistantShouldntListUsers(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -173,7 +173,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldntListUsers()
+    public function secretaryShouldntListUsers(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -192,7 +192,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntListUsers()
+    public function ldiShouldntListUsers(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -211,7 +211,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldntListUsers()
+    public function coordinatorShouldntListUsers(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -232,7 +232,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntAccessCreateUsersPage()
+    public function guestShouldntAccessCreateUsersPage(): void
     {
         $this->get('/users/create')
             ->assertStatus(401);
@@ -244,7 +244,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldAccessCreateUsersPage()
+    public function administratorShouldAccessCreateUsersPage(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -264,7 +264,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldntAccessCreateUsersPage()
+    public function directorShouldntAccessCreateUsersPage(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -283,7 +283,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldntAccessCreateUsersPage()
+    public function assistantShouldntAccessCreateUsersPage(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -302,7 +302,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldntAccessCreateUsersPage()
+    public function secretaryShouldntAccessCreateUsersPage(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -321,7 +321,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntAccessCreateUsersPage()
+    public function ldiShouldntAccessCreateUsersPage(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -340,7 +340,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldntAccessCreateUsersPage()
+    public function coordinatorShouldntAccessCreateUsersPage(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -362,7 +362,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntCreateUser()
+    public function guestShouldntCreateUser(): void
     {
         $user = $this->createTestUserAsArray();
 
@@ -376,7 +376,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldCreateUser()
+    public function administratorShouldCreateUser(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -398,7 +398,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldntCreateUser()
+    public function directorShouldntCreateUser(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -419,7 +419,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldntCreateUser()
+    public function assistantShouldntCreateUser(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -440,7 +440,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldntCreateUser()
+    public function secretaryShouldntCreateUser(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -461,7 +461,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntCreateUser()
+    public function ldiShouldntCreateUser(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -482,7 +482,7 @@ class UserTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldntCreateUser()
+    public function coordinatorShouldntCreateUser(): void
     {
         $this->actingAs(self::$userCoord);
 

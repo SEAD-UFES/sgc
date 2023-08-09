@@ -42,7 +42,7 @@ class UserServiceTest extends TestCase
     }
 
     #[Test]
-    public function usersShouldBeListed()
+    public function usersShouldBeListed(): void
     {
         Event::fakeFor(function () {
             //execution
@@ -57,7 +57,7 @@ class UserServiceTest extends TestCase
     }
 
     #[Test]
-    public function userShouldBeRetrieved()
+    public function userShouldBeRetrieved(): void
     {
         //setting up scenario
         $user = User::find(1);
@@ -74,7 +74,7 @@ class UserServiceTest extends TestCase
     }
 
     #[Test]
-    public function userShouldBeCreated()
+    public function userShouldBeCreated(): void
     {
         //setting up scenario
         $attributes = [];
@@ -98,7 +98,7 @@ class UserServiceTest extends TestCase
     }
 
     #[Test]
-    public function userShouldBeUpdated()
+    public function userShouldBeUpdated(): void
     {
         //setting up scenario
 
@@ -127,7 +127,7 @@ class UserServiceTest extends TestCase
     }
 
     #[Test]
-    public function userShouldBeUpdatedExceptPassword()
+    public function userShouldBeUpdatedExceptPassword(): void
     {
         //setting up scenario
 
@@ -157,7 +157,7 @@ class UserServiceTest extends TestCase
     }
 
     #[Test]
-    public function userShouldHaveEmployeeAttached()
+    public function userShouldHaveEmployeeAttached(): void
     {
         //setting up scenario
         /**
@@ -191,7 +191,7 @@ class UserServiceTest extends TestCase
     }
 
     #[Test]
-    public function userShouldBeDeleted()
+    public function userShouldBeDeleted(): void
     {
         //setting up scenario
         $user = User::find(1);

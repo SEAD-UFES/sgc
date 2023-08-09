@@ -174,7 +174,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntListBonds()
+    public function guestShouldntListBonds(): void
     {
         $this->get('/bonds')
             ->assertStatus(401);
@@ -186,7 +186,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldListBonds()
+    public function administratorShouldListBonds(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -206,7 +206,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldListBonds()
+    public function directorShouldListBonds(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -226,7 +226,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldListBonds()
+    public function assistantShouldListBonds(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -246,7 +246,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldListBonds()
+    public function secretaryShouldListBonds(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -266,7 +266,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntListBonds()
+    public function ldiShouldntListBonds(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -285,7 +285,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldListBonds()
+    public function coordinatorShouldListBonds(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -307,7 +307,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntAccessCreateBondsPage()
+    public function guestShouldntAccessCreateBondsPage(): void
     {
         $this->get('/bonds/create')
             ->assertStatus(401);
@@ -319,7 +319,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldAccessCreateBondsPage()
+    public function administratorShouldAccessCreateBondsPage(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -339,7 +339,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldAccessCreateBondsPage()
+    public function directorShouldAccessCreateBondsPage(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -359,7 +359,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldAccessCreateBondsPage()
+    public function assistantShouldAccessCreateBondsPage(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -379,7 +379,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldAccessCreateBondsPage()
+    public function secretaryShouldAccessCreateBondsPage(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -399,7 +399,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntAccessCreateBondsPage()
+    public function ldiShouldntAccessCreateBondsPage(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -418,7 +418,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldAccessCreateBondsPage()
+    public function coordinatorShouldAccessCreateBondsPage(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -441,7 +441,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntCreateBond()
+    public function guestShouldntCreateBond(): void
     {
         $bondArr = $this->createTestBondArray();
         Arr::forget($bondArr, ['id', 'created_at', 'updated_at']);
@@ -457,7 +457,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldCreateBond()
+    public function administratorShouldCreateBond(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -481,7 +481,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldCreateBond()
+    public function directorShouldCreateBond(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -505,7 +505,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldCreateBond()
+    public function assistantShouldCreateBond(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -529,7 +529,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldCreateBond()
+    public function secretaryShouldCreateBond(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -553,7 +553,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntCreateBond()
+    public function ldiShouldntCreateBond(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -576,7 +576,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorOfSameCourseShouldCreateBond()
+    public function coordinatorOfSameCourseShouldCreateBond(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -605,7 +605,7 @@ class BondTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorOfAnotherCourseShouldntCreateBond()
+    public function coordinatorOfAnotherCourseShouldntCreateBond(): void
     {
         $this->actingAs(self::$userCoord);
 

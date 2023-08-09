@@ -102,7 +102,7 @@ class CourseTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntListCourses()
+    public function guestShouldntListCourses(): void
     {
         $this->get('/courses')
             ->assertStatus(401);
@@ -114,7 +114,7 @@ class CourseTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldListCourses()
+    public function administratorShouldListCourses(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -134,7 +134,7 @@ class CourseTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldListCourses()
+    public function directorShouldListCourses(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -154,7 +154,7 @@ class CourseTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldListCourses()
+    public function assistantShouldListCourses(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -174,7 +174,7 @@ class CourseTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldListCourses()
+    public function secretaryShouldListCourses(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -194,7 +194,7 @@ class CourseTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntListCourses()
+    public function ldiShouldntListCourses(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -213,7 +213,7 @@ class CourseTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldListCourses()
+    public function coordinatorShouldListCourses(): void
     {
         $this->actingAs(self::$userCoord);
 

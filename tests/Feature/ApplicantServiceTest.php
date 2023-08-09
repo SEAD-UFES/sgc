@@ -59,7 +59,7 @@ class ApplicantServiceTest extends TestCase
      * @return void
      */
     #[Test]
-    public function applicantsShouldBeListed()
+    public function applicantsShouldBeListed(): void
     {
         Event::fakeFor(function () {
             //execution
@@ -78,7 +78,7 @@ class ApplicantServiceTest extends TestCase
      * @return void
      */
     #[Test]
-    public function applicantShouldBeRetrieved()
+    public function applicantShouldBeRetrieved(): void
     {
         //setting up scenario
         /**
@@ -102,7 +102,7 @@ class ApplicantServiceTest extends TestCase
      * @return void
      */
     #[Test]
-    public function applicantShouldBeDeleted()
+    public function applicantShouldBeDeleted(): void
     {
         //setting up scenario
         /**
@@ -126,7 +126,7 @@ class ApplicantServiceTest extends TestCase
      * @return void
      */
     #[Test]
-    public function applicantStateShouldChange()
+    public function applicantStateShouldChange(): void
     {
         /**
          * @var array<string, string> $attributes
@@ -155,7 +155,7 @@ class ApplicantServiceTest extends TestCase
      * @return void
      */
     #[Test]
-    public function applicantShouldBeCreated()
+    public function applicantShouldBeCreated(): void
     {
         /**
          * @var array<string, string> $attributes
@@ -208,7 +208,7 @@ class ApplicantServiceTest extends TestCase
      * @return void
      */
     #[Test]
-    public function shouldPersistApplicantsList()
+    public function shouldPersistApplicantsList(): void
     {
         $applicants = [];
 

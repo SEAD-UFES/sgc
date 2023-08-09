@@ -102,7 +102,7 @@ class RoleTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntListRoles()
+    public function guestShouldntListRoles(): void
     {
         $this->get('/roles')
             ->assertStatus(401);
@@ -114,7 +114,7 @@ class RoleTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldListRoles()
+    public function administratorShouldListRoles(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -134,7 +134,7 @@ class RoleTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldListRoles()
+    public function directorShouldListRoles(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -154,7 +154,7 @@ class RoleTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldListRoles()
+    public function assistantShouldListRoles(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -174,7 +174,7 @@ class RoleTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldListRoles()
+    public function secretaryShouldListRoles(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -194,7 +194,7 @@ class RoleTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntListRoles()
+    public function ldiShouldntListRoles(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -213,7 +213,7 @@ class RoleTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldListRoles()
+    public function coordinatorShouldListRoles(): void
     {
         $this->actingAs(self::$userCoord);
 

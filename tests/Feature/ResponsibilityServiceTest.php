@@ -48,7 +48,7 @@ class ResponsibilityServiceTest extends TestCase
     }
 
     #[Test]
-    public function responsibilitiesShouldBeListed()
+    public function responsibilitiesShouldBeListed(): void
     {
         Event::fakeFor(function () {
             //execution
@@ -62,7 +62,7 @@ class ResponsibilityServiceTest extends TestCase
     }
 
     #[Test]
-    public function responsibilityShouldBeRetrieved()
+    public function responsibilityShouldBeRetrieved(): void
     {
         //setting up scenario
         $responsibility = Responsibility::find(1);
@@ -79,7 +79,7 @@ class ResponsibilityServiceTest extends TestCase
     }
 
     #[Test]
-    public function responsibilityShouldBeCreated()
+    public function responsibilityShouldBeCreated(): void
     {
         //setting up scenario
         $attributes = [];
@@ -105,7 +105,7 @@ class ResponsibilityServiceTest extends TestCase
     }
 
     #[Test]
-    public function responsibilityShouldBeUpdated()
+    public function responsibilityShouldBeUpdated(): void
     {
         //setting up scenario
 
@@ -138,7 +138,7 @@ class ResponsibilityServiceTest extends TestCase
     }
 
     #[Test]
-    public function responsibilityShouldBeDeleted()
+    public function responsibilityShouldBeDeleted(): void
     {
         //setting up scenario
         $responsibility = Responsibility::find(1);

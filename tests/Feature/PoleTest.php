@@ -115,7 +115,7 @@ class PoleTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldListPoles()
+    public function administratorShouldListPoles(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -135,7 +135,7 @@ class PoleTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldListPoles()
+    public function directorShouldListPoles(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -155,7 +155,7 @@ class PoleTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldListPoles()
+    public function assistantShouldListPoles(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -175,7 +175,7 @@ class PoleTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldListPoles()
+    public function secretaryShouldListPoles(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -195,7 +195,7 @@ class PoleTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntListPoles()
+    public function ldiShouldntListPoles(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -214,7 +214,7 @@ class PoleTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldListPoles()
+    public function coordinatorShouldListPoles(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -296,7 +296,7 @@ class PoleTest extends TestCase
      *
      * @return void
      */
-    public function testAuthenticatedUserWhitoutPermissionAssignmentCannotListPoles()
+    public function testAuthenticatedUserWhitoutPermissionAssignmentCannotListPoles(): void
     {
         $session = $this->getAuthenticatedSession();
 
@@ -309,7 +309,7 @@ class PoleTest extends TestCase
      *
      * @return void
      */
-    public function testAuthenticatedUserWithoutPermissionAssignmentCannotCreatePole()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotCreatePole(): void
     {
         $session = $this->getAuthenticatedSession();
 
@@ -322,7 +322,7 @@ class PoleTest extends TestCase
      *
      * @return void
      */
-    public function testAuthenticatedUserWithoutPermissionAssignmentCannotUpdatePole()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotUpdatePole(): void
     {
         $session = $this->getAuthenticatedSession();
 
@@ -340,7 +340,7 @@ class PoleTest extends TestCase
      *
      * @return void
      */
-    public function testAuthenticatedUserWithoutPermissionAssignmentCannotDeletePole()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotDeletePole(): void
     {
         $session = $this->getAuthenticatedSession();
 
@@ -357,7 +357,7 @@ class PoleTest extends TestCase
      *
      * @return void
      */
-    public function testAuthenticatedUserWithoutPermissionAssignmentCannotAccessCreatePolePage()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotAccessCreatePolePage(): void
     {
         $session = $this->getAuthenticatedSession();
 
@@ -371,7 +371,7 @@ class PoleTest extends TestCase
      *
      * @return void
      */
-    public function testAuthenticatedUserWithoutPermissionAssignmentCannotAccessEditPolePage()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotAccessEditPolePage(): void
     {
         $session = $this->getAuthenticatedSession();
 

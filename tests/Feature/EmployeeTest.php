@@ -187,7 +187,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntListEmployees()
+    public function guestShouldntListEmployees(): void
     {
         $this->get(route('employees.index'))
             ->assertStatus(401);
@@ -199,7 +199,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function authenticatedUserWithoutPermissionShouldntListEmployees()
+    public function authenticatedUserWithoutPermissionShouldntListEmployees(): void
     {
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
@@ -214,7 +214,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldListEmployees()
+    public function administratorShouldListEmployees(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -235,7 +235,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldListEmployees()
+    public function directorShouldListEmployees(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -255,7 +255,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldListEmployees()
+    public function assistantShouldListEmployees(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -275,7 +275,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldListEmployees()
+    public function secretaryShouldListEmployees(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -295,7 +295,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntListEmployees()
+    public function ldiShouldntListEmployees(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -314,7 +314,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldListEmployees()
+    public function coordinatorShouldListEmployees(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -336,7 +336,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntAccessEmployeesDetailsPage()
+    public function guestShouldntAccessEmployeesDetailsPage(): void
     {
         $this->get(route('employees.show', 1))
             ->assertStatus(401);
@@ -348,7 +348,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function authenticatedUserWithoutPermissionShouldntAccessEmployeesDetailsPage()
+    public function authenticatedUserWithoutPermissionShouldntAccessEmployeesDetailsPage(): void
     {
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
@@ -363,7 +363,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldAccessEmployeesDetailsPage()
+    public function administratorShouldAccessEmployeesDetailsPage(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -383,7 +383,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldAccessEmployeesDetailsPage()
+    public function directorShouldAccessEmployeesDetailsPage(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -403,7 +403,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldAccessEmployeesDetailsPage()
+    public function assistantShouldAccessEmployeesDetailsPage(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -423,7 +423,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldAccessEmployeesDetailsPage()
+    public function secretaryShouldAccessEmployeesDetailsPage(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -443,7 +443,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntAccessEmployeesDetailsPage()
+    public function ldiShouldntAccessEmployeesDetailsPage(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -462,7 +462,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldntAccessEmployeesDetailsPage()
+    public function coordinatorShouldntAccessEmployeesDetailsPage(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -483,7 +483,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntAccessCreateEmployeesPage()
+    public function guestShouldntAccessCreateEmployeesPage(): void
     {
         $this->get(route('employees.create'))
             ->assertStatus(401);
@@ -495,7 +495,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function authenticatedUserWithoutPermissionShouldntAccessCreateEmployeesPage()
+    public function authenticatedUserWithoutPermissionShouldntAccessCreateEmployeesPage(): void
     {
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
@@ -510,7 +510,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldAccessCreateEmployeesPage()
+    public function administratorShouldAccessCreateEmployeesPage(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -530,7 +530,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldAccessCreateEmployeesPage()
+    public function directorShouldAccessCreateEmployeesPage(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -550,7 +550,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldAccessCreateEmployeesPage()
+    public function assistantShouldAccessCreateEmployeesPage(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -570,7 +570,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldAccessCreateEmployeesPage()
+    public function secretaryShouldAccessCreateEmployeesPage(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -590,7 +590,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntAccessCreateEmployeesPage()
+    public function ldiShouldntAccessCreateEmployeesPage(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -609,7 +609,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldntAccessCreateEmployeesPage()
+    public function coordinatorShouldntAccessCreateEmployeesPage(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -630,7 +630,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntCreateEmployee()
+    public function guestShouldntCreateEmployee(): void
     {
         $employeeArr = $this->createTestEmployeeArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
@@ -646,7 +646,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function authenticatedUserWithoutPermissionShouldntCreateEmployee()
+    public function authenticatedUserWithoutPermissionShouldntCreateEmployee(): void
     {
         $employeeArr = $this->createTestEmployeeArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
@@ -664,7 +664,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldCreateEmployee()
+    public function administratorShouldCreateEmployee(): void
     {
         $employeeArr = $this->createTestEmployeeArray();
         Arr::forget($employeeArr, ['id', 'created_at', 'updated_at']);
@@ -687,7 +687,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldCreateEmployee()
+    public function directorShouldCreateEmployee(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -711,7 +711,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldCreateEmployee()
+    public function assistantShouldCreateEmployee(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -735,7 +735,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldCreateEmployee()
+    public function secretaryShouldCreateEmployee(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -759,7 +759,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldntCreateEmployee()
+    public function coordinatorShouldntCreateEmployee(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -782,7 +782,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntCreateEmployee()
+    public function ldiShouldntCreateEmployee(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -807,7 +807,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntAccessEditEmployeesPage()
+    public function guestShouldntAccessEditEmployeesPage(): void
     {
         $this->get(route('employees.edit', 1))
             ->assertStatus(401);
@@ -819,7 +819,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function authenticatedUserWithoutPermissionShouldntAccessEditEmployeesPage()
+    public function authenticatedUserWithoutPermissionShouldntAccessEditEmployeesPage(): void
     {
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
@@ -834,7 +834,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldAccessEditEmployeesPage()
+    public function administratorShouldAccessEditEmployeesPage(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -854,7 +854,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldAccessEditEmployeesPage()
+    public function directorShouldAccessEditEmployeesPage(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -874,7 +874,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldAccessEditEmployeesPage()
+    public function assistantShouldAccessEditEmployeesPage(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -894,7 +894,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldAccessEditEmployeesPage()
+    public function secretaryShouldAccessEditEmployeesPage(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -914,7 +914,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntAccessEditEmployeesPage()
+    public function ldiShouldntAccessEditEmployeesPage(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -933,7 +933,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldntAccessEditEmployeesPage()
+    public function coordinatorShouldntAccessEditEmployeesPage(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -954,7 +954,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntUpdateEmployee()
+    public function guestShouldntUpdateEmployee(): void
     {
         /** @var Employee $originalEmployee */
         $originalEmployee = Employee::where('name', 'John Doe')->first();
@@ -978,7 +978,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function authenticatedUserWithoutPermissionShouldntUpdateEmployee()
+    public function authenticatedUserWithoutPermissionShouldntUpdateEmployee(): void
     {
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
@@ -1005,7 +1005,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldUpdateEmployee()
+    public function administratorShouldUpdateEmployee(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -1060,7 +1060,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldUpdateEmployee()
+    public function directorShouldUpdateEmployee(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -1116,7 +1116,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldUpdateEmployee()
+    public function assistantShouldUpdateEmployee(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -1172,7 +1172,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldUpdateEmployee()
+    public function secretaryShouldUpdateEmployee(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -1228,7 +1228,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldntUpdateEmployee()
+    public function coordinatorShouldntUpdateEmployee(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -1283,7 +1283,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntUpdateEmployee()
+    public function ldiShouldntUpdateEmployee(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -1340,7 +1340,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntDeleteEmployees()
+    public function guestShouldntDeleteEmployees(): void
     {
         $employeeBefore = Employee::find(1);
 
@@ -1357,7 +1357,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function authenticatedUserWithoutPermissionShouldntDeleteEmployees()
+    public function authenticatedUserWithoutPermissionShouldntDeleteEmployees(): void
     {
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
@@ -1377,7 +1377,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function administratorShouldDeleteEmployees()
+    public function administratorShouldDeleteEmployees(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -1403,7 +1403,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function directorShouldntDeleteEmployees()
+    public function directorShouldntDeleteEmployees(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -1427,7 +1427,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function assistantShouldntDeleteEmployees()
+    public function assistantShouldntDeleteEmployees(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -1451,7 +1451,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function secretaryShouldntDeleteEmployees()
+    public function secretaryShouldntDeleteEmployees(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -1475,7 +1475,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function ldiShouldntDeleteEmployees()
+    public function ldiShouldntDeleteEmployees(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -1499,7 +1499,7 @@ class EmployeeTest extends TestCase
      * @return void
      */
     #[Test]
-    public function coordinatorShouldntDeleteEmployees()
+    public function coordinatorShouldntDeleteEmployees(): void
     {
         $this->actingAs(self::$userCoord);
 

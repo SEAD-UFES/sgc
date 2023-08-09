@@ -18,7 +18,7 @@ class LoginTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldAccessLoginPage()
+    public function guestShouldAccessLoginPage(): void
     {
         $this->get(route('auth.login'))
             ->assertSuccessful()
@@ -34,7 +34,7 @@ class LoginTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestIsRedirectedFromRootLogin()
+    public function guestIsRedirectedFromRootLogin(): void
     {
         $this->get(route('root'))
             ->assertRedirect(route('auth.login'));
@@ -46,7 +46,7 @@ class LoginTest extends TestCase
      * @return void
      */
     #[Test]
-    public function guestShouldntSeeHome()
+    public function guestShouldntSeeHome(): void
     {
         $this->get(route('home'))
             ->assertStatus(401);
@@ -60,7 +60,7 @@ class LoginTest extends TestCase
      * @return void
      */
     #[Test]
-    public function authenticatedUserShouldntAccessLoginPage()
+    public function authenticatedUserShouldntAccessLoginPage(): void
     {
         $user = User::factory()->make();
 
@@ -79,7 +79,7 @@ class LoginTest extends TestCase
      * @return void
      */
     #[Test]
-    public function userShouldntAuthenticateWithWrongPassword()
+    public function userShouldntAuthenticateWithWrongPassword(): void
     {
         $user = User::factory()->create(
             [

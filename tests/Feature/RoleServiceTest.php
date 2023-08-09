@@ -38,7 +38,7 @@ class RoleServiceTest extends TestCase
     }
 
     #[Test]
-    public function rolesShouldBeListed()
+    public function rolesShouldBeListed(): void
     {
         Event::fakeFor(function () {
             //execution
@@ -52,7 +52,7 @@ class RoleServiceTest extends TestCase
     }
 
     #[Test]
-    public function roleShouldBeRetrieved()
+    public function roleShouldBeRetrieved(): void
     {
         //setting up scenario
         $role = Role::find(1);
@@ -69,7 +69,7 @@ class RoleServiceTest extends TestCase
     }
 
     #[Test]
-    public function roleShouldBeCreated()
+    public function roleShouldBeCreated(): void
     {
         //setting up scenario
         $attributes = [];
@@ -93,7 +93,7 @@ class RoleServiceTest extends TestCase
     }
 
     #[Test]
-    public function roleShouldBeUpdated()
+    public function roleShouldBeUpdated(): void
     {
         //setting up scenario
 
@@ -121,7 +121,7 @@ class RoleServiceTest extends TestCase
     }
 
     #[Test]
-    public function roleShouldBeDeleted()
+    public function roleShouldBeDeleted(): void
     {
         //setting up scenario
         $role = Role::find(1);

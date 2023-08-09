@@ -37,7 +37,7 @@ class PoleServiceTest extends TestCase
     }
 
     #[Test]
-    public function polesShouldBeListed()
+    public function polesShouldBeListed(): void
     {
         Event::fakeFor(function () {
             //execution
@@ -51,7 +51,7 @@ class PoleServiceTest extends TestCase
     }
 
     #[Test]
-    public function poleShouldBeRetrieved()
+    public function poleShouldBeRetrieved(): void
     {
         //setting up scenario
         $pole = Pole::find(1);
@@ -68,7 +68,7 @@ class PoleServiceTest extends TestCase
     }
 
     #[Test]
-    public function poleShouldBeCreated()
+    public function poleShouldBeCreated(): void
     {
         //setting up scenario
         $attributes = [];
@@ -90,7 +90,7 @@ class PoleServiceTest extends TestCase
     }
 
     #[Test]
-    public function poleShouldBeUpdated()
+    public function poleShouldBeUpdated(): void
     {
         //setting up scenario
 
@@ -116,7 +116,7 @@ class PoleServiceTest extends TestCase
     }
 
     #[Test]
-    public function poleShouldBeDeleted()
+    public function poleShouldBeDeleted(): void
     {
         //setting up scenario
         $pole = Pole::find(1);
