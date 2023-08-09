@@ -19,6 +19,6 @@ class CourseTypeController extends Controller
     {
         $courseTypes = Degrees:: cases();
 
-        return view('coursetype.index', compact('courseTypes'));
+        return view('coursetype.index', ['courseTypes' => $courseTypes]);
     }
 }

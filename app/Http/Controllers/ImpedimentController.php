@@ -24,8 +24,8 @@ class ImpedimentController extends Controller
                 'description' => $request->impediment_description,
                 'reviewer_id' => $request->user()?->id,
             ]);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noStore' => 'Não foi possível criar o impedimento: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noStore' => 'Não foi possível criar o impedimento: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('bonds.show', $bondId)->with('success', 'Impedimento criado com sucesso.');
@@ -55,8 +55,8 @@ class ImpedimentController extends Controller
             ]);
 
             $bondId = $impediment->bond_id;
-        } catch (\Exception $e) {
-            return back()->withErrors(['noStore' => 'Não foi possível atualizar o impedimento: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noStore' => 'Não foi possível atualizar o impedimento: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('bonds.show', $bondId)->with('success', 'Impedimento atualizado com sucesso.');

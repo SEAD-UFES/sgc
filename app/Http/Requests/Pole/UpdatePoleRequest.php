@@ -43,8 +43,8 @@ class UpdatePoleRequest extends FormRequest
     public function toDto(): PoleDto
     {
         return new PoleDto(
-            name: strval($this->validated('name') ?? ''),
-            description: strval($this->validated('description') ?? ''),
+            name: (string) ($this->validated('name') ?? ''),
+            description: (string) ($this->validated('description') ?? ''),
         );
     }
 }

@@ -31,7 +31,7 @@ class CourseController extends Controller
     {
         $courses = $this->service->list();
 
-        return view('course.index', compact('courses'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('course.index', ['courses' => $courses])->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -73,7 +73,7 @@ class CourseController extends Controller
     {
         $course = $this->service->read($course);
 
-        return view('course.show', compact(['course']));
+        return view('course.show', ['course' => $course]);
     }
 
     /**
@@ -87,7 +87,7 @@ class CourseController extends Controller
      */
     public function edit(EditCourseRequest $request, Course $course): View
     {
-        return view('course.edit', compact('course'));
+        return view('course.edit', ['course' => $course]);
     }
 
     /**
@@ -102,8 +102,8 @@ class CourseController extends Controller
     {
         try {
             $this->service->update($request->toDto(), $course);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noStore' => 'Não foi possível salvar o curso: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o curso: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('courses.index')->with('success', 'Curso atualizado com sucesso.');
@@ -122,8 +122,8 @@ class CourseController extends Controller
     {
         try {
             $this->service->delete($course);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noDestroy' => 'Não foi possível excluir o curso: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noDestroy' => 'Não foi possível excluir o curso: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('courses.index')->with('success', 'Curso excluído com sucesso.');
@@ -134,6 +134,6 @@ class CourseController extends Controller
         $bonds = $course->bonds()->with('employee')->get();
         $bonds = $bonds->sortBy('employee.name');
 
-        return view('course.listEmployees', compact(['bonds', 'course']));
+        return view('course.listEmployees', ['bonds' => $bonds, 'course' => $course]);
     }
 }

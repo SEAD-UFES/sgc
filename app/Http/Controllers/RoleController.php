@@ -34,7 +34,7 @@ class RoleController extends Controller
 
         $roles = $this->service->list();
 
-        return view('role.index', compact('roles', 'filters'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('role.index', ['roles' => $roles, 'filters' => $filters])->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -60,8 +60,8 @@ class RoleController extends Controller
     {
         try {
             $this->service->create($request->toDto());
-        } catch (\Exception $e) {
-            return redirect()->route('bonds.index')->withErrors(['noStore' => 'Não foi possível salvar a Função: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return redirect()->route('bonds.index')->withErrors(['noStore' => 'Não foi possível salvar a Função: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('roles.index')->with('success', 'Função criada com sucesso.');
@@ -77,7 +77,7 @@ class RoleController extends Controller
      */
     public function edit(EditRoleRequest $request, Role $role): View
     {
-        return view('role.edit', compact('role'));
+        return view('role.edit', ['role' => $role]);
     }
 
     /**
@@ -92,8 +92,8 @@ class RoleController extends Controller
     {
         try {
             $this->service->update($request->toDto(), $role);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noStore' => 'Não foi possível salvar a Função: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar a Função: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('roles.index')->with('success', 'Função atualizada com sucesso.');
@@ -111,8 +111,8 @@ class RoleController extends Controller
     {
         try {
             $this->service->delete($role);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noDestroy' => 'Não foi possível excluir a Função: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noDestroy' => 'Não foi possível excluir a Função: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('roles.index')->with('success', 'Função excluída com sucesso.');

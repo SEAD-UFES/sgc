@@ -29,8 +29,8 @@ class UpdateCurrentPasswordController extends Controller
 
         try {
             $user = $this->service->updateCurrentPassword($request->toDto(), $user);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('home')->with('success', 'Usuário atualizado com sucesso.');

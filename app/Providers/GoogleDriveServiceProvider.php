@@ -40,7 +40,7 @@ class GoogleDriveServiceProvider extends ServiceProvider
                 $driver = new \League\Flysystem\Filesystem($adapter);
                 return new \Illuminate\Filesystem\FilesystemAdapter($driver, $adapter);
             });
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             // your exception handling logic
         }
     }

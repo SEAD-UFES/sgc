@@ -50,10 +50,10 @@ class StoreUserRequest extends FormRequest
     public function toDto(): UserDto
     {
         return new UserDto(
-            login: strval($this->validated('login') ?? ''),
-            password: strval($this->validated('password') ?? ''),
+            login: (string) ($this->validated('login') ?? ''),
+            password: (string) ($this->validated('password') ?? ''),
             active: ($this->validated('active') ?? '') === 'on',
-            employeeId: intval($this->validated('employee_id')),
+            employeeId: (int) $this->validated('employee_id'),
         );
     }
 }

@@ -25,8 +25,8 @@ class DestroyUserEmployeeLinkController extends Controller
     {
         try {
             $this->service->unlinkEmployee($user);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('users.index')->with('success', 'Usuário atualizado com sucesso.');

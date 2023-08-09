@@ -136,36 +136,36 @@ class StoreEmployeeRequest extends FormRequest
     public function toDto(): EmployeeDto
     {
         return new EmployeeDto(
-            name: strval($this->validated('name') ?? ''),
-            cpf: strval($this->validated('cpf_number') ?? ''),
-            job: strval($this->validated('job') ?? ''),
-            gender: Genders::from(strval($this->validated('gender'))), //*** */
+            name: (string) ($this->validated('name') ?? ''),
+            cpf: (string) ($this->validated('cpf_number') ?? ''),
+            job: (string) ($this->validated('job') ?? ''),
+            gender: Genders::from((string) $this->validated('gender')), //*** */
             birthDate: Date::parse($this->validated('birth_date')), //*** */
-            birthState: States::from(strval($this->validated('birth_state'))), //*** */
-            birthCity: strval($this->validated('birth_city') ?? ''),
-            maritalStatus: MaritalStatuses::from(strval($this->validated('marital_status'))), //*** */
-            spouseName: $this->validated('spouse_name') !== null ? strval($this->validated('spouse_name')) : null,
-            fatherName: strval($this->validated('father_name') ?? ''),
-            motherName: strval($this->validated('mother_name') ?? ''),
-            documentTypeId: intval($this->validated('document_type_id')),
-            identityNumber: strval($this->validated('identity_number') ?? ''),
+            birthState: States::from((string) $this->validated('birth_state')), //*** */
+            birthCity: (string) ($this->validated('birth_city') ?? ''),
+            maritalStatus: MaritalStatuses::from((string) $this->validated('marital_status')), //*** */
+            spouseName: $this->validated('spouse_name') !== null ? (string) $this->validated('spouse_name') : null,
+            fatherName: (string) ($this->validated('father_name') ?? ''),
+            motherName: (string) ($this->validated('mother_name') ?? ''),
+            documentTypeId: (int) $this->validated('document_type_id'),
+            identityNumber: (string) ($this->validated('identity_number') ?? ''),
             identityIssueDate: Date::parse($this->validated('identity_issue_date')), //*** */
-            identityIssuer: strval($this->validated('identity_issuer') ?? ''),
-            issuerState: States::from(strval($this->validated('issuer_state'))), //*** */
-            addressStreet: strval($this->validated('address_street') ?? ''),
-            addressComplement: strval($this->validated('address_complement') ?? ''),
-            addressNumber: strval($this->validated('address_number') ?? ''),
-            addressDistrict: strval($this->validated('address_district') ?? ''),
-            addressZipCode: strval($this->validated('address_zip_code') ?? ''),
-            addressState: States::from(strval($this->validated('address_state'))), //*** */
-            addressCity: strval($this->validated('address_city') ?? ''),
-            landline: $this->validated('landline') !== null ? strval($this->validated('landline')) : null,
-            mobile: strval($this->validated('mobile') ?? ''),
-            areaCode: strval($this->validated('area_code') ?? ''),
-            email: strval($this->validated('email') ?? ''),
-            bankName: strval($this->validated('bank_name') ?? ''),
-            agencyNumber: strval($this->validated('agency_number') ?? ''),
-            accountNumber: strval($this->validated('account_number') ?? ''),
+            identityIssuer: (string) ($this->validated('identity_issuer') ?? ''),
+            issuerState: States::from((string) $this->validated('issuer_state')), //*** */
+            addressStreet: (string) ($this->validated('address_street') ?? ''),
+            addressComplement: (string) ($this->validated('address_complement') ?? ''),
+            addressNumber: (string) ($this->validated('address_number') ?? ''),
+            addressDistrict: (string) ($this->validated('address_district') ?? ''),
+            addressZipCode: (string) ($this->validated('address_zip_code') ?? ''),
+            addressState: States::from((string) $this->validated('address_state')), //*** */
+            addressCity: (string) ($this->validated('address_city') ?? ''),
+            landline: $this->validated('landline') !== null ? (string) $this->validated('landline') : null,
+            mobile: (string) ($this->validated('mobile') ?? ''),
+            areaCode: (string) ($this->validated('area_code') ?? ''),
+            email: (string) ($this->validated('email') ?? ''),
+            bankName: (string) ($this->validated('bank_name') ?? ''),
+            agencyNumber: (string) ($this->validated('agency_number') ?? ''),
+            accountNumber: (string) ($this->validated('account_number') ?? ''),
         );
     }
 }

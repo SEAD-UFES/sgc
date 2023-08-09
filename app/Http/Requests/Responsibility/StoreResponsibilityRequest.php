@@ -55,9 +55,9 @@ class StoreResponsibilityRequest extends FormRequest
     public function toDto(): ResponsibilityDto
     {
         return new ResponsibilityDto(
-            userId: intval($this->validated('user_id')),
-            userTypeId: intval($this->validated('user_type_id')),
-            courseId: $this->validated('course_id') !== null ? intval($this->validated('course_id')) : null,
+            userId: (int) $this->validated('user_id'),
+            userTypeId: (int) $this->validated('user_type_id'),
+            courseId: $this->validated('course_id') !== null ? (int) $this->validated('course_id') : null,
             begin: Date::parse($this->validated('begin')),
             end: $this->validated('end') !== null ? Date::parse($this->validated('end')) : null,
         );

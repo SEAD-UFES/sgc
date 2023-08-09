@@ -30,6 +30,7 @@ class TextHelper
             if ($delimiter === '') {
                 continue;
             }
+
             $words = explode($delimiter, $string);
             $newwords = [];
             foreach ($words as $word) {
@@ -47,7 +48,7 @@ class TextHelper
                 $newwords[] = $word;
             }
 
-            $string = join($delimiter, $newwords);
+            $string = implode($delimiter, $newwords);
         }
 
         return $string;

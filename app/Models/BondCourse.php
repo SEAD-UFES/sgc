@@ -11,6 +11,7 @@ class BondCourse extends Model
      * @var bool
      */
     public $incrementing = false;
+
     /**
      * @var string
      */

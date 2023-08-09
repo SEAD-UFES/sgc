@@ -28,14 +28,14 @@ class DesignateApplicantController extends Controller
     {
         try {
             $employee = $this->service->designateApplicant($applicant);
-        } catch (Exception $e) {
-            return back()->withErrors(['noStore' => 'Não é possível nomear o aprovado: ' . $e->getMessage()]);
+        } catch (Exception $exception) {
+            return back()->withErrors(['noStore' => 'Não é possível nomear o aprovado: ' . $exception->getMessage()]);
         }
 
         $fromApplicant = true;
 
         EmployeeDesignated::dispatch($employee);
 
-        return view('applicant.designate', compact(['employee', 'fromApplicant']));
+        return view('applicant.designate', ['employee' => $employee, 'fromApplicant' => $fromApplicant]);
     }
 }

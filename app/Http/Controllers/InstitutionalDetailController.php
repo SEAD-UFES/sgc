@@ -41,8 +41,8 @@ class InstitutionalDetailController extends Controller
     {
         try {
             $this->service->create($request->toDto(), $employee);
-        } catch (\Exception $e) {
-            return redirect()->route('employees.show', $employee->id)->withErrors(['noStore' => 'Não foi possível salvar os Detalhes Intitucionais: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return redirect()->route('employees.show', $employee->id)->withErrors(['noStore' => 'Não foi possível salvar os Detalhes Intitucionais: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('employees.show', $employee->id)->with('success', 'Detalhes Institucionais criados com sucesso.');
@@ -60,7 +60,7 @@ class InstitutionalDetailController extends Controller
     {
         $institutionalDetail = $employee->institutionalDetail;
 
-        return view('institutionalDetail.edit', compact('institutionalDetail', 'employee'));
+        return view('institutionalDetail.edit', ['institutionalDetail' => $institutionalDetail, 'employee' => $employee]);
     }
 
     /**
@@ -75,8 +75,8 @@ class InstitutionalDetailController extends Controller
     {
         try {
             $this->service->update($request->toDto(), $employee);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noStore' => 'Não foi possível salvar os Detalhes Institucionais: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar os Detalhes Institucionais: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('employees.show', $employee->id)->with('success', 'Detalhes Institucionais atualizados com sucesso.');

@@ -44,10 +44,10 @@ class UpdateCourseRequest extends FormRequest
     public function toDto(): CourseDto
     {
         return new CourseDto(
-            name: strval($this->validated('name') ?? ''),
-            description: strval($this->validated('description') ?? ''),
-            degree: Degrees::from(strval($this->validated('degree'))),
-            lmsUrl: strval($this->validated('lms_url') ?? ''),
+            name: (string) ($this->validated('name') ?? ''),
+            description: (string) ($this->validated('description') ?? ''),
+            degree: Degrees::from((string) $this->validated('degree')),
+            lmsUrl: (string) ($this->validated('lms_url') ?? ''),
         );
     }
 }

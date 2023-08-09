@@ -42,7 +42,7 @@ class ApplicantController extends Controller
             ) ?? '';
         }
 
-        return view('applicant.index', compact('applicants'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('applicant.index', ['applicants' => $applicants])->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -69,8 +69,8 @@ class ApplicantController extends Controller
         //dd($request);
         try {
             $this->service->create($request->toDto());
-        } catch (\Exception $e) {
-            return redirect()->route('applicants.index')->withErrors(['noStore' => 'Não foi possível salvar o Aprovado: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return redirect()->route('applicants.index')->withErrors(['noStore' => 'Não foi possível salvar o Aprovado: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('applicants.index')->with('success', 'Aprovado criado com sucesso.');
@@ -88,8 +88,8 @@ class ApplicantController extends Controller
     {
         try {
             $this->service->changeState($request->all(), $applicant);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noStore' => 'Não foi possível salvar o Aprovado: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o Aprovado: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('applicants.index')->with('success', 'Aprovado alterado com sucesso.');
@@ -107,8 +107,8 @@ class ApplicantController extends Controller
     {
         try {
             $this->service->delete($applicant);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noDestroy' => 'Não foi possível excluir o Aprovado: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noDestroy' => 'Não foi possível excluir o Aprovado: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('applicants.index')->with('success', 'Aprovado retirado da lista.');

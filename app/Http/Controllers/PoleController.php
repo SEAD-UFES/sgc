@@ -30,7 +30,7 @@ class PoleController extends Controller
     {
         $poles = $this->service->list();
 
-        return view('pole.index', compact('poles'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('pole.index', ['poles' => $poles])->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -56,8 +56,8 @@ class PoleController extends Controller
     {
         try {
             $this->service->create($request->toDto());
-        } catch (\Exception $e) {
-            return redirect()->route('poles.index')->withErrors(['noStore' => 'Não foi possível salvar o Polo: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return redirect()->route('poles.index')->withErrors(['noStore' => 'Não foi possível salvar o Polo: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('poles.index')->with('success', 'Polo criado com sucesso.');
@@ -73,7 +73,7 @@ class PoleController extends Controller
      */
     public function edit(EditPoleRequest $request, Pole $pole): View
     {
-        return view('pole.edit', compact('pole'));
+        return view('pole.edit', ['pole' => $pole]);
     }
 
     /**
@@ -88,8 +88,8 @@ class PoleController extends Controller
     {
         try {
             $pole = $this->service->update($request->toDto(), $pole);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noStore' => 'Não foi possível salvar o Polo: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o Polo: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('poles.index')->with('success', 'Polo atualizado com sucesso.');
@@ -107,8 +107,8 @@ class PoleController extends Controller
     {
         try {
             $this->service->delete($pole);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noDestroy' => 'Não foi possível salvar o Polo: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noDestroy' => 'Não foi possível salvar o Polo: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('poles.index')->with('success', 'Polo excluído com sucesso.');

@@ -29,7 +29,7 @@ class CourseClassController extends Controller
     {
         $courseClasses = $this->service->list();
 
-        return view('courseClass.index', compact('courseClasses'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('courseClass.index', ['courseClasses' => $courseClasses])->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function create(CreateCourseClassRequest $request): View
@@ -41,8 +41,8 @@ class CourseClassController extends Controller
     {
         try {
             $this->service->create($request->toDto());
-        } catch (\Exception $e) {
-            return redirect()->route('course-classes.index')->withErrors(['noStore' => 'Não foi possível salvar a Disciplina: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return redirect()->route('course-classes.index')->withErrors(['noStore' => 'Não foi possível salvar a Disciplina: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('course-classes.index')->with('success', 'Disciplina criada com sucesso.');
@@ -51,21 +51,21 @@ class CourseClassController extends Controller
     public function show(ShowCourseClassRequest $request, CourseClass $courseClass): View
     {
         $courseClass = $this->service->read($courseClass);
-        return view('courseClass.show', compact('courseClass'));
+        return view('courseClass.show', ['courseClass' => $courseClass]);
     }
 
     public function edit(EditCourseClassRequest $request, CourseClass $courseClass): View
     {
         $courseClass = $this->service->read($courseClass);
-        return view('courseClass.edit', compact('courseClass'));
+        return view('courseClass.edit', ['courseClass' => $courseClass]);
     }
 
     public function update(UpdateCourseClassRequest $request, CourseClass $courseClass): RedirectResponse
     {
         try {
             $this->service->update($request->toDto(), $courseClass);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noStore' => 'Não foi possível salvar a Disciplina: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar a Disciplina: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('course-classes.index')->with('success', 'Disciplina atualizada com sucesso.');
@@ -75,8 +75,8 @@ class CourseClassController extends Controller
     {
         try {
             $this->service->delete($courseClass);
-        } catch (\Exception $e) {
-            return redirect()->route('course-classes.index')->withErrors(['noDestroy' => 'Não foi possível excluir a Disciplina: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return redirect()->route('course-classes.index')->withErrors(['noDestroy' => 'Não foi possível excluir a Disciplina: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('course-classes.index')->with('success', 'Disciplina excluída com sucesso.');

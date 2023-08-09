@@ -45,8 +45,8 @@ class UpdateCurrentPasswordRequest extends FormRequest
     public function toDto(): UpdateCurrentPasswordDto
     {
         return new UpdateCurrentPasswordDto(
-            password: strval($this->validated('password')),
-            confirmPassword: strval($this->validated('confirm_password')),
+            password: (string) $this->validated('password'),
+            confirmPassword: (string) $this->validated('confirm_password'),
         );
     }
 }

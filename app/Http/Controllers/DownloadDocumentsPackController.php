@@ -38,8 +38,8 @@ class DownloadDocumentsPackController extends Controller
     {
         try {
             $zipFileName = $this->service->zipDocuments($bond);
-        } catch (Exception $e) {
-            return redirect()->route('bonds.show', $bond)->withErrors('Erro ao gerar o arquivo compactado: ' . $e->getMessage());
+        } catch (Exception $exception) {
+            return redirect()->route('bonds.show', $bond)->withErrors('Erro ao gerar o arquivo compactado: ' . $exception->getMessage());
         }
 
         return response()->download($zipFileName)->deleteFileAfterSend(true);

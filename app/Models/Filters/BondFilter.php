@@ -62,9 +62,11 @@ trait BondFilter
             if (in_array(strtolower($value), ['sim', '1', 'true'])) {
                 return $builder->whereNotNull('lastOpenImpediments.created_at');
             }
+
             if (in_array(strtolower($value), ['não', 'nao', '0', 'false'])) {
                 return $builder->whereNull('lastOpenImpediments.created_at');
             }
+
             throw new \InvalidArgumentException('Invalid value for impedimentExactly($value)');
         }
     }

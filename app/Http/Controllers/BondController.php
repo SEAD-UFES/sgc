@@ -31,7 +31,7 @@ class BondController extends Controller
     {
         $bonds = $this->service->list();
 
-        return view('bond.index', compact('bonds'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('bond.index', ['bonds' => $bonds])->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -57,8 +57,8 @@ class BondController extends Controller
     {
         try {
             $this->service->create($request->toDto());
-        } catch (\Exception $e) {
-            return redirect()->route('bonds.index')->withErrors(['noStore' => 'Não foi possível salvar o Vínculo: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return redirect()->route('bonds.index')->withErrors(['noStore' => 'Não foi possível salvar o Vínculo: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('bonds.index')->with('success', 'Vínculo criado com sucesso.');
@@ -77,7 +77,7 @@ class BondController extends Controller
     {
         $bond = $this->service->read($bond);
 
-        return view('bond.show', compact(['bond']));
+        return view('bond.show', ['bond' => $bond]);
     }
 
     /**
@@ -91,7 +91,7 @@ class BondController extends Controller
      */
     public function edit(EditBondRequest $request, Bond $bond): View
     {
-        return view('bond.edit', compact('bond'));
+        return view('bond.edit', ['bond' => $bond]);
     }
 
     /**
@@ -108,8 +108,8 @@ class BondController extends Controller
         // another course B via http post request or form manipulation
         try {
             $bond = $this->service->update($request->toDto(), $bond);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noStore' => 'Não foi possível salvar o vínculo: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o vínculo: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('bonds.index')->with('success', 'Vínculo atualizado com sucesso.');
@@ -128,8 +128,8 @@ class BondController extends Controller
     {
         try {
             $this->service->delete($bond);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noDestroy' => 'Não foi possível excluir o vínculo: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noDestroy' => 'Não foi possível excluir o vínculo: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('bonds.index')->with('success', 'Vínculo excluído com sucesso.');

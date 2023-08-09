@@ -103,7 +103,7 @@ class ApplicantService
      */
     public function changeState(array $attributes, Applicant $applicant): void
     {
-        $applicant->call_state = CallStates::from(strval($attributes['states']));
+        $applicant->call_state = CallStates::from((string) $attributes['states']);
 
         $applicant->save();
     }
@@ -126,15 +126,15 @@ class ApplicantService
             foreach ($applicants as $applicant) {
                 if (Arr::exists($applicant, 'check')) {
                     $applicantDto = new ApplicantDto(
-                        name: strval(Arr::get($applicant, 'name')),
-                        email: strval(Arr::get($applicant, 'email')),
-                        areaCode: strval(Arr::get($applicant, 'area_code')),
-                        landline: strval(Arr::get($applicant, 'landline')),
-                        mobile: strval(Arr::get($applicant, 'mobile')),
-                        hiringProcess: strval(Arr::get($applicant, 'hiring_process')),
-                        roleId: intval(Arr::get($applicant, 'role_id')),
-                        courseId: Arr::get($applicant, 'course_id') !== null ? intval(Arr::get($applicant, 'course_id')) : null,
-                        poleId: Arr::get($applicant, 'pole_id') !== null ? intval(Arr::get($applicant, 'pole_id')) : null,
+                        name: (string) Arr::get($applicant, 'name'),
+                        email: (string) Arr::get($applicant, 'email'),
+                        areaCode: (string) Arr::get($applicant, 'area_code'),
+                        landline: (string) Arr::get($applicant, 'landline'),
+                        mobile: (string) Arr::get($applicant, 'mobile'),
+                        hiringProcess: (string) Arr::get($applicant, 'hiring_process'),
+                        roleId: (int) Arr::get($applicant, 'role_id'),
+                        courseId: Arr::get($applicant, 'course_id') !== null ? (int) Arr::get($applicant, 'course_id') : null,
+                        poleId: Arr::get($applicant, 'pole_id') !== null ? (int) Arr::get($applicant, 'pole_id') : null,
                     );
 
                     $this->create($applicantDto);
