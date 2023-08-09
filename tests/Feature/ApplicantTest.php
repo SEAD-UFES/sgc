@@ -32,7 +32,7 @@ final class ApplicantTest extends TestCase
 
     public function __construct()
     {
-        parent::__construct('ApplicantTest');
+        parent::__construct();
 
         $this->responsibilityRepository = new ResponsibilityRepository();
     }

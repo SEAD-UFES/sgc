@@ -28,7 +28,7 @@ final class PoleTest extends TestCase
 
     public function __construct()
     {
-        parent::__construct('PoleTest');
+        parent::__construct();
 
         $this->responsibilityRepository = new ResponsibilityRepository();
     }

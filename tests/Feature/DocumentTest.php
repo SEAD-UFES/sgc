@@ -31,7 +31,7 @@ final class DocumentTest extends TestCase
 
     public function __construct()
     {
-        parent::__construct('DocumentTest');
+        parent::__construct();
 
         $this->responsibilityRepository = new ResponsibilityRepository();
     }

@@ -8,10 +8,6 @@ use Tests\TestCase;
 
 final class DummyTest extends TestCase
 {
-    public function __construct()
-    {
-        parent::__construct('test_example');
-    }
     /**
      * A basic feature test example.
      */

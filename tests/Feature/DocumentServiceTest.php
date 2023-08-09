@@ -28,7 +28,7 @@ final class DocumentServiceTest extends TestCase
     /** @return void  */
     public function __construct()
     {
-        parent::__construct('DocumentServiceTest');
+        parent::__construct();
 
         $this->service = new DocumentService(new DocumentRepository());
         $this->rightsService = new RightsDocumentService(new RightsDocumentRepository());

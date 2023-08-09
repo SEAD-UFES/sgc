@@ -26,7 +26,7 @@ final class CourseTest extends TestCase
 
     public function __construct()
     {
-        parent::__construct('CourseTest');
+        parent::__construct();
 
         $this->responsibilityRepository = new ResponsibilityRepository();
     }
