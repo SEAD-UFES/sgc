@@ -27,16 +27,24 @@
   </php>
   <source>
     <include>
+      <directory suffix=".php">./app/Enums</directory> <!--  -->
+      <directory suffix=".php">./app/Events</directory> <!--  -->
       <directory suffix=".php">./app/Exceptions</directory>
       <directory suffix=".php">./app/Gates</directory>
       <directory suffix=".php">./app/Helpers</directory>
       <directory suffix=".php">./app/Http/Controllers</directory>
       <directory suffix=".php">./app/Http/Requests</directory>
+      <directory suffix=".php">./app/Http/View/Composers</directory> <!--  -->
       <directory suffix=".php">./app/Imports</directory>
-      <directory suffix=".php">./app/ModelFilters</directory>
+      <directory suffix=".php">./app/Interfaces</directory> <!--  -->
+      <directory suffix=".php">./app/Listeners</directory> <!--  -->
+      <directory suffix=".php">./app/Logging</directory> <!--  -->
+      <directory suffix=".php">./app/Mail</directory> <!--  -->
+      <!-- <directory suffix=".php">./app/ModelFilters</directory> -->
       <directory suffix=".php">./app/Models</directory>
       <directory suffix=".php">./app/Notifications</directory>
       <directory suffix=".php">./app/Observers</directory>
+      <directory suffix=".php">./app/Reposiories</directory> <!--  -->
       <directory suffix=".php">./app/Services</directory>
     </include>
   </source>

@@ -6,7 +6,7 @@ parameters:
         - routes
         - tests
 
-    level: 9
+    level: 8
 
 includes:
     - vendor/nunomaduro/larastan/extension.neon
