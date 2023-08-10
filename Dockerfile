@@ -1,7 +1,7 @@
 # Based on https://www.reddit.com/r/laravel/comments/pqw6du/deploying_laravel_mix_using_docker/
 
 # ============ PHP Dependencies ============ #
-FROM composer:latest as vendor
+FROM composer:latest AS vendor
 LABEL image=composer:latest
 
 COPY . /app
@@ -17,23 +17,24 @@ RUN composer update \
     --no-dev
     
 # ===================================== #
-FROM node:alpine as frontend
+FROM node:alpine AS frontend
 LABEL image=node:alpine
-RUN mkdir -p /app/public
+RUN mkdir -p /laravel-app/public
 
-COPY ./package.json .
-COPY ./package-lock.json .
-COPY ./vite.config.js .
-COPY ./app/ .
+COPY ./package.json /laravel-app
+COPY ./package-lock.json /laravel-app
+COPY ./tsconfig.json /laravel-app
+COPY ./vite.config.js /laravel-app
+COPY ./app/ /laravel-app
 
 # Copy your JavaScript source files
-COPY ./resources/ /app/resources/
+COPY ./resources/ /laravel-app/resources/
 
-WORKDIR /app
+WORKDIR /laravel-app
 RUN npm ci && npm run build
 
 # ===================================== #
-FROM alpine:latest as deploy
+FROM alpine:latest AS deploy
 
 RUN apk update && apk upgrade --no-cache
 
@@ -122,13 +123,14 @@ RUN apk add --no-cache php81-zip mariadb-connector-c
 
 COPY --chown=www:www --from=vendor /app/ /www/
 
-COPY --chown=www:www --from=frontend /app/public/js/ /www/public/js/
-COPY --chown=www:www --from=frontend /app/public/css/ /www/public/css/
+# COPY --chown=www:www --from=frontend /laravel-app/public/js/ /www/public/js/
+# COPY --chown=www:www --from=frontend /laravel-app/public/css/ /www/public/css/
+COPY --chown=www:www --from=frontend /laravel-app/public/build/ /www/public/build/
 
 
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-RUN php -r "if (hash_file('sha384', 'composer-setup.php') === '55ce33d7678c5a611085589f1f3ddf8b3c52d662cd01d4ba75c0ee0459970c2200a51f492d557530c71c15d8dba01eae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+RUN php -r "if (hash_file('sha384', 'composer-setup.php') === 'e21205b207c3ff031906575712edab6f13eb0b361f2085f1f1237b7126d785e826a450292b6cfd1d64d92e6563bbde02') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
 RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
 
@@ -191,4 +193,8 @@ RUN chmod 555 /www/disableHttpsRequirement.sh
 RUN chmod 555 /www/enableFakeData.sh
 
 EXPOSE 8080
+
+# Keep Docker Container Running for Debugging
+# ENTRYPOINT ["tail", "-f", "/dev/null"]
+
 ENTRYPOINT ["/www/entrypoint.sh"]

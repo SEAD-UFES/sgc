@@ -21,6 +21,7 @@ vendor/**/Tests*
 #composer.json
 
 *.config.js
+!vite.config.js
 ?ulpfile.js
 ?untfile.js
 #package.json
