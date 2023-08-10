@@ -33,34 +33,40 @@ class StoreEmployeeRequest extends FormRequest
         return [
             'name' => 'required|string',
             'cpf_number' => 'required|unique:employees,cpf|digits:11',
-            'job' => 'required|string',
             'gender' => ['required', new Enum(Genders::class)],
-            'birth_date' => 'required|date',
-            'birth_state' => ['required', new Enum(States::class)],
-            'birth_city' => 'required|string',
-            'marital_status' => ['required', new Enum(MaritalStatuses::class)],
-            'spouse_name' => 'nullable|string',
-            'father_name' => 'required|string',
-            'mother_name' => 'required|string',
-            'document_type_id' => 'required|exists:document_types,id',
-            'identity_number' => 'required|numeric',
-            'identity_issue_date' => 'required|date',
-            'identity_issuer' => 'required|string',
-            'issuer_state' => ['required', new Enum(States::class)],
-            'address_street' => 'required|string',
-            'address_complement' => 'required|string',
-            'address_number' => 'required|numeric',
-            'address_district' => 'required|string',
-            'address_zip_code' => 'required|numeric',
-            'address_state' => ['required', new Enum(States::class)],
-            'address_city' => 'required|string',
-            'landline' => 'nullable|numeric',
-            'mobile' => 'required|numeric',
-            'area_code' => 'required|numeric',
             'email' => 'required|email|unique:employees,email',
-            'bank_name' => 'required|string|required_with:agency_number,account',
-            'agency_number' => 'required|string|required_with:bank_name,account',
-            'account_number' => 'required|string|required_with:bank_name,agency_number',
+            
+            'job' => 'nullable|string|required_with:birth_date,birth_state,birth_city,marital_status,father_name,mother_name',
+            'birth_date' => 'nullable|date|required_with:job,birth_state,birth_city,marital_status,father_name,mother_name',
+            'birth_state' => ['nullable', new Enum(States::class), 'required_with:job,birth_date,birth_city,marital_status,father_name,mother_name'],
+            'birth_city' => 'nullable|string|required_with:job,birth_date,birth_state,marital_status,father_name,mother_name',
+            'marital_status' => ['nullable', new Enum(MaritalStatuses::class), 'required_with:job,birth_date,birth_state,birth_city,father_name,mother_name'],
+            'father_name' => 'nullable|string|required_with:job,birth_date,birth_state,birth_city,marital_status,mother_name',
+            'mother_name' => 'nullable|string|required_with:job,birth_date,birth_state,birth_city,marital_status,father_name',
+
+            'spouse_name' => 'nullable|string',
+
+            'document_type_id' => 'nullable|exists:document_types,id|required_with:identity_number,identity_issue_date,identity_issuer,issuer_state',
+            'identity_number' => 'nullable|numeric|required_with:document_type_id,identity_issue_date,identity_issuer,issuer_state',
+            'identity_issue_date' => 'nullable|date|required_with:document_type_id,identity_number,identity_issuer,issuer_state',
+            'identity_issuer' => 'nullable|string|required_with:document_type_id,identity_number,identity_issue_date,issuer_state',
+            'issuer_state' => ['nullable', new Enum(States::class), 'required_with:document_type_id,identity_number,identity_issue_date,identity_issuer'],
+
+            'address_street' => 'nullable|string|required_with:address_complement,address_number,address_district,address_zip_code,address_state,address_city',
+            'address_complement' => 'nullable|string|required_with:address_street,address_number,address_district,address_zip_code,address_state,address_city',
+            'address_number' => 'nullable|numeric|required_with:address_street,address_complement,address_district,address_zip_code,address_state,address_city',
+            'address_district' => 'nullable|string|required_with:address_street,address_complement,address_number,address_zip_code,address_state,address_city',
+            'address_zip_code' => 'nullable|numeric|required_with:address_street,address_complement,address_number,address_district,address_state,address_city',
+            'address_state' => ['nullable', new Enum(States::class), 'required_with:address_street,address_complement,address_number,address_district,address_zip_code,address_city'],
+            'address_city' => 'nullable|string|required_with:address_street,address_complement,address_number,address_district,address_zip_code,address_state',
+
+            'area_code' => 'nullable|numeric|required_with:mobile',
+            'landline' => 'nullable|numeric',
+            'mobile' => 'nullable|numeric|required_with:area_code',
+
+            'bank_name' => 'nullable|string|required_with:agency_number,account',
+            'agency_number' => 'nullable|string|required_with:bank_name,account',
+            'account_number' => 'nullable|string|required_with:bank_name,agency_number',
         ];
     }
 
@@ -75,10 +81,14 @@ class StoreEmployeeRequest extends FormRequest
             'cpf_number.required' => 'O CPF é obrigatório',
             'cpf_number.unique' => 'O CPF não pode repetir um previamente já cadastrado por outra pessoa',
             'cpf_number.digits' => 'O CPF deve ser um número de 11 dígitos',
-            'job.string' => 'O campo deve ser texto',
-            'job.required' => 'A profissão é obrigatória',
             'gender.required' => 'O gênero é obrigatório',
             'gender.Illuminate\Validation\Rules\Enum' => 'O campo deve ser preenchido com uma das opções fornecidas',
+            'email.required' => 'O email é obrigatório',
+            'email.email' => 'O email deve ser válido',
+            'email.unique' => 'O email não pode repetir um previamente já cadastrado por outra pessoa',
+
+            'job.string' => 'O campo deve ser texto',
+            'job.required' => 'A profissão é obrigatória',
             'birth_date.required' => 'A Data de Nasc. é obrigatória',
             'birth_date.date' => 'Nascimento deve ser uma data',
             'birth_state.required' => 'O estado de nasc. é obrigatório',
@@ -87,11 +97,15 @@ class StoreEmployeeRequest extends FormRequest
             'birth_city.string' => 'O campo deve ser texto',
             'marital_status.required' => 'O estado civil é obrigatório',
             'marital_status.Illuminate\Validation\Rules\Enum' => 'O campo deve ser preenchido com uma das opções fornecidas',
-            'spouse_name.string' => 'O campo deve ser texto',
             'father_name.required' => 'O nome do pai é obrigatório',
             'father_name.string' => 'O campo deve ser texto',
             'mother_name.required' => 'O nome da mãe é obrigatório',
             'mother_name.string' => 'O campo deve ser texto',
+
+            'spouse_name.string' => 'O campo deve ser texto',
+
+            'document_type_id.required' => 'O tipo de doc. é obrigatório',
+            'document_type_id.exists' => 'O campo deve ser preenchido com uma das opções fornecidas',
             'identity_number.required' => 'O número do doc. é obrigatório',
             'identity_number.numeric' => 'O Documento deve ser um número',
             'identity_issue_date.required' => 'A data de exp. é obrigatória',
@@ -100,8 +114,7 @@ class StoreEmployeeRequest extends FormRequest
             'identity_issuer.string' => 'O campo deve ser texto',
             'issuer_state.required' => 'O estado de exp. é obrigatório',
             'issuer_state.Illuminate\Validation\Rules\Enum' => 'O campo deve ser preenchido com uma das opções fornecidas',
-            'document_type_id.required' => 'O tipo de doc. é obrigatório',
-            'document_type_id.exists' => 'O campo deve ser preenchido com uma das opções fornecidas',
+
             'address_street.required' => 'A rua é obrigatória',
             'address_street.string' => 'O campo deve ser texto',
             'address_complement.required' => 'O complemento é obrigatório',
@@ -116,14 +129,13 @@ class StoreEmployeeRequest extends FormRequest
             'address_state.Illuminate\Validation\Rules\Enum' => 'O campo deve ser preenchido com uma das opções fornecidas',
             'address_city.required' => 'O campo Cidade é obrigatório',
             'address_city.string' => 'O campo deve ser texto',
+
+            'area_code.required' => 'O campo DDD é obrigatório',
+            'area_code.numeric' => 'O campo deve ser número',
             'landline.numeric' => 'O Telefone deve ser número',
             'mobile.required' => 'O celular é obrigatório',
             'mobile.numeric' => 'O campo deve ser número',
-            'area_code.required' => 'O campo DDD é obrigatório',
-            'area_code.numeric' => 'O campo deve ser número',
-            'email.required' => 'O email é obrigatório',
-            'email.email' => 'O email deve ser válido',
-            'email.unique' => 'O email não pode repetir um previamente já cadastrado por outra pessoa',
+
             'bank_name.required' => 'O banco é obrigatório',
             'bank_name.string' => 'O campo deve ser texto',
             'agency_number.required' => 'A agência é obrigatória',
@@ -138,31 +150,37 @@ class StoreEmployeeRequest extends FormRequest
         return new EmployeeDto(
             name: (string) ($this->validated('name') ?? ''),
             cpf: (string) ($this->validated('cpf_number') ?? ''),
-            job: (string) ($this->validated('job') ?? ''),
             gender: Genders::from((string) $this->validated('gender')), //*** */
+            email: (string) ($this->validated('email') ?? ''),
+
+            job: (string) ($this->validated('job') ?? ''),
             birthDate: Date::parse($this->validated('birth_date')), //*** */
-            birthState: States::from((string) $this->validated('birth_state')), //*** */
+            birthState: $this->validated('birth_state') != null ? States::from((string) $this->validated('birth_state')) : '', //*** */
             birthCity: (string) ($this->validated('birth_city') ?? ''),
-            maritalStatus: MaritalStatuses::from((string) $this->validated('marital_status')), //*** */
-            spouseName: $this->validated('spouse_name') !== null ? (string) $this->validated('spouse_name') : null,
+            maritalStatus: $this->validated('marital_status') != null ? MaritalStatuses::from((string) $this->validated('marital_status')) : '', //*** */
             fatherName: (string) ($this->validated('father_name') ?? ''),
             motherName: (string) ($this->validated('mother_name') ?? ''),
+
+            spouseName: $this->validated('spouse_name') !== null ? (string) $this->validated('spouse_name') : null,
+
             documentTypeId: (int) $this->validated('document_type_id'),
             identityNumber: (string) ($this->validated('identity_number') ?? ''),
             identityIssueDate: Date::parse($this->validated('identity_issue_date')), //*** */
             identityIssuer: (string) ($this->validated('identity_issuer') ?? ''),
-            issuerState: States::from((string) $this->validated('issuer_state')), //*** */
+            issuerState: $this->validated('issuer_state') != null ? States::from((string) $this->validated('issuer_state')) : '', //*** */
+
             addressStreet: (string) ($this->validated('address_street') ?? ''),
             addressComplement: (string) ($this->validated('address_complement') ?? ''),
             addressNumber: (string) ($this->validated('address_number') ?? ''),
             addressDistrict: (string) ($this->validated('address_district') ?? ''),
             addressZipCode: (string) ($this->validated('address_zip_code') ?? ''),
-            addressState: States::from((string) $this->validated('address_state')), //*** */
+            addressState: $this->validated('address_state') != null ? States::from((string) $this->validated('address_state')) : '', //*** */
             addressCity: (string) ($this->validated('address_city') ?? ''),
+
+            areaCode: (string) ($this->validated('area_code') ?? ''),
             landline: $this->validated('landline') !== null ? (string) $this->validated('landline') : null,
             mobile: (string) ($this->validated('mobile') ?? ''),
-            areaCode: (string) ($this->validated('area_code') ?? ''),
-            email: (string) ($this->validated('email') ?? ''),
+
             bankName: (string) ($this->validated('bank_name') ?? ''),
             agencyNumber: (string) ($this->validated('agency_number') ?? ''),
             accountNumber: (string) ($this->validated('account_number') ?? ''),
