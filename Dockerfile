@@ -6,6 +6,18 @@ LABEL image=composer:latest
 
 COPY . /app
 
+# Clean up
+RUN rm -rf ./resources/js/
+RUN rm -rf ./resources/scss/
+RUN rm -rf ./.k8s/
+RUN rm -rf ./design/
+RUN rm -f ./package-lock.json
+RUN rm -f ./package.json
+RUN rm -f ./phpstan.neon
+RUN rm -f ./rector.php
+RUN rm -f ./tsconfig.json
+RUN rm -f ./vite.config.js
+
 RUN composer remove barryvdh/laravel-debugbar brianium/paratest facade/ignition laravel/sail mockery/mockery nunomaduro/collision nunomaduro/larastan nunomaduro/phpinsights phpunit/php-code-coverage phpunit/phpunit squizlabs/php_codesniffer --dev --ignore-platform-reqs --no-interaction --no-scripts
 
 RUN composer update \
@@ -189,8 +201,14 @@ RUN rm -f /etc/nginx/http.d/default.conf
 RUN echo "APP_BUILD=$(date +%Y%m%d_%H%M)" > BUILD
 
 RUN chmod 555 /www/entrypoint.sh
-RUN chmod 555 /www/disableHttpsRequirement.sh
-RUN chmod 555 /www/enableFakeData.sh
+RUN chmod 655 /www/disableHttpsRequirement.sh
+RUN chmod 655 /www/enableFakeData.sh
+
+RUN chmod 655 /www/genEnv.php
+
+# Clean up
+RUN rm -f ./.env.ci
+RUN rm -f ./.env.deploy
 
 EXPOSE 8080
 

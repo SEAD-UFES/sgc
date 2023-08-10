@@ -2,8 +2,6 @@ import { defineConfig } from 'vite';
 import { checker } from 'vite-plugin-checker';
 
 import laravel from 'laravel-vite-plugin';
-// import react from '@vitejs/plugin-react';
-// import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
     plugins: [
@@ -25,14 +23,5 @@ export default defineConfig({
             typescript: true,
             overlay: true,
         }),
-        // react(),
-        // vue({
-        //     template: {
-        //         transformAssetUrls: {
-        //             base: null,
-        //             includeAbsolute: false,
-        //         },
-        //     },
-        // }),
     ],
 });

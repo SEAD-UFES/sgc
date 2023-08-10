@@ -109,7 +109,7 @@ class UserRepository
      *
      * @return Builder
      */
-    private static function allActiveUsersOfTypeIdQuery(int $userTypeId, string $sort = 'users.id', string $direction = 'desc'): Builder
+    private function allActiveUsersOfTypeIdQuery(int $userTypeId, string $sort = 'users.id', string $direction = 'desc'): Builder
     {
         return self::allActiveUsersQuery($sort, $direction)
             ->join('responsibilities', 'responsibilities.user_id', '=', 'users.id')
@@ -125,7 +125,7 @@ class UserRepository
      */
     private function allActiveUsersOfActiveTypeIdQuery(int $userTypeId, string $sort = 'users.id', string $direction = 'desc'): Builder
     {
-        return self::allActiveUsersOfTypeIdQuery($userTypeId, $sort, $direction)
+        return $this->allActiveUsersOfTypeIdQuery($userTypeId, $sort, $direction)
             ->where('responsibilities.begin', '<=', Carbon::today()->toDateString())
             ->where(static function ($q) {
                 $q->where('responsibilities.end', '>=', Carbon::today()->toDateString())

@@ -30,7 +30,7 @@ class Handler extends ExceptionHandler
     protected $dontReport = [];
 
     /**
-     * A list of the inputs that are never flashed to the session on validation exceptions.
+     * The list of the inputs that are never flashed to the session on validation exceptions.
      *
      * @var array<int, string>
      */
@@ -63,8 +63,10 @@ class Handler extends ExceptionHandler
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
+        $this->reportable(static function (Throwable $e) {
+        });
     }
 
     public function report(Throwable $exception): void
