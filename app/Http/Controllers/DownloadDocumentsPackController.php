@@ -10,7 +10,6 @@ use App\Models\Employee;
 use App\Services\DocumentService;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -38,15 +37,14 @@ class DownloadDocumentsPackController extends Controller
     {
         try {
             $zipFileName = $this->service->zipDocuments($bond);
-        } catch (Exception $e) {
-            return redirect()->route('bonds.show', $bond)->withErrors('Erro ao gerar o arquivo compactado: ' . $e->getMessage());
+        } catch (Exception $exception) {
+            return redirect()->route('bonds.show', $bond)->withErrors('Erro ao gerar o arquivo compactado: ' . $exception->getMessage());
         }
 
         return response()->download($zipFileName)->deleteFileAfterSend(true);
     }
 
     /**
-     *
      * Creates a ZIP package of multiple employees' documents
      *
      * @param  ExportDocumentPackRequest  $request
@@ -64,7 +62,7 @@ class DownloadDocumentsPackController extends Controller
         }
 
         // Create a new ZIP archive
-        $zip = new \ZipArchive;
+        $zip = new \ZipArchive();
         $zipFileName = 'documentos_colaboradores.zip';
 
         if ($zip->open($zipFileName, \ZipArchive::CREATE) !== true) {

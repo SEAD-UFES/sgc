@@ -38,7 +38,7 @@ class ResponsibilityRepository
             return null;
         }
 
-        $userResponsibilities = Responsibility::where('user_id', $id)->where('begin', '<=', date('Y-m-d'))->where(function ($query) {
+        $userResponsibilities = Responsibility::where('user_id', $id)->where('begin', '<=', date('Y-m-d'))->where(static function ($query) {
             $query->where('end', '>=', date('Y-m-d'))->orWhereNull('end');
         })->get();
 
@@ -54,7 +54,7 @@ class ResponsibilityRepository
     {
         $userResponsibilityArray = self::getActiveResponsibilitiesByUserId($id);
 
-        if (empty($userResponsibilityArray)) {
+        if ($userResponsibilityArray === null || $userResponsibilityArray === []) {
             return null;
         }
 
@@ -70,7 +70,7 @@ class ResponsibilityRepository
     public static function getActiveResponsibilityByIdAssertUserId(int $responsibilityId, int $userId): ?Responsibility
     {
         if (Responsibility::where('id', $responsibilityId)->where('user_id', $userId)->exists()) {
-            return Responsibility::where('id', $responsibilityId)->where('begin', '<=', date('Y-m-d'))->where(function ($query) {
+            return Responsibility::where('id', $responsibilityId)->where('begin', '<=', date('Y-m-d'))->where(static function ($query) {
                 $query->where('end', '>=', date('Y-m-d'))->orWhereNull('end');
             })->first();
         }

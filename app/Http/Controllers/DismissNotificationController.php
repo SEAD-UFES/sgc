@@ -19,8 +19,8 @@ class DismissNotificationController extends Controller
     {
         try {
             $notification->markAsRead();
-        } catch (\Exception $e) {
-            return back()->withErrors(['noDismiss' => 'Não foi possível dispensar a notificação: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noDismiss' => 'Não foi possível dispensar a notificação: ' . $exception->getMessage()]);
         }
 
         NotificationDismissed::dispatch($notification);

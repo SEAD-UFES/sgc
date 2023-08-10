@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Enums\Degrees;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
@@ -13,13 +14,13 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-class CourseServiceTest extends TestCase
+final class CourseServiceTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;
 
     //setting up scenario for all tests
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -38,10 +39,8 @@ class CourseServiceTest extends TestCase
         $this->service = new CourseService();
     }
 
-    /**
-     * @test
-     */
-    public function coursesShouldBeListed()
+    #[Test]
+    public function coursesShouldBeListed(): void
     {
         Event::fakeFor(function () {
             //execution
@@ -54,10 +53,8 @@ class CourseServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function courseShouldBeRetrieved()
+    #[Test]
+    public function courseShouldBeRetrieved(): void
     {
         //setting up scenario
         $course = Course::find(1);
@@ -73,10 +70,8 @@ class CourseServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function courseShouldBeCreated()
+    #[Test]
+    public function courseShouldBeCreated(): void
     {
         //setting up scenario
         $attributes = [];
@@ -100,10 +95,8 @@ class CourseServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function courseShouldBeUpdated()
+    #[Test]
+    public function courseShouldBeUpdated(): void
     {
         //setting up scenario
 
@@ -130,10 +123,8 @@ class CourseServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function courseShouldBeDeleted()
+    #[Test]
+    public function courseShouldBeDeleted(): void
     {
         //setting up scenario
         $course = Course::find(1);

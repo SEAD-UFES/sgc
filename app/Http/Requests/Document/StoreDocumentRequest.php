@@ -57,8 +57,8 @@ class StoreDocumentRequest extends FormRequest
         return new DocumentDto(
             fileName: $file->getClientOriginalName(),
             fileData: base64_encode($file->getContent()),
-            documentTypeId: intval($this->validated('document_type_id')),
-            relatedId: intval($this->validated('bond_id')),
+            documentTypeId: (int) $this->validated('document_type_id'),
+            relatedId: (int) $this->validated('bond_id'),
         );
     }
 }

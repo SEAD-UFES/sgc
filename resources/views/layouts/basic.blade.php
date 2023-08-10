@@ -8,8 +8,8 @@
     <title>SGC - @yield('title')</title>
     <meta name="description" content="SGC - Sistema de Gestão de Colaboradores da Sead/Ufes">
     <link rel="shortcut icon" href="{{ asset('/sead.png') }}">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <script src="{{ asset('js/app.js') }}"></script>
+    @vite(['resources/scss/app.scss', 'resources/js/app.js'])
+    
     @yield('headerScripts')
 </head>
 
@@ -20,6 +20,7 @@
     </div>
     @include('layouts.partialFooter')
     @yield('scripts')
+    @vite('resources/js/enable_tooltip.ts')
 </body>
 
 </html>

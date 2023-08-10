@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\User;
 use App\Models\UserType;
 use App\Models\Responsibility;
@@ -11,7 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
 use Tests\TestCase;
 
-class UserTest extends TestCase
+final class UserTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -24,16 +25,10 @@ class UserTest extends TestCase
 
     private ResponsibilityRepository $responsibilityRepository;
 
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->responsibilityRepository = new ResponsibilityRepository();
-    }
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
+        $this->responsibilityRepository = new ResponsibilityRepository();
 
         self::$userAdm = User::factory()->create();
         $userTypeAdm = UserType::factory()->admin()->create();
@@ -100,10 +95,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function guestShouldntListUsers()
+    #[Test]
+    public function guestShouldntListUsers(): void
     {
         $this->get('/users')
             ->assertStatus(401);
@@ -113,10 +107,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function administratorShouldListUsers()
+    #[Test]
+    public function administratorShouldListUsers(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -134,10 +127,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function directorShouldntListUsers()
+    #[Test]
+    public function directorShouldntListUsers(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -154,10 +146,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function assistantShouldntListUsers()
+    #[Test]
+    public function assistantShouldntListUsers(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -174,10 +165,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function secretaryShouldntListUsers()
+    #[Test]
+    public function secretaryShouldntListUsers(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -194,10 +184,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function ldiShouldntListUsers()
+    #[Test]
+    public function ldiShouldntListUsers(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -214,10 +203,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function coordinatorShouldntListUsers()
+    #[Test]
+    public function coordinatorShouldntListUsers(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -236,10 +224,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function guestShouldntAccessCreateUsersPage()
+    #[Test]
+    public function guestShouldntAccessCreateUsersPage(): void
     {
         $this->get('/users/create')
             ->assertStatus(401);
@@ -249,10 +236,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function administratorShouldAccessCreateUsersPage()
+    #[Test]
+    public function administratorShouldAccessCreateUsersPage(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -270,10 +256,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function directorShouldntAccessCreateUsersPage()
+    #[Test]
+    public function directorShouldntAccessCreateUsersPage(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -290,10 +275,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function assistantShouldntAccessCreateUsersPage()
+    #[Test]
+    public function assistantShouldntAccessCreateUsersPage(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -310,10 +294,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function secretaryShouldntAccessCreateUsersPage()
+    #[Test]
+    public function secretaryShouldntAccessCreateUsersPage(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -330,10 +313,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function ldiShouldntAccessCreateUsersPage()
+    #[Test]
+    public function ldiShouldntAccessCreateUsersPage(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -350,10 +332,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function coordinatorShouldntAccessCreateUsersPage()
+    #[Test]
+    public function coordinatorShouldntAccessCreateUsersPage(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -373,10 +354,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function guestShouldntCreateUser()
+    #[Test]
+    public function guestShouldntCreateUser(): void
     {
         $user = $this->createTestUserAsArray();
 
@@ -388,10 +368,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function administratorShouldCreateUser()
+    #[Test]
+    public function administratorShouldCreateUser(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -411,10 +390,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function directorShouldntCreateUser()
+    #[Test]
+    public function directorShouldntCreateUser(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -433,10 +411,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function assistantShouldntCreateUser()
+    #[Test]
+    public function assistantShouldntCreateUser(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -455,10 +432,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function secretaryShouldntCreateUser()
+    #[Test]
+    public function secretaryShouldntCreateUser(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -477,10 +453,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function ldiShouldntCreateUser()
+    #[Test]
+    public function ldiShouldntCreateUser(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -499,10 +474,9 @@ class UserTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function coordinatorShouldntCreateUser()
+    #[Test]
+    public function coordinatorShouldntCreateUser(): void
     {
         $this->actingAs(self::$userCoord);
 

@@ -120,5 +120,4 @@
 
 @section('scripts')
     @component('_components.filters_script', ['filters' =>$filters] )@endcomponent
-    <script src="{{ asset('js/enable_tooltip_popover.js') }}"></script>
 @endsection

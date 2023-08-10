@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Events\ModelListed;
 use App\Models\UserType;
 use App\Services\UserTypeService;
@@ -9,12 +10,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-class UserTypeServiceTest extends TestCase
+final class UserTypeServiceTest extends TestCase
 {
     use RefreshDatabase;
 
     //setting up scenario for all tests
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -37,10 +38,8 @@ class UserTypeServiceTest extends TestCase
         $this->service = new UserTypeService();
     }
 
-    /**
-     * @test
-     */
-    public function userTypesShouldBeListed()
+    #[Test]
+    public function userTypesShouldBeListed(): void
     {
         Event::fakeFor(function () {
             $userTypes = $this->service->list();

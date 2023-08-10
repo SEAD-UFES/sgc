@@ -24,7 +24,7 @@ class BondFormComposer
      */
     public function compose(View $view): void
     {
-        $knowledgeAreas = Arr::sort(KnowledgeAreas::cases(), function ($knowledgeArea) {
+        $knowledgeAreas = Arr::sort(KnowledgeAreas::cases(), static function ($knowledgeArea) {
             return $knowledgeArea->label();
         });
 
@@ -43,7 +43,7 @@ class BondFormComposer
     }
 
     /** @return Collection<int, Course>  */
-    private static function getAllowedCourses(): Collection
+    private function getAllowedCourses(): Collection
     {
         $courses = Course::orderBy('name')->get();
         foreach ($courses as $key => $course) {

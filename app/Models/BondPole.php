@@ -11,6 +11,7 @@ class BondPole extends Model
      * @var bool
      */
     public $incrementing = false;
+
     /**
      * @var string
      */

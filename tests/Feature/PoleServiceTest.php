@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Pole;
@@ -11,12 +12,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-class PoleServiceTest extends TestCase
+final class PoleServiceTest extends TestCase
 {
     use RefreshDatabase;
 
     //setting up scenario for all tests
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -35,10 +36,8 @@ class PoleServiceTest extends TestCase
         $this->service = new PoleService();
     }
 
-    /**
-     * @test
-     */
-    public function polesShouldBeListed()
+    #[Test]
+    public function polesShouldBeListed(): void
     {
         Event::fakeFor(function () {
             //execution
@@ -51,10 +50,8 @@ class PoleServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function poleShouldBeRetrieved()
+    #[Test]
+    public function poleShouldBeRetrieved(): void
     {
         //setting up scenario
         $pole = Pole::find(1);
@@ -70,10 +67,8 @@ class PoleServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function poleShouldBeCreated()
+    #[Test]
+    public function poleShouldBeCreated(): void
     {
         //setting up scenario
         $attributes = [];
@@ -94,10 +89,8 @@ class PoleServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function poleShouldBeUpdated()
+    #[Test]
+    public function poleShouldBeUpdated(): void
     {
         //setting up scenario
 
@@ -122,10 +115,8 @@ class PoleServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function poleShouldBeDeleted()
+    #[Test]
+    public function poleShouldBeDeleted(): void
     {
         //setting up scenario
         $pole = Pole::find(1);

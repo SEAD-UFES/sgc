@@ -63,7 +63,7 @@ class UserType extends Model
          * @var UserType
          */
         $userType = UserType::select('id')->where('acronym', $acronym)->take(1)->first();
-        return intval($userType->getAttribute('id'));
+        return (int) $userType->getAttribute('id');
     }
 
     public function getActivitylogOptions(): LogOptions

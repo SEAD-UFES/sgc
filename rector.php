@@ -22,6 +22,9 @@ use Rector\Core\ValueObject\PhpVersion;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 use Rector\Php71\Rector\FuncCall\RemoveExtraParametersRector;
 use Rector\Set\ValueObject\SetList;
+use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
+use Rector\CodingStyle\Rector\Encapsed\WrapEncapsedVariableInCurlyBracesRector;
+use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
 
 return static function (RectorConfig $rectorConfig): void {
     // here we can define, what sets of rules will be applied
@@ -40,9 +43,13 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->skip([
         // skip this class
         //\Rector\Php74\Rector\Property\TypedPropertyRector::class,
-        CompactToVariablesRector::class,
-        ExplicitMethodCallOverMagicGetSetRector::class,
-        CatchExceptionNameMatchingTypeRector::class,
-        VarConstantCommentRector::class,
+        // CompactToVariablesRector::class,
+        // ExplicitMethodCallOverMagicGetSetRector::class,
+        // CatchExceptionNameMatchingTypeRector::class,
+        // VarConstantCommentRector::class,
+
+        EncapsedStringsToSprintfRector::class,
+        WrapEncapsedVariableInCurlyBracesRector::class,
+        PostIncDecToPreIncDecRector::class,
     ]);
 };

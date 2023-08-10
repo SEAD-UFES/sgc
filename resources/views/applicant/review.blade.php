@@ -29,11 +29,8 @@
 
             checkboxFlag = !checkboxFlag;
         }
-        
-        $(document).ready(function(){
-            Inputmask().mask(document.querySelectorAll("input"));
-        });
     </script>
+    @vite('resources/js/enable_inputmask.ts')
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb border-top border-bottom bg-light">
             <li class="breadcrumb-item">Colaboradores</li>

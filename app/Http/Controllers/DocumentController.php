@@ -37,7 +37,7 @@ class DocumentController extends Controller
 
         $documents = $this->service->list(direction: $direction, sort: $sort);
 
-        return view('document.index', compact('documents'));
+        return view('document.index', ['documents' => $documents]);
     }
 
     /**

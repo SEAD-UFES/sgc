@@ -31,7 +31,7 @@ class UserController extends Controller
     {
         $users = $this->service->list();
 
-        return view('user.index', compact('users'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('user.index', ['users' => $users])->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -57,8 +57,8 @@ class UserController extends Controller
     {
         try {
             $this->service->create($request->toDto());
-        } catch (\Exception $e) {
-            return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('users.index')->with('success', 'Usuário criado com sucesso.');
@@ -76,7 +76,7 @@ class UserController extends Controller
     {
         $this->service->read($user);
 
-        return view('user.show', compact('user'));
+        return view('user.show', ['user' => $user]);
     }
 
     /**
@@ -89,7 +89,7 @@ class UserController extends Controller
      */
     public function edit(EditUserRequest $request, User $user): View
     {
-        return view('user.edit', compact('user'));
+        return view('user.edit', ['user' => $user]);
     }
 
     /**
@@ -104,8 +104,8 @@ class UserController extends Controller
     {
         try {
             $user = $this->service->update($request->toDto(), $user);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o usuário: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('users.index')->with('success', 'Usuário atualizado com sucesso.');
@@ -123,8 +123,8 @@ class UserController extends Controller
     {
         try {
             $this->service->delete($user);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noDestroy' => 'Não foi possível excluir o usuário: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noDestroy' => 'Não foi possível excluir o usuário: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('users.index')->with('success', 'Usuário excluído com sucesso.');

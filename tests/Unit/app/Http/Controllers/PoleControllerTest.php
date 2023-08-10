@@ -16,7 +16,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 
-class PoleControllerTest extends TestCase
+final class PoleControllerTest extends TestCase
 {
     use WithoutMiddleware;
 

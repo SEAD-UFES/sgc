@@ -34,7 +34,7 @@ class RightsDocumentController extends Controller
 
         $documents = $this->service->list(direction: $direction, sort: $sort);
 
-        return view('reports.rightsIndex', compact('documents'));
+        return view('reports.rightsIndex', ['documents' => $documents]);
     }
 
     /**

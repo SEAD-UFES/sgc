@@ -14,11 +14,8 @@
 
         document.getElementById('inputArea1').value = code[1];
     }
-        
-    $(document).ready(function(){
-        Inputmask().mask(document.querySelectorAll("input"));
-    });
 </script>
+@vite('resources/js/enable_inputmask.ts')
 
 @csrf
 {{-- @dd($genders) --}}

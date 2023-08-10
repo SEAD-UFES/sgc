@@ -24,7 +24,7 @@ class CourseClassFormComposer
     }
 
     /** @return Collection<int, Course>  */
-    private static function getAllowedCourses(): Collection
+    private function getAllowedCourses(): Collection
     {
         $courses = Course::orderBy('name')->get();
         foreach ($courses as $key => $course) {

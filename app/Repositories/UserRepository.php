@@ -44,7 +44,7 @@ class UserRepository
         /**
          * @var Builder $query
          */
-        $query = self::allActiveUsersOfActiveTypeIdQuery($userTypeId, $sort, $direction);
+        $query = $this->allActiveUsersOfActiveTypeIdQuery($userTypeId, $sort, $direction);
 
         return $query->get();
     }
@@ -65,10 +65,11 @@ class UserRepository
         /**
          * @var Builder $query
          */
-        $query = self::allActiveUsersOfActiveTypeIdOfCourseIdQuery($userTypeId, $courseId, $sort, $direction);
+        $query = $this->allActiveUsersOfActiveTypeIdOfCourseIdQuery($userTypeId, $courseId, $sort, $direction);
 
         return $query->get();
     }
+
     /**
      * Undocumented function
      *
@@ -108,7 +109,7 @@ class UserRepository
      *
      * @return Builder
      */
-    private static function allActiveUsersOfTypeIdQuery(int $userTypeId, string $sort = 'users.id', string $direction = 'desc'): Builder
+    private function allActiveUsersOfTypeIdQuery(int $userTypeId, string $sort = 'users.id', string $direction = 'desc'): Builder
     {
         return self::allActiveUsersQuery($sort, $direction)
             ->join('responsibilities', 'responsibilities.user_id', '=', 'users.id')
@@ -122,9 +123,9 @@ class UserRepository
      *
      * @return Builder
      */
-    private static function allActiveUsersOfActiveTypeIdQuery(int $userTypeId, string $sort = 'users.id', string $direction = 'desc'): Builder
+    private function allActiveUsersOfActiveTypeIdQuery(int $userTypeId, string $sort = 'users.id', string $direction = 'desc'): Builder
     {
-        return self::allActiveUsersOfTypeIdQuery($userTypeId, $sort, $direction)
+        return $this->allActiveUsersOfTypeIdQuery($userTypeId, $sort, $direction)
             ->where('responsibilities.begin', '<=', Carbon::today()->toDateString())
             ->where(static function ($q) {
                 $q->where('responsibilities.end', '>=', Carbon::today()->toDateString())
@@ -140,9 +141,9 @@ class UserRepository
      *
      * @return Builder
      */
-    private static function allActiveUsersOfActiveTypeIdOfCourseIdQuery(int $userTypeId, int $courseId, string $sort = 'users.id', string $direction = 'desc'): Builder
+    private function allActiveUsersOfActiveTypeIdOfCourseIdQuery(int $userTypeId, int $courseId, string $sort = 'users.id', string $direction = 'desc'): Builder
     {
-        return self::allActiveUsersOfActiveTypeIdQuery($userTypeId, $sort, $direction)
+        return $this->allActiveUsersOfActiveTypeIdQuery($userTypeId, $sort, $direction)
             ->where('responsibilities.course_id', $courseId);
     }
 }

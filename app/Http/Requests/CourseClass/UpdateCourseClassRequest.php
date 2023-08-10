@@ -52,10 +52,10 @@ class UpdateCourseClassRequest extends FormRequest
     public function toDto(): CourseClassDto
     {
         return new CourseClassDto(
-            courseId: intval($this->validated('course_id')),
-            code: strval($this->validated('code') ?? ''),
-            name: strval($this->validated('name') ?? ''),
-            cpp: strval($this->validated('cpp') ?? ''),
+            courseId: (int) $this->validated('course_id'),
+            code: (string) ($this->validated('code') ?? ''),
+            name: (string) ($this->validated('name') ?? ''),
+            cpp: (string) ($this->validated('cpp') ?? ''),
         );
     }
 }

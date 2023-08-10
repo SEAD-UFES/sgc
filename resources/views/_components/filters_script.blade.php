@@ -37,8 +37,8 @@
         let filters = buildAllFilters()
 
         //
-        let new_type = $("#filterType option:checked").val();
-        let new_value = $('#filterValue').val();
+        let new_type = document.querySelector('#filterType').value;
+        let new_value = document.querySelector('#filterValue').value;
         let filter_key = Object.keys(filters).find(f_key => f_key === new_type);
         
         //if filter[key] dont exists

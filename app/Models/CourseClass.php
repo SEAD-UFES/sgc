@@ -26,26 +26,6 @@ class CourseClass extends Model
     public $incrementing = true;
 
     /**
-     * @var string
-     */
-    protected $table = 'course_classes';
-
-    /**
-     * @var string
-     */
-    protected $primaryKey = 'id';
-
-    /**
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'course_id',
-        'code',
-        'name',
-        'cpp',
-    ];
-
-    /**
      * @var array<int, string>
      */
     public static $sortable = [
@@ -66,6 +46,26 @@ class CourseClass extends Model
         'codeContains',
         'nameContains',
         'cppContains',
+    ];
+
+    /**
+     * @var string
+     */
+    protected $table = 'course_classes';
+
+    /**
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'course_id',
+        'code',
+        'name',
+        'cpp',
     ];
 
     /**

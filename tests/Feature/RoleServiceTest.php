@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Enums\GrantTypes;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
@@ -12,12 +13,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-class RoleServiceTest extends TestCase
+final class RoleServiceTest extends TestCase
 {
     use RefreshDatabase;
 
     //setting up scenario for all tests
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -36,10 +37,8 @@ class RoleServiceTest extends TestCase
         $this->service = new RoleService();
     }
 
-    /**
-     * @test
-     */
-    public function rolesShouldBeListed()
+    #[Test]
+    public function rolesShouldBeListed(): void
     {
         Event::fakeFor(function () {
             //execution
@@ -52,10 +51,8 @@ class RoleServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function roleShouldBeRetrieved()
+    #[Test]
+    public function roleShouldBeRetrieved(): void
     {
         //setting up scenario
         $role = Role::find(1);
@@ -71,10 +68,8 @@ class RoleServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function roleShouldBeCreated()
+    #[Test]
+    public function roleShouldBeCreated(): void
     {
         //setting up scenario
         $attributes = [];
@@ -97,10 +92,8 @@ class RoleServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function roleShouldBeUpdated()
+    #[Test]
+    public function roleShouldBeUpdated(): void
     {
         //setting up scenario
 
@@ -127,10 +120,8 @@ class RoleServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function roleShouldBeDeleted()
+    #[Test]
+    public function roleShouldBeDeleted(): void
     {
         //setting up scenario
         $role = Role::find(1);

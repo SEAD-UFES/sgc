@@ -44,7 +44,7 @@ class BondService
 
         $query = Bond::with(['employee', 'courses', 'role', 'poles'])
             ->select(['bonds.*', 'lastOpenImpediments.bond_id', 'lastOpenImpediments.created_at as last_open_impediment_date'])
-            ->leftJoinSub($lastOpenImpediments, 'lastOpenImpediments', function ($join) {
+            ->leftJoinSub($lastOpenImpediments, 'lastOpenImpediments', static function ($join) {
                 $join->on('bonds.id', '=', 'lastOpenImpediments.bond_id');
             })
             ->join('employees', 'bonds.employee_id', '=', 'employees.id')
@@ -185,7 +185,7 @@ class BondService
                 'reviewer_id' => User::where('login', 'sgc_system')->first()?->id,
             ]);
 
-            if ($bondDto->qualificationKnowledgeArea !== null) {
+            if ($bondDto->qualificationKnowledgeArea instanceof \App\Enums\KnowledgeAreas) {
                 $bond->qualification()->updateOrCreate(
                     ['bond_id' => $bond->id],
                     [
@@ -254,12 +254,7 @@ class BondService
     public static function bondHaveRights(Bond $bond): bool
     {
         $typeId = DocumentType::where('name', 'Termo de cessão de direitos')->first()?->id;
-
-        if ($bond->documents->where('document_type_id', $typeId)->count() > 0) {
-            return true;
-        }
-
-        return false;
+        return $bond->documents->where('document_type_id', $typeId)->count() > 0;
     }
 
     public static function bondCheckRights(Bond $bond): void

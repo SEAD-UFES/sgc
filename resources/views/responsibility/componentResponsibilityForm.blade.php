@@ -1,7 +1,7 @@
 @csrf
 <div class="mb-3">
     <label for="selectEmployee1" class="form-label">Usuário*</label>
-    <select name="user_id" id="selectEmployee1" class="form-select searchable-select">
+    <select name="user_id" id="selectEmployee1" class="form-select select-dropdown">
         <option value="">Selecione o usuário</option>
         @foreach ($users as $user)
             <option value="{{ $user->id }}"
@@ -29,7 +29,7 @@
 </div>
 <div class="mb-3">
     <label for="selectCourse1" class="form-label">Curso</label>
-    <select name="course_id" id="selectCourse1" class="form-select searchable-select">
+    <select name="course_id" id="selectCourse1" class="form-select select-dropdown">
         <option value="">Sem curso específico</option>
         @foreach ($courses as $course)
             <option value="{{ $course->id }}"

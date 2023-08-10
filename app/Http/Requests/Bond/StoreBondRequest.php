@@ -75,18 +75,18 @@ class StoreBondRequest extends FormRequest
     public function toDto(): BondDto
     {
         return new BondDto(
-            employeeId: intval($this->validated('employee_id')),
-            roleId: intval($this->validated('role_id')),
-            courseId: $this->validated('course_id') !== null ? intval($this->validated('course_id')) : null,
-            courseClassId: $this->validated('course_class_id') !== null ? intval($this->validated('course_class_id')) : null,
-            poleId: $this->validated('pole_id') !== null ? intval($this->validated('pole_id')) : null,
+            employeeId: (int) $this->validated('employee_id'),
+            roleId: (int) $this->validated('role_id'),
+            courseId: $this->validated('course_id') !== null ? (int) $this->validated('course_id') : null,
+            courseClassId: $this->validated('course_class_id') !== null ? (int) $this->validated('course_class_id') : null,
+            poleId: $this->validated('pole_id') !== null ? (int) $this->validated('pole_id') : null,
             begin: Date::parse($this->validated('begin')),
             terminatedAt: $this->validated('terminated_at') !== null ? Date::parse($this->validated('terminated_at')) : null,
-            hiringProcess: strval($this->validated('hiring_process')),
+            hiringProcess: (string) $this->validated('hiring_process'),
             volunteer: ($this->validated('volunteer') ?? '') === 'on',
-            qualificationKnowledgeArea: KnowledgeAreas::from(strval($this->validated('qualification_knowledge_area'))),
-            qualificationCourse: strval($this->validated('qualification_course')),
-            qualificationInstitution: strval($this->validated('qualification_institution')),
+            qualificationKnowledgeArea: KnowledgeAreas::from((string) $this->validated('qualification_knowledge_area')),
+            qualificationCourse: (string) $this->validated('qualification_course'),
+            qualificationInstitution: (string) $this->validated('qualification_institution'),
         );
     }
 }

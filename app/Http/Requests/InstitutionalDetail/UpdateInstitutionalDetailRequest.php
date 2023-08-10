@@ -62,8 +62,8 @@ class UpdateInstitutionalDetailRequest extends FormRequest
     public function toDto(): InstitutionalDetailDto
     {
         return new InstitutionalDetailDto(
-            login: strval($this->validated('login') ?? ''),
-            email: strval($this->validated('email') ?? ''),
+            login: (string) ($this->validated('login') ?? ''),
+            email: (string) ($this->validated('email') ?? ''),
         );
     }
 }

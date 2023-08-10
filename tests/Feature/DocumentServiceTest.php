@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Bond;
@@ -17,27 +18,19 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-class DocumentServiceTest extends TestCase
+final class DocumentServiceTest extends TestCase
 {
     use RefreshDatabase;
 
     private DocumentService $service;
     private RightsDocumentService $rightsService;
 
-    /** @return void  */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->service = new DocumentService(new DocumentRepository());
-        $this->rightsService = new RightsDocumentService(new RightsDocumentRepository());
-    }
-
-
     //setting up scenario for all tests
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
+        $this->service = new DocumentService(new DocumentRepository());
+        $this->rightsService = new RightsDocumentService(new RightsDocumentRepository());
 
         Document::factory()->createOne(
             [
@@ -68,9 +61,7 @@ class DocumentServiceTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function documentsShouldBeListed(): void
     {
         Event::fakeFor(function () {
@@ -85,9 +76,7 @@ class DocumentServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rightsShouldBeListed(): void
     {
         Document::factory()->createOne(
@@ -116,9 +105,7 @@ class DocumentServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function documentShouldBeCreated(): void
     {
         //setting up scenario
@@ -151,9 +138,7 @@ class DocumentServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function documentShouldBePreparedToDownload(): void
     {
         Event::fakeFor(function () {

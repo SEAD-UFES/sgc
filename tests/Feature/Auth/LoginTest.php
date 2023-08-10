@@ -2,12 +2,13 @@
 
 namespace Tests\Feature\Auth;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
-class LoginTest extends TestCase
+final class LoginTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -15,10 +16,9 @@ class LoginTest extends TestCase
      * Ensures a guest (unauthenticated user) sees the login form
      *
      * @return void
-     *
-     * @test
      */
-    public function guestShouldAccessLoginPage()
+    #[Test]
+    public function guestShouldAccessLoginPage(): void
     {
         $this->get(route('auth.login'))
             ->assertSuccessful()
@@ -32,10 +32,9 @@ class LoginTest extends TestCase
      * A guest must be redirected from the root '/' to the login route
      *
      * @return void
-     *
-     * @test
      */
-    public function guestIsRedirectedFromRootLogin()
+    #[Test]
+    public function guestIsRedirectedFromRootLogin(): void
     {
         $this->get(route('root'))
             ->assertRedirect(route('auth.login'));
@@ -45,10 +44,9 @@ class LoginTest extends TestCase
      * A guest must not be able to access the home route
      *
      * @return void
-     *
-     * @test
      */
-    public function guestShouldntSeeHome()
+    #[Test]
+    public function guestShouldntSeeHome(): void
     {
         $this->get(route('home'))
             ->assertStatus(401);
@@ -60,10 +58,9 @@ class LoginTest extends TestCase
      * A logged user must be redirected from 'root' to the 'home'.
      *
      * @return void
-     *
-     * @test
      */
-    public function authenticatedUserShouldntAccessLoginPage()
+    #[Test]
+    public function authenticatedUserShouldntAccessLoginPage(): void
     {
         $user = User::factory()->make();
 
@@ -80,10 +77,9 @@ class LoginTest extends TestCase
      * An existing user cannot login with the wrong password
      *
      * @return void
-     *
-     * @test
      */
-    public function userShouldntAuthenticateWithWrongPassword()
+    #[Test]
+    public function userShouldntAuthenticateWithWrongPassword(): void
     {
         $user = User::factory()->create(
             [

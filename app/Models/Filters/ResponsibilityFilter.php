@@ -12,6 +12,7 @@ trait ResponsibilityFilter
         $values = ModelFilterHelper::inputToArray($value);
         return ModelFilterHelper::relationContains($builder, 'user', 'email', $values);
     }
+
     public function userLoginContains(Builder $builder, $value)
     {
         $values = ModelFilterHelper::inputToArray($value);

@@ -1,19 +1,21 @@
-* text=auto
+* text=auto eol=lf
 
-*.php text diff=php eol=lf
 *.blade.php text diff=html
 *.css text diff=css
 *.htm text diff=html
 *.html text diff=html
+*.md text diff=markdown
+*.php text diff=php eol=lf
 *.js text eol=lf
 *.json text eol=lf
-*.md text diff=markdown
 *.sass text eol=lf
 *.xml text eol=lf
 
 *.gitattributes text eol=lf
 .gitignore text eol=lf
 *.lock text eol=lf
+*.sh text eol=lf
 
 /.github export-ignore
 CHANGELOG.md export-ignore
+.styleci.yml export-ignore

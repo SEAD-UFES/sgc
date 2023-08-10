@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\UserType;
@@ -10,7 +11,7 @@ use App\Repositories\ResponsibilityRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ResponsibilityTest extends TestCase
+final class ResponsibilityTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -23,16 +24,10 @@ class ResponsibilityTest extends TestCase
 
     private ResponsibilityRepository $responsibilityRepository;
 
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->responsibilityRepository = new ResponsibilityRepository();
-    }
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
+        $this->responsibilityRepository = new ResponsibilityRepository();
 
         self::$userAdm = User::factory()->create();
         $userTypeAdm = UserType::factory()->admin()->create();
@@ -107,10 +102,9 @@ class ResponsibilityTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function guestShouldntListResponsibilities()
+    #[Test]
+    public function guestShouldntListResponsibilities(): void
     {
         $this->get('/responsibilities')
             ->assertStatus(401);
@@ -120,10 +114,9 @@ class ResponsibilityTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function administratorShouldListResponsibilities()
+    #[Test]
+    public function administratorShouldListResponsibilities(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -141,10 +134,9 @@ class ResponsibilityTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function directorShouldntListResponsibilities()
+    #[Test]
+    public function directorShouldntListResponsibilities(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -161,10 +153,9 @@ class ResponsibilityTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function assistantShouldntListResponsibilities()
+    #[Test]
+    public function assistantShouldntListResponsibilities(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -181,10 +172,9 @@ class ResponsibilityTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function secretaryShouldntListResponsibilities()
+    #[Test]
+    public function secretaryShouldntListResponsibilities(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -201,10 +191,9 @@ class ResponsibilityTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function ldiShouldntListResponsibilities()
+    #[Test]
+    public function ldiShouldntListResponsibilities(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -221,10 +210,9 @@ class ResponsibilityTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function coordinatorShouldntListResponsibilities()
+    #[Test]
+    public function coordinatorShouldntListResponsibilities(): void
     {
         $this->actingAs(self::$userCoord);
 

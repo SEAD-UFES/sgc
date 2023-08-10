@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Pole;
 use App\Models\User;
 use App\Models\UserType;
@@ -10,7 +11,7 @@ use App\Repositories\ResponsibilityRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class PoleTest extends TestCase
+final class PoleTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -25,16 +26,10 @@ class PoleTest extends TestCase
 
     private ResponsibilityRepository $responsibilityRepository;
 
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->responsibilityRepository = new ResponsibilityRepository();
-    }
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
+        $this->responsibilityRepository = new ResponsibilityRepository();
 
         self::$userAdm = User::factory()->create();
         $userTypeAdm = UserType::factory()->admin()->create();
@@ -112,10 +107,9 @@ class PoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function administratorShouldListPoles()
+    #[Test]
+    public function administratorShouldListPoles(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -133,10 +127,9 @@ class PoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function directorShouldListPoles()
+    #[Test]
+    public function directorShouldListPoles(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -154,10 +147,9 @@ class PoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function assistantShouldListPoles()
+    #[Test]
+    public function assistantShouldListPoles(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -175,10 +167,9 @@ class PoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function secretaryShouldListPoles()
+    #[Test]
+    public function secretaryShouldListPoles(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -196,10 +187,9 @@ class PoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function ldiShouldntListPoles()
+    #[Test]
+    public function ldiShouldntListPoles(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -216,10 +206,9 @@ class PoleTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function coordinatorShouldListPoles()
+    #[Test]
+    public function coordinatorShouldListPoles(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -301,7 +290,7 @@ class PoleTest extends TestCase
      *
      * @return void
      */
-    public function testAuthenticatedUserWhitoutPermissionAssignmentCannotListPoles()
+    public function testAuthenticatedUserWhitoutPermissionAssignmentCannotListPoles(): void
     {
         $session = $this->getAuthenticatedSession();
 
@@ -314,7 +303,7 @@ class PoleTest extends TestCase
      *
      * @return void
      */
-    public function testAuthenticatedUserWithoutPermissionAssignmentCannotCreatePole()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotCreatePole(): void
     {
         $session = $this->getAuthenticatedSession();
 
@@ -327,7 +316,7 @@ class PoleTest extends TestCase
      *
      * @return void
      */
-    public function testAuthenticatedUserWithoutPermissionAssignmentCannotUpdatePole()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotUpdatePole(): void
     {
         $session = $this->getAuthenticatedSession();
 
@@ -345,7 +334,7 @@ class PoleTest extends TestCase
      *
      * @return void
      */
-    public function testAuthenticatedUserWithoutPermissionAssignmentCannotDeletePole()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotDeletePole(): void
     {
         $session = $this->getAuthenticatedSession();
 
@@ -362,7 +351,7 @@ class PoleTest extends TestCase
      *
      * @return void
      */
-    public function testAuthenticatedUserWithoutPermissionAssignmentCannotAccessCreatePolePage()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotAccessCreatePolePage(): void
     {
         $session = $this->getAuthenticatedSession();
 
@@ -376,7 +365,7 @@ class PoleTest extends TestCase
      *
      * @return void
      */
-    public function testAuthenticatedUserWithoutPermissionAssignmentCannotAccessEditPolePage()
+    public function testAuthenticatedUserWithoutPermissionAssignmentCannotAccessEditPolePage(): void
     {
         $session = $this->getAuthenticatedSession();
 

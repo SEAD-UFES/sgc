@@ -92,6 +92,7 @@ class ModelFilterHelper
         foreach ($values as $value) {
             $queryBuilder = $queryBuilder->where($column, $operation, $value);
         }
+
         return $queryBuilder;
     }
 

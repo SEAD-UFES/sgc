@@ -46,8 +46,8 @@ class ApplicantBatchController extends Controller
             $importedApplicants = $this->fileService->readSourceSpreadsheet($uploadeFile);
 
             session(['importedApplicants' => $importedApplicants]);
-        } catch (\Exception $e) {
-            return back()->withErrors($e->getMessage());
+        } catch (\Exception $exception) {
+            return back()->withErrors($exception->getMessage());
         }
 
         return redirect()->route('applicants.create_many.step_2')->with('success', 'Arquivo importado com sucesso.');
@@ -64,7 +64,7 @@ class ApplicantBatchController extends Controller
     {
         $importedApplicants = session('importedApplicants');
 
-        return view('applicant.review', compact('importedApplicants'));
+        return view('applicant.review', ['importedApplicants' => $importedApplicants]);
     }
 
     /**
@@ -78,8 +78,8 @@ class ApplicantBatchController extends Controller
     {
         try {
             $this->service->batchStore($request->validated());
-        } catch (\Exception $e) {
-            return back()->withErrors(['noStore' => 'Não foi possível salvar o(s) aprovado(s): ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o(s) aprovado(s): ' . $exception->getMessage()]);
         }
 
         session()->forget('importedApplicants');

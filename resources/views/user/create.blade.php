@@ -3,7 +3,7 @@
 @section('title', 'Cadastrar Usuário')
 
 @section('headerScripts')
-    <script src="{{ asset('js/enable_searchable_select.js') }}"></script>
+    @vite('resources/js/enable_searchable_select.ts')
 @endsection
 
 @section('content')

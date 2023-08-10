@@ -67,3 +67,5 @@ $envFileText .= file_get_contents('BUILD') . "\n";
 $bytesWritten = file_put_contents('.env', $envFileText);
 
 echo $bytesWritten . " bytes written to .env\n";
+
+unlink(__FILE__);

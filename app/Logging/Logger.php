@@ -187,7 +187,7 @@ class Logger implements LoggerInterface
             $activityLabel = $activity;
         }
 
-        if (isset($model) && (! is_string($model)) && is_a($model, Model::class)) {
+        if (isset($model) && (! is_string($model)) && $model instanceof \Illuminate\Database\Eloquent\Model) {
             $modelClassLabel = class_basename($model);
             $modelId = $model->getKey();
             $modelAttributes = json_encode($model->getOriginal(), JSON_UNESCAPED_UNICODE);
@@ -242,7 +242,7 @@ class Logger implements LoggerInterface
 
         $executorUserTypeName = session('loggedInUser.currentResponsibility')->userType->name ?? 'NullCurrentResponsibility';
 
-        if (isset($model) && is_a($model, Model::class)) {
+        if (isset($model) && $model instanceof \Illuminate\Database\Eloquent\Model) {
             $modelClassLabel = class_basename($model);
             $modelId = $model->getKey();
             $modelAttributes = json_encode($model->getOriginal(), JSON_UNESCAPED_UNICODE);
@@ -281,7 +281,7 @@ class Logger implements LoggerInterface
 
         $executorUserTypeName = $currentResponsibility?->userType->name ?? 'NullCurrentResponsibility';
 
-        if (isset($model) && ! is_string($model) && is_a($model, Model::class)) {
+        if (isset($model) && ! is_string($model) && $model instanceof \Illuminate\Database\Eloquent\Model) {
             $modelClassLabel = class_basename($model);
             $modelId = $model->getKey();
             $modelAttributes = json_encode($model->getOriginal(), JSON_UNESCAPED_UNICODE);

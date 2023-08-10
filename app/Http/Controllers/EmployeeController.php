@@ -31,7 +31,7 @@ class EmployeeController extends Controller
     {
         $employees = $this->service->list();
 
-        return view('employee.index', compact('employees'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('employee.index', ['employees' => $employees])->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -45,7 +45,7 @@ class EmployeeController extends Controller
     {
         $fromApplicant = false;
 
-        return view('employee.create', compact('fromApplicant'));
+        return view('employee.create', ['fromApplicant' => $fromApplicant]);
     }
 
     /**
@@ -59,8 +59,8 @@ class EmployeeController extends Controller
     {
         try {
             $this->service->create($request->toDto());
-        } catch (\Exception $e) {
-            return redirect()->route('employees.index')->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return redirect()->route('employees.index')->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('employees.index')->with('success', 'Colaborador criado com sucesso.');
@@ -78,7 +78,7 @@ class EmployeeController extends Controller
     {
         $employee = $this->service->read($employee);
 
-        return view('employee.show', compact(['employee']));
+        return view('employee.show', ['employee' => $employee]);
     }
 
     /**
@@ -95,7 +95,7 @@ class EmployeeController extends Controller
 
         $employee = $this->service->read($employee);
 
-        return view('employee.edit', compact('employee', 'fromApplicant'));
+        return view('employee.edit', ['employee' => $employee, 'fromApplicant' => $fromApplicant]);
     }
 
     /**
@@ -110,8 +110,8 @@ class EmployeeController extends Controller
     {
         try {
             $this->service->update($request->toDto(), $employee);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar o Colaborador: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('employees.index')->with('success', 'Colaborador atualizado com sucesso.');
@@ -129,8 +129,8 @@ class EmployeeController extends Controller
     {
         try {
             $this->service->delete($employee);
-        } catch (\Exception $e) {
-            return redirect()->route('employees.index')->withErrors(['noDestroy' => 'Não foi possível excluir o Colaborador: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return redirect()->route('employees.index')->withErrors(['noDestroy' => 'Não foi possível excluir o Colaborador: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('employees.index')->with('success', 'Colaborador excluído com sucesso.');

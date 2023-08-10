@@ -101,6 +101,6 @@ class AuthController extends Controller
     public function currentPasswordEdit(): View
     {
         $user = auth()->user();
-        return view('user.currentPasswordEdit', compact('user'));
+        return view('user.currentPasswordEdit', ['user' => $user]);
     }
 }

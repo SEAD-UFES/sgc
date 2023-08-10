@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Enums\KnowledgeAreas;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
@@ -25,7 +26,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-class BondServiceTest extends TestCase
+final class BondServiceTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;
@@ -36,7 +37,7 @@ class BondServiceTest extends TestCase
     private BondService $service;
 
     //setting up scenario for all tests
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -142,9 +143,7 @@ class BondServiceTest extends TestCase
         $this->service = new BondService(new DocumentRepository());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function bondsShouldBeListed(): void
     {
         Event::fakeFor(function () {
@@ -173,9 +172,7 @@ class BondServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function bondShouldBeRetrieved(): void
     {
         //setting up scenario
@@ -192,9 +189,7 @@ class BondServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function bondShouldBeCreated(): void
     {
         //setting up scenario
@@ -228,9 +223,7 @@ class BondServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function bondShouldBeUpdated(): void
     {
         //setting up scenario
@@ -264,9 +257,7 @@ class BondServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function bondShouldBeDeleted(): void
     {
         //setting up scenario
@@ -283,9 +274,7 @@ class BondServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function bondWithDocumentShouldBeDeleted(): void
     {
         //setting up scenario

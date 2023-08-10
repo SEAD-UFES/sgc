@@ -30,7 +30,7 @@ class SendInstitutionalLoginConfirmationRequiredEvent extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $yesterday = date('Y-m-d', strtotime('-1 days'));
 
@@ -52,7 +52,7 @@ class SendInstitutionalLoginConfirmationRequiredEvent extends Command
              */
             $user = $item->causer;
 
-            if ($employee !== null) {
+            if ($employee instanceof \App\Models\Employee) {
                 InstitutionalLoginConfirmationRequired::dispatch($user, $employee);
             }
         }

@@ -5,14 +5,14 @@ namespace Tests\Unit;
 use App\Helpers\TextHelper;
 use PHPUnit\Framework\TestCase;
 
-class TextHelperTest extends TestCase
+final class TextHelperTest extends TestCase
 {
     /**
      * Test titleCase helper function works
      *
      * @return void
      */
-    public function testTitleCaseHelper()
+    public function testTitleCaseHelper(): void
     {
         $this->assertEquals(TextHelper::titleCase('king henry viii'), 'King Henry VIII');
         $this->assertEquals(TextHelper::titleCase('dom joão vi'), 'Dom João VI');
@@ -25,7 +25,7 @@ class TextHelperTest extends TestCase
      *
      * @return void
      */
-    public function testRemoveAccentHelper()
+    public function testRemoveAccentHelper(): void
     {
         $this->assertEquals(
             TextHelper::removeAccents('Açalpão, Caçapa, Época, Açaí'),

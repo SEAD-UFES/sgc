@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Events\ModelListed;
 use App\Events\ModelRead;
 use App\Models\Employee;
@@ -13,12 +14,12 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
-class UserServiceTest extends TestCase
+final class UserServiceTest extends TestCase
 {
     use RefreshDatabase;
 
     //setting up scenario for all tests
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -40,10 +41,8 @@ class UserServiceTest extends TestCase
         $this->service = new UserService();
     }
 
-    /**
-     * @test
-     */
-    public function usersShouldBeListed()
+    #[Test]
+    public function usersShouldBeListed(): void
     {
         Event::fakeFor(function () {
             //execution
@@ -57,10 +56,8 @@ class UserServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function userShouldBeRetrieved()
+    #[Test]
+    public function userShouldBeRetrieved(): void
     {
         //setting up scenario
         $user = User::find(1);
@@ -76,10 +73,8 @@ class UserServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function userShouldBeCreated()
+    #[Test]
+    public function userShouldBeCreated(): void
     {
         //setting up scenario
         $attributes = [];
@@ -102,10 +97,8 @@ class UserServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function userShouldBeUpdated()
+    #[Test]
+    public function userShouldBeUpdated(): void
     {
         //setting up scenario
 
@@ -133,10 +126,8 @@ class UserServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function userShouldBeUpdatedExceptPassword()
+    #[Test]
+    public function userShouldBeUpdatedExceptPassword(): void
     {
         //setting up scenario
 
@@ -165,10 +156,8 @@ class UserServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function userShouldHaveEmployeeAttached()
+    #[Test]
+    public function userShouldHaveEmployeeAttached(): void
     {
         //setting up scenario
         /**
@@ -201,10 +190,8 @@ class UserServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function userShouldBeDeleted()
+    #[Test]
+    public function userShouldBeDeleted(): void
     {
         //setting up scenario
         $user = User::find(1);

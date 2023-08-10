@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Bond;
 use App\Models\Course;
 use App\Models\Document;
@@ -14,7 +15,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
-class DocumentTest extends TestCase
+final class DocumentTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -28,16 +29,10 @@ class DocumentTest extends TestCase
 
     private ResponsibilityRepository $responsibilityRepository;
 
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->responsibilityRepository = new ResponsibilityRepository();
-    }
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
+        $this->responsibilityRepository = new ResponsibilityRepository();
 
         User::factory()->withoutEmployee()->create([
             'login' => 'sgc_system',
@@ -157,10 +152,9 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function guestShouldntListBondsDocuments()
+    #[Test]
+    public function guestShouldntListBondsDocuments(): void
     {
         $this->get(route('documents.index'))
             ->assertStatus(401);
@@ -170,10 +164,9 @@ class DocumentTest extends TestCase
      * Authenticated user without permission Shouldnt list employees
      *
      * @return void
-     *
-     * @test
      */
-    public function authenticatedUserWithoutPermissionShouldntListBondsDocuments()
+    #[Test]
+    public function authenticatedUserWithoutPermissionShouldntListBondsDocuments(): void
     {
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
@@ -186,10 +179,9 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function administratorShouldListBondsDocuments()
+    #[Test]
+    public function administratorShouldListBondsDocuments(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -207,10 +199,9 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function directorShouldListBondsDocuments()
+    #[Test]
+    public function directorShouldListBondsDocuments(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -228,10 +219,9 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function assistantShouldListBondsDocuments()
+    #[Test]
+    public function assistantShouldListBondsDocuments(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -249,10 +239,9 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function secretaryShouldListBondsDocuments()
+    #[Test]
+    public function secretaryShouldListBondsDocuments(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -270,10 +259,9 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function ldiShouldntListBondsDocuments()
+    #[Test]
+    public function ldiShouldntListBondsDocuments(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -290,10 +278,9 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function coordinatorShouldntListBondsDocuments()
+    #[Test]
+    public function coordinatorShouldntListBondsDocuments(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -318,10 +305,9 @@ class DocumentTest extends TestCase
      * Guest Shouldnt access employee document
      *
      * @return void
-     *
-     * @test
      */
-    public function guestShouldntAccessDocument()
+    #[Test]
+    public function guestShouldntAccessDocument(): void
     {
         /** @var Document $document */
         $document = $this->getDocument();
@@ -333,10 +319,9 @@ class DocumentTest extends TestCase
      * Authenticated user without permission Shouldnt Access Employees document
      *
      * @return void
-     *
-     * @test
      */
-    public function authenticatedUserWithoutPermissionShouldntAccessDocument()
+    #[Test]
+    public function authenticatedUserWithoutPermissionShouldntAccessDocument(): void
     {
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
@@ -351,10 +336,9 @@ class DocumentTest extends TestCase
      * Admin user Should access employee document
      *
      * @return void
-     *
-     * @test
      */
-    public function administratorShouldAccessDocument()
+    #[Test]
+    public function administratorShouldAccessDocument(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -374,10 +358,9 @@ class DocumentTest extends TestCase
      * director user Should access employee document
      *
      * @return void
-     *
-     * @test
      */
-    public function directorShouldAccessDocument()
+    #[Test]
+    public function directorShouldAccessDocument(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -397,10 +380,9 @@ class DocumentTest extends TestCase
      * assistant user Should access employee document
      *
      * @return void
-     *
-     * @test
      */
-    public function assistantShouldAccessDocument()
+    #[Test]
+    public function assistantShouldAccessDocument(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -420,10 +402,9 @@ class DocumentTest extends TestCase
      * secretary user Should access employee document
      *
      * @return void
-     *
-     * @test
      */
-    public function secretaryShouldAccessDocument()
+    #[Test]
+    public function secretaryShouldAccessDocument(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -443,10 +424,9 @@ class DocumentTest extends TestCase
      * ldi user Should access employee document
      *
      * @return void
-     *
-     * @test
      */
-    public function ldiShouldntAccessDocument()
+    #[Test]
+    public function ldiShouldntAccessDocument(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -465,10 +445,9 @@ class DocumentTest extends TestCase
      * coordinator user Should access employee document
      *
      * @return void
-     *
-     * @test
      */
-    public function coordinatorShouldntAccessDocument()
+    #[Test]
+    public function coordinatorShouldntAccessDocument(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -496,10 +475,9 @@ class DocumentTest extends TestCase
      * Guest Shouldnt access create bond document page
      *
      * @return void
-     *
-     * @test
      */
-    public function guestShouldntAccessCreateDocumentPage()
+    #[Test]
+    public function guestShouldntAccessCreateDocumentPage(): void
     {
         $this->get(route('documents.create'))
             ->assertStatus(401);
@@ -509,10 +487,9 @@ class DocumentTest extends TestCase
      * Authenticated user without permission Shouldnt Access create bond document page
      *
      * @return void
-     *
-     * @test
      */
-    public function authenticatedUserWithoutPermissionShouldntAccessCreateDocumentPage()
+    #[Test]
+    public function authenticatedUserWithoutPermissionShouldntAccessCreateDocumentPage(): void
     {
         $this->actingAs(self::$userAlien)
             ->withSession(['loggedInUser.currentResponsibility' => null]);
@@ -525,10 +502,9 @@ class DocumentTest extends TestCase
      * Admin user Should access create bond document page
      *
      * @return void
-     *
-     * @test
      */
-    public function administratorShouldAccessCreateDocumentPage()
+    #[Test]
+    public function administratorShouldAccessCreateDocumentPage(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -546,10 +522,9 @@ class DocumentTest extends TestCase
      * director user Should access create bond document page
      *
      * @return void
-     *
-     * @test
      */
-    public function directorShouldAccessCreateDocumentPage()
+    #[Test]
+    public function directorShouldAccessCreateDocumentPage(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -567,10 +542,9 @@ class DocumentTest extends TestCase
      * assistant user Should access create bond document page
      *
      * @return void
-     *
-     * @test
      */
-    public function assistantShouldAccessCreateDocumentPage()
+    #[Test]
+    public function assistantShouldAccessCreateDocumentPage(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -588,10 +562,9 @@ class DocumentTest extends TestCase
      * secretary user Should access create bond document page
      *
      * @return void
-     *
-     * @test
      */
-    public function secretaryShouldAccessCreateDocumentPage()
+    #[Test]
+    public function secretaryShouldAccessCreateDocumentPage(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -609,10 +582,9 @@ class DocumentTest extends TestCase
      * ldi user Should access create bond document page
      *
      * @return void
-     *
-     * @test
      */
-    public function ldiShouldntAccessCreateDocumentPage()
+    #[Test]
+    public function ldiShouldntAccessCreateDocumentPage(): void
     {
         $this->actingAs(self::$userLdi);
 
@@ -629,10 +601,9 @@ class DocumentTest extends TestCase
      * coordinator user Should access create bond document page
      *
      * @return void
-     *
-     * @test
      */
-    public function coordinatorShouldntAccessCreateDocumentPage()
+    #[Test]
+    public function coordinatorShouldntAccessCreateDocumentPage(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -652,10 +623,9 @@ class DocumentTest extends TestCase
      * Guest Shouldnt create employee document
      *
      * @return void
-     *
-     * @test
      */
-    public function guestShouldntCreateDocument()
+    #[Test]
+    public function guestShouldntCreateDocument(): void
     {
         $bondDocumentArr = $this->createTestDocumentAttributes();
 
@@ -667,10 +637,9 @@ class DocumentTest extends TestCase
      * Authenticated user without permission Shouldnt create employee document
      *
      * @return void
-     *
-     * @test
      */
-    public function authenticatedUserWithoutPermissionShouldntCreateDocument()
+    #[Test]
+    public function authenticatedUserWithoutPermissionShouldntCreateDocument(): void
     {
         $bondDocumentArr = $this->createTestDocumentAttributes();
 
@@ -684,10 +653,9 @@ class DocumentTest extends TestCase
      * Admin user Should create employees document
      *
      * @return void
-     *
-     * @test
      */
-    public function administratorShouldCreateDocument()
+    #[Test]
+    public function administratorShouldCreateDocument(): void
     {
         $this->actingAs(self::$userAdm);
 
@@ -707,10 +675,9 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function directorShouldCreateDocument()
+    #[Test]
+    public function directorShouldCreateDocument(): void
     {
         $this->actingAs(self::$userDir);
 
@@ -730,10 +697,9 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function assistantShouldCreateDocument()
+    #[Test]
+    public function assistantShouldCreateDocument(): void
     {
         $this->actingAs(self::$userAss);
 
@@ -753,10 +719,9 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function secretaryShouldCreateDocument()
+    #[Test]
+    public function secretaryShouldCreateDocument(): void
     {
         $this->actingAs(self::$userSec);
 
@@ -776,10 +741,9 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function coordinatorShouldntCreateDocument()
+    #[Test]
+    public function coordinatorShouldntCreateDocument(): void
     {
         $this->actingAs(self::$userCoord);
 
@@ -798,10 +762,9 @@ class DocumentTest extends TestCase
      * A basic feature test example.
      *
      * @return void
-     *
-     * @test
      */
-    public function ldiShouldntCreateDocument()
+    #[Test]
+    public function ldiShouldntCreateDocument(): void
     {
         $this->actingAs(self::$userLdi);
 

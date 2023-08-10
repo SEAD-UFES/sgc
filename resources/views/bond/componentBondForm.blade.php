@@ -1,26 +1,33 @@
 <script>
-    $(document).ready(function(){
-        Inputmask().mask(document.querySelectorAll("input"));
+    const courseClassesJson = @json($courseClasses);
+let filteredCourseClasses = [];
+
+function filterCourseClasses() {
+    const selectCourse1Value = document.querySelector('#selectCourse1').value;
+    filteredCourseClasses = courseClassesJson.filter(courseClass => courseClass.course_id == selectCourse1Value);
+    
+    const selectCourseClass1 = document.querySelector('#selectCourseClass1');
+    console.log(selectCourseClass1);
+    selectCourseClass1.innerHTML = '<option value="">Não se aplica</option>';
+    
+    filteredCourseClasses.forEach(courseClass => {
+        const option = document.createElement('option');
+        option.value = courseClass.id;
+        option.textContent = courseClass.name;
+        selectCourseClass1.appendChild(option);
     });
+    console.log(filteredCourseClasses);
+}
 
-    courseClassesJson = @json($courseClasses);
-    filteredCourseClasses = [];
-
-    function filterCourseClasses() {
-        filteredCourseClasses = courseClassesJson.filter(courseClass => courseClass.course_id == $('#selectCourse1').val());
-        $('#selectCourseClass1').empty();
-        $('#selectCourseClass1').append('<option value="">Não se aplica</option>');
-        filteredCourseClasses.forEach(courseClass => {
-            $('#selectCourseClass1').append('<option value="' + courseClass.id + '">' + courseClass.name + '</option>');
-        });
-    }
 </script>
+@vite('resources/js/enable_inputmask.ts')
+@vite('resources/js/enable_searchable_select.ts')
 
 @csrf
 <div class="row g-3 mb-3">
     <div class="col-12 col-lg-6">
         <label for="selectEmployee1" class="form-label">Colaborador*</label>
-        <select name="employee_id" id="selectEmployee1" class="form-select searchable-select">
+        <select name="employee_id" id="selectEmployee1" class="form-select select-dropdown">
             <option value="">Selecione o colaborador</option>
             @foreach ($employees as $employee)
                 <option value="{{ $employee->id }}"
@@ -48,7 +55,7 @@
     </div>
     <div class="col-12 col-sm-12 col-md-7 col-lg-6 col-xl-6 col-xxl-6">
         <label for="selectCourse1" class="form-label">Curso</label>
-        <select name="course_id" id="selectCourse1" class="form-select searchable-select" onchange="filterCourseClasses()">
+        <select name="course_id" id="selectCourse1" class="form-select select-dropdown" onchange="filterCourseClasses()">
             <option value="">Não se aplica</option>
             @foreach ($courses as $course)
                 <option value="{{ $course->id }}"
@@ -62,7 +69,7 @@
     </div>
     <div class="col-12 col-sm-12 col-md-5 col-lg-6 col-xl-6 col-xl-6">
         <label for="selectCourseClass1" class="form-label">Disciplina</label>
-        <select name="course_class_id" id="selectCourseClass1" class="form-select searchable-select">
+        <select name="course_class_id" id="selectCourseClass1" class="form-select select-dropdown">
             <option value="">Não se aplica</option>
             @foreach ($courseClasses as $courseClass)
                 <option value="{{ $courseClass->id }}"
@@ -76,7 +83,7 @@
     </div>
     <div class="col-12 col-sm-12 col-md-5 col-lg-6 col-xl-6 col-xl-6">
         <label for="selectPole1" class="form-label">Polo</label>
-        <select name="pole_id" id="selectPole1" class="form-select searchable-select">
+        <select name="pole_id" id="selectPole1" class="form-select select-dropdown">
             <option value="">Não se aplica</option>
             @foreach ($poles as $pole)
                 <option value="{{ $pole->id }}"

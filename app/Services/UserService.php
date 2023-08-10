@@ -93,7 +93,7 @@ class UserService
      */
     public function updateCurrentPassword(UpdateCurrentPasswordDto $updateCurrentPasswordDto, User $user): User
     {
-        if ($updateCurrentPasswordDto->password == null || trim($updateCurrentPasswordDto->password) === '') {
+        if ($updateCurrentPasswordDto->password === null || trim($updateCurrentPasswordDto->password) === '') {
             throw new Exception('A senha não pode ser vazia');
         }
 

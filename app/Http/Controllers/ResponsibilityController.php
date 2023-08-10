@@ -31,7 +31,7 @@ class ResponsibilityController extends Controller
     {
         $responsibilities = $this->service->list();
 
-        return view('responsibility.index', compact('responsibilities'));
+        return view('responsibility.index', ['responsibilities' => $responsibilities]);
     }
 
     /**
@@ -57,8 +57,8 @@ class ResponsibilityController extends Controller
     {
         try {
             $this->service->create($request->toDto());
-        } catch (\Exception $e) {
-            return redirect()->route('responsibilities.index')->withErrors(['noStore' => 'Não foi possível salvar a Atribuição de Papel: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return redirect()->route('responsibilities.index')->withErrors(['noStore' => 'Não foi possível salvar a Atribuição de Papel: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('responsibilities.index')->with('success', 'Atribuição de Papel criada com sucesso.');
@@ -76,7 +76,7 @@ class ResponsibilityController extends Controller
     {
         $responsibility = $this->service->read($responsibility);
 
-        return view('responsibility.show', compact('responsibility'));
+        return view('responsibility.show', ['responsibility' => $responsibility]);
     }
 
     /**
@@ -89,7 +89,7 @@ class ResponsibilityController extends Controller
      */
     public function edit(EditResponsibilityRequest $request, Responsibility $responsibility): View
     {
-        return view('responsibility.edit', compact('responsibility'));
+        return view('responsibility.edit', ['responsibility' => $responsibility]);
     }
 
     /**
@@ -104,8 +104,8 @@ class ResponsibilityController extends Controller
     {
         try {
             $responsibility = $this->service->update($request->toDto(), $responsibility);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noStore' => 'Não foi possível salvar a Atribuição de Papel: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noStore' => 'Não foi possível salvar a Atribuição de Papel: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('responsibilities.index')->with('success', 'Atribuição de Papel atualizada com sucesso.');
@@ -123,8 +123,8 @@ class ResponsibilityController extends Controller
     {
         try {
             $this->service->delete($responsibility);
-        } catch (\Exception $e) {
-            return back()->withErrors(['noDestroy' => 'Não foi possível excluir a atribuição de papel: ' . $e->getMessage()]);
+        } catch (\Exception $exception) {
+            return back()->withErrors(['noDestroy' => 'Não foi possível excluir a atribuição de papel: ' . $exception->getMessage()]);
         }
 
         return redirect()->route('responsibilities.index')->with('success', 'Atribuição de papel excluído com sucesso.');

@@ -32,7 +32,7 @@ class DocumentBatchController extends Controller
             ])->get()
             : Bond::where('id', $id)->get();
 
-        return view('document.create-many-1', compact('bonds', 'id'));
+        return view('document.create-many-1', ['bonds' => $bonds, 'id' => $id]);
     }
 
     /**
@@ -44,11 +44,11 @@ class DocumentBatchController extends Controller
     {
         try {
             $bondDocuments = $this->service->createManyDocumentsStep1($request->validated());
-        } catch (Exception $e) {
-            return redirect()->back()->withErrors('Erro ao tentar obter arquivos: ' . $e->getMessage());
+        } catch (Exception $exception) {
+            return redirect()->back()->withErrors('Erro ao tentar obter arquivos: ' . $exception->getMessage());
         }
 
-        return view('document.create-many-2', compact('bondDocuments'));
+        return view('document.create-many-2', ['bondDocuments' => $bondDocuments]);
     }
 
     /**

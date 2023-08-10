@@ -53,10 +53,10 @@ class StoreRoleRequest extends FormRequest
     public function toDto(): RoleDto
     {
         return new RoleDto(
-            name: strval($this->validated('name') ?? ''),
-            description: strval($this->validated('description') ?? ''),
-            grantValue: intval($this->validated('grant_value')),
-            grantType: GrantTypes::from(strval($this->validated('grant_type'))),
+            name: (string) ($this->validated('name') ?? ''),
+            description: (string) ($this->validated('description') ?? ''),
+            grantValue: (int) $this->validated('grant_value'),
+            grantType: GrantTypes::from((string) $this->validated('grant_type')),
         );
     }
 }
