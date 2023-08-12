@@ -16,91 +16,20 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Logger implements LoggerInterface
 {
-    /* Classe personalizada para log do sistema.
-
-    use App\Logging\Logger;
-    ...
-    Logger::writeLog();
-
-    O método 'writeLog' tem 3 parâmetros opcionais: $target, $action, $executor
-    Assim, lendo de trás pra frente, Quem->O que->Onde
-
-    = Target =
-    Pode receber null/vazio, Classe com atributo id ou string.
-    - Com null ou vazio, usa 'System'.
-    - Com uma string, usa a string.
-    - Com uma classe com id, usa o o nome da classe, id e email, se possuir.
-
-    = Action =
-    Pode receber null/vazio ou string.
-    - Com null ou vazio, usa o nome do método que chamou o writeLog.
-    - Com uma string, usa a string.
-
-    = Executor =
-    Pode receber null/vazio, Classe com atributo id ou string.
-    - Com null ou vazio, usa o id e o email do usuário logado.
-    - Com uma string, usa a string.
-    - Com uma classe com id, usa o id e email.
-
-    Ex.:
-    Logger::writeLog(null, 'tried login', $request); [chamado do método authenticate com senha errada]
-    => NoID:prof1@ufes.br|tried login|System
-
-    Logger::writeLog(); [chamando do método authenticate]
-    => 7:prof1@ufes.br|authenticate|System
-
-    Logger::writeLog(); [chamando do método index do UserController]
-    => 7:prof1@ufes.br|index|User
-
-    Logger::writeLog($user); [chamado do método store do UserController]
-    => 7:prof1@ufes.br|store| User:18:marco@gmail.com */
-
-    /*========================================================================================================
-    - Model Events
-        ** retrieved **
-        creating
-        created
-        updating
-        updated
-        saving
-        saved
-        deleting
-        deleted
-        restoring
-        restored
-
-    - HTTP Access Error Events
-        401
-        403
-        404
-
-    - Domain Events
-        designate
-        review
-        request review
-
-    - System Events
-        authenticate
-        logout
-        import
-        exportDocuments
-
-    ========================================================================================================*/
-
-    /**
-     * @var array<int, string> $severities
-     */
-    private static $severities = ['info', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency'];
-
-    public static function writeLog(mixed $target = null, mixed $action = null, mixed $executor = null, mixed $request = null, ?string $model_json = null)
+    public static function writeLog(mixed $target = null, mixed $action = null, mixed $executor = null, mixed $request = null, ?string $model_json = null): void
     {
-        $functionCaller = (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']);
+        $functionCaller = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
         $executorInfo = self::getExecutorInfo($executor);
         $actionInfo = self::getActionInfo($action, $functionCaller);
         $targetInfo = self::getTargetInfo($target);
         $severity = self::severityMap($actionInfo);
 
-        $logText = "\t" . NetworkHelper::getClientIpAddress() . "\t|\t${executorInfo}\t|\t${actionInfo}\t|\t${targetInfo}\t";
+        $logText = implode("\t|\t", [
+            NetworkHelper::getClientIpAddress(),
+            $executorInfo,
+            $actionInfo,
+            $targetInfo,
+        ]);
 
         if ($request) {
             $logText .= "|\trequest-params: " . self::getRequestParams($request);
@@ -122,32 +51,18 @@ class Logger implements LoggerInterface
         $httpErrorCode = $exception->getStatusCode();
         $uri = $request->getRequestUri();
         $method = $request->getMethod();
-        /**
-         * @var User|null $user
-         */
+
         $user = Auth::user();
-        /**
-         * @var string|null $userEmail
-         */
-        $userEmail = $user?->email;
-        /**
-         * @var string $executorLabel
-         */
-        $executorLabel = (($userEmail ?? request()->email) ?? request()->ip()) ?? '';
-        $executorId = $user?->id ?? '-';
+        $userEmail = optional($user)->login;
+        $executorLabel = $userEmail ?? request()->input('email') ?? request()->ip();
+        $executorId = optional($user)->id ?? '-';
 
-        $executorUserTypeName = session('loggedInUser.currentResponsibility')->userType->name ?? 'NullCurrentResponsibility';
+        $executorCurrentResponsibility = session('loggedInUser.currentResponsibility');
+        $executorUserTypeName = $executorCurrentResponsibility?->userType->name ?? 'NullCurrentResponsibility';
 
-        $logText = "\tHTTP_ERROR\t| " . NetworkHelper::getClientIpAddress() . "\t| User:${executorId}:${executorLabel} [${executorUserTypeName}]\t| attempted " . $method . " on '" . $uri . "' with result " . $httpErrorCode;
+        $logText = "\tHTTP_ERROR\t| " . NetworkHelper::getClientIpAddress() . "\t| {$executorId}:{$executorLabel} [{$executorUserTypeName}]\t| attempted {$method} on '{$uri}' with result {$httpErrorCode}";
 
         Log::warning($logText);
-        /* Log::warning(
-            'HttpException: ' . $httpErrorCode . ' Path: ' . $request->path() . "\n" . $exception::class . "\n",
-            [
-                'user' => auth()->user(),
-                'request' => $request,
-            ]
-        ); */
     }
 
     public static function logModelEvent(Activity|string $activity, Model|string|null $model = null): void
@@ -165,7 +80,7 @@ class Logger implements LoggerInterface
             /** @var User $executor */
             $executor = Auth::user();
             $executorId = $executor->id;
-            $executorLabel = $executor->email;
+            $executorLabel = $executor->login;
             /** @var Responsibility|null $executorCurrentResponsibility */
             $executorCurrentResponsibility = session('loggedInUser.currentResponsibility');
             $executorUserTypeName = $executorCurrentResponsibility?->userType->name ?? 'NullCurrentResponsibility';
@@ -177,7 +92,7 @@ class Logger implements LoggerInterface
             /** @var User $executor */
             $executor = $activity->causer;
             $executorId = $executor->id;
-            $executorLabel = $executor->email;
+            $executorLabel = $executor->login;
             /** @var Responsibility|null $executorCurrentResponsibility */
             $executorCurrentResponsibility = session('loggedInUser.currentResponsibility');
             $executorUserTypeName = $executorCurrentResponsibility?->userType->name ?? 'NullCurrentResponsibility';
@@ -189,8 +104,10 @@ class Logger implements LoggerInterface
 
         if (isset($model) && (! is_string($model)) && $model instanceof \Illuminate\Database\Eloquent\Model) {
             $modelClassLabel = class_basename($model);
-            $modelId = $model->getKey();
-            $modelAttributes = json_encode($model->getOriginal(), JSON_UNESCAPED_UNICODE);
+            $modelId = ':' . $model->getKey();
+            $originalAttributes = $model->getOriginal();
+            Arr::forget($originalAttributes, ['password', 'remember_token']);
+            $modelAttributes = ':' . json_encode($originalAttributes, JSON_UNESCAPED_UNICODE);
         }
 
         if (isset($model) && is_string($model)) {
@@ -201,24 +118,32 @@ class Logger implements LoggerInterface
 
         if ($activity instanceof Activity) {
             $activityLabel = $activity->description;
+            if ($activity->subject_type !== null) {
+                $modelClassLabel = class_basename($activity->subject_type);
+            }
 
-            $modelClassLabel = class_basename($activity->subject_type);
-            $modelId = $activity->subject_id;
-            $modelAttributes = $activity->changes;
+            $modelId = ':' . $activity->subject_id;
+            $modelAttributes = ':' . $activity->changes;
         }
 
         if (isset($model) && (! is_string($model)) && ($model::class === Document::class) && $activityLabel === 'read' && (is_string($modelAttributes))) {
             $modelAttributes = json_decode($modelAttributes, true);
-            Arr::forget($modelAttributes, 'file_data');
-            $modelAttributes = json_encode($modelAttributes, JSON_UNESCAPED_UNICODE);
+            $modelAttributes = ':' . json_encode($modelAttributes, JSON_UNESCAPED_UNICODE);
         }
 
-        $logText = "\tMODEL_EVENT\t| " . NetworkHelper::getClientIpAddress() . "\t| User:${executorId}:${executorLabel} [${executorUserTypeName}]\t| [" . $activityLabel . "]\t| Model:" . $modelClassLabel . ':' . $modelId . ':' . $modelAttributes;
+        if ($activity === 'listed') {
+            $modelId = '';
+            $modelAttributes = '';
+        }
+
+        $logText = "\tMODEL_EVENT\t| " . NetworkHelper::getClientIpAddress() . "\t| {$executorId}:{$executorLabel} [{$executorUserTypeName}]\t| [" . $activityLabel . "]\t| Model:" . $modelClassLabel . $modelId . $modelAttributes;
         Log::info($logText);
     }
 
     public static function logDomainEvent(string $event, ?Model $model = null): void
     {
+        /** @var User|null $user */
+        $user = Auth::user();
         $executorId = '-';
         $executorLabel = 'UnknownUser';
         $executorUserTypeName = 'UnknownCurrentResponsibility';
@@ -226,31 +151,25 @@ class Logger implements LoggerInterface
         $modelId = 'UnknownModelID';
         $modelAttributes = '{?}';
 
-        /**
-         * @var User|null $user
-         */
-        $user = Auth::user();
-        /**
-         * @var string|null $userEmail
-         */
-        $userEmail = $user?->email;
-        /**
-         * @var string $executorLabel
-         */
-        $executorLabel = (($userEmail ?? request()->email) ?? request()->ip()) ?? '';
-        $executorId = $user?->id ?? '-';
+        if ($user instanceof \App\Models\User) {
+            $executorId = $user->id;
+            $executorLabel = $user->login ?? $executorLabel;
+            $executorUserTypeName = session('loggedInUser.currentResponsibility')?->userType->name ?? $executorUserTypeName;
+        } elseif (request()->filled('email')) {
+            $executorLabel = request()->email;
+        } else {
+            $executorLabel = request()->ip();
+        }
 
-        $executorUserTypeName = session('loggedInUser.currentResponsibility')->userType->name ?? 'NullCurrentResponsibility';
-
-        if (isset($model) && $model instanceof \Illuminate\Database\Eloquent\Model) {
+        if ($model instanceof \Illuminate\Database\Eloquent\Model) {
             $modelClassLabel = class_basename($model);
             $modelId = $model->getKey();
             $modelAttributes = json_encode($model->getOriginal(), JSON_UNESCAPED_UNICODE);
         }
 
-        $logText = "\tDOMAIN_EVENT\t| " . NetworkHelper::getClientIpAddress() . "\t| User:${executorId}:${executorLabel} [${executorUserTypeName}]\t| [" . $event . "]\t| Model:" . $modelClassLabel . ':' . $modelId . ':' . $modelAttributes;
+        $logMessage = "\tDOMAIN_EVENT\t| " . NetworkHelper::getClientIpAddress() . "\t| {$executorId}:{$executorLabel} [{$executorUserTypeName}]\t| [" . $event . "]\t| Model:" . $modelClassLabel . ':' . $modelId . ':' . $modelAttributes;
 
-        Log::info($logText);
+        Log::info($logMessage);
     }
 
     public static function logSystemEvent(string $event, Model|string|null $model = null): void
@@ -262,74 +181,61 @@ class Logger implements LoggerInterface
         $modelId = 'UnknownModelID';
         $modelAttributes = '{?}';
 
-        /**
-         * @var User|null $user
-         */
         $user = Auth::user();
-        /**
-         * @var string|null $userEmail
-         */
-        $userEmail = $user?->email;
-        /**
-         * @var string $executorLabel
-         */
-        $executorLabel = (($userEmail ?? request()->email) ?? request()->ip()) ?? '';
+        $executorLabel = $user?->login ?? request()->login ?? request()->ip() ?? '';
         $executorId = $user?->id ?? '-';
 
-        /** @var Responsibility */
         $currentResponsibility = session('loggedInUser.currentResponsibility');
-
         $executorUserTypeName = $currentResponsibility?->userType->name ?? 'NullCurrentResponsibility';
 
-        if (isset($model) && ! is_string($model) && $model instanceof \Illuminate\Database\Eloquent\Model) {
+        if ($model instanceof \Illuminate\Database\Eloquent\Model) {
             $modelClassLabel = class_basename($model);
             $modelId = $model->getKey();
-            $modelAttributes = json_encode($model->getOriginal(), JSON_UNESCAPED_UNICODE);
-        }
-
-        if (isset($model) && is_string($model)) {
-            $modelClassLabel = '';
-            $modelId = '';
+            $originalAttributes = $model->getOriginal();
+            Arr::forget($originalAttributes, ['password', 'remember_token']);
+            $modelAttributes = json_encode($originalAttributes, JSON_UNESCAPED_UNICODE);
+        } elseif (is_string($model)) {
             $modelAttributes = $model;
         }
 
-        $logText = "\tSYSTEM_EVENT\t| " . NetworkHelper::getClientIpAddress() . "\t| User:${executorId}:${executorLabel} [${executorUserTypeName}]\t| [" . $event . "]\t| Model:" . $modelClassLabel . ':' . $modelId . ':' . $modelAttributes;
+        $logMessage = "\tSYSTEM_EVENT\t| " . NetworkHelper::getClientIpAddress() . "\t| {$executorId}:{$executorLabel} [{$executorUserTypeName}]\t| [" . $event . "]\t| Model:" . $modelClassLabel . ':' . $modelId . ':' . $modelAttributes;
 
-        Log::info($logText);
+        Log::info($logMessage);
     }
 
-    private static function getExecutorInfo($executor): string
+    private static function getExecutorInfo(mixed $executor): string
+{
+    if (is_string($executor)) {
+        return $executor;
+    }
+
+    if (is_int($executor)) {
+        return 'NoID';
+    }
+
+    $loggedInUser = Auth::user();
+
+    if (!$loggedInUser instanceof User) {
+        return 'NoRole';
+    }
+
+    $executorId = $loggedInUser->id ?? 'NoID';
+    $executorEmail = $loggedInUser->login ?? '';
+    $executorEmailPart = $executorEmail ? ":{$executorEmail}" : '';
+    $executorRole = session()->has('loggedInUser.currentResponsibility')
+        ? session('loggedInUser.currentResponsibility')->userType->name
+        : 'NoRole';
+
+    return "{$executorId}{$executorEmailPart} [{$executorRole}]";
+}
+
+
+    private static function getActionInfo(mixed $action, mixed $functionCaller): string
     {
-        if (is_string($executor)) {
-            return $executor;
-        }
-
-        if (is_int($executor)) {
-            return 'NoID';
-        }
-
-        $_executor = $executor ?? Auth::user();
-        $executorId = $_executor->id ?? 'NoID';
-        $executorEmail = isset($_executor->email) ? ':' . $_executor->email : ":\t";
-        $executorRole = $_executor instanceof User ? (is_null(session('loggedInUser.currentResponsibility')) ? 'Null Current Responsibility' : session('loggedInUser.currentResponsibility')->userType->name) : 'NoRole';
-
-        return "${executorId}${executorEmail} [${executorRole}]";
+        return $action !== null ? (is_string($action) ? $action : 'No Action') : $functionCaller;
     }
 
-    private static function getActionInfo($action, $functionCaller): string
-    {
-        if ($action === null) {
-            return $functionCaller;
-        }
-
-        if (is_string($action)) {
-            return $action;
-        }
-
-        return 'No Action';
-    }
-
-    private static function getTargetInfo($target): string
+    private static function getTargetInfo(mixed $target): string
     {
         if ($target === null) {
             return 'System';
@@ -339,67 +245,42 @@ class Logger implements LoggerInterface
             return $target;
         }
 
-        if (isset($target->id)) {
+        if (is_object($target) && property_exists($target, 'id')) {
             $targetId = ':' . $target->id;
-            $targetClass = class_basename($target::class);
-            $targetEmail = $target->email ? ':' . $target->email : '';
+            $targetClass = class_basename($target);
+            $targetEmail = method_exists($target, 'getEmail') ? ':' . $target->getEmail() : '';
 
-            return "${targetClass}${targetId}${targetEmail}";
+            return "{$targetClass}{$targetId}{$targetEmail}";
         }
 
         return 'Maybe there is something wrong with $target on logger';
     }
 
-    private static function getRequestParams(array $request): string
+    private static function getRequestParams(Request $request): string
     {
         return collect($request)
             ->toJson(JSON_UNESCAPED_UNICODE);
     }
 
-    /**
-     * @param string $action
-     *
-     * @return string
-     */
     private static function severityMap(string $action): string
     {
-        $loggedActions = [];
-
-        $loggedActions['info'] = [
-            'authenticate',
-            'logout',
-            'index',
-            'listed',
-            'create',
-            'created',
-            'designate',
-            'import',
-            'show',
-            'fetched',
-            'edit',
-            'review',
-            'request review',
+        $severityMap = [
+            'info' => [
+                'authenticate', 'logout', 'index', 'listed', 'create',
+                'created', 'designate', 'import', 'show', 'fetched',
+                'edit', 'review', 'request review',
+            ],
+            'notice' => [
+                'tried login', 'store', 'updated user', 'updating',
+                'update', 'updated', 'exportDocuments', 'dismiss',
+            ],
+            'warning' => [
+                'Updated existent Employee info on User', 'destroy', 'deleted',
+            ],
         ];
 
-        $loggedActions['notice'] = [
-            'tried login',
-            'store',
-            'updated user',
-            'updating',
-            'update',
-            'updated',
-            'exportDocuments',
-            'dismiss',
-        ];
-
-        $loggedActions['warning'] = [
-            'Updated existent Employee info on User',
-            'destroy',
-            'deleted',
-        ];
-
-        foreach (self::$severities as $severity) {
-            if (in_array($action, $loggedActions[$severity])) {
+        foreach ($severityMap as $severity => $actions) {
+            if (in_array($action, $actions)) {
                 return $severity;
             }
         }
