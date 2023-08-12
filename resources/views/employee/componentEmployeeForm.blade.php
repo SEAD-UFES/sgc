@@ -41,7 +41,7 @@
             @enderror
         </div>
         <div class="col-8 col-sm-9 col-md-3 col-lg-4">
-            <label for="inputJob1" class="form-label">Profissão*</label>
+            <label for="inputJob1" class="form-label">Profissão</label>
             <input name="job" id="inputJob1" type="text" class="form-control" placeholder="Profissão"
                 value="{{ (isset($employee) and !$fromApplicant) ? $employee->personalDetail?->job : old('job') }}" maxlength="50" />
             @error('job')
@@ -50,7 +50,7 @@
         </div>
         <div class="col-6 col-sm-4 col-md-3 col-lg-2">
             <label for="selectGender1" class="form-label">Gênero*</label>
-            <select name="gender" id="selectGender1" class="form-select">
+            <select name="gender" id="selectGender1" class="form-select" required>
                 <option value="">Gênero</option>
                 @foreach ($genders as $gender)
                     <option value="{{ $gender->name }}"
@@ -63,7 +63,7 @@
             @enderror
         </div>
         <div class="col-6 col-sm-4 col-md-3 col-lg-3">
-            <label for="inputBirthDay1" class="form-label">Dt de Nascimento*</label>
+            <label for="inputBirthDay1" class="form-label">Dt de Nascimento</label>
             <input name="birth_date" id="inputBirthDay1" type="date"
                 value="{{ (isset($employee) and !$fromApplicant) ? $employee->personalDetail?->birth_date : old('birth_date') }}" class="form-control" />
             @error('birth_date')
@@ -71,7 +71,7 @@
             @enderror
         </div>
         <div class="col-4 col-sm-4 col-md-3 col-lg-2">
-            <label for="selectBirthState1" class="form-label">UF de Nascimento*</label>
+            <label for="selectBirthState1" class="form-label">UF de Nascimento</label>
             <select name="birth_state" id="selectBirthState1" class="form-select">
                 <option value="">UF</option>
                 @foreach ($states as $birthState)
@@ -86,7 +86,7 @@
             @enderror
         </div>
         <div class="col-8 col-sm-12 col-md-3 col-lg-5">
-            <label for="inputBirthCity1" class="form-label">Cidade de Nascimento*</label>
+            <label for="inputBirthCity1" class="form-label">Cidade de Nascimento</label>
             <input name="birth_city" type="text" id="inputBirthCity1" class="form-control" placeholder="Cidade"
                 value="{{ (isset($employee) and !$fromApplicant) ? $employee->personalDetail?->birth_city : old('birth_city') }}" maxlength="50" />
             @error('birth_city')
@@ -96,7 +96,7 @@
     </div>
     <div class="row g-3 mb-3">
         <div class="col-4 col-sm-4 col-md-3 col-lg-2">
-            <label for="selectMarital1" class="form-label">Estado Civil*</label>
+            <label for="selectMarital1" class="form-label">Estado Civil</label>
             <select name="marital_status" id="selectMarital1" class="form-select">
                 <option value="">Estado Civil</option>
                 @foreach ($maritalStatuses as $maritalStatus)
@@ -119,7 +119,7 @@
             @enderror
         </div>
         <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-            <label for="inputFather1" class="form-label">Nome do pai*</label>
+            <label for="inputFather1" class="form-label">Nome do pai</label>
             <input name="father_name" id="inputFather1" type="text" class="form-control" placeholder="Nome"
                 value="{{ (isset($employee) and !$fromApplicant) ? $employee->personalDetail?->father_name : old('father_name') }}" maxlength="50" />
             @error('father_name')
@@ -127,7 +127,7 @@
             @enderror
         </div>
         <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-            <label for="inputMother1" class="form-label">Nome da mãe*</label>
+            <label for="inputMother1" class="form-label">Nome da mãe</label>
             <input name="mother_name" id="inputMother1" type="text" class="form-control" placeholder="Nome"
                 value="{{ (isset($employee) and !$fromApplicant) ? $employee->personalDetail?->mother_name : old('mother_name') }}" maxlength="50" />
             @error('mother_name')
@@ -140,7 +140,7 @@
     <legend>Documento</legend>
     <div class="row g-3 mb-3">
         <div class="col-8 col-sm-7 col-md-5 col-lg-4">
-            <label for="selectIdType1" class="form-label">Tipo de Documento*</label>
+            <label for="selectIdType1" class="form-label">Tipo de Documento</label>
             <select name="document_type_id" id="selectIdType1" class="form-select">
                 <option value="">Selecione o tipo</option>
                 @foreach ($documentTypes as $documentType)
@@ -154,7 +154,7 @@
             @enderror
         </div>
         <div class="col-4 col-sm-5 col-md-4 col-lg-3">
-            <label for="inputId1" class="form-label">N° do Documento*</label>
+            <label for="inputId1" class="form-label">N° do Documento</label>
             <input name="identity_number" id="inputId1" type="text" class="form-control" placeholder="Número"
                 value="{{ (isset($employee) and !$fromApplicant) ? $employee->identity?->number : old('identity_number') }}" maxlength="15" />
             @error('identity_number')
@@ -162,7 +162,7 @@
             @enderror
         </div>
         <div class="col-5 col-sm-4 col-md-3 col-lg-3">
-            <label for="inputIssueDate1" class="form-label">Data de Expedição*</label>
+            <label for="inputIssueDate1" class="form-label">Data de Expedição</label>
             <input name="identity_issue_date" id="inputIssueDate1" type="date" class="form-control"
                 value="{{ (isset($employee) and !$fromApplicant) ? $employee->identity?->issue_date : old('identity_issue_date') }}" />
             @error('identity_issue_date')
@@ -170,7 +170,7 @@
             @enderror
         </div>
         <div class="col-4 col-sm-4 col-md-2 col-lg-1">
-            <label for="inputIssuer1" class="form-label">Expedidor*</label>
+            <label for="inputIssuer1" class="form-label">Expedidor</label>
             <input name="identity_issuer" id="inputIssuer1" type="text" class="form-control" placeholder="Orgão"
                 value="{{ (isset($employee) and !$fromApplicant) ? $employee->identity?->issuer : old('identity_issuer') }}" maxlength="10" />
             @error('identity_issuer')
@@ -178,7 +178,7 @@
             @enderror
         </div>
         <div class="col-3 col-sm-4 col-md-2 col-lg-1">
-            <label for="inputIssuerState1" class="form-label">UF Exp.*</label>
+            <label for="inputIssuerState1" class="form-label">UF Exp.</label>
             <select name="issuer_state" id="inputIssuerState1" class="form-select">
                 <option value="">UF</option>
                 @foreach ($states as $issuerState)
@@ -198,7 +198,7 @@
     <legend>Endereço</legend>
     <div class="row g-3 mb-3">
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-            <label for="inputStreet1" class="form-label">Logradouro*</label>
+            <label for="inputStreet1" class="form-label">Logradouro</label>
             <input name="address_street" id="inputStreet1" type="text" class="form-control" placeholder="Logradouro"
                 value="{{ (isset($employee) and !$fromApplicant) ? $employee->address?->street : old('address_street') }}" maxlength="50" />
             @error('address_street')
@@ -206,7 +206,7 @@
             @enderror
         </div>
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-            <label for="inputComplement1" class="form-label">Complemento*</label>
+            <label for="inputComplement1" class="form-label">Complemento</label>
             <input name="address_complement" id="inputComplement1" type="text" class="form-control"
                 placeholder="Complemento"
                 value="{{ (isset($employee) and !$fromApplicant) ? $employee->address?->complement : old('address_complement') }}"
@@ -216,7 +216,7 @@
             @enderror
         </div>
         <div class="col-3 col-sm-3 col-md-2 col-lg-1">
-            <label for="inputNumber1" class="form-label">Número*</label>
+            <label for="inputNumber1" class="form-label">Número</label>
             <input name="address_number" id="inputNumber1" type="text" class="form-control" placeholder="Número"
                 value="{{ (isset($employee) and !$fromApplicant) ? $employee->address?->number : old('address_number') }}" maxlength="5" />
             @error('address_number')
@@ -224,7 +224,7 @@
             @enderror
         </div>
         <div class="col-6 col-sm-6 col-md-3 col-lg-4">
-            <label for="inputDistrict1" class="form-label">Bairro*</label>
+            <label for="inputDistrict1" class="form-label">Bairro</label>
             <input name="address_district" id="inputDistrict1" type="text" class="form-control" placeholder="Bairro"
                 value="{{ (isset($employee) and !$fromApplicant) ? $employee->address?->district : old('address_district') }}" maxlength="50" />
             @error('address_district')
@@ -232,7 +232,7 @@
             @enderror
         </div>
         <div class="col-3 col-sm-3 col-md-2 col-lg-2">
-            <label for="inputPostal1" class="form-label">CEP*</label>
+            <label for="inputPostal1" class="form-label">CEP</label>
             <input name="address_zip_code" id="inputPostal1" type="text" class="form-control"
                 placeholder="CEP"
                 value="{{ (isset($employee) and !$fromApplicant) ? $employee->address?->zip_code : old('address_zip_code') }}" maxlength="9"
@@ -243,7 +243,7 @@
             @enderror
         </div>
         <div class="col-3 col-sm-2 col-md-2 col-lg-2">
-            <label for="selectAddressState1" class="form-label">UF*</label>
+            <label for="selectAddressState1" class="form-label">UF</label>
             <select name="address_state" id="selectAddressState1" class="form-select">
                 <option value="">UF</option>
                 @foreach ($states as $addressState)
@@ -258,7 +258,7 @@
             @enderror
         </div>
         <div class="col-9 col-sm-10 col-md-3 col-lg-3">
-            <label for="inputAddressCity1" class="form-label">Cidade*</label>
+            <label for="inputAddressCity1" class="form-label">Cidade</label>
             <input name="address_city" id="inputAddressCity1" type="text" class="form-control" placeholder="Cidade"
                 value="{{ (isset($employee) and !$fromApplicant) ? $employee->address?->city : old('address_city') }}" maxlength="50" />
             @error('address_city')
@@ -288,7 +288,7 @@
             @enderror
         </div>
         <div class="col-5 col-sm-5 col-md-2 col-lg-2">
-            <label for="inputMobile1" class="form-label">Celular*</label>
+            <label for="inputMobile1" class="form-label">Celular</label>
             <input name="mobile" id="inputMobile1" type="tel" class="form-control" placeholder="Celular"
                 value="{{ isset($employee) ? $view_cellphone : old('mobile') }}" maxlength="16"
                 data-inputmask="'mask': '(99) 9 9999-9999', 'removeMaskOnSubmit': true" onfocusout="setCode()"
@@ -298,7 +298,7 @@
             @enderror
         </div>
         <div class="col-2 col-sm-2 col-md-1 col-lg-1">
-            <label for="inputArea1" class="form-label">DDD*</label>
+            <label for="inputArea1" class="form-label">DDD</label>
             <input name="area_code" id="inputArea1" type="number" class="form-control" placeholder="DDD"
                 value="{{ isset($employee) ? $view_area_code : old('area_code') }}" min="10" max="99" minlength="2" maxlength="2"
                 onkeyup="validate('inputArea1');" pattern="[0-9]{2}" />
@@ -320,7 +320,7 @@
     <legend>Dados Bancários</legend>
     <div class="row g-3 mb-3">
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-            <label for="inputBank1" class="form-label">Banco*</label>
+            <label for="inputBank1" class="form-label">Banco</label>
             <input name="bank_name" id="inputBank1" type="text" class="form-control" placeholder="Banco"
                 value="{{ isset($employee) && isset($employee->bankAccount) ? $employee->bankAccount?->bank_name : old('bank_name') }}" maxlength="100" />
             @error('bank_name')
@@ -328,7 +328,7 @@
             @enderror
         </div>
         <div class="col-6 col-sm-6 col-md-3 col-lg-3">
-            <label for="inputAgency1" class="form-label">Agência*</label>
+            <label for="inputAgency1" class="form-label">Agência</label>
             <input name="agency_number" id="inputAgency1" type="text" class="form-control" placeholder="Agência"
                 value="{{ isset($employee) && isset($employee->bankAccount) ? $employee->bankAccount?->agency_number : old('agency_number') }}" maxlength="100" />
             @error('agency_number')
@@ -336,7 +336,7 @@
             @enderror
         </div>
         <div class="col-6 col-sm-6 col-md-3 col-lg-3">
-            <label for="inputAccount1" class="form-label">Conta Corrente*</label>
+            <label for="inputAccount1" class="form-label">Conta Corrente</label>
             <input name="account_number" id="inputAccount1" type="text" class="form-control" placeholder="Conta Corrente"
                 value="{{ isset($employee) && isset($employee->bankAccount) ? $employee->bankAccount?->account : old('account_number') }}" maxlength="100" />
             @error('account_number')

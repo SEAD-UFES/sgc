@@ -14,7 +14,6 @@ class EmployeeDto
         public readonly string $cpf,
         public readonly Genders $gender,
         public readonly string $email,
-
         public readonly string $job,
         public readonly Carbon $birthDate,
         public readonly States|string $birthState,
@@ -22,15 +21,12 @@ class EmployeeDto
         public readonly MaritalStatuses|string $maritalStatus,
         public readonly string $fatherName,
         public readonly string $motherName,
-        
         public readonly ?string $spouseName,
-
         public readonly int $documentTypeId,
         public readonly string $identityNumber,
         public readonly Carbon $identityIssueDate,
         public readonly string $identityIssuer,
         public readonly States|string $issuerState,
-
         public readonly string $addressStreet,
         public readonly string $addressComplement,
         public readonly string $addressNumber,
@@ -38,11 +34,9 @@ class EmployeeDto
         public readonly string $addressZipCode,
         public readonly States|string $addressState,
         public readonly string $addressCity,
-
         public readonly string $areaCode,
         public readonly ?string $landline,
         public readonly string $mobile,
-
         public readonly string $bankName,
         public readonly string $agencyNumber,
         public readonly string $accountNumber,

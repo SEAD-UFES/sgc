@@ -96,7 +96,7 @@ class UserRepository
      *
      * @return Builder
      */
-    private static function allActiveUsersQuery(string $sort = 'users.id', string $direction = 'desc'): Builder
+    private function allActiveUsersQuery(string $sort = 'users.id', string $direction = 'desc'): Builder
     {
         return self::allUsersQuery($sort, $direction)
             ->where('users.active', true);
@@ -111,7 +111,7 @@ class UserRepository
      */
     private function allActiveUsersOfTypeIdQuery(int $userTypeId, string $sort = 'users.id', string $direction = 'desc'): Builder
     {
-        return self::allActiveUsersQuery($sort, $direction)
+        return $this->allActiveUsersQuery($sort, $direction)
             ->join('responsibilities', 'responsibilities.user_id', '=', 'users.id')
             ->where('responsibilities.user_type_id', $userTypeId);
     }
