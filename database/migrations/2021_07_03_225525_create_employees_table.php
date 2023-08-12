@@ -15,10 +15,10 @@ class CreateEmployeesTable extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            $table->string('cpf', 11)->unique();
-            $table->string('name', 50);
-            $table->string('gender', 10);
-            $table->string('email', 50)->unique();
+            $table->string('cpf', 11)->unique();    // Manter obrigatório [Ticket #286434 de 02/08/2023]
+            $table->string('name', 50);             // Manter obrigatório [Ticket #286434 de 02/08/2023]
+            $table->string('gender', 10);           // Não deveria ser obrigatório [Ticket #286434 de 02/08/2023], porém mudança acarreta alteração no banco de dados já em produção
+            $table->string('email', 50)->unique();  // Manter obrigatório [Ticket #286434 de 02/08/2023]
             $table->timestamps();
         });
     }

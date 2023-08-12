@@ -59,41 +59,47 @@ class EmployeeService
             ]);
             $employee->save();
 
-            $employee->personalDetail()->create([
-                'job' => TextHelper::titleCase($employeeDto->job),
-                'birth_date' => $employeeDto->birthDate,
-                'birth_state' => $employeeDto->birthState,
-                'birth_city' => TextHelper::titleCase($employeeDto->birthCity),
-                'marital_status' => $employeeDto->maritalStatus,
-                'father_name' => TextHelper::titleCase($employeeDto->fatherName),
-                'mother_name' => TextHelper::titleCase($employeeDto->motherName),
-            ]);
+            if ($employeeDto->job !== '' && ! empty($employeeDto->birthDate) && ! empty($employeeDto->birthState) && $employeeDto->birthCity !== '' && ! empty($employeeDto->maritalStatus) && $employeeDto->fatherName !== '' && $employeeDto->motherName !== '') {
+                $employee->personalDetail()->create([
+                    'job' => TextHelper::titleCase($employeeDto->job),
+                    'birth_date' => $employeeDto->birthDate,
+                    'birth_state' => $employeeDto->birthState,
+                    'birth_city' => TextHelper::titleCase($employeeDto->birthCity),
+                    'marital_status' => $employeeDto->maritalStatus,
+                    'father_name' => TextHelper::titleCase($employeeDto->fatherName),
+                    'mother_name' => TextHelper::titleCase($employeeDto->motherName),
+                ]);
+            }
 
-            if ($employeeDto->spouseName !== null) {
+            if ($employeeDto->spouseName !== null && $employeeDto->spouseName !== '') {
                 $employee->spouse()->create([
                     'name' => TextHelper::titleCase($employeeDto->spouseName),
                 ]);
             }
 
-            $employee->identity()->create([
-                'type_id' => $employeeDto->documentTypeId,
-                'number' => $employeeDto->identityNumber,
-                'issue_date' => $employeeDto->identityIssueDate,
-                'issuer' => mb_strtoupper($employeeDto->identityIssuer),
-                'issuer_state' => $employeeDto->issuerState,
-            ]);
+            if ($employeeDto->documentTypeId !== 0 && $employeeDto->identityNumber !== '' && ! empty($employeeDto->identityIssueDate) && $employeeDto->identityIssuer !== '' && ! empty($employeeDto->issuerState)) {
+                $employee->identity()->create([
+                    'type_id' => $employeeDto->documentTypeId,
+                    'number' => $employeeDto->identityNumber,
+                    'issue_date' => $employeeDto->identityIssueDate,
+                    'issuer' => mb_strtoupper($employeeDto->identityIssuer),
+                    'issuer_state' => $employeeDto->issuerState,
+                ]);
+            }
 
-            $employee->address()->create([
-                'street' => TextHelper::titleCase($employeeDto->addressStreet),
-                'complement' => TextHelper::titleCase($employeeDto->addressComplement),
-                'number' => $employeeDto->addressNumber,
-                'district' => TextHelper::titleCase($employeeDto->addressDistrict),
-                'zip_code' => $employeeDto->addressZipCode,
-                'state' => $employeeDto->addressState,
-                'city' => TextHelper::titleCase($employeeDto->addressCity),
-            ]);
+            if ($employeeDto->addressStreet !== '' && $employeeDto->addressComplement !== '' && $employeeDto->addressNumber !== '' && $employeeDto->addressDistrict !== '' && $employeeDto->addressZipCode !== '' && ! empty($employeeDto->addressState) && $employeeDto->addressCity !== '') {
+                $employee->address()->create([
+                    'street' => TextHelper::titleCase($employeeDto->addressStreet),
+                    'complement' => TextHelper::titleCase($employeeDto->addressComplement),
+                    'number' => $employeeDto->addressNumber,
+                    'district' => TextHelper::titleCase($employeeDto->addressDistrict),
+                    'zip_code' => $employeeDto->addressZipCode,
+                    'state' => $employeeDto->addressState,
+                    'city' => TextHelper::titleCase($employeeDto->addressCity),
+                ]);
+            }
 
-            if ($employeeDto->landline !== null) {
+            if ($employeeDto->landline !== null && ($employeeDto->landline !== '' && $employeeDto->areaCode !== '')) {
                 $landline = new Phone($employeeDto->landline);
                 $employee->phones()->create([
                     'area_code' => $landline->getAreaCode(),
@@ -102,18 +108,22 @@ class EmployeeService
                 ]);
             }
 
-            $mobile = new Phone($employeeDto->mobile);
-            $employee->phones()->create([
-                'area_code' => $mobile->getAreaCode(),
-                'number' => $mobile->getNumber(),
-                'type' => $phoneTypeTranslation[$mobile->getType()],
-            ]);
+            if ($employeeDto->mobile !== '' && $employeeDto->areaCode !== '') {
+                $mobile = new Phone($employeeDto->mobile);
+                $employee->phones()->create([
+                    'area_code' => $mobile->getAreaCode(),
+                    'number' => $mobile->getNumber(),
+                    'type' => $phoneTypeTranslation[$mobile->getType()],
+                ]);
+            }
 
-            $employee->bankAccount()->create([
-                'bank_name' => TextHelper::titleCase($employeeDto->bankName),
-                'agency_number' => $employeeDto->agencyNumber,
-                'account' => $employeeDto->accountNumber,
-            ]);
+            if ($employeeDto->bankName !== '' && $employeeDto->agencyNumber !== '' && $employeeDto->accountNumber !== '') {
+                $employee->bankAccount()->create([
+                    'bank_name' => TextHelper::titleCase($employeeDto->bankName),
+                    'agency_number' => $employeeDto->agencyNumber,
+                    'account' => $employeeDto->accountNumber,
+                ]);
+            }
 
             return $employee;
         });
@@ -169,20 +179,22 @@ class EmployeeService
                 'email' => mb_strtolower($employeeDto->email),
             ]);
 
-            $employee->personalDetail()->updateOrCreate(
-                ['employee_id' => $employee->id],
-                [
-                    'job' => TextHelper::titleCase($employeeDto->job),
-                    'birth_date' => $employeeDto->birthDate,
-                    'birth_state' => $employeeDto->birthState,
-                    'birth_city' => TextHelper::titleCase($employeeDto->birthCity),
-                    'marital_status' => $employeeDto->maritalStatus,
-                    'father_name' => TextHelper::titleCase($employeeDto->fatherName),
-                    'mother_name' => TextHelper::titleCase($employeeDto->motherName),
-                ]
-            );
+            if ($employeeDto->job !== '' && ! empty($employeeDto->birthDate) && ! empty($employeeDto->birthState) && $employeeDto->birthCity !== '' && ! empty($employeeDto->maritalStatus) && $employeeDto->fatherName !== '' && $employeeDto->motherName !== '') {
+                $employee->personalDetail()->updateOrCreate(
+                    ['employee_id' => $employee->id],
+                    [
+                        'job' => TextHelper::titleCase($employeeDto->job),
+                        'birth_date' => $employeeDto->birthDate,
+                        'birth_state' => $employeeDto->birthState,
+                        'birth_city' => TextHelper::titleCase($employeeDto->birthCity),
+                        'marital_status' => $employeeDto->maritalStatus,
+                        'father_name' => TextHelper::titleCase($employeeDto->fatherName),
+                        'mother_name' => TextHelper::titleCase($employeeDto->motherName),
+                    ]
+                );
+            }
 
-            if ($employeeDto->spouseName !== null) {
+            if ($employeeDto->spouseName !== null && $employeeDto->spouseName !== '') {
                 $employee->spouse()->updateOrCreate(
                     ['employee_id' => $employee->id],
                     [
@@ -191,31 +203,35 @@ class EmployeeService
                 );
             }
 
-            $employee->identity()->updateOrCreate(
-                ['employee_id' => $employee->id],
-                [
-                    'type_id' => $employeeDto->documentTypeId,
-                    'number' => $employeeDto->identityNumber,
-                    'issue_date' => $employeeDto->identityIssueDate,
-                    'issuer' => mb_strtoupper($employeeDto->identityIssuer),
-                    'issuer_state' => $employeeDto->issuerState,
-                ]
-            );
+            if ($employeeDto->documentTypeId !== 0 && $employeeDto->identityNumber !== '' && ! empty($employeeDto->identityIssueDate) && $employeeDto->identityIssuer !== '' && ! empty($employeeDto->issuerState)) {
+                $employee->identity()->updateOrCreate(
+                    ['employee_id' => $employee->id],
+                    [
+                        'type_id' => $employeeDto->documentTypeId,
+                        'number' => $employeeDto->identityNumber,
+                        'issue_date' => $employeeDto->identityIssueDate,
+                        'issuer' => mb_strtoupper($employeeDto->identityIssuer),
+                        'issuer_state' => $employeeDto->issuerState,
+                    ]
+                );
+            }
 
-            $employee->address()->updateOrCreate(
-                ['employee_id' => $employee->id],
-                [
-                    'street' => TextHelper::titleCase($employeeDto->addressStreet),
-                    'complement' => TextHelper::titleCase($employeeDto->addressComplement),
-                    'number' => $employeeDto->addressNumber,
-                    'district' => TextHelper::titleCase($employeeDto->addressDistrict),
-                    'zip_code' => $employeeDto->addressZipCode,
-                    'state' => $employeeDto->addressState,
-                    'city' => TextHelper::titleCase($employeeDto->addressCity),
-                ]
-            );
+            if ($employeeDto->addressStreet !== '' && $employeeDto->addressComplement !== '' && $employeeDto->addressNumber !== '' && $employeeDto->addressDistrict !== '' && $employeeDto->addressZipCode !== '' && ! empty($employeeDto->addressState) && $employeeDto->addressCity !== '') {
+                $employee->address()->updateOrCreate(
+                    ['employee_id' => $employee->id],
+                    [
+                        'street' => TextHelper::titleCase($employeeDto->addressStreet),
+                        'complement' => TextHelper::titleCase($employeeDto->addressComplement),
+                        'number' => $employeeDto->addressNumber,
+                        'district' => TextHelper::titleCase($employeeDto->addressDistrict),
+                        'zip_code' => $employeeDto->addressZipCode,
+                        'state' => $employeeDto->addressState,
+                        'city' => TextHelper::titleCase($employeeDto->addressCity),
+                    ]
+                );
+            }
 
-            if ($employeeDto->landline !== null) {
+            if ($employeeDto->landline !== null && ($employeeDto->landline !== '' && $employeeDto->areaCode !== '')) {
                 $newLandline = new Phone($employeeDto->landline);
                 $employee->phones()->updateOrCreate(
                     ['employee_id' => $employee->id, 'type' => 'Fixo'],
@@ -227,24 +243,28 @@ class EmployeeService
                 );
             }
 
-            $newMobile = new Phone($employeeDto->mobile);
-            $employee->phones()->updateOrCreate(
-                ['employee_id' => $employee->id, 'type' => 'Celular'],
-                [
-                    'area_code' => $newMobile->getAreaCode(),
-                    'number' => $newMobile->getNumber(),
-                    'type' => $phoneTypeTranslation[$newMobile->getType()],
-                ]
-            );
+            if ($employeeDto->mobile !== '' && $employeeDto->areaCode !== '') {
+                $newMobile = new Phone($employeeDto->mobile);
+                $employee->phones()->updateOrCreate(
+                    ['employee_id' => $employee->id, 'type' => 'Celular'],
+                    [
+                        'area_code' => $newMobile->getAreaCode(),
+                        'number' => $newMobile->getNumber(),
+                        'type' => $phoneTypeTranslation[$newMobile->getType()],
+                    ]
+                );
+            }
 
-            $employee->bankAccount()->updateOrCreate(
-                ['employee_id' => $employee->id],
-                [
-                    'bank_name' => TextHelper::titleCase($employeeDto->bankName),
-                    'agency_number' => $employeeDto->agencyNumber,
-                    'account' => $employeeDto->accountNumber,
-                ]
-            );
+            if ($employeeDto->bankName !== '' && $employeeDto->agencyNumber !== '' && $employeeDto->accountNumber !== '') {
+                $employee->bankAccount()->updateOrCreate(
+                    ['employee_id' => $employee->id],
+                    [
+                        'bank_name' => TextHelper::titleCase($employeeDto->bankName),
+                        'agency_number' => $employeeDto->agencyNumber,
+                        'account' => $employeeDto->accountNumber,
+                    ]
+                );
+            }
         });
 
         return $employee;
