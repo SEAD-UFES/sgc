@@ -210,7 +210,7 @@ return [
     */
 
     'build' => env('APP_BUILD', 'dev'),
-    'version' =>  '0.0.' . env('APP_BUILD', 'dev'),
+    'version' =>  '0.91.0-Beta Build: ' . env('APP_BUILD', 'dev'),
 
 
 ];
