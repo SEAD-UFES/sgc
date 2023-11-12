@@ -52,14 +52,14 @@ RUN apk update && apk upgrade --no-cache
 
 # Explicitly set Timezone
 ENV TIMEZONE=Brazil/East
-RUN apk add --no-cache tzdata
-RUN cp /usr/share/zoneinfo/$TIMEZONE /etc/localtime
-RUN echo $TIMEZONE >  /etc/timezone
-RUN apk del tzdata
+RUN apk add --no-cache tzdata && \
+    cp /usr/share/zoneinfo/$TIMEZONE /etc/localtime && \
+    echo $TIMEZONE >  /etc/timezone && \
+    apk del tzdata
 
 # Change ICU lib data to full version
-RUN apk del icu-data-en
-RUN apk add --no-cache icu-data-full
+RUN apk del icu-data-en && \
+    apk add --no-cache icu-data-full
 
 # Install Nginx
 RUN apk add --no-cache nginx
@@ -68,18 +68,30 @@ RUN apk add --no-cache nginx
 RUN adduser -D -g 'www' www
 
 # Create a directory for html files
-RUN mkdir /www
-RUN chown -R www:www /var/lib/nginx
-RUN chown -R www:www /www
+RUN mkdir /www && \
+    chown -R www:www /var/lib/nginx && \
+    chown -R www:www /www
 
 RUN mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
 COPY ./.docker/nginx.conf /etc/nginx/nginx.conf
 
 # Installing PHP
-RUN apk add --no-cache php81 php81-fpm
+RUN apk add --no-cache php82 php82-fpm && \
+    #Laravel site declared dependencies
+    apk add --no-cache php82-bcmath php82-ctype php82-fileinfo php82-json php82-mbstring php82-openssl php82-pdo php82-tokenizer php82-xml && \
+    #Dependencies that brake Laravel
+    apk add --no-cache php82-gd php82-intl php82-pdo_mysql && \
+    #More Dependencies that brake Laravel on run time
+    apk add --no-cache php82-session php82-dom php82-simplexml php82-xmlwriter php82-xmlreader && \
+    #More Dependencies... Composer with php82 this time
+    apk add --no-cache php82-phar && \
+    #More Dependencies... Required for laravel-backup
+    apk add --no-cache php82-zip mariadb-connector-c
 
-# # RUN ln -s /usr/bin/php81 /usr/bin/php
-RUN ln -s /usr/sbin/php-fpm81 /usr/sbin/php-fpm
+RUN ln -s /usr/bin/php82 /usr/bin/php && \
+    ln -s /usr/sbin/php-fpm82 /usr/sbin/php-fpm && \
+    ln -s /etc/php82 /etc/php && \
+    ln -s /var/log/php82 /var/log/php
 
 # Defining ENV variables which will be used in configuration
 ENV PHP_FPM_USER="www"
@@ -95,43 +107,27 @@ ENV PHP_ERROR_REPORTING="E_COMPILE_ERROR\|E_RECOVERABLE_ERROR\|E_ERROR\|E_CORE_E
 ENV PHP_CGI_FIX_PATHINFO=0
 
 # Modifying configuration file php-fpm.conf
-RUN sed -i "s|;listen.owner\s*=\s*nobody|listen.owner = $PHP_FPM_USER|g" /etc/php81/php-fpm.conf
-RUN sed -i "s|;listen.group\s*=\s*nobody|listen.group = $PHP_FPM_GROUP|g" /etc/php81/php-fpm.conf
-RUN sed -i "s|;listen.mode\s*=\s*0660|listen.mode = $PHP_FPM_LISTEN_MODE|g" /etc/php81/php-fpm.conf
-RUN sed -i "s|user\s*=\s*nobody|user = $PHP_FPM_USER|g" /etc/php81/php-fpm.conf
-RUN sed -i "s|group\s*=\s*nobody|group = $PHP_FPM_GROUP|g" /etc/php81/php-fpm.conf
-RUN sed -i "s|;log_level\s*=\s*notice|log_level = notice|g" /etc/php81/php-fpm.conf
-
-RUN sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php81/php-fpm.conf
+RUN sed -i "s|;listen.owner\s*=\s*nobody|listen.owner = $PHP_FPM_USER|g" /etc/php/php-fpm.conf && \
+    sed -i "s|;listen.group\s*=\s*nobody|listen.group = $PHP_FPM_GROUP|g" /etc/php/php-fpm.conf && \
+    sed -i "s|;listen.mode\s*=\s*0660|listen.mode = $PHP_FPM_LISTEN_MODE|g" /etc/php/php-fpm.conf && \
+    sed -i "s|user\s*=\s*nobody|user = $PHP_FPM_USER|g" /etc/php/php-fpm.conf && \
+    sed -i "s|group\s*=\s*nobody|group = $PHP_FPM_GROUP|g" /etc/php/php-fpm.conf && \
+    sed -i "s|;log_level\s*=\s*notice|log_level = notice|g" /etc/php/php-fpm.conf && \
+    sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php/php-fpm.conf
 
 # Modifying configuration file php.ini
-RUN sed -i "s|display_errors\s*=\s*Off|display_errors = $PHP_DISPLAY_ERRORS|i" /etc/php81/php.ini
-RUN sed -i "s|display_startup_errors\s*=\s*Off|display_startup_errors = $PHP_DISPLAY_STARTUP_ERRORS|i" /etc/php81/php.ini
-RUN sed -i "s|error_reporting\s*=\s*E_ALL & ~E_DEPRECATED & ~E_STRICT|error_reporting = $PHP_ERROR_REPORTING|i" /etc/php81/php.ini
-RUN sed -i "s|;*memory_limit =.*|memory_limit = $PHP_MEMORY_LIMIT|i" /etc/php81/php.ini
-RUN sed -i "s|;*upload_max_filesize =.*|upload_max_filesize = $PHP_MAX_UPLOAD|i" /etc/php81/php.ini
-RUN sed -i "s|;*max_file_uploads =.*|max_file_uploads = $PHP_MAX_FILE_UPLOAD|i" /etc/php81/php.ini
-RUN sed -i "s|;*post_max_size =.*|post_max_size = $PHP_MAX_POST|i" /etc/php81/php.ini
-RUN sed -i "s|;*cgi.fix_pathinfo=.*|cgi.fix_pathinfo= $PHP_CGI_FIX_PATHINFO|i" /etc/php81/php.ini
+RUN sed -i "s|display_errors\s*=\s*Off|display_errors = $PHP_DISPLAY_ERRORS|i" /etc/php/php.ini && \
+    sed -i "s|display_startup_errors\s*=\s*Off|display_startup_errors = $PHP_DISPLAY_STARTUP_ERRORS|i" /etc/php/php.ini && \
+    sed -i "s|error_reporting\s*=\s*E_ALL & ~E_DEPRECATED & ~E_STRICT|error_reporting = $PHP_ERROR_REPORTING|i" /etc/php/php.ini && \
+    sed -i "s|;*memory_limit =.*|memory_limit = $PHP_MEMORY_LIMIT|i" /etc/php/php.ini && \
+    sed -i "s|;*upload_max_filesize =.*|upload_max_filesize = $PHP_MAX_UPLOAD|i" /etc/php/php.ini && \
+    sed -i "s|;*max_file_uploads =.*|max_file_uploads = $PHP_MAX_FILE_UPLOAD|i" /etc/php/php.ini && \
+    sed -i "s|;*post_max_size =.*|post_max_size = $PHP_MAX_POST|i" /etc/php/php.ini && \
+    sed -i "s|;*cgi.fix_pathinfo=.*|cgi.fix_pathinfo= $PHP_CGI_FIX_PATHINFO|i" /etc/php/php.ini
 
-# /etc/php81/php-fpm.d/www.conf
-RUN sed -i "s|user\s*=\s*nobody|user = $PHP_FPM_USER|g" /etc/php81/php-fpm.d/www.conf
-RUN sed -i "s|group\s*=\s*nobody|group = $PHP_FPM_GROUP|g" /etc/php81/php-fpm.d/www.conf
-
-#Laravel site declared dependencies
-RUN apk add --no-cache php81-bcmath php81-ctype php81-fileinfo php81-json php81-mbstring php81-openssl php81-pdo php81-tokenizer php81-xml
-
-#Dependencies that brake Laravel
-RUN apk add --no-cache php81-gd php81-intl php81-pdo_mysql
-
-#More Dependencies that brake Laravel on run time
-RUN apk add --no-cache php81-session php81-dom php81-simplexml php81-xmlwriter php81-xmlreader
-
-#More Dependencies... Composer with php81 this time
-RUN apk add --no-cache php81-phar
-
-#More Dependencies... Required for laravel-backup
-RUN apk add --no-cache php81-zip mariadb-connector-c
+# /etc/php/php-fpm.d/www.conf
+RUN sed -i "s|user\s*=\s*nobody|user = $PHP_FPM_USER|g" /etc/php/php-fpm.d/www.conf && \
+    sed -i "s|group\s*=\s*nobody|group = $PHP_FPM_GROUP|g" /etc/php/php-fpm.d/www.conf
 
 COPY --chown=www:www --from=vendor /app/ /www/
 
@@ -141,29 +137,28 @@ COPY --chown=www:www --from=frontend /laravel-app/public/build/ /www/public/buil
 
 
 
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-RUN php -r "if (hash_file('sha384', 'composer-setup.php') === 'e21205b207c3ff031906575712edab6f13eb0b361f2085f1f1237b7126d785e826a450292b6cfd1d64d92e6563bbde02') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-RUN php composer-setup.php
-RUN php -r "unlink('composer-setup.php');"
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    php -r "if (hash_file('sha384', 'composer-setup.php') === 'e21205b207c3ff031906575712edab6f13eb0b361f2085f1f1237b7126d785e826a450292b6cfd1d64d92e6563bbde02') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
+    php composer-setup.php && \
+    php -r "unlink('composer-setup.php');" && \
+    mv composer.phar /usr/local/bin/composer
 
-RUN mv composer.phar /usr/local/bin/composer
-
-RUN cp /usr/bin/php81 /usr/bin/php
+## RUN cp /usr/bin/php82 /usr/bin/php
 
 WORKDIR /www
 RUN composer dump-autoload --optimize --no-dev
 
 #COPY --chown=www:www ./.env.deploy /www/.env
 
-RUN mkdir /www/storage/framework/cache/data
-RUN chown www:www /www/storage/framework/cache/data
+RUN mkdir /www/storage/framework/cache/data && \
+    chown www:www /www/storage/framework/cache/data
 
 #RUN php artisan key:generate
 
-RUN php artisan optimize:clear
-RUN php artisan optimize
-RUN php artisan view:cache
-RUN php artisan config:clear
+RUN php artisan optimize:clear && \
+    php artisan optimize && \
+    php artisan view:cache && \
+    php artisan config:clear
 
 # Install Supervisor Process Control System
 RUN apk add --no-cache supervisor
@@ -177,38 +172,28 @@ RUN echo "* * * * * cd /www && php artisan schedule:run >> /dev/null 2>&1" >> /e
 
 # RTAs
 
-RUN touch /var/log/nginx/access.log
-RUN chown www:www /var/log/nginx/access.log
-#RUN chmod 666 /var/log/nginx/access.log
+RUN touch /var/log/nginx/access.log && \
+    chown www:www /var/log/nginx/access.log && \
+    touch /var/lib/nginx/logs/error.log && \
+    chown www:www /var/lib/nginx/logs/error.log && \
+    touch /var/run/nginx/nginx.pid && \
+    chown www:www /var/run/nginx/nginx.pid && \
+    touch /var/log/php/error.log && \
+    chown www:www /var/log/php/error.log && \
+    touch /www/storage/logs/laravel.log && \
+    chown www:www /www/storage/logs/laravel.log
 
-RUN touch /var/lib/nginx/logs/error.log
-RUN chown www:www /var/lib/nginx/logs/error.log
-#RUN chmod 666 /var/lib/nginx/logs/error.log
+RUN rm -f /etc/nginx/http.d/default.conf && \
+    echo "APP_BUILD=$(date +%Y%m%d_%H%M)" > BUILD
 
-RUN touch /var/run/nginx/nginx.pid
-RUN chown www:www /var/run/nginx/nginx.pid
-#RUN chmod 666 /var/run/nginx/nginx.pid
-
-RUN touch /var/log/php81/error.log
-RUN chown www:www /var/log/php81/error.log
-#RUN chmod 666 /var/log/php81/error.log
-
-RUN touch /www/storage/logs/laravel.log
-RUN chown www:www /www/storage/logs/laravel.log
-#RUN chmod 666 /www/storage/logs/laravel.log
-
-RUN rm -f /etc/nginx/http.d/default.conf
-RUN echo "APP_BUILD=$(date +%Y%m%d_%H%M)" > BUILD
-
-RUN chmod 555 /www/entrypoint.sh
-RUN chmod 655 /www/disableHttpsRequirement.sh
-RUN chmod 655 /www/enableFakeData.sh
-
-RUN chmod 655 /www/genEnv.php
+RUN chmod 555 /www/entrypoint.sh && \
+    chmod 655 /www/disableHttpsRequirement.sh && \
+    chmod 655 /www/enableFakeData.sh && \
+    chmod 655 /www/genEnv.php
 
 # Clean up
-RUN rm -f ./.env.ci
-RUN rm -f ./.env.deploy
+RUN rm -f ./.env.ci && \
+    rm -f ./.env.deploy
 
 EXPOSE 8080
 

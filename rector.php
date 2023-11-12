@@ -32,7 +32,7 @@ return static function (RectorConfig $rectorConfig): void {
 
     $rectorConfig->sets([SetList::CODE_QUALITY,SetList::CODING_STYLE,]); // run all sets
 
-    $rectorConfig->phpVersion(PhpVersion::PHP_81);
+    $rectorConfig->phpVersion(PhpVersion::PHP_82);
 
     //register single rule
     //$rectorConfig->rule(NewlineAfterStatementRector::class);
