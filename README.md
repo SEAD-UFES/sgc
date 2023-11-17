@@ -1,4 +1,4 @@
-<img src="https://img.shields.io/badge/PHP-8-blue" />&nbsp;<img src="https://img.shields.io/badge/Laravel-10-red" />&nbsp;<img src="https://img.shields.io/badge/Bootstrap-5-blueviolet" />&nbsp;[![Actions Status](https://github.com/LDI-Ufes/sgc/workflows/Integration/badge.svg)](https://github.com/LDI-Ufes/sgc/actions)
+<img src="https://img.shields.io/badge/PHP-8-blue" />&nbsp;<img src="https://img.shields.io/badge/Laravel-10-red" />&nbsp;<img src="https://img.shields.io/badge/Bootstrap-5-blueviolet" />&nbsp;[![Actions Status](https://github.com/SEAD-UFES/sgc/workflows/Integration/badge.svg)](https://github.com/SEAD-UFES/sgc/actions)
 
 # SGC
 
