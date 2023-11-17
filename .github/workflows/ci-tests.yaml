@@ -1,4 +1,4 @@
-name: Integration
+name: Integration-Tests
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
         with:
           php-version: "8.x"
       - name: "☁️ Checkout repository"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: "🌳 Copy .env"
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: "📦 Install Dependencies"
@@ -44,7 +44,7 @@ jobs:
           tools:
             brianium/paratest
       - name: "☁️ Checkout repository"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: "🌳 Copy .env"
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: "📦 Install Dependencies"

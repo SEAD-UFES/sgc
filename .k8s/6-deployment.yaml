@@ -25,7 +25,7 @@ spec:
           claimName: sgc-logs-pvc
       initContainers:
         - name: gen-env
-          image: ldiufes/sgc:latest
+          image: seadufes/sgc:latest
           envFrom:
             - configMapRef:
                 name: sgc-config
@@ -41,7 +41,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: sgc-config
-          image: ldiufes/sgc:latest
+          image: seadufes/sgc:latest
           ports:
             - containerPort: 8080
           volumeMounts:
