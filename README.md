@@ -25,7 +25,7 @@ $ `docker network create --driver bridge sgc-net`
 $ `docker run -e MYSQL_ROOT_PASSWORD=qwerty -e MYSQL_DATABASE=sgc -e MYSQL_USER=sgc -e MYSQL_PASSWORD=password -p 3306:3306 --name=mysql --hostname=mysql --restart unless-stopped --network sgc-net -d mysql:latest`
 
 ### 3. Run the application
-$ `docker run -p 80:8080 --name=sgc --hostname=sgc --restart unless-stopped --network sgc-net -d ldiufes/sgc:latest`
+$ `docker run -p 80:8080 --name=sgc --hostname=sgc --restart unless-stopped --network sgc-net -d seadufes/sgc:latest`
 
 ### 4. Access SGC container shell
 $ `docker exec -it sgc ash`
@@ -68,7 +68,7 @@ $ `docker network create --driver bridge sgc-net`
 $ `docker run -e MYSQL_ROOT_PASSWORD=qwerty -e MYSQL_DATABASE=sgc -e MYSQL_USER=sgc -e MYSQL_PASSWORD=password -p 3306:3306 --name=mysql --hostname=mysql --restart unless-stopped --network sgc-net -d mysql:latest`
 
 ### 3. Iniciar a aplicação
-$ `docker run -p 80:8080 --name=sgc --hostname=sgc --restart unless-stopped --network sgc-net -d ldiufes/sgc:latest`
+$ `docker run -p 80:8080 --name=sgc --hostname=sgc --restart unless-stopped --network sgc-net -d seadufes/sgc:latest`
 
 ### 4. Acessar o shell do contêiner SGC
 $ `docker exec -it sgc ash`
@@ -88,6 +88,6 @@ Sugestão: Em um sistema de produção, registre uma nova conta de administrador
 E é isso! ✨
 <hr \>
 
-## Docker image 💿
+## Image 💿
 
-Docker Hub: https://hub.docker.com/r/ldiufes/sgc
+Registry: https://hub.docker.com/r/seadufes/sgc
