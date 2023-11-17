@@ -88,6 +88,6 @@ Sugestão: Em um sistema de produção, registre uma nova conta de administrador
 E é isso! ✨
 <hr \>
 
-## Docker image 💿
+## Image 💿
 
-Docker Hub: https://hub.docker.com/r/ldiufes/sgc
+Registry: https://hub.docker.com/r/seadufes/sgc
