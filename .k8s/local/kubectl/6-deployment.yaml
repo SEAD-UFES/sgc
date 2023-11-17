@@ -23,19 +23,19 @@ spec:
       - name: logs-dir
         persistentVolumeClaim:
           claimName: sgc-logs-pvc
-      initContainers:
-        - name: gen-env
-          image: seadufes/sgc:latest
-          envFrom:
-            - configMapRef:
-                name: sgc-config
-          args:
-            - /bin/ash
-            - -c
-            - php genEnv.php && cat BUILD >> .env
-          volumeMounts:
-            - name: env-file
-              mountPath: /www/.env
+      # initContainers:
+      #   - name: gen-env
+      #     image: seadufes/sgc:latest
+      #     envFrom:
+      #       - configMapRef:
+      #           name: sgc-config
+      #     args:
+      #       - /bin/ash
+      #       - -c
+      #       - php genEnv.php && cat BUILD >> .env
+      #     volumeMounts:
+      #       - name: env-file
+      #         mountPath: /www/.env
       containers:
         - name: sgc
           envFrom:
