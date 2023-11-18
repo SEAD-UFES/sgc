@@ -5,7 +5,7 @@
 ![United States](https://raw.githubusercontent.com/stevenrskelton/flag-icon/master/png/16/country-4x3/us.png "United States") - English
 ## Sead/Ufes Employee Management System Repository
 
-The SGC (abbreviation for 'Sistema de Gestão de Colaboradores') aims to enhance work in the activities of the Academic Secretariat, Grant Assistant, Course Coordinators and the Virtual Learning Environments Team.
+The SGC (initialism for 'Sistema de Gestão de Colaboradores') aims to enhance work in the activities of the Academic Secretariat, Grant Assistant, Course Coordinators and the Virtual Learning Environments Team.
 
 The final product must provide:
 - [x] Management of employees documents and filled out forms, both in digital format;
