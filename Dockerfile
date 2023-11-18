@@ -184,7 +184,7 @@ RUN touch /var/log/nginx/access.log && \
     chown www:www /www/storage/logs/laravel.log
 
 RUN rm -f /etc/nginx/http.d/default.conf && \
-    echo "APP_BUILD=$(date +%Y%m%d_%H%M)" > BUILD
+    echo "$(date +%Y%m%d_%H%M)" > BUILD
 
 RUN chmod 555 /www/entrypoint.sh && \
     chmod 655 /www/disableHttpsRequirement.sh && \

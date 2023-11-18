@@ -1,14 +1,9 @@
 <?php
 
 /**
- * @var array<string, string> $sysEnvs
+ * @var string $fmtConfEnvText
  */
-$sysEnvs = getenv();
-
-/**
- * @var string $envFileText
- */
-$envFileText = '';
+$fmtConfEnvText = "\n; SGC added env variables\n";
 
 /**
  * @var array<int, string> $laravelEnvKeys
@@ -53,19 +48,18 @@ $laravelEnvKeys = array(
     'SESSION_LIFETIME',
 );
 
+// Add env variables to PHP-FPM www.conf
 foreach ($laravelEnvKeys as $laravelEnvKey) {
-    if (array_key_exists($laravelEnvKey, $sysEnvs)) {
-        $envFileText .= $laravelEnvKey . '=' . $sysEnvs[$laravelEnvKey] . "\n";
-    }
+    $fmtConfEnvText .= 'env[' . $laravelEnvKey . '] = ' . '$' . $laravelEnvKey . "\n";
 }
 
-$envFileText .= file_get_contents('BUILD') . "\n";
+$fmtConfEnvText .= 'env[APP_BUILD] = ' . file_get_contents('BUILD') . "\n";
 
 /**
  * @var int $bytesWritten
  */
-$bytesWritten = file_put_contents('.env', $envFileText);
+$bytesWritten = file_put_contents('/etc/php/php-fpm.d/www.conf', $fmtConfEnvText, FILE_APPEND);
 
-echo $bytesWritten . " bytes written to .env\n";
+echo $bytesWritten . " bytes written to PHP-FPM www.conf\n";
 
 unlink(__FILE__);
