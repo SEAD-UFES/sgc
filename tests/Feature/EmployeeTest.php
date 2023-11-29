@@ -14,7 +14,6 @@ use App\Models\UserType;
 use App\Models\Responsibility;
 use App\Repositories\ResponsibilityRepository;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
@@ -26,7 +25,6 @@ use Tests\TestCase;
 final class EmployeeTest extends TestCase
 {
     use DatabaseMigrations;
-    use RefreshDatabase;
     use WithFaker;
 
     private static User $userAdm;
